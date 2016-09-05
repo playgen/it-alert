@@ -61,10 +61,19 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="GameWork">
+      <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\ControllerBehaviour.cs" />
-    <Compile Include="Assets\StateController.cs" />
+    <Compile Include="Assets\GameObjectUtilities.cs" />
+    <Compile Include="Assets\LoadingState.cs" />
+    <Compile Include="Assets\LoadingStateInterface.cs" />
+    <Compile Include="Assets\LoginCommand.cs" />
+    <Compile Include="Assets\LoginPanelBehaviour.cs" />
+    <Compile Include="Assets\LoginState.cs" />
+    <Compile Include="Assets\LoginStateInterface.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
