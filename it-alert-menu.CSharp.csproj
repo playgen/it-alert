@@ -64,16 +64,36 @@
     <Reference Include="GameWork">
       <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\SUGAR\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.SUGAR.Client">
+      <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.SUGAR.Contracts">
+      <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ControllerBehaviour.cs" />
-    <Compile Include="Assets\GameObjectUtilities.cs" />
-    <Compile Include="Assets\LoadingState.cs" />
-    <Compile Include="Assets\LoadingStateInterface.cs" />
-    <Compile Include="Assets\LoginCommand.cs" />
-    <Compile Include="Assets\LoginPanelBehaviour.cs" />
-    <Compile Include="Assets\LoginState.cs" />
-    <Compile Include="Assets\LoginStateInterface.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\ControllerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Commands\LoginCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\LogoutCommand.cs" />
+    <Compile Include="Assets\Scripts\GameObjectUtilities.cs" />
+    <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
+    <Compile Include="Assets\Scripts\GameStates\LobbyState.cs" />
+    <Compile Include="Assets\Scripts\GameStates\LoginState.cs" />
+    <Compile Include="Assets\Scripts\GameStates\MenuState.cs" />
+    <Compile Include="Assets\Scripts\ILoginable.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\LoadingStateInterface.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\LobbyStateInterface.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\LoginStateInterface.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\MenuStateInterface.cs" />
+    <Compile Include="Assets\Scripts\LoginController.cs" />
+    <Compile Include="Assets\Scripts\Menu.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
