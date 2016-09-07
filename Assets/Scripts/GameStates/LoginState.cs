@@ -1,15 +1,22 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameWork.States;
+﻿using GameWork.States;
 
 public class LoginState : State
 {
 	private LoginStateInterface _interface;
+	private LoginController _controller;
 	public const string StateName = "LoginState";
 
-	public LoginState(LoginStateInterface @interface)
+	public LoginState(LoginStateInterface @interface, LoginController controller)
 	{
 		_interface = @interface;
+		_controller = controller;
+		_controller.LoginSuccessEvent += OnLoginSucceeded;
+		_controller.LoginFailedEvent += _interface.OnLoginFailed;
+	}
+
+	private void OnLoginSucceeded()
+	{
+		NextState();
 	}
 
 	public override void Initialize()
@@ -37,7 +44,14 @@ public class LoginState : State
 		if (_interface.HasCommands)
 		{
 			var command = _interface.TakeFirstCommand();
-			command.Execute(this);
+			if (command is LoginCommand)
+			{
+				command.Execute(_controller);
+			}
+			else
+			{
+				command.Execute(this);
+			}
 		}
 	}
 
@@ -48,6 +62,6 @@ public class LoginState : State
 
 	public override void NextState()
 	{
-		throw new System.NotImplementedException();
+		ChangeState(MenuState.StateName);
 	}
 }
