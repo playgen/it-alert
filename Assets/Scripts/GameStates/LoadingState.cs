@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameWork.States;
+﻿using GameWork.States;
 
 public class LoadingState : State
 {

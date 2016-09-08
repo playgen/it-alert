@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -80,6 +82,8 @@
     <Compile Include="Assets\Scripts\Commands\LoginCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\LogoutCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
+    <Compile Include="Assets\Scripts\Commands\RefreshGamesListCommand.cs" />
+    <Compile Include="Assets\Scripts\Controllers\GameListController.cs" />
     <Compile Include="Assets\Scripts\Controllers\LoginController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
