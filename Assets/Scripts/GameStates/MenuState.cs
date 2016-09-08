@@ -35,6 +35,11 @@ public class MenuState : State
         ChangeState(LobbyState.stateName);
     }
 
+    public override void PreviousState()
+    {
+        ChangeState(LoginState.StateName);
+    }
+
     public override string Name
     {
         get { return StateName; }

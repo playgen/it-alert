@@ -11,7 +11,7 @@ public class MenuStateInterface : StateInterface
     public override void Initialize()
     {
         _mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
-        var menu = new Menu("MainMenuContainer/MenuPanelContainer/MenuContainer");
+        var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer");
 
         var logoutButton = menu.GetButton("LogoutButtonContainer");
         logoutButton.onClick.AddListener(OnLogoutClick);
@@ -27,7 +27,8 @@ public class MenuStateInterface : StateInterface
 
     private void OnLogoutClick()
     {
-        EnqueueCommand(new LogoutCommand());
+        //EnqueueCommand(new LogoutCommand());
+        EnqueueCommand(new PreviousStateCommand());
     }
 
 

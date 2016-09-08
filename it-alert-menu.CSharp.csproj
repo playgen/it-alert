@@ -79,18 +79,19 @@
     <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
     <Compile Include="Assets\Scripts\Commands\LoginCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\LogoutCommand.cs" />
-    <Compile Include="Assets\Scripts\GameObjectUtilities.cs" />
+    <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
+    <Compile Include="Assets\Scripts\Controllers\LoginController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LobbyState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoginState.cs" />
     <Compile Include="Assets\Scripts\GameStates\MenuState.cs" />
-    <Compile Include="Assets\Scripts\ILoginable.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoadingStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LobbyStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoginStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\MenuStateInterface.cs" />
-    <Compile Include="Assets\Scripts\LoginController.cs" />
-    <Compile Include="Assets\Scripts\Menu.cs" />
+    <Compile Include="Assets\Scripts\Utilities\ButtonList.cs" />
+    <Compile Include="Assets\Scripts\Utilities\GameObjectUtilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.xml" />

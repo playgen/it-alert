@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameWork.Commands.Interfaces;
-using GameWork.States.Interfaces;
+﻿using GameWork.Commands.Interfaces;
+using GameWork.Interfaces;
 
 public struct LoginCommand : ICommand
 {
