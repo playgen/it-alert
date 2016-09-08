@@ -1,10 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using GameWork.Commands.Interfaces;
+﻿using GameWork.Commands.Interfaces;
 using GameWork.States.Interfaces;
 
-public class LogoutCommand : ICommand {
-
+public class LogoutCommand : ICommand
+{
     public void Execute(object parameter)
     {
         var state = (IState)parameter;

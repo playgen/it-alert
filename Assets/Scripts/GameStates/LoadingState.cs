@@ -34,6 +34,11 @@ public class LoadingState : State
 		_interface.Exit();
 	}
 
+	public override void PreviousState()
+	{
+		throw new System.NotImplementedException();
+	}
+
 	public override void Tick(float deltaTime)
 	{
 		if (_timer >= _splashDelay && _interface.HasCommands)

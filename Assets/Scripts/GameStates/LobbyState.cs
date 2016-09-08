@@ -3,20 +3,32 @@
 public class LobbyState : State
 {
     private LobbyStateInterface _interface;
+    private ReadyPlayerController _readyPlayerController;
     public const string stateName = "LobbyState";
 
-    public LobbyState(LobbyStateInterface @interface)
+    public LobbyState(LobbyStateInterface @interface, ReadyPlayerController controller)
     {
         _interface = @interface;
+        _readyPlayerController = controller;
     }
 
     public override void Initialize()
     {
         _interface.Initialize();
+        _readyPlayerController.ReadySuccessEvent += _interface.OnReadySucceeded;
+        //_readyPlayerController.ReadyFailedEvent += _interface.OnReadyFailed;
+    }
+
+    public override void Terminate()
+    {
+        _readyPlayerController.ReadySuccessEvent -= _interface.OnReadySucceeded;
+        //_readyPlayerController.ReadyFailedEvent -= _interface.OnReadyFailed;
+        _interface.Terminate();
     }
 
     public override void Enter()
     {
+        
         _interface.Enter();
     }
 
@@ -30,6 +42,11 @@ public class LobbyState : State
         throw new System.NotImplementedException();
     }
 
+    public override void PreviousState()
+    {
+       ChangeState(MenuState.StateName);
+    }
+
     public override string Name
     {
         get { return stateName; }
@@ -40,7 +57,14 @@ public class LobbyState : State
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            command.Execute(this);
+            if (command is ReadyPlayerCommand)
+            {
+                command.Execute(_readyPlayerController);
+            }
+            else
+            {
+                command.Execute(this);
+            }
         }
     }
 }

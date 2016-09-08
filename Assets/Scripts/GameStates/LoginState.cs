@@ -10,8 +10,6 @@ public class LoginState : State
 	{
 		_interface = @interface;
 		_controller = controller;
-		_controller.LoginSuccessEvent += OnLoginSucceeded;
-		_controller.LoginFailedEvent += _interface.OnLoginFailed;
 	}
 
 	private void OnLoginSucceeded()
@@ -22,10 +20,14 @@ public class LoginState : State
 	public override void Initialize()
 	{
 		_interface.Initialize();
+		_controller.LoginSuccessEvent += OnLoginSucceeded;
+		_controller.LoginFailedEvent += _interface.OnLoginFailed;
 	}
 
 	public override void Terminate()
 	{
+		_controller.LoginSuccessEvent -= OnLoginSucceeded;
+		_controller.LoginFailedEvent -= _interface.OnLoginFailed;
 		_interface.Terminate();
 	}
 
@@ -37,6 +39,11 @@ public class LoginState : State
 	public override void Exit()
 	{
 		_interface.Exit();
+	}
+
+	public override void PreviousState()
+	{
+		throw new System.NotImplementedException();
 	}
 
 	public override void Tick(float deltaTime)

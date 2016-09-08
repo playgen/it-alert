@@ -19,8 +19,8 @@ public class LoginStateInterface : StateInterface
 	{
 		_loginPanel = GameObject.Find("LoginContainer").transform.GetChild(0).gameObject;
 
-		var buttons = GameObjectUtilities.FindAllChildren("LoginContainer/LoginPanelContainer/LoginPanel/ButtonPanel");
-		var loginButton = buttons.First(o => o.name.Equals("LoginButtonContainer")).transform.GetChild(0).GetComponent<Button>();
+		var buttons = new ButtonList("LoginContainer/LoginPanelContainer/LoginPanel/ButtonPanel");
+		var loginButton = buttons.GetButton("LoginButtonContainer");
 		//var registerButton = buttons.First(o => o.name.Equals("RegisterButton")).GetComponent<Button>();
 		loginButton.onClick.AddListener(OnLoginClick);
 	}

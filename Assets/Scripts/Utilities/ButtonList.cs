@@ -2,11 +2,11 @@
 using System.Linq;
 using UnityEngine.UI;
 
-public class Menu
+public class ButtonList
 {
     private GameObject[] _buttons;
 
-    public Menu(string menuPath)
+    public ButtonList(string menuPath)
     {
         _buttons = GameObjectUtilities.FindAllChildren(menuPath);
     }
