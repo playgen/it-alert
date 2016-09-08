@@ -3,21 +3,25 @@
 public class MenuState : State
 {
     private MenuStateInterface _interface;
+    private GameListController _gameListController;
     public const string StateName = "MenuState";
 
-    public MenuState(MenuStateInterface @interface)
+    public MenuState(MenuStateInterface @interface, GameListController gameListController)
     {
         _interface = @interface;
+        _gameListController = gameListController;
     }
 
     public override void Initialize()
     {
+        _gameListController.GameListSuccessEvent += _interface.OnGameListSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
+        _gameListController.GameListSuccessEvent -= _interface.OnGameListSuccess;
     }
 
     public override void Enter()
@@ -50,7 +54,14 @@ public class MenuState : State
         if ( _interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            command.Execute(this);
+            if (command is RefreshGamesListCommand)
+            {
+                command.Execute(_gameListController);
+            }
+            else
+            {
+                command.Execute(this);
+            }
         }
     }
 }

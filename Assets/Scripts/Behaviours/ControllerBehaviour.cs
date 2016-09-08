@@ -1,20 +1,21 @@
 ﻿using UnityEngine;
 using GameWork.States;
+using GameWork.States.Interfaces;
 
 public class ControllerBehaviour : MonoBehaviour
 {
 
-    private StateController _stateController;
+    private StateController<IState> _stateController;
 
     void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
         // PASS SUGAR CLIENT TO EVERY STATE THAT NEEDS IT FOR PERSISTANCE
 
-        _stateController = new StateController(  
+        _stateController = new StateController<IState>(  
             new LoginState(new LoginStateInterface(), new LoginController()), 
             new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface()),
+            new MenuState(new MenuStateInterface(), new GameListController()),
             new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()) 
             );
         _stateController.Initialize();
