@@ -128,15 +128,15 @@ namespace PlayGen.ITAlert.Network
                     break;
 
                 case (byte)GameEventCode.SimulationInitialized:
+                    // Get entire state dump
                     break;
 
-                case (byte)GameEventCode.SimulationDump:
-                    break;
-
-                case (byte)GameEventCode.SimulationDelta:
+                case (byte)GameEventCode.SimulationTick:
+                    // get dump or deltas
                     break;
 
                 case (byte)GameEventCode.SimulationFinalized:
+                    // get final dump
                     ChangeState(ClientStates.Lobby);
                     break;
             }

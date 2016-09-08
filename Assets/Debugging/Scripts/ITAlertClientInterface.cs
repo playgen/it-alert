@@ -90,6 +90,11 @@ public class ITAlertClientInterface : MonoBehaviour
         {
             GUILayout.Label("----Join/Create Room----");
 
+            if (GUILayout.Button("Join Random Room"))
+            {
+                _client.JoinRandomRoom();   
+            }
+
             GUILayout.BeginVertical("box");
             {
                 GUILayout.Label("Rooms:");

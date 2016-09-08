@@ -10,12 +10,10 @@
 
         SimulationInitialized = 50,
 
-        SimulationDump = 51,
+        SimulationTick = 51,
 
-        SimulationDelta = 52,
+        SimulationFinalized = 52,
 
-        SimulationFinalized = 53,
-
-        SimulationCommand = 54,
+        SimulationCommand = 53,
     }
 }

@@ -94,7 +94,7 @@ namespace PlayGen.ITAlert.Network
             }
         }
 
-        #region ROOMS
+        #region Rooms
 
         public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
         {
@@ -180,6 +180,11 @@ namespace PlayGen.ITAlert.Network
             else if (IsInRoom)
             {
                 Log("Already in a room.");
+                return;
+            }
+            else if (!ListRooms(ListRoomsFilters.Open).Any())
+            {
+                Log("No open rooms to join.");
                 return;
             }
 
