@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using GameWork.Commands;
+using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine.UI;
 

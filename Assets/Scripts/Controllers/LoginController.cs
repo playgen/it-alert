@@ -1,11 +1,11 @@
 ﻿using System;
-
+using GameWork.Commands.Actions.Interfaces;
 using GameWork.Interfaces;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts;
 
 
-public class LoginController : ILoginable
+public class LoginController : ILogin, ILogout
 {
     public event Action LoginSuccessEvent;
     public event Action<string> LoginFailedEvent;
