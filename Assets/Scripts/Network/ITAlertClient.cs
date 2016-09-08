@@ -70,9 +70,10 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte)GameEventCode.ListReadyPlayers);
         }
 
-        public void StartGame(bool forceStart)
+        public void StartGame(bool forceStart, bool closeRoom = true)
         {
-            _client.RaiseEvent((byte)GameEventCode.PlayerStartGame, forceStart);
+            _client.RaiseEvent((byte)GameEventCode.PlayerStartGame, 
+                new bool[] { forceStart, closeRoom });
         }
 
         public void QuitGame()
