@@ -15,11 +15,11 @@ MonoBehaviour:
   Protocol: 0
   ServerAddress: 10.0.0.14
   ServerPort: 5055
-  AppID: 1e224c09-eca3-43ec-bc45-6d89015e1045
-  VoiceAppID: f62db7eb-e13e-4d18-8eb4-f0757f704d4f
+  AppID: a4f87584-1a6d-4a41-a208-9b3efb93f4c4
+  VoiceAppID: e94874f7-99e5-4ed7-8746-8679109f941f
   PreferredRegion: 0
   EnabledRegions: -1
-  JoinLobby: 0
+  JoinLobby: 1
   EnableLobbyStatistics: 0
   RpcList:
   - Chat
