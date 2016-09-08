@@ -308,7 +308,10 @@ namespace PlayGen.ITAlert.Network
                 return;
             }
 
-            PhotonNetwork.RaiseEvent(eventCode, eventContext, true, null);
+            PhotonNetwork.RaiseEvent(eventCode, eventContext, true, new RaiseEventOptions()
+            {
+                TargetActors = new int[1] {0},
+            });
         }
 
         private void OnPhotonEvent(byte eventCode, object content, int senderId)
