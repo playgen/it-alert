@@ -9,6 +9,7 @@ public class MenuStateInterface : StateInterface
 {
     private GameObject _mainMenuPanel;
     private GameObject _joinGamePopup;
+    private GameObject _createGamePopup;
 
     public override void Initialize()
     {
@@ -19,6 +20,9 @@ public class MenuStateInterface : StateInterface
         var logoutButton = menu.GetButton("LogoutButtonContainer");
         logoutButton.onClick.AddListener(OnLogoutClick);
 
+        var createGameButton = menu.GetButton("CreateGameButtonContainer");
+        createGameButton.onClick.AddListener(OnCreateGameClick);
+
         var joinGameButton = menu.GetButton("JoinGameButtonContainer");
         joinGameButton.onClick.AddListener(OnJoinGameClick);
 
@@ -26,18 +30,32 @@ public class MenuStateInterface : StateInterface
         quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 
         // Join Game Popup
-        _joinGamePopup =
-            GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup");
+        _joinGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup");
         var joinGameCloseButton =
             GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup/ButtonPanel/CloseButtonContainer/CloseButton")
                 .GetComponent<Button>();
-        joinGameCloseButton.onClick.AddListener(OnCloseJoinGamePopupClick);
+        joinGameCloseButton.onClick.AddListener(OnClosePopupClick);
+
+        // Create Game Popup
+        _createGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/CreateGamePopup");
+        var popUpButtons = new ButtonList("MainMenuContainer/CreateGamePopup/ButtonPanel");
+
+        var createGameCloseButton = popUpButtons.GetButton("CloseButtonContainer");
+        createGameCloseButton.onClick.AddListener(OnClosePopupClick);
+
+        var createGamePopupButton = popUpButtons.GetButton("CreateButtonContainer");
 
     }
 
-    private void OnCloseJoinGamePopupClick()
+    private void OnCreateGameClick()
+    {
+        _createGamePopup.SetActive(true);
+    }
+
+    private void OnClosePopupClick()
     {
         _joinGamePopup.SetActive(false);
+        _createGamePopup.SetActive(false);
     }
 
     private void OnJoinGameClick()
