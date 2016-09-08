@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class MenuState : State
+public class MenuState : SequenceState
 {
     private MenuStateInterface _interface;
     private GameListController _gameListController;
