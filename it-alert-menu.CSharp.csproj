@@ -61,6 +61,12 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
     </Reference>
@@ -81,6 +87,12 @@
     </Reference>
     <Reference Include="PlayGen.ITAlert.DataTransferObjects">
       <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Serialization">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -182,22 +194,17 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\SupportLogger.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
     <Compile Include="Assets\Scripts\Behaviours\ControllerBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Behaviours\CreateGamePopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Commands\CreateGameCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\RefreshGamesListCommand.cs" />
-    <Compile Include="Assets\Scripts\Controllers\CreateGameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameListController.cs" />
     <Compile Include="Assets\Scripts\Controllers\LoginController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\RegisterController.cs" />
-    <Compile Include="Assets\Scripts\GameStates\GameListState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LobbyState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoginState.cs" />
     <Compile Include="Assets\Scripts\GameStates\MenuState.cs" />
-    <Compile Include="Assets\Scripts\Interfaces\GamesListStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoadingStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LobbyStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoginStateInterface.cs" />
@@ -220,10 +227,12 @@
     <None Include="Assets\Photon Unity Networking\changelog.txt" />
     <None Include="Assets\Photon Unity Networking\link.xml" />
     <None Include="Assets\Photon Unity Networking\readme.txt" />
+    <None Include="Assets\Plugins\Network\Newtonsoft.Json.xml" />
     <None Include="Assets\Plugins\Photon3Unity3D.xml" />
     <None Include="Assets\Plugins\PhotonVoiceApi\readme.txt" />
     <None Include="Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.xml" />
     <None Include="Assets\Plugins\release_history.txt" />
+    <None Include="Assets\link.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
