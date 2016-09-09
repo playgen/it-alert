@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using GameWork.States;
-using GameWork.States.Interfaces;
+using PlayGen.SUGAR.Client;
 
 public class ControllerBehaviour : MonoBehaviour
 {
@@ -11,9 +11,10 @@ public class ControllerBehaviour : MonoBehaviour
     {
         DontDestroyOnLoad(transform.gameObject);
         // PASS SUGAR CLIENT TO EVERY STATE THAT NEEDS IT FOR PERSISTANCE
+        var factory = new SUGARClient("http://localhost:62312/");
 
         _stateController = new StateController<SequenceState>(  
-            new LoginState(new LoginStateInterface(), new LoginController()), 
+            new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), new GameListController()),
             new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()) 

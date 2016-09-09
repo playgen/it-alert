@@ -1,16 +1,19 @@
 ﻿using GameWork.Commands;
+using GameWork.Commands.Users;
 using GameWork.States;
 
 public class LoginState : SequenceState
 {
 	private LoginStateInterface _interface;
-	private LoginController _controller;
+	private LoginController _loginController;
+	private RegisterController _registerController;
 	public const string StateName = "LoginState";
 
-	public LoginState(LoginStateInterface @interface, LoginController controller)
+	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController)
 	{
 		_interface = @interface;
-		_controller = controller;
+		_loginController = loginController;
+		_registerController = registerController;
 	}
 
 	private void OnLoginSucceeded()
@@ -21,14 +24,16 @@ public class LoginState : SequenceState
 	public override void Initialize()
 	{
 		_interface.Initialize();
-		_controller.LoginSuccessEvent += OnLoginSucceeded;
-		_controller.LoginFailedEvent += _interface.OnLoginFailed;
+		_registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
+		_registerController.RegisterFailedEvent += _interface.OnLoginFailed;
+		_loginController.LoginSuccessEvent += OnLoginSucceeded;
+		_loginController.LoginFailedEvent += _interface.OnLoginFailed;
 	}
 
 	public override void Terminate()
 	{
-		_controller.LoginSuccessEvent -= OnLoginSucceeded;
-		_controller.LoginFailedEvent -= _interface.OnLoginFailed;
+		_loginController.LoginSuccessEvent -= OnLoginSucceeded;
+		_loginController.LoginFailedEvent -= _interface.OnLoginFailed;
 		_interface.Terminate();
 	}
 
@@ -54,7 +59,11 @@ public class LoginState : SequenceState
 			var command = _interface.TakeFirstCommand();
 			if (command is LoginCommand)
 			{
-				command.Execute(_controller);
+				command.Execute(_loginController);
+			}
+			else if (command is RegisterCommand)
+			{
+				command.Execute(_registerController);
 			}
 			else
 			{
