@@ -52,3 +52,5 @@ Assets/Plugins/Network/PlayGen.ITAlert.Events.dll.mdb.meta
 Assets/Plugins/Network/PlayGen.ITAlert.Events.dll.meta
 Assets/Plugins/Network/PlayGen.ITAlert.Events.pdb
 Assets/Plugins/Network/PlayGen.ITAlert.Events.pdb.meta
+test_Data/
+test.exe
