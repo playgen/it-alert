@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using GameWork.Commands.Interfaces;
+using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
+using Newtonsoft.Json;
+using PlayGen.ITAlert.Serialization;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -21,10 +25,8 @@ namespace PlayGen.ITAlert.Network
         {
             _client = client;
 
-            _client.ConnectedEvent += OnConnected;
-            _client.JoinedRoomEvent += OnJoinedRoom;
-            _client.EventRecievedEvent += OnRecievedEvent;
-            _client.LeftRoomEvent += OnLeftRoom;
+            RegisterSerializableTypes(_client);
+            ConnectEvents(_client);
 
             State = ClientStates.Disconnected;
 
@@ -130,14 +132,17 @@ namespace PlayGen.ITAlert.Network
                     break;
 
                 case (byte)GameEventCode.SimulationInitialized:
+                    UnityEngine.Debug.Log((StateResponse)content);
                     // Get entire state dump
                     break;
 
                 case (byte)GameEventCode.SimulationTick:
+                    UnityEngine.Debug.Log((StateResponse)content);
                     // get dump or deltas
                     break;
 
                 case (byte)GameEventCode.SimulationFinalized:
+                    UnityEngine.Debug.Log((StateResponse)content);
                     // get final dump
                     ChangeState(ClientStates.Lobby);
                     break;
@@ -166,6 +171,19 @@ namespace PlayGen.ITAlert.Network
         private void RefreshLobby()
         {
             GetPlayerReadyStatus();
+        }
+
+        private void RegisterSerializableTypes(Client client)
+        {
+            client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize,                 Deserializer<StateResponse>.Deserialize);
+        }
+
+        private void ConnectEvents(Client client)
+        {
+            client.ConnectedEvent += OnConnected;
+            client.JoinedRoomEvent += OnJoinedRoom;
+            client.EventRecievedEvent += OnRecievedEvent;
+            client.LeftRoomEvent += OnLeftRoom;
         }
     }
 }
