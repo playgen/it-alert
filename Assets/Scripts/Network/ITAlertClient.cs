@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GameWork.Commands.Interfaces;
+using PlayGen.ITAlert.Events;
 
 namespace PlayGen.ITAlert.Network
 {
