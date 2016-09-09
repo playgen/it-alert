@@ -76,6 +76,12 @@
     <Reference Include="PlayGen.SUGAR.Contracts">
       <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Events">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.DataTransferObjects">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="it-alert-menu.CSharp.Plugins.csproj">
@@ -176,24 +182,28 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\SupportLogger.cs" />
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
     <Compile Include="Assets\Scripts\Behaviours\ControllerBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\CreateGamePopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Commands\CreateGameCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\RefreshGamesListCommand.cs" />
+    <Compile Include="Assets\Scripts\Controllers\CreateGameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameListController.cs" />
     <Compile Include="Assets\Scripts\Controllers\LoginController.cs" />
     <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\RegisterController.cs" />
+    <Compile Include="Assets\Scripts\GameStates\GameListState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LobbyState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoginState.cs" />
     <Compile Include="Assets\Scripts\GameStates\MenuState.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\GamesListStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoadingStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LobbyStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoginStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\MenuStateInterface.cs" />
     <Compile Include="Assets\Scripts\Network\Client.cs" />
     <Compile Include="Assets\Scripts\Network\ClientStates.cs" />
-    <Compile Include="Assets\Scripts\Network\GameEventCode.cs" />
     <Compile Include="Assets\Scripts\Network\ITAlertClient.cs" />
     <Compile Include="Assets\Scripts\Network\ListRoomsFilters.cs" />
     <Compile Include="Assets\Scripts\Utilities\ButtonList.cs" />

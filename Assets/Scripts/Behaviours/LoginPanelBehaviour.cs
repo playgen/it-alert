@@ -1,12 +1,9 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using System.Runtime.InteropServices;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class LoginPanelBehaviour : MonoBehaviour
 {
-    public InputField UsernameInputField;
+	public InputField UsernameInputField;
 	public InputField PasswordInputField;
 	public Text StatusText;
 
@@ -14,7 +11,7 @@ public class LoginPanelBehaviour : MonoBehaviour
 	{
 		UsernameInputField.text = "";
 		PasswordInputField.text = "";
-	    StatusText.text = "";
+		StatusText.text = "";
 	}
 
 	public LoginDetails GetLoginDetails()
@@ -22,10 +19,10 @@ public class LoginPanelBehaviour : MonoBehaviour
 		return new LoginDetails(UsernameInputField.text, PasswordInputField.text);
 	}
 
-    public void SetStatusText(string status)
-    {
-        StatusText.text = status;
-    }
+	public void SetStatusText(string status)
+	{
+		StatusText.text = status;
+	}
 
 	public struct LoginDetails
 	{
