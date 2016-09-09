@@ -1,4 +1,4 @@
-﻿using GameWork.Commands;
+﻿using GameWork.Commands.Users;
 using GameWork.Interfacing;
 using UnityEngine;
 
@@ -18,8 +18,15 @@ public class LoginStateInterface : StateInterface
 
 		var buttons = new ButtonList("LoginContainer/LoginPanelContainer/LoginPanel/ButtonPanel");
 		var loginButton = buttons.GetButton("LoginButtonContainer");
-		//var registerButton = buttons.First(o => o.name.Equals("RegisterButton")).GetComponent<Button>();
 		loginButton.onClick.AddListener(OnLoginClick);
+		var registerButton = buttons.GetButton("RegisterButtonContainer");
+		registerButton.onClick.AddListener(OnRegisterClick);
+	}
+
+	private void OnRegisterClick()
+	{
+		var loginDetails = _loginPanel.GetComponent<LoginPanelBehaviour>().GetLoginDetails();
+		EnqueueCommand(new RegisterCommand(loginDetails.username, loginDetails.password));
 	}
 
 
@@ -37,5 +44,10 @@ public class LoginStateInterface : StateInterface
 	public void OnLoginFailed(string msg)
 	{
 		_loginPanel.GetComponent<LoginPanelBehaviour>().SetStatusText(msg);
+	}
+
+	public void OnRegisterSucceeded()
+	{
+		_loginPanel.GetComponent<LoginPanelBehaviour>().SetStatusText("Register Succeeded, Please Login");
 	}
 }
