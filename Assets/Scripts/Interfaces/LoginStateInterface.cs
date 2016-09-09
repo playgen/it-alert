@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
+﻿using GameWork.Commands;
 using GameWork.Interfacing;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LoginStateInterface : StateInterface
 {

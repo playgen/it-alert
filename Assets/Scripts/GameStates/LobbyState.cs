@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class LobbyState : State
+public class LobbyState : SequenceState
 {
     private LobbyStateInterface _interface;
     private ReadyPlayerController _readyPlayerController;

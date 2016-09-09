@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -61,6 +63,9 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
+    </Reference>
     <Reference Include="GameWork">
       <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
     </Reference>
@@ -72,9 +77,6 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Contracts">
       <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Photon3Unity3D">
-      <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -177,8 +179,6 @@
     <Compile Include="Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs" />
     <Compile Include="Assets\Scripts\Behaviours\ControllerBehaviour.cs" />
     <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
-    <Compile Include="Assets\Scripts\Commands\LoginCommand.cs" />
-    <Compile Include="Assets\Scripts\Commands\LogoutCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameListController.cs" />

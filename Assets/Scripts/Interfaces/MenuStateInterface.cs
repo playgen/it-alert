@@ -1,6 +1,5 @@
 ﻿using System.Linq;
-using GameWork.Commands;
-using GameWork.Commands.Interfaces;
+using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine;
 using UnityEngine.UI;

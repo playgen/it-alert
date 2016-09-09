@@ -1,6 +1,7 @@
-﻿using GameWork.States;
+﻿using GameWork.Commands;
+using GameWork.States;
 
-public class LoginState : State
+public class LoginState : SequenceState
 {
 	private LoginStateInterface _interface;
 	private LoginController _controller;
