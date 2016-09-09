@@ -1,5 +1,4 @@
-﻿using GameWork.Commands;
-using UnityEngine;
+﻿using GameWork.Commands.States;
 using GameWork.Interfacing;
 
 public class LoadingStateInterface : StateInterface {
