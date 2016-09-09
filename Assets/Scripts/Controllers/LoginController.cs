@@ -7,17 +7,20 @@ using PlayGen.SUGAR.Contracts;
 
 public class LoginController : ILogin, ILogout
 {
+    private readonly AccountClient _accountController;
+
     public event Action LoginSuccessEvent;
     public event Action<string> LoginFailedEvent;
 
+    public LoginController(AccountClient factoryAccount)
+    {
+        _accountController = factoryAccount;
+    }
 
     public void Login(string username, string password)
     {
 
         //LoginSuccessEvent();
-        var factory = new SUGARClient("http://localhost:62312/");
-        var loginController = factory.Account;
-
         var accountRequest = new AccountRequest()
         {
             Name = username,
@@ -27,7 +30,7 @@ public class LoginController : ILogin, ILogout
 
         try
         {
-            var accountResponse = loginController.Login(accountRequest);
+            var accountResponse = _accountController.Login(accountRequest);
             LoginSuccessEvent();
         }
         catch (Exception ex)
