@@ -4,3 +4,6 @@
 [submodule "SUGAR"]
 	path = SUGAR
 	url = git@codebasehq.com:playgen/rage/sga2.git
+[submodule "photon-server"]
+	path = photon-server
+	url = git@codebasehq.com:playgen/rage/photon-server.git
