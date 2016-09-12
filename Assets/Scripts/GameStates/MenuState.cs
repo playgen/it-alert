@@ -4,22 +4,24 @@ public class MenuState : SequenceState
 {
     private readonly MenuStateInterface _interface;
     public const string StateName = "MenuState";
-    private readonly CreateGameController _createGameController;
+    private readonly JoinGameController _controller;
 
-    public MenuState(MenuStateInterface @interface, CreateGameController createGameController)
+    public MenuState(MenuStateInterface @interface, JoinGameController controller)
     {
         _interface = @interface;
-        _createGameController = createGameController;
+        _controller = controller;
     }
 
     public override void Initialize()
     {
+        _controller.JoinGameSuccessEvent += _interface.OnJoinGameSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
+        _controller.JoinGameSuccessEvent -= _interface.OnJoinGameSuccess;
     }
 
     public override void Enter()
@@ -52,7 +54,14 @@ public class MenuState : SequenceState
         if ( _interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            command.Execute(this);
+            if (command is QuickMatchCommand)
+            {
+                command.Execute(_controller);
+            }
+            else
+            {
+                command.Execute(this);
+            }
         }
     }
 }

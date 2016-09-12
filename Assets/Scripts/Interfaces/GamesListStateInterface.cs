@@ -48,13 +48,33 @@ public class GamesListStateInterface : StateInterface
 
     public void OnGamesListSuccess(RoomInfo[] rooms)
     {
-        // Populate Game list UI
-        foreach (var room in rooms)
-        {
-            var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-            gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
-            gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
-            gameItem.SetParent(_gameListObject.transform);
-        }
-    }
+		var offset = 0f;
+		var height = 100f;
+		// Populate Game list UI
+		foreach (var room in rooms)
+		{
+			var gameItem = Object.Instantiate(_gameItemPrefab).transform;
+			gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
+			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
+			gameItem.SetParent(_gameListObject.transform);
+
+			// set anchors
+			var gameItemRect = gameItem.GetComponent<RectTransform>();
+
+			gameItemRect.pivot = new Vector2(0.5f, 1f);
+			gameItemRect.anchorMax = Vector2.one;
+			gameItemRect.anchorMin = new Vector2(0f, 1f);
+
+			gameItemRect.offsetMin = new Vector2(0f, offset - height);
+			gameItemRect.offsetMax = new Vector2(0f, offset);
+
+			// increment the offset
+			offset -= height;
+
+			// TODO: add listener to each button to join specifc game 
+			//gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener(delegate{});
+		}
+		// Set the content box to be the correct size for our elements
+		_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+	}
 }

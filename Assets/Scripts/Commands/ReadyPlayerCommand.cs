@@ -12,7 +12,7 @@ public class ReadyPlayerCommand : ICommand
 
     public void Execute(object parameter)
     {
-        var controller = (ReadyPlayerController)parameter;
+        var controller = (LobbyController)parameter;
         if (_ready)
         {
             controller.ReadyPlayer();
