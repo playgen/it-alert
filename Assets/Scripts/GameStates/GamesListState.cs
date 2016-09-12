@@ -1,14 +1,14 @@
 ﻿using GameWork.States;
 
-public class GameListState : SequenceState
+public class GamesListState : SequenceState
 {
-    private GameListController _controller;
+    private GamesListController _controller;
     private GamesListStateInterface _interface;
 
     public const string stateName = "GameListState";
 
 
-    public GameListState(GamesListStateInterface @interface, GameListController controller)
+    public GamesListState(GamesListStateInterface @interface, GamesListController controller)
     {
         _interface = @interface;
         _controller = controller;
@@ -16,12 +16,14 @@ public class GameListState : SequenceState
 
     public override void Initialize()
     {
+        _controller.GamesListSuccessEvent += _interface.OnGamesListSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
+        _controller.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
     }
 
     public override void Enter()
@@ -36,21 +38,29 @@ public class GameListState : SequenceState
 
     public override void Tick(float deltaTime)
     {
-        throw new System.NotImplementedException();
+        var command = _interface.TakeFirstCommand();
+        if (command is RefreshGamesListCommand)
+        {
+            command.Execute(_controller);
+        }
+        else
+        {
+            command.Execute(this);
+        }
     }
 
     public override string Name
     {
-        get { throw new System.NotImplementedException(); }
+        get { return stateName; }
     }
 
     public override void NextState()
     {
-        throw new System.NotImplementedException();
+        ChangeState(LobbyState.stateName);
     }
 
     public override void PreviousState()
     {
-        throw new System.NotImplementedException();
+        ChangeState(MenuState.StateName);
     }
 }

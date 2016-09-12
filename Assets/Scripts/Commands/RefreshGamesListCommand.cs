@@ -4,7 +4,7 @@ public class RefreshGamesListCommand : ICommand
 {
     public void Execute(object parameter)
     {
-        var controller = (GameListController) parameter;
+        var controller = (GamesListController) parameter;
         controller.GetGamesList();
     }
 }
