@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using UnityEditor;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ public class PopupController : MonoBehaviour
 	private GameObject _buttonContainer3;
 
 	private Text _title;
+
+	private GameObject _contentPanel;
 
 	/// <summary>
 	/// Set the title and buttons of the popup containier, currently supports 1-3 buttons
@@ -58,6 +61,27 @@ public class PopupController : MonoBehaviour
 				//not supported length of popup
 				break;
 		}
+	}
+
+
+	/// <summary>
+	/// Set the content panel inside the popup
+	/// </summary>
+	/// <param name="contentParent">The UI rect transform contains all the content required</param>
+	public void SetContent(RectTransform contentParent)
+	{
+		//find the content panel
+		_contentPanel = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/PopupContentContainer").gameObject;
+
+		//set the content to be child of the content panel
+		contentParent.transform.parent = _contentPanel.transform;
+
+		//set the position and padding of the content panel	
+		contentParent.anchorMin = new Vector2(0f, 0f);
+		contentParent.anchorMax = new Vector2(1f, 1f);
+
+		contentParent.offsetMin = new Vector2(0f,0f);
+		contentParent.offsetMax = new Vector2(0f,0f);
 	}
 
 	private void SetTitle(string title)
@@ -114,4 +138,20 @@ public class PopupController : MonoBehaviour
 			Action = action;
 		}
 	}
+//
+//	example of how to set content in popup
+//
+//#if UNITY_EDITOR
+//	void Update()
+//	{
+//		if (Input.GetKeyDown(KeyCode.A))
+//		{
+//			var r = new GameObject();
+//			r.AddComponent<RectTransform>();
+//			r.name = "My Test GameObject";
+//			r.AddComponent<Image>().color = Color.red;
+//			SetContent(r.GetComponent<RectTransform>());
+//		}
+//	}
+//#endif
 }
