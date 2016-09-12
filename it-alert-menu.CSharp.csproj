@@ -190,12 +190,14 @@
     <Compile Include="Assets\Scripts\Behaviours\ControllerBehaviour.cs" />
     <Compile Include="Assets\Scripts\Behaviours\CreateGamePopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Behaviours\LoginPanelBehaviour.cs" />
+    <Compile Include="Assets\Scripts\Behaviours\PopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Commands\CreateGameCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Assets\Scripts\Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Assets\Scripts\Controllers\CreateGameController.cs" />
     <Compile Include="Assets\Scripts\Controllers\GameListController.cs" />
     <Compile Include="Assets\Scripts\Controllers\LoginController.cs" />
+    <Compile Include="Assets\Scripts\Controllers\PopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\RegisterController.cs" />
     <Compile Include="Assets\Scripts\GameStates\GameListState.cs" />
