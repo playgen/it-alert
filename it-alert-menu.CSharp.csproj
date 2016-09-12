@@ -61,23 +61,14 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>Assets\Plugins\Photon3Unity3D.dll</HintPath>
-    </Reference>
-    <Reference Include="GameWork">
-      <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.DataTransferObjects">
-      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.Events">
-      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.Serialization">
-      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets\Plugins\SUGAR\Newtonsoft.Json.dll</HintPath>
@@ -87,6 +78,57 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Contracts">
       <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Interfaces">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Utilities">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Commands">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Commands.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Math">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Audio">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Audio.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Factories">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Factories.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Controllers">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Controllers.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.States">
+      <HintPath>Assets\Plugins\GameWork\GameWork.States.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Models">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.IO">
+      <HintPath>Assets\Plugins\GameWork\GameWork.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Interfacing">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Interfacing.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Localization">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Logging">
+      <HintPath>Assets\Plugins\GameWork\GameWork.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Events">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.DataTransferObjects">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Serialization">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +256,7 @@
     <Compile Include="Assets\Scripts\Interfaces\MenuStateInterface.cs" />
     <Compile Include="Assets\Scripts\Network\Client.cs" />
     <Compile Include="Assets\Scripts\Network\ClientStates.cs" />
+    <Compile Include="Assets\Scripts\Network\GameStates.cs" />
     <Compile Include="Assets\Scripts\Network\ITAlertClient.cs" />
     <Compile Include="Assets\Scripts\Network\ListRoomsFilters.cs" />
     <Compile Include="Assets\Scripts\Utilities\ButtonList.cs" />
