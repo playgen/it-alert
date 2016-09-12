@@ -21,11 +21,13 @@ public class ControllerBehaviour : MonoBehaviour
         var client = new ITAlertClient(clientBase);
         var factory = new SUGARClient("http://localhost:62312/");
 
+        var joinGameController = new JoinGameController(client);
+
         _stateController = new StateController<SequenceState>(  
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
             new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface(), new CreateGameController(client)),
-            new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()),
+            new MenuState(new MenuStateInterface(), joinGameController),
+            new LobbyState(new LobbyStateInterface(), new LobbyController(client)),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client)),
             new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client)) 
             );
