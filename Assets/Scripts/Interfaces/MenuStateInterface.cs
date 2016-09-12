@@ -42,6 +42,11 @@ public class MenuStateInterface : StateInterface
 
     }
 
+    private void OnJoinGameClick()
+    {
+        EnqueueCommand(new ChangeStateCommand(GamesListState.stateName));
+    }
+
     private void OnCreateClick()
     {
         var details = _createGamePopup.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
@@ -51,6 +56,7 @@ public class MenuStateInterface : StateInterface
 
     private void OnCreateGameClick()
     {
+        //EnqueueCommand(new ChangeStateCommand(CreateGameState.stateName));
         _createGamePopup.SetActive(true);
     }
 
@@ -78,20 +84,7 @@ public class MenuStateInterface : StateInterface
 
     public override void Exit()
     {
-        _joinGamePopup.SetActive(false);
         _mainMenuPanel.SetActive(false);
-    }
-
-    public void OnGameListSuccess(RoomInfo[] rooms)
-    {
-        // Populate Game list UI
-        foreach (var room in rooms)
-        {
-            var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-            gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
-            gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
-            gameItem.SetParent(_gameListObject.transform);
-        }
     }
 
     public void OnCreateGameSuccess()

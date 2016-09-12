@@ -2,10 +2,9 @@
 
 public class MenuState : SequenceState
 {
-    private MenuStateInterface _interface;
+    private readonly MenuStateInterface _interface;
     public const string StateName = "MenuState";
-    private CreateGameController createGameController;
-    private CreateGameController _createGameController;
+    private readonly CreateGameController _createGameController;
 
     public MenuState(MenuStateInterface @interface, CreateGameController createGameController)
     {

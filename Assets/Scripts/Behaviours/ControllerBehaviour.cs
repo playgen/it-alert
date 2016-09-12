@@ -26,7 +26,7 @@ public class ControllerBehaviour : MonoBehaviour
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), new CreateGameController(client)),
             new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()),
-            new GameListState(new GameListStateInterface(), new GameListController(client)) 
+            new GamesListState(new GamesListStateInterface(), new GamesListController(client)) 
             );
         _stateController.Initialize();
     }
