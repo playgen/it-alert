@@ -10,6 +10,9 @@ public class MenuStateInterface : StateInterface
     private GameObject _joinGamePopup;
     private GameObject _createGamePopup;
 
+    private GameObject _gameItemPrefab;
+    private GameObject _gameListObject;
+
     public override void Initialize()
     {
         // Main Menu
@@ -35,6 +38,9 @@ public class MenuStateInterface : StateInterface
                 .GetComponent<Button>();
         joinGameCloseButton.onClick.AddListener(OnClosePopupClick);
 
+        _gameListObject = GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup/GameListContainer/Viewport/Content");
+        _gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
+
         // Create Game Popup
         _createGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/CreateGamePopup");
         var popUpButtons = new ButtonList("MainMenuContainer/CreateGamePopup/ButtonPanel");
@@ -43,8 +49,16 @@ public class MenuStateInterface : StateInterface
         createGameCloseButton.onClick.AddListener(OnClosePopupClick);
 
         var createGamePopupButton = popUpButtons.GetButton("CreateButtonContainer");
+        createGamePopupButton.onClick.AddListener(OnCreateClick);
         // Create Game Listener Goes Here
 
+    }
+
+    private void OnCreateClick()
+    {
+        var details = _createGamePopup.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
+        EnqueueCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
+        OnClosePopupClick();
     }
 
     private void OnCreateGameClick()
@@ -87,12 +101,20 @@ public class MenuStateInterface : StateInterface
         _mainMenuPanel.SetActive(false);
     }
 
-    public void OnGameListSuccess(object[] objects)
+    public void OnGameListSuccess(RoomInfo[] rooms)
     {
         // Populate Game list UI
-        foreach (var @object in objects)
+        foreach (var room in rooms)
         {
-            //_joinGamePopup.listofgames.add(@object);
+            var gameItem = Object.Instantiate(_gameItemPrefab).transform;
+            gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
+            gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
+            gameItem.SetParent(_gameListObject.transform);
         }
+    }
+
+    public void OnCreateGameSuccess()
+    {
+        Debug.Log("Create Game Success!");
     }
 }

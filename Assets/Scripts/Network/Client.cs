@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using Photon;
 using UnityEngine;
+using ExitGames.Client.Photon;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -92,6 +93,11 @@ namespace PlayGen.ITAlert.Network
             {
                 PhotonNetwork.ConnectUsingSettings(_gameVersion);
             }
+        }
+
+        public bool RegisterSerializableType(Type customType, byte code, SerializeMethod serializeMethod, DeserializeMethod constructor)
+        {
+            return PhotonPeer.RegisterType(customType, code, serializeMethod, constructor);
         }
 
         #region Rooms
