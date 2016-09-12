@@ -7,11 +7,7 @@ using UnityEngine.UI;
 public class MenuStateInterface : StateInterface
 {
     private GameObject _mainMenuPanel;
-    private GameObject _joinGamePopup;
     private GameObject _createGamePopup;
-
-    private GameObject _gameItemPrefab;
-    private GameObject _gameListObject;
 
     public override void Initialize()
     {
@@ -31,15 +27,7 @@ public class MenuStateInterface : StateInterface
         var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
         quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 
-        // Join Game Popup
-        _joinGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup");
-        var joinGameCloseButton =
-            GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup/ButtonPanel/CloseButtonContainer/CloseButton")
-                .GetComponent<Button>();
-        joinGameCloseButton.onClick.AddListener(OnClosePopupClick);
-
-        _gameListObject = GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup/GameListContainer/Viewport/Content");
-        _gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
+        
 
         // Create Game Popup
         _createGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/CreateGamePopup");
@@ -68,14 +56,7 @@ public class MenuStateInterface : StateInterface
 
     private void OnClosePopupClick()
     {
-        _joinGamePopup.SetActive(false);
         _createGamePopup.SetActive(false);
-    }
-
-    private void OnJoinGameClick()
-    {
-        _joinGamePopup.SetActive(true);
-        EnqueueCommand(new RefreshGamesListCommand());
     }
 
     private void OnQuickMatchClick()

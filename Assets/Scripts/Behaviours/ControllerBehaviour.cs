@@ -24,8 +24,9 @@ public class ControllerBehaviour : MonoBehaviour
         _stateController = new StateController<SequenceState>(  
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
             new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface(), new GameListController(client), new CreateGameController(client)),
-            new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()) 
+            new MenuState(new MenuStateInterface(), new CreateGameController(client)),
+            new LobbyState(new LobbyStateInterface(), new ReadyPlayerController()),
+            new GameListState(new GameListStateInterface(), new GameListController(client)) 
             );
         _stateController.Initialize();
     }
