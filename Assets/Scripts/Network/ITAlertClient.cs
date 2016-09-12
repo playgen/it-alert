@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using ExitGames.Client.Photon;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
-using Newtonsoft.Json;
 using PlayGen.ITAlert.Serialization;
 
 namespace PlayGen.ITAlert.Network
@@ -11,14 +9,35 @@ namespace PlayGen.ITAlert.Network
     public class ITAlertClient
     {
         private readonly Client _client;
+
+        private StateResponse _simulationState;
+
         public ClientStates State { get; private set; }
 
+        public GameStates GameState { get; private set; }
+
         public bool IsReady { get; private set; }
-        public Dictionary<byte, bool> PlayerReadyStatus { get; private set; }
+
+        public Dictionary<int, bool> PlayerReadyStatus { get; private set; }
+
+        public PhotonPlayer[] ListCurrentRoomPlayers
+        {
+            get { return _client.ListCurrentRoomPlayers; }
+        }
 
         public bool IsInRoom
         {
             get { return _client.IsInRoom; }
+        }
+
+        public RoomInfo CurrentRoom
+        {
+            get { return _client.CurrentRoom; }
+        }
+
+        public bool HasSimulationState
+        {
+            get { return _simulationState != null; }
         }
 
         public ITAlertClient(Client client)
@@ -29,23 +48,15 @@ namespace PlayGen.ITAlert.Network
             ConnectEvents(_client);
 
             State = ClientStates.Disconnected;
+            GameState = GameStates.None;
 
             _client.Connect();
         }
 
-        public RoomInfo CurrentRoom
-        {
-            get { return _client.CurrentRoom; }
-        }
-
+        #region Rooms
         public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
         {
             return _client.ListRooms(filters);
-        }
-
-        public PhotonPlayer[] ListCurrentRoomPlayers
-        {
-            get { return _client.ListCurrentRoomPlayers; }
         }
 
         public void CreateRoom(string roomName, int maxPlayers)
@@ -62,32 +73,62 @@ namespace PlayGen.ITAlert.Network
         {
             _client.JoinRandomRoom();
         }
+        #endregion
 
+        #region Lobby
         public void SetReady(bool isReady)
         {
-            _client.RaiseEvent((byte)GameEventCode.PlayerReady, isReady);
+            if (isReady)
+            {
+                _client.RaiseEvent((byte) PlayerEventCode.Ready);
+            }
+            else
+            {
+                _client.RaiseEvent((byte)PlayerEventCode.NotReady);
+            }
         }
 
         public void GetPlayerReadyStatus()
         {
-            _client.RaiseEvent((byte)GameEventCode.ListReadyPlayers);
+            _client.RaiseEvent((byte)PlayerEventCode.GetReady);
         }
 
         public void StartGame(bool forceStart, bool closeRoom = true)
         {
-            _client.RaiseEvent((byte)GameEventCode.PlayerStartGame, 
+            _client.RaiseEvent((byte)PlayerEventCode.StartGame, 
                 new bool[] { forceStart, closeRoom });
         }
+        #endregion
 
         public void QuitGame()
         {
             _client.LeaveRoom();
         }
 
+        #region Simulation
+
+        public void SetInitialized()
+        {
+            _client.RaiseEvent((byte) PlayerEventCode.SimulationInitialized);
+        }
+
         public void SendCommand(ICommand command)
         {
-            _client.RaiseEvent((byte)GameEventCode.SimulationCommand, command);
+            _client.RaiseEvent((byte)PlayerEventCode.SimulationCommand, command);
         }
+
+        public void SetFinalized()
+        {
+            _client.RaiseEvent((byte)PlayerEventCode.SimulationFinalized);
+        }
+
+        public StateResponse TakeSimulationState()
+        {
+            var simulationState = _simulationState;
+            _simulationState = null;
+            return simulationState;
+        }
+        #endregion
 
         #region Callbacks
         private void OnConnected()
@@ -119,37 +160,59 @@ namespace PlayGen.ITAlert.Network
         {
             switch (eventCode)
             {
-                case (byte)GameEventCode.ListReadyPlayers:
-                    PlayerReadyStatus = (Dictionary<byte, bool>) content;
-                    if (senderId == _client.Player.ID && PlayerReadyStatus.ContainsKey((byte)senderId))
+                case (byte)ServerEventCode.ReadyPlayers:
+                    if (State != ClientStates.Lobby)
                     {
-                        IsReady = PlayerReadyStatus[(byte)senderId];
+                        ChangeState(ClientStates.Lobby);
+                    }
+
+                    PlayerReadyStatus = (Dictionary<int, bool>) content;
+                    if (senderId == _client.Player.ID && PlayerReadyStatus.ContainsKey(senderId))
+                    {
+                        IsReady = PlayerReadyStatus[senderId];
                     }
                     break;
 
-                case (byte)GameEventCode.PlayerStartGame:
+                case (byte)ServerEventCode.GameStarted:
                     ChangeState(ClientStates.Game);
+                    ChangeGameState(GameStates.Initializing);
                     break;
 
-                case (byte)GameEventCode.SimulationInitialized:
-                    UnityEngine.Debug.Log((StateResponse)content);
-                    // Get entire state dump
+                case (byte)ServerEventCode.SimulationInitialized:
+                    _simulationState = (StateResponse)content;
+                    break;
+                    
+                case (byte)ServerEventCode.SimulationTick:
+                    if (GameState != GameStates.Playing)
+                    {
+                        ChangeGameState(GameStates.Playing);
+                    }
+
+                    _simulationState = (StateResponse)content;
                     break;
 
-                case (byte)GameEventCode.SimulationTick:
-                    UnityEngine.Debug.Log((StateResponse)content);
-                    // get dump or deltas
-                    break;
+                case (byte)ServerEventCode.SimulationFinalized:
+                    ChangeGameState(GameStates.Finalizing);
 
-                case (byte)GameEventCode.SimulationFinalized:
-                    UnityEngine.Debug.Log((StateResponse)content);
-                    // get final dump
+                    _simulationState = (StateResponse)content;
                     ChangeState(ClientStates.Lobby);
                     break;
             }
         }
         #endregion
 
+        private void RegisterSerializableTypes(Client client)
+        {
+            client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize, Deserializer<StateResponse>.Deserialize);
+        }
+
+        private void ConnectEvents(Client client)
+        {
+            client.ConnectedEvent += OnConnected;
+            client.JoinedRoomEvent += OnJoinedRoom;
+            client.EventRecievedEvent += OnRecievedEvent;
+            client.LeftRoomEvent += OnLeftRoom;
+        }
 
         private void ChangeState(ClientStates newState)
         {
@@ -158,9 +221,15 @@ namespace PlayGen.ITAlert.Network
             switch (newState)
             {
                 case ClientStates.Lobby:
+                    ChangeGameState(GameStates.None);
                     ResetLobby();
                     break;
             }
+        }
+
+        private void ChangeGameState(GameStates gameState)
+        {
+            GameState = gameState;
         }
 
         private void ResetLobby()
@@ -171,19 +240,6 @@ namespace PlayGen.ITAlert.Network
         private void RefreshLobby()
         {
             GetPlayerReadyStatus();
-        }
-
-        private void RegisterSerializableTypes(Client client)
-        {
-            client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize,                 Deserializer<StateResponse>.Deserialize);
-        }
-
-        private void ConnectEvents(Client client)
-        {
-            client.ConnectedEvent += OnConnected;
-            client.JoinedRoomEvent += OnJoinedRoom;
-            client.EventRecievedEvent += OnRecievedEvent;
-            client.LeftRoomEvent += OnLeftRoom;
         }
     }
 }
