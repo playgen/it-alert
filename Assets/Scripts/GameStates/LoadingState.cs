@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class LoadingState : SequenceState
+public class LoadingState : TickableSequenceState
 {
 	private LoadingStateInterface _interface;
 	public const string StateName = "LoadingState";

@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class CreateGameState : SequenceState
+public class CreateGameState : TickableSequenceState
 {
     private readonly CreateGameController _controller;
     private readonly CreateGameStateInterface _interface;

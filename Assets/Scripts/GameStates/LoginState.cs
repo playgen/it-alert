@@ -1,7 +1,7 @@
 ﻿using GameWork.Commands.Accounts;
 using GameWork.States;
 
-public class LoginState : SequenceState
+public class LoginState : TickableSequenceState
 {
 	private LoginStateInterface _interface;
 	private LoginController _loginController;

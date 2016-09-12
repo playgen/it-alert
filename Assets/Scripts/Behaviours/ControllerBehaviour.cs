@@ -7,7 +7,7 @@ public class ControllerBehaviour : MonoBehaviour
 {
     private const string GamePlugin = "RoomControllerPlugin";
 
-    private StateController<SequenceState> _stateController;
+    private TickableStateController<TickableSequenceState> _stateController;
     private string _gameVersion = "1";
 
 
@@ -23,7 +23,7 @@ public class ControllerBehaviour : MonoBehaviour
 
         var joinGameController = new JoinGameController(client);
 
-        _stateController = new StateController<SequenceState>(  
+        _stateController = new TickableStateController<TickableSequenceState>(  
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), joinGameController),
