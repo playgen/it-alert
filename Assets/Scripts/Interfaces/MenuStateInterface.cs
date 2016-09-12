@@ -26,43 +26,16 @@ public class MenuStateInterface : StateInterface
 
         var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
         quickMatchButton.onClick.AddListener(OnQuickMatchClick);
-
-        
-
-        // Create Game Popup
-        _createGamePopup = GameObjectUtilities.FindGameObject("MainMenuContainer/CreateGamePopup");
-        var popUpButtons = new ButtonList("MainMenuContainer/CreateGamePopup/ButtonPanel");
-
-        var createGameCloseButton = popUpButtons.GetButton("CloseButtonContainer");
-        createGameCloseButton.onClick.AddListener(OnClosePopupClick);
-
-        var createGamePopupButton = popUpButtons.GetButton("CreateButtonContainer");
-        createGamePopupButton.onClick.AddListener(OnCreateClick);
-        // Create Game Listener Goes Here
-
     }
 
     private void OnJoinGameClick()
     {
-        EnqueueCommand(new ChangeStateCommand(GamesListState.stateName));
-    }
-
-    private void OnCreateClick()
-    {
-        var details = _createGamePopup.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
-        EnqueueCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
-        OnClosePopupClick();
+        EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
     }
 
     private void OnCreateGameClick()
     {
-        //EnqueueCommand(new ChangeStateCommand(CreateGameState.stateName));
-        _createGamePopup.SetActive(true);
-    }
-
-    private void OnClosePopupClick()
-    {
-        _createGamePopup.SetActive(false);
+        EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
     }
 
     private void OnQuickMatchClick()
@@ -87,8 +60,5 @@ public class MenuStateInterface : StateInterface
         _mainMenuPanel.SetActive(false);
     }
 
-    public void OnCreateGameSuccess()
-    {
-        Debug.Log("Create Game Success!");
-    }
+
 }

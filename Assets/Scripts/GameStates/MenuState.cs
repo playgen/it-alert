@@ -14,14 +14,12 @@ public class MenuState : SequenceState
 
     public override void Initialize()
     {
-        _createGameController.CreateGameSuccessEvent += _interface.OnCreateGameSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
-        _createGameController.CreateGameSuccessEvent -= _interface.OnCreateGameSuccess;
     }
 
     public override void Enter()
@@ -54,14 +52,7 @@ public class MenuState : SequenceState
         if ( _interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            if (command is CreateGameCommand)
-            {
-                command.Execute(_createGameController);
-            }
-            else
-            {
-                command.Execute(this);
-            }
+            command.Execute(this);
         }
     }
 }
