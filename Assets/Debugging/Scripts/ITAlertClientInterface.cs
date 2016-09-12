@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Simulation.Commands;
 
 public class ITAlertClientInterface : MonoBehaviour
 {
