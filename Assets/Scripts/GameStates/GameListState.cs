@@ -36,21 +36,29 @@ public class GameListState : SequenceState
 
     public override void Tick(float deltaTime)
     {
-        throw new System.NotImplementedException();
+        var command = _interface.TakeFirstCommand();
+        if (command is RefreshGamesListCommand)
+        {
+            command.Execute(_controller);
+        }
+        else
+        {
+            command.Execute(this);
+        }
     }
 
     public override string Name
     {
-        get { throw new System.NotImplementedException(); }
+        get { return stateName; }
     }
 
     public override void NextState()
     {
-        throw new System.NotImplementedException();
+        ChangeState(LobbyState.stateName);
     }
 
     public override void PreviousState()
     {
-        throw new System.NotImplementedException();
+        ChangeState(MenuState.StateName);
     }
 }
