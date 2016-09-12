@@ -14,65 +14,63 @@ public class PopupController : MonoBehaviour
 
 	private Text _title;
 
-	public void SetPopup(string title, string middleButtonText, UnityAction middleButtonClick)
+	/// <summary>
+	/// Set the title and buttons of the popup containier, currently supports 1-3 buttons
+	/// </summary>
+	/// <param name="title">The title of the popup</param>
+	/// <param name="outputs">The desired button outputs from left to right</param
+	public void SetPopup(string title, Outputs[] outputs)
 	{
 		//set the title
 		SetTitle(title);
 
 		//set the button container to be active
-		SetButtonContainers();
+		FindButtonContainers();
 
-		SetActiveContainer(1);
+		switch (outputs.Length)
+		{
+			case 1:
+				SetActiveContainer(1);
+				_buttons = new ButtonList("PopupContainer/PopupPanelContainer/ButtonContainer/1ButtonContainer");
 
-		_buttons = new ButtonList("PopupPanelContainer/ButtonContainer/1ButtonContainer");
+				SetButton(_buttons.GetButton("ButtonContainer"), outputs[0].Name, outputs[0].Action);
 
-		SetButton(_buttons.GetButton("ButtonContainer"), middleButtonText, middleButtonClick);
-	}
+				break;
+			case 2:
+				SetActiveContainer(2);
+				_buttons = new ButtonList("PopupContainer/PopupPanelContainer/ButtonContainer/2ButtonContainer");
 
-	public void SetPopup(string title, string leftButtonText, UnityAction leftButtonClick, string rightButtonText, UnityAction rightButtonClick)
-	{
-		//set the title
-		SetTitle(title);
+				SetButton(_buttons.GetButton("LeftButtonContainer"), outputs[0].Name, outputs[0].Action);
+				SetButton(_buttons.GetButton("RightButtonContainer"), outputs[1].Name, outputs[1].Action);
 
-		//set the button container to be active
-		SetButtonContainers();
+				break;
+			case 3:
+				SetActiveContainer(3);
+				_buttons = new ButtonList("PopupContainer/PopupPanelContainer/ButtonContainer/3ButtonContainer");
 
-		SetActiveContainer(2);
+				SetButton(_buttons.GetButton("LeftButtonContainer"), outputs[0].Name, outputs[0].Action);
+				SetButton(_buttons.GetButton("MiddleButtonContainer"), outputs[1].Name, outputs[1].Action);
+				SetButton(_buttons.GetButton("RightButtonContainer"), outputs[2].Name, outputs[2].Action);
 
-		_buttons = new ButtonList("PopupPanelContainer/ButtonContainer/2ButtonContainer");
-
-		SetButton(_buttons.GetButton("LeftButtonContainer"), leftButtonText, leftButtonClick);
-		SetButton(_buttons.GetButton("RightButtonContainer"), rightButtonText, rightButtonClick);
-	}
-
-	public void SetPopup(string title, string leftButtonText, UnityAction leftButtonClick, string middleButtonText, UnityAction middleButtonClick, string rightButtonText, UnityAction rightButtonClick)
-	{
-		//set the title
-		SetTitle(title);
-
-		//set the button container to be active
-		SetButtonContainers();
-
-		SetActiveContainer(3);
-
-		_buttons = new ButtonList("PopupPanelContainer/ButtonContainer/3ButtonContainer");
-
-		SetButton(_buttons.GetButton("LeftButtonContainer"), leftButtonText, leftButtonClick);
-		SetButton(_buttons.GetButton("MiddleButtonContainer"), middleButtonText, middleButtonClick);
-		SetButton(_buttons.GetButton("RightButtonContainer"), rightButtonText, rightButtonClick);
+				break;
+			default:
+				Debug.LogError(string.Format("Unsuported length of outputs array for popup box.\nSupported Range: {0}		Provided Outputs: {1}", "1-3", outputs.Length));
+				//not supported length of popup
+				break;
+		}
 	}
 
 	private void SetTitle(string title)
 	{
-		_title = GameObjectUtilities.Find("TitleContainer/Title").GetComponent<Text>();
+		_title = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/TitleContainer/Title").GetComponent<Text>();
 		_title.text = title;
 	}
 
-	private void SetButtonContainers()
+	private void FindButtonContainers()
 	{
-		_buttonContainer1 = GameObjectUtilities.Find("PopupPanelContainer/ButtonContainer/1ButtonContainer").gameObject;
-		_buttonContainer2 = GameObjectUtilities.Find("PopupPanelContainer/ButtonContainer/2ButtonContainer").gameObject;
-		_buttonContainer3 = GameObjectUtilities.Find("PopupPanelContainer/ButtonContainer/3ButtonContainer").gameObject;
+		_buttonContainer1 = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer/1ButtonContainer").gameObject;
+		_buttonContainer2 = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer/2ButtonContainer").gameObject;
+		_buttonContainer3 = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer/3ButtonContainer").gameObject;
 	}
 
 	private void SetButton(Button button, string text, UnityAction action)
@@ -105,26 +103,15 @@ public class PopupController : MonoBehaviour
 		}
 	}
 
-#if UNITY_EDITOR
-	void Update()
+	public class Outputs
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			SetPopup("1 Button", "Middle", TextOutput);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
-		{
-			SetPopup("2 Button", "Left", TextOutput, "Right", TextOutput);
-		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
-		{
-			SetPopup("3 Button", "Left", TextOutput, "Middle", TextOutput, "Right", TextOutput);
-		}
-	}
+		public string Name;
+		public UnityAction Action;
 
-	void TextOutput()
-	{
-		Debug.Log(Time.time);
+		public Outputs(string name, UnityAction action)
+		{
+			Name = name;
+			Action = action;
+		}
 	}
-#endif
 }
