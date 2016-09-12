@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine.UI;
@@ -36,11 +35,6 @@ public class GamesListStateInterface : StateInterface
         EnqueueCommand(new PreviousStateCommand());
     }
 
-    public override void Terminate()
-    {
-        base.Terminate();
-    }
-
     public override void Enter()
     {
         _joinGamePanel.SetActive(true);
@@ -49,6 +43,18 @@ public class GamesListStateInterface : StateInterface
 
     public override void Exit()
     {
-        _joinGamePanel.SetActive(false);
+    }
+
+    public void OnGamesListSuccess(RoomInfo[] rooms)
+    {
+        // Populate Game list UI
+        foreach (var room in rooms)
+        {
+            var gameItem = Object.Instantiate(_gameItemPrefab).transform;
+            gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
+            gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
+            gameItem.SetParent(_gameListObject.transform);
+            // TODO: add listener to each button to join specifc game 
+        }
     }
 }
