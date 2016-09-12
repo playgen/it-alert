@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class MenuState : SequenceState
+public class MenuState : TickableSequenceState
 {
     private readonly MenuStateInterface _interface;
     public const string StateName = "MenuState";

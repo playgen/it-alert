@@ -1,6 +1,6 @@
 ﻿using GameWork.States;
 
-public class LobbyState : SequenceState
+public class LobbyState : TickableSequenceState
 {
     private LobbyStateInterface _interface;
     private LobbyController _lobbyController;
