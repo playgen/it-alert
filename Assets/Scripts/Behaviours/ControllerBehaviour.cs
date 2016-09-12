@@ -5,7 +5,7 @@ using PlayGen.SUGAR.Client;
 
 public class ControllerBehaviour : MonoBehaviour
 {
-    private const string GamePlugin = "GameControllerPlugin";
+    private const string GamePlugin = "RoomControllerPlugin";
 
     private StateController<SequenceState> _stateController;
     private string _gameVersion = "1";

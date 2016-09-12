@@ -1,14 +1,18 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
+using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Network;
 
 public class ITAlertClientInterface : MonoBehaviour
 {
-    private const string GamePlugin = "GameControllerPlugin";
+    private const string GamePlugin = "RoomControllerPlugin";
 
     [SerializeField]
     private string _gameVersion = "1";
     private ITAlertClient _client;
+
+    private StateResponse _lastState;
 
     #region UI Variables
 
@@ -39,7 +43,24 @@ public class ITAlertClientInterface : MonoBehaviour
                 break;
 
             case ClientStates.Game:
-                // simulation ui
+
+                ShowGameState();
+
+                switch (_client.GameState)
+                {
+                    case GameStates.Initializing:
+                        ShowGameInitializingOptions();
+                        break;
+
+                    case GameStates.Playing:
+                        ShowGamePlayingOptions();
+                        break;
+
+                    case GameStates.Finalizing:
+                        ShowGameFinalizingOptions();
+                        break;
+                }
+
                 break;
         }
     }
@@ -79,7 +100,6 @@ public class ITAlertClientInterface : MonoBehaviour
                     }
                 }
             }
-
         }
         GUILayout.EndVertical();
     }
@@ -92,7 +112,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (GUILayout.Button("Join Random Room"))
             {
-                _client.JoinRandomRoom();   
+                _client.JoinRandomRoom();
             }
 
             GUILayout.BeginVertical("box");
@@ -129,6 +149,70 @@ public class ITAlertClientInterface : MonoBehaviour
                 }
             }
             GUILayout.EndVertical();
+        }
+        GUILayout.EndVertical();
+    }
+
+    private void ShowGameState()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Game State----");
+
+            GUILayout.Label("Pending Game State: " + _client.HasSimulationState);
+
+            if (_client.HasSimulationState)
+            {
+                _lastState = _client.TakeSimulationState();
+            }
+
+            if (_lastState != null)
+            {
+                GUILayout.Label("Pending State Type: " + _lastState.Type);
+                GUILayout.Label("Pending State Tick: " + _lastState.Tick);
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    private void ShowGameInitializingOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Initializing----");
+
+            if (GUILayout.Button("Set Initialized."))
+            {
+                _client.SetGameInitialized();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    private void ShowGamePlayingOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Playing----");
+
+            if (GUILayout.Button("Send Dummy Command"))
+            {
+                _client.SendGameCommand(new DummyCommand());
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    private void ShowGameFinalizingOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Finalizing----");
+
+            if (GUILayout.Button("Set Finalized."))
+            {
+                _client.SetGameFinalized();
+            }
         }
         GUILayout.EndVertical();
     }

@@ -90,7 +90,7 @@ namespace PlayGen.ITAlert.Network
 
         public void GetPlayerReadyStatus()
         {
-            _client.RaiseEvent((byte)PlayerEventCode.GetReady);
+            _client.RaiseEvent((byte)PlayerEventCode.ListReady);
         }
 
         public void StartGame(bool forceStart, bool closeRoom = true)
@@ -107,19 +107,19 @@ namespace PlayGen.ITAlert.Network
 
         #region Simulation
 
-        public void SetInitialized()
+        public void SetGameInitialized()
         {
-            _client.RaiseEvent((byte) PlayerEventCode.SimulationInitialized);
+            _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-        public void SendCommand(ICommand command)
+        public void SendGameCommand(ICommand command)
         {
-            _client.RaiseEvent((byte)PlayerEventCode.SimulationCommand, command);
+            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, command);
         }
 
-        public void SetFinalized()
+        public void SetGameFinalized()
         {
-            _client.RaiseEvent((byte)PlayerEventCode.SimulationFinalized);
+            _client.RaiseEvent((byte)PlayerEventCode.GameFinalized);
         }
 
         public StateResponse TakeSimulationState()
@@ -173,16 +173,16 @@ namespace PlayGen.ITAlert.Network
                     }
                     break;
 
-                case (byte)ServerEventCode.GameStarted:
+                case (byte)ServerEventCode.GameEntered:
                     ChangeState(ClientStates.Game);
                     ChangeGameState(GameStates.Initializing);
                     break;
 
-                case (byte)ServerEventCode.SimulationInitialized:
+                case (byte)ServerEventCode.GameInitialized:
                     _simulationState = (StateResponse)content;
                     break;
                     
-                case (byte)ServerEventCode.SimulationTick:
+                case (byte)ServerEventCode.GameTick:
                     if (GameState != GameStates.Playing)
                     {
                         ChangeGameState(GameStates.Playing);
@@ -191,11 +191,11 @@ namespace PlayGen.ITAlert.Network
                     _simulationState = (StateResponse)content;
                     break;
 
-                case (byte)ServerEventCode.SimulationFinalized:
+                case (byte)ServerEventCode.GameFinalized:
                     ChangeGameState(GameStates.Finalizing);
 
                     _simulationState = (StateResponse)content;
-                    ChangeState(ClientStates.Lobby);
+                    
                     break;
             }
         }
