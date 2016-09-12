@@ -54,7 +54,6 @@ public class GamesListStateInterface : StateInterface
             gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
             gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
             gameItem.SetParent(_gameListObject.transform);
-            // TODO: add listener to each button to join specifc game 
         }
     }
 }

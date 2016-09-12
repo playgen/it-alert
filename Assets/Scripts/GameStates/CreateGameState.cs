@@ -1,14 +1,13 @@
 ﻿using GameWork.States;
 
-public class GamesListState : SequenceState
+public class CreateGameState : SequenceState
 {
-    private GamesListController _controller;
-    private GamesListStateInterface _interface;
+    private readonly CreateGameController _controller;
+    private readonly CreateGameStateInterface _interface;
+    public const string StateName = "CreateGameState";
 
-    public const string StateName = "GameListState";
 
-
-    public GamesListState(GamesListStateInterface @interface, GamesListController controller)
+    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller)
     {
         _interface = @interface;
         _controller = controller;
@@ -16,14 +15,14 @@ public class GamesListState : SequenceState
 
     public override void Initialize()
     {
-        _controller.GamesListSuccessEvent += _interface.OnGamesListSuccess;
+        _controller.CreateGameSuccessEvent += _interface.OnCreateGameSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
-        _controller.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
+        _controller.CreateGameSuccessEvent -= _interface.OnCreateGameSuccess;
     }
 
     public override void Enter()
@@ -38,14 +37,17 @@ public class GamesListState : SequenceState
 
     public override void Tick(float deltaTime)
     {
-        var command = _interface.TakeFirstCommand();
-        if (command is RefreshGamesListCommand)
+        if (_interface.HasCommands)
         {
-            command.Execute(_controller);
-        }
-        else
-        {
-            command.Execute(this);
+            var command = _interface.TakeFirstCommand();
+            if (command is CreateGameCommand)
+            {
+                command.Execute(_controller);
+            }
+            else
+            {
+                command.Execute(this);
+            }
         }
     }
 
