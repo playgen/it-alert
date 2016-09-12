@@ -3,32 +3,31 @@
 public class LobbyState : SequenceState
 {
     private LobbyStateInterface _interface;
-    private ReadyPlayerController _readyPlayerController;
+    private LobbyController _lobbyController;
     public const string stateName = "LobbyState";
 
-    public LobbyState(LobbyStateInterface @interface, ReadyPlayerController controller)
+    public LobbyState(LobbyStateInterface @interface, LobbyController controller)
     {
         _interface = @interface;
-        _readyPlayerController = controller;
+        _lobbyController = controller;
     }
 
     public override void Initialize()
     {
         _interface.Initialize();
-        _readyPlayerController.ReadySuccessEvent += _interface.OnReadySucceeded;
+        _lobbyController.ReadySuccessEvent += _interface.OnReadySucceeded;
         //_readyPlayerController.ReadyFailedEvent += _interface.OnReadyFailed;
     }
 
     public override void Terminate()
     {
-        _readyPlayerController.ReadySuccessEvent -= _interface.OnReadySucceeded;
+        _lobbyController.ReadySuccessEvent -= _interface.OnReadySucceeded;
         //_readyPlayerController.ReadyFailedEvent -= _interface.OnReadyFailed;
         _interface.Terminate();
     }
 
     public override void Enter()
     {
-        
         _interface.Enter();
     }
 
@@ -59,7 +58,7 @@ public class LobbyState : SequenceState
             var command = _interface.TakeFirstCommand();
             if (command is ReadyPlayerCommand)
             {
-                command.Execute(_readyPlayerController);
+                command.Execute(_lobbyController);
             }
             else
             {

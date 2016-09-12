@@ -1,8 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class MenuStateInterface : StateInterface
 {
@@ -40,7 +40,7 @@ public class MenuStateInterface : StateInterface
 
     private void OnQuickMatchClick()
     {
-        EnqueueCommand(new NextStateCommand());
+        EnqueueCommand(new QuickMatchCommand());
     }
 
     private void OnLogoutClick()
@@ -61,4 +61,8 @@ public class MenuStateInterface : StateInterface
     }
 
 
+    public void OnJoinGameSuccess()
+    {
+        EnqueueCommand(new NextStateCommand());
+    }
 }
