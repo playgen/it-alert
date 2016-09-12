@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using GameWork.Commands.Interfaces;
+﻿using GameWork.Commands.Interfaces;
 
 public class CreateGameCommand : ICommand
 {
