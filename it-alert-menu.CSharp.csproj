@@ -13,13 +13,11 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.4.0f3</UnityVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -69,11 +67,17 @@
     <Reference Include="GameWork">
       <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.ITAlert.DataTransferObjects">
       <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Events">
       <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Serialization">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets\Plugins\SUGAR\Newtonsoft.Json.dll</HintPath>
@@ -83,12 +87,6 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Contracts">
       <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.Serialization">
-      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -202,11 +200,13 @@
     <Compile Include="Assets\Scripts\Controllers\PopupBehaviour.cs" />
     <Compile Include="Assets\Scripts\Controllers\ReadyPlayerController.cs" />
     <Compile Include="Assets\Scripts\Controllers\RegisterController.cs" />
+    <Compile Include="Assets\Scripts\GameStates\CreateGameState.cs" />
     <Compile Include="Assets\Scripts\GameStates\GamesListState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoadingState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LobbyState.cs" />
     <Compile Include="Assets\Scripts\GameStates\LoginState.cs" />
     <Compile Include="Assets\Scripts\GameStates\MenuState.cs" />
+    <Compile Include="Assets\Scripts\Interfaces\CreateGameStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\GamesListStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LoadingStateInterface.cs" />
     <Compile Include="Assets\Scripts\Interfaces\LobbyStateInterface.cs" />
