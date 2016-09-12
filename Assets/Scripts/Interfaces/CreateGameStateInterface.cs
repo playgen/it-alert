@@ -10,7 +10,7 @@ public class CreateGameStateInterface : StateInterface
     {
         // Create Game Popup
         _createGamePanel = GameObjectUtilities.FindGameObject("CreateGameContainer/CreatePanelContainer");
-        var popUpButtons = new ButtonList("MainMenuContainer/CreateGamePopup/ButtonPanel");
+        var popUpButtons = new ButtonList("CreateGameContainer/CreatePanelContainer/ButtonPanel");
 
         var createGameCloseButton = popUpButtons.GetButton("BackButtonContainer");
         createGameCloseButton.onClick.AddListener(OnBackClick);

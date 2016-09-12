@@ -100,11 +100,17 @@
     <Reference Include="GameWork">
       <HintPath>Assets\Plugins\GameWork\GameWork.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.ITAlert.DataTransferObjects">
       <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.DataTransferObjects.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Events">
       <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Events.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Serialization">
+      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>Assets\Plugins\SUGAR\Newtonsoft.Json.dll</HintPath>
@@ -114,12 +120,6 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Contracts">
       <HintPath>Assets\Plugins\SUGAR\PlayGen.SUGAR.Contracts.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>Assets\Plugins\Network\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.Serialization">
-      <HintPath>Assets\Plugins\Network\PlayGen.ITAlert.Serialization.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

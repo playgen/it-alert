@@ -21,7 +21,7 @@ public class GamesListStateInterface : StateInterface
         var refreshButton = panelButtons.GetButton("RefreshButtonContainer");
         refreshButton.onClick.AddListener(OnRefreshClick);
 
-        _gameListObject = GameObjectUtilities.FindGameObject("MainMenuContainer/JoinGamePopup/GameListContainer/Viewport/Content");
+        _gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
         _gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
     }
 
@@ -43,6 +43,7 @@ public class GamesListStateInterface : StateInterface
 
     public override void Exit()
     {
+        _joinGamePanel.SetActive(false);
     }
 
     public void OnGamesListSuccess(RoomInfo[] rooms)
