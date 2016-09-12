@@ -57,7 +57,7 @@ public class PopupController : MonoBehaviour
 
 				break;
 			default:
-				Debug.LogError(string.Format("Unsuported length of outputs array for popup box.\nSupported Range: {0}		Provided Outputs: {1}", "1-3", outputs.Length));
+				Debug.LogError(string.Format("Unsuported length of outputs array for popup box.\nSupported Range: {0}		Provided Output: {1}", "1-3", outputs.Length));
 				//not supported length of popup
 				break;
 		}
