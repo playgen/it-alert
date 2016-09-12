@@ -2,13 +2,13 @@
 using PlayGen.ITAlert.Network;
 using UnityEngine;
 
-public class GameListController
+public class GamesListController
 {
     private ITAlertClient _client;
-    public event Action<RoomInfo[]> GameListSuccessEvent;
-    public event Action<string> GameListFailedEvent;
+    public event Action<RoomInfo[]> GamesListSuccessEvent;
+    public event Action<string> GamesListFailedEvent;
 
-    public GameListController(ITAlertClient client)
+    public GamesListController(ITAlertClient client)
     {
         _client = client;
     }
@@ -16,7 +16,7 @@ public class GameListController
     public void GetGamesList()
     {
         var rooms = _client.ListRooms(ListRoomsFilters.Open | ListRoomsFilters.Visible);
-        GameListSuccessEvent(rooms);
+        GamesListSuccessEvent(rooms);
     }
 
 }
