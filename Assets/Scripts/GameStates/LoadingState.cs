@@ -43,7 +43,8 @@ public class LoadingState : TickableSequenceState
 		{
 			var command = _interface.TakeFirstCommand();
 			_timer = 0;
-			command.Execute(this);
+			var commandResolver = new StateCommandResolver();
+			commandResolver.HandleSequenceStates(command, this);
 		}
 		_timer += deltaTime;
 		   

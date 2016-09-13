@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ExitGames.Client.Photon;
+using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine.UI;
@@ -52,8 +53,14 @@ public class GamesListStateInterface : StateInterface
 
 	public void OnGamesListSuccess(RoomInfo[] rooms)
 	{
+
+		foreach (Transform child in _gameListObject.transform)
+		{
+			GameObject.Destroy(child.gameObject);
+		}
 		var offset = 0f;
 		var height = _gameItemPrefab.GetComponent<Rect>().height;
+
 		// Populate Game list UI
 		foreach (var room in rooms)
 		{

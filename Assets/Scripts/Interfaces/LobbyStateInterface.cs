@@ -76,6 +76,11 @@ public class LobbyStateInterface : StateInterface
 
     public void UpdatePlayerList(LobbyController.LobbyPlayer[] players)
     {
+        foreach (Transform child in _playerListObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
         var offset = 0f;
         var height = 100f;
 
