@@ -1,6 +1,6 @@
 ﻿using GameWork.Commands.Interfaces;
 
-public class CreateGameCommand : ICommand
+public class CreateGameCommand : ICommand<CreateGameController>
 {
     private string _gameName;
     private int _maxPlayers;
@@ -11,9 +11,8 @@ public class CreateGameCommand : ICommand
         _maxPlayers = maxPlayers;
     }
 
-    public void Execute(object parameter)
+    public void Execute(CreateGameController parameter)
     {
-        var controller = (CreateGameController)parameter;
-        controller.CreateGame(_gameName, _maxPlayers);
+        parameter.CreateGame(_gameName, _maxPlayers);
     }
 }

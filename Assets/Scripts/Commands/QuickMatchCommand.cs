@@ -1,10 +1,9 @@
 ﻿using GameWork.Commands.Interfaces;
 
-public class QuickMatchCommand : ICommand
+public class QuickMatchCommand : ICommand<JoinGameController>
 {
-    public void Execute(object parameter)
+    public void Execute(JoinGameController parameter)
     {
-        var controller = (JoinGameController)parameter;
-        controller.QuickMatch();
+        parameter.QuickMatch();
     }
 }

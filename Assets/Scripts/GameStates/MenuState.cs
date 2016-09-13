@@ -54,14 +54,15 @@ public class MenuState : TickableSequenceState
         if ( _interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            if (command is QuickMatchCommand)
+
+            var quickMatchCommand = command as QuickMatchCommand;
+            if (quickMatchCommand != null)
             {
-                command.Execute(_controller);
+                quickMatchCommand.Execute(_controller);
             }
-            else
-            {
-                command.Execute(this);
-            }
+
+            var commandResolver = new StateCommandResolver();
+            commandResolver.HandleSequenceStates(command, this);
         }
     }
 }

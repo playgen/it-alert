@@ -2,11 +2,10 @@
 using System.Diagnostics;
 using GameWork.Commands.Interfaces;
 
-public class RefreshPlayerListCommand : ICommand
+public class RefreshPlayerListCommand : ICommand<LobbyController>
 {
-    public void Execute(object parameter)
+    public void Execute(LobbyController parameter)
     {
-        var controller = (LobbyController)parameter;
-        controller.RefreshPlayerList();
+        parameter.RefreshPlayerList();
     }
 }
