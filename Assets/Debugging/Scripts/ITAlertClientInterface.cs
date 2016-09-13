@@ -171,7 +171,7 @@ public class ITAlertClientInterface : MonoBehaviour
             {
                 GUILayout.Label("Pending State Type: " + _lastState.Type);
                 GUILayout.Label("Pending State Tick: " + _lastState.Tick);
-                GUILayout.TextArea(_lastState.State.MockData.Substring(0, 100));
+                //GUILayout.TextArea(_lastState.State.MockData.Substring(0, 100));
             }
         }
         GUILayout.EndVertical();
