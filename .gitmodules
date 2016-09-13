@@ -1,6 +1,6 @@
 [submodule "GameWork"]
 	path = GameWork
-url=https://github.com/JaredGG/GameWork.git
+url=git@github.com:playgenhub/GameWork.git
 [submodule "SUGAR"]
 	path = SUGAR
 	url = git@codebasehq.com:playgen/rage/sga2.git
