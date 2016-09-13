@@ -1,4 +1,6 @@
-﻿using GameWork.States;
+﻿using GameWork.Commands.Interfaces;
+using GameWork.Commands.States;
+using GameWork.States;
 
 public class CreateGameState : TickableSequenceState
 {
@@ -40,16 +42,19 @@ public class CreateGameState : TickableSequenceState
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            if (command is CreateGameCommand)
+
+            var createGameCommand = command as CreateGameCommand;
+            if (createGameCommand != null)
             {
-                command.Execute(_controller);
+                createGameCommand.Execute(_controller);
+                return;
             }
-            else
-            {
-                command.Execute(this);
-            }
+            var commandResolver = new StateCommandResolver();
+            commandResolver.HandleSequenceStates(command, this);
         }
     }
+
+   
 
     public override string Name
     {

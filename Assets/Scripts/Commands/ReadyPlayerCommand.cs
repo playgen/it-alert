@@ -1,7 +1,7 @@
 ﻿using GameWork.Commands.Interfaces;
 using GameWork.States.Interfaces;
 
-public class ReadyPlayerCommand : ICommand
+public class ReadyPlayerCommand : ICommand<LobbyController>
 {
     private bool _ready;
 
@@ -10,16 +10,15 @@ public class ReadyPlayerCommand : ICommand
         _ready = ready;
     }
 
-    public void Execute(object parameter)
+    public void Execute(LobbyController parameter)
     {
-        var controller = (LobbyController)parameter;
         if (_ready)
         {
-            controller.ReadyPlayer();
+            parameter.ReadyPlayer();
         }
         else
         {
-            controller.UnreadyPlayer();
+            parameter.UnreadyPlayer();
         }
     }
 }

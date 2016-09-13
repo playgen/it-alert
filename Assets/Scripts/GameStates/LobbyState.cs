@@ -6,7 +6,7 @@ public class LobbyState : TickableSequenceState
 {
     private readonly LobbyStateInterface _interface;
     private readonly LobbyController _controller;
-    private ITAlertClient _client;
+    private readonly ITAlertClient _client;
     public const string stateName = "LobbyState";
 
     public LobbyState(LobbyStateInterface @interface, LobbyController controller, ITAlertClient client)
@@ -38,8 +38,8 @@ public class LobbyState : TickableSequenceState
 
     public override void Enter()
     {
-        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.Enter();
+        //_interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
     }
 
     public override void Exit()
@@ -67,14 +67,22 @@ public class LobbyState : TickableSequenceState
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            if (command is ReadyPlayerCommand || command is RefreshPlayerListCommand)
+            var readyCommand = command as ReadyPlayerCommand;
+            if (readyCommand != null)
             {
-                command.Execute(_controller);
+                readyCommand.Execute(_controller);
+                return;
             }
-            else
+
+            var refreshCommand = command as RefreshPlayerListCommand;
+            if (refreshCommand != null)
             {
-                command.Execute(this);
+                refreshCommand.Execute(_controller);
+                return;
             }
+
+            var commandResolver = new StateCommandResolver();
+            commandResolver.HandleSequenceStates(command, this);
         }
     }
 }

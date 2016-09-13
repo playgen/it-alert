@@ -2,8 +2,8 @@
 
 public class GamesListState : TickableSequenceState
 {
-    private GamesListController _controller;
-    private GamesListStateInterface _interface;
+    private readonly GamesListController _controller;
+    private readonly GamesListStateInterface _interface;
 
     public const string StateName = "GameListState";
 
@@ -39,14 +39,14 @@ public class GamesListState : TickableSequenceState
     public override void Tick(float deltaTime)
     {
         var command = _interface.TakeFirstCommand();
-        if (command is RefreshGamesListCommand)
+        var refreshCommand = command as RefreshGamesListCommand;
+        if (refreshCommand != null)
         {
-            command.Execute(_controller);
+            refreshCommand.Execute(_controller);
+            return;
         }
-        else
-        {
-            command.Execute(this);
-        }
+        var commandResolver = new StateCommandResolver();
+        commandResolver.HandleSequenceStates(command, this);
     }
 
     public override string Name

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ExitGames.Client.Photon;
+using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ public class GamesListStateInterface : StateInterface
 	public override void Enter()
 	{
 		_joinGamePanel.SetActive(true);
-		OnRefreshClick();
+        OnRefreshClick();
 	}
 
 	public override void Exit()
@@ -48,7 +49,13 @@ public class GamesListStateInterface : StateInterface
 
 	public void OnGamesListSuccess(RoomInfo[] rooms)
 	{
-		var offset = 0f;
+
+        foreach (Transform child in _gameListObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        var offset = 0f;
 		var height = 100f;
 		// Populate Game list UI
 		foreach (var room in rooms)
