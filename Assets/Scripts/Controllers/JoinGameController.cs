@@ -12,11 +12,6 @@ public class JoinGameController
         _client = client;
     }
 
-    public void JoinGame(string name)
-    {
-        _client.JoinRoom(name);
-    }
-
     public void QuickMatch()
     {
         try
@@ -29,4 +24,17 @@ public class JoinGameController
             JoinGameFailedEvent(ex.Message);
         }
     }
+
+	public void JoinGame(string name)
+	{
+		try
+		{
+			_client.JoinRoom(name);
+			JoinGameSuccessEvent();
+		}
+		catch (Exception ex)
+		{
+			JoinGameFailedEvent(ex.Message);
+		}
+	}
 }
