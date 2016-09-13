@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
@@ -19,6 +20,10 @@ namespace PlayGen.ITAlert.Network
         public bool IsReady { get; private set; }
 
         public Dictionary<int, bool> PlayerReadyStatus { get; private set; }
+
+        public event Action PlayerReadyStatusChange;
+
+        public event Action PlayerRoomParticipationChange; 
 
         public PhotonPlayer[] ListCurrentRoomPlayers
         {
@@ -142,6 +147,10 @@ namespace PlayGen.ITAlert.Network
             {
                 ChangeState(ClientStates.Lobby);
             }
+            if (PlayerRoomParticipationChange != null)
+            {
+                PlayerRoomParticipationChange();
+            }
         }
 
         private void OnLeftRoom()
@@ -153,6 +162,10 @@ namespace PlayGen.ITAlert.Network
             else
             {
                 RefreshLobby();
+                if (PlayerRoomParticipationChange != null)
+                {
+                    PlayerRoomParticipationChange();
+                }
             }
         }
 
@@ -170,6 +183,10 @@ namespace PlayGen.ITAlert.Network
                     if (senderId == _client.Player.ID && PlayerReadyStatus.ContainsKey(senderId))
                     {
                         IsReady = PlayerReadyStatus[senderId];
+                    }
+                    if (PlayerReadyStatusChange != null)
+                    {
+                        PlayerReadyStatusChange();
                     }
                     break;
 

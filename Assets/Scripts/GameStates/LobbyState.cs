@@ -1,33 +1,44 @@
-﻿using GameWork.States;
+﻿using System;
+using GameWork.States;
+using PlayGen.ITAlert.Network;
 
 public class LobbyState : TickableSequenceState
 {
-    private LobbyStateInterface _interface;
-    private LobbyController _lobbyController;
+    private readonly LobbyStateInterface _interface;
+    private readonly LobbyController _controller;
+    private ITAlertClient _client;
     public const string stateName = "LobbyState";
 
-    public LobbyState(LobbyStateInterface @interface, LobbyController controller)
+    public LobbyState(LobbyStateInterface @interface, LobbyController controller, ITAlertClient client)
     {
         _interface = @interface;
-        _lobbyController = controller;
+        _controller = controller;
+        _client = client;
     }
 
     public override void Initialize()
     {
         _interface.Initialize();
-        _lobbyController.ReadySuccessEvent += _interface.OnReadySucceeded;
+        _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
+        _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
+        _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
+        _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
         //_readyPlayerController.ReadyFailedEvent += _interface.OnReadyFailed;
     }
 
     public override void Terminate()
     {
-        _lobbyController.ReadySuccessEvent -= _interface.OnReadySucceeded;
+        _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
+        _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
+        _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
+        _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
         //_readyPlayerController.ReadyFailedEvent -= _interface.OnReadyFailed;
         _interface.Terminate();
     }
 
     public override void Enter()
     {
+        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.Enter();
     }
 
@@ -56,9 +67,9 @@ public class LobbyState : TickableSequenceState
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
-            if (command is ReadyPlayerCommand)
+            if (command is ReadyPlayerCommand || command is RefreshPlayerListCommand)
             {
-                command.Execute(_lobbyController);
+                command.Execute(_controller);
             }
             else
             {
