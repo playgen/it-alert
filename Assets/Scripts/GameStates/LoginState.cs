@@ -56,19 +56,24 @@ public class LoginState : TickableSequenceState
 		if (_interface.HasCommands)
 		{
 			var command = _interface.TakeFirstCommand();
-			if (command is LoginCommand)
+
+		    var loginCommand = command as LoginCommand;
+			if (loginCommand != null)
 			{
-				command.Execute(_loginController);
+				loginCommand.Execute(_loginController);
+                return;
 			}
-			else if (command is RegisterCommand)
-			{
-				command.Execute(_registerController);
-			}
-			else
-			{
-				command.Execute(this);
-			}
-		}
+
+            var registerCommand = command as RegisterCommand;
+            if (registerCommand != null)
+            {
+                registerCommand.Execute(_registerController);
+                return;
+            }
+
+            var commandResolver = new StateCommandResolver();
+            commandResolver.HandleSequenceStates(command, this);
+        }
 	}
 
 	public override string Name

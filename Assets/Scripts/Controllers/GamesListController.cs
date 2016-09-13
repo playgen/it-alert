@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GamesListController
 {
-    private ITAlertClient _client;
+    private readonly ITAlertClient _client;
     public event Action<RoomInfo[]> GamesListSuccessEvent;
     public event Action<string> GamesListFailedEvent;
 
