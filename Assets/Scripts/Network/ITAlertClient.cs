@@ -110,7 +110,7 @@ namespace PlayGen.ITAlert.Network
             _client.LeaveRoom();
         }
 
-        #region Simulation
+        #region Game
 
         public void SetGameInitialized()
         {
