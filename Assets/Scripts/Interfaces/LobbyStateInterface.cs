@@ -1,14 +1,21 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class LobbyStateInterface : StateInterface
 {
     private GameObject _lobbyPanel;
     private Button _readyButton;
+    private GameObject _playerListObject;
+    private GameObject _playerItemPrefab;
+    private GameObject _playerSpacePrefab;
+
 
     private bool _ready;
+    private int _lobbyPlayerMax;
 
     public override void Initialize()
     {
@@ -20,6 +27,10 @@ public class LobbyStateInterface : StateInterface
 
         _readyButton = buttons.GetButton("ReadyButtonContainer");
         _readyButton.onClick.AddListener(OnReadyButtonClick);
+
+        _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListConatiner/Viewport/Content");
+        _playerItemPrefab = Resources.Load("Prefabs/PlayerItem") as GameObject;
+        _playerSpacePrefab = Resources.Load("Prefabs/PlayerSpace") as GameObject;
     }
 
     private void OnReadyButtonClick()
@@ -57,4 +68,65 @@ public class LobbyStateInterface : StateInterface
         }
         _readyButton.gameObject.GetComponent<Text>().text = text;
     }
+
+    public void RefreshPlayerList()
+    {
+        EnqueueCommand(new RefreshPlayerListCommand());
+    }
+
+    public void UpdatePlayerList(LobbyController.LobbyPlayer[] players)
+    {
+        var offset = 0f;
+        var height = 100f;
+
+        foreach (var player in players)
+        {
+            var playerItem = Object.Instantiate(_playerItemPrefab).transform;
+            playerItem.FindChild("Name").GetComponent<Text>().text = player.Name;
+            playerItem.FindChild("Ready").GetComponent<Text>().text = player.IsReady ? "Ready" : "Waiting";
+            playerItem.SetParent(_playerListObject.transform);
+
+            // set anchors
+            var playerItemRect = playerItem.GetComponent<RectTransform>();
+
+            playerItemRect.pivot = new Vector2(0.5f, 1f);
+            playerItemRect.anchorMax = Vector2.one;
+            playerItemRect.anchorMin = new Vector2(0f, 1f);
+
+            playerItemRect.offsetMin = new Vector2(0f, offset - height);
+            playerItemRect.offsetMax = new Vector2(0f, offset);
+
+            // increment the offset
+            offset -= height;
+
+            // Set the content box to be the correct size for our elements
+        }
+
+        for (var i = players.Length; i < _lobbyPlayerMax; i++)
+        {
+            var playerSpace = Object.Instantiate(_playerSpacePrefab).transform;
+            playerSpace.SetParent(_playerListObject.transform);
+
+            // set anchors
+            var playerSpaceRect = playerSpace.GetComponent<RectTransform>();
+
+            playerSpaceRect.pivot = new Vector2(0.5f, 1f);
+            playerSpaceRect.anchorMax = Vector2.one;
+            playerSpaceRect.anchorMin = new Vector2(0f, 1f);
+
+            playerSpaceRect.offsetMin = new Vector2(0f, offset - height);
+            playerSpaceRect.offsetMax = new Vector2(0f, offset);
+
+            // increment the offset
+            offset -= height;
+        }
+
+        _playerListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+    }
+
+    public void SetRoomMax(int currentRoomMaxPlayers)
+    {
+        _lobbyPlayerMax = currentRoomMaxPlayers;
+    }
 }
+

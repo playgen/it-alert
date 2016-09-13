@@ -12,6 +12,11 @@ public class JoinGameController
         _client = client;
     }
 
+    public void JoinGame(string name)
+    {
+        _client.JoinRoom(name);
+    }
+
     public void QuickMatch()
     {
         try
