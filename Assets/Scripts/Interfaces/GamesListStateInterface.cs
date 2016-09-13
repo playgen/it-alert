@@ -35,11 +35,24 @@ public class GamesListStateInterface : StateInterface
 		EnqueueCommand(new PreviousStateCommand());
 	}
 
+<<<<<<< HEAD
 	public override void Enter()
 	{
 		_joinGamePanel.SetActive(true);
 		OnRefreshClick();
 	}
+=======
+	private void JoinGame(string name)
+	{
+		EnqueueCommand(new JoinGameCommand(name));
+	}
+
+    public override void Enter()
+    {
+        _joinGamePanel.SetActive(true);
+        OnRefreshClick();
+    }
+>>>>>>> UIUpdates
 
 	public override void Exit()
 	{
@@ -49,7 +62,7 @@ public class GamesListStateInterface : StateInterface
 	public void OnGamesListSuccess(RoomInfo[] rooms)
 	{
 		var offset = 0f;
-		var height = 100f;
+		var height = _gameItemPrefab.GetComponent<Rect>().height;
 		// Populate Game list UI
 		foreach (var room in rooms)
 		{
@@ -71,8 +84,8 @@ public class GamesListStateInterface : StateInterface
 			// increment the offset
 			offset -= height;
 
-			// TODO: add listener to each button to join specifc game 
-			//gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener(delegate{});
+			// add listener to each button to join specifc game 
+			gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener( delegate{ JoinGame(room.name); } );
 		}
 		// Set the content box to be the correct size for our elements
 		_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
