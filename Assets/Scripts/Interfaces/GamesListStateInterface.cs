@@ -35,28 +35,19 @@ public class GamesListStateInterface : StateInterface
 		EnqueueCommand(new PreviousStateCommand());
 	}
 
-<<<<<<< HEAD
 	public override void Enter()
 	{
 		_joinGamePanel.SetActive(true);
 		OnRefreshClick();
 	}
-=======
-	private void JoinGame(string name)
-	{
-		EnqueueCommand(new JoinGameCommand(name));
-	}
-
-    public override void Enter()
-    {
-        _joinGamePanel.SetActive(true);
-        OnRefreshClick();
-    }
->>>>>>> UIUpdates
-
 	public override void Exit()
 	{
 		_joinGamePanel.SetActive(false);
+	}
+
+	private void JoinGame(string name)
+	{
+		EnqueueCommand(new JoinGameCommand(name));
 	}
 
 	public void OnGamesListSuccess(RoomInfo[] rooms)
