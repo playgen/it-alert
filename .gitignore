@@ -29,7 +29,6 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.dll
-Assets/Plugins/Network/*
-!Assets/Plugins/Network/GameWork.Commands.dll.meta
-Assets/Plugins/GameWork/*
+Assets/Plugins/Network/
+Assets/Plugins/GameWork/
 *.sln

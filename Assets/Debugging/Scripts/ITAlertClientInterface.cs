@@ -3,7 +3,6 @@ using UnityEngine;
 using System.Linq;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Network;
-using PlayGen.ITAlert.Simulation.Commands;
 
 public class ITAlertClientInterface : MonoBehaviour
 {
@@ -199,7 +198,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (GUILayout.Button("Send Dummy Command"))
             {
-                _client.SendGameCommand(new DummyCommand());
+                //_client.SendGameCommand(new DummyCommand());
             }
         }
         GUILayout.EndVertical();
