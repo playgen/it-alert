@@ -32,3 +32,4 @@ sysinfo.txt
 Assets/Plugins/Network/*
 !Assets/Plugins/Network/GameWork.Commands.dll.meta
 Assets/Plugins/GameWork/*
+*.sln
