@@ -27,7 +27,7 @@ public class ControllerBehaviour : MonoBehaviour
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), joinGameController),
-            new LobbyState(new LobbyStateInterface(), new LobbyController(client)),
+            new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client)),
             new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client)) 
             );

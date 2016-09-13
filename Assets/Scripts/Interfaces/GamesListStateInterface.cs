@@ -5,49 +5,49 @@ using UnityEngine.UI;
 
 public class GamesListStateInterface : StateInterface
 {
-    private GameObject _joinGamePanel;
-    private GameObject _gameListObject;
-    private GameObject _gameItemPrefab;
+	private GameObject _joinGamePanel;
+	private GameObject _gameListObject;
+	private GameObject _gameItemPrefab;
 
-    public override void Initialize()
-    {
-        // Join Game Popup
-        _joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
-        var panelButtons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
+	public override void Initialize()
+	{
+		// Join Game Popup
+		_joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
+		var panelButtons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
 
-        var backButton = panelButtons.GetButton("BackButtonContainer");
-        backButton.onClick.AddListener(OnBackClick);
+		var backButton = panelButtons.GetButton("BackButtonContainer");
+		backButton.onClick.AddListener(OnBackClick);
 
-        var refreshButton = panelButtons.GetButton("RefreshButtonContainer");
-        refreshButton.onClick.AddListener(OnRefreshClick);
+		var refreshButton = panelButtons.GetButton("RefreshButtonContainer");
+		refreshButton.onClick.AddListener(OnRefreshClick);
 
-        _gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
-        _gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
-    }
+		_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
+		_gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
+	}
 
-    private void OnRefreshClick()
-    {
-        EnqueueCommand(new RefreshGamesListCommand());
-    }
+	private void OnRefreshClick()
+	{
+		EnqueueCommand(new RefreshGamesListCommand());
+	}
 
-    private void OnBackClick()
-    {
-        EnqueueCommand(new PreviousStateCommand());
-    }
+	private void OnBackClick()
+	{
+		EnqueueCommand(new PreviousStateCommand());
+	}
 
-    public override void Enter()
-    {
-        _joinGamePanel.SetActive(true);
-        OnRefreshClick();
-    }
+	public override void Enter()
+	{
+		_joinGamePanel.SetActive(true);
+		OnRefreshClick();
+	}
 
-    public override void Exit()
-    {
-        _joinGamePanel.SetActive(false);
-    }
+	public override void Exit()
+	{
+		_joinGamePanel.SetActive(false);
+	}
 
-    public void OnGamesListSuccess(RoomInfo[] rooms)
-    {
+	public void OnGamesListSuccess(RoomInfo[] rooms)
+	{
 		var offset = 0f;
 		var height = 100f;
 		// Populate Game list UI
