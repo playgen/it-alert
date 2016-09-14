@@ -4,6 +4,7 @@ using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
 using PlayGen.ITAlert.Serialization;
+using PlayGen.ITAlert.Simulation.Intents;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -138,9 +139,9 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-        public void SendGameCommand(ICommand command)
+        public void SendGameCommand(IIntent intent)
         {
-            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, command);
+            _client.RaiseEvent((byte)PlayerEventCode.GameIntent, intent);
         }
 
         public void SetGameFinalized()
