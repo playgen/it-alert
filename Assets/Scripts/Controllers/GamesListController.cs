@@ -1,8 +1,8 @@
 ﻿using System;
+using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
-using UnityEngine;
 
-public class GamesListController
+public class GamesListController : ICommandAction
 {
     private readonly ITAlertClient _client;
     public event Action<RoomInfo[]> GamesListSuccessEvent;

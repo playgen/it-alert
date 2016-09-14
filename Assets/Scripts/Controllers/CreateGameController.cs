@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
 
-public class CreateGameController
+public class CreateGameController : ICommandAction
 {
     private ITAlertClient _client;
 
