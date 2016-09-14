@@ -17,6 +17,7 @@ namespace PlayGen.ITAlert.Network
         public event Action JoinedRoomEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
         public event Action LeftRoomEvent;
+        public event Action<string> ErrorLogEvent;
 
         public PhotonPlayer Player
         {
@@ -392,7 +393,12 @@ namespace PlayGen.ITAlert.Network
         [System.Diagnostics.Conditional("LOGGING_ENABLED")]
         private void Log(string message)
         {
+
             Debug.Log("Network.Client: " + message);
+            if (ErrorLogEvent != null)
+            {
+                ErrorLogEvent(message);
+            }
         }
     }
 }

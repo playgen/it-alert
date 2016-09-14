@@ -26,28 +26,32 @@ public class LoginState : TickableSequenceState
 
 	public override void Initialize()
 	{
-		_interface.Initialize();
-		_registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
-		_registerController.RegisterFailedEvent += _interface.OnLoginFailed;
-		_loginController.LoginSuccessEvent += OnLoginSucceeded;
-		_loginController.LoginFailedEvent += _interface.OnLoginFailed;
+        _client.ClientErrorLogEvent += _interface.OnLoginFailed;
+        _interface.Initialize();
 	}
 
 	public override void Terminate()
 	{
-		_loginController.LoginSuccessEvent -= OnLoginSucceeded;
-		_loginController.LoginFailedEvent -= _interface.OnLoginFailed;
-		_interface.Terminate();
+        _client.ClientErrorLogEvent -= _interface.OnLoginFailed;
+        _interface.Terminate();
 	}
 
 	public override void Enter()
 	{
-		_interface.Enter();
+        _registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
+        _registerController.RegisterFailedEvent += _interface.OnLoginFailed;
+        _loginController.LoginSuccessEvent += OnLoginSucceeded;
+        _loginController.LoginFailedEvent += _interface.OnLoginFailed;
+        _interface.Enter();
 	}
 
 	public override void Exit()
 	{
-		_interface.Exit();
+        _registerController.RegisterSuccessEvent -= _interface.OnRegisterSucceeded;
+        _registerController.RegisterFailedEvent -= _interface.OnLoginFailed;
+        _loginController.LoginSuccessEvent -= OnLoginSucceeded;
+        _loginController.LoginFailedEvent -= _interface.OnLoginFailed;
+        _interface.Exit();
 	}
 
 	public override void PreviousState()

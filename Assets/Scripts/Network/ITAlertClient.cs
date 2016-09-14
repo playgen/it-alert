@@ -31,6 +31,8 @@ namespace PlayGen.ITAlert.Network
 
         public event Action GameEnteredEvent;
 
+        public event Action<string> ClientErrorLogEvent;
+
         public void SetPlayerName(string name)
         {
             _client.Player.name = name;
@@ -256,9 +258,19 @@ namespace PlayGen.ITAlert.Network
             client.JoinedRoomEvent += OnJoinedRoom;
             client.EventRecievedEvent += OnRecievedEvent;
             client.LeftRoomEvent += OnLeftRoom;
+            client.ErrorLogEvent += OnLogError;
 
             client.JoinedRoomEvent += voiceClient.OnJoinedRoom;
             client.LeftRoomEvent += voiceClient.OnLeftRoom;
+
+        }
+
+        private void OnLogError(string message)
+        {
+            if (ClientErrorLogEvent != null)
+            {
+                ClientErrorLogEvent(message);
+            }
         }
 
         private void ChangeState(ClientStates newState)
