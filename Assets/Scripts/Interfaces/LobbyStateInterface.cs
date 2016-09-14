@@ -40,6 +40,11 @@ public class LobbyStateInterface : StateInterface
 
     private void OnBackButtonClick()
     {
+        EnqueueCommand(new LeaveRoomCommand());
+    }
+
+    public void OnLeaveSuccess()
+    {
         EnqueueCommand(new PreviousStateCommand());
     }
 

@@ -4,6 +4,7 @@ using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
 using PlayGen.ITAlert.Serialization;
+using UnityEngine;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -24,6 +25,8 @@ namespace PlayGen.ITAlert.Network
         public event Action PlayerReadyStatusChange;
 
         public event Action PlayerRoomParticipationChange;
+
+        public event Action CurrentPlayerLeftRoomEvent;
 
         public void SetPlayerName(string name)
         {
@@ -163,8 +166,10 @@ namespace PlayGen.ITAlert.Network
             if (!_client.IsInRoom)
             {
                 State = ClientStates.Roomless;
+                CurrentPlayerLeftRoomEvent();
             }
             else
+
             {
                 RefreshLobby();
                 if (PlayerRoomParticipationChange != null)

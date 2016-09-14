@@ -30,6 +30,11 @@ public class LobbyController
         RefreshSuccessEvent(lobbyPlayers.ToArray());
     }
 
+    public void LeaveLobby()
+    {
+        _client.QuitGame();
+    }
+
     public void ReadyPlayer()
     {
         try

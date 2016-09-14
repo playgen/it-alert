@@ -60,7 +60,6 @@ public class MenuStateInterface : StateInterface
         _mainMenuPanel.SetActive(false);
     }
 
-
     public void OnJoinGameSuccess()
     {
         EnqueueCommand(new NextStateCommand());

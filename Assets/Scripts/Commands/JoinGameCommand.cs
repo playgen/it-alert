@@ -1,6 +1,6 @@
 ﻿using GameWork.Commands.Interfaces;
 
-public class JoinGameCommand : ICommand
+public class JoinGameCommand : ICommand<JoinGameController>
 {
 	private string _name;
 
@@ -8,9 +8,8 @@ public class JoinGameCommand : ICommand
 	{
 		_name = name;
 	}
-	public void Execute(object parameter)
+	public void Execute(JoinGameController parameter)
 	{
-		var controller = (JoinGameController)parameter;
-		controller.JoinGame(_name);
+		parameter.JoinGame(_name);
 	}
 }
