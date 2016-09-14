@@ -50,9 +50,14 @@ namespace PlayGen.ITAlert.Network
             PhotonVoiceSettings.Instance.AutoConnect = true;
         }
 
-        public static void ReisterVoicePlayer(int id, VoicePlayer voicePlayer)
+        public static void RegisterVoicePlayer(int id, VoicePlayer voicePlayer)
         {
             _voicePlayers[id] = voicePlayer;
+        }
+
+        public static void UnregisterVoicePlayer(int id)
+        {
+            _voicePlayers.Remove(id);
         }
 
         public void OnJoinedRoom()
