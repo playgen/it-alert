@@ -359,7 +359,15 @@ namespace PlayGen.ITAlert.Network
                 JoinedRoomEvent();
             }
         }
-       
+
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer remotePlayer)
+        {
+            if (LeftRoomEvent != null)
+            {
+                LeftRoomEvent();
+            }
+        }
+
         public override void OnLeftRoom()
         {
             if (LeftRoomEvent != null)

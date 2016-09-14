@@ -32,6 +32,7 @@ public class LobbyState : TickableSequenceState
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
         _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
         _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
+        _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.Enter();
     }
@@ -52,6 +53,7 @@ public class LobbyState : TickableSequenceState
 
     public override void PreviousState()
     {
+        
        ChangeState(MenuState.StateName);
     }
 
@@ -65,6 +67,14 @@ public class LobbyState : TickableSequenceState
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
+
+            var leaveCommand = command as LeaveRoomCommand;
+            if (leaveCommand != null)
+            {
+                leaveCommand.Execute(_controller);
+                return;
+            }
+
             var readyCommand = command as ReadyPlayerCommand;
             if (readyCommand != null)
             {
