@@ -46,23 +46,26 @@ public class GamesListState : TickableSequenceState
 
     public override void Tick(float deltaTime)
     {
-        var command = _interface.TakeFirstCommand();
-
-        var refreshCommand = command as RefreshGamesListCommand;
-        if (refreshCommand != null)
+        if (_interface.HasCommands)
         {
-            refreshCommand.Execute(_gameListController);
-            return;
-        }
+            var command = _interface.TakeFirstCommand();
 
-        var joinCommand = command as JoinGameCommand;
-        if (joinCommand != null)
-        {
-            joinCommand.Execute(_joinGameController);
-        }
+            var refreshCommand = command as RefreshGamesListCommand;
+            if (refreshCommand != null)
+            {
+                refreshCommand.Execute(_gameListController);
+                return;
+            }
 
-        var commandResolver = new StateCommandResolver();
-        commandResolver.HandleSequenceStates(command, this);
+            var joinCommand = command as JoinGameCommand;
+            if (joinCommand != null)
+            {
+                joinCommand.Execute(_joinGameController);
+            }
+
+            var commandResolver = new StateCommandResolver();
+            commandResolver.HandleSequenceStates(command, this);
+        }
     }
 
     public override string Name
