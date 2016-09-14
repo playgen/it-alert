@@ -25,7 +25,12 @@ public class VoicePlayer : MonoBehaviour
         _photonVoiceRecorder = GetComponent<PhotonVoiceRecorder>();
         _photonVoiceSpeaker = GetComponent<PhotonVoiceSpeaker>();
 
-        VoiceClient.ReisterVoicePlayer(_photonView.ownerId, this);
+        VoiceClient.RegisterVoicePlayer(_photonView.ownerId, this);
+    }
+
+    private void OnDisable()
+    {
+        VoiceClient.UnregisterVoicePlayer(_photonView.ownerId);
     }
 
     void Update()
