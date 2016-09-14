@@ -24,12 +24,12 @@ public class ControllerBehaviour : MonoBehaviour
         var joinGameController = new JoinGameController(client);
 
         _stateController = new TickableStateController<TickableSequenceState>(  
-            new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
+            new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account), client), 
             new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface(), joinGameController),
+            new MenuState(new MenuStateInterface(), joinGameController, client),
             new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client)),
-            new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client)) 
+            new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client), client) 
             );
         _stateController.Initialize();
     }

@@ -19,31 +19,29 @@ public class LobbyState : TickableSequenceState
     public override void Initialize()
     {
         _interface.Initialize();
-        _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
-        _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
-        _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
-        _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
-        //_readyPlayerController.ReadyFailedEvent += _interface.OnReadyFailed;
     }
 
     public override void Terminate()
     {
-        _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
-        _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
-        _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
-        _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
-        //_readyPlayerController.ReadyFailedEvent -= _interface.OnReadyFailed;
         _interface.Terminate();
     }
 
     public override void Enter()
     {
+        _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
+        _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
+        _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
+        _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
+        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.Enter();
-        //_interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
     }
 
     public override void Exit()
     {
+        _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
+        _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
+        _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
+        _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
         _interface.Exit();
     }
 

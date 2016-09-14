@@ -1,10 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateGamePopupBehaviour : MonoBehaviour
 {
     public InputField GameNameInputField;
     public InputField PlayerNumberInputField;
+
+    private int _maxPlayers = 6;
 
     public GameDetails GetGameDetails()
     {
@@ -18,6 +21,14 @@ public class CreateGamePopupBehaviour : MonoBehaviour
         PlayerNumberInputField.text = "";
     }
 
+    public void CheckPlayerNumberInput()
+    {
+        var playerInput = Convert.ToInt32(PlayerNumberInputField.text);
+        // clamp input
+        playerInput = Mathf.Clamp(playerInput, 1, _maxPlayers);
+        // Set Text to clamped value
+        PlayerNumberInputField.text = playerInput.ToString();
+    }
 
     public struct GameDetails
     {

@@ -19,7 +19,7 @@ MonoBehaviour:
   VoiceAppID: e94874f7-99e5-4ed7-8746-8679109f941f
   PreferredRegion: 0
   EnabledRegions: -1
-  JoinLobby: 1
+  JoinLobby: 0
   EnableLobbyStatistics: 0
   RpcList:
   - Chat

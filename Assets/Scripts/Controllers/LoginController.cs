@@ -8,7 +8,7 @@ public class LoginController : ILoginAction, ILogoutAction
 {
     private readonly AccountClient _accountController;
 
-    public event Action LoginSuccessEvent;
+    public event Action<string> LoginSuccessEvent;
     public event Action<string> LoginFailedEvent;
 
     public LoginController(AccountClient factoryAccount)
@@ -30,7 +30,7 @@ public class LoginController : ILoginAction, ILogoutAction
         try
         {
             var accountResponse = _accountController.Login(accountRequest);
-            LoginSuccessEvent();
+            LoginSuccessEvent(accountRequest.Name);
         }
         catch (Exception ex)
         {

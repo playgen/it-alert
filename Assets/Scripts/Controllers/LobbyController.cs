@@ -23,7 +23,7 @@ public class LobbyController
         foreach (var photonPlayer in players)
         {
             var name = photonPlayer.name;
-            var isReady = playerReadyStatus[photonPlayer.ID];
+            var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
             var lobbyPlayer = new LobbyPlayer(name, isReady);
             lobbyPlayers.Add(lobbyPlayer);
         }
