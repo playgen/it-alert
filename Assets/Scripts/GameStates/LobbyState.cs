@@ -33,6 +33,7 @@ public class LobbyState : TickableSequenceState
         _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
         _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
         _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
+        _client.GameEnteredEvent += NextState;
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.Enter();
     }
@@ -43,6 +44,7 @@ public class LobbyState : TickableSequenceState
         _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
         _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
         _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
+        _client.GameEnteredEvent -= NextState;
         _interface.Exit();
     }
 
