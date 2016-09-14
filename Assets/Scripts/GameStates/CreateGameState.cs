@@ -1,39 +1,42 @@
 ﻿using GameWork.Commands.Interfaces;
 using GameWork.Commands.States;
 using GameWork.States;
+using PlayGen.ITAlert.Network;
 
 public class CreateGameState : TickableSequenceState
 {
     private readonly CreateGameController _controller;
     private readonly CreateGameStateInterface _interface;
+    private readonly ITAlertClient _client;
     public const string StateName = "CreateGameState";
 
 
-    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller)
+    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller, ITAlertClient client)
     {
         _interface = @interface;
         _controller = controller;
+        _client = client;
     }
 
     public override void Initialize()
     {
-        _controller.CreateGameSuccessEvent += _interface.OnCreateGameSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
-        _controller.CreateGameSuccessEvent -= _interface.OnCreateGameSuccess;
     }
 
     public override void Enter()
     {
+        _client.PlayerRoomParticipationChange += _interface.OnCreateGameSuccess;
         _interface.Enter();
     }
 
     public override void Exit()
     {
+        _client.PlayerRoomParticipationChange -= _interface.OnCreateGameSuccess;
         _interface.Exit();
     }
 

@@ -1,36 +1,39 @@
 ﻿using GameWork.States;
+using PlayGen.ITAlert.Network;
 
 public class MenuState : TickableSequenceState
 {
     private readonly MenuStateInterface _interface;
-    public const string StateName = "MenuState";
     private readonly JoinGameController _controller;
+    private readonly ITAlertClient _client;
+    public const string StateName = "MenuState";
 
-    public MenuState(MenuStateInterface @interface, JoinGameController controller)
+    public MenuState(MenuStateInterface @interface, JoinGameController controller, ITAlertClient client)
     {
         _interface = @interface;
         _controller = controller;
+        _client = client;
     }
 
     public override void Initialize()
     {
-        _controller.JoinGameSuccessEvent += _interface.OnJoinGameSuccess;
         _interface.Initialize();
     }
 
     public override void Terminate()
     {
         _interface.Terminate();
-        _controller.JoinGameSuccessEvent -= _interface.OnJoinGameSuccess;
     }
 
     public override void Enter()
     {
+        _client.PlayerRoomParticipationChange += _interface.OnJoinGameSuccess;
         _interface.Enter();
     }
 
     public override void Exit()
     {
+        _client.PlayerRoomParticipationChange -= _interface.OnJoinGameSuccess;
         _interface.Exit();
     }
 
