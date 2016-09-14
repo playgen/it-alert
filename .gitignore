@@ -32,3 +32,5 @@ sysinfo.txt
 Assets/Plugins/Network/
 Assets/Plugins/GameWork/
 *.sln
+test_Data/
+test.exe

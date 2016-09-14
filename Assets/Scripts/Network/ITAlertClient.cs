@@ -24,7 +24,12 @@ namespace PlayGen.ITAlert.Network
 
         public event Action PlayerReadyStatusChange;
 
-        public event Action PlayerRoomParticipationChange; 
+        public event Action PlayerRoomParticipationChange;
+
+        public void SetPlayerName(string name)
+        {
+            _client.Player.name = name;
+        }
 
         public PhotonPlayer[] ListCurrentRoomPlayers
         {
