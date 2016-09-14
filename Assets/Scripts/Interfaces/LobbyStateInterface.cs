@@ -28,7 +28,7 @@ public class LobbyStateInterface : StateInterface
         _readyButton = buttons.GetButton("ReadyButtonContainer");
         _readyButton.onClick.AddListener(OnReadyButtonClick);
 
-        _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer/Viewport/Content");
+        _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
         _playerItemPrefab = Resources.Load("Prefabs/PlayerItem") as GameObject;
         _playerSpacePrefab = Resources.Load("Prefabs/PlayerSpace") as GameObject;
     }
@@ -87,7 +87,7 @@ public class LobbyStateInterface : StateInterface
         }
 
         var offset = 0f;
-        var height = _playerItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        var height = _playerListObject.GetComponent<RectTransform>().rect.height / 6f;
 
         foreach (var player in players)
         {
@@ -109,7 +109,7 @@ public class LobbyStateInterface : StateInterface
             // increment the offset
             offset -= height;
 
-            
+
         }
 
         for (var i = players.Length; i < _lobbyPlayerMax; i++)
@@ -130,8 +130,6 @@ public class LobbyStateInterface : StateInterface
             // increment the offset
             offset -= height;
         }
-        // Set the content box to be the correct size for our elements
-        _playerListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
     }
 
     public void SetRoomMax(int currentRoomMaxPlayers)
