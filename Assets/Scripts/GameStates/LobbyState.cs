@@ -39,7 +39,7 @@ public class LobbyState : TickableSequenceState
     public override void Enter()
     {
         _interface.Enter();
-        //_interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
+        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
     }
 
     public override void Exit()
