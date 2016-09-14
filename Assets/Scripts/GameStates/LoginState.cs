@@ -7,14 +7,16 @@ public class LoginState : TickableSequenceState
 	private readonly LoginStateInterface _interface;
 	private readonly LoginController _loginController;
 	private readonly RegisterController _registerController;
+    private readonly PopupController _popupController;
     private readonly ITAlertClient _client;
     public const string StateName = "LoginState";
 
-	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController, ITAlertClient client)
+	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController, PopupController popupController, ITAlertClient client)
 	{
 		_interface = @interface;
 		_loginController = loginController;
 		_registerController = registerController;
+	    _popupController = popupController;
 	    _client = client;
 	}
 
@@ -26,28 +28,30 @@ public class LoginState : TickableSequenceState
 
 	public override void Initialize()
 	{
-		_interface.Initialize();
-		_registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
-		_registerController.RegisterFailedEvent += _interface.OnLoginFailed;
-		_loginController.LoginSuccessEvent += OnLoginSucceeded;
-		_loginController.LoginFailedEvent += _interface.OnLoginFailed;
+        _interface.Initialize();
 	}
 
 	public override void Terminate()
 	{
-		_loginController.LoginSuccessEvent -= OnLoginSucceeded;
-		_loginController.LoginFailedEvent -= _interface.OnLoginFailed;
-		_interface.Terminate();
+        _interface.Terminate();
 	}
 
 	public override void Enter()
 	{
-		_interface.Enter();
+        _registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
+        _registerController.RegisterFailedEvent += _popupController.ShowPopup;
+        _loginController.LoginSuccessEvent += OnLoginSucceeded;
+        _loginController.LoginFailedEvent += _popupController.ShowPopup;
+        _interface.Enter();
 	}
 
 	public override void Exit()
 	{
-		_interface.Exit();
+        _registerController.RegisterSuccessEvent -= _interface.OnRegisterSucceeded;
+        _registerController.RegisterFailedEvent -= _popupController.ShowPopup;
+        _loginController.LoginSuccessEvent -= OnLoginSucceeded;
+        _loginController.LoginFailedEvent -= _popupController.ShowPopup;
+        _interface.Exit();
 	}
 
 	public override void PreviousState()
