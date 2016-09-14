@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using GameWork.States;
+using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network;
 
 public class LobbyState : TickableSequenceState
@@ -30,6 +32,7 @@ public class LobbyState : TickableSequenceState
     {
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
+
         _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
         _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
         _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
@@ -42,6 +45,8 @@ public class LobbyState : TickableSequenceState
     {
         _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
         _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
+        _client.GameEnteredEvent -= NextState;
+
         _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
         _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
         _client.GameEnteredEvent -= NextState;
@@ -50,7 +55,7 @@ public class LobbyState : TickableSequenceState
 
     public override void NextState()
     {
-        throw new System.NotImplementedException();
+        ChangeState(GameState.StateName);
     }
 
     public override void PreviousState()
@@ -93,6 +98,14 @@ public class LobbyState : TickableSequenceState
 
             var commandResolver = new StateCommandResolver();
             commandResolver.HandleSequenceStates(command, this);
+        }
+
+        if (_client.IsMasterClient)
+        {
+            if (_client.PlayerReadyStatus.Values.All(v => v))
+            {
+                _client.StartGame(false);
+            }
         }
     }
 }
