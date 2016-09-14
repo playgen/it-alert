@@ -4,8 +4,6 @@ using PlayGen.ITAlert.Network;
 public class CreateGameController
 {
     private ITAlertClient _client;
-    public event Action CreateGameSuccessEvent;
-    public event Action<string> CreateGameFailedEvent;
 
     public CreateGameController(ITAlertClient client)
     {
@@ -14,14 +12,6 @@ public class CreateGameController
 
     public void CreateGame(string gameName, int maxPlayers)
     {
-        try
-        {
-            _client.CreateRoom(gameName, maxPlayers);
-            CreateGameSuccessEvent();
-        }
-        catch (Exception ex)
-        {
-            CreateGameFailedEvent(ex.Message);
-        }
+        _client.CreateRoom(gameName, maxPlayers);
     }
 }
