@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GameWork.States;
+using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.SUGAR.Client;
 
@@ -29,7 +30,8 @@ public class ControllerBehaviour : MonoBehaviour
             new MenuState(new MenuStateInterface(), joinGameController, client),
             new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client)),
-            new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client), client) 
+            new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client), client), 
+            new GameState(client)
             );
         _stateController.Initialize();
     }

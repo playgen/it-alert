@@ -26,6 +26,8 @@ namespace PlayGen.ITAlert.Network
 
         public event Action PlayerRoomParticipationChange;
 
+        public event Action GameEnteredEvent;
+
         public void SetPlayerName(string name)
         {
             _client.Player.name = name;
@@ -39,6 +41,11 @@ namespace PlayGen.ITAlert.Network
         public VoiceClient VoiceClient
         {
             get { return _voiceClient; }
+        }
+
+        public bool IsMasterClient
+        {
+            get { return _client.IsMasterClient; }
         }
 
         public bool IsInRoom
@@ -205,6 +212,11 @@ namespace PlayGen.ITAlert.Network
                 case (byte)ServerEventCode.GameEntered:
                     ChangeState(ClientStates.Game);
                     ChangeGameState(GameStates.Initializing);
+
+                    if (GameEnteredEvent != null)
+                    {
+                        GameEnteredEvent();
+                    }
                     break;
 
                 case (byte)ServerEventCode.GameInitialized:
