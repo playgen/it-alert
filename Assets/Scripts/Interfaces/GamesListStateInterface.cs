@@ -59,13 +59,12 @@ public class GamesListStateInterface : StateInterface
 			GameObject.Destroy(child.gameObject);
 		}
 		var offset = 0f;
-		var height = _gameItemPrefab.GetComponent<Rect>().height;
-
-		// Populate Game list UI
-		foreach (var room in rooms)
+        var height = _gameItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+        // Populate Game list UI
+        foreach (var room in rooms)
 		{
-			var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-			gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
+            var gameItem = Object.Instantiate(_gameItemPrefab).transform;
+            gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
 			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
 			gameItem.SetParent(_gameListObject.transform);
 
