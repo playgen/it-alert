@@ -4,7 +4,7 @@ using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
 using PlayGen.ITAlert.Serialization;
-using UnityEngine;
+using PlayGen.ITAlert.Simulation.Intents;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -31,8 +31,6 @@ namespace PlayGen.ITAlert.Network
 
         public event Action GameEnteredEvent;
 
-        public event Action<string> ClientErrorLogEvent;
-
         public void SetPlayerName(string name)
         {
             _client.Player.name = name;
@@ -48,14 +46,14 @@ namespace PlayGen.ITAlert.Network
             get { return _voiceClient; }
         }
 
-        public bool IsInRoom
-        {
-            get { return _client.IsInRoom; }
-        }
-
         public bool IsMasterClient
         {
             get { return _client.IsMasterClient; }
+        }
+
+        public bool IsInRoom
+        {
+            get { return _client.IsInRoom; }
         }
 
         public RoomInfo CurrentRoom
@@ -75,6 +73,7 @@ namespace PlayGen.ITAlert.Network
 
             RegisterSerializableTypes(_client);
             ConnectEvents(_client, _voiceClient);
+
             State = ClientStates.Disconnected;
             GameState = GameStates.None;
 
@@ -140,9 +139,9 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-        public void SendGameCommand(ICommand command)
+        public void SendGameCommand(IIntent intent)
         {
-            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, command);
+            _client.RaiseEvent((byte)PlayerEventCode.GameIntent, intent);
         }
 
         public void SetGameFinalized()
@@ -181,10 +180,13 @@ namespace PlayGen.ITAlert.Network
             if (!_client.IsInRoom)
             {
                 State = ClientStates.Roomless;
-                CurrentPlayerLeftRoomEvent();
+
+                if(CurrentPlayerLeftRoomEvent != null)
+                {
+                    CurrentPlayerLeftRoomEvent();
+                }
             }
             else
-
             {
                 RefreshLobby();
                 if (PlayerRoomParticipationChange != null)
@@ -218,6 +220,7 @@ namespace PlayGen.ITAlert.Network
                 case (byte)ServerEventCode.GameEntered:
                     ChangeState(ClientStates.Game);
                     ChangeGameState(GameStates.Initializing);
+
                     if (GameEnteredEvent != null)
                     {
                         GameEnteredEvent();
@@ -258,19 +261,9 @@ namespace PlayGen.ITAlert.Network
             client.JoinedRoomEvent += OnJoinedRoom;
             client.EventRecievedEvent += OnRecievedEvent;
             client.LeftRoomEvent += OnLeftRoom;
-            client.ErrorLogEvent += OnLogError;
 
             client.JoinedRoomEvent += voiceClient.OnJoinedRoom;
             client.LeftRoomEvent += voiceClient.OnLeftRoom;
-
-        }
-
-        private void OnLogError(string message)
-        {
-            if (ClientErrorLogEvent != null)
-            {
-                ClientErrorLogEvent(message);
-            }
         }
 
         private void ChangeState(ClientStates newState)
