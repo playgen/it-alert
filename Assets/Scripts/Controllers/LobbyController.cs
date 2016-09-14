@@ -24,7 +24,7 @@ public class LobbyController
         {
             var name = photonPlayer.name;
             var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
-            var lobbyPlayer = new LobbyPlayer(name, isReady);
+            var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID);
             lobbyPlayers.Add(lobbyPlayer);
         }
         RefreshSuccessEvent(lobbyPlayers.ToArray());
@@ -65,11 +65,13 @@ public class LobbyController
     {
         public string Name;
         public bool IsReady;
+        public int Id;
 
-        public LobbyPlayer(string name, bool isReady)
+        public LobbyPlayer(string name, bool isReady, int id)
         {
             Name = name;
             IsReady = isReady;
+            Id = id;
         }
     }
         

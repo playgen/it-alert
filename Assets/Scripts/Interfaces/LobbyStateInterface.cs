@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Runtime.Remoting.Channels;
 using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
@@ -89,11 +91,23 @@ public class LobbyStateInterface : StateInterface
         var offset = 0f;
         var height = _playerListObject.GetComponent<RectTransform>().rect.height / 6f;
 
-        foreach (var player in players)
+        //sort array into list
+        var playersList = players.OrderBy(player => player.Id).ToList();
+
+        var index = 1;
+        foreach (var player in playersList)
         {
             var playerItem = Object.Instantiate(_playerItemPrefab).transform;
-            playerItem.FindChild("Name").GetComponent<Text>().text = player.Name;
-            playerItem.FindChild("Ready").GetComponent<Text>().text = player.IsReady ? "Ready" : "Waiting";
+
+            var nameText = playerItem.FindChild("Name").GetComponent<Text>();
+            nameText.text = player.Name;
+            nameText.color = GetColorForPlayerNumber(index);
+            index++;
+
+            var readyText = playerItem.FindChild("Ready").GetComponent<Text>();
+            readyText.text = player.IsReady ? "Ready" : "Waiting";
+            readyText.color = nameText.color;
+
             playerItem.SetParent(_playerListObject.transform);
 
             // set anchors
@@ -136,5 +150,28 @@ public class LobbyStateInterface : StateInterface
     {
         _lobbyPlayerMax = currentRoomMaxPlayers;
     }
+
+    public Color GetColorForPlayerNumber(int playerNum)
+    {
+        switch (playerNum)
+        {
+            case 1:
+                return Color.red;
+            case 2:
+                return Color.blue;
+            case 3:
+                return Color.green;
+            case 4:
+                return Color.yellow;
+            case 5:
+                return Color.magenta;
+            case 6:
+                return Color.cyan;
+            default:
+                return Color.white;
+        }
+        
+    }
+
 }
 
