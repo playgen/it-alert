@@ -392,7 +392,9 @@ namespace PlayGen.ITAlert.Network
         [System.Diagnostics.Conditional("LOGGING_ENABLED")]
         private void Log(string message)
         {
+
             Debug.Log("Network.Client: " + message);
+            LoggerUtility.LogError("Network.Client: " + message);
         }
     }
 }

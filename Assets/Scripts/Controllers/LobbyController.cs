@@ -8,7 +8,7 @@ using UnityEngine;
 
 public class LobbyController : ICommandAction
 {
-    private ITAlertClient _client;
+    private readonly ITAlertClient _client;
     public event Action ReadySuccessEvent;
     public event Action<LobbyPlayer[]> RefreshSuccessEvent;
 
