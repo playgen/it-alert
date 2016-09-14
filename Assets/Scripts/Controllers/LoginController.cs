@@ -1,10 +1,11 @@
 ﻿using System;
 using GameWork.Commands.Accounts.Interfaces;
+using GameWork.Commands.Interfaces;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts;
 
 
-public class LoginController : ILoginAction, ILogoutAction
+public class LoginController : ILoginAction, ILogoutAction, ICommandAction
 {
     private readonly AccountClient _accountController;
 

@@ -1,7 +1,8 @@
 ﻿using System;
+using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
 
-public class JoinGameController
+public class JoinGameController : ICommandAction
 {
 	private readonly ITAlertClient _client;
 	public event Action JoinGameSuccessEvent;

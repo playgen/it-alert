@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
+using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
 using UnityEngine;
 
-public class LobbyController
+public class LobbyController : ICommandAction
 {
     private ITAlertClient _client;
     public event Action ReadySuccessEvent;
@@ -25,7 +26,7 @@ public class LobbyController
         {
             var name = photonPlayer.name;
             var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
-            var lobbyPlayer = new LobbyPlayer(name, isReady);
+            var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID);
             lobbyPlayers.Add(lobbyPlayer);
         }
 
@@ -65,11 +66,13 @@ public class LobbyController
     {
         public string Name;
         public bool IsReady;
+        public int Id;
 
-        public LobbyPlayer(string name, bool isReady)
+        public LobbyPlayer(string name, bool isReady, int id)
         {
             Name = name;
             IsReady = isReady;
+            Id = id;
         }
     }
         
