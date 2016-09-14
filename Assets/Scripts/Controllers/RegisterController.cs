@@ -1,9 +1,10 @@
 ﻿using System;
 using GameWork.Commands.Accounts.Interfaces;
+using GameWork.Commands.Interfaces;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts;
 
-public class RegisterController : IRegisterAction
+public class RegisterController : IRegisterAction, ICommandAction
 {
     private readonly AccountClient _accountController;
 
