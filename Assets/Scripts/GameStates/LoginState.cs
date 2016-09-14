@@ -1,23 +1,27 @@
 ﻿using GameWork.Commands.Accounts;
 using GameWork.States;
+using PlayGen.ITAlert.Network;
 
 public class LoginState : TickableSequenceState
 {
 	private LoginStateInterface _interface;
 	private LoginController _loginController;
 	private RegisterController _registerController;
-	public const string StateName = "LoginState";
+    private readonly ITAlertClient _client;
+    public const string StateName = "LoginState";
 
-	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController)
+	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController, ITAlertClient client)
 	{
 		_interface = @interface;
 		_loginController = loginController;
 		_registerController = registerController;
+	    _client = client;
 	}
 
-	private void OnLoginSucceeded()
+	private void OnLoginSucceeded(string name)
 	{
-		NextState();
+        _client.SetPlayerName(name);
+        NextState();
 	}
 
 	public override void Initialize()

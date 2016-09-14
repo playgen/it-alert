@@ -24,7 +24,7 @@ public class ControllerBehaviour : MonoBehaviour
         var joinGameController = new JoinGameController(client);
 
         _stateController = new TickableStateController<TickableSequenceState>(  
-            new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account)), 
+            new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account), client), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), joinGameController),
             new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
