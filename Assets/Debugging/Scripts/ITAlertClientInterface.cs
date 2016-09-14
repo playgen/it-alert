@@ -39,12 +39,14 @@ public class ITAlertClientInterface : MonoBehaviour
                 break;
 
             case ClientStates.Lobby:
+                ShowVoiceOptions();
                 ShowLobbyOptions();
                 break;
 
             case ClientStates.Game:
 
                 ShowGameState();
+                ShowVoiceOptions();
 
                 switch (_client.GameState)
                 {
@@ -65,11 +67,42 @@ public class ITAlertClientInterface : MonoBehaviour
         }
     }
 
+    private void ShowVoiceOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Voice----");
+
+            GUILayout.BeginVertical("box");
+            {
+                GUILayout.Label("Talking:");
+
+                foreach (var kvp in VoiceClient.TransmittingStatuses)
+                {
+                    GUILayout.Label(kvp.Key + " is " + (kvp.Value ? "Talking" : "Not Talking"));
+                }
+            }
+            GUILayout.EndVertical();
+
+
+            if (GUILayout.Button("Start Transmitting"))
+            {
+                _client.VoiceClient.StartTransmission();
+            }
+            else if (GUILayout.Button("Stop Transmitting"))
+            {
+                _client.VoiceClient.StopTransmission();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+
     private void ShowLobbyOptions()
     {
         GUILayout.BeginVertical("box");
         {
-            GUILayout.Label("----Lobby----");
+            GUILayout.Label("----Talking----");
 
             if (!_client.IsReady)
             {
