@@ -10,6 +10,7 @@ namespace PlayGen.ITAlert.Network
     public class ITAlertClient
     {
         private readonly Client _client;
+        private readonly VoiceClient _voiceClient;
 
         private StateResponse _simulationState;
 
@@ -30,6 +31,11 @@ namespace PlayGen.ITAlert.Network
             get { return _client.ListCurrentRoomPlayers; }
         }
 
+        public VoiceClient VoiceClient
+        {
+            get { return _voiceClient; }
+        }
+
         public bool IsInRoom
         {
             get { return _client.IsInRoom; }
@@ -48,9 +54,10 @@ namespace PlayGen.ITAlert.Network
         public ITAlertClient(Client client)
         {
             _client = client;
+            _voiceClient = new VoiceClient();
 
             RegisterSerializableTypes(_client);
-            ConnectEvents(_client);
+            ConnectEvents(_client, _voiceClient);
 
             State = ClientStates.Disconnected;
             GameState = GameStates.None;
@@ -223,12 +230,15 @@ namespace PlayGen.ITAlert.Network
             client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize, Deserializer<StateResponse>.Deserialize);
         }
 
-        private void ConnectEvents(Client client)
+        private void ConnectEvents(Client client, VoiceClient voiceClient)
         {
             client.ConnectedEvent += OnConnected;
             client.JoinedRoomEvent += OnJoinedRoom;
             client.EventRecievedEvent += OnRecievedEvent;
             client.LeftRoomEvent += OnLeftRoom;
+
+            client.JoinedRoomEvent += voiceClient.OnJoinedRoom;
+            client.LeftRoomEvent += voiceClient.OnLeftRoom;
         }
 
         private void ChangeState(ClientStates newState)
