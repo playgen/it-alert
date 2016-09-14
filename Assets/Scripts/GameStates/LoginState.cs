@@ -4,9 +4,9 @@ using PlayGen.ITAlert.Network;
 
 public class LoginState : TickableSequenceState
 {
-	private LoginStateInterface _interface;
-	private LoginController _loginController;
-	private RegisterController _registerController;
+	private readonly LoginStateInterface _interface;
+	private readonly LoginController _loginController;
+	private readonly RegisterController _registerController;
     private readonly ITAlertClient _client;
     public const string StateName = "LoginState";
 

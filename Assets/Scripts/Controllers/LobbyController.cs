@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using PlayGen.ITAlert.Network;
+using UnityEngine;
 
 public class LobbyController
 {
     private ITAlertClient _client;
     public event Action ReadySuccessEvent;
-    public event Action<string> ReadyFailedEvent;
     public event Action<LobbyPlayer[]> RefreshSuccessEvent;
 
     public LobbyController(ITAlertClient client)
@@ -27,7 +28,20 @@ public class LobbyController
             var lobbyPlayer = new LobbyPlayer(name, isReady);
             lobbyPlayers.Add(lobbyPlayer);
         }
+
         RefreshSuccessEvent(lobbyPlayers.ToArray());
+
+        if (_client.IsMasterClient)
+        {
+            var numReadyPlayers = playerReadyStatus.Values.Count(b => b.Equals(true));
+            Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
+            if (numReadyPlayers == _client.CurrentRoom.maxPlayers)
+            {
+                Debug.Log("All Ready!");
+                _client.StartGame(true); // force start = true?
+            }
+        }
+
     }
 
     public void LeaveLobby()
@@ -37,28 +51,14 @@ public class LobbyController
 
     public void ReadyPlayer()
     {
-        try
-        {
-            _client.SetReady(true);
-            ReadySuccessEvent();
-        }
-        catch (Exception ex)
-        {
-            
-        }
+        _client.SetReady(true);
+        ReadySuccessEvent();
     }
 
     public void UnreadyPlayer()
     {
-        try
-        {
-            _client.SetReady(false);
-            ReadySuccessEvent();
-        }
-        catch (Exception ex)
-        {
-            
-        }
+        _client.SetReady(false);
+        ReadySuccessEvent();
     }
 
     public struct LobbyPlayer

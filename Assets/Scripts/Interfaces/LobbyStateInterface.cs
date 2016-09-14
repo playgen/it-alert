@@ -70,6 +70,7 @@ public class LobbyStateInterface : StateInterface
         {
             text = "WAITING";
             _ready = true;
+
         }
         _readyButton.gameObject.GetComponent<Text>().text = text;
     }
