@@ -17,7 +17,6 @@ namespace PlayGen.ITAlert.Network
         public event Action JoinedRoomEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
         public event Action LeftRoomEvent;
-        public event Action<string> ErrorLogEvent;
 
         public PhotonPlayer Player
         {
@@ -395,10 +394,7 @@ namespace PlayGen.ITAlert.Network
         {
 
             Debug.Log("Network.Client: " + message);
-            if (ErrorLogEvent != null)
-            {
-                ErrorLogEvent(message);
-            }
+            LoggerUtility.LogError("Network.Client: " + message);
         }
     }
 }

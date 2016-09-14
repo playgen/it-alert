@@ -63,14 +63,17 @@ public class PopupBehaviour : MonoBehaviour
 	{
 		// find the Content panel
 		_contentPanel = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/PopupContentContainer").gameObject;
-		var content = _contentPanel.transform.GetChild(0).gameObject;
-		// Destroy the content
-		Destroy(content);
-		foreach (var button in _buttonsGameObjects)
+		if (_contentPanel.transform.childCount > 0)
 		{
-			Destroy(button.gameObject);
+			var content = _contentPanel.transform.GetChild(0).gameObject;
+			// Destroy the content
+			Destroy(content);
+			foreach (var button in _buttonsGameObjects)
+			{
+				Destroy(button.gameObject);
+			}
+			_buttonsGameObjects.Clear();
 		}
-		_buttonsGameObjects.Clear();
 	}
 
 	private void SetTitle(string title)
