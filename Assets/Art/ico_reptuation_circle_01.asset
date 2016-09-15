@@ -1,0 +1,194 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
+  m_Name: ico_reptuation_circle_01
+  m_EditorClassIdentifier: 
+  _lastTimeModified: 636086800665327309
+  _documentAsset: {fileID: 11465648}
+  _sharedMesh: {fileID: 43000012273194650}
+  _antialiasing: 0
+  _antialiasingWidth: 0
+  _generateCollider: 0
+  _keepSVGFile: 1
+  _ignoreSVGCanvas: 1
+  _colliderShape: []
+  _format: 2
+  _useGradients: 1
+  _meshCompression: 0
+  _optimizeMesh: 1
+  _generateNormals: 0
+  _generateTangents: 0
+  _scale: 0.01
+  _vpm: 1000
+  _depthOffset: 0.01
+  _compressDepth: 1
+  _pivotPoint: {x: 0.5, y: 0.5}
+  _customPivotPoint: 0
+  _border: {x: 0, y: 0, z: 0, w: 0}
+  _sliceMesh: 0
+  _sharedGradients: []
+  _sharedShaders:
+  - SVG Importer/SolidColor/SolidColorAlphaBlended
+  _canvasRectangle:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 20.48
+    height: 15.36
+  _layers: []
+--- !u!114 &11465648
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363e9872ad27a4ca59c07d233fdf0023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _errors: 
+  _svgFile: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!-- Generator: Adobe Illustrator
+    18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n<svg version=\"1.1\"
+    id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"
+    x=\"0px\" y=\"0px\"\r\n\t viewBox=\"0 0 2048 1536\" enable-background=\"new 0
+    0 2048 1536\" xml:space=\"preserve\">\r\n<circle fill=\"#6D6E71\" cx=\"1023.5\"
+    cy=\"768.2\" r=\"31.2\"/>\r\n<path fill=\"#FFFFFF\" d=\"M1022.1,749.5l-5,10.1c-0.2,0.4-0.6,0.7-1.1,0.8l-11.1,1.6c-1.2,0.2-1.7,1.6-0.8,2.5l8.1,7.9\r\n\tc0.3,0.3,0.5,0.8,0.4,1.3l-1.9,11.1c-0.2,1.2,1,2.1,2.1,1.5l10-5.2c0.4-0.2,0.9-0.2,1.4,0l10,5.2c1.1,0.6,2.3-0.3,2.1-1.5l-1.9-11.1\r\n\tc-0.1-0.5,0.1-1,0.4-1.3l8.1-7.9c0.9-0.8,0.4-2.3-0.8-2.5l-11.1-1.6c-0.5-0.1-0.9-0.4-1.1-0.8l-5-10.1\r\n\tC1024.2,748.4,1022.7,748.4,1022.1,749.5z\"/>\r\n</svg>\r\n"
+  _title: 
+  _description: 
+--- !u!43 &43000012273194650
+Mesh:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: ico_reptuation_circle_01
+  serializedVersion: 8
+  m_SubMeshes:
+  - serializedVersion: 2
+    firstByte: 0
+    indexCount: 201
+    topology: 0
+    firstVertex: 0
+    vertexCount: 71
+    localAABB:
+      m_Center: {x: -0.00000047683716, y: 0, z: -0}
+      m_Extent: {x: 0.3119998, y: 0.3119998, z: 0}
+  m_Shapes:
+    vertices: []
+    shapes: []
+    channels: []
+    fullWeights: []
+  m_BindPose: []
+  m_BoneNameHashes: 
+  m_RootBoneNameHash: 0
+  m_MeshCompression: 0
+  m_IsReadable: 1
+  m_KeepVertices: 1
+  m_KeepIndices: 1
+  m_IndexBuffer: 0000010002000000030001000400030000000400050003000400060005000700060004000800060007000800090006000a00090008000a000b0009000c000b000a000c000d000b000e000d000c000e000f000d0010000f000e00100011000f0010001200110013001200100013001400120015001400130016001400150016001700140018001700160018001900170018001a0019001b001a0018001c001a001b001c001d001a001e001d001c001e001f001d001e0020001f00210020001e00220020002100200022002300240025002600270025002400280025002700280029002500290028002a002b002c002d002e002c002b002e002f002c0030002f002e00300031002f003000320031003000330032003000340033003500340030003500360034003700360035003800360037003900360038003a00360039003b0036003a003b003c0036003b003d003c003b003e003d003f003e003b0040003e003f0024003e00400026003e00240041003e002600410042003e00410043004200440043004100430044004500460032003300
+  m_Skin: []
+  m_VertexData:
+    m_CurrentChannels: 5
+    m_VertexCount: 71
+    m_Channels:
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 3
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 12
+      format: 2
+      dimension: 4
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    - stream: 0
+      offset: 0
+      format: 0
+      dimension: 0
+    m_DataSize: 1136
+    _typelessdata: c03c183e60728cbe000000806d6e71ff007f763e002c4bbe000000806d6e71ff802e4b3ec07c76be000000806d6e71ff80738c3e603a18be000000806d6e71ff00eebd3d308e98be000000806d6e71ff608f983e40e9bdbd000000806d6e71ff60eb9e3e009502bd000000806d6e71ff009e023d20ea9ebe000000806d6e71ff0000203770be9fbe000000806d6e71ff60be9f3e00000080000000806d6e71ff009602bd20ea9ebe000000806d6e71ff60eb9e3e009f023d000000806d6e71ff80e9bdbd308e98be000000806d6e71ff608f983e80eebd3d000000806d6e71ff803a18be60728cbe000000806d6e71ff80738c3e003d183e000000806d6e71ff402c4bbec07c76be000000806d6e71ff007f763ea02e4b3e000000806d6e71ff802e4b3e407f763e000000806d6e71ff007d76be002c4bbe000000806d6e71ffc03c183eb0738c3e000000806d6e71ffc0738cbe603a18be000000806d6e71ff408e98be40e9bdbd000000806d6e71ff00eebd3d908f983e000000806d6e71ff40ea9ebe009502bd000000806d6e71ff009e023d70eb9e3e000000806d6e71ff0000203770be9f3e000000806d6e71ff80be9fbe00000080000000806d6e71ff40ea9ebe009f023d000000806d6e71ff009602bd70eb9e3e000000806d6e71ff408e98be80eebd3d000000806d6e71ff80e9bdbd908f983e000000806d6e71ff803a18beb0738c3e000000806d6e71ffc0738cbe003d183e000000806d6e71ff007d76bea02e4b3e000000806d6e71ff402c4bbe407f763e000000806d6e71ff8067e7bd00fe2bbd00000080ffffffff809499bdc0c39f3d00000080ffffffff00068cbd40a4a53d00000080ffffffff80a546be0098173d00000080ffffffff00fd4abe80fc353d00000080ffffffff80743ebe80fe7d3d00000080ffffffff803746be00b36f3d00000080ffffffff80f2eb3d60423bbe00000080ffffffff4012033e40f929be00000080ffffffff0029023e006c32be00000080ffffffff8022db3d605539be00000080ffffffff003bdf3d003d61bd00000080ffffffff0060e53b001604be00000080ffffffff8041e03d808b43bd00000080ffffffff006ce73d00fe2bbd00000080ffffffff00ff4a3e0044343d00000080ffffffffc039463e801f6f3d00000080ffffffff0080c2b9c08c02be00000080ffffffff80763e3e80fe7d3d00000080ffffffff0068e5bb001604be00000080ffffffff0023dbbd605539be00000080ffffffff80eeebbd60423bbe00000080ffffffffc02602be006c32be00000080ffffffff001003be40f929be00000080ffffffff0099993dc0c39f3d00000080ffffffff800a8c3d40a4a53d00000080ffffffff0012833dc025b03d00000080ffffffff8036dfbd003d61bd00000080ffffffff0042e0bd808b43bd00000080ffffffff001383bdc025b03d00000080ffffffff005c653ce07c3f3e00000080ffffffff0068f63ba0d3453e00000080ffffffff006465bce07c3f3e00000080ffffffff003c04bca0d3453e00000080ffffffffc0a7463e0098173d00000080ffffffff
+  m_CompressedMesh:
+    m_Vertices:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UV:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Normals:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Tangents:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Weights:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_NormalSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_TangentSigns:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_FloatColors:
+      m_NumItems: 0
+      m_Range: 0
+      m_Start: 0
+      m_Data: 
+      m_BitSize: 0
+    m_BoneIndices:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_Triangles:
+      m_NumItems: 0
+      m_Data: 
+      m_BitSize: 0
+    m_UVInfo: 0
+  m_LocalAABB:
+    m_Center: {x: -0.00000047683716, y: 0, z: -0}
+    m_Extent: {x: 0.3119998, y: 0.3119998, z: 0}
+  m_MeshUsageFlags: 0
+  m_BakedConvexCollisionMesh: 
+  m_BakedTriangleCollisionMesh: 
+  m_MeshOptimized: 0
