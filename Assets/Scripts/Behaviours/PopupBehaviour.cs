@@ -19,18 +19,21 @@ public class PopupBehaviour : MonoBehaviour
 	/// </summary>
 	/// <param name="title">The title of the popup</param>
 	/// <param name="output">The desired button Output from left to right</param
-	public void SetPopup(string title, Output[] outputs)
+	public void SetPopup(string title, Output[] outputs, UnityAction closePopupAction)
 	{
 		// set the title
 		SetTitle(title);
 
-		_buttonContainer = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer").gameObject;
+	    if (outputs == null)
+	        return;
 
+		_buttonContainer = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer").gameObject;
+        
 		var buttonPrefab = Resources.Load("Prefabs/ButtonContainer");
 		foreach (var buttonOutput in outputs)
 		{
 			var buttonObject = Instantiate(buttonPrefab) as GameObject;
-			SetButton(buttonObject.transform.GetChild(0).GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action);
+			SetButton(buttonObject.transform.GetChild(0).GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
 			
 			//now set the parent of the object
 			buttonObject.transform.parent = _buttonContainer.transform;
@@ -82,9 +85,15 @@ public class PopupBehaviour : MonoBehaviour
 		_title.text = title;
 	}
 
-	private void SetButton(Button button, string text, UnityAction action)
+	private void SetButton(Button button, string text, UnityAction action, UnityAction defaultAction)
 	{
-		button.onClick.AddListener(action);
+        // check if there is a custom action
+	    if (action != null)
+	    {
+	        button.onClick.AddListener(action);
+	    }
+        // Add the default on click action
+	    button.onClick.AddListener(defaultAction);
 		button.gameObject.GetComponent<Text>().text = text;
 	}
 
