@@ -16,7 +16,7 @@ public class PopupController
     public void ShowErrorPopup(string msg)
     {
         // Show error on popup
-        var errorPanel = Object.Instantiate(Resources.Load("Prefabs/ErrorContentPanel")) as GameObject;
+        var errorPanel = Object.Instantiate(Resources.Load("ErrorContentPanel")) as GameObject;
         var errorMsg = errorPanel.transform.GetChild(1).GetComponent<UnityEngine.UI.Text>();
         errorMsg.text = msg;
 
@@ -30,7 +30,7 @@ public class PopupController
     public void ShowLoadingPopup(/*UnityAction cancelAction = null*/)
     {
         // Show the loading popup along with a button to cancel
-        var loadingPanel = Object.Instantiate(Resources.Load("Prefabs/LoadingContentPanel")) as GameObject;
+        var loadingPanel = Object.Instantiate(Resources.Load("LoadingContentPanel")) as GameObject;
 
         _popupBehaviour.ClearContent();
         _popupBehaviour.SetPopup("", null/*new[] { new PopupBehaviour.Output("Cancel", null) }*/, PopupClosed);

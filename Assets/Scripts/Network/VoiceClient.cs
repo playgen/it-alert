@@ -6,7 +6,7 @@ namespace PlayGen.ITAlert.Network
 {
     public class VoiceClient
     {
-        private const string VoicePlayerPath = "Prefabs/Network/VoicePlayer";
+        private const string VoicePlayerPath = "VoicePlayer";
         private static Dictionary<int, VoicePlayer> _voicePlayers = new Dictionary<int, VoicePlayer>();
         private PhotonVoiceRecorder _rec;
         

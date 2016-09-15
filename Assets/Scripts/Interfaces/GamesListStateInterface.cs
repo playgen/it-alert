@@ -23,7 +23,7 @@ public class GamesListStateInterface : StateInterface
 		refreshButton.onClick.AddListener(OnRefreshClick);
 
 		_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
-		_gameItemPrefab = Resources.Load("Prefabs/GameItem") as GameObject;
+		_gameItemPrefab = Resources.Load("GameItem") as GameObject;
 	}
 
 	private void OnRefreshClick()
