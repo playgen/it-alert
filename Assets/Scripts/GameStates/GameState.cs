@@ -40,6 +40,8 @@ namespace PlayGen.ITAlert.GameStates
         {
             _stateController.ExitState();
             _stateController.Terminate();
+
+	        SceneManager.UnloadScene("Network");
         }
 
         public override void Tick(float deltaTime)

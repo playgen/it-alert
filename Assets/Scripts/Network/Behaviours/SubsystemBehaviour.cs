@@ -165,7 +165,7 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 
 	private void SetShield()
 	{
-		_health.transform.localScale = new Vector3(EntityState.Shield, 1);
+		_shield.transform.localScale = new Vector3(EntityState.Shield, 1);
 	}
 
 	private void SetSystemProperties()
@@ -249,7 +249,7 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 		// Top Left = (-1, -1), Bottom Right = (1, 1)
 		var sideLength = _connectionScaleCoefficient * _connectionSquareCollider.bounds.size.x;
 		var halfSide = sideLength/2;
-		var step = sideLength / PointsPerSide * 2;
+		//var step = sideLength / PointsPerSide * 2;
 		var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;
 
 		// TOP
