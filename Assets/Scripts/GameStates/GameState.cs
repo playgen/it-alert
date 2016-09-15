@@ -2,6 +2,8 @@
 using GameWork.States;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
@@ -30,12 +32,16 @@ namespace PlayGen.ITAlert.GameStates
         {
             _stateController.Initialize();
             _stateController.SetState(InitializingState.StateName);
+
+			SceneManager.LoadScene("Network");
         }
 
         public override void Exit()
         {
             _stateController.ExitState();
             _stateController.Terminate();
+
+	        SceneManager.UnloadScene("Network");
         }
 
         public override void Tick(float deltaTime)

@@ -1,8 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using System.Linq;
-using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Simulation;
 
 public class ITAlertClientInterface : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class ITAlertClientInterface : MonoBehaviour
     private string _gameVersion = "1";
     private ITAlertClient _client;
 
-    private StateResponse _lastState;
+    private Simulation _lastSimulation;
 
     #region UI Variables
 
@@ -102,7 +102,7 @@ public class ITAlertClientInterface : MonoBehaviour
     {
         GUILayout.BeginVertical("box");
         {
-            GUILayout.Label("----Talking----");
+            GUILayout.Label("----Lobby----");
 
             if (!_client.IsReady)
             {
@@ -196,14 +196,12 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (_client.HasSimulationState)
             {
-                _lastState = _client.TakeSimulationState();
+                _lastSimulation = _client.TakeSimulationState();
             }
 
-            if (_lastState != null)
+            if (_lastSimulation != null)
             {
-                GUILayout.Label("Pending State Type: " + _lastState.Type);
-                GUILayout.Label("Pending State Tick: " + _lastState.Tick);
-                //GUILayout.TextArea(_lastState.State.MockData.Substring(0, 100));
+                GUILayout.Label("Pending Simulation: " + _lastSimulation.CurrentTick);
             }
         }
         GUILayout.EndVertical();
