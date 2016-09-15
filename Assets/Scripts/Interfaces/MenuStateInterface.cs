@@ -13,7 +13,7 @@ public class MenuStateInterface : StateInterface
     {
         // Main Menu
         _mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
-        var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer");
+        var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer", true);
 
         var logoutButton = menu.GetButton("LogoutButtonContainer");
         logoutButton.onClick.AddListener(OnLogoutClick);
