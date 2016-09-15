@@ -29,7 +29,7 @@ public class PopupBehaviour : MonoBehaviour
 
 		_buttonContainer = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/ButtonContainer").gameObject;
         
-		var buttonPrefab = Resources.Load("Prefabs/ButtonContainer");
+		var buttonPrefab = Resources.Load("ButtonContainer");
 		foreach (var buttonOutput in outputs)
 		{
 			var buttonObject = Instantiate(buttonPrefab) as GameObject;

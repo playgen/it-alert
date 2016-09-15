@@ -16,6 +16,8 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 
 	public bool IsActive { get { return EntityState != null && EntityState.Active; } }
 
+	public int? Owner { get { return EntityState == null ? (int?) null : EntityState.Owner; } }
+
 	#endregion
 
 	#region Initialization
