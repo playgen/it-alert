@@ -34,7 +34,7 @@ public class ControllerBehaviour : MonoBehaviour
             new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client), joinGameController, client),
             new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client), client), 
-            new SettingsState(new SettingsStateInterface(), client),
+            new SettingsState(new SettingsStateInterface()),
             new GameState(client)
             );
         _stateController.Initialize();

@@ -1,18 +1,17 @@
-﻿using GameWork.States;
+﻿using System;
+using GameWork.States;
 using PlayGen.ITAlert.Network;
 
 public class SettingsState : TickableSequenceState
 {
     private readonly SettingsStateInterface _interface;
-    private readonly ITAlertClient _client;
 
     public const string StateName = "SettingsState";
 
 
-    public SettingsState(SettingsStateInterface @interface, ITAlertClient client)
+    public SettingsState(SettingsStateInterface @interface)
     {
         _interface = @interface;
-        _client = client;
     }
 
     public override void Initialize()
@@ -53,7 +52,7 @@ public class SettingsState : TickableSequenceState
 
     public override void NextState()
     {
-        //ChangeState(LobbyState.stateName);
+        throw new NotImplementedException();
     }
 
     public override void PreviousState()
