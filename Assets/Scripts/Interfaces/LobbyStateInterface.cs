@@ -14,6 +14,7 @@ public class LobbyStateInterface : StateInterface
     private GameObject _playerListObject;
     private GameObject _playerItemPrefab;
     private GameObject _playerSpacePrefab;
+    private GameObject _roomNameObject;
 
 
     private bool _ready;
@@ -29,6 +30,8 @@ public class LobbyStateInterface : StateInterface
 
         _readyButton = buttons.GetButton("ReadyButtonContainer");
         _readyButton.onClick.AddListener(OnReadyButtonClick);
+
+        _roomNameObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/RoomNameContainer/RoomName");
 
         _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
         _playerItemPrefab = Resources.Load("Prefabs/PlayerItem") as GameObject;
@@ -58,6 +61,11 @@ public class LobbyStateInterface : StateInterface
     public override void Exit()
     {
         _lobbyPanel.SetActive(false);
+    }
+
+    public void SetRoomName(string name)
+    {
+        _roomNameObject.GetComponent<Text>().text = name;
     }
 
     public void OnReadySucceeded()
