@@ -201,9 +201,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (_lastSimulation != null)
             {
-                GUILayout.Label("Pending State Type: " + _lastSimulation.Type);
-                GUILayout.Label("Pending State Tick: " + _lastSimulation.Tick);
-                //GUILayout.TextArea(_lastSimulation.State.MockData.Substring(0, 100));
+                GUILayout.Label("Pending Simulation: " + _lastSimulation.CurrentTick);
             }
         }
         GUILayout.EndVertical();

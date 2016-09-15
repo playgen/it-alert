@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Commands.Interfaces;
-using PlayGen.ITAlert.DataTransferObjects.Simulation;
-using PlayGen.ITAlert.Events;
-using PlayGen.ITAlert.Simulation.Intents;
+using PlayGen.ITAlert.Photon.Events;
+using PlayGen.ITAlert.Photon.Serialization;
 
 namespace PlayGen.ITAlert.Network
 {
@@ -12,7 +10,7 @@ namespace PlayGen.ITAlert.Network
         private readonly Client _client;
         private readonly VoiceClient _voiceClient;
 
-        private StateResponse _simulationState;
+        private Simulation.Simulation _simulationState;
 
         public ClientStates State { get; private set; }
 
@@ -149,7 +147,7 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte)PlayerEventCode.GameFinalized);
         }
 
-        public StateResponse TakeSimulationState()
+        public Simulation.Simulation TakeSimulationState()
         {
             var simulationState = _simulationState;
             _simulationState = null;
@@ -228,7 +226,7 @@ namespace PlayGen.ITAlert.Network
                     break;
 
                 case (byte)ServerEventCode.GameInitialized:
-                    _simulationState = (StateResponse)content;
+                    _simulationState = (Simulation.Simulation)content;
                     break;
                     
                 case (byte)ServerEventCode.GameTick:
@@ -237,13 +235,13 @@ namespace PlayGen.ITAlert.Network
                         ChangeGameState(GameStates.Playing);
                     }
 
-                    _simulationState = (StateResponse)content;
+                    _simulationState = (Simulation.Simulation)content;
                     break;
 
                 case (byte)ServerEventCode.GameFinalized:
                     ChangeGameState(GameStates.Finalizing);
 
-                    _simulationState = (StateResponse)content;
+                    _simulationState = (Simulation.Simulation)content;
                     
                     break;
             }
@@ -252,7 +250,10 @@ namespace PlayGen.ITAlert.Network
 
         private void RegisterSerializableTypes(Client client)
         {
-            //client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize, Deserializer<StateResponse>.Deserialize);
+            client.RegisterSerializableType(typeof(Simulation.Simulation), 
+                SerializableTypes.SimulationState, 
+                Serializer.SerializeSimulation, 
+                Serializer.DeserializeSimulation);
         }
 
         private void ConnectEvents(Client client, VoiceClient voiceClient)
