@@ -23,7 +23,9 @@ public class ControllerBehaviour : MonoBehaviour
         var factory = new SUGARClient("http://localhost:62312/");
 
         var popupController = new PopupController();
-        LoggerUtility.LogErrorEvent += popupController.ShowErrorPopup;//
+        PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
+        PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
+        PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
 
         var joinGameController = new JoinGameController(client);
 

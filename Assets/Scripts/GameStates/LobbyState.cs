@@ -49,7 +49,7 @@ public class LobbyState : TickableSequenceState
 
         _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
         _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
-        _client.GameEnteredEvent -= NextState;
+        _client.CurrentPlayerLeftRoomEvent -= _interface.OnLeaveSuccess;
         _interface.Exit();
     }
 
