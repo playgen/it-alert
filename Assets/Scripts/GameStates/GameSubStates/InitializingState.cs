@@ -43,6 +43,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             if (_networkClient.HasSimulationState)
             {
                 Director.Initialize(_networkClient.TakeSimulationState());
+
+                _networkClient.SetGameInitialized();
             }
         }
     }
