@@ -29,7 +29,9 @@ sysinfo.txt
 *.apk
 *.unitypackage
 *.dll
-Assets/Plugins/Network/
+Assets/Plugins/Network/*
+!Assets/Plugins/Network/PlayGen.ITAlert.*.dll.meta
+Assets/Plugins/Network/PlayGen.ITAlert.Photon*
 Assets/Plugins/GameWork/
 Assets/Plugins/PlayGen.ITAlert/
 *.sln
