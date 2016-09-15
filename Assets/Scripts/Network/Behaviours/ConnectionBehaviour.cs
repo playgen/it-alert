@@ -121,7 +121,6 @@ public class ConnectionBehaviour : EntityBehaviour<PlayGen.ITAlert.Simulation.Co
 	{
 		foreach (var visitor in EntityState.VisitorPositions)
 		{
-
 			UpdateVisitorMovement(Director.GetEntity(visitor.Key), visitor.Value);
 		}
 		_currentVisitors.RemoveWhere(v => EntityState.VisitorPositions.ContainsKey(v) == false);

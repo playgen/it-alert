@@ -394,7 +394,7 @@ namespace PlayGen.ITAlert.Network
         {
 
             Debug.Log("Network.Client: " + message);
-            LoggerUtility.LogError("Network.Client: " + message);
+            PopupUtility.LogError("Network.Client: " + message);
         }
     }
 }
