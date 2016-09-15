@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
 
@@ -254,6 +255,11 @@ namespace PlayGen.ITAlert.Network
                 SerializableTypes.SimulationState, 
                 Serializer.SerializeSimulation, 
                 Serializer.DeserializeSimulation);
+
+            client.RegisterSerializableType(typeof(Simulation.Commands.Commands.Interfaces.ICommand),
+                SerializableTypes.Command,
+                Serializer.Serialize,
+                Serializer.Deserialize<ICommand>);
         }
 
         private void ConnectEvents(Client client, VoiceClient voiceClient)
