@@ -1,4 +1,5 @@
 ﻿using GameWork.States;
+using PlayGen.ITAlert.Network;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
@@ -6,9 +7,16 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
     {
         public const string StateName = "Finalizing";
 
+        private readonly ITAlertClient _networkClient;
+
         public override string Name
         {
             get { return StateName; }
+        }
+
+        public FinalizingState(ITAlertClient networkClient)
+        {
+            _networkClient = networkClient;
         }
 
         public override void Enter()
@@ -29,6 +37,12 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
         public override void Tick(float deltaTime)
         {
+            if (_networkClient.HasSimulationState)
+            {
+                Director.Finalise(_networkClient.TakeSimulationState());
+            }
+
+            Director.Tick();
         }
     }
 }

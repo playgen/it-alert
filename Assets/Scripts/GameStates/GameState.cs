@@ -23,9 +23,9 @@ namespace PlayGen.ITAlert.GameStates
         {
             _networkClient = networkClient;
 
-            _stateController = new TickableStateController(new InitializingState(),
-                new PlayingState(),
-                new FinalizingState());
+            _stateController = new TickableStateController(new InitializingState(_networkClient),
+                new PlayingState(_networkClient),
+                new FinalizingState(_networkClient));
         }
 
         public override void Enter()
@@ -33,7 +33,8 @@ namespace PlayGen.ITAlert.GameStates
             _stateController.Initialize();
             _stateController.SetState(InitializingState.StateName);
 
-			SceneManager.LoadScene("Network");
+            Director.Client = _networkClient;
+            SceneManager.LoadScene("Network");
         }
 
         public override void Exit()
