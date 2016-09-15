@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
 
 	//TODO: why are these coroutines?
 	private static Coroutine _warningFlash;
-	private static Coroutine _hintMove;
+	//private static Coroutine _hintMove;
 	private static int _flashCount;
 
 	private void Awake()
@@ -160,7 +160,7 @@ public class UIManager : MonoBehaviour
 			yield return new WaitForFixedUpdate();
 		}
 		_hintObject.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -75);
-		_hintMove = null;
+		//_hintMove = null;
 	}
 	
 	#endregion
