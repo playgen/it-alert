@@ -7,3 +7,6 @@ url=git@github.com:playgenhub/GameWork.git
 [submodule "photon-server"]
 	path = photon-server
 	url = git@codebasehq.com:playgen/rage/photon-server.git
+[submodule "PlayGen.ITAlert"]
+	path = PlayGen.ITAlert
+	url = git@codebasehq.com:playgen/rage/it-alert-2.git
