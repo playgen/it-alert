@@ -43,6 +43,6 @@ public class CreateGameStateInterface : StateInterface
 
     public void OnCreateGameSuccess()
     {
-        //EnqueueCommand(new NextStateCommand());
+        EnqueueCommand(new NextStateCommand());
     }
 }
