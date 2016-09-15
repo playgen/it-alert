@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.DataTransferObjects.Simulation;
 using PlayGen.ITAlert.Events;
-using PlayGen.ITAlert.Serialization;
 using PlayGen.ITAlert.Simulation.Intents;
 
 namespace PlayGen.ITAlert.Network
@@ -139,10 +138,11 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-        public void SendGameCommand(IIntent intent)
-        {
-            _client.RaiseEvent((byte)PlayerEventCode.GameIntent, intent);
-        }
+		//TODO: reimplement with command object
+        //public void SendGameCommand(IIntent intent)
+        //{
+        //    _client.RaiseEvent((byte)PlayerEventCode.GameIntent, intent);
+        //}
 
         public void SetGameFinalized()
         {
@@ -252,7 +252,7 @@ namespace PlayGen.ITAlert.Network
 
         private void RegisterSerializableTypes(Client client)
         {
-            client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize, Deserializer<StateResponse>.Deserialize);
+            //client.RegisterSerializableType(typeof(StateResponse), SerializableTypes.StateResponce, Serializer.Serialize, Deserializer<StateResponse>.Deserialize);
         }
 
         private void ConnectEvents(Client client, VoiceClient voiceClient)

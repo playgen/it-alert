@@ -17,7 +17,6 @@
 using System;
 using ExitGames.Client.Photon;
 
-
 /// <summary>
 /// This enum defines the set of MonoMessages Photon Unity Networking is using as callbacks. Implemented by PunBehaviour.
 /// </summary>

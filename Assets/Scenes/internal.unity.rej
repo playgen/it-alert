@@ -1,0 +1,148 @@
+diff a/Assets/Scene/internal.unity b/Assets/Scene/internal.unity	(rejected hunks)
+@@ -288,6 +288,146 @@
+       propertyPath: Speed
+       value: 1
+       objectReference: {fileID: 0}
++    - target: {fileID: 11471902, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Enabled
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.r
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.g
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.b
++      value: 1
++      objectReference: {fileID: 0}
++    m_RemovedComponents: []
++  m_ParentPrefab: {fileID: 100100000, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++  m_IsPrefabParent: 0
++--- !u!1001 &205595584
++Prefab:
++  m_ObjectHideFlags: 0
++  serializedVersion: 2
++  m_Modification:
++    m_TransformParent: {fileID: 0}
++    m_Modifications:
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.w
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_RootOrder
++      value: 10
++      objectReference: {fileID: 0}
++    - target: {fileID: 162670, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Name
++      value: Player (3)
++      objectReference: {fileID: 0}
++    - target: {fileID: 11471902, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: _startPosition
++      value: 18
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.r
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.g
++      value: 0.006896496
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.b
++      value: 1
++      objectReference: {fileID: 0}
++    m_RemovedComponents: []
++  m_ParentPrefab: {fileID: 100100000, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++  m_IsPrefabParent: 0
++--- !u!1001 &223768603
++Prefab:
++  m_ObjectHideFlags: 0
++  serializedVersion: 2
++  m_Modification:
++    m_TransformParent: {fileID: 0}
++    m_Modifications:
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalPosition.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.x
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.y
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.z
++      value: 0
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_LocalRotation.w
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 482206, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_RootOrder
++      value: 9
++      objectReference: {fileID: 0}
++    - target: {fileID: 162670, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Name
++      value: Player (2)
++      objectReference: {fileID: 0}
++    - target: {fileID: 11471902, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: _startPosition
++      value: 12
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.r
++      value: 0.5769777
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.b
++      value: 1
++      objectReference: {fileID: 0}
++    - target: {fileID: 21226004, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
++      propertyPath: m_Color.g
++      value: 0.28676468
++      objectReference: {fileID: 0}
+     m_RemovedComponents: []
+   m_ParentPrefab: {fileID: 100100000, guid: 34d273c7202f2ce42abfe7c13420b57d, type: 2}
+   m_IsPrefabParent: 0
