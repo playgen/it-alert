@@ -16,7 +16,7 @@ public class PopupController
     public void ShowErrorPopup(string msg)
     {
         // Show error on popup
-        var errorPanel = Object.Instantiate(Resources.Load("Prefabs/ErrorContentPanel")) as GameObject;
+        var errorPanel = Object.Instantiate(Resources.Load("ErrorContentPanel")) as GameObject;
         var errorMsg = errorPanel.transform.GetChild(1).GetComponent<UnityEngine.UI.Text>();
         errorMsg.text = msg;
 

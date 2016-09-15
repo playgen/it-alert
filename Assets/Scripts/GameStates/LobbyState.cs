@@ -38,6 +38,7 @@ public class LobbyState : TickableSequenceState
         _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
         _client.GameEnteredEvent += NextState;
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
+        _interface.SetRoomName(_client.CurrentRoom.name);
         _interface.Enter();
     }
 
