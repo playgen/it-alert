@@ -102,7 +102,7 @@ public class ITAlertClientInterface : MonoBehaviour
     {
         GUILayout.BeginVertical("box");
         {
-            GUILayout.Label("----Talking----");
+            GUILayout.Label("----Lobby----");
 
             if (!_client.IsReady)
             {
