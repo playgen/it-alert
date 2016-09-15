@@ -40,6 +40,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             if (_networkClient.HasSimulationState)
             {
                 Director.Finalise(_networkClient.TakeSimulationState());
+
+                _networkClient.SetGameFinalized();
             }
 
             Director.Tick();
