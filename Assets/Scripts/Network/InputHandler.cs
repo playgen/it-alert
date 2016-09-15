@@ -16,6 +16,10 @@ public class InputHandler : MonoBehaviour
 	private ItemBehaviour _selectedItem;
 	private SubsystemBehaviour _selectedSubsystem;
 
+	private float ClickInterval = 1.0f/10;
+
+	private float _lastClick = 0;
+
 	/// <summary>
 	/// ?
 	/// </summary>
@@ -54,11 +58,18 @@ public class InputHandler : MonoBehaviour
 			&& Director.Player.InventoryItem.Value == item.Id;
 	}
 
+	private bool PlayerOwnsItem(ItemBehaviour item)
+	{
+		return Director.Player != null
+				&& item.Owner.HasValue
+				&& item.Owner.Value == Director.Player.Id;
+	}
+
 	#endregion
 
 	#region DEBUG
 
-	#if DEBUG
+#if DEBUG
 
 	private DebugBehaviour _debug;
 
@@ -96,9 +107,8 @@ public class InputHandler : MonoBehaviour
 		var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 		var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
 		var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
-		var click = false;
 
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetMouseButtonDown(0) && _lastClick <= 0)
 		{
 			if (subsystemHits.Any() && itemHits.Any())
 			{
@@ -112,21 +122,24 @@ public class InputHandler : MonoBehaviour
 			{
 				OnClickSubsystem(subsystemHits.Single());
 			}
-			click = true;
+			_lastClick = ClickInterval;
 		}
 
-		if (Input.GetMouseButton(0) && click == false)
+		if (Input.GetMouseButton(0) && _lastClick <= 0)
 		{
 			if (_selectedItemHit.HasValue && _clickItemFrames++ > 0)
 			{
 				DragItem(_selectedItemHit.Value);
 			}
+			_lastClick = ClickInterval;
 		}
 
-		if (Input.GetMouseButtonUp(0) && click == false)
+		if (Input.GetMouseButtonUp(0) && _lastClick <= 0)
 		{
 			OnDrop();
 		}
+
+		_lastClick = Math.Max(0, _lastClick - Time.deltaTime);
 	}
 
 	#region Clicks
@@ -180,9 +193,12 @@ public class InputHandler : MonoBehaviour
 		if (_selectedItemHit.HasValue && _selectedItem != null && _selectedSubsystem != null)
 		{
 			var item = _selectedItem;
-			if (PlayerHasItem(item))
+			if (PlayerOwnsItem(item))
 			{
 				Vector2 releasePos = _selectedItemHit.Value.point - (Vector2)_selectedSubsystem.transform.position;
+
+				var subsystemHits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
+
 				//if (Mathf.Abs(releasePos.x) < UIConstants.SubsystemRadiusScale && Mathf.Abs(releasePos.y) < UIConstants.SubsystemRadiusScale)
 				if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releasePos))
 				{

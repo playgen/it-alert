@@ -31,8 +31,8 @@ public class LobbyStateInterface : StateInterface
         _readyButton.onClick.AddListener(OnReadyButtonClick);
 
         _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
-        _playerItemPrefab = Resources.Load("Prefabs/PlayerItem") as GameObject;
-        _playerSpacePrefab = Resources.Load("Prefabs/PlayerSpace") as GameObject;
+        _playerItemPrefab = Resources.Load("PlayerItem") as GameObject;
+        _playerSpacePrefab = Resources.Load("PlayerSpace") as GameObject;
     }
 
     private void OnReadyButtonClick()
