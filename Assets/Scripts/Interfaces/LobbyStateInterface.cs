@@ -90,7 +90,8 @@ public class LobbyStateInterface : StateInterface
         }
 
         var offset = 0f;
-        var height = _playerListObject.GetComponent<RectTransform>().rect.height / 6f;
+        var maximumPlayersPossible = 6f; // the maximum number of players the game currently supports - Not the max for the room
+        var height = _playerListObject.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
 
         //sort array into list
         var playersList = players.OrderBy(player => player.Id).ToList();
