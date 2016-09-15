@@ -137,11 +137,10 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-		//TODO: reimplement with command object
-        //public void SendGameCommand(IIntent intent)
-        //{
-        //    _client.RaiseEvent((byte)PlayerEventCode.GameIntent, intent);
-        //}
+		public void SendGameCommand(Simulation.Commands.Commands.Interfaces.ICommand command)
+        {
+            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, command);
+        }
 
         public void SetGameFinalized()
         {
