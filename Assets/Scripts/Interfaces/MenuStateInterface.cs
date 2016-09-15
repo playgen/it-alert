@@ -26,6 +26,9 @@ public class MenuStateInterface : StateInterface
 
         var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
         quickMatchButton.onClick.AddListener(OnQuickMatchClick);
+
+        var settingsButton = menu.GetButton("SettingsButtonContainer");
+        settingsButton.onClick.AddListener(OnSettingsClick);
     }
 
     private void OnJoinGameClick()
@@ -41,6 +44,11 @@ public class MenuStateInterface : StateInterface
     private void OnQuickMatchClick()
     {
         EnqueueCommand(new QuickMatchCommand());
+    }
+
+    private void OnSettingsClick()
+    {
+        EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
     }
 
     private void OnLogoutClick()
