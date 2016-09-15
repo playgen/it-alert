@@ -466,18 +466,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &299462706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -531,18 +519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 11400000, guid: 6762bf987e817ef4a9acf60af0c4e434, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!114 &314701495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,7 +554,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 314701494}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -707,18 +683,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &461080217
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1061,18 +1025,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 11400000, guid: b9f2be2521b2f41429a52f29199c172a, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &669033115
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1455,18 +1407,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &932108691
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1519,18 +1459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 11400000, guid: 8fb1a7d04c885e3479147f2f501d0d05, type: 2}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &955370969
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1673,18 +1601,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &1160219640
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2172,7 +2088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1456743868
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2617,18 +2533,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &1603457058
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2836,18 +2740,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.20784314, g: 0.18431373, b: 0.20392157, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_UsePivot: 0
 --- !u!222 &1741861380
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3105,18 +2997,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &1962173077
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3240,18 +3120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17e34ae2138a4405182984330823b51b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.8980392, g: 0.16078432, b: 0.48235294, a: 1}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  _vectorGraphics: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_UsePivot: 0
 --- !u!222 &1999100584
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3513,7 +3381,6 @@ MonoBehaviour:
   _timerText: {fileID: 113552813}
   _warningText: {fileID: 0}
   _hintObject: {fileID: 0}
-  _hintObjectIcon: {fileID: 0}
 --- !u!4 &2119488591
 Transform:
   m_ObjectHideFlags: 0

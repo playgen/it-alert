@@ -26,7 +26,7 @@ public class GameOverBehaviour : MonoBehaviour
 		if (_animationProgress < 1)
 		{
 			_animationProgress += Time.deltaTime;
-			Debug.Log(_animationProgress);
+			//Debug.Log(_animationProgress);
 			_bigVirus.transform.localPosition = new Vector3(InitialOffset.x, Mathf.SmoothStep(InitialOffset.y, 0, _animationProgress));
 		}
 	}

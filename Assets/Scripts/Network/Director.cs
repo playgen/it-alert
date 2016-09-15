@@ -74,7 +74,7 @@ public class Director : MonoBehaviour
 
 	#region Initialization
 
-	private void Start()
+	private void OnEnable()
 	{
 		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 		//TODO: replace with code to init from remote state
@@ -107,8 +107,8 @@ public class Director : MonoBehaviour
 		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
 		//TODO: the player id should be passed along with initialization data
 		_player = players[Random.Next(0, players.Length)];
-		GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
-		GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
+		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
+		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
 		_player.EnableDecorator();
 	}
 
