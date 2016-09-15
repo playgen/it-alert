@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class PopupController
 {
@@ -12,16 +13,28 @@ public class PopupController
         _popupBehaviour = _popupPanel.GetComponent<PopupBehaviour>();
     }
 
-    public void ShowPopup(string msg)
+    public void ShowErrorPopup(string msg)
     {
-        // TODO show error on popup
+        // Show error on popup
         var errorPanel = Object.Instantiate(Resources.Load("Prefabs/ErrorContentPanel")) as GameObject;
         var errorMsg = errorPanel.transform.GetChild(1).GetComponent<UnityEngine.UI.Text>();
         errorMsg.text = msg;
 
         _popupBehaviour.ClearContent();
-        _popupBehaviour.SetPopup("Error", new[] { new PopupBehaviour.Output("OK", PopupClosed) });
+        _popupBehaviour.SetPopup("Error", new[] { new PopupBehaviour.Output("OK", null) }, PopupClosed);
         _popupBehaviour.SetContent(errorPanel.GetComponent<RectTransform>());
+
+        _popupPanel.gameObject.SetActive(true);
+    }
+
+    public void ShowLoadingPopup(UnityAction cancelAction = null)
+    {
+        // Show the loading popup along with a button to cancel
+        var loadingPanel = Object.Instantiate(Resources.Load("Prefabs/LoadingContentPanel")) as GameObject;
+
+        _popupBehaviour.ClearContent();
+        _popupBehaviour.SetPopup("", null/*new[] { new PopupBehaviour.Output("Cancel", null) }*/, PopupClosed);
+        _popupBehaviour.SetContent(loadingPanel.GetComponent<RectTransform>());
 
         _popupPanel.gameObject.SetActive(true);
     }

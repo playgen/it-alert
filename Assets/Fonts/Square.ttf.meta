@@ -1,16 +1,15 @@
 fileFormatVersion: 2
-guid: 6e9edfe8a93b9e349a222a522c4e4cb3
-timeCreated: 1473242867
+guid: d2d22ca2cb8eadc4bbefa57c867abf73
+timeCreated: 1458559433
 licenseType: Free
 TrueTypeFontImporter:
-  serializedVersion: 4
+  serializedVersion: 3
   fontSize: 16
   forceTextureCase: -2
-  characterSpacing: 0
-  characterPadding: 1
+  characterSpacing: 1
+  characterPadding: 0
   includeFontData: 1
-  fontNames:
-  - SquareFont
+  fontNames: []
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
