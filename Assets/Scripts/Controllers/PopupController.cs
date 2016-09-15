@@ -27,7 +27,7 @@ public class PopupController
         _popupPanel.gameObject.SetActive(true);
     }
 
-    public void ShowLoadingPopup(UnityAction cancelAction = null)
+    public void ShowLoadingPopup(/*UnityAction cancelAction = null*/)
     {
         // Show the loading popup along with a button to cancel
         var loadingPanel = Object.Instantiate(Resources.Load("Prefabs/LoadingContentPanel")) as GameObject;
@@ -38,7 +38,10 @@ public class PopupController
 
         _popupPanel.gameObject.SetActive(true);
     }
-
+    public void HideLoadingPopup()
+    {
+        PopupClosed();
+    }
     private void PopupClosed()
     {
         _popupPanel.gameObject.SetActive(false);
