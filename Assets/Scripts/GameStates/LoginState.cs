@@ -39,18 +39,18 @@ public class LoginState : TickableSequenceState
 	public override void Enter()
 	{
         _registerController.RegisterSuccessEvent += _interface.OnRegisterSucceeded;
-        _registerController.RegisterFailedEvent += _popupController.ShowPopup;
+        _registerController.RegisterFailedEvent += _popupController.ShowErrorPopup;
         _loginController.LoginSuccessEvent += OnLoginSucceeded;
-        _loginController.LoginFailedEvent += _popupController.ShowPopup;
+        _loginController.LoginFailedEvent += _popupController.ShowErrorPopup;
         _interface.Enter();
 	}
 
 	public override void Exit()
 	{
         _registerController.RegisterSuccessEvent -= _interface.OnRegisterSucceeded;
-        _registerController.RegisterFailedEvent -= _popupController.ShowPopup;
+        _registerController.RegisterFailedEvent -= _popupController.ShowErrorPopup;
         _loginController.LoginSuccessEvent -= OnLoginSucceeded;
-        _loginController.LoginFailedEvent -= _popupController.ShowPopup;
+        _loginController.LoginFailedEvent -= _popupController.ShowErrorPopup;
         _interface.Exit();
 	}
 
