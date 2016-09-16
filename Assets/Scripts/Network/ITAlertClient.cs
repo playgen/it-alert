@@ -34,6 +34,11 @@ namespace PlayGen.ITAlert.Network
             _client.Player.name = name;
         }
 
+        public PhotonPlayer Player
+        {
+            get { return _client.Player; }
+        }
+
         public PhotonPlayer[] ListCurrentRoomPlayers
         {
             get { return _client.ListCurrentRoomPlayers; }
@@ -63,6 +68,8 @@ namespace PlayGen.ITAlert.Network
         {
             get { return _simulationState != null; }
         }
+
+        
 
         public ITAlertClient(Client client)
         {

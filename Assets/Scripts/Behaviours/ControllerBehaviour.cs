@@ -22,6 +22,8 @@ public class ControllerBehaviour : MonoBehaviour
         var client = new ITAlertClient(clientBase);
         var factory = new SUGARClient("http://localhost:62312/");
 
+        PlayerCommands.Client = client;
+
         var popupController = new PopupController();
         PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
         PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
