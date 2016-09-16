@@ -80,9 +80,7 @@ public class Director : MonoBehaviour
 	public static void Initialize(Simulation simulation, int playerServerId)
 	{
 	    _simulation = simulation;
-
-	    _player = simulation.ServerPlayers[playerServerId];
-
+        
         SetPlayer(playerServerId);
 
         SimulationAnimationRatio = Time.deltaTime/SimulationTick;
@@ -115,9 +113,8 @@ public class Director : MonoBehaviour
     {
         var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
         
-
-        _player = players.Single(p => p.)
-        _player.EnableDecorator();
+        var playerState = _simulation.ExternalPlayers[playerServerId];
+        _player = players.Single(p => p.Id == playerState.Id);
     }
 
 	private void SelectPlayer()
