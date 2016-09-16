@@ -34,6 +34,7 @@ public class CreateGameStateInterface : StateInterface
     public override void Enter()
     {
         _createGamePanel.SetActive(true);
+        _createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields();
     }
 
     public override void Exit()

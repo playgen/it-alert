@@ -25,7 +25,7 @@ namespace Debugging
             GameStateButton(LoginState.StateName);
             GameStateButton(LoadingState.StateName);
             GameStateButton(MenuState.StateName);
-            GameStateButton(LobbyState.stateName);
+            GameStateButton(LobbyState.StateName);
             GameStateButton(GamesListState.StateName);
             GameStateButton(CreateGameState.StateName);
             GameStateButton(SettingsState.StateName);

@@ -93,12 +93,12 @@ namespace PlayGen.ITAlert.GameStates
 
         public override void NextState()
         {
-            ChangeState(LobbyState.stateName);
+            ChangeState(LobbyState.StateName);
         }
 
         public override void PreviousState()
         {
-            ChangeState(LobbyState.stateName);
+            ChangeState(LobbyState.StateName);
         }
     }
 }
