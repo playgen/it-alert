@@ -166,15 +166,12 @@ public class InputHandler : MonoBehaviour
 			_selectedItem = item;
 			_selectedSubsystem = subsystem;
 
-			if (PlayerHasItem(item))
+			if (PlayerOwnsItem(item))
 			{
-				//TODO: the item should be dropped automatically when the player enters the subsystem, so there is nothing to do here
-				// if the player already has the item, drop it
 				PlayerCommands.DropItem(item);
 			}
 			else
 			{
-				// pick it up
 				PlayerCommands.PickupItem(item, subsystem);
 			}
 		}
