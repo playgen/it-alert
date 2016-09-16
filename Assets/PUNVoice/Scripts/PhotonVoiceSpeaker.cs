@@ -17,6 +17,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
     private int frameSamples = 0;
     private int streamSamplePos = 0;
 
+
     // non-wrapped play position
     private int playSamplePos
     {
@@ -59,6 +60,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
 
     void Awake()
     {
+        DontDestroyOnLoad(transform.gameObject);
         this.source = GetComponent<AudioSource>();
         PhotonVoiceNetwork.LinkSpeakerToRemoteVoice(this);
     }
