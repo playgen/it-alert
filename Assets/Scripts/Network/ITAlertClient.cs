@@ -21,6 +21,8 @@ namespace PlayGen.ITAlert.Network
 
         public Dictionary<int, bool> PlayerReadyStatus { get; private set; }
 
+        public Dictionary<int, string> PlayerColors { get; private set; }
+
         public event Action PlayerReadyStatusChange;
 
         public event Action PlayerRoomParticipationChange;
@@ -118,6 +120,11 @@ namespace PlayGen.ITAlert.Network
             {
                 _client.RaiseEvent((byte)PlayerEventCode.NotReady);
             }
+        }
+
+        public void SetColor(string color)
+        {
+            _client.RaiseEvent((byte)PlayerEventCode.SetColor, color);
         }
 
         public void GetPlayerReadyStatus()
@@ -251,6 +258,10 @@ namespace PlayGen.ITAlert.Network
 
                     _simulationState = (Simulation.Simulation)content;
                     
+                    break;
+
+                case (byte)ServerEventCode.PlayerColors:
+                    PlayerColors = (Dictionary<int, string>)content;
                     break;
             }
         }
