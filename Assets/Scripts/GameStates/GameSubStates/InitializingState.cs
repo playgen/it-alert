@@ -42,7 +42,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
         {
             if (_networkClient.HasSimulationState)
             {
-                Director.Initialize(_networkClient.TakeSimulationState());
+                Director.Initialize(_networkClient.TakeSimulationState(),
+                    _networkClient.Player.ID);
                 Director.Tick();
 
                 _networkClient.SetGameInitialized();

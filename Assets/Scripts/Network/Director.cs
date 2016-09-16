@@ -94,20 +94,22 @@ public class Director : MonoBehaviour
 		return ConfigHelper.GenerateSimulation(6, 3, 2, 9, 4);
 	}
 
-	public static void Initialize(Simulation simulation)
+	public static void Initialize(Simulation simulation, int playerServerId)
 	{
 		_simulation = simulation;
-
-		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
+        
+        SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
 		// center graph 
 		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
 
 		SetState();
 		CreateInitialEntities();
-		// todo uncomment SelectPlayer();
+        // todo uncomment SelectPlayer();
 
-		_initialized = true;
+        SetPlayer(playerServerId);
+
+        _initialized = true;
 		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
 		_gameOver.SetActive(false);
 	}
@@ -117,6 +119,14 @@ public class Director : MonoBehaviour
 
 	}
 
+
+    private static void SetPlayer(int playerServerId)
+    {
+        var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+        
+        var playerState = _simulation.ExternalPlayers[playerServerId];
+        _player = players.Single(p => p.Id == playerState.Id);
+    }
 	private static void SelectPlayer()
 	{
 
