@@ -39,7 +39,7 @@ public class InputHandler : MonoBehaviour
 
 	private void Awake()
 	{
-		DebugAwake();
+
 	}
 
 	private void Update()
@@ -67,40 +67,8 @@ public class InputHandler : MonoBehaviour
 
 	#endregion
 
-	#region DEBUG
-
-#if DEBUG
-
-	private DebugBehaviour _debug;
-
-	#endif
-
-	[Conditional("DEBUG")]
-	private void DebugAwake()
-	{
-		_debug = GameObject.Find("Debug").GetComponent<DebugBehaviour>();
-	}
-
-	[Conditional("DEBUG")]
-	private void DebugInput()
-	{
-		if (_debug.AutoTickOn == false && Input.GetKeyDown(KeyCode.Space))
-		{
-			_debug.DebugTick();
-		}
-		else if (_debug.AutoTickOn == false && Input.GetKey(KeyCode.Space))
-		{
-			_debug.DebugAutoTick();
-		}
-	}
-
-	#endregion
-
 	private void HandleInput()
 	{
-		// do any debug tests we need
-		DebugInput();
-
 		//raycast to see if player has clicked/tapped on anything
 		var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
