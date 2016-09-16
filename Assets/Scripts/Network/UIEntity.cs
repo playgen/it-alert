@@ -41,8 +41,8 @@ public class UIEntity
 			case EntityType.Player:
 				_entityBehaviour = GameObject.GetComponent<PlayerBehaviour>();
 				break;
-			case EntityType.Virus:
-				_entityBehaviour = GameObject.GetComponent<VirusBehaviour>();
+			case EntityType.Npc:
+				_entityBehaviour = GameObject.GetComponent<NpcBehaviour>();
 				break;
 			case EntityType.Item:
 				_entityBehaviour = GameObject.GetComponent<ItemBehaviour>();

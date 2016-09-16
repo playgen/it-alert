@@ -53,13 +53,14 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 		get { return _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2); }
 	}
 
+	public int LogicalId { get { return EntityState.LogicalId; } }
 
 	#endregion
 
 	// logical elements
 	private ItemBehaviour[] _items;
 	private ItemBehaviour _activeItem;
-	private VirusBehaviour _virus;
+	private NpcBehaviour _npc;
 
 	private Vector2[] _itemPositions;
 

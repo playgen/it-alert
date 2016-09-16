@@ -6,6 +6,7 @@ using System.Linq;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.TestData;
 using UnityEngine.UI;
 
@@ -54,11 +55,13 @@ public class Director : MonoBehaviour
 		get { return _player; }
 	}
 
-    public static ITAlertClient Client { get; set; }
+	public static ITAlertClient Client { get; set; }
 
 	public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
 
 	private static GameObject _gameOver;
+
+	public static PlayerBehaviour[] Players { get; private set; }
 
 	/// <summary>
 	/// Get entity wrapper by id
@@ -76,14 +79,26 @@ public class Director : MonoBehaviour
 	}
 
 	#region Initialization
-    
+
+	public static void DebugInitialize()
+	{
+		Initialize(InitializeTestSimulation());
+		Players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+		_player = Players[Random.Next(0, Players.Length)];
+		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
+		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
+		_player.EnableDecorator();
+	}
+	private static Simulation InitializeTestSimulation()
+	{
+		return ConfigHelper.GenerateSimulation(6, 3, 2, 9, 4);
+	}
+
 	public static void Initialize(Simulation simulation)
 	{
-	    _simulation = simulation;
+		_simulation = simulation;
 
 		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
-		//TODO: replace with code to init from remote state
-		//InitializeTestSimulation();
 
 		// center graph 
 		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
@@ -102,21 +117,9 @@ public class Director : MonoBehaviour
 
 	}
 
-	/*
-	private void InitializeTestSimulation()
+	private static void SelectPlayer()
 	{
-		_simulation = ConfigHelper.GenerateSimulation(6, 3, 9, 9, 4);
-	}
-	*/
 
-	private void SelectPlayer()
-	{
-		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
-		//TODO: the player id should be passed along with initialization data
-		_player = players[Random.Next(0, players.Length)];
-		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
-		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
-		_player.EnableDecorator();
 	}
 
 	/// <summary>
@@ -135,16 +138,16 @@ public class Director : MonoBehaviour
 		}
 	}
 
-    #endregion
+	#endregion
 
-    #region State Update
+	#region State Update
 
-    public static void UpdateSimulation(Simulation simulation)
-    {
-        _simulation = simulation;
-    }
+	public static void UpdateSimulation(Simulation simulation)
+	{
+		_simulation = simulation;
+	}
 
-    private static void SetState()
+	private static void SetState()
 	{
 		_state = _simulation.GetState();
 	}
@@ -190,10 +193,10 @@ public class Director : MonoBehaviour
 		_gameOver.SetActive(true);
 	}
 
-    public static void Finalise(Simulation simulation)
-    {
-        _simulation = simulation;
-    }
+	public static void Finalise(Simulation simulation)
+	{
+		_simulation = simulation;
+	}
 
 	#endregion
 
@@ -206,6 +209,11 @@ public class Director : MonoBehaviour
 		if (_state.IsGameFailure == false)
 		{
 			_simulation.Tick();
+
+			//var state = SimulationSerializer.SerializeSimulation(_simulation);
+			//_simulation.Dispose();
+
+			//_simulation = SimulationSerializer.DeserializeSimulation(state);
 
 			SetState();
 			UpdateEntityStates();
@@ -272,7 +280,7 @@ public class Director : MonoBehaviour
 	public static void SpawnVirus()
 	{
 		var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
-		_simulation.SpawnVirus(subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour.Id);
+		_simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
 	}
 
 	#endregion
