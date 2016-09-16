@@ -3,8 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Debugging.Scripts;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Simulation;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.TestData;
@@ -63,6 +65,8 @@ public class Director : MonoBehaviour
 
 	public static PlayerBehaviour[] Players { get; private set; }
 
+	public static Resolver LocaResolver { get; private set; }
+
 	/// <summary>
 	/// Get entity wrapper by id
 	/// </summary>
@@ -86,6 +90,7 @@ public class Director : MonoBehaviour
 		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
 		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
 		_player.EnableDecorator();
+		PlayerCommands.Client =	new DebugClientProxy();
 	}
 	private static Simulation InitializeTestSimulation()
 	{
@@ -94,7 +99,7 @@ public class Director : MonoBehaviour
 
 	public static void Initialize(Simulation simulation, int playerServerId)
 	{
-		_simulation = simulation;
+		UpdateSimulation(simulation);
 		
 		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
@@ -153,6 +158,7 @@ public class Director : MonoBehaviour
 	public static void UpdateSimulation(Simulation simulation)
 	{
 		_simulation = simulation;
+		LocaResolver = new Resolver(simulation);
 	}
 
 	private static void SetState()
@@ -223,7 +229,7 @@ public class Director : MonoBehaviour
 				var state = SimulationSerializer.SerializeSimulation(_simulation);
 				_simulation.Dispose();
 
-				_simulation = SimulationSerializer.DeserializeSimulation(state);
+				UpdateSimulation(SimulationSerializer.DeserializeSimulation(state));
 			}
 
 			Refresh();
