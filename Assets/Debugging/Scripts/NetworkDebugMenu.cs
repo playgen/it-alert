@@ -22,8 +22,12 @@ namespace Assets.Debugging.Scripts
 
 		private string _tpsText;
 
+	    private bool _isVisible = false;
+
 		private void OnGUI()
 		{
+		    if (!_isVisible) return;
+
 			if (GUILayout.Button("Debug Initialize"))
 			{
 				if (!_initialized)
@@ -49,7 +53,12 @@ namespace Assets.Debugging.Scripts
 		// Update is called once per frame
 		void Update()
 		{
-			if (AutoTickOn)
+		    if (Input.GetKeyDown(KeyCode.F1))
+		    {
+		        _isVisible = !_isVisible;
+		    }
+
+			if (_isVisible && AutoTickOn)
 			{
 				DebugAutoTick();
 			}
