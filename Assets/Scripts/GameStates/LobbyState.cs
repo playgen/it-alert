@@ -3,6 +3,7 @@ using System.Linq;
 using GameWork.States;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network;
+using UnityEngine;
 
 public class LobbyState : TickableSequenceState
 {
@@ -72,6 +73,17 @@ public class LobbyState : TickableSequenceState
 
     public override void Tick(float deltaTime)
     {
+        if (Input.GetKey(KeyCode.Tab) && !_client.VoiceClient.IsTransmitting)
+        {
+            Debug.Log("Start Transmission");
+            _client.VoiceClient.StartTransmission();
+        }
+        else if (!Input.GetKey(KeyCode.Tab) && _client.VoiceClient.IsTransmitting)
+        {
+            Debug.Log("Stop Transmission");
+            _client.VoiceClient.StopTransmission();
+        }
+
         if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
