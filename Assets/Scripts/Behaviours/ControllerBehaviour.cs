@@ -42,7 +42,7 @@ public class ControllerBehaviour : MonoBehaviour
             new GamesListState(new GamesListStateInterface(), new GamesListController(client), joinGameController, client),
             new CreateGameState(new CreateGameStateInterface(), createGameController, client), 
             new SettingsState(new SettingsStateInterface()),
-            new GameState(client, voiceController)
+            new GameState(client, new GameStateInterface(), new LobbyController(client), voiceController)
             );
         _stateController.Initialize();
     }
