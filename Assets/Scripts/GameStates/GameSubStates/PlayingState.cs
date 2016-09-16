@@ -41,9 +41,10 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             if (_networkClient.HasSimulationState)
             {
                 Director.UpdateSimulation(_networkClient.TakeSimulationState());
+                Director.Tick();
             }
 
-            Director.Tick();
+            // todo simulation UI tick 
         }
     }
 }
