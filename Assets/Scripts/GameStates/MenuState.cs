@@ -4,11 +4,11 @@ using PlayGen.ITAlert.Network;
 public class MenuState : TickableSequenceState
 {
     private readonly MenuStateInterface _interface;
-    private readonly JoinGameController _controller;
+    private readonly QuickGameController _controller;
     private readonly ITAlertClient _client;
     public const string StateName = "MenuState";
 
-    public MenuState(MenuStateInterface @interface, JoinGameController controller, ITAlertClient client)
+    public MenuState(MenuStateInterface @interface, QuickGameController controller, ITAlertClient client)
     {
         _interface = @interface;
         _controller = controller;
@@ -58,10 +58,10 @@ public class MenuState : TickableSequenceState
         {
             var command = _interface.TakeFirstCommand();
 
-            var quickMatchCommand = command as QuickMatchCommand;
-            if (quickMatchCommand != null)
+            var quickGameCommand = command as QuickGameCommand;
+            if (quickGameCommand != null)
             {
-                quickMatchCommand.Execute(_controller);
+                quickGameCommand.Execute(_controller);
             }
 
             var commandResolver = new StateCommandResolver();

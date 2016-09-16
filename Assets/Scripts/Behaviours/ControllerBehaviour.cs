@@ -30,14 +30,16 @@ public class ControllerBehaviour : MonoBehaviour
         PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
 
         var joinGameController = new JoinGameController(client);
+        var createGameController = new CreateGameController(client);
+        var quickGameController = new QuickGameController(client, createGameController, 4);
 
         _stateController = new TickableStateController<TickableSequenceState>(  
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account), popupController, client), 
             new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface(), joinGameController, client),
+            new MenuState(new MenuStateInterface(), quickGameController, client),
             new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client), joinGameController, client),
-            new CreateGameState(new CreateGameStateInterface(), new CreateGameController(client), client), 
+            new CreateGameState(new CreateGameStateInterface(), createGameController, client), 
             new SettingsState(new SettingsStateInterface()),
             new GameState(client)
             );

@@ -43,7 +43,7 @@ public class MenuStateInterface : StateInterface
 
     private void OnQuickMatchClick()
     {
-        EnqueueCommand(new QuickMatchCommand());
+        EnqueueCommand(new QuickGameCommand());
     }
 
     private void OnSettingsClick()
