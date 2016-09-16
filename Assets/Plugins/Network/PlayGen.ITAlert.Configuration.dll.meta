@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: eea20c9bc6b4f2c46aa01fd82e97c606
-timeCreated: 1473949922
+timeCreated: 1474026026
 licenseType: Free
 PluginImporter:
   serializedVersion: 1
@@ -49,6 +49,11 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
+    iOS:
+      enabled: 0
+      settings:
+        CompileFlags: 
+        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

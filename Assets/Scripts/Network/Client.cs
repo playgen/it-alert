@@ -69,7 +69,7 @@ namespace PlayGen.ITAlert.Network
                 return PhotonNetwork.room;
             }
         }
-
+        
         public PhotonPlayer[] ListCurrentRoomPlayers
         {
             get { return PhotonNetwork.playerList; }

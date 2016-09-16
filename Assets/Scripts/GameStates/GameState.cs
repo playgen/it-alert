@@ -13,19 +13,22 @@ namespace PlayGen.ITAlert.GameStates
 
         private readonly TickableStateController _stateController;
         private readonly ITAlertClient _networkClient;
+        private readonly VoiceController _voiceController;
 
         public override string Name
         {
             get { return StateName; }
         }
 
-        public GameState(ITAlertClient networkClient)
+        public GameState(ITAlertClient networkClient, VoiceController voiceController)
         {
             _networkClient = networkClient;
 
             _stateController = new TickableStateController(new InitializingState(_networkClient),
                 new PlayingState(_networkClient),
                 new FinalizingState(_networkClient));
+
+            _voiceController = voiceController;
         }
 
         public override void Enter()
@@ -47,6 +50,8 @@ namespace PlayGen.ITAlert.GameStates
 
         public override void Tick(float deltaTime)
         {
+            _voiceController.HandleVoiceInput();
+
             switch (_networkClient.GameState)
             {
                 case Network.GameStates.Initializing:
