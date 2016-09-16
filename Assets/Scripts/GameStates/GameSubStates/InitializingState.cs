@@ -44,7 +44,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             {
                 Director.Initialize(_networkClient.TakeSimulationState(),
                     _networkClient.Player.ID);
-                Director.Tick();
+                Director.Refresh();
 
                 _networkClient.SetGameInitialized();
             }
