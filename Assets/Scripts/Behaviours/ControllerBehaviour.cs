@@ -32,16 +32,17 @@ public class ControllerBehaviour : MonoBehaviour
         var joinGameController = new JoinGameController(client);
         var createGameController = new CreateGameController(client);
         var quickGameController = new QuickGameController(client, createGameController, 4);
+        var voiceController = new VoiceController(client);
 
         _stateController = new TickableStateController<TickableSequenceState>(  
             new LoginState(new LoginStateInterface(), new LoginController(factory.Account), new RegisterController(factory.Account), popupController, client), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), quickGameController, client),
-            new LobbyState(new LobbyStateInterface(), new LobbyController(client), client),
+            new LobbyState(new LobbyStateInterface(), new LobbyController(client), client, voiceController),
             new GamesListState(new GamesListStateInterface(), new GamesListController(client), joinGameController, client),
             new CreateGameState(new CreateGameStateInterface(), createGameController, client), 
             new SettingsState(new SettingsStateInterface()),
-            new GameState(client)
+            new GameState(client, voiceController)
             );
         _stateController.Initialize();
     }
