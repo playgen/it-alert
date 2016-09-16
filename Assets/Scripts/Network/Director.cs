@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.TestData;
@@ -53,6 +54,8 @@ public class Director : MonoBehaviour
 		get { return _player; }
 	}
 
+    public static ITAlertClient Client { get; set; }
+
 	public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
 
 	private static GameObject _gameOver;
@@ -73,22 +76,24 @@ public class Director : MonoBehaviour
 	}
 
 	#region Initialization
-
-	private void OnEnable()
+    
+	public static void Initialize(Simulation simulation)
 	{
+	    _simulation = simulation;
+
 		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 		//TODO: replace with code to init from remote state
-		InitializeTestSimulation();
+		//InitializeTestSimulation();
 
 		// center graph 
 		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
 
 		SetState();
 		CreateInitialEntities();
-		SelectPlayer();
+		// todo uncomment SelectPlayer();
 
 		_initialized = true;
-		_gameOver = GameObject.Find("Canvas/GameOver");
+		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
 		_gameOver.SetActive(false);
 	}
 
@@ -97,10 +102,12 @@ public class Director : MonoBehaviour
 
 	}
 
+	/*
 	private void InitializeTestSimulation()
 	{
 		_simulation = ConfigHelper.GenerateSimulation(6, 3, 9, 9, 4);
 	}
+	*/
 
 	private void SelectPlayer()
 	{
@@ -128,20 +135,16 @@ public class Director : MonoBehaviour
 		}
 	}
 
-	#endregion
+    #endregion
 
-	#region Unity Update
+    #region State Update
 
-	public void FixedUpdate()
-	{
-	}
+    public static void UpdateSimulation(Simulation simulation)
+    {
+        _simulation = simulation;
+    }
 
-	#endregion
-
-	#region State Update
-
-
-	private static void SetState()
+    private static void SetState()
 	{
 		_state = _simulation.GetState();
 	}
@@ -186,6 +189,11 @@ public class Director : MonoBehaviour
 	{
 		_gameOver.SetActive(true);
 	}
+
+    public static void Finalise(Simulation simulation)
+    {
+        _simulation = simulation;
+    }
 
 	#endregion
 
