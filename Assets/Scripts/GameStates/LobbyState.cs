@@ -11,7 +11,7 @@ public class LobbyState : TickableSequenceState
     private readonly LobbyController _controller;
     private readonly ITAlertClient _client;
     private readonly VoiceController _voiceController;
-    public const string stateName = "LobbyState";
+    public const string StateName = "LobbyState";
 
     public LobbyState(LobbyStateInterface @interface, LobbyController controller, ITAlertClient client, VoiceController voiceController)
     {
@@ -70,12 +70,13 @@ public class LobbyState : TickableSequenceState
 
     public override string Name
     {
-        get { return stateName; }
+        get { return StateName; }
     }
 
     public override void Tick(float deltaTime)
     {
-        _voiceController.HandleVoiceInput();    
+        _voiceController.HandleVoiceInput();
+
 
         if (_interface.HasCommands)
         {
@@ -113,6 +114,8 @@ public class LobbyState : TickableSequenceState
                 _client.StartGame(false);
             }
         }
+
+        _interface.UpdateVoiceStatuses();
     }
 }
 

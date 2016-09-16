@@ -75,7 +75,7 @@ public class GamesListState : TickableSequenceState
 
     public override void NextState()
     {
-        ChangeState(LobbyState.stateName);
+        ChangeState(LobbyState.StateName);
     }
 
     public override void PreviousState()

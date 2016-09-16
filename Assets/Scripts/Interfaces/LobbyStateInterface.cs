@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
+using PlayGen.ITAlert.Network;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -15,7 +17,7 @@ public class LobbyStateInterface : StateInterface
     private GameObject _playerItemPrefab;
     private GameObject _playerSpacePrefab;
     private GameObject _roomNameObject;
-
+    private Dictionary<int, Image> _playerVoiceIcons = new Dictionary<int, Image>();
 
     private bool _ready;
     private int _lobbyPlayerMax;
@@ -105,6 +107,9 @@ public class LobbyStateInterface : StateInterface
         var playersList = players.OrderBy(player => player.Id).ToList();
 
         var index = 1;
+
+        _playerVoiceIcons = new Dictionary<int, Image>();
+
         foreach (var player in playersList)
         {
             var playerItem = Object.Instantiate(_playerItemPrefab).transform;
@@ -117,6 +122,10 @@ public class LobbyStateInterface : StateInterface
             var readyText = playerItem.FindChild("Ready").GetComponent<Text>();
             readyText.text = player.IsReady ? "Ready" : "Waiting";
             readyText.color = nameText.color;
+
+            var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
+            soundIcon.color = nameText.color;
+            _playerVoiceIcons[player.Id] = soundIcon;
 
             playerItem.SetParent(_playerListObject.transform);
 
@@ -132,8 +141,6 @@ public class LobbyStateInterface : StateInterface
 
             // increment the offset
             offset -= height;
-
-
         }
 
         for (var i = players.Length; i < _lobbyPlayerMax; i++)
@@ -183,5 +190,12 @@ public class LobbyStateInterface : StateInterface
         
     }
 
+    public void UpdateVoiceStatuses()
+    {
+        foreach (var status in VoiceClient.TransmittingStatuses)
+        {
+            _playerVoiceIcons[status.Key].enabled = status.Value;
+        }
+    }
 }
 
