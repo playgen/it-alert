@@ -77,13 +77,15 @@ public class Director : MonoBehaviour
 
 	#region Initialization
     
-	public static void Initialize(Simulation simulation)
+	public static void Initialize(Simulation simulation, int playerServerId)
 	{
 	    _simulation = simulation;
 
-		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
-		//TODO: replace with code to init from remote state
-		//InitializeTestSimulation();
+	    _player = simulation.ServerPlayers[playerServerId];
+
+        SetPlayer(playerServerId);
+
+        SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
 		// center graph 
 		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
@@ -108,6 +110,15 @@ public class Director : MonoBehaviour
 		_simulation = ConfigHelper.GenerateSimulation(6, 3, 9, 9, 4);
 	}
 	*/
+
+    private static void SetPlayer(int playerServerId)
+    {
+        var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+        
+
+        _player = players.Single(p => p.)
+        _player.EnableDecorator();
+    }
 
 	private void SelectPlayer()
 	{
