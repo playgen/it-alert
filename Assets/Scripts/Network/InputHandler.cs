@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
+
+
 // ReSharper disable once CheckNamespace
 public class InputHandler : MonoBehaviour
 {
@@ -39,8 +41,10 @@ public class InputHandler : MonoBehaviour
 
 	private void Awake()
 	{
-		DebugAwake();
-	}
+#if DEBUG
+        DebugAwake();
+#endif
+    }
 
 	private void Update()
 	{
@@ -73,7 +77,6 @@ public class InputHandler : MonoBehaviour
 
 	private DebugBehaviour _debug;
 
-	#endif
 
 	[Conditional("DEBUG")]
 	private void DebugAwake()
@@ -94,15 +97,18 @@ public class InputHandler : MonoBehaviour
 		}
 	}
 
-	#endregion
+#endif
+    #endregion
 
-	private void HandleInput()
+    private void HandleInput()
 	{
-		// do any debug tests we need
-		DebugInput();
+#if DEBUG
+        // do any debug tests we need
+        DebugInput();
+#endif
 
-		//raycast to see if player has clicked/tapped on anything
-		var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+        //raycast to see if player has clicked/tapped on anything
+        var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
 		var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 		var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();

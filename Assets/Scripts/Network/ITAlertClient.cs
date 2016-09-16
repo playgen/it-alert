@@ -144,9 +144,10 @@ namespace PlayGen.ITAlert.Network
             _client.RaiseEvent((byte) PlayerEventCode.GameInitialized);
         }
 
-		public void SendGameCommand(Simulation.Commands.Commands.Interfaces.ICommand command)
+		public void SendGameCommand(Simulation.Commands.Interfaces.ICommand command)
         {
-            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, command);
+            var serializedCommand = Serializer.Serialize(command);
+            _client.RaiseEvent((byte)PlayerEventCode.GameCommand, serializedCommand);
         }
 
         public void SetGameFinalized()
@@ -261,11 +262,6 @@ namespace PlayGen.ITAlert.Network
                 SerializableTypes.SimulationState, 
                 Serializer.SerializeSimulation, 
                 Serializer.DeserializeSimulation);
-
-            client.RegisterSerializableType(typeof(Simulation.Commands.Commands.Interfaces.ICommand),
-                SerializableTypes.Command,
-                Serializer.Serialize,
-                Serializer.Deserialize<ICommand>);
         }
 
         private void ConnectEvents(Client client, VoiceClient voiceClient)

@@ -81,8 +81,6 @@ public class Director : MonoBehaviour
 	{
 	    _simulation = simulation;
         
-        SetPlayer(playerServerId);
-
         SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
 		// center graph 
@@ -90,9 +88,11 @@ public class Director : MonoBehaviour
 
 		SetState();
 		CreateInitialEntities();
-		// todo uncomment SelectPlayer();
+        // todo uncomment SelectPlayer();
 
-		_initialized = true;
+        SetPlayer(playerServerId);
+
+        _initialized = true;
 		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
 		_gameOver.SetActive(false);
 	}
