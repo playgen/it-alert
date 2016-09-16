@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class CreateGamePopupBehaviour : MonoBehaviour
@@ -39,6 +40,38 @@ public class CreateGamePopupBehaviour : MonoBehaviour
         {
             GameName = gameName;
             MaxPlayers = int.Parse(maxPlayers);
+        }
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift) && EventSystem.current.currentSelectedGameObject != null)
+        {
+            var next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
+
+            if (next == null)
+                return;
+
+            var inputfield = next.GetComponent<InputField>();
+            if (inputfield != null)
+            {
+                inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
+            }
+            EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
+        }
+        else if (Input.GetKeyDown(KeyCode.Tab) && EventSystem.current.currentSelectedGameObject != null)
+        {
+            var next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnDown();
+
+            if (next == null)
+                return;
+
+            var inputfield = next.GetComponent<InputField>();
+            if (inputfield != null)
+            {
+                inputfield.OnPointerClick(new PointerEventData(EventSystem.current));
+            }
+            EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
         }
     }
 }
