@@ -82,9 +82,7 @@ public class Director : MonoBehaviour
 
 	public static void DebugInitialize()
 	{
-		Initialize(InitializeTestSimulation());
-		Players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
-		_player = Players[Random.Next(0, Players.Length)];
+		Initialize(InitializeTestSimulation(), 1);
 		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
 		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
 		_player.EnableDecorator();
@@ -97,19 +95,19 @@ public class Director : MonoBehaviour
 	public static void Initialize(Simulation simulation, int playerServerId)
 	{
 		_simulation = simulation;
-        
-        SimulationAnimationRatio = Time.deltaTime/SimulationTick;
+		
+		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
 		// center graph 
 		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
 
 		SetState();
 		CreateInitialEntities();
-        // todo uncomment SelectPlayer();
+		// todo uncomment SelectPlayer();
 
-        SetPlayer(playerServerId);
+		SetPlayer(playerServerId);
 
-        _initialized = true;
+		_initialized = true;
 		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
 		_gameOver.SetActive(false);
 	}
@@ -120,13 +118,13 @@ public class Director : MonoBehaviour
 	}
 
 
-    private static void SetPlayer(int playerServerId)
-    {
-        var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
-        
-        var playerState = _simulation.ExternalPlayers[playerServerId];
-        _player = players.Single(p => p.Id == playerState.Id);
-    }
+	private static void SetPlayer(int playerServerId)
+	{
+		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+		
+		var playerState = _simulation.ExternalPlayers[playerServerId];
+		_player = players.Single(p => p.Id == playerState.Id);
+	}
 	private static void SelectPlayer()
 	{
 
@@ -213,21 +211,29 @@ public class Director : MonoBehaviour
 	/// <summary>
 	/// manually advance the simulation tick and propogate changes
 	/// </summary>
-	public static void Tick()
+	public static void Tick(bool serialize)
 	{
 		//TODO: replace super lazy way of stopping the game
 		if (_state.IsGameFailure == false)
 		{
 			_simulation.Tick();
 
-			//var state = SimulationSerializer.SerializeSimulation(_simulation);
-			//_simulation.Dispose();
+			if (serialize)
+			{
+				var state = SimulationSerializer.SerializeSimulation(_simulation);
+				_simulation.Dispose();
 
-			//_simulation = SimulationSerializer.DeserializeSimulation(state);
+				_simulation = SimulationSerializer.DeserializeSimulation(state);
+			}
 
-			SetState();
-			UpdateEntityStates();
+			Refresh();
 		}
+	}
+
+	public static void Refresh()
+	{
+		SetState();
+		UpdateEntityStates();
 	}
 
 	#region UI accessors
