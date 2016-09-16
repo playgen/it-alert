@@ -18,7 +18,7 @@ public class CreateGamePopupBehaviour : MonoBehaviour
 
     public void ResetFields()
     {
-        GameNameInputField.text = "";
+        GameNameInputField.text = Guid.NewGuid().ToString().Substring(0,8);
         PlayerNumberInputField.text = "";
     }
 

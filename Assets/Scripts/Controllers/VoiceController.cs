@@ -1,25 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using PlayGen.ITAlert.Network;
 
 public class VoiceController
 {
-    private ITAlertClient _client;
+    private readonly VoiceClient _voiceClient;
 
     public VoiceController(ITAlertClient client)
     {
-        _client = client;
+        _voiceClient = client.VoiceClient;
     }
 
     public void HandleVoiceInput()
     {
-        if (Input.GetKey(KeyCode.Tab) && !_client.VoiceClient.IsTransmitting)
+        if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
         {
-            _client.VoiceClient.StartTransmission();
+            _voiceClient.StartTransmission();
         }
-        else if (!Input.GetKey(KeyCode.Tab) && _client.VoiceClient.IsTransmitting)
+        else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
         {
-            _client.VoiceClient.StopTransmission();
+            _voiceClient.StopTransmission();
         }
     }
 }
