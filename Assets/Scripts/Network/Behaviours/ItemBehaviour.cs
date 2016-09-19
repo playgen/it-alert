@@ -3,11 +3,13 @@ using System.Collections;
 using System;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using UnityEngine.UI;
 
 // ReSharper disable CheckNamespace
 public class ItemBehaviour : EntityBehaviour<ItemState>
 {
-
+	[SerializeField]
+	private Image _activationTimerImage;
 
 	private bool _dragging;
 
@@ -100,6 +102,7 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	{
 		//TODO: if owner has changed
 		UpdateItemColor();
+		UpdateActivationTimer();
 	}
 
 	private void UpdateItemColor()
@@ -113,6 +116,18 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 		else if (!EntityState.Owner.HasValue && !isWhite)
 		{
 			GetComponent<SpriteRenderer>().color = Color.white;
+		}
+	}
+
+	private void UpdateActivationTimer()
+	{
+		if (EntityState.Active)
+		{
+			_activationTimerImage.fillAmount = (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
+		}
+		else
+		{
+			_activationTimerImage.fillAmount = 0f;
 		}
 	}
 
