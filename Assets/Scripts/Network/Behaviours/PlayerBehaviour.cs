@@ -109,7 +109,7 @@ public class PlayerBehaviour : EntityBehaviour<PlayerState>
 			if ((item.EntityBehaviour as ItemBehaviour).IsOnSubsystem == false)
 			{
 				item.GameObject.transform.position = itemPosition;
-				item.GameObject.transform.localScale = Vector3.one*UIConstants.ItemPlayerScale;
+				//item.GameObject.transform.localScale = Vector3.one*UIConstants.ItemPlayerScale;
 			}
 		}
 	}
