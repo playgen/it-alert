@@ -65,7 +65,7 @@ public class Director : MonoBehaviour
 
 	public static PlayerBehaviour[] Players { get; private set; }
 
-	public static Resolver LocaResolver { get; private set; }
+	public static CommandResolver LocaResolver { get; private set; }
 
 	public static SimulationRules Rules { get { return Simulation != null ? Simulation.Rules : new SimulationRules(); } }
 
@@ -159,7 +159,7 @@ public class Director : MonoBehaviour
 	public static void UpdateSimulation(Simulation simulation)
 	{
 		Simulation = simulation;
-		LocaResolver = new Resolver(simulation);
+		LocaResolver = new CommandResolver(simulation);
 	}
 
 	private static void SetState()
@@ -180,25 +180,22 @@ public class Director : MonoBehaviour
 		{
 			OnGameOver();
 		}
-		else
+		foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
 		{
-			foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
-			{
-				CreateEntity(newEntity.Key, newEntity.Value);
-				GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
-			}
+			CreateEntity(newEntity.Key, newEntity.Value);
+			GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+		}
 
-			foreach (var stateEntity in _state.Entities)
-			{
-				GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
-			}
-			// remove dead entities
-			// TODO: make sure nothing is still referencing these
-			foreach (var entityToRemove in Entities.Keys.Except(_state.Entities.Keys).ToArray())
-			{
-				Destroy(GetEntity(entityToRemove).GameObject);
-				Entities.Remove(entityToRemove);
-			}
+		foreach (var stateEntity in _state.Entities)
+		{
+			GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
+		}
+		// remove dead entities
+		// TODO: make sure nothing is still referencing these
+		foreach (var entityToRemove in Entities.Keys.Except(_state.Entities.Keys).ToArray())
+		{
+			Destroy(GetEntity(entityToRemove).GameObject);
+			Entities.Remove(entityToRemove);
 		}
 	}
 

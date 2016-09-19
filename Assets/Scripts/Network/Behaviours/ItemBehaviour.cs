@@ -3,11 +3,16 @@ using System.Collections;
 using System;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using UnityEngine.UI;
 
 // ReSharper disable CheckNamespace
 public class ItemBehaviour : EntityBehaviour<ItemState>
 {
+	[SerializeField]
+	private Image _activationTimerImage;
 
+	[SerializeField]
+	private SpriteRenderer _iconRenderer;
 
 	private bool _dragging;
 
@@ -100,6 +105,7 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	{
 		//TODO: if owner has changed
 		UpdateItemColor();
+		UpdateActivationTimer();
 	}
 
 	private void UpdateItemColor()
@@ -107,12 +113,29 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 		bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
 		if (EntityState.Owner.HasValue && isWhite)
 		{
-			GetComponent<SpriteRenderer>().color = Director.GetEntity(EntityState.Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
-			TriggerHint();
+			var playerColour = Director.GetEntity(EntityState.Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
+			_iconRenderer.color = playerColour;
+			_activationTimerImage.color = playerColour;
+
+			//TriggerHint();
 		}
 		else if (!EntityState.Owner.HasValue && !isWhite)
 		{
-			GetComponent<SpriteRenderer>().color = Color.white;
+			_iconRenderer.color = Color.white;
+			_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+
+		}
+	}
+
+	private void UpdateActivationTimer()
+	{
+		if (EntityState.Active)
+		{
+			_activationTimerImage.fillAmount = 1f - (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
+		}
+		else
+		{
+			_activationTimerImage.fillAmount = 0f;
 		}
 	}
 

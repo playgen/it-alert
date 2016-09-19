@@ -234,6 +234,7 @@ public class InputHandler : MonoBehaviour
 					PlayerCommands.DisownItem(item.Id);
 				}
 			}
+			DragStop();
 		}
 
 	}
