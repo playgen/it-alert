@@ -19,7 +19,7 @@ public class PopupBehaviour : MonoBehaviour
 	/// </summary>
 	/// <param name="title">The title of the popup</param>
 	/// <param name="output">The desired button Output from left to right</param
-	public void SetPopup(string title, Output[] outputs, UnityAction closePopupAction)
+	public void SetPopup(string title, Output[] outputs, Action closePopupAction)
 	{
 		// set the title
 		SetTitle(title);
@@ -85,24 +85,23 @@ public class PopupBehaviour : MonoBehaviour
 		_title.text = title;
 	}
 
-	private void SetButton(Button button, string text, UnityAction action, UnityAction defaultAction)
+	private void SetButton(Button button, string text, Action action, Action defaultAction)
 	{
         // check if there is a custom action
 	    if (action != null)
 	    {
-	        button.onClick.AddListener(action);
+	        button.onClick.AddListener(() => action());
 	    }
         // Add the default on click action
-	    button.onClick.AddListener(defaultAction);
+	    button.onClick.AddListener(() => defaultAction());
 		button.gameObject.GetComponent<Text>().text = text;
 	}
-
 	public struct Output
 	{
 		public string Name;
-		public UnityAction Action;
+		public Action Action;
 
-		public Output(string name, UnityAction action)
+		public Output(string name, Action action)
 		{
 			Name = name;
 			Action = action;

@@ -104,6 +104,13 @@ public class LobbyState : TickableSequenceState
                 return;
             }
 
+            var colorCommand = command as ChangePlayerColorCommand;
+            if (colorCommand != null)
+            {
+                colorCommand.Execute(_controller);
+                return;
+            }
+
             var commandResolver = new StateCommandResolver();
             commandResolver.HandleSequenceStates(command, this);
         }

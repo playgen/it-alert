@@ -20,13 +20,15 @@ public class LobbyController : ICommandAction
     public void RefreshPlayerList()
     {
         var playerReadyStatus = _client.PlayerReadyStatus;
+        var playerColors = _client.PlayerColors;
         var players = _client.ListCurrentRoomPlayers;
         var lobbyPlayers = new List<LobbyPlayer>();
         foreach (var photonPlayer in players)
         {
             var name = photonPlayer.name;
             var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
-            var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID);
+            var color = playerColors.ContainsKey(photonPlayer.ID) ? playerColors[photonPlayer.ID] : "000000";
+            var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID, color);
             lobbyPlayers.Add(lobbyPlayer);
         }
 
@@ -62,17 +64,25 @@ public class LobbyController : ICommandAction
         ReadySuccessEvent();
     }
 
+    public void SetColor(string colorHex)
+    {
+        _client.SetColor(colorHex);
+        RefreshPlayerList();
+    }
+
     public struct LobbyPlayer
     {
         public string Name;
         public bool IsReady;
         public int Id;
+        public string Color;
 
-        public LobbyPlayer(string name, bool isReady, int id)
+        public LobbyPlayer(string name, bool isReady, int id, string color)
         {
             Name = name;
             IsReady = isReady;
             Id = id;
+            Color = color;
         }
     }
         

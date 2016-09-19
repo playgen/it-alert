@@ -28,6 +28,7 @@ public class ControllerBehaviour : MonoBehaviour
         PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
         PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
         PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
+        //PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
 
         var joinGameController = new JoinGameController(client);
         var createGameController = new CreateGameController(client);

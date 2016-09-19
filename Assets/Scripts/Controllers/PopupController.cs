@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using Object = UnityEngine.Object;
 
 public class PopupController
 {
@@ -11,6 +13,7 @@ public class PopupController
     {
         _popupPanel = GameObject.Find("PopupContainer").transform.GetChild(0).gameObject;
         _popupBehaviour = _popupPanel.GetComponent<PopupBehaviour>();
+        PopupUtility.PopupController = this;
     }
 
     public void ShowErrorPopup(string msg)
@@ -33,7 +36,7 @@ public class PopupController
         var loadingPanel = Object.Instantiate(Resources.Load("LoadingContentPanel")) as GameObject;
 
         _popupBehaviour.ClearContent();
-        _popupBehaviour.SetPopup("", null/*new[] { new PopupBehaviour.Output("Cancel", null) }*/, PopupClosed);
+        _popupBehaviour.SetPopup("", null, PopupClosed);
         _popupBehaviour.SetContent(loadingPanel.GetComponent<RectTransform>());
 
         _popupPanel.gameObject.SetActive(true);
@@ -42,6 +45,31 @@ public class PopupController
     {
         PopupClosed();
     }
+
+    public void ShowColorPickerPopup(Action<Color> callback)
+    {
+        var colorPanel = Object.Instantiate(Resources.Load("ColorPickerContentPanel")) as GameObject;
+        colorPanel.name = "ColorPickerContentPanel";
+        _popupBehaviour.ClearContent();
+        colorPanel.GetComponent<ColorPickerBehaviour>().GenerateColorPicker();
+        _popupBehaviour.SetPopup("Change Player Colour",
+            new[] {
+                new PopupBehaviour.Output("Cancel", null),
+                new PopupBehaviour.Output("Set Colour", () => ColorCallback(callback))}, 
+                PopupClosed
+            );
+        _popupBehaviour.SetContent(colorPanel.GetComponent<RectTransform>());
+
+        _popupPanel.gameObject.SetActive(true);
+    }
+
+    private void ColorCallback(Action<Color> callback)
+    {
+        //get the selected color from the color picker behaviour
+        var color = GameObject.Find("ColorPickerContentPanel").GetComponent<ColorPickerBehaviour>().GetColor();
+        callback(color);
+    }
+
     private void PopupClosed()
     {
         _popupPanel.gameObject.SetActive(false);
