@@ -43,8 +43,6 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 				Director.Refresh();
 				_networkClient.SetGameFinalized();
 			}
-
-			// todo simulation UI tick Director.Tick();
 		}
 	}
 }

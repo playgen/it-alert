@@ -61,7 +61,8 @@ public class Director : MonoBehaviour
 
 	public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
 
-	private static GameObject _gameOver;
+    private static GameObject _gameOverWon;
+    private static GameObject _gameOverLost;
 
 	public static PlayerBehaviour[] Players { get; private set; }
 
@@ -117,8 +118,12 @@ public class Director : MonoBehaviour
 		SetPlayer(playerServerId);
 
 		Initialized = true;
-		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
-		_gameOver.SetActive(false);
+
+        _gameOverWon = GameObjectUtilities.FindGameObject("Canvas/GameOverWon");
+	    _gameOverWon.SetActive(false);
+
+        _gameOverLost = GameObjectUtilities.FindGameObject("Canvas/GameOverLost");
+		_gameOverLost.SetActive(false);
 	}
 
 	private void Awake()
@@ -176,10 +181,6 @@ public class Director : MonoBehaviour
 
 	private static void UpdateEntityStates()
 	{
-		if (_state.IsGameFailure)
-		{
-			OnGameOver();
-		}
 		foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
 		{
 			CreateEntity(newEntity.Key, newEntity.Value);
@@ -199,14 +200,24 @@ public class Director : MonoBehaviour
 		}
 	}
 
-	private static void OnGameOver()
-	{
-		_gameOver.SetActive(true);
-	}
-
+    private static void OnGameOver(bool didWin)
+    {
+        if (didWin)
+        {
+            _gameOverWon.SetActive(true);
+        }
+        else
+        {
+            _gameOverLost.SetActive(true);
+        }
+    }
+    
 	public static void Finalise(Simulation simulation)
 	{
 		Simulation = simulation;
+
+	    var didWin = !Simulation.HasViruses && !Simulation.IsGameFailure;
+        OnGameOver(didWin);
 	}
 
 	#endregion
