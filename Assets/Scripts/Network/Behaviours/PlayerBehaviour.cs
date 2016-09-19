@@ -125,7 +125,7 @@ public class PlayerBehaviour : EntityBehaviour<PlayerState>
 		GetComponent<Renderer>().sortingOrder++;
 		//transform.localScale = new Vector3(2.5f, 2.5f, 0f);
 
-		for (var i = 0; i < PositionHistory; i++)
+		for (var i = 0; i < PositionHistory -1; i++)
 		{
 			_trail[i] = new GameObject();
 			var alpha = (float)(PositionHistory - (i + 1)) / PositionHistory;

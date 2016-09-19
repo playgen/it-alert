@@ -180,25 +180,22 @@ public class Director : MonoBehaviour
 		{
 			OnGameOver();
 		}
-		else
+		foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
 		{
-			foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
-			{
-				CreateEntity(newEntity.Key, newEntity.Value);
-				GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
-			}
+			CreateEntity(newEntity.Key, newEntity.Value);
+			GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+		}
 
-			foreach (var stateEntity in _state.Entities)
-			{
-				GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
-			}
-			// remove dead entities
-			// TODO: make sure nothing is still referencing these
-			foreach (var entityToRemove in Entities.Keys.Except(_state.Entities.Keys).ToArray())
-			{
-				Destroy(GetEntity(entityToRemove).GameObject);
-				Entities.Remove(entityToRemove);
-			}
+		foreach (var stateEntity in _state.Entities)
+		{
+			GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
+		}
+		// remove dead entities
+		// TODO: make sure nothing is still referencing these
+		foreach (var entityToRemove in Entities.Keys.Except(_state.Entities.Keys).ToArray())
+		{
+			Destroy(GetEntity(entityToRemove).GameObject);
+			Entities.Remove(entityToRemove);
 		}
 	}
 
