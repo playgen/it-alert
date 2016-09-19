@@ -13,6 +13,7 @@ public class LobbyStateInterface : StateInterface
 {
     private GameObject _lobbyPanel;
     private Button _readyButton;
+    private Button _changeColorButton;
     private GameObject _playerListObject;
     private GameObject _playerItemPrefab;
     private GameObject _playerSpacePrefab;
@@ -33,6 +34,9 @@ public class LobbyStateInterface : StateInterface
         _readyButton = buttons.GetButton("ReadyButtonContainer");
         _readyButton.onClick.AddListener(OnReadyButtonClick);
 
+        _changeColorButton = buttons.GetButton("ChangeColourButtonContainer");
+        _changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
+
         _roomNameObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/RoomNameContainer/RoomName");
 
         _playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
@@ -48,6 +52,16 @@ public class LobbyStateInterface : StateInterface
     private void OnBackButtonClick()
     {
         EnqueueCommand(new LeaveRoomCommand());
+    }
+
+    private void OnColorChangeButtonClick()
+    {
+        PopupUtility.ShowColorPicker(ColorPicked);
+    }
+
+    private void ColorPicked(Color pickedColor)
+    {
+        EnqueueCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
     }
 
     public void OnLeaveSuccess()
@@ -114,17 +128,20 @@ public class LobbyStateInterface : StateInterface
         {
             var playerItem = Object.Instantiate(_playerItemPrefab).transform;
 
+            var color = new Color();
+            ColorUtility.TryParseHtmlString(player.Color, out color);
+
             var nameText = playerItem.FindChild("Name").GetComponent<Text>();
             nameText.text = player.Name;
-            nameText.color = GetColorForPlayerNumber(index);
+            nameText.color = color;
             index++;
 
             var readyText = playerItem.FindChild("Ready").GetComponent<Text>();
             readyText.text = player.IsReady ? "Ready" : "Waiting";
-            readyText.color = nameText.color;
+            readyText.color = color;
 
             var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
-            soundIcon.color = nameText.color;
+            soundIcon.color = color;    
             _playerVoiceIcons[player.Id] = soundIcon;
 
             playerItem.SetParent(_playerListObject.transform);

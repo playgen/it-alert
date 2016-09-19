@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class ColourPickerBehaviour : MonoBehaviour
+public class ColorPickerBehaviour : MonoBehaviour
 {
 
     /// <summary>
@@ -16,7 +16,7 @@ public class ColourPickerBehaviour : MonoBehaviour
     /// 170,68,153      ||      0.666f, 0.266f, 0.6f
     /// 51,34,136       ||      0.2f, 0.133f, 0.533f
     /// </summary>           
-    public Color[] colors;
+    public Color[] colors;//
 
     private GameObject _colourPickerRow;
     private GameObject _colourPickerObject;
@@ -33,8 +33,7 @@ public class ColourPickerBehaviour : MonoBehaviour
         SetColorPickerObjects();
 
         // HACK SET COLOR
-        _selectedColor = colors[0];
-        SetColor(_selectedColor);
+        SetColor(colors[0]);
 
         // Get the length of the colors array
         var totalColors = colors.Length;
@@ -79,5 +78,10 @@ public class ColourPickerBehaviour : MonoBehaviour
     {
         _selectedColor = color;
         Avatar.color = color;
+    }
+
+    public Color GetColor()
+    {
+        return _selectedColor;
     }
 }
