@@ -72,7 +72,7 @@ GameObject:
   m_Layer: 0
   m_Name: Health
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -154,7 +154,7 @@ GameObject:
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
-  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -248,7 +248,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013589385172}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.92254, y: -0.94585264, z: 0}
+  m_LocalPosition: {x: -5.5834017, y: 0.8667753, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -393,7 +393,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 0.627451}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0.75172424, b: 1, a: 1}
+  m_Color: {r: 0, g: 0.75172424, b: 1, a: 0.627451}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -796,8 +796,8 @@ RectTransform:
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.25, y: 0.425}
-  m_SizeDelta: {x: -0.6, y: -0.9}
+  m_AnchoredPosition: {x: -0.25, y: 0.4375}
+  m_SizeDelta: {x: -0.6, y: -0.92499995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000010585729516
 RectTransform:
@@ -854,7 +854,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.4, y: 0.1}
+  m_SizeDelta: {x: 0.4, y: 0.075}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224000013285744700
 RectTransform:
@@ -872,8 +872,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.25, y: 0.425}
-  m_SizeDelta: {x: -0.6, y: -0.9}
+  m_AnchoredPosition: {x: 0.25, y: 0.4375}
+  m_SizeDelta: {x: -0.6, y: -0.92499995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224000013409566714
 RectTransform:
@@ -891,5 +891,5 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0.4, y: 0.1}
+  m_SizeDelta: {x: 0.4, y: 0.075}
   m_Pivot: {x: 0, y: 1}
