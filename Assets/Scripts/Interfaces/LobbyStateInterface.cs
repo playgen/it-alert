@@ -129,7 +129,7 @@ public class LobbyStateInterface : StateInterface
             var playerItem = Object.Instantiate(_playerItemPrefab).transform;
 
             var color = new Color();
-            ColorUtility.TryParseHtmlString(player.Color, out color);
+            ColorUtility.TryParseHtmlString("#" + player.Color, out color);
 
             var nameText = playerItem.FindChild("Name").GetComponent<Text>();
             nameText.text = player.Name;
