@@ -11,6 +11,8 @@ namespace Debugging
         private ControllerBehaviour _controllerBehaviour;
         private TickableStateController<TickableSequenceState> _stateController;
 
+        private bool _isVisible = false;
+
         void Start()
         {
             _controllerBehaviour = GameObject.FindObjectOfType<ControllerBehaviour>();
@@ -20,8 +22,18 @@ namespace Debugging
                 "_stateController");
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.F2))
+            {
+                _isVisible = !_isVisible;
+            }
+        }
+
         private void OnGUI()
         {
+            if (!_isVisible) return;
+
             GameStateButton(LoginState.StateName);
             GameStateButton(LoadingState.StateName);
             GameStateButton(MenuState.StateName);

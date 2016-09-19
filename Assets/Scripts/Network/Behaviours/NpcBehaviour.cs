@@ -56,6 +56,8 @@ public class NpcBehaviour : EntityBehaviour<VirusState>
 
     private void HandlePulse()
     {
+	    _spriteRenderer.enabled = EntityState.Visible;
+
         if (EntityState.Active)
         {
             if (_pulseDown)

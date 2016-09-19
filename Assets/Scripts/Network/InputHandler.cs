@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-
+using Debug = UnityEngine.Debug;
 
 
 // ReSharper disable once CheckNamespace
@@ -18,19 +18,13 @@ public class InputHandler : MonoBehaviour
 	private ItemBehaviour _selectedItem;
 	private SubsystemBehaviour _selectedSubsystem;
 
-	private float ClickInterval = 1.0f/10;
+	private const float CligDragThreshold = 0.2f;
 
-	private float _lastClick = 0;
+	private float _mouseDown = 0;
+	private bool _dragging;
 
-	/// <summary>
-	/// ?
-	/// </summary>
-	//private Vector2 _selectedItemClickOffset;
+	public static bool DebugLog { get; set; }
 
-	/// <summary>
-	/// 
-	/// </summary>
-	private int _clickItemFrames;
 
 	#region Initialization 
 
@@ -53,6 +47,14 @@ public class InputHandler : MonoBehaviour
 
 	#region Util
 
+	private void Log(string message)
+	{
+		if (DebugLog)
+		{
+			Debug.Log(message);
+		}
+	}
+
 	private bool PlayerHasItem(ItemBehaviour item)
 	{
 		return Director.Player != null 
@@ -71,135 +73,178 @@ public class InputHandler : MonoBehaviour
 
 	private void HandleInput()
 	{
-		//raycast to see if player has clicked/tapped on anything
+		if (Input.GetMouseButtonDown(0))
+		{
+			//Debug.Log("InputHandler::MouseDown");
+			_mouseDown = Time.time;
+		}
+
+		if (Input.GetMouseButton(0))
+		{
+			if (Time.time - _mouseDown > CligDragThreshold)
+			{
+				Log("InputHandler::Dragging");
+
+				_dragging = true;
+				OnDrag();
+			}
+		}
+
+		if (Input.GetMouseButtonUp(0))
+		{
+			var mouseUpTime = Time.time - _mouseDown;
+			Log("InputHandler::MouseUp [" + mouseUpTime + "]");
+		
+			if (mouseUpTime <= CligDragThreshold)
+			{
+				Log("InputHandler::Click");
+
+				OnClick();
+			}
+			else
+			{
+				if (_dragging)
+				{
+					Log("InputHandler::Drop");
+
+					_dragging = false;
+					OnDrop();
+				}
+			}
+		}
+	}
+
+	#region Clicks
+
+	private void OnClick()
+	{
 		var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
 		var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 		var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
 		var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
 
-		var click = false;
-
-		if (Input.GetMouseButtonDown(0) && _lastClick <= 0)
+		if (subsystemHits.Any() && itemHits.Any())
 		{
-			if (subsystemHits.Any() && itemHits.Any())
-			{
-				OnClickItem(subsystemHits.Single(), itemHits.Single());
-			}
-			else if (subsystemHits.Any() && enhancementHits.Any())
-			{
-				OnClickEnhancement(subsystemHits.Single(), enhancementHits.Single());
-			}
-			else if (subsystemHits.Any())
-			{
-				OnClickSubsystem(subsystemHits.Single());
-			}
-			click = true;
+			OnClickItem(subsystemHits.Single(), itemHits.Single());
 		}
-
-		if (Input.GetMouseButton(0) && click == false)
+		else if (subsystemHits.Any() && enhancementHits.Any())
 		{
-			if (_selectedItemHit.HasValue && _clickItemFrames++ > 0)
-			{
-				DragItem(_selectedItemHit.Value);
-			}
-			_lastClick = ClickInterval;
+			//OnClickEnhancement(subsystemHits.Single(), enhancementHits.Single());
 		}
-
-		if (Input.GetMouseButtonUp(0) && _lastClick >= 0)
+		else if (subsystemHits.Any())
 		{
-			OnDrop();
+			OnClickSubsystem(subsystemHits.Single());
 		}
-
-		_lastClick = Math.Max(0, _lastClick - Time.deltaTime);
 	}
-
-	#region Clicks
 
 	private void OnClickSubsystem(RaycastHit2D subsystemHit)
 	{
 		var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
-		PlayerCommands.Move(subsystem);
+		PlayerCommands.Move(subsystem.Id);
 	}
 
 	private void OnClickItem(RaycastHit2D subsystemHit, RaycastHit2D itemHit)
 	{
 		var item = itemHit.collider.GetComponent<ItemBehaviour>();
-		var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
-
-		// if the player can select this item
-		if (item.CanActivate())
-		{
-			// set the item time so we can detect a drag
-			_clickItemFrames = 0;
-			_selectedItemHit = itemHit;
-			_selectedItem = item;
-			_selectedSubsystem = subsystem;
-
-			if (PlayerHasItem(item))
-			{
-				//TODO: the item should be dropped automatically when the player enters the subsystem, so there is nothing to do here
-				// if the player already has the item, drop it
-				PlayerCommands.DropItem(item);
-			}
-			else
-			{
-				// pick it up
-				PlayerCommands.PickupItem(item, subsystem);
-			}
-		}
+		item.OnClick(false);
 	}
 
 	private void OnClickEnhancement(RaycastHit2D subsystemHit, RaycastHit2D enhancementHit)
 	{
-		var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
-		var enhancement = enhancementHit.collider.GetComponent<EnhancementBehaviour>();
+		//var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
+		//var enhancement = enhancementHit.collider.GetComponent<EnhancementBehaviour>();
 	}
 
 	#endregion
 
 	#region Drag
 
+	private void OnDrag()
+	{
+		if (_selectedItem == null)
+		{
+			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+
+			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
+			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+			//var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
+
+			Log("InputHandler::OnDrag [" + subsystemHits.Length + ", " + itemHits.Length + "]");
+
+			if (itemHits.Length == 1 && subsystemHits.Length == 1)
+			{
+				_selectedSubsystem = subsystemHits.Single().collider.GetComponent<SubsystemBehaviour>();
+				_selectedItemHit = itemHits.Single();
+				_selectedItem = _selectedItemHit.Value.collider.GetComponent<ItemBehaviour>();
+				_selectedItem.OnClick(true);
+			}
+		}
+	
+		DragItem();
+	}
+
+	private void DragItem()
+	{
+		if (_selectedItemHit.HasValue
+			&& _selectedItem != null
+			&& _selectedSubsystem != null
+			&& _selectedSubsystem.HasActiveItem == false)
+		{
+			var item = _selectedItem;
+
+			item.DragStart();
+			item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+			// - (Vector3)_selectedItemClickOffset;
+
+			Log("Item::Drag [" + item.transform.position + "]");
+
+			Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
+			if (!locationBounds.Contains(item.transform.position))
+			{
+				Log("Item::Drag [Clamping]");
+
+				float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
+				float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
+				item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
+			}
+		}
+		else
+		{
+			DragStop();
+		}
+	}
+
 	private void OnDrop()
 	{
 		if (_selectedItemHit.HasValue && _selectedItem != null && _selectedSubsystem != null)
 		{
 			var item = _selectedItem;
+			item.DragStop();
 			if (PlayerOwnsItem(item))
 			{
 				var releaseHit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).SingleOrDefault(d => d.collider.tag.Equals(Tags.Subsystem));
 
 				if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releaseHit.point))
 				{
-					PlayerCommands.ActivateItem(item);
+					PlayerCommands.ActivateItem(item.Id);
 				}
 				else
 				{
-					//if (Time.time - _clickItemTime < 0.25f)
-					//{
-					//	PlayerCommands.DropItem(_player, item);
-					//}
+					PlayerCommands.DisownItem(item.Id);
 				}
 			}
-			_selectedItemHit = null;
-			_selectedItem = null;
-			_selectedSubsystem = null;
-			_clickItemFrames = 0;
 		}
+
 	}
 
-	private void DragItem(RaycastHit2D hit)
+	private void DragStop()
 	{
-		var item = hit.collider;
-		item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;// - (Vector3)_selectedItemClickOffset;
-
-		Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
-		if (!locationBounds.Contains(hit.point))
-		{
-			float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
-			float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
-			item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
-		}
+		_selectedItemHit = null;
+		_selectedItem = null;
+		_selectedSubsystem = null;
+		_dragging = false;
+		_mouseDown = Time.time;
 	}
 
 	#endregion

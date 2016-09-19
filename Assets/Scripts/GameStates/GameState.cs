@@ -3,6 +3,7 @@ using GameWork.States;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
@@ -12,32 +13,50 @@ namespace PlayGen.ITAlert.GameStates
         public const string StateName = "GameState";
 
         private readonly TickableStateController _stateController;
-        private readonly ITAlertClient _networkClient;
+        private readonly ITAlertClient _client;
         private readonly VoiceController _voiceController;
+        private readonly GameStateInterface _interface;
+        private readonly LobbyController _lobbyController;
 
         public override string Name
         {
             get { return StateName; }
         }
 
-        public GameState(ITAlertClient networkClient, VoiceController voiceController)
+        public GameState(ITAlertClient client, GameStateInterface @interface, LobbyController lobbyController, VoiceController voiceController)
         {
-            _networkClient = networkClient;
+            _client = client;
+            _interface = @interface;
+            _stateController = new TickableStateController(new InitializingState(_client),
+                new PlayingState(_client),
+                new FinalizingState(_client));
 
-            _stateController = new TickableStateController(new InitializingState(_networkClient),
-                new PlayingState(_networkClient),
-                new FinalizingState(_networkClient));
-
+            _lobbyController = lobbyController;
             _voiceController = voiceController;
         }
 
         public override void Enter()
         {
+            
             _stateController.Initialize();
             _stateController.SetState(InitializingState.StateName);
 
-            Director.Client = _networkClient;
+            
+            
             SceneManager.LoadScene("Network");
+            SceneManager.activeSceneChanged += SceneLoaded;
+            Debug.Log(SceneManager.GetActiveScene().name);
+            
+        }
+
+        private void SceneLoaded(Scene arg0, Scene scene)
+        {
+            Debug.Log(SceneManager.GetActiveScene().name);
+
+            Director.Client = _client;
+
+            _interface.Initialize();
+            _interface.PopulateChatPanel(_client.ListCurrentRoomPlayers);
         }
 
         public override void Exit()
@@ -52,7 +71,7 @@ namespace PlayGen.ITAlert.GameStates
         {
             _voiceController.HandleVoiceInput();
 
-            switch (_networkClient.GameState)
+            switch (_client.GameState)
             {
                 case Network.GameStates.Initializing:
                     if (_stateController.CurrentStateName != InitializingState.StateName)
@@ -89,6 +108,8 @@ namespace PlayGen.ITAlert.GameStates
                     }
                     break;
             }
+
+            _interface.UpdateChatPanel();
         }
 
         public override void NextState()
