@@ -11,10 +11,17 @@ using PlayGen.ITAlert.Simulation.Layout;
 // ReSharper disable CheckNamespace
 public class ConnectionBehaviour : EntityBehaviour<PlayGen.ITAlert.Simulation.Contracts.ConnectionState>
 {
+	[SerializeField]
+	private Color[] _weightColors = new Color[]
+	{
+	};
+
 	private Vector2 _headPos;
 	private Vector2 _tailPos;
 
 	public Vector Position;
+
+	private SpriteRenderer _spriteRenderer;
 
 	//private float _pointsPerSecond = 24;
 
@@ -31,7 +38,6 @@ public class ConnectionBehaviour : EntityBehaviour<PlayGen.ITAlert.Simulation.Co
 
 	public void Awake()
 	{
-		
 	}
 
 	/// <summary>
@@ -63,6 +69,10 @@ public class ConnectionBehaviour : EntityBehaviour<PlayGen.ITAlert.Simulation.Co
 		var relativeWeight = (SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
 		transform.localScale = new Vector2(relativeWeight, distance - (tail.ConnectionSquareRadius * 2));
 		transform.eulerAngles = new Vector3(0, 0, _angle + 90);
+
+		GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+		transform.Find("Start Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+		transform.Find("End Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
 
 		//adjust node images to correct scale
 		_headPos = ScaleEndPoint(headPos, tail.ConnectionSquareRadius);

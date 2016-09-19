@@ -29,6 +29,7 @@ public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
 
 	public EntityType EntityType { get { return EntityState.EntityType; } }
 
+
 	#region Unity Update
 
 	/// <summary>
