@@ -1,12 +1,16 @@
 ﻿using System;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Commands;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
 public class PlayerCommands
 {
+	static PlayerCommands()
+	{
+		DebugLog = true;
+	}
+
 	public static bool DebugLog { get; set; }
 
 	private static void Log(string message)
