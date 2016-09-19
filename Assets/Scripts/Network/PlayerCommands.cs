@@ -1,7 +1,6 @@
 ﻿using System;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Commands;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace

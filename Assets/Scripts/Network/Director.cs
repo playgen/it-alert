@@ -65,7 +65,7 @@ public class Director : MonoBehaviour
 
 	public static PlayerBehaviour[] Players { get; private set; }
 
-	public static Resolver LocaResolver { get; private set; }
+	public static CommandResolver LocaResolver { get; private set; }
 
 	public static SimulationRules Rules { get { return Simulation != null ? Simulation.Rules : new SimulationRules(); } }
 
@@ -159,7 +159,7 @@ public class Director : MonoBehaviour
 	public static void UpdateSimulation(Simulation simulation)
 	{
 		Simulation = simulation;
-		LocaResolver = new Resolver(simulation);
+		LocaResolver = new CommandResolver(simulation);
 	}
 
 	private static void SetState()
