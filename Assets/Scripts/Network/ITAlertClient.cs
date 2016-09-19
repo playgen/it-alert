@@ -31,7 +31,10 @@ namespace PlayGen.ITAlert.Network
 
 		public event Action GameEnteredEvent;
 
-		public void SetPlayerName(string name)
+	    public event Action PlayerColorStatusChange;
+
+
+        public void SetPlayerName(string name)
 		{
 			_client.Player.name = name;
 		}
@@ -262,7 +265,11 @@ namespace PlayGen.ITAlert.Network
 
 				case (byte)ServerEventCode.PlayerColors:
 					PlayerColors = (Dictionary<int, string>)content;
-					break;
+                    if (PlayerColorStatusChange != null)
+                    {
+                        PlayerColorStatusChange();
+                    }
+                    break;
 			}
 		}
 		#endregion
