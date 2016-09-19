@@ -11,6 +11,9 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	[SerializeField]
 	private Image _activationTimerImage;
 
+	[SerializeField]
+	private SpriteRenderer _iconRenderer;
+
 	private bool _dragging;
 
 	private int _dragCount;
@@ -110,12 +113,17 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 		bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
 		if (EntityState.Owner.HasValue && isWhite)
 		{
-			GetComponent<SpriteRenderer>().color = Director.GetEntity(EntityState.Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
-			TriggerHint();
+			var playerColour = Director.GetEntity(EntityState.Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
+			_iconRenderer.color = playerColour;
+			_activationTimerImage.color = playerColour;
+
+			//TriggerHint();
 		}
 		else if (!EntityState.Owner.HasValue && !isWhite)
 		{
-			GetComponent<SpriteRenderer>().color = Color.white;
+			_iconRenderer.color = Color.white;
+			_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+
 		}
 	}
 
