@@ -4,6 +4,7 @@ using GameWork.States;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyState : TickableSequenceState
 {

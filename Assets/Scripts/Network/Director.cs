@@ -27,7 +27,7 @@ public class Director : MonoBehaviour
 	/// <summary>
 	/// Simulation
 	/// </summary>
-	private static Simulation _simulation;
+	public static Simulation Simulation;
 
 	/// <summary>
 	/// Current State
@@ -45,7 +45,7 @@ public class Director : MonoBehaviour
 	/// <summary>
 	/// has the simulation been initialized
 	/// </summary>
-	private static bool _initialized;
+	public static bool Initialized { get; private set; }
 
 	/// <summary>
 	/// the active player
@@ -66,6 +66,8 @@ public class Director : MonoBehaviour
 	public static PlayerBehaviour[] Players { get; private set; }
 
 	public static Resolver LocaResolver { get; private set; }
+
+	public static SimulationRules Rules { get { return Simulation != null ? Simulation.Rules : new SimulationRules(); } }
 
 	/// <summary>
 	/// Get entity wrapper by id
@@ -94,7 +96,9 @@ public class Director : MonoBehaviour
 	}
 	private static Simulation InitializeTestSimulation()
 	{
-		return ConfigHelper.GenerateSimulation(6, 3, 2, 9, 4);
+		var width = 6;
+		var height = 3;
+		return ConfigHelper.GenerateSimulation(width, height, 2, width * height, 4);
 	}
 
 	public static void Initialize(Simulation simulation, int playerServerId)
@@ -104,7 +108,7 @@ public class Director : MonoBehaviour
 		SimulationAnimationRatio = Time.deltaTime/SimulationTick;
 
 		// center graph 
-		UIConstants.NetworkOffset -= new Vector2((float) _simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) _simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
+		UIConstants.NetworkOffset -= new Vector2((float) Simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) Simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
 
 		SetState();
 		CreateInitialEntities();
@@ -112,7 +116,7 @@ public class Director : MonoBehaviour
 
 		SetPlayer(playerServerId);
 
-		_initialized = true;
+		Initialized = true;
 		_gameOver = GameObjectUtilities.FindGameObject("Canvas/GameOver");
 		_gameOver.SetActive(false);
 	}
@@ -127,12 +131,9 @@ public class Director : MonoBehaviour
 	{
 		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
 		
-		var playerState = _simulation.ExternalPlayers[playerServerId];
+		var playerState = Simulation.ExternalPlayers[playerServerId];
 		_player = players.Single(p => p.Id == playerState.Id);
-	}
-	private static void SelectPlayer()
-	{
-
+		_player.SetActive();
 	}
 
 	/// <summary>
@@ -157,13 +158,13 @@ public class Director : MonoBehaviour
 
 	public static void UpdateSimulation(Simulation simulation)
 	{
-		_simulation = simulation;
+		Simulation = simulation;
 		LocaResolver = new Resolver(simulation);
 	}
 
 	private static void SetState()
 	{
-		_state = _simulation.GetState();
+		_state = Simulation.GetState();
 	}
 
 
@@ -181,7 +182,6 @@ public class Director : MonoBehaviour
 		}
 		else
 		{
-
 			foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
 			{
 				CreateEntity(newEntity.Key, newEntity.Value);
@@ -209,7 +209,7 @@ public class Director : MonoBehaviour
 
 	public static void Finalise(Simulation simulation)
 	{
-		_simulation = simulation;
+		Simulation = simulation;
 	}
 
 	#endregion
@@ -220,14 +220,14 @@ public class Director : MonoBehaviour
 	public static void Tick(bool serialize)
 	{
 		//TODO: replace super lazy way of stopping the game
-		if (_state.IsGameFailure == false)
+		if (Initialized && _state.IsGameFailure == false)
 		{
-			_simulation.Tick();
+			Simulation.Tick();
 
 			if (serialize)
 			{
-				var state = SimulationSerializer.SerializeSimulation(_simulation);
-				_simulation.Dispose();
+				var state = SimulationSerializer.SerializeSimulation(Simulation);
+				Simulation.Dispose();
 
 				UpdateSimulation(SimulationSerializer.DeserializeSimulation(state));
 			}
@@ -246,7 +246,7 @@ public class Director : MonoBehaviour
 
 	private static void DoInitialized(Action action)
 	{
-		if (_initialized)
+		if (Initialized)
 		{
 			action();
 		}
@@ -254,7 +254,7 @@ public class Director : MonoBehaviour
 
 	private static T GetInitialized<T>(Func<T> func)
 	{
-		if (_initialized)
+		if (Initialized)
 		{
 			return func();
 		}
@@ -281,28 +281,28 @@ public class Director : MonoBehaviour
 
 	public static void RequestMovePlayer(int destinationId)
 	{
-		_simulation.RequestMovePlayer(_player.Id, destinationId);
+		Simulation.RequestMovePlayer(_player.Id, destinationId);
 	}
 
 	public static void RequestActivateItem(int itemId)
 	{
-		_simulation.RequestActivateItem(_player.Id, itemId);
+		Simulation.RequestActivateItem(_player.Id, itemId);
 	}
 
 	public static void RequestDropItem(int itemId)
 	{
-		_simulation.RequestDropItem(_player.Id, itemId);
+		Simulation.RequestDropItem(_player.Id, itemId);
 	}
 
 	public static void RequestPickupItem(int itemId, int subsystemId)
 	{
-		_simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
+		Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
 	}
 
 	public static void SpawnVirus()
 	{
 		var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
-		_simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
+		Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
 	}
 
 	#endregion

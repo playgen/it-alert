@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.ITAlert.Common;
+using PlayGen.ITAlert.Simulation.World;
 using UnityEngine;
 
 namespace Assets.Debugging.Scripts
@@ -22,8 +24,18 @@ namespace Assets.Debugging.Scripts
 
 		private string _tpsText;
 
+	    private bool _isVisible = false;
+
+		void Start()
+		{
+			EnableSerializer = true;
+			AutoTickOn = true;
+		}
+
 		private void OnGUI()
 		{
+		    if (!_isVisible) return;
+
 			if (GUILayout.Button("Debug Initialize"))
 			{
 				if (!_initialized)
@@ -42,14 +54,31 @@ namespace Assets.Debugging.Scripts
 			{
 				DebugCommands.SpawnVirus();
 			}
+			if (GUILayout.Button("Damage Subsystems"))
+			{
+				foreach (var subsystem in Director.Simulation.Subsystems)
+				{
+					subsystem.ModulateHealth((SimulationConstants.MaxHealth + SimulationConstants.MaxShield) / 2 * -1);
+				}
+			}
 			GUILayout.Label(_tpsText);
-
+			Director.Rules.VirusesDieWithSubsystem = GUILayout.Toggle(Director.Rules.VirusesDieWithSubsystem, "Viruses Die");
+			Director.Rules.VirusesAlwaysVisible = GUILayout.Toggle(Director.Rules.VirusesAlwaysVisible, "Viruses Visible");
+			Director.Rules.VirusesSpread = GUILayout.Toggle(Director.Rules.VirusesSpread, "Viruses Spread");
+			Director.Rules.RepairItemsConsumable = GUILayout.Toggle(Director.Rules.RepairItemsConsumable, "Repair Items Consumed");
+			InputHandler.DebugLog = GUILayout.Toggle(InputHandler.DebugLog, "Log InputHandler");
+			PlayerCommands.DebugLog = GUILayout.Toggle(PlayerCommands.DebugLog, "Log PlayerCommands");
 		}
 
 		// Update is called once per frame
 		void Update()
 		{
-			if (AutoTickOn)
+		    if (Input.GetKeyDown(KeyCode.F1))
+		    {
+		        _isVisible = !_isVisible;
+		    }
+
+			if (_isVisible && AutoTickOn)
 			{
 				DebugAutoTick();
 			}

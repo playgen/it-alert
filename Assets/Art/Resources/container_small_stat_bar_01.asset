@@ -8,42 +8,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 35648741dd5b14baa82bec08abfe7457, type: 3}
+  m_Script: {fileID: 0}
   m_Name: container_small_stat_bar_01
   m_EditorClassIdentifier: 
-  _lastTimeModified: 636086800943172447
-  _documentAsset: {fileID: 114000012090757614}
-  _sharedMesh: {fileID: 43000012074765902}
-  _antialiasing: 0
-  _antialiasingWidth: 0
-  _generateCollider: 0
-  _keepSVGFile: 0
-  _ignoreSVGCanvas: 1
-  _colliderShape: []
-  _format: 1
-  _useGradients: 1
-  _meshCompression: 0
-  _optimizeMesh: 1
-  _generateNormals: 0
-  _generateTangents: 0
-  _scale: 0.01
-  _vpm: 1000
-  _depthOffset: 0.01
-  _compressDepth: 1
-  _pivotPoint: {x: 0.5, y: 0.5}
-  _customPivotPoint: 0
-  _border: {x: 0, y: 0, z: 0, w: 0}
-  _sliceMesh: 0
-  _sharedGradients: []
-  _sharedShaders:
-  - SVG Importer/SolidColor/SolidColorAlphaBlended
-  _canvasRectangle:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 20.48
-    height: 15.36
-  _layers: []
 --- !u!43 &43000012074765902
 Mesh:
   m_ObjectHideFlags: 1

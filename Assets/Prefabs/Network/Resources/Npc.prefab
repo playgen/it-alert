@@ -22,7 +22,7 @@ GameObject:
   - 114: {fileID: 114000010202997008}
   - 212: {fileID: 212000012044310090}
   m_Layer: 0
-  m_Name: Virus
+  m_Name: Npc
   m_TagString: Virus
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

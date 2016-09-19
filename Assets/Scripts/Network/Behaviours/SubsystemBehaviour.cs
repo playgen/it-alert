@@ -53,16 +53,18 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 		get { return _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2); }
 	}
 
-	public int LogicalId { get { return EntityState.LogicalId; } }
 
 	#endregion
 
-	// logical elements
-	private ItemBehaviour[] _items;
-	private ItemBehaviour _activeItem;
-	private NpcBehaviour _npc;
-
 	private Vector2[] _itemPositions;
+
+	#region public state 
+
+	public int LogicalId { get { return EntityState.LogicalId; } }
+
+	public bool HasActiveItem { get { return EntityState.HasActiveItem; } }
+
+	#endregion
 
 	#region movement constants
 
@@ -201,13 +203,16 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 			{
 				var item = Director.GetEntity(EntityState.ItemPositions[i].Value);
 				var itemBehaviour = item.GameObject.GetComponent<ItemBehaviour>();
-				if (itemBehaviour.IsActive)
+				if (itemBehaviour.Dragging == false)
 				{
-					item.GameObject.transform.position = _connectionSquare.transform.position;
-				}
-				else
-				{
-					item.GameObject.transform.position = _itemPositions[i];
+					if (itemBehaviour.IsActive)
+					{
+						item.GameObject.transform.position = _connectionSquare.transform.position;
+					}
+					else
+					{
+						item.GameObject.transform.position = _itemPositions[i];
+					}
 				}
 			}
 		}
@@ -315,51 +320,6 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 			_iconRenderer.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
 		}
 	}
-
-
-
-
-	//private Vector3 GetPositionFromPathPoint(float pathPoint)
-	//{
-	//	var localPosition = GetPositionOnSquare(pathPoint);
-
-	//	localPosition.y *= -1;                  // Flip Y so displays correctly relative to the view
-	//	localPosition *= _pathPerimiterScaleFactor;
-	//	localPosition += transform.position;    // Move relative to this subsystem
-
-	//	return localPosition;
-	//}
-
-
-	/// <summary>
-	/// Takes 
-	/// </summary>
-	/// <param name="pathPoint">Numerical point value from simulation</param>
-	/// <param name="scale">Scales to the size of the square</param>
-	/// <returns></returns>
-
-
-	//private void MoveVisitors(float moveByPoints)
-	//{
-	//	var copy = PlayerPositions.Keys.ToArray();
-	//	foreach (var player in copy)
-	//	{
-	//		UpdatePlayerMovement(player, moveByPoints);
-	//	}
-	//}
-
-
-
-	//private void UpdatePlayerMovement(Player player, float moveByPoints)
-	//{
-	//	var pathPoint = PlayerPositions[player];
-	//	var position = GetPositionFromPathPoint(pathPoint);
-	//	player.transform.position = position;
-
-	//	PlayerPositions[player] = (PlayerPositions[player] + moveByPoints) % _pathPointsInSubsystem;
-	//}
-
-
 
 }
 
