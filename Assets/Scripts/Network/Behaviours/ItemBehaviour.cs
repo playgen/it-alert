@@ -123,7 +123,7 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	{
 		if (EntityState.Active)
 		{
-			_activationTimerImage.fillAmount = (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
+			_activationTimerImage.fillAmount = 1f - (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
 		}
 		else
 		{
