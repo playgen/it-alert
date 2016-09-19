@@ -7,6 +7,11 @@ using UnityEngine;
 // ReSharper disable once CheckNamespace
 public class PlayerCommands
 {
+	static PlayerCommands()
+	{
+		DebugLog = true;
+	}
+
 	public static bool DebugLog { get; set; }
 
 	private static void Log(string message)
