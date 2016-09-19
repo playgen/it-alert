@@ -7,16 +7,27 @@ using PlayGen.ITAlert.Simulation.Contracts;
 // ReSharper disable CheckNamespace
 public class ItemBehaviour : EntityBehaviour<ItemState>
 {
-	public ItemType Type
+
+
+	private bool _dragging;
+
+	private int _dragCount;
+
+	public bool Dragging
 	{
-		get { return EntityState.ItemType;  }
+		get { return _dragging || _dragCount > 0; }
 	}
+
 
 	#region public state
 
 	public bool IsActive { get { return EntityState != null && EntityState.Active; } }
 
 	public int? Owner { get { return EntityState == null ? (int?) null : EntityState.Owner; } }
+
+	public ItemType Type { get { return EntityState.ItemType; } }
+
+	public bool IsOnSubsystem { get { return EntityState.CurrentNode.HasValue; } }
 
 	#endregion
 
@@ -36,6 +47,7 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	{
 		SetSprite();
 		//_activeDuration = EntityState.ActiveDuration;
+		
 	}
 	
 	private void SetSprite()
@@ -52,9 +64,9 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 				spriteName = "tool_scanner";
 				break;
 
-			case ItemType.Tracer:
-				spriteName = "tool_tracer";
-				break;
+			//case ItemType.Tracer:
+			//	spriteName = "tool_tracer";
+			//	break;
 
 			case ItemType.Cleaner:
 				spriteName = "tool_cleaner";
@@ -77,6 +89,7 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 
 	protected override void OnUpdate()
 	{
+		_dragCount = Math.Max(0, --_dragCount);
 	}
 
 	#endregion
@@ -114,14 +127,38 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 
 	#region player interaction
 
-	public bool CanActivate()
+	private bool PlayerOwnsItem()
 	{
-		return IsActivated() == false && (EntityState.Owner.HasValue  == false || EntityState.Owner.Value == Director.Player.Id);
+		return Director.Player != null
+				&& Owner.HasValue
+				&& Owner.Value == Director.Player.Id;
 	}
 
-	public bool IsActivated()
+	public void OnClick(bool dragging)
 	{
-		return EntityState.Active;
+		Debug.Log("Item OnClick");
+
+		if (CanActivate())
+		{
+			if (PlayerOwnsItem())
+			{
+				if (dragging == false)
+				{
+					PlayerCommands.DisownItem(this.Id);
+				}
+			}
+			else
+			{
+				PlayerCommands.PickupItem(Id, EntityState.CurrentNode.Value);
+			}
+		}
+	}
+
+	public bool CanActivate()
+	{
+		return EntityState.Active == false 
+			&& EntityState.CanActivate 
+			&& (EntityState.Owner.HasValue == false || EntityState.Owner.Value == Director.Player.Id);
 	}
 
 	public void Deactivate()
@@ -133,6 +170,17 @@ public class ItemBehaviour : EntityBehaviour<ItemState>
 	{
 		// TODO: Start Item Animation
 		throw new NotImplementedException();
+	}
+
+	public void DragStart()
+	{
+		_dragging = true;
+	}
+
+	public void DragStop()
+	{
+		_dragging = false;
+		_dragCount = 2;
 	}
 
 	#endregion
