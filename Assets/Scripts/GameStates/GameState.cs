@@ -56,6 +56,7 @@ namespace PlayGen.ITAlert.GameStates
             Director.Client = _client;
 
             _interface.Initialize();
+            _interface.SetPlayerColors(_client.PlayerColors);
             _interface.PopulateChatPanel(_client.ListCurrentRoomPlayers);
         }
 

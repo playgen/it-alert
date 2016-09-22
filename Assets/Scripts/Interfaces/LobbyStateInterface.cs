@@ -70,6 +70,7 @@ public class LobbyStateInterface : StateInterface
     public void OnLeaveSuccess()
     {
         EnqueueCommand(new PreviousStateCommand());
+        
     }
 
     public override void Enter()
@@ -202,28 +203,6 @@ public class LobbyStateInterface : StateInterface
         _playerColors = colorList;
 
         EnqueueCommand(new RefreshPlayerListCommand());
-    }
-
-    public Color GetColorForPlayerNumber(int playerNum)
-    {
-        switch (playerNum)
-        {
-            case 1:
-                return Color.red;
-            case 2:
-                return Color.blue;
-            case 3:
-                return Color.green;
-            case 4:
-                return Color.yellow;
-            case 5:
-                return Color.magenta;
-            case 6:
-                return Color.cyan;
-            default:
-                return Color.white;
-        }
-        
     }
 
     public void UpdateVoiceStatuses()

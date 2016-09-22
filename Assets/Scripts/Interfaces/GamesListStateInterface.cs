@@ -69,7 +69,8 @@ public class GamesListStateInterface : StateInterface
 		foreach (var room in rooms)
 		{
 			var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-			gameItem.FindChild("Name").GetComponent<Text>().text = room.name;
+		    var name = room.name;
+			gameItem.FindChild("Name").GetComponent<Text>().text = name;
 			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
 			gameItem.SetParent(_gameListObject.transform);
 
@@ -87,7 +88,7 @@ public class GamesListStateInterface : StateInterface
 			offset -= height;
 
 			// add listener to each button to join specifc game 
-			gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener( delegate{ JoinGame(room.name); } );
+			gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener( delegate{ JoinGame(name); } );
 		}
 		// Set the content box to be the correct size for our elements
 		_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);

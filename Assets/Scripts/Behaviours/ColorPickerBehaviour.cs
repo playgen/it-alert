@@ -33,8 +33,7 @@ public class ColorPickerBehaviour : MonoBehaviour
             colors = allColors;
         SetColorPickerObjects();
 
-        // HACK SET COLOR
-        SetColor(colors[0]);
+        
 
         // Get the length of the colors array
         var totalColors = colors.Length;
@@ -59,6 +58,12 @@ public class ColorPickerBehaviour : MonoBehaviour
                 image.color = colors[index];
                 var button = obj.GetComponent<Button>();
                 button.interactable = !selectedColors.Contains(image.color);
+
+                if (button.interactable)
+                {
+                    // HACK SET COLOR
+                    SetColor(image.color);
+                }
 
                 button.onClick.AddListener(delegate { SetColor(image.color); });
                 index++;
