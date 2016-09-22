@@ -1,6 +1,6 @@
 ﻿using System;
 using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Events;
 
 public static class PopupUtility
@@ -35,9 +35,9 @@ public static class PopupUtility
         }
     }
 
-    public static void ShowColorPicker(Action<Color> callbackAction)
+    public static void ShowColorPicker(Action<Color> callbackAction, List<Color> selectedColors)
     {
         //get the controller
-        PopupController.ShowColorPickerPopup(callbackAction);
+        PopupController.ShowColorPickerPopup(callbackAction, selectedColors);
     }
 }

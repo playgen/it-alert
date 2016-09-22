@@ -27,7 +27,7 @@ public class LobbyController : ICommandAction
         {
             var name = photonPlayer.name;
             var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
-            var color = playerColors.ContainsKey(photonPlayer.ID) ? playerColors[photonPlayer.ID] : "000000";
+            var color = playerColors != null && playerColors.ContainsKey(photonPlayer.ID) ? playerColors[photonPlayer.ID] : "FFFFFF";
             var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID, color);
             lobbyPlayers.Add(lobbyPlayer);
         }

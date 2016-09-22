@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ColorPickerBehaviour : MonoBehaviour
@@ -26,7 +27,7 @@ public class ColorPickerBehaviour : MonoBehaviour
 
     private Color _selectedColor;
 
-    public void GenerateColorPicker(Color[] allColors = null)
+    public void GenerateColorPicker(List<Color> selectedColors, Color[] allColors = null)
     {
         if (allColors != null)
             colors = allColors;
@@ -57,9 +58,7 @@ public class ColorPickerBehaviour : MonoBehaviour
                 var image = obj.GetComponent<Image>();
                 image.color = colors[index];
                 var button = obj.GetComponent<Button>();
-
-                // TODO check if the colour is available
-                //button.interactable = isAvailable
+                button.interactable = !selectedColors.Contains(image.color);
 
                 button.onClick.AddListener(delegate { SetColor(image.color); });
                 index++;

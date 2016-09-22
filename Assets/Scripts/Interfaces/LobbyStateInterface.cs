@@ -22,6 +22,7 @@ public class LobbyStateInterface : StateInterface
 
     private bool _ready;
     private int _lobbyPlayerMax;
+    private List<Color> _playerColors;
 
     public override void Initialize()
     {
@@ -56,7 +57,9 @@ public class LobbyStateInterface : StateInterface
 
     private void OnColorChangeButtonClick()
     {
-        PopupUtility.ShowColorPicker(ColorPicked);
+        // Get the selected colors list from the client
+
+        PopupUtility.ShowColorPicker(ColorPicked, _playerColors);
     }
 
     private void ColorPicked(Color pickedColor)
@@ -183,6 +186,22 @@ public class LobbyStateInterface : StateInterface
     public void SetRoomMax(int currentRoomMaxPlayers)
     {
         _lobbyPlayerMax = currentRoomMaxPlayers;
+    }
+
+    public void SetPlayerColors(Dictionary<int, string> colors)
+    {
+        // Convert Dictionary to string list
+        var colorStrings = colors.Select(item => item.Value).ToList();
+        var colorList = new List<Color>();
+        var c = new Color();
+        foreach (var color in colorStrings)
+        {
+            ColorUtility.TryParseHtmlString("#" + color, out c);
+            colorList.Add(c);
+        }
+        _playerColors = colorList;
+
+        EnqueueCommand(new RefreshPlayerListCommand());
     }
 
     public Color GetColorForPlayerNumber(int playerNum)
