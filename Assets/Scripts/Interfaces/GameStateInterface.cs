@@ -10,6 +10,7 @@ public class GameStateInterface : StateInterface
 {
     private GameObject _chatPanel;
     private GameObject _playerChatItemPrefab;
+    private Dictionary<int, string> _playerColors;
     private Dictionary<int, Image> _playerVoiceIcons;
 
     public override void Initialize()
@@ -42,8 +43,6 @@ public class GameStateInterface : StateInterface
         //sort array into list
         var playersList = players.OrderBy(player => player.ID).ToList();
 
-        var index = 1;
-
         _playerVoiceIcons = new Dictionary<int, Image>();
 
         foreach (var player in playersList)
@@ -52,9 +51,7 @@ public class GameStateInterface : StateInterface
 
             var nameText = playerItem.FindChild("Name").GetComponent<Text>();
             nameText.text = player.name;
-            nameText.color = GetColorForPlayerNumber(index);
-            index++;
-
+            nameText.color = GetColorForPlayerNumber(player.ID);
 
             var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
             soundIcon.color = nameText.color;
@@ -82,24 +79,18 @@ public class GameStateInterface : StateInterface
 
     public Color GetColorForPlayerNumber(int playerNum)
     {
-        switch (playerNum)
-        {
-            case 1:
-                return Color.red;
-            case 2:
-                return Color.blue;
-            case 3:
-                return Color.green;
-            case 4:
-                return Color.yellow;
-            case 5:
-                return Color.magenta;
-            case 6:
-                return Color.cyan;
-            default:
-                return Color.white;
-        }
+        //get the color of the player from the client
+        var playerColorString = _playerColors[playerNum];
 
+        var playerColor = new Color();
+        ColorUtility.TryParseHtmlString("#" + playerColorString, out playerColor);
+
+        return playerColor;
+    }
+
+    public void SetPlayerColors(Dictionary<int, string> colors)
+    {
+        _playerColors = colors;
     }
 
     public void UpdateChatPanel()
