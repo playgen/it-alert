@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Events;
 using Object = UnityEngine.Object;
 
@@ -46,12 +47,12 @@ public class PopupController
         PopupClosed();
     }
 
-    public void ShowColorPickerPopup(Action<Color> callback)
+    public void ShowColorPickerPopup(Action<Color> callback, List<Color> selectedColors)
     {
         var colorPanel = Object.Instantiate(Resources.Load("ColorPickerContentPanel")) as GameObject;
         colorPanel.name = "ColorPickerContentPanel";
         _popupBehaviour.ClearContent();
-        colorPanel.GetComponent<ColorPickerBehaviour>().GenerateColorPicker();
+        colorPanel.GetComponent<ColorPickerBehaviour>().GenerateColorPicker(selectedColors);
         _popupBehaviour.SetPopup("Change Player Colour",
             new[] {
                 new PopupBehaviour.Output("Cancel", null),
