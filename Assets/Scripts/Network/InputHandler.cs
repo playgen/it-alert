@@ -132,8 +132,7 @@ public class InputHandler : MonoBehaviour
                 _minDragBounds = _selectedItemHit.Value.collider.bounds.min;
                 _maxDragBounds = _selectedItemHit.Value.collider.bounds.max;
             }
-        }
-        Debug.Log(string.Format("Set bounds, min {0}, max {1}", _minDragBounds, _maxDragBounds));
+        }   
     }
 
     private bool IsMouseOutsideBounds()
@@ -260,12 +259,9 @@ public class InputHandler : MonoBehaviour
 				if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releaseHit.point))
 				{
 					PlayerCommands.ActivateItem(item.Id);
-				}
-				else
-				{
-					PlayerCommands.DisownItem(item.Id);
-				}
-			}
+                }
+                PlayerCommands.DisownItem(item.Id);
+            }
 			DragStop();
 		}
 
