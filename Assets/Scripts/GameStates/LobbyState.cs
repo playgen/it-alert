@@ -45,7 +45,6 @@ public class LobbyState : TickableSequenceState
 
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
         _interface.SetRoomName(_client.CurrentRoom.name);
-        _interface.SetPlayerColors(_client.PlayerColors);
         _interface.Enter();
     }
 
@@ -121,7 +120,7 @@ public class LobbyState : TickableSequenceState
 
         if (_client.IsMasterClient)
         {
-            if (_client.PlayerReadyStatus.Values.All(v => v))
+            if (_client.PlayerReadyStatus != null && _client.PlayerReadyStatus.Values.All(v => v))
             {
                 _client.StartGame(false);
             }
