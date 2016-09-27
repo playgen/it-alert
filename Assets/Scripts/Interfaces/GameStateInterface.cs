@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameWork.Interfacing;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client.Voice;
 using UnityEngine.UI;
 
 public class GameStateInterface : StateInterface

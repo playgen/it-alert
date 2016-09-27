@@ -2,6 +2,7 @@
 using GameWork.States;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -74,7 +75,7 @@ namespace PlayGen.ITAlert.GameStates
 
             switch (_client.GameState)
             {
-                case Network.GameStates.Initializing:
+                case Network.Client.States.GameStates.Initializing:
                     if (_stateController.CurrentStateName != InitializingState.StateName)
                     {
                         _stateController.ChangeState(InitializingState.StateName);
@@ -85,7 +86,7 @@ namespace PlayGen.ITAlert.GameStates
                     }
                     break;
 
-                case Network.GameStates.Playing:
+                case Network.Client.States.GameStates.Playing:
                     if (_stateController.CurrentStateName != PlayingState.StateName)
                     {
                         _stateController.ChangeState(PlayingState.StateName);
@@ -96,7 +97,7 @@ namespace PlayGen.ITAlert.GameStates
                     }
                     break;
 
-                case Network.GameStates.Finalizing:
+                case Network.Client.States.GameStates.Finalizing:
 
 
                     if (_stateController.CurrentStateName != FinalizingState.StateName)

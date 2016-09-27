@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Network;
-using PlayGen.ITAlert.Simulation;
+﻿using PlayGen.ITAlert.Network.Client;
 
 namespace Assets.Debugging.Scripts
 {

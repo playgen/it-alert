@@ -1,5 +1,6 @@
 ﻿using GameWork.States;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 
 public class MenuState : TickableSequenceState
 {

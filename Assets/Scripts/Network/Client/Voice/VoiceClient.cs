@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Network
+namespace PlayGen.ITAlert.Network.Client.Voice
 {
     public class VoiceClient
     {

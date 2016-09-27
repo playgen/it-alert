@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlayGen.ITAlert.Network
+namespace PlayGen.ITAlert.Network.Client
 {
     [Flags]
     public enum ListRoomsFilters

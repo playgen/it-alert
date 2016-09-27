@@ -2,6 +2,9 @@
 using UnityEngine;
 using System.Linq;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Network.Client.States;
+using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.ITAlert.Simulation;
 
 public class ITAlertClientInterface : MonoBehaviour
@@ -34,16 +37,16 @@ public class ITAlertClientInterface : MonoBehaviour
 
         switch (_client.State)
         {
-            case ClientStates.Roomless:
+            case States.Roomless:
                 ShowJoinCreateRoomOptions();
                 break;
 
-            case ClientStates.Lobby:
+            case States.Lobby:
                 ShowVoiceOptions();
                 ShowLobbyOptions();
                 break;
 
-            case ClientStates.Game:
+            case States.Game:
 
                 ShowGameState();
                 ShowVoiceOptions();
