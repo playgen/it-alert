@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Photon.Events;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Serialization;
 
 namespace PlayGen.ITAlert.Network
@@ -32,13 +34,7 @@ namespace PlayGen.ITAlert.Network
 		public event Action GameEnteredEvent;
 
 	    public event Action<Dictionary<int, string>> ChangeColorEvent;
-
-
-        public void SetPlayerName(string name)
-		{
-			_client.Player.name = name;
-		}
-
+        
 		public PhotonPlayer Player
 		{
 			get { return _client.Player; }
@@ -117,22 +113,27 @@ namespace PlayGen.ITAlert.Network
 		{
 			if (isReady)
 			{
-				_client.RaiseEvent((byte) PlayerEventCode.Ready);
+				_client.RaiseEvent((byte) PlayerEventCode.SetReady);
 			}
 			else
 			{
-				_client.RaiseEvent((byte)PlayerEventCode.NotReady);
+				_client.RaiseEvent((byte)PlayerEventCode.SetNotReady);
 			}
 		}
 
-		public void SetColor(string color)
+        public void SetPlayerName(string name)
+        {
+            _client.RaiseEvent((byte)PlayerEventCode.ChangeName, name);
+        }
+
+        public void SetColor(string color)
 		{
-			_client.RaiseEvent((byte)PlayerEventCode.SetColor, color);
+			_client.RaiseEvent((byte)PlayerEventCode.ChangeColor, color);
 		}
 
 		public void GetPlayerReadyStatus()
 		{
-			_client.RaiseEvent((byte)PlayerEventCode.ListReady);
+			_client.RaiseEvent((byte)PlayerEventCode.ListPlayers);
 		}
 
 		public void StartGame(bool forceStart, bool closeRoom = true)
@@ -181,7 +182,9 @@ namespace PlayGen.ITAlert.Network
 
 		private void OnJoinedRoom()
 		{
-			if (State == ClientStates.Roomless)
+		    GetPlayerReadyStatus();
+
+            if (State == ClientStates.Roomless)
 			{
 				ChangeState(ClientStates.Lobby);
 			}
@@ -196,6 +199,9 @@ namespace PlayGen.ITAlert.Network
 			if (!_client.IsInRoom)
 			{
 				State = ClientStates.Roomless;
+
+			    PlayerReadyStatus = null;
+			    PlayerColors = null;
 
 				if(CurrentPlayerLeftRoomEvent != null)
 				{
@@ -216,14 +222,16 @@ namespace PlayGen.ITAlert.Network
 		{
 			switch (eventCode)
 			{
-				case (byte)ServerEventCode.ReadyPlayers:
-					if (State != ClientStates.Lobby)
-					{
-						ChangeState(ClientStates.Lobby);
-					}
+				case (byte)ServerEventCode.PlayerList:
+                    var players = (Player[])content;
+                    
+                    PlayerReadyStatus = new Dictionary<int, bool>();
+			        foreach (var player in players)
+			        {
+			            PlayerReadyStatus[player.Id] = player.Status == PlayerStatuses.Ready;
+			        }
 
-					PlayerReadyStatus = (Dictionary<int, bool>) content;
-					if (senderId == _client.Player.ID && PlayerReadyStatus.ContainsKey(senderId))
+                    if (senderId == _client.Player.ID && PlayerReadyStatus.ContainsKey(senderId))
 					{
 						IsReady = PlayerReadyStatus[senderId];
 					}
@@ -231,7 +239,19 @@ namespace PlayGen.ITAlert.Network
 					{
 						PlayerReadyStatusChange();
 					}
-					break;
+
+                    PlayerColors = new Dictionary<int, string>();
+                    foreach (var player in players)
+                    {
+                        PlayerColors[player.Id] = player.Color;
+                    }
+
+                    if (ChangeColorEvent != null)
+                    {
+                        ChangeColorEvent(PlayerColors);
+                    }
+
+                    break;
 
 				case (byte)ServerEventCode.GameEntered:
 					ChangeState(ClientStates.Game);
@@ -262,14 +282,6 @@ namespace PlayGen.ITAlert.Network
 					_simulationState = (Simulation.Simulation)content;
 					
 					break;
-
-				case (byte)ServerEventCode.PlayerColors:
-					PlayerColors = (Dictionary<int, string>)content;
-                    if (ChangeColorEvent != null)
-                    {
-                        ChangeColorEvent(PlayerColors);
-                    }
-                    break;
 			}
 		}
 		#endregion
@@ -280,7 +292,12 @@ namespace PlayGen.ITAlert.Network
 				SerializableTypes.SimulationState, 
 				Serializer.SerializeSimulation, 
 				Serializer.DeserializeSimulation);
-		}
+            
+            client.RegisterSerializableType(typeof(Player),
+                SerializableTypes.Player,
+                Serializer.Serialize,
+                Serializer.Deserialize<Player>);
+        }
 
 		private void ConnectEvents(Client client, VoiceClient voiceClient)
 		{
