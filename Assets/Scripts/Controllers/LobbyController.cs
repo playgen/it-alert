@@ -9,11 +9,11 @@ using UnityEngine;
 
 public class LobbyController : ICommandAction
 {
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     public event Action ReadySuccessEvent;
     public event Action<LobbyPlayer[]> RefreshSuccessEvent;
 
-    public LobbyController(ITAlertClient client)
+    public LobbyController(Client client)
     {
         _client = client;
     }

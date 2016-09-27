@@ -9,10 +9,10 @@ public class LoginState : TickableSequenceState
 	private readonly LoginController _loginController;
 	private readonly RegisterController _registerController;
     private readonly PopupController _popupController;
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     public const string StateName = "LoginState";
 
-	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController, PopupController popupController, ITAlertClient client)
+	public LoginState(LoginStateInterface @interface, LoginController loginController, RegisterController registerController, PopupController popupController, Client client)
 	{
 		_interface = @interface;
 		_loginController = loginController;

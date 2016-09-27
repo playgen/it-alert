@@ -5,7 +5,7 @@ using PlayGen.ITAlert.Network.Client;
 
 public class QuickGameController : ICommandAction
 {
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     private readonly CreateGameController _createGameController;
     private readonly int _defaultMaxPlayers;
 
@@ -14,7 +14,7 @@ public class QuickGameController : ICommandAction
         get { return Guid.NewGuid().ToString().Substring(0, 7); }
     }
 
-    public QuickGameController(ITAlertClient client, CreateGameController createGameController, int defaultMaxPlayers)
+    public QuickGameController(Client client, CreateGameController createGameController, int defaultMaxPlayers)
     {
         _client = client;
         _createGameController = createGameController;

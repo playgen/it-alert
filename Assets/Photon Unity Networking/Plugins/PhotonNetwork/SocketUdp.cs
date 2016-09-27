@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CSharpSocket.cs" company="Exit Games GmbH">
-//   Protocol & Photon Client Lib - Copyright (C) 2013 Exit Games GmbH
+//   Protocol & Photon PhotonClient Lib - Copyright (C) 2013 Exit Games GmbH
 // </copyright>
 // <summary>
 //   Uses the UDP socket for a peer to send and receive enet/Photon messages.

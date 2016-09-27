@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.GameStates
         public const string StateName = "GameState";
 
         private readonly TickableStateController _stateController;
-        private readonly ITAlertClient _client;
+        private readonly Client _client;
         private readonly VoiceController _voiceController;
         private readonly GameStateInterface _interface;
         private readonly LobbyController _lobbyController;
@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.GameStates
             get { return StateName; }
         }
 
-        public GameState(ITAlertClient client, GameStateInterface @interface, LobbyController lobbyController, VoiceController voiceController)
+        public GameState(Client client, GameStateInterface @interface, LobbyController lobbyController, VoiceController voiceController)
         {
             _client = client;
             _interface = @interface;

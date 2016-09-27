@@ -1,400 +1,340 @@
-﻿#define LOGGING_ENABLED
-using System;
-using System.Linq;
-using Photon;
-using UnityEngine;
-using ExitGames.Client.Photon;
+﻿using System;
+using System.Collections.Generic;
+using PlayGen.ITAlert.Network.Client.Voice;
+using PlayGen.ITAlert.Photon.Events;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Serialization;
 
 namespace PlayGen.ITAlert.Network.Client
 {
-    public class Client : PunBehaviour
-    {
-        private string _gameVersion;
-        private string _gamePlugin;
+	public class Client
+	{
+		private readonly PhotonClient _photonClient;
+		private readonly VoiceClient _voiceClient;
 
-        public event Action<byte, object, int> EventRecievedEvent;
-        public event Action ConnectedEvent;
-        public event Action JoinedRoomEvent;
-        public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
-        public event Action LeftRoomEvent;
+		private Simulation.Simulation _simulationState;
 
-        public PhotonPlayer Player
-        {
-            get { return PhotonNetwork.player; }
-        }
-        
-        public bool IsMasterClient
-        {
-            get
-            {
-                if (!PhotonNetwork.connected)
-                {
-                    Log("Not connected.");
-                    return false;
-                }
+		public States.States State { get; private set; }
 
-                return PhotonNetwork.isMasterClient;
-            }
-        }
+		public States.GameStates GameState { get; private set; }
 
-        public bool IsInRoom
-        {
-            get
-            {
-                if (!PhotonNetwork.connected)
-                {
-                    Log("Not connected.");
-                    return false;
-                }
+		public bool IsReady { get; private set; }
 
-                return PhotonNetwork.inRoom;
-            }
-        }
+		public Dictionary<int, bool> PlayerReadyStatus { get; private set; }
 
-        public RoomInfo CurrentRoom
-        {
-            get
-            {
-                if (!PhotonNetwork.connected)
-                {
-                    Log("Not connected.");
-                    return null;
-                }
-                else if (!IsInRoom)
-                {
-                    Log("Not in a room.");
-                    return null;
-                }
+		public Dictionary<int, string> PlayerColors { get; private set; }
 
-                return PhotonNetwork.room;
-            }
-        }
-        
-        public PhotonPlayer[] ListCurrentRoomPlayers
-        {
-            get { return PhotonNetwork.playerList; }
-        }
-        
-        public void Initialize(string gameVersion, string gamePlugin)
-        {
-            _gameVersion = gameVersion;
-            _gamePlugin = gamePlugin;
+		public event Action PlayerReadyStatusChange;
 
-            PhotonNetwork.autoJoinLobby = true;
-            PhotonNetwork.OnEventCall += OnPhotonEvent;
-        }
+		public event Action PlayerRoomParticipationChange;
 
-        public void Connect()
-        {
-            if (PhotonNetwork.connected)
-            {
-                Log("Already Connected");
-            }
-            else
-            {
-                PhotonNetwork.ConnectUsingSettings(_gameVersion);
-            }
-        }
+		public event Action CurrentPlayerLeftRoomEvent;
 
-        public bool RegisterSerializableType(Type customType, byte code, SerializeMethod serializeMethod, DeserializeMethod constructor)
-        {
-            return PhotonPeer.RegisterType(customType, code, serializeMethod, constructor);
-        }
+		public event Action GameEnteredEvent;
 
-        #region Rooms
+		public event Action<Dictionary<int, string>> ChangeColorEvent;
+		
+		public PhotonPlayer Player
+		{
+			get { return _photonClient.Player; }
+		}
 
-        public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return new RoomInfo[0];
-            }
-            else if (!PhotonNetwork.insideLobby)
-            {
-                Log("You need to be in a \"lobby\" to retrieve a list of \"rooms\".");
-                return new RoomInfo[0];
-            }
+		public PhotonPlayer[] ListCurrentRoomPlayers
+		{
+			get { return _photonClient.ListCurrentRoomPlayers; }
+		}
 
-            return PhotonNetwork.GetRoomList().Where(r =>
-                ((ListRoomsFilters.Open & filters)      != ListRoomsFilters.Open    || r.open)
-                && ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed  || !r.open)
-                && ((ListRoomsFilters.Visible & filters)!= ListRoomsFilters.Visible || r.visible)
-                && ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden  || !r.visible)
-            ).ToArray();
-        }        
+		public VoiceClient VoiceClient
+		{
+			get { return _voiceClient; }
+		}
 
-        public void CreateRoom(string roomName, int maxPlayers)
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (IsInRoom)
-            {
-                Log("Already in a room.");
-                return;
-            }
-            else if (ListRooms().Any(r => r.name.ToLower() == roomName.ToLower()))
-            {
-                Log("A room with the name: \"" + roomName + "\" already exists.");
-                return;
-            }
+		public bool IsMasterClient
+		{
+			get { return _photonClient.IsMasterClient; }
+		}
 
-            PhotonNetwork.CreateRoom(roomName,
-                new RoomOptions()
-                {
-                    Plugins = new string[] {_gamePlugin},
-                    MaxPlayers = (byte) maxPlayers
-                },
-                PhotonNetwork.lobby);
-        }
+		public bool IsInRoom
+		{
+			get { return _photonClient.IsInRoom; }
+		}
 
-        public void JoinRoom(string roomName)
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (IsInRoom)
-            {
-                Log("Already in a room.");
-                return;
-            }
-            else if (!ListRooms().Any(r => r.name == roomName))
-            {
-                Log("No room with the name: \"" + roomName + "\" was found.");
-                return;
-            }
-            else if (!ListRooms().Single(r => r.name == roomName).open)
-            {
-                Log("The room: \"" + roomName + "\" is \"closed\". You can only join \"open\" rooms.");
-                return;
-            }
+		public RoomInfo CurrentRoom
+		{
+			get { return _photonClient.CurrentRoom; }
+		}
 
-            PhotonNetwork.JoinRoom(roomName);
-        }
+		public bool HasSimulationState
+		{
+			get { return _simulationState != null; }
+		}
 
-        public void JoinRandomRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (IsInRoom)
-            {
-                Log("Already in a room.");
-                return;
-            }
-            else if (!ListRooms(ListRoomsFilters.Open).Any())
-            {
-                Log("No open rooms to join.");
-                return;
-            }
+		
 
-            PhotonNetwork.JoinRandomRoom();
-        }
+		public Client(PhotonClient photonClient)
+		{
+			_photonClient = photonClient;
+			_voiceClient = new VoiceClient();
 
-        public void LeaveRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
+			RegisterSerializableTypes(_photonClient);
+			ConnectEvents(_photonClient, _voiceClient);
 
-            PhotonNetwork.LeaveRoom();
-        }
+			State = States.States.Disconnected;
+			GameState = States.GameStates.None;
 
-        public void HideRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
-            else if (!PhotonNetwork.room.visible)
-            {
-                Log("Room is already hidden.");
-                return;
-            }
+			_photonClient.Connect();
+		}
 
-            PhotonNetwork.room.visible = false;
-        }
+		#region Rooms
+		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
+		{
+			return _photonClient.ListRooms(filters);
+		}
 
-        public void ShowRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
-            else if (PhotonNetwork.room.visible)
-            {
-                Log("Room is already shown.");
-                return;
-            }
+		public void CreateRoom(string roomName, int maxPlayers)
+		{
+			_photonClient.CreateRoom(roomName, maxPlayers);
+		}
 
-            PhotonNetwork.room.visible = true;
-        }
+		public void JoinRoom(string roomName)
+		{
+			_photonClient.JoinRoom(roomName);
+		}
 
-        public void CloseRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
-            else if (!PhotonNetwork.room.open)
-            {
-                Log("Room is already closed.");
-                return;
-            }
+		public void JoinRandomRoom()
+		{
+			_photonClient.JoinRandomRoom();
+		}
+		
+		public void RefreshPlayers()
+		{
+			_photonClient.RaiseEvent((byte)PlayerEventCode.ListPlayers);
+		}
 
-            PhotonNetwork.room.open = false;
-        }
+		public void QuitGame()
+		{
+			_photonClient.LeaveRoom();
+		}
+		#endregion
 
-        public void OpenRoom()
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
-            else if (PhotonNetwork.room.open)
-            {
-                Log("Room is already open.");
-                return;
-            }
+		#region Lobby
+		public void SetReady(bool isReady)
+		{
+			if (isReady)
+			{
+				_photonClient.RaiseEvent((byte) PlayerEventCode.SetReady);
+			}
+			else
+			{
+				_photonClient.RaiseEvent((byte)PlayerEventCode.SetNotReady);
+			}
+		}
 
-            PhotonNetwork.room.open = true;
-        }
+		public void SetPlayerName(string name)
+		{
+			_photonClient.RaiseEvent((byte)PlayerEventCode.ChangeName, name);
+		}
 
-        #endregion
+		public void SetColor(string color)
+		{
+			_photonClient.RaiseEvent((byte)PlayerEventCode.ChangeColor, color);
+		}
 
-        #region Events
+		public void StartGame(bool forceStart, bool closeRoom = true)
+		{
+			_photonClient.RaiseEvent((byte)PlayerEventCode.StartGame, 
+				new bool[] { forceStart, closeRoom });
+		}
+		#endregion
+		
+		#region Game
 
-        public void RaiseEvent(byte eventCode, object eventContext = null)
-        {
-            if (!PhotonNetwork.connected)
-            {
-                Log("Not connected.");
-                return;
-            }
-            else if (!IsInRoom)
-            {
-                Log("Not in a room.");
-                return;
-            }
+		public void SetGameInitialized()
+		{
+			_photonClient.RaiseEvent((byte) PlayerEventCode.GameInitialized);
+		}
 
-            PhotonNetwork.RaiseEvent(eventCode, eventContext, true, new RaiseEventOptions()
-            {
-                TargetActors = new int[1] {0},
-            });
-        }
+		public virtual void SendGameCommand(Simulation.Commands.Interfaces.ICommand command)
+		{
+			var serializedCommand = Serializer.Serialize(command);
+			_photonClient.RaiseEvent((byte)PlayerEventCode.GameCommand, serializedCommand);
+		}
 
-        private void OnPhotonEvent(byte eventCode, object content, int senderId)
-        {
-            if (EventRecievedEvent == null)
-            {
-                Log("Event Recieved but no event callbacks have been connected.");
-                return;
-            }
+		public void SetGameFinalized()
+		{
+			_photonClient.RaiseEvent((byte)PlayerEventCode.GameFinalized);
+		}
 
-            EventRecievedEvent(eventCode, content, senderId);
-        }
+		public Simulation.Simulation TakeSimulationState()
+		{
+			var simulationState = _simulationState;
+			_simulationState = null;
+			return simulationState;
+		}
+		#endregion
 
-        #endregion
+		#region Callbacks
+		private void OnConnected()
+		{
+			State = States.States.Roomless;
+		}
 
-        #region Callbacks
+		private void OnJoinedRoom()
+		{
+			RefreshLobby();
 
-        public override void OnConnectedToMaster()
-        {
-            if (ConnectedEvent != null)
-            {
-                ConnectedEvent();
-            }
-        }
+			if (State == States.States.Roomless)
+			{
+				ChangeState(States.States.Lobby);
+			}
+			if (PlayerRoomParticipationChange != null)
+			{
+				PlayerRoomParticipationChange();
+			}
+		}
 
-        public override void OnJoinedLobby()
-        {
-            if (ConnectedEvent != null)
-            {
-                ConnectedEvent();
-            }
-        }
+		private void OnLeftRoom()
+		{
+			if (!_photonClient.IsInRoom)
+			{
+				State = States.States.Roomless;
 
+				PlayerReadyStatus = null;
+				PlayerColors = null;
 
-        public override void OnJoinedRoom()
-        {
-            if (JoinedRoomEvent != null)
-            {
-                JoinedRoomEvent();
-            }
-        }
+				if(CurrentPlayerLeftRoomEvent != null)
+				{
+					CurrentPlayerLeftRoomEvent();
+				}
+			}
+			else
+			{
+				RefreshLobby();
+				if (PlayerRoomParticipationChange != null)
+				{
+					PlayerRoomParticipationChange();
+				}
+			}
+		}
 
-        public override void OnPhotonPlayerDisconnected(PhotonPlayer remotePlayer)
-        {
-            if (LeftRoomEvent != null)
-            {
-                LeftRoomEvent();
-            }
-        }
+		private void OnRecievedEvent(byte eventCode, object content, int senderId)
+		{
+			switch (eventCode)
+			{
+				case (byte)ServerEventCode.PlayerList:
+					var players = (Player[])content;
+					
+					PlayerReadyStatus = new Dictionary<int, bool>();
+					foreach (var player in players)
+					{
+						PlayerReadyStatus[player.Id] = player.Status == PlayerStatuses.Ready;
+					}
 
-        public override void OnLeftRoom()
-        {
-            if (LeftRoomEvent != null)
-            {
-                LeftRoomEvent();
-            }
-        }
+					if (senderId == _photonClient.Player.ID && PlayerReadyStatus.ContainsKey(senderId))
+					{
+						IsReady = PlayerReadyStatus[senderId];
+					}
+					if (PlayerReadyStatusChange != null)
+					{
+						PlayerReadyStatusChange();
+					}
 
-        public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
-        {
-            if (OtherPlayerJoinedRoomEvent != null)
-            {
-                OtherPlayerJoinedRoomEvent(newPlayer);
-            }
-        }
+					PlayerColors = new Dictionary<int, string>();
+					foreach (var player in players)
+					{
+						PlayerColors[player.Id] = player.Color;
+					}
 
+					if (ChangeColorEvent != null)
+					{
+						ChangeColorEvent(PlayerColors);
+					}
 
+					break;
 
-        #endregion
+				case (byte)ServerEventCode.GameEntered:
+					ChangeState(States.States.Game);
+					ChangeGameState(States.GameStates.Initializing);
 
-        [System.Diagnostics.Conditional("LOGGING_ENABLED")]
-        private void Log(string message)
-        {
+					if (GameEnteredEvent != null)
+					{
+						GameEnteredEvent();
+					}
+					break;
 
-            Debug.Log("Network.Client: " + message);
-            PopupUtility.LogError("Network.Client: " + message);
-        }
-    }
+				case (byte)ServerEventCode.GameInitialized:
+					_simulationState = (Simulation.Simulation)content;
+					break;
+					
+				case (byte)ServerEventCode.GameTick:
+					if (GameState != States.GameStates.Playing)
+					{
+						ChangeGameState(States.GameStates.Playing);
+					}
+
+					_simulationState = (Simulation.Simulation)content;
+					break;
+
+				case (byte)ServerEventCode.GameFinalized:
+					ChangeGameState(States.GameStates.Finalizing);
+
+					_simulationState = (Simulation.Simulation)content;
+					
+					break;
+			}
+		}
+		#endregion
+
+		private void RegisterSerializableTypes(PhotonClient photonClient)
+		{
+			photonClient.RegisterSerializableType(typeof(Simulation.Simulation), 
+				SerializableTypes.SimulationState, 
+				Serializer.SerializeSimulation, 
+				Serializer.DeserializeSimulation);
+			
+			photonClient.RegisterSerializableType(typeof(Player),
+				SerializableTypes.Player,
+				Serializer.Serialize,
+				Serializer.Deserialize<Player>);
+		}
+
+		private void ConnectEvents(PhotonClient photonClient, VoiceClient voiceClient)
+		{
+			photonClient.ConnectedEvent += OnConnected;
+			photonClient.JoinedRoomEvent += OnJoinedRoom;
+			photonClient.EventRecievedEvent += OnRecievedEvent;
+			photonClient.LeftRoomEvent += OnLeftRoom;
+
+			photonClient.JoinedRoomEvent += voiceClient.OnJoinedRoom;
+			photonClient.LeftRoomEvent += voiceClient.OnLeftRoom;
+		}
+
+		private void ChangeState(States.States newState)
+		{
+			State = newState;
+
+			switch (newState)
+			{
+				case States.States.Lobby:
+					ChangeGameState(States.GameStates.None);
+					ResetLobby();
+					break;
+			}
+		}
+
+		private void ChangeGameState(States.GameStates gameState)
+		{
+			GameState = gameState;
+		}
+
+		private void ResetLobby()
+		{
+			SetReady(false);
+		}
+
+		private void RefreshLobby()
+		{
+			RefreshPlayers();
+		}
+	}
 }

@@ -6,8 +6,8 @@ namespace PlayGen.ITAlert.Network.Client.Voice
 {
     public class VoiceClient
     {
-        private const string VoicePlayerPath = "VoicePlayer";
-        private static Dictionary<int, VoicePlayer> _voicePlayers = new Dictionary<int, VoicePlayer>();
+        private const string VoicePlayerPath = "PhotonVoicePlayer";
+        private static Dictionary<int, PhotonVoicePlayer> _voicePlayers = new Dictionary<int, PhotonVoicePlayer>();
         private PhotonVoiceRecorder _rec;
         
         public bool IsEnabled
@@ -50,9 +50,9 @@ namespace PlayGen.ITAlert.Network.Client.Voice
             PhotonVoiceSettings.Instance.AutoConnect = true;
         }
 
-        public static void RegisterVoicePlayer(int id, VoicePlayer voicePlayer)
+        public static void RegisterVoicePlayer(int id, PhotonVoicePlayer photonVoicePlayer)
         {
-            _voicePlayers[id] = voicePlayer;
+            _voicePlayers[id] = photonVoicePlayer;
         }
 
         public static void UnregisterVoicePlayer(int id)

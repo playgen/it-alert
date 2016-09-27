@@ -250,16 +250,16 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// The Master Client of the current room or null (outside of rooms).
+    /// The Master PhotonClient of the current room or null (outside of rooms).
     /// </summary>
     /// <remarks>
     /// Can be used as "authoritative" client/player to make descisions, run AI or other.
     ///
-    /// If the current Master Client leaves the room (leave/disconnect), the server will quickly assign someone else.
-    /// If the current Master Client times out (closed app, lost connection, etc), messages sent to this client are
-    /// effectively lost for the others! A timeout can take 10 seconds in which no Master Client is active.
+    /// If the current Master PhotonClient leaves the room (leave/disconnect), the server will quickly assign someone else.
+    /// If the current Master PhotonClient times out (closed app, lost connection, etc), messages sent to this client are
+    /// effectively lost for the others! A timeout can take 10 seconds in which no Master PhotonClient is active.
     ///
-    /// Implement the method IPunCallbacks.OnMasterClientSwitched to be called when the Master Client switched.
+    /// Implement the method IPunCallbacks.OnMasterClientSwitched to be called when the Master PhotonClient switched.
     ///
     /// Use PhotonNetwork.SetMasterClient, to switch manually to some other player / client.
     ///
@@ -514,9 +514,9 @@ public static class PhotonNetwork
     [Obsolete("Used for compatibility with Unity networking only.")]
     public static int maxConnections;
 
-    /// <summary>Defines if all clients in a room should load the same level as the Master Client (if that used PhotonNetwork.LoadLevel).</summary>
+    /// <summary>Defines if all clients in a room should load the same level as the Master PhotonClient (if that used PhotonNetwork.LoadLevel).</summary>
     /// <remarks>
-    /// To synchronize the loaded level, the Master Client should use PhotonNetwork.LoadLevel.
+    /// To synchronize the loaded level, the Master PhotonClient should use PhotonNetwork.LoadLevel.
     /// All clients will load the new scene when they get the update or when they join.
     ///
     /// Internally, a Custom Room Property is set for the loaded scene. When a client reads that
@@ -1702,7 +1702,7 @@ public static class PhotonNetwork
         }
         if (networkingPeer.Server != ServerConnection.MasterServer || !connectedAndReady)
         {
-            Debug.LogError("CreateRoom failed. Client is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
+            Debug.LogError("CreateRoom failed. PhotonClient is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
             return false;
         }
 
@@ -1773,7 +1773,7 @@ public static class PhotonNetwork
         }
         if (networkingPeer.Server != ServerConnection.MasterServer || !connectedAndReady)
         {
-            Debug.LogError("JoinRoom failed. Client is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
+            Debug.LogError("JoinRoom failed. PhotonClient is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
             return false;
         }
         if (string.IsNullOrEmpty(roomName))
@@ -1840,7 +1840,7 @@ public static class PhotonNetwork
         }
         if (networkingPeer.Server != ServerConnection.MasterServer || !connectedAndReady)
         {
-            Debug.LogError("JoinOrCreateRoom failed. Client is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
+            Debug.LogError("JoinOrCreateRoom failed. PhotonClient is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
             return false;
         }
         if (string.IsNullOrEmpty(roomName))
@@ -1949,7 +1949,7 @@ public static class PhotonNetwork
         }
         if (networkingPeer.Server != ServerConnection.MasterServer || !connectedAndReady)
         {
-            Debug.LogError("JoinRandomRoom failed. Client is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
+            Debug.LogError("JoinRandomRoom failed. PhotonClient is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
             return false;
         }
 
@@ -1991,7 +1991,7 @@ public static class PhotonNetwork
         }
         if (networkingPeer.Server != ServerConnection.MasterServer || !connectedAndReady)
         {
-            Debug.LogError("ReJoinRoom failed. Client is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
+            Debug.LogError("ReJoinRoom failed. PhotonClient is not on Master Server or not yet ready to call operations. Wait for callback: OnJoinedLobby or OnConnectedToMaster.");
             return false;
         }
         if (string.IsNullOrEmpty(roomName))
@@ -2303,14 +2303,14 @@ public static class PhotonNetwork
 
 
     /// <summary>
-    /// Enables the Master Client to allocate a viewID that is valid for scene objects.
+    /// Enables the Master PhotonClient to allocate a viewID that is valid for scene objects.
     /// </summary>
     /// <returns>A viewID that can be used for a new PhotonView or -1 in case of an error.</returns>
     public static int AllocateSceneViewID()
     {
         if (!PhotonNetwork.isMasterClient)
         {
-            Debug.LogError("Only the Master Client can AllocateSceneViewID(). Check PhotonNetwork.isMasterClient!");
+            Debug.LogError("Only the Master PhotonClient can AllocateSceneViewID(). Check PhotonNetwork.isMasterClient!");
             return -1;
         }
 
@@ -2429,7 +2429,7 @@ public static class PhotonNetwork
     {
         if (!connected || (InstantiateInRoomOnly && !inRoom))
         {
-            Debug.LogError("Failed to Instantiate prefab: " + prefabName + ". Client should be in a room. Current connectionStateDetailed: " + PhotonNetwork.connectionStateDetailed);
+            Debug.LogError("Failed to Instantiate prefab: " + prefabName + ". PhotonClient should be in a room. Current connectionStateDetailed: " + PhotonNetwork.connectionStateDetailed);
             return null;
         }
 
@@ -2489,13 +2489,13 @@ public static class PhotonNetwork
     {
         if (!connected || (InstantiateInRoomOnly && !inRoom))
         {
-            Debug.LogError("Failed to InstantiateSceneObject prefab: " + prefabName + ". Client should be in a room. Current connectionStateDetailed: " + PhotonNetwork.connectionStateDetailed);
+            Debug.LogError("Failed to InstantiateSceneObject prefab: " + prefabName + ". PhotonClient should be in a room. Current connectionStateDetailed: " + PhotonNetwork.connectionStateDetailed);
             return null;
         }
 
         if (!isMasterClient)
         {
-            Debug.LogError("Failed to InstantiateSceneObject prefab: " + prefabName + ". Client is not the MasterClient in this room.");
+            Debug.LogError("Failed to InstantiateSceneObject prefab: " + prefabName + ". PhotonClient is not the MasterClient in this room.");
             return null;
         }
 
@@ -2605,18 +2605,18 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Asks the server to assign another player as Master Client of your current room.
+    /// Asks the server to assign another player as Master PhotonClient of your current room.
     /// </summary>
     /// <remarks>
-    /// RPCs and RaiseEvent have the option to send messages only to the Master Client of a room.
+    /// RPCs and RaiseEvent have the option to send messages only to the Master PhotonClient of a room.
     /// SetMasterClient affects which client gets those messages.
     ///
-    /// This method calls an operation on the server to set a new Master Client, which takes a roundtrip.
-    /// In case of success, this client and the others get the new Master Client from the server.
+    /// This method calls an operation on the server to set a new Master PhotonClient, which takes a roundtrip.
+    /// In case of success, this client and the others get the new Master PhotonClient from the server.
     ///
-    /// SetMasterClient tells the server which current Master Client should be replaced with the new one.
-    /// It will fail, if anything switches the Master Client moments earlier. There is no callback for this
-    /// error. All clients should get the new Master Client assigned by the server anyways.
+    /// SetMasterClient tells the server which current Master PhotonClient should be replaced with the new one.
+    /// It will fail, if anything switches the Master PhotonClient moments earlier. There is no callback for this
+    /// error. All clients should get the new Master PhotonClient assigned by the server anyways.
     ///
     /// See also: PhotonNetwork.masterClient
     ///
@@ -2624,20 +2624,20 @@ public static class PhotonNetwork
     /// The ReceiverGroup.MasterClient (usable in RPCs) is not affected by this (still points to lowest player.ID in room).
     /// Avoid using this enum value (and send to a specific player instead).
     ///
-    /// If the current Master Client leaves, PUN will detect a new one by "lowest player ID". Implement OnMasterClientSwitched
-    /// to get a callback in this case. The PUN-selected Master Client might assign a new one.
+    /// If the current Master PhotonClient leaves, PUN will detect a new one by "lowest player ID". Implement OnMasterClientSwitched
+    /// to get a callback in this case. The PUN-selected Master PhotonClient might assign a new one.
     ///
-    /// Make sure you don't create an endless loop of Master-assigning! When selecting a custom Master Client, all clients
+    /// Make sure you don't create an endless loop of Master-assigning! When selecting a custom Master PhotonClient, all clients
     /// should point to the same player, no matter who actually assigns this player.
     ///
-    /// Locally the Master Client is immediately switched, while remote clients get an event. This means the game
-    /// is tempoarily without Master Client like when a current Master Client leaves.
+    /// Locally the Master PhotonClient is immediately switched, while remote clients get an event. This means the game
+    /// is tempoarily without Master PhotonClient like when a current Master PhotonClient leaves.
     ///
-    /// When switching the Master Client manually, keep in mind that this user might leave and not do it's work, just like
-    /// any Master Client.
+    /// When switching the Master PhotonClient manually, keep in mind that this user might leave and not do it's work, just like
+    /// any Master PhotonClient.
     ///
     /// </remarks>
-    /// <param name="masterClientPlayer">The player to become the next Master Client.</param>
+    /// <param name="masterClientPlayer">The player to become the next Master PhotonClient.</param>
     /// <returns>False when this operation couldn't be done. Must be in a room (not in offlineMode).</returns>
     public static bool SetMasterClient(PhotonPlayer masterClientPlayer)
     {
@@ -2680,8 +2680,8 @@ public static class PhotonNetwork
     ///
     /// The GameObject must be under this client's control:
     /// - Instantiated and owned by this client.
-    /// - Instantiated objects of players who left the room are controlled by the Master Client.
-    /// - Scene-owned game objects are controlled by the Master Client.
+    /// - Instantiated objects of players who left the room are controlled by the Master PhotonClient.
+    /// - Scene-owned game objects are controlled by the Master PhotonClient.
     /// - GameObject can be destroyed while client is not in a room.
     /// </remarks>
     /// <returns>Nothing. Check error debug log for any issues.</returns>
@@ -2714,8 +2714,8 @@ public static class PhotonNetwork
     ///
     /// The GameObject must be under this client's control:
     /// - Instantiated and owned by this client.
-    /// - Instantiated objects of players who left the room are controlled by the Master Client.
-    /// - Scene-owned game objects are controlled by the Master Client.
+    /// - Instantiated objects of players who left the room are controlled by the Master PhotonClient.
+    /// - Scene-owned game objects are controlled by the Master PhotonClient.
     /// - GameObject can be destroyed while client is not in a room.
     /// </remarks>
     /// <returns>Nothing. Check error debug log for any issues.</returns>
@@ -2725,7 +2725,7 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Network-Destroy all GameObjects, PhotonViews and their RPCs of targetPlayer. Can only be called on local player (for "self") or Master Client (for anyone).
+    /// Network-Destroy all GameObjects, PhotonViews and their RPCs of targetPlayer. Can only be called on local player (for "self") or Master PhotonClient (for anyone).
     /// </summary>
     /// <remarks>
     /// Destroying a networked GameObject includes:
@@ -2748,7 +2748,7 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Network-Destroy all GameObjects, PhotonViews and their RPCs of this player (by ID). Can only be called on local player (for "self") or Master Client (for anyone).
+    /// Network-Destroy all GameObjects, PhotonViews and their RPCs of this player (by ID). Can only be called on local player (for "self") or Master PhotonClient (for anyone).
     /// </summary>
     /// <remarks>
     /// Destroying a networked GameObject includes:
@@ -2772,15 +2772,15 @@ public static class PhotonNetwork
         }
         else
         {
-            Debug.LogError("DestroyPlayerObjects() failed, cause players can only destroy their own GameObjects. A Master Client can destroy anyone's. This is master: " + PhotonNetwork.isMasterClient);
+            Debug.LogError("DestroyPlayerObjects() failed, cause players can only destroy their own GameObjects. A Master PhotonClient can destroy anyone's. This is master: " + PhotonNetwork.isMasterClient);
         }
     }
 
     /// <summary>
-    /// Network-Destroy all GameObjects, PhotonViews and their RPCs in the room. Removes anything buffered from the server. Can only be called by Master Client (for anyone).
+    /// Network-Destroy all GameObjects, PhotonViews and their RPCs in the room. Removes anything buffered from the server. Can only be called by Master PhotonClient (for anyone).
     /// </summary>
     /// <remarks>
-    /// Can only be called by Master Client (for anyone).
+    /// Can only be called by Master PhotonClient (for anyone).
     /// Unlike the Destroy methods, this will remove anything from the server's room buffer. If your game
     /// buffers anything beyond Instantiate and RPC calls, that will be cleaned as well from server.
     ///
@@ -2805,12 +2805,12 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Remove all buffered RPCs from server that were sent by targetPlayer. Can only be called on local player (for "self") or Master Client (for anyone).
+    /// Remove all buffered RPCs from server that were sent by targetPlayer. Can only be called on local player (for "self") or Master PhotonClient (for anyone).
     /// </summary>
     /// <remarks>
     /// This method requires either:
     /// - This is the targetPlayer's client.
-    /// - This client is the Master Client (can remove any PhotonPlayer's RPCs).
+    /// - This client is the Master PhotonClient (can remove any PhotonPlayer's RPCs).
     ///
     /// If the targetPlayer calls RPCs at the same time that this is called,
     /// network lag will determine if those get buffered or cleared like the rest.
@@ -2833,12 +2833,12 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Remove all buffered RPCs from server that were sent via targetPhotonView. The Master Client and the owner of the targetPhotonView may call this.
+    /// Remove all buffered RPCs from server that were sent via targetPhotonView. The Master PhotonClient and the owner of the targetPhotonView may call this.
     /// </summary>
     /// <remarks>
     /// This method requires either:
     /// - The targetPhotonView is owned by this client (Instantiated by it).
-    /// - This client is the Master Client (can remove any PhotonView's RPCs).
+    /// - This client is the Master PhotonClient (can remove any PhotonView's RPCs).
     /// </remarks>
     /// <param name="targetPhotonView">RPCs buffered for this PhotonView get removed from server buffer.</param>
     public static void RemoveRPCs(PhotonView targetPhotonView)
@@ -2852,11 +2852,11 @@ public static class PhotonNetwork
     }
 
     /// <summary>
-    /// Remove all buffered RPCs from server that were sent in the targetGroup, if this is the Master Client or if this controls the individual PhotonView.
+    /// Remove all buffered RPCs from server that were sent in the targetGroup, if this is the Master PhotonClient or if this controls the individual PhotonView.
     /// </summary>
     /// <remarks>
     /// This method requires either:
-    /// - This client is the Master Client (can remove any RPCs per group).
+    /// - This client is the Master PhotonClient (can remove any RPCs per group).
     /// - Any other client: each PhotonView is checked if it is under this client's control. Only those RPCs are removed.
     /// </remarks>
     /// <param name="targetGroup">Interest group that gets all RPCs removed.</param>
@@ -3057,7 +3057,7 @@ public static class PhotonNetwork
     /// <summary>Wraps loading a level to pause the network mesage-queue. Optionally syncs the loaded level in a room.</summary>
     /// <remarks>
     /// To sync the loaded level in a room, set PhotonNetwork.automaticallySyncScene to true.
-    /// The Master Client of a room will then sync the loaded level with every other player in the room.
+    /// The Master PhotonClient of a room will then sync the loaded level with every other player in the room.
     ///
     /// While loading levels, it makes sense to not dispatch messages received by other players.
     /// This method takes care of that by setting PhotonNetwork.isMessageQueueRunning = false and enabling
@@ -3087,7 +3087,7 @@ public static class PhotonNetwork
     /// the queue when the level was loaded.
     ///
     /// To sync the loaded level in a room, set PhotonNetwork.automaticallySyncScene to true.
-    /// The Master Client of a room will then sync the loaded level with every other player in the room.
+    /// The Master PhotonClient of a room will then sync the loaded level with every other player in the room.
     ///
     /// You should make sure you don't fire RPCs before you load another scene (which doesn't contain
     /// the same GameObjects and PhotonViews). You can call this in OnJoinedRoom.

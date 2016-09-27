@@ -55,12 +55,12 @@ public class PhotonTransformViewPositionModel
 
     //public bool DrawNetworkGizmo = true;
     //public Color NetworkGizmoColor = Color.red;
-    //public ExitGames.Client.GUI.GizmoType NetworkGizmoType;
+    //public ExitGames.PhotonClient.GUI.GizmoType NetworkGizmoType;
     //public float NetworkGizmoSize = 1f;
 
     //public bool DrawExtrapolatedGizmo = true;
     //public Color ExtrapolatedGizmoColor = Color.yellow;
-    //public ExitGames.Client.GUI.GizmoType ExtrapolatedGizmoType;
+    //public ExitGames.PhotonClient.GUI.GizmoType ExtrapolatedGizmoType;
     //public float ExtrapolatedGizmoSize = 1f;
 
     public bool DrawErrorGizmo = true;

@@ -266,7 +266,7 @@ public class PhotonConverter : Photon.MonoBehaviour
                 text = PregReplace(text, NOT_VAR_WITH_DOT + "NetworkPeerType" + NOT_VAR_WITH_DOT, "$1ConnectionState$2");
                 text = PregReplace(text, NOT_VAR_WITH_DOT + "Network.peerType" + NOT_VAR_WITH_DOT, "$1PhotonNetwork.connectionState$2");
                 text = PregReplace(text, NOT_VAR_WITH_DOT + "ConnectionState.Server" + NOT_VAR_WITH_DOT, "$1PhotonNetwork.isMasterClient$2");
-                text = PregReplace(text, NOT_VAR_WITH_DOT + "ConnectionState.Client" + NOT_VAR_WITH_DOT, "$1PhotonNetwork.isNonMasterClientInRoom$2");
+                text = PregReplace(text, NOT_VAR_WITH_DOT + "ConnectionState.PhotonClient" + NOT_VAR_WITH_DOT, "$1PhotonNetwork.isNonMasterClientInRoom$2");
                 text = PregReplace(text, NOT_VAR_WITH_DOT + "PhotonNetwork.playerList.Length" + NOT_VAR_WITH_DOT, "$1PhotonNetwork.playerList.Count$2");
 
                 /*DROPPED:

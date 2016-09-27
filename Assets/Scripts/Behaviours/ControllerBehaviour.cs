@@ -16,10 +16,10 @@ public class ControllerBehaviour : MonoBehaviour
     {
         DontDestroyOnLoad(transform.gameObject);
 
-        var clientBase = this.gameObject.AddComponent<Client>();
+        var clientBase = this.gameObject.AddComponent<PhotonClient>();
         clientBase.Initialize(_gameVersion, GamePlugin);
 
-        var client = new ITAlertClient(clientBase);
+        var client = new Client(clientBase);
         var factory = new SUGARClient("http://localhost:62312/");
 
         PlayerCommands.Client = client;

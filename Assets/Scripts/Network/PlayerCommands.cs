@@ -22,7 +22,7 @@ public class PlayerCommands
 		}
 	}
 
-	public static ITAlertClient Client { get; set; }
+	public static Client Client { get; set; }
 
 	public static void PickupItem(int itemId, int subsystemId)
 	{

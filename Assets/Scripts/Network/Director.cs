@@ -58,7 +58,7 @@ public class Director : MonoBehaviour
 		get { return _player; }
 	}
 
-	public static ITAlertClient Client { get; set; }
+	public static Client Client { get; set; }
 
 	public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
 

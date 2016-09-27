@@ -11,11 +11,11 @@ public class LobbyState : TickableSequenceState
 {
     private readonly LobbyStateInterface _interface;
     private readonly LobbyController _controller;
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     private readonly VoiceController _voiceController;
     public const string StateName = "LobbyState";
 
-    public LobbyState(LobbyStateInterface @interface, LobbyController controller, ITAlertClient client, VoiceController voiceController)
+    public LobbyState(LobbyStateInterface @interface, LobbyController controller, Client client, VoiceController voiceController)
     {
         _interface = @interface;
         _controller = controller;

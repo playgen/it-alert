@@ -39,7 +39,7 @@ public enum ClientState
     /// <remarks>(will-change) Unless AutoJoinLobby is false.</remarks>
     Authenticated,
 
-    /// <summary>Client is in the lobby of the Master Server and gets room listings.</summary>
+    /// <summary>PhotonClient is in the lobby of the Master Server and gets room listings.</summary>
     /// <remarks>Use Join, Create or JoinRandom to get into a room to play.</remarks>
     JoinedLobby,
 
@@ -88,10 +88,10 @@ public enum ClientState
     /// <summary>Final state for connecting to master without joining the lobby (AutoJoinLobby is false).</summary>
     ConnectedToMaster,
 
-    /// <summary>Client connects to the NameServer. This process includes low level connecting and setting up encryption. When done, state becomes ConnectedToNameServer.</summary>
+    /// <summary>PhotonClient connects to the NameServer. This process includes low level connecting and setting up encryption. When done, state becomes ConnectedToNameServer.</summary>
     ConnectingToNameServer,
 
-    /// <summary>Client is connected to the NameServer and established enctryption already. You should call OpGetRegions or ConnectToRegionMaster.</summary>
+    /// <summary>PhotonClient is connected to the NameServer and established enctryption already. You should call OpGetRegions or ConnectToRegionMaster.</summary>
     ConnectedToNameServer,
 
     /// <summary>When disconnecting from a Photon NameServer.</summary>
@@ -115,7 +115,7 @@ public enum ClientState
         JoinRoom,
         /// <summary>Done on Master Server and (if successful) followed by a Join on Game Server.</summary>
         JoinRandomRoom,
-        /// <summary>Client is either joining or creating a room. On Master- and Game-Server.</summary>
+        /// <summary>PhotonClient is either joining or creating a room. On Master- and Game-Server.</summary>
         JoinOrCreateRoom
     }
 
@@ -123,7 +123,7 @@ public enum ClientState
 /// <summary>
 /// Summarizes the cause for a disconnect. Used in: OnConnectionFail and OnFailedToConnectToPhoton.
 /// </summary>
-/// <remarks>Extracted from the status codes from ExitGames.Client.Photon.StatusCode.</remarks>
+/// <remarks>Extracted from the status codes from ExitGames.PhotonClient.Photon.StatusCode.</remarks>
 /// <seealso cref="PhotonNetworkingMessage"/>
 /// \ingroup publicApi
 public enum DisconnectCause
@@ -1384,7 +1384,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         return lowestActorNumber;
     }
 
-    /// <summary>Fake-sets a new Master Client for this room via RaiseEvent.</summary>
+    /// <summary>Fake-sets a new Master PhotonClient for this room via RaiseEvent.</summary>
     /// <remarks>Does not affect RaiseEvent with target MasterClient but RPC().</remarks>
     internal protected bool SetMasterClient(int playerId, bool sync)
     {
@@ -1409,7 +1409,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         return true;
     }
 
-    /// <summary>Uses a well-known property to set someone new as Master Client in room (requires "Server Side Master Client" feature).</summary>
+    /// <summary>Uses a well-known property to set someone new as Master PhotonClient in room (requires "Server Side Master PhotonClient" feature).</summary>
     public bool SetMasterClient(int nextMasterId)
     {
         Hashtable newProps = new Hashtable() { { GamePropertyKey.MasterClientId, nextMasterId } };
@@ -1776,7 +1776,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
                     if (operationResponse.ReturnCode != 0)
                     {
                         if (PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
-                            Debug.Log(string.Format("JoinRoom failed (room maybe closed by now). Client stays on masterserver: {0}. State: {1}", operationResponse.ToStringFull(), this.State));
+                            Debug.Log(string.Format("JoinRoom failed (room maybe closed by now). PhotonClient stays on masterserver: {0}. State: {1}", operationResponse.ToStringFull(), this.State));
 
                         SendMonoMessage(PhotonNetworkingMessage.OnPhotonJoinRoomFailed, operationResponse.ReturnCode, operationResponse.DebugMessage);
                         break;
@@ -3190,7 +3190,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
         {
             if (!viewZero.isMine)
             {
-                Debug.LogError("Failed to 'network-remove' GameObject. Client is neither owner nor masterClient taking over for owner who left: " + viewZero);
+                Debug.LogError("Failed to 'network-remove' GameObject. PhotonClient is neither owner nor masterClient taking over for owner who left: " + viewZero);
                 return;
             }
 

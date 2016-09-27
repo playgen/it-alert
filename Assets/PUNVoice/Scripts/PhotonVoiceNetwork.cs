@@ -16,7 +16,7 @@ using VoiceIdPair = System.Collections.Generic.KeyValuePair<int, byte>;
 /// Accessed via class static methods.
 /// </summary>
 /// <remarks>
-/// Extends MonoBehaviour and attached to an object in scene to call Photon Voice Client Service() in Update().
+/// Extends MonoBehaviour and attached to an object in scene to call Photon Voice PhotonClient Service() in Update().
 /// </remarks>
 public class PhotonVoiceNetwork : MonoBehaviour
 {
@@ -514,7 +514,7 @@ public class UnityVoiceClient : Voice.Client
     {
         if (PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
         {
-            Debug.LogFormat("PUNVoice: Voice Client state: {0}", state);
+            Debug.LogFormat("PUNVoice: Voice PhotonClient state: {0}", state);
         }
         switch (state)
         {

@@ -70,7 +70,7 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
     public readonly bool isLocal = false;
 
     /// <summary>
-    /// True if this player is the Master Client of the current room.
+    /// True if this player is the Master PhotonClient of the current room.
     /// </summary>
     /// <remarks>
     /// See also: PhotonNetwork.masterClient.
@@ -372,7 +372,7 @@ public class PhotonPlayer : IComparable<PhotonPlayer>, IComparable<int>, IEquata
 	#endregion
 
     /// <summary>
-    /// Brief summary string of the PhotonPlayer. Includes name or player.ID and if it's the Master Client.
+    /// Brief summary string of the PhotonPlayer. Includes name or player.ID and if it's the Master PhotonClient.
     /// </summary>
     public override string ToString()
     {

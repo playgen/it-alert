@@ -72,7 +72,7 @@ public class InRoomTime : MonoBehaviour
             yield return 0;
         }
 
-        ExitGames.Client.Photon.Hashtable startTimeProp = new Hashtable(); // only use ExitGames.Client.Photon.Hashtable for Photon
+        ExitGames.Client.Photon.Hashtable startTimeProp = new Hashtable(); // only use ExitGames.PhotonClient.Photon.Hashtable for Photon
         startTimeProp[StartTimeKey] = PhotonNetwork.ServerTimestamp;
 
         //Debug.Log("Setting roomStartTimestamp property to: " + startTimeProp[StartTimeKey]);

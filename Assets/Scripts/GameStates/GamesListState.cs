@@ -7,12 +7,12 @@ public class GamesListState : TickableSequenceState
     private readonly GamesListController _gameListController;
     private readonly GamesListStateInterface _interface;
     private readonly JoinGameController _joinGameController;
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
 
     public const string StateName = "GameListState";
 
 
-    public GamesListState(GamesListStateInterface @interface, GamesListController gameListController, JoinGameController joinGameController, ITAlertClient client)
+    public GamesListState(GamesListStateInterface @interface, GamesListController gameListController, JoinGameController joinGameController, Client client)
     {
         _interface = @interface;
         _gameListController = gameListController;

@@ -184,7 +184,7 @@ public enum PhotonNetworkingMessage
     OnReceivedRoomListUpdate,
 
     /// <summary>
-    /// Called when entering a room (by creating or joining it). Called on all clients (including the Master Client).
+    /// Called when entering a room (by creating or joining it). Called on all clients (including the Master PhotonClient).
     /// </summary>
     /// <remarks>
     /// This method is commonly used to instantiate player characters.
@@ -381,7 +381,7 @@ public enum PhotonNetworkingMessage
     /// Example: WebRpcResponse webResponse = new WebRpcResponse(operationResponse);
     ///
     /// Please note: Class OperationResponse is in a namespace which needs to be "used":
-    /// using ExitGames.Client.Photon;  // includes OperationResponse (and other classes)
+    /// using ExitGames.PhotonClient.Photon;  // includes OperationResponse (and other classes)
     ///
     /// The OperationResponse.ReturnCode by Photon is:
     ///  0 for "OK"
