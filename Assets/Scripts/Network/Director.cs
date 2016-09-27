@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Debugging.Scripts;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Contracts;

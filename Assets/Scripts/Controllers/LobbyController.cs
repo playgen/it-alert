@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using UnityEngine;
 
 public class LobbyController : ICommandAction

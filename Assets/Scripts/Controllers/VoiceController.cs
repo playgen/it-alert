@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Network.Client.Voice;
 
 public class VoiceController
 {

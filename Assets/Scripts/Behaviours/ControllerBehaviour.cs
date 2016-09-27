@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using GameWork.States;
 using PlayGen.ITAlert.GameStates;
-using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.SUGAR.Client;
 
 public class ControllerBehaviour : MonoBehaviour

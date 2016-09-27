@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Simulation.Commands;
 using UnityEngine;
 

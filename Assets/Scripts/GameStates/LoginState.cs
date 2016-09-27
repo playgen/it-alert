@@ -1,6 +1,7 @@
 ﻿using GameWork.Commands.Accounts;
 using GameWork.States;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 
 public class LoginState : TickableSequenceState
 {

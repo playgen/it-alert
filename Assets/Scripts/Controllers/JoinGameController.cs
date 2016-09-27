@@ -1,6 +1,7 @@
 ﻿using System;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 
 public class JoinGameController : ICommandAction
 {

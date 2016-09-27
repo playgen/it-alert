@@ -6,6 +6,7 @@ using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client.Voice;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 

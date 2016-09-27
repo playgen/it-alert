@@ -1,6 +1,6 @@
-﻿namespace PlayGen.ITAlert.Network
+﻿namespace PlayGen.ITAlert.Network.Client.States
 {
-    public enum ClientStates
+    public enum States
     {
         Disconnected,
 

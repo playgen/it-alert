@@ -5,7 +5,7 @@ using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
 
-namespace PlayGen.ITAlert.Network
+namespace PlayGen.ITAlert.Network.Client
 {
     public class Client : PunBehaviour
     {
