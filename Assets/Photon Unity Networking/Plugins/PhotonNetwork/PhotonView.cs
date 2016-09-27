@@ -32,7 +32,7 @@ public enum OnSerializeRigidBody { OnlyVelocity, OnlyAngularVelocity, All }
 public enum OwnershipOption
 {
     /// <summary>
-    /// Ownership is fixed. Instantiated objects stick with their creator, scene objects always belong to the Master Client.
+    /// Ownership is fixed. Instantiated objects stick with their creator, scene objects always belong to the Master PhotonClient.
     /// </summary>
     Fixed,
     /// <summary>
@@ -179,7 +179,7 @@ public class PhotonView : Photon.MonoBehaviour
     /// <summary>True if the PhotonView was loaded with the scene (game object) or instantiated with InstantiateSceneObject.</summary>
     /// <remarks>
     /// Scene objects are not owned by a particular player but belong to the scene. Thus they don't get destroyed when their
-    /// creator leaves the game and the current Master Client can control them (whoever that is).
+    /// creator leaves the game and the current Master PhotonClient can control them (whoever that is).
     /// The ownerId is 0 (player IDs are 1 and up).
     /// </remarks>
     public bool isSceneView

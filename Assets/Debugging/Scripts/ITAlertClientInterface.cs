@@ -13,7 +13,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
     [SerializeField]
     private string _gameVersion = "1";
-    private ITAlertClient _client;
+    private Client _client;
 
     private Simulation _lastSimulation;
 
@@ -25,10 +25,10 @@ public class ITAlertClientInterface : MonoBehaviour
 
     private void Awake()
     {
-        var clientBase = this.gameObject.AddComponent<Client>();
+        var clientBase = this.gameObject.AddComponent<PhotonClient>();
         clientBase.Initialize(_gameVersion, GamePlugin);
 
-        _client = new ITAlertClient(clientBase);
+        _client = new Client(clientBase);
     }
 
     private void OnGUI()

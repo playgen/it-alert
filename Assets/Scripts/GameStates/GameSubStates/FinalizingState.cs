@@ -8,14 +8,14 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 	{
 		public const string StateName = "Finalizing";
 
-		private readonly ITAlertClient _networkClient;
+		private readonly Client _networkClient;
 
 		public override string Name
 		{
 			get { return StateName; }
 		}
 
-		public FinalizingState(ITAlertClient networkClient)
+		public FinalizingState(Client networkClient)
 		{
 			_networkClient = networkClient;
 		}

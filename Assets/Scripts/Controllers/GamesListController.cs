@@ -5,11 +5,11 @@ using PlayGen.ITAlert.Network.Client;
 
 public class GamesListController : ICommandAction
 {
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     public event Action<RoomInfo[]> GamesListSuccessEvent;
     public event Action<string> GamesListFailedEvent;
 
-    public GamesListController(ITAlertClient client)
+    public GamesListController(Client client)
     {
         _client = client;
     }

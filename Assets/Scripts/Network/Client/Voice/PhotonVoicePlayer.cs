@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Network.Client.Voice
     [RequireComponent(typeof(PhotonView))]
     [RequireComponent(typeof(PhotonVoiceRecorder))]
     [RequireComponent(typeof(PhotonVoiceSpeaker))]
-    public class VoicePlayer : MonoBehaviour
+    public class PhotonVoicePlayer : MonoBehaviour
     {
         private PhotonView _photonView;
         private PhotonVoiceRecorder _photonVoiceRecorder;

@@ -6,10 +6,10 @@ public class MenuState : TickableSequenceState
 {
     private readonly MenuStateInterface _interface;
     private readonly QuickGameController _controller;
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     public const string StateName = "MenuState";
 
-    public MenuState(MenuStateInterface @interface, QuickGameController controller, ITAlertClient client)
+    public MenuState(MenuStateInterface @interface, QuickGameController controller, Client client)
     {
         _interface = @interface;
         _controller = controller;

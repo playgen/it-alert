@@ -136,7 +136,7 @@ public class ServerSettingsInspector : Editor
         }
 
         EditorGUI.indentLevel = 0;
-        EditorGUILayout.LabelField("Client Settings");
+        EditorGUILayout.LabelField("PhotonClient Settings");
         EditorGUI.indentLevel = 1;
         //EditorGUILayout.LabelField("game version");
         settings.JoinLobby = EditorGUILayout.Toggle("Auto-Join Lobby", settings.JoinLobby);

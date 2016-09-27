@@ -10,7 +10,7 @@ public class VoiceController
 {
     private readonly VoiceClient _voiceClient;
 
-    public VoiceController(ITAlertClient client)
+    public VoiceController(Client client)
     {
         _voiceClient = client.VoiceClient;
     }

@@ -25,7 +25,7 @@ GameObject:
   - 114: {fileID: 114000011401837048}
   - 114: {fileID: 114000012107007148}
   m_Layer: 0
-  m_Name: VoicePlayer
+  m_Name: PhotonVoicePlayer
   m_TagString: PhotonVoicePlayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

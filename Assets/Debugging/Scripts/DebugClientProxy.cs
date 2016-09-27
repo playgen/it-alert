@@ -2,10 +2,10 @@
 
 namespace Assets.Debugging.Scripts
 {
-	public class DebugClientProxy : ITAlertClient
+	public class DebugClientProxy : Client
 	{
 		public DebugClientProxy() 
-			: base(new Client())
+			: base(new PhotonClient())
 		{
 		}
 

@@ -8,11 +8,11 @@ public class CreateGameState : TickableSequenceState
 {
     private readonly CreateGameController _controller;
     private readonly CreateGameStateInterface _interface;
-    private readonly ITAlertClient _client;
+    private readonly Client _client;
     public const string StateName = "CreateGameState";
 
 
-    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller, ITAlertClient client)
+    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller, Client client)
     {
         _interface = @interface;
         _controller = controller;

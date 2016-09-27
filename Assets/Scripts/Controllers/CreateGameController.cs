@@ -4,9 +4,9 @@ using PlayGen.ITAlert.Network.Client;
 
 public class CreateGameController : ICommandAction
 {
-    private ITAlertClient _client;
+    private Client _client;
 
-    public CreateGameController(ITAlertClient client)
+    public CreateGameController(Client client)
     {
         _client = client;
     }

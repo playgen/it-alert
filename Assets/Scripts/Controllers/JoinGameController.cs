@@ -5,9 +5,9 @@ using PlayGen.ITAlert.Network.Client;
 
 public class JoinGameController : ICommandAction
 {
-	private readonly ITAlertClient _client;
+	private readonly Client _client;
 
-	public JoinGameController(ITAlertClient client)
+	public JoinGameController(Client client)
 	{
 		_client = client;
 	}

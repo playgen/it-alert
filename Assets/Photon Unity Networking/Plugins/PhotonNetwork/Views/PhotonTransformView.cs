@@ -152,7 +152,7 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
     //        return;
     //    }
 
-    //    ExitGames.Client.GUI.GizmoTypeDrawer.Draw( m_PositionControl.GetNetworkPosition(),
+    //    ExitGames.PhotonClient.GUI.GizmoTypeDrawer.Draw( m_PositionControl.GetNetworkPosition(),
     //                                               m_PositionModel.NetworkGizmoType,
     //                                               m_PositionModel.NetworkGizmoColor,
     //                                               m_PositionModel.NetworkGizmoSize );
@@ -167,7 +167,7 @@ public class PhotonTransformView : MonoBehaviour, IPunObservable
     //        return;
     //    }
 
-    //    ExitGames.Client.GUI.GizmoTypeDrawer.Draw( m_PositionControl.GetNetworkPosition() + m_PositionControl.GetExtrapolatedPositionOffset(),
+    //    ExitGames.PhotonClient.GUI.GizmoTypeDrawer.Draw( m_PositionControl.GetNetworkPosition() + m_PositionControl.GetExtrapolatedPositionOffset(),
     //                                               m_PositionModel.ExtrapolatedGizmoType,
     //                                               m_PositionModel.ExtrapolatedGizmoColor,
     //                                               m_PositionModel.ExtrapolatedGizmoSize );

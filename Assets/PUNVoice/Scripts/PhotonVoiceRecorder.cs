@@ -197,7 +197,7 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
     }
 
     /// <summary>If AudioGroup != 0, recorders's audio data is sent only to clients listening to this group.</summary>
-    /// <see PhotonVoiceNetwork.Client.ChangeAudioGroups/>
+    /// <see PhotonVoiceNetwork.PhotonClient.ChangeAudioGroups/>
     public byte AudioGroup
     {
         get { return voice.AudioGroup; }

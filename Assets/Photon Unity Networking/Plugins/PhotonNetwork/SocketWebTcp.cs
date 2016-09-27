@@ -15,7 +15,7 @@ using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 #if UNITY_WEBGL || UNITY_XBOXONE
 
-namespace ExitGames.Client.Photon
+namespace ExitGames.PhotonClient.Photon
 {
     /// <summary>
     /// Internal class to encapsulate the network i/o functionality for the realtime libary.
