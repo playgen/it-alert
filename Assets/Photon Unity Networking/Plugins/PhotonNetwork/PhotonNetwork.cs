@@ -2148,7 +2148,7 @@ public static class PhotonNetwork
         {
             if (room == null)
             {
-                Debug.LogWarning("PhotonNetwork.room is null. You don't have to call LeaveRoom() when you're not in one. State: " + PhotonNetwork.connectionStateDetailed);
+                Debug.LogWarning("PhotonNetwork.room is null. You don't have to call Leave() when you're not in one. State: " + PhotonNetwork.connectionStateDetailed);
             }
             return networkingPeer.OpLeave();
         }

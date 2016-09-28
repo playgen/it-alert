@@ -57,8 +57,8 @@ namespace PlayGen.ITAlert.GameStates
             Director.Client = _client;
 
             _interface.Initialize();
-            _interface.SetPlayerColors(_client.PlayerColors);
-            _interface.PopulateChatPanel(_client.ListCurrentRoomPlayers);
+            _interface.SetPlayerColors(_client.CurrentRoom.PlayerColors);
+            _interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
         }
 
         public override void Exit()
@@ -73,7 +73,7 @@ namespace PlayGen.ITAlert.GameStates
         {
             _voiceController.HandleVoiceInput();
 
-            switch (_client.GameState)
+            switch (_client.CurrentRoom.CurrentGame.State)
             {
                 case Network.Client.States.GameStates.Initializing:
                     if (_stateController.CurrentStateName != InitializingState.StateName)

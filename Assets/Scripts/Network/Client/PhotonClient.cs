@@ -14,6 +14,7 @@ namespace PlayGen.ITAlert.Network.Client
 
         public event Action<byte, object, int> EventRecievedEvent;
         public event Action ConnectedEvent;
+        public event Action DisconnectedEvent;
         public event Action JoinedRoomEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
         public event Action LeftRoomEvent;
@@ -352,6 +353,14 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
+        public override void OnDisconnectedFromPhoton()
+        {
+            if (DisconnectedEvent != null)
+            {
+                DisconnectedEvent();
+            }
+        }
+
 
         public override void OnJoinedRoom()
         {
@@ -385,14 +394,11 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
-
-
         #endregion
 
         [System.Diagnostics.Conditional("LOGGING_ENABLED")]
         private void Log(string message)
         {
-
             Debug.Log("Network.PhotonClient: " + message);
             PopupUtility.LogError("Network.PhotonClient: " + message);
         }

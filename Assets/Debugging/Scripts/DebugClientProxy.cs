@@ -2,6 +2,9 @@
 
 namespace Assets.Debugging.Scripts
 {
+    // todo modify in accordance with refactor
+
+    /*
 	public class DebugClientProxy : Client
 	{
 		public DebugClientProxy() 
@@ -15,4 +18,5 @@ namespace Assets.Debugging.Scripts
 
 		}
 	}
+    */
 }

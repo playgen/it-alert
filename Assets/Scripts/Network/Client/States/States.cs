@@ -4,7 +4,7 @@
     {
         Disconnected,
 
-        Roomless,
+        Connected,
 
         Lobby,
 

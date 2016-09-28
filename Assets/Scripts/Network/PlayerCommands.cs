@@ -33,7 +33,8 @@ public class PlayerCommands
 			ItemId = itemId,
 			LocationId = subsystemId
 		};
-		Client.SendGameCommand(requestPickupItemCommand);
+
+        Client.CurrentRoom.CurrentGame.SendGameCommand(requestPickupItemCommand);
 		// todo process locally too and resync later Director.RequestPickupItem(item.Id, subsystem.Id);
 	}
 
@@ -46,7 +47,8 @@ public class PlayerCommands
 			PlayerId = Director.Player.Id,
 			DestinationId = subsystemId
 		};
-		Client.SendGameCommand(requestMovePlayerCommand);
+        
+        Client.CurrentRoom.CurrentGame.SendGameCommand(requestMovePlayerCommand);
 		// todo process locally too and resync laterDirector.RequestMovePlayer(destination.Id);
 	}
 
@@ -59,7 +61,8 @@ public class PlayerCommands
 			PlayerId = Director.Player.Id,
 			ItemId = itemId
 		};
-		Client.SendGameCommand(requestDropItemCommand);
+        
+        Client.CurrentRoom.CurrentGame.SendGameCommand(requestDropItemCommand);
 		// todo process locally too and resync laterDirector.RequestDropItem(item.Id);
 	}
 
@@ -72,7 +75,8 @@ public class PlayerCommands
 			PlayerId = Director.Player.Id,
 			ItemId = itemId
 		};
-		Client.SendGameCommand(requestActivateItemCommand);
+
+        Client.CurrentRoom.CurrentGame.SendGameCommand(requestActivateItemCommand);
 		// todo process locally too and resync later Director.RequestActivateItem(item.Id);
 	}
 

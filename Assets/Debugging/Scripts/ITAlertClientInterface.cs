@@ -37,7 +37,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
         switch (_client.State)
         {
-            case States.Roomless:
+            case States.Connected:
                 ShowJoinCreateRoomOptions();
                 break;
 
@@ -47,11 +47,10 @@ public class ITAlertClientInterface : MonoBehaviour
                 break;
 
             case States.Game:
-
                 ShowGameState();
                 ShowVoiceOptions();
 
-                switch (_client.GameState)
+                switch (_client.CurrentRoom.CurrentGame.State)
                 {
                     case GameStates.Initializing:
                         ShowGameInitializingOptions();
@@ -68,76 +67,6 @@ public class ITAlertClientInterface : MonoBehaviour
 
                 break;
         }
-    }
-
-    private void ShowVoiceOptions()
-    {
-        GUILayout.BeginVertical("box");
-        {
-            GUILayout.Label("----Voice----");
-
-            GUILayout.BeginVertical("box");
-            {
-                GUILayout.Label("Talking:");
-
-                foreach (var kvp in VoiceClient.TransmittingStatuses)
-                {
-                    GUILayout.Label(kvp.Key + " is " + (kvp.Value ? "Talking" : "Not Talking"));
-                }
-            }
-            GUILayout.EndVertical();
-
-
-            if (GUILayout.Button("Start Transmitting"))
-            {
-                _client.VoiceClient.StartTransmission();
-            }
-            else if (GUILayout.Button("Stop Transmitting"))
-            {
-                _client.VoiceClient.StopTransmission();
-            }
-        }
-        GUILayout.EndVertical();
-    }
-
-
-    private void ShowLobbyOptions()
-    {
-        GUILayout.BeginVertical("box");
-        {
-            GUILayout.Label("----Lobby----");
-
-            if (!_client.IsReady)
-            {
-                if (GUILayout.Button("Set Ready"))
-                {
-                    _client.SetReady(true);
-                }
-            }
-
-            if (_client.PlayerReadyStatus != null)
-            {
-                var readyCount = _client.PlayerReadyStatus.Values.Count(v => v);
-                GUILayout.Label(readyCount + " / " + _client.ListCurrentRoomPlayers.Length);
-
-                if (_client.IsReady)
-                {
-                    if (GUILayout.Button("Set Not Ready"))
-                    {
-                        _client.SetReady(false);
-                    }
-                    else if (GUILayout.Button("Start if all ready"))
-                    {
-                        _client.StartGame(false);
-                    }
-                    else if (GUILayout.Button("Force Start"))
-                    {
-                        _client.StartGame(true);
-                    }
-                }
-            }
-        }
-        GUILayout.EndVertical();
     }
 
     private void ShowJoinCreateRoomOptions()
@@ -189,17 +118,92 @@ public class ITAlertClientInterface : MonoBehaviour
         GUILayout.EndVertical();
     }
 
+    private void ShowVoiceOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Voice----");
+
+            GUILayout.BeginVertical("box");
+            {
+                GUILayout.Label("Talking:");
+
+                foreach (var kvp in VoiceClient.TransmittingStatuses)
+                {
+                    GUILayout.Label(kvp.Key + " is " + (kvp.Value ? "Talking" : "Not Talking"));
+                }
+            }
+            GUILayout.EndVertical();
+
+
+            if (GUILayout.Button("Start Transmitting"))
+            {
+                _client.CurrentRoom.VoiceClient.StartTransmission();
+            }
+            else if (GUILayout.Button("Stop Transmitting"))
+            {
+                _client.CurrentRoom.VoiceClient.StopTransmission();
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+    private void ShowLobbyOptions()
+    {
+        GUILayout.BeginVertical("box");
+        {
+            GUILayout.Label("----Lobby----");
+
+            if (GUILayout.Button("Leave Room"))
+            {
+                _client.CurrentRoom.Leave();
+            }
+
+            if (!_client.CurrentRoom.IsReady)
+            {
+                if (GUILayout.Button("Set Ready"))
+                {
+                    _client.CurrentRoom.SetReady(true);
+                }
+            }
+
+            if (_client.CurrentRoom.PlayerReadyStatus != null)
+            {
+                var readyCount = _client.CurrentRoom.PlayerReadyStatus.Values.Count(v => v);
+                GUILayout.Label(readyCount + " / " + _client.CurrentRoom.ListCurrentRoomPlayers.Length);
+
+                if (_client.CurrentRoom.IsReady)
+                {
+                    if (GUILayout.Button("Set Not Ready"))
+                    {
+                        _client.CurrentRoom.SetReady(false);
+                    }
+                    else if (GUILayout.Button("Start if all ready"))
+                    {
+                        _client.CurrentRoom.StartGame(false);
+                    }
+                    else if (GUILayout.Button("Force Start"))
+                    {
+                        _client.CurrentRoom.StartGame(true);
+                    }
+                }
+            }
+        }
+        GUILayout.EndVertical();
+    }
+
+  
     private void ShowGameState()
     {
         GUILayout.BeginVertical("box");
         {
             GUILayout.Label("----Game State----");
 
-            GUILayout.Label("Pending Game State: " + _client.HasSimulationState);
+            GUILayout.Label("Pending Game State: " + _client.CurrentRoom.CurrentGame.HasSimulationState);
 
-            if (_client.HasSimulationState)
+            if (_client.CurrentRoom.CurrentGame.HasSimulationState)
             {
-                _lastSimulation = _client.TakeSimulationState();
+                _lastSimulation = _client.CurrentRoom.CurrentGame.TakeSimulationState();
             }
 
             if (_lastSimulation != null)
@@ -218,7 +222,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (GUILayout.Button("Set Initialized."))
             {
-                _client.SetGameInitialized();
+                _client.CurrentRoom.CurrentGame.SetGameInitialized();
             }
         }
         GUILayout.EndVertical();
@@ -229,11 +233,6 @@ public class ITAlertClientInterface : MonoBehaviour
         GUILayout.BeginVertical("box");
         {
             GUILayout.Label("----Playing----");
-
-            if (GUILayout.Button("Send Dummy Command"))
-            {
-                //_client.SendGameCommand(new DummyCommand());
-            }
         }
         GUILayout.EndVertical();
     }
@@ -246,7 +245,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
             if (GUILayout.Button("Set Finalized."))
             {
-                _client.SetGameFinalized();
+                _client.CurrentRoom.CurrentGame.SetGameFinalized();
             }
         }
         GUILayout.EndVertical();
