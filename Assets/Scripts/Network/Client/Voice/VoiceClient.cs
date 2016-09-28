@@ -7,6 +7,7 @@ namespace PlayGen.ITAlert.Network.Client.Voice
     public class VoiceClient
     {
         private const string VoicePlayerPath = "PhotonVoicePlayer";
+        private readonly PhotonClient _photonClient;
         private static Dictionary<int, PhotonVoicePlayer> _voicePlayers = new Dictionary<int, PhotonVoicePlayer>();
         private PhotonVoiceRecorder _rec;
         
@@ -120,6 +121,5 @@ namespace PlayGen.ITAlert.Network.Client.Voice
         {
             Debug.Log("Network.VoiceClient: " + message);
         }
-
     }
 }

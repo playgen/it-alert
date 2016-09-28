@@ -94,9 +94,11 @@ public class Director : MonoBehaviour
 		//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
 		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
 		_player.EnableDecorator();
-		PlayerCommands.Client =	new DebugClientProxy();
-	}
-	private static Simulation InitializeTestSimulation()
+
+        // todo fixup for refactor
+        //PlayerCommands.Client =	new DebugClientProxy();
+    }
+    private static Simulation InitializeTestSimulation()
 	{
 		var width = 6;
 		var height = 3;

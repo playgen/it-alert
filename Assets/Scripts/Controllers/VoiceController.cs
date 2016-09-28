@@ -8,11 +8,13 @@ using PlayGen.ITAlert.Network.Client.Voice;
 
 public class VoiceController
 {
-    private readonly VoiceClient _voiceClient;
+    private VoiceClient _voiceClient;
+    private readonly Client _client;
 
     public VoiceController(Client client)
     {
-        _voiceClient = client.VoiceClient;
+        _client = client;
+        _client.JoinedRoomEvent += OnJoinedRoom;
     }
 
     public void HandleVoiceInput()
@@ -25,5 +27,10 @@ public class VoiceController
         {
             _voiceClient.StopTransmission();
         }
+    }
+
+    private void OnJoinedRoom(ClientRoom room)
+    {
+        _voiceClient = room.VoiceClient;
     }
 }

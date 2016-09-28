@@ -23,7 +23,7 @@ public class LoginState : TickableSequenceState
 
 	private void OnLoginSucceeded(string name)
 	{
-        _client.SetPlayerName(name);
+        _client.CurrentRoom.SetPlayerName(name);
         NextState();
 	}
 

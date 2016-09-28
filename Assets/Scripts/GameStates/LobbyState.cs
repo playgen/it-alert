@@ -38,28 +38,35 @@ public class LobbyState : TickableSequenceState
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
-        _client.PlayerReadyStatusChange += _interface.RefreshPlayerList;
+        _client.CurrentRoom.PlayerReadyStatusChange += _interface.RefreshPlayerList;
         _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
-        _client.ChangeColorEvent += _interface.SetPlayerColors;
+        _client.CurrentRoom.ChangeColorEvent += _interface.SetPlayerColors;
         _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
-        _client.GameEnteredEvent += NextState;
+        _client.CurrentRoom.GameEnteredEvent += OnGameEntered;
+        
+        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.RoomInfo.maxPlayers));
+        _interface.SetRoomName(_client.CurrentRoom.RoomInfo.name);
 
-        _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.maxPlayers));
-        _interface.SetRoomName(_client.CurrentRoom.name);
-        _interface.Enter();
+        _interface.Enter();        
     }
 
     public override void Exit()
     {
         _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
-        _client.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
-        _client.GameEnteredEvent -= NextState;
+        _client.CurrentRoom.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
+        _client.CurrentRoom.GameEnteredEvent -= OnGameEntered;
 
         _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
         _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
         _client.CurrentPlayerLeftRoomEvent -= _interface.OnLeaveSuccess;
-        _client.ChangeColorEvent -= _interface.SetPlayerColors;
+        _client.CurrentRoom.ChangeColorEvent -= _interface.SetPlayerColors;
+
         _interface.Exit();
+    }
+
+    private void OnGameEntered(ClientGame game)
+    {
+        NextState();
     }
 
     public override void NextState()
@@ -118,12 +125,12 @@ public class LobbyState : TickableSequenceState
             var commandResolver = new StateCommandResolver();
             commandResolver.HandleSequenceStates(command, this);
         }
-
-        if (_client.IsMasterClient)
+        
+        if (_client.CurrentRoom.IsMasterClient)
         {
-            if (_client.PlayerReadyStatus != null && _client.PlayerReadyStatus.Values.All(v => v))
+            if (_client.CurrentRoom.PlayerReadyStatus != null && _client.CurrentRoom.PlayerReadyStatus.Values.All(v => v))
             {
-                _client.StartGame(false);
+                _client.CurrentRoom.StartGame(false);
             }
         }
 

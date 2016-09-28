@@ -20,9 +20,9 @@ public class LobbyController : ICommandAction
 
     public void RefreshPlayerList()
     {
-        var playerReadyStatus = _client.PlayerReadyStatus;
-        var playerColors = _client.PlayerColors;
-        var players = _client.ListCurrentRoomPlayers;
+        var playerReadyStatus = _client.CurrentRoom.PlayerReadyStatus;
+        var playerColors = _client.CurrentRoom.PlayerColors;
+        var players = _client.CurrentRoom.ListCurrentRoomPlayers;
         var lobbyPlayers = new List<LobbyPlayer>();
         foreach (var photonPlayer in players)
         {
@@ -35,39 +35,38 @@ public class LobbyController : ICommandAction
 
         RefreshSuccessEvent(lobbyPlayers.ToArray());
 
-        if (_client.IsMasterClient)
+        if (_client.CurrentRoom.IsMasterClient)
         {
             var numReadyPlayers = playerReadyStatus.Values.Count(b => b.Equals(true));
             Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
-            if (numReadyPlayers == _client.CurrentRoom.maxPlayers)
+            if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
                 Debug.Log("All Ready!");
-                _client.StartGame(true); // force start = true?
+                _client.CurrentRoom.StartGame(true); // force start = true?
             }
         }
-
     }
 
     public void LeaveLobby()
     {
-        _client.QuitGame();
+        _client.CurrentRoom.Leave();
     }
 
     public void ReadyPlayer()
     {
-        _client.SetReady(true);
+        _client.CurrentRoom.SetReady(true);
         ReadySuccessEvent();
     }
 
     public void UnreadyPlayer()
     {
-        _client.SetReady(false);
+        _client.CurrentRoom.SetReady(false);
         ReadySuccessEvent();
     }
 
     public void SetColor(string colorHex)
     {
-        _client.SetColor(colorHex);
+        _client.CurrentRoom.SetColor(colorHex);
         RefreshPlayerList();
     }
 

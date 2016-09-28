@@ -39,9 +39,9 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
         public override void Tick(float deltaTime)
         {
-            if (_networkClient.HasSimulationState)
+            if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
             {
-                Director.UpdateSimulation(_networkClient.TakeSimulationState());
+                Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
                 Director.Refresh();
             }
         }
