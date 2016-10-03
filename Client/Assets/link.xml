@@ -1,0 +1,3 @@
+<linker>
+       <assembly fullname="PlayGen" preserve="all"/>
+</linker>

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b9f2be2521b2f41429a52f29199c172a
+timeCreated: 1458657223
+licenseType: Free
+NativeFormatImporter:
+  userData: "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<!-- Generator: Adobe Illustrator
+    18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->\r\n<svg version=\"1.1\"
+    id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"
+    x=\"0px\" y=\"0px\"\r\n\t viewBox=\"0 0 2048 1536\" enable-background=\"new 0
+    0 2048 1536\" xml:space=\"preserve\">\r\n<circle fill=\"#6D6E71\" cx=\"1023.1\"
+    cy=\"768.2\" r=\"31.2\"/>\r\n<g>\r\n\t<path fill=\"#FFFFFF\" d=\"M1021.9,746l-15.1,15.1c-0.3,0.3-0.5,0.8-0.5,1.2c0,0.5,0.2,0.9,0.5,1.2c0.3,0.4,0.8,0.5,1.2,0.5h8v12.4\r\n\t\tc0,0.5,0.2,0.9,0.5,1.2c0.4,0.4,0.8,0.5,1.2,0.5h10.6c0.5,0,0.9-0.2,1.2-0.5c0.4-0.4,0.5-0.8,0.5-1.2v-12.4h8\r\n\t\tc0.5,0,0.9-0.2,1.2-0.5c0.4-0.4,0.5-0.8,0.5-1.2c0-0.5-0.2-0.9-0.5-1.2l-15.1-15.1c-0.3-0.4-0.8-0.5-1.2-0.5\r\n\t\tS1022.2,745.7,1021.9,746L1021.9,746z
+    M1021.9,746\"/>\r\n\t<path fill=\"#FFFFFF\" d=\"M1028.3,784H1018c-1.1,0-1.9-0.9-1.9-1.9l0,0c0-1.1,0.9-1.9,1.9-1.9h10.3c1.1,0,1.9,0.9,1.9,1.9l0,0\r\n\t\tC1030.3,783.1,1029.4,784,1028.3,784z\"/>\r\n\t<path
+    fill=\"#FFFFFF\" d=\"M1028.3,789.6H1018c-1.1,0-1.9-0.9-1.9-1.9l0,0c0-1.1,0.9-1.9,1.9-1.9h10.3c1.1,0,1.9,0.9,1.9,1.9l0,0\r\n\t\tC1030.3,788.8,1029.4,789.6,1028.3,789.6z\"/>\r\n</g>\r\n</svg>\r\n"
+  assetBundleName: 
+  assetBundleVariant: 
