@@ -1,6 +1,7 @@
 SET MSBUILD="C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
 
-CALL :BUILD "Simulation\PlayGen.ITAlert.sln" "UnityDebug"
+CALL :BUILD "SUGAR\PlayGen.SUGAR.sln" "Debug"
+CALL :BUILD "Simulation\PlayGen.ITAlert.Client.sln" "UnityDebug"
 CALL :BUILD "GameWork\GameWork.sln" "Unity Client Debug"
 CALL :BUILD "Server\src-server\Loadbalancing\Loadbalancing.sln" "Unity Debug"
 
