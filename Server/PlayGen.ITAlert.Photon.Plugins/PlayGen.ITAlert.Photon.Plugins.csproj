@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CA3E391B-7EAB-428E-B869-2C974E211067}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.PhotonPlugins</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.PhotonPlugins</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PhotonLoadbalancingApi">
+      <HintPath>..\..\..\it-alert-menu\photon-server\lib\PhotonLoadbalancingApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\PluginBaseExtensions.cs" />
+    <Compile Include="PlayerManager.cs" />
+    <Compile Include="RoomControllerPlugin.cs" />
+    <Compile Include="RoomStates\InternalGameState.cs" />
+    <Compile Include="RoomStates\RoomStateController.cs" />
+    <Compile Include="RoomStates\Interfaces\IRoomState.cs" />
+    <Compile Include="RoomStates\GameState.cs" />
+    <Compile Include="PluginFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomStates\LobbyState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameWork\GameWork.Commands\GameWork.Commands.csproj">
+      <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
+      <Name>GameWork.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GameWork\GameWork.Interfaces\GameWork.Interfaces.csproj">
+      <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
+      <Name>GameWork.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GameWork\GameWork.States\GameWork.States.csproj">
+      <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
+      <Name>GameWork.States</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ItAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
+      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
+      <Name>PlayGen.ITAlert.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
+      <Project>{2344c836-6b6f-4259-a5a3-e12eafdba643}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
+      <Project>{d5d14e17-c9d5-4ab2-ab74-96f95b50614f}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
+      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
+      <Name>PlayGen.ITAlert.TestData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
+      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
+      <Name>PlayGen.ITAlert.Photon.Players</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src-server\HivePlugin\PhotonHivePlugin.csproj">
+      <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
+      <Name>PhotonHivePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src-server\Hive\PhotonHive\PhotonHive.csproj">
+      <Project>{E1F918F4-F581-4280-9D91-3CF77B24C290}</Project>
+      <Name>PhotonHive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Events\PlayGen.ITAlert.Photon.Events.csproj">
+      <Project>{b4eaa34f-88b2-43fe-85aa-cd66056ec75e}</Project>
+      <Name>PlayGen.ITAlert.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
+      <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
+      <Name>PlayGen.ITAlert.PhotonSerialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src-server\Loadbalancing\LoadBalancing\LoadBalancing.csproj">
+      <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
+      <Name>LoadBalancing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)..\..\deploy\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"
+xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)..\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
