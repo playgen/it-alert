@@ -10,62 +10,56 @@ namespace PlayGen.ITAlert.Network.Client
 	public class Client
 	{
 		private readonly PhotonClient _photonClient;
-	    private States.States _connectivityState = States.States.Disconnected;
+		private States.States _connectivityState = States.States.Disconnected;
 
-        public event Action<ClientRoom> JoinedRoomEvent;
+		public event Action<ClientRoom> JoinedRoomEvent;
         public event Action LeftRoomEvent;
-
-
-        // todo refactor these
-        public event Action PlayerRoomParticipationChange;
-        public event Action CurrentPlayerLeftRoomEvent;
-
 
         public ClientRoom CurrentRoom { get; private set; }
 
-        public States.States State
-	    {
-            get
-            {
-                if (CurrentRoom == null)
-                {
-                    return _connectivityState;
-                }
-                else
-                {
-                    if (CurrentRoom.CurrentGame == null)
-                    {
-                        return States.States.Lobby; 
-                    }
-                    else
-                    {
-                        return States.States.Game;
-                    }
-                }
-            }
-	    }
-        
+		public States.States State
+		{
+			get
+			{
+				if (CurrentRoom == null)
+				{
+					return _connectivityState;
+				}
+				else
+				{
+					if (CurrentRoom.CurrentGame == null)
+					{
+						return States.States.Lobby; 
+					}
+					else
+					{
+						return States.States.Game;
+					}
+				}
+			}
+		}
+		
 		public Client(PhotonClient photonClient)
 		{
-            _photonClient = photonClient;
+			_photonClient = photonClient;
 
-            _photonClient.ConnectedEvent += OnConnected;
-            _photonClient.DisconnectedEvent += OnDisconnected;
-            _photonClient.JoinedRoomEvent += OnJoinedRoom;
-            _photonClient.LeftRoomEvent += OnLeftRoom;
+			_photonClient.ConnectedEvent += OnConnected;
+			_photonClient.DisconnectedEvent += OnDisconnected;
+			_photonClient.JoinedRoomEvent += OnJoinedRoom;
+			_photonClient.LeftRoomEvent += OnLeftRoom;
 
-            _photonClient.Connect();
-        }
+			_photonClient.Connect();
+		}
 
-        ~Client()
-        {
-            _photonClient.ConnectedEvent -= OnConnected;
-            _photonClient.DisconnectedEvent -= OnDisconnected;
-            _photonClient.JoinedRoomEvent -= OnJoinedRoom;
-            _photonClient.LeftRoomEvent -= OnLeftRoom;
-        }
+		~Client()
+		{
+			_photonClient.ConnectedEvent -= OnConnected;
+			_photonClient.DisconnectedEvent -= OnDisconnected;
+			_photonClient.JoinedRoomEvent -= OnJoinedRoom;
+			_photonClient.LeftRoomEvent -= OnLeftRoom;
+		}
 
-        public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
+		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
 		{
 			return _photonClient.ListRooms(filters);
 		}
@@ -85,56 +79,45 @@ namespace PlayGen.ITAlert.Network.Client
 			_photonClient.JoinRandomRoom();
 		}
 
-        #region Callbacks
-        private void OnConnected()
+		#region Callbacks
+		private void OnConnected()
 		{
-            _connectivityState = States.States.Connected;
+			_connectivityState = States.States.Connected;
 		}
 
-	    private void OnDisconnected()
-	    {
-            _connectivityState = States.States.Disconnected;
-        }
+		private void OnDisconnected()
+		{
+			_connectivityState = States.States.Disconnected;
+		}
 
 		private void OnJoinedRoom()
 		{
 			CurrentRoom = new ClientRoom(_photonClient);
 
-            // todo refactor this
-		    if (PlayerRoomParticipationChange != null)
-		    {
-		        PlayerRoomParticipationChange();
-		    }
-            
+            _photonClient.OtherPlayerJoinedRoomEvent += CurrentRoom.OnOtherPlayerJoined;
+            _photonClient.OtherPlayerLeftRoomEvent += CurrentRoom.OnOtherPlayerLeft;
+
             if (JoinedRoomEvent != null)
-		    {
-		        JoinedRoomEvent(CurrentRoom);
-		    }
+			{
+				JoinedRoomEvent(CurrentRoom);
+			}
 		}
 
 		private void OnLeftRoom()
 		{
-            // todo refactor this
-            if (PlayerRoomParticipationChange != null)
-            {
-                PlayerRoomParticipationChange();
-            }
-
-            if (!_photonClient.IsInRoom)
+			if (!_photonClient.IsInRoom)
 			{
-			    if (CurrentPlayerLeftRoomEvent != null)
-			    {
-			        CurrentPlayerLeftRoomEvent();
-			    }
+                _photonClient.OtherPlayerJoinedRoomEvent -= CurrentRoom.OnOtherPlayerJoined;
+                _photonClient.OtherPlayerLeftRoomEvent -= CurrentRoom.OnOtherPlayerLeft;
 
                 CurrentRoom = null;
 
-			    if (LeftRoomEvent != null)
-			    {
-			        LeftRoomEvent();
-			    }
+				if (LeftRoomEvent != null)
+				{
+					LeftRoomEvent();
+				}
 			}
 		}
-        #endregion
-    }
+		#endregion
+	}
 }

@@ -23,6 +23,9 @@ namespace PlayGen.ITAlert.Network.Client
         public event Action PlayerReadyStatusChange;
         public event Action<Dictionary<int, string>> ChangeColorEvent;
 
+        public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
+        public event Action<PhotonPlayer> OtherPlayerLeftEvent;
+
         public ClientGame CurrentGame { get; private set; }
 
         public RoomInfo RoomInfo
@@ -172,6 +175,22 @@ namespace PlayGen.ITAlert.Network.Client
                 _photonClient.EventRecievedEvent -= OnRecievedEvent;
 
                 _isDisposed = true;
+            }
+        }
+
+        internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)
+        {
+            if (OtherPlayerJoinedEvent != null)
+            {
+                OtherPlayerJoinedEvent(otherPlayer);
+            }
+        }
+
+        internal void OnOtherPlayerJoined(PhotonPlayer otherPlayer)
+        {
+            if (OtherPlayerLeftEvent != null)
+            {
+                OtherPlayerLeftEvent(otherPlayer);
             }
         }
     }

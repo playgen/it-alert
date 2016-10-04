@@ -31,13 +31,13 @@ public class CreateGameState : TickableSequenceState
 
     public override void Enter()
     {
-        _client.PlayerRoomParticipationChange += _interface.OnCreateGameSuccess;
+        _client.JoinedRoomEvent += _interface.OnJoinedRoom;
         _interface.Enter();
     }
 
     public override void Exit()
     {
-        _client.PlayerRoomParticipationChange -= _interface.OnCreateGameSuccess;
+        _client.JoinedRoomEvent -= _interface.OnJoinedRoom;
         _interface.Exit();
     }
 
@@ -57,8 +57,6 @@ public class CreateGameState : TickableSequenceState
             commandResolver.HandleSequenceStates(command, this);
         }
     }
-
-   
 
     public override string Name
     {

@@ -284,3 +284,8 @@ ModelManifest.xml
 *.log
 
 !/Server/lib/*
+
+Client/Client.CSharp.csproj
+Client/Client.CSharp.Editor.csproj
+Client/Client.CSharp.Plugins.csproj
+Client/Client.sln

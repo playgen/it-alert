@@ -2,6 +2,9 @@
 using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
+
+using PlayGen.ITAlert.Network.Client;
+
 using UnityEngine.UI;
 
 public class GamesListStateInterface : StateInterface
@@ -51,7 +54,7 @@ public class GamesListStateInterface : StateInterface
 		EnqueueCommand(new JoinGameCommand(name));
 	}
 
-    public void OnJoinGameSuccess()
+    public void OnJoinGameSuccess(ClientRoom clientRoom)
     {
         EnqueueCommand(new NextStateCommand());
     }
