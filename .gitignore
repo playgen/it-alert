@@ -283,3 +283,5 @@ ModelManifest.xml
 .fake/
 
 *.log
+
+!/Server/lib/*
