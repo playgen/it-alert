@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PhotonLoadbalancingApi">
-      <HintPath>..\..\..\it-alert-menu\photon-server\lib\PhotonLoadbalancingApi.dll</HintPath>
+      <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,31 +85,33 @@
       <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
       <Name>PlayGen.ITAlert.Photon.Players</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src-server\HivePlugin\PhotonHivePlugin.csproj">
+    <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src-server\Hive\PhotonHive\PhotonHive.csproj">
+    <ProjectReference Include="..\Hive\PhotonHive\PhotonHive.csproj">
       <Project>{E1F918F4-F581-4280-9D91-3CF77B24C290}</Project>
       <Name>PhotonHive</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Events\PlayGen.ITAlert.Photon.Events.csproj">
       <Project>{b4eaa34f-88b2-43fe-85aa-cd66056ec75e}</Project>
-      <Name>PlayGen.ITAlert.Events</Name>
+      <Name>PlayGen.ITAlert.Photon.Events</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
-      <Name>PlayGen.ITAlert.PhotonSerialization</Name>
+      <Name>PlayGen.ITAlert.Photon.Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src-server\Loadbalancing\LoadBalancing\LoadBalancing.csproj">
+    <ProjectReference Include="..\Photon.LoadBalancing\Photon.LoadBalancing.csproj">
       <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
-      <Name>LoadBalancing</Name>
+      <Name>Photon.LoadBalancing</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)..\..\deploy\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"
-xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)..\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

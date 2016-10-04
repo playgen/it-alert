@@ -62,9 +62,9 @@
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src-server\Loadbalancing\LoadBalancing\LoadBalancing.csproj">
+    <ProjectReference Include="..\Photon.LoadBalancing\Photon.LoadBalancing.csproj">
       <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
-      <Name>LoadBalancing</Name>
+      <Name>Photon.LoadBalancing</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
