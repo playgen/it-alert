@@ -16,4 +16,4 @@ Build "Simulation\PlayGen.ITAlert.sln" "UnityDebug"
 
 Build "GameWork\GameWork.sln" "Unity Client Debug"
 
-Build "Server\src-server\Loadbalancing\Loadbalancing.sln" "Unity Debug"
+Build "Server\Photon.Loadbalancing.sln" "Unity Debug"
