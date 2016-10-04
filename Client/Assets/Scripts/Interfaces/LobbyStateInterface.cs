@@ -6,6 +6,7 @@ using UnityEngine;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
 using PlayGen.ITAlert.Network;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Network.Client.Voice;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -71,7 +72,6 @@ public class LobbyStateInterface : StateInterface
     public void OnLeaveSuccess()
     {
         EnqueueCommand(new PreviousStateCommand());
-        
     }
 
     public override void Enter()
@@ -215,6 +215,14 @@ public class LobbyStateInterface : StateInterface
                 _playerVoiceIcons[status.Key].enabled = status.Value;
             }
         }
+    }
+
+    public void OnJoinedRoom(ClientRoom room)
+    {
+        room.OtherPlayerJoinedEvent += (otherPlayer) => RefreshPlayerList();
+        room.OtherPlayerLeftEvent += (otherPlayer) => RefreshPlayerList();
+
+        RefreshPlayerList();
     }
 }
 

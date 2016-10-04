@@ -28,13 +28,13 @@ public class MenuState : TickableSequenceState
 
     public override void Enter()
     {
-        _client.PlayerRoomParticipationChange += _interface.OnJoinGameSuccess;
+        _client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
         _interface.Enter();
     }
 
     public override void Exit()
     {
-        _client.PlayerRoomParticipationChange -= _interface.OnJoinGameSuccess;
+        _client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
         _interface.Exit();
     }
 

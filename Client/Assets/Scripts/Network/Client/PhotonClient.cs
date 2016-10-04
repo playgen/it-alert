@@ -16,8 +16,9 @@ namespace PlayGen.ITAlert.Network.Client
         public event Action ConnectedEvent;
         public event Action DisconnectedEvent;
         public event Action JoinedRoomEvent;
-        public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
         public event Action LeftRoomEvent;
+        public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
+        public event Action<PhotonPlayer> OtherPlayerLeftRoomEvent;
 
         public PhotonPlayer Player
         {
@@ -370,11 +371,11 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
-        public override void OnPhotonPlayerDisconnected(PhotonPlayer remotePlayer)
+        public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
         {
-            if (LeftRoomEvent != null)
+            if (OtherPlayerLeftRoomEvent != null)
             {
-                LeftRoomEvent();
+                OtherPlayerLeftRoomEvent(otherPlayer);
             }
         }
 
@@ -386,11 +387,11 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
-        public override void OnPhotonPlayerConnected(PhotonPlayer newPlayer)
+        public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer)
         {
             if (OtherPlayerJoinedRoomEvent != null)
             {
-                OtherPlayerJoinedRoomEvent(newPlayer);
+                OtherPlayerJoinedRoomEvent(otherPlayer);
             }
         }
 

@@ -39,9 +39,9 @@ public class LobbyState : TickableSequenceState
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
         _client.CurrentRoom.PlayerReadyStatusChange += _interface.RefreshPlayerList;
-        _client.PlayerRoomParticipationChange += _interface.RefreshPlayerList;
+        _client.JoinedRoomEvent += _interface.OnJoinedRoom;
+        _client.LeftRoomEvent += _interface.OnLeaveSuccess;
         _client.CurrentRoom.ChangeColorEvent += _interface.SetPlayerColors;
-        _client.CurrentPlayerLeftRoomEvent += _interface.OnLeaveSuccess;
         _client.CurrentRoom.GameEnteredEvent += OnGameEntered;
         
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.RoomInfo.maxPlayers));
@@ -52,14 +52,11 @@ public class LobbyState : TickableSequenceState
 
     public override void Exit()
     {
-        _client.PlayerRoomParticipationChange -= _interface.RefreshPlayerList;
-        _client.CurrentRoom.PlayerReadyStatusChange -= _interface.RefreshPlayerList;
-        _client.CurrentRoom.GameEnteredEvent -= OnGameEntered;
+        _client.LeftRoomEvent -= _interface.OnLeaveSuccess;
+        _client.JoinedRoomEvent -= _interface.OnJoinedRoom;
 
         _controller.RefreshSuccessEvent -= _interface.UpdatePlayerList;
         _controller.ReadySuccessEvent -= _interface.OnReadySucceeded;
-        _client.CurrentPlayerLeftRoomEvent -= _interface.OnLeaveSuccess;
-        _client.CurrentRoom.ChangeColorEvent -= _interface.SetPlayerColors;
 
         _interface.Exit();
     }
@@ -126,7 +123,7 @@ public class LobbyState : TickableSequenceState
             commandResolver.HandleSequenceStates(command, this);
         }
         
-        if (_client.CurrentRoom.IsMasterClient)
+        if (_client.CurrentRoom != null && _client.CurrentRoom.IsMasterClient)
         {
             if (_client.CurrentRoom.PlayerReadyStatus != null && _client.CurrentRoom.PlayerReadyStatus.Values.All(v => v))
             {
