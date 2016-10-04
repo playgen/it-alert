@@ -1,5 +1,8 @@
 ﻿using GameWork.Commands.States;
 using GameWork.Interfacing;
+
+using PlayGen.ITAlert.Network.Client;
+
 using UnityEngine;
 
 public class CreateGameStateInterface : StateInterface
@@ -42,7 +45,7 @@ public class CreateGameStateInterface : StateInterface
         _createGamePanel.SetActive(false);
     }
 
-    public void OnCreateGameSuccess()
+    public void OnJoinedRoom(ClientRoom room)
     {
         EnqueueCommand(new NextStateCommand());
     }

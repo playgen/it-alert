@@ -2,6 +2,9 @@
 using System.Linq;
 using GameWork.Commands.States;
 using GameWork.Interfacing;
+
+using PlayGen.ITAlert.Network.Client;
+
 using UnityEngine;
 
 public class MenuStateInterface : StateInterface
@@ -68,7 +71,7 @@ public class MenuStateInterface : StateInterface
         _mainMenuPanel.SetActive(false);
     }
 
-    public void OnJoinGameSuccess()
+    public void OnJoinGameSuccess(ClientRoom clientRoom)
     {
         EnqueueCommand(new NextStateCommand());
     }
