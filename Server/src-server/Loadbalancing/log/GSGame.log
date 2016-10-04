@@ -345,3 +345,21 @@
 2016-10-04 17:23:54,573 [13] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Low, new=Lowest
 2016-10-04 17:24:35,976 [37] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Lowest to Low with input 35
 2016-10-04 17:24:35,979 [37] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Lowest, new=Low
+2016-10-04 17:27:34,366 [65] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Low to Lowest with input 20
+2016-10-04 17:27:34,369 [65] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Low, new=Lowest
+2016-10-04 17:45:11,653 [28] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll
+2016-10-04 17:45:12,610 [28] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll
+2016-10-04 17:45:19,335 [31] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Lowest to Low with input 35
+2016-10-04 17:45:19,343 [31] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Lowest, new=Low
+2016-10-04 17:46:52,038 [26] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Low to Lowest with input 20
+2016-10-04 17:46:52,040 [26] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Low, new=Lowest
+2016-10-04 17:51:26,997 [31] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Lowest to Low with input 35
+2016-10-04 17:51:27,018 [31] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Lowest, new=Low
+2016-10-04 17:51:54,292 [28] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Low to Normal with input 50
+2016-10-04 17:51:54,294 [28] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Low, new=Normal
+2016-10-04 17:53:30,988 [28] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll
+2016-10-04 17:53:32,334 [31] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll
+2016-10-04 17:53:50,538 [45] INFO  Photon.Common.LoadBalancer.LoadShedding.FeedbackController - Transit CpuUsage from Normal to High with input 70
+2016-10-04 17:53:50,543 [45] INFO  Photon.Common.LoadBalancer.LoadShedding.WorkloadController - FeedbackLevel changed: old=Normal, new=High
+2016-10-04 17:54:16,402 [19] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll
+2016-10-04 17:54:17,057 [45] INFO  Photon.Hive.Plugin.PluginManager - Plugin successfully created:Type:PlayGen.ITAlert.PhotonPlugins.PluginFactory, path:C:\Users\Jared\Documents\rage\it-alert\Server\src-server\LoadBalancing\Plugins\PlayGen.ITAlert.PhotonPlugins\\bin\PlayGen.ITAlert.PhotonPlugins.dll

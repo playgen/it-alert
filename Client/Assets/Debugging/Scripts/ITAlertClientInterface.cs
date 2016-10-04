@@ -150,6 +150,8 @@ public class ITAlertClientInterface : MonoBehaviour
 
     private void ShowLobbyOptions()
     {
+        // todo fix for latest changes
+        /*
         GUILayout.BeginVertical("box");
         {
             GUILayout.Label("----Lobby----");
@@ -190,6 +192,7 @@ public class ITAlertClientInterface : MonoBehaviour
             }
         }
         GUILayout.EndVertical();
+        */
     }
 
   

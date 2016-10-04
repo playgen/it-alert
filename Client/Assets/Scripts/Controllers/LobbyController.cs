@@ -5,6 +5,8 @@ using System.Runtime.InteropServices;
 using GameWork.Commands.Interfaces;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Players;
+
 using UnityEngine;
 
 public class LobbyController : ICommandAction
@@ -20,16 +22,11 @@ public class LobbyController : ICommandAction
 
     public void RefreshPlayerList()
     {
-        var playerReadyStatus = _client.CurrentRoom.PlayerReadyStatus;
-        var playerColors = _client.CurrentRoom.PlayerColors;
-        var players = _client.CurrentRoom.ListCurrentRoomPlayers;
         var lobbyPlayers = new List<LobbyPlayer>();
-        foreach (var photonPlayer in players)
+
+        foreach (var player in _client.CurrentRoom.Players)
         {
-            var name = photonPlayer.name;
-            var isReady = playerReadyStatus != null && playerReadyStatus.ContainsKey(photonPlayer.ID) && playerReadyStatus[photonPlayer.ID];
-            var color = playerColors != null && playerColors.ContainsKey(photonPlayer.ID) ? playerColors[photonPlayer.ID] : "FFFFFF";
-            var lobbyPlayer = new LobbyPlayer(name, isReady, photonPlayer.ID, color);
+            var lobbyPlayer = new LobbyPlayer(player.Name, player.Status == PlayerStatuses.Ready, player.Id, player.Color);
             lobbyPlayers.Add(lobbyPlayer);
         }
 
@@ -37,7 +34,7 @@ public class LobbyController : ICommandAction
 
         if (_client.CurrentRoom.IsMasterClient)
         {
-            var numReadyPlayers = playerReadyStatus.Values.Count(b => b.Equals(true));
+            var numReadyPlayers = this._client.CurrentRoom.Players.Count(p => p.Status == PlayerStatuses.Ready);
             Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
             if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
