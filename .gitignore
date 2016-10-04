@@ -31,7 +31,6 @@ sysinfo.txt
 *.pdb
 *.mdb
 !Assets/**/*.dll.meta
-*.sln
 test_Data/
 test.exe
 *.mdb.meta
