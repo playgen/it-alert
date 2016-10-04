@@ -1,7 +1,7 @@
 **/[Ll]ibrary/
 **/[Tt]emp/
 **/[Oo]bj/
-**/[Bb]uild/
+Client/[Bb]uild/
 **/[Bb]uilds/
 **/Assets/AssetStoreTools*
 
@@ -55,7 +55,6 @@ test.exe
 [Rr]eleases/
 [Xx]64/
 [Xx]86/
-[Bb]uild/
 bld/
 [Bb]in/
 [Oo]bj/
