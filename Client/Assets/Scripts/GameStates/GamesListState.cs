@@ -32,7 +32,7 @@ public class GamesListState : TickableSequenceState
 
     public override void Enter()
     {
-        _client.PlayerRoomParticipationChange += _interface.OnJoinGameSuccess;
+        _client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
         _gameListController.GamesListSuccessEvent += _interface.OnGamesListSuccess;
 
         _interface.Enter();
@@ -40,7 +40,7 @@ public class GamesListState : TickableSequenceState
 
     public override void Exit()
     {
-        _client.PlayerRoomParticipationChange -= _interface.OnJoinGameSuccess;
+        _client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
         _gameListController.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
         _interface.Exit();
     }
