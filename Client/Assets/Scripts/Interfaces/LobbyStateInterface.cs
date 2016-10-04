@@ -8,6 +8,8 @@ using GameWork.Interfacing;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Network.Client.Voice;
+using PlayGen.ITAlert.Photon.Players;
+
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
@@ -223,6 +225,14 @@ public class LobbyStateInterface : StateInterface
         room.OtherPlayerLeftEvent += (otherPlayer) => RefreshPlayerList();
 
         RefreshPlayerList();
+    }
+
+    public void OnPlayersChanged(Player[] players)
+    {
+        RefreshPlayerList();
+        SetPlayerColors(players.ToDictionary(
+            p => p.Id,
+            p => p.Color));
     }
 }
 
