@@ -285,3 +285,5 @@ ModelManifest.xml
 *.log
 
 !/Server/lib/*
+Client/*.csproj
+Client/*.sln
