@@ -46,9 +46,9 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <StartAction>Program</StartAction>
-    <StartProgram>..\deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
+    <StartProgram>$(SolutionDir)\deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
     <StartArguments>/debug LoadBalancing</StartArguments>
-    <StartWorkingDirectory>..\deploy</StartWorkingDirectory>
+    <StartWorkingDirectory>$(SolutionDir)\deploy\bin_Win64</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,9 +59,9 @@
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <StartAction>Program</StartAction>
-    <StartProgram>$(SolutionDir)\deploy\bin_Win32\PhotonSocketServer.exe</StartProgram>
-    <StartArguments>/config PhotonServer.LoadBalancing-Development.config</StartArguments>
-    <StartWorkingDirectory>..</StartWorkingDirectory>
+    <StartProgram>$(SolutionDir)\deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
+    <StartArguments>LoadBalancing</StartArguments>
+    <StartWorkingDirectory>$(SolutionDir)\deploy\bin_Win64</StartWorkingDirectory>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
