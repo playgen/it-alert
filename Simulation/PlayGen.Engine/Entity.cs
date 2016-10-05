@@ -1,8 +1,4 @@
-﻿using System;
-using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
-
-namespace PlayGen.ITAlert.Simulation
+﻿namespace PlayGen.Engine
 {
 	public abstract class Entity<TState> : EntityBase, IEntity<TState>
 		where TState : EntityState
@@ -10,8 +6,8 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region constructors
 
-		protected Entity(ISimulation simulation, EntityType entityType) 
-			: base(simulation, entityType)
+		protected Entity(IEntityRegistry entityRegistry) 
+			: base(entityRegistry)
 		{
 		}
 
@@ -32,7 +28,5 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			return GenerateState();
 		}
-
-		//public abstract void SetState(TState state, ISimulation simulation);
 	}
 }

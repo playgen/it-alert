@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.Engine;
 using PlayGen.ITAlert.Configuration;
 
 namespace PlayGen.ITAlert.Simulation.Contracts
 {
-	public class ItemState : EntityState
+	public class ItemState : ITAlertEntityState
 	{
 		public ItemType ItemType { get; }
 

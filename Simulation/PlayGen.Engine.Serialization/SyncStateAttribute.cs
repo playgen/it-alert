@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlayGen.ITAlert.Common.Serialization
+namespace PlayGen.Engine.Serialization
 {
     [AttributeUsage(AttributeTargets.Field|AttributeTargets.Property)]
     public class SyncStateAttribute : Attribute

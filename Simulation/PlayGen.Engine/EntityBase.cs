@@ -1,27 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Common.Serialization;
-using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
 
-namespace PlayGen.ITAlert.Simulation
+namespace PlayGen.Engine
 {
 	public abstract class EntityBase : IEntity, IEquatable<IEntity>
 	{
 		#region Event registry
 
-		//private static int _seedId;
-
-		//public event EventHandler EntityCreated;
-
 		public event EventHandler EntityDestroyed;
-
-		//private void RaiseEntityCreated(object entity)
-		//{
-		//	EntityCreated?.Invoke(entity, EventArgs.Empty);
-		//}
 
 		private void RaiseEntityDestroyed(object entity)
 		{
@@ -46,27 +31,20 @@ namespace PlayGen.ITAlert.Simulation
 
 		#endregion
 
-		[SyncState(StateLevel.Minimal)]
-		public int CurrentTick { get; protected set; }
 
-		[SyncState(StateLevel.Minimal)]
+		//[SyncState(StateLevel.Minimal)]
 		public int Id { get; protected set; }
 
-		[SyncState(StateLevel.Setup)]
-		public EntityType EntityType { get; protected set; }
-
-		[SyncState(StateLevel.Setup)]
-		protected ISimulation Simulation { get; set; }
-
-
+		//[SyncState(StateLevel.Setup)]
+		protected IEntityRegistry EntityRegistry { get; set; }
+		
 		#region constructors
 
-		protected EntityBase(ISimulation simulation, EntityType entityType)
+		protected EntityBase(IEntityRegistry entityRegistry)
 		{
 			// TODO: replace dirty hack for the entity factory
-			Simulation = simulation;
-			Id = simulation.EntitySeed;
-			EntityType = entityType;
+			EntityRegistry = entityRegistry;
+			Id = entityRegistry.EntitySeed;
 			//RaiseEntityCreated(this);
 		}
 
@@ -95,15 +73,6 @@ namespace PlayGen.ITAlert.Simulation
 		}
 
 
-		public virtual void Tick(int currentTick)
-		{
-			if (CurrentTick < currentTick)
-			{
-				CurrentTick = currentTick;
-				OnTick();
-			}
-		}
-		protected abstract void OnTick();
 
 		public virtual void OnDeserialized()
 		{

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Initialization;
@@ -22,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation
 	/// Simulation class
 	/// Handles all autonomous functionality of the game
 	/// </summary>
-	public class Simulation : ISimulation
+	public class Simulation : EntityRegistryBase<IITAlertEntity>, ISimulation
 	{
 		private bool _disposed;
 
@@ -43,8 +44,8 @@ namespace PlayGen.ITAlert.Simulation
 		/// <summary>
 		/// The global entity registry
 		/// </summary>
-		[SyncState(StateLevel.Full)]
-		private Dictionary<int, IEntity> _entities = new Dictionary<int, IEntity>();
+		//[SyncState(StateLevel.Full)]
+
 
 		[SyncState(StateLevel.Full)]
 		private Dictionary<int, Subsystem> _subsystems = new Dictionary<int, Subsystem>();
@@ -60,10 +61,8 @@ namespace PlayGen.ITAlert.Simulation
 
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 		
-		[SyncState(StateLevel.Full)]
-		private int _entitySeed;
+		//[SyncState(StateLevel.Full)]
 
-		public int EntitySeed => ++_entitySeed;
 
 		#endregion
 
@@ -218,7 +217,7 @@ namespace PlayGen.ITAlert.Simulation
 					SubsystemsByLogicalId.Add(config.Id, subsystem);
 					break;
 			}
-			EntityCreated(subsystem);
+			AddEntity(subsystem);
 			return subsystem;
 		}
 
@@ -232,7 +231,7 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			var connection = new Connection(this, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
 			edgeConfig.EntityId = connection.Id;
-			EntityCreated(connection);
+			AddEntity(connection);
 			return connection;
 		}
 
@@ -255,14 +254,14 @@ namespace PlayGen.ITAlert.Simulation
 				default:
 					throw new Exception("Unknown item type");
 			}
-			EntityCreated(item);
+			AddEntity(item);
 			return item;
 		}
 
 		public Player CreatePlayer(PlayerConfig playerConfig)
 		{
 			var player = new Player(this, playerConfig.Name, playerConfig.Colour);
-			EntityCreated(player);
+			AddEntity(player);
 			return player;
 		}
 
@@ -277,7 +276,7 @@ namespace PlayGen.ITAlert.Simulation
 				default:
 					throw new Exception("Unkown npc type");
 			}
-			EntityCreated(actor);
+			AddEntity(actor);
 			return actor;
 		}
 
@@ -300,84 +299,51 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region entity registry
 
-		/// <summary>
-		/// perform post deserialization event attachment, assignment of non serialized computer properties etc
-		/// </summary>
-		public void OnDeserialized()
+
+
+		protected override void OnEntityAdded(IITAlertEntity entity)
 		{
-			foreach (var entity in _entities.Values)
+			switch (entity.EntityType)
 			{
-				entity.EntityDestroyed += Entity_EntityDestroyed;
-				entity.OnDeserialized();
+				case EntityType.Subsystem:
+					var subsystem = entity as Subsystem;
+					if (subsystem != null)
+					{
+						_subsystems.Add(entity.Id, subsystem);
+					}
+					break;
+				case EntityType.Connection:
+					var connection = entity as Connection;
+					if (connection != null)
+					{
+						_connections.Add(entity.Id, connection);
+					}
+					break;
+				case EntityType.Player:
+				case EntityType.Npc:
+					var actor = entity as IActor;
+					if (actor != null)
+					{
+						_actors.Add(entity.Id, actor);
+					}
+					break;
+				case EntityType.Item:
+					var item = entity as IItem;
+					if (item != null)
+					{
+						_items.Add(entity.Id, item);
+					}
+					break;
+
+				default:
+					// unknown entity!
+					break;
 			}
 		}
 
-		private void EntityCreated(IEntity entity)
+		protected override void OnEntityDestroyed(IITAlertEntity destroyedEntity)
 		{
-			if (_entities.ContainsKey(entity.Id))
-			{
-				throw new Exception($"A duplicate entity was created for id {entity.Id}");
-			}
-			else
-			{
-				_entities.Add(entity.Id, entity);
-
-				switch (entity.EntityType)
-				{
-					case EntityType.Subsystem:
-						var subsystem = entity as Subsystem;
-						if (subsystem != null)
-						{
-							_subsystems.Add(entity.Id, subsystem);
-						}
-						break;
-					case EntityType.Connection:
-						var connection = entity as Connection;
-						if (connection != null)
-						{
-							_connections.Add(entity.Id, connection);
-						}
-						break;
-					case EntityType.Player:
-					case EntityType.Npc:
-						var actor = entity as IActor;
-						if (actor != null)
-						{
-							_actors.Add(entity.Id, actor);
-						}
-						break;
-					case EntityType.Item:
-						var item = entity as IItem;
-						if (item != null)
-						{
-							_items.Add(entity.Id, item);
-						}
-						break;
-
-					default:
-						// unknown entity!
-						break;
-				}
-				entity.EntityDestroyed += Entity_EntityDestroyed;
-			}
-		}
-
-		private void Entity_EntityDestroyed(object sender, EventArgs e)
-		{
-			var destroyedEntity = sender as IEntity;
-			if (destroyedEntity == null)
-			{
-				throw new Exception("A non-entity raised the entity destroyed event; this should be impossible!");
-			}
-
-			destroyedEntity.EntityDestroyed -= Entity_EntityDestroyed;
-
-			if (_entities.ContainsKey(destroyedEntity.Id) == false)
-			{
-				throw new Exception($"A duplicate entity was destroyed for id {destroyedEntity.Id}");
-			}
-			_entities.Remove(destroyedEntity.Id);
-				
+			
 			switch (destroyedEntity.EntityType)
 			{
 				case EntityType.Subsystem:
@@ -399,20 +365,7 @@ namespace PlayGen.ITAlert.Simulation
 			}
 		}
 
-		public TEntity GetEntityById<TEntity>(int id)
-			where TEntity : class, IEntity
-		{
-			IEntity entity;
-			if (_entities.TryGetValue(id, out entity))
-			{
-				var typedEntity = entity as TEntity;
-				if (typedEntity != null)
-				{
-					return typedEntity;
-				}
-			}
-			throw new SimulationException($"Entity not of expected type {typeof(TEntity)}");
-		}
+
 
 		#endregion
 
@@ -422,7 +375,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				GraphSize = GraphSize,
 				CurrentTick = CurrentTick,
-				Entities = _entities.ToDictionary(ek => ek.Key, ev => ev.Value.GetState()),
+				Entities = Entities.ToDictionary(ek => ek.Key, ev => ev.Value.GetState()),
 				IsGameFailure = IsGameFailure,
 			};
 		}
@@ -437,21 +390,21 @@ namespace PlayGen.ITAlert.Simulation
 		//TODO: implement some sort of extensible evaluator pattern
 		public bool IsGameFailure => _subsystems.Values.All(ss => ss.IsDead);
 
-	    public bool HasViruses => _entities.OfType<IInfection>().Any();
+		public bool HasViruses => Entities.OfType<IInfection>().Any();
 
-        #endregion
+		#endregion
 
-        //private Subsystem GetSubsystemById(int id)
-        //{
-        //	Subsystem subsystem;
-        //	if (!_subsystems.TryGetValue(id, out subsystem))
-        //	{
-        //		throw new Exception($"Subsystem {id} not found");
-        //	}
-        //	return subsystem;
-        //}
+		//private Subsystem GetSubsystemById(int id)
+		//{
+		//	Subsystem subsystem;
+		//	if (!_subsystems.TryGetValue(id, out subsystem))
+		//	{
+		//		throw new Exception($"Subsystem {id} not found");
+		//	}
+		//	return subsystem;
+		//}
 
-        public void Tick()
+		public void Tick()
 		{
 			CurrentTick++;
 

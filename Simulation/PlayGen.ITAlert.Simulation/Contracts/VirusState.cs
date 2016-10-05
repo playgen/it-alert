@@ -6,7 +6,7 @@ using System.Text;
 
 namespace PlayGen.ITAlert.Simulation.Contracts
 {
-	public class VirusState : EntityState
+	public class VirusState : ITAlertEntityState
 	{
 		//TODO: this needs a better name
 		public bool Active { get; set; }

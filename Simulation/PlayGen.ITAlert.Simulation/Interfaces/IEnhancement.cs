@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Interfaces
 {
-	public interface IEnhancement : IEntity
+	public interface IEnhancement : IITAlertEntity
 	{
 		EnhancementType EnhancementType { get; }
 	}

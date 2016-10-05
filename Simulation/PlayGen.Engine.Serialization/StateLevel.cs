@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PlayGen.ITAlert.Common.Serialization
+namespace PlayGen.Engine.Serialization
 {
 	[Flags]
 	public enum StateLevel
