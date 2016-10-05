@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
+    using System.Linq;
+
     public class GameState : TickableSequenceState
     {
         public const string StateName = "GameState";
@@ -57,7 +59,7 @@ namespace PlayGen.ITAlert.GameStates
             Director.Client = _client;
 
             _interface.Initialize();
-            _interface.SetPlayerColors(_client.CurrentRoom.PlayerColors);
+            _interface.SetPlayerColors(_client.CurrentRoom.Players);
             _interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
         }
 
