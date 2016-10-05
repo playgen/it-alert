@@ -18,13 +18,11 @@ namespace PlayGen.ITAlert.Network.Client
         private bool _isDisposed;
 
         public event Action<ClientGame> GameEnteredEvent;
-
-        // todo refactor these to use player list
-        public event Action PlayerReadyStatusChange;
-        public event Action<Dictionary<int, string>> ChangeColorEvent;
-
         public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
         public event Action<PhotonPlayer> OtherPlayerLeftEvent;
+        public event Action<Player[]> PlayerListUpdatedEvent;
+
+        public Player[] Players { get; private set; }
 
         public ClientGame CurrentGame { get; private set; }
 
@@ -37,11 +35,6 @@ namespace PlayGen.ITAlert.Network.Client
         {
             get { return _voiceClient; }
         }
-
-        // todo replace references to these with the player list
-        public bool IsReady { get; private set; }
-        public Dictionary<int, bool> PlayerReadyStatus { get; private set; }
-        public Dictionary<int, string> PlayerColors { get; private set; }
 
         public PhotonPlayer[] ListCurrentRoomPlayers
         {
@@ -125,32 +118,12 @@ namespace PlayGen.ITAlert.Network.Client
             switch (eventCode)
             {
                 case (byte)ServerEventCode.PlayerList:
-                    var players = (Player[])content;
+                    Players = (Player[])content;
 
-                    PlayerReadyStatus = new Dictionary<int, bool>();
-                    foreach (var player in players)
+                    if (PlayerListUpdatedEvent != null)
                     {
-                        PlayerReadyStatus[player.Id] = player.Status == PlayerStatuses.Ready;
+                        PlayerListUpdatedEvent(Players);
                     }
-
-                    IsReady = PlayerReadyStatus[_photonClient.Player.ID];
-                    
-                    if (PlayerReadyStatusChange != null)
-                    {
-                        PlayerReadyStatusChange();
-                    }
-
-                    PlayerColors = new Dictionary<int, string>();
-                    foreach (var player in players)
-                    {
-                        PlayerColors[player.Id] = player.Color;
-                    }
-
-                    if (ChangeColorEvent != null)
-                    {
-                        ChangeColorEvent(PlayerColors);
-                    }
-
                     break;
 
                 case (byte)ServerEventCode.GameEntered:
@@ -162,7 +135,6 @@ namespace PlayGen.ITAlert.Network.Client
                         GameEnteredEvent(CurrentGame);
                     }
                     break;
-           
             }
         }
 

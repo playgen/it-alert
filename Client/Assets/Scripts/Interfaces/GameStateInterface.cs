@@ -5,6 +5,8 @@ using System.Linq;
 using GameWork.Interfacing;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client.Voice;
+using PlayGen.ITAlert.Photon.Players;
+
 using UnityEngine.UI;
 
 public class GameStateInterface : StateInterface
@@ -89,9 +91,14 @@ public class GameStateInterface : StateInterface
         return playerColor;
     }
 
-    public void SetPlayerColors(Dictionary<int, string> colors)
+    public void SetPlayerColors(Player[] players)
     {
-        _playerColors = colors;
+        _playerColors = new Dictionary<int, string>();
+
+        foreach (var player in players)
+        {
+            _playerColors.Add(player.Id, player.Color);
+        }
     }
 
     public void UpdateChatPanel()
