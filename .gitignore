@@ -287,3 +287,4 @@ ModelManifest.xml
 Client/*.csproj
 Client/*.sln
 Server/**/log
+Client/Assets/Plugins/Server/PhotonServer.config
