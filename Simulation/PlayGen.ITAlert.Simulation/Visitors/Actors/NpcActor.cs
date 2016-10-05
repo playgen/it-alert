@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 {
 	public abstract class NpcActor<TState> : Actor<TState>
-		where TState : EntityState
+		where TState : ITAlertEntityState
 	{
 		[SyncState(StateLevel.Setup)]
 		public NpcActorType NpcActorType { get; protected set; }

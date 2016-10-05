@@ -2,7 +2,7 @@
 
 namespace PlayGen.ITAlert.Simulation.Contracts
 {
-	public class EnhancementState : EntityState
+	public class EnhancementState : ITAlertEntityState
 	{
 		public EnhancementType EnhancementType { get; }
 

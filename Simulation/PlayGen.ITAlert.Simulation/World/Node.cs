@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.Engine;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Common.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.World
 {
-	public abstract class Node<TState> : Entity<TState>, INode
+	public abstract class Node<TState> : ITAlertEntity<TState>, INode
 		where TState : EntityState
 	{
 		#region events

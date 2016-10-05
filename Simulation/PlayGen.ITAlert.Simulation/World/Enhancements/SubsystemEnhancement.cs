@@ -1,12 +1,12 @@
 ﻿using System;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.World.Enhancements
 {
-	public abstract class SubsystemEnhancement : Entity<EnhancementState>, IEnhancement
+	public abstract class SubsystemEnhancement : ITAlertEntity<EnhancementState>, IEnhancement
 	{
 		[SyncState(StateLevel.Setup)]
 		protected Subsystem Subsystem { get; set; }

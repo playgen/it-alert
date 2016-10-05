@@ -47,6 +47,7 @@
     <Compile Include="Contracts\ActorState.cs" />
     <Compile Include="Contracts\Extensions\IntentExtensions.cs" />
     <Compile Include="Contracts\Intents\IntentState.cs" />
+    <Compile Include="Contracts\ITAlertEntityState.cs" />
     <Compile Include="Intents\DisownItemIntent.cs" />
     <Compile Include="Intents\InfectSystemIntent.cs" />
     <Compile Include="Intents\Intent.cs" />
@@ -55,6 +56,8 @@
     <Compile Include="Contracts\Extensions\VisitorPositionExtensions.cs" />
     <Compile Include="Contracts\PositionState.cs" />
     <Compile Include="Interfaces\IEnhancement.cs" />
+    <Compile Include="Interfaces\IITAlertEntity.cs" />
+    <Compile Include="ITAlertEntity.cs" />
     <Compile Include="SimulationRules.cs" />
     <Compile Include="Utilities\IItemArrayExtensions.cs" />
     <Compile Include="Visitors\Actors\Actor.cs" />
@@ -64,19 +67,15 @@
     <Compile Include="Visitors\Actors\Virus.cs" />
     <Compile Include="Contracts\ConnectionState.cs" />
     <Compile Include="Contracts\EnhancementState.cs" />
-    <Compile Include="Contracts\EntityState.cs" />
     <Compile Include="Contracts\GameState.cs" />
     <Compile Include="Contracts\ItemState.cs" />
     <Compile Include="Contracts\NodeState.cs" />
     <Compile Include="Contracts\PlayerState.cs" />
     <Compile Include="Contracts\SubsystemState.cs" />
     <Compile Include="Contracts\VirusState.cs" />
-    <Compile Include="Entity.cs" />
-    <Compile Include="EntityBase.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="Initialization\GraphValidator.cs" />
     <Compile Include="Interfaces\IActivatable.cs" />
-    <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\IActor.cs" />
     <Compile Include="Interfaces\IInfection.cs" />
     <Compile Include="Interfaces\IItem.cs" />
@@ -113,6 +112,14 @@
     <ProjectReference Include="..\High-Speed-Priority-Queue-for-C-Sharp\Priority Queue\Priority Queue.csproj">
       <Project>{1531c1ea-bd53-41d1-a34b-cfcdf79d2651}</Project>
       <Name>Priority Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
+      <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
+      <Name>PlayGen.Engine.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
+      <Name>PlayGen.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.Engine;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Visitors.Actors;
 using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Interfaces
 {
-	public interface ISimulation : IDisposable
+	public interface ISimulation : IEntityRegistry
 	{
 		int CurrentTick { get; }
-		TEntity GetEntityById<TEntity>(int id) where TEntity : class, IEntity;
 
 		#region entity factory
 
@@ -38,7 +38,7 @@ namespace PlayGen.ITAlert.Simulation.Interfaces
 
 		void SpawnVirus(int subsystemLogicalId);
 
-		int EntitySeed { get; }
+
 
 		void OnDeserialized();
 

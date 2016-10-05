@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
 using PlayGen.ITAlert.Simulation.Interfaces;

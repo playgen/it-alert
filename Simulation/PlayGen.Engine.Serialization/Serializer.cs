@@ -1,53 +1,52 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using PlayGen.Engine.Serialization;
 
-namespace PlayGen.ITAlert.Simulation.Serialization
+namespace PlayGen.Engine.Serialization
 {
 	public class SimulationSerializer
 	{
-		private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings();
+		private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
 		static SimulationSerializer()
 		{
-			SerializerSettings.Converters.Add(new StringEnumConverter());
+			DefaultSettings.Converters.Add(new StringEnumConverter());
 			// ignore reference loops as these will be taken care of
-			SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+			DefaultSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 			// minimize the size of the output
-			SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
-			SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-			SerializerSettings.Formatting = Formatting.None;
+			DefaultSettings.DefaultValueHandling = DefaultValueHandling.Include;
+			DefaultSettings.NullValueHandling = NullValueHandling.Ignore;
+			DefaultSettings.Formatting = Formatting.None;
 			// deal with references
-			SerializerSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-			SerializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+			DefaultSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
+			DefaultSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 			// polymorphism
-			SerializerSettings.TypeNameHandling = TypeNameHandling.Auto;
+			DefaultSettings.TypeNameHandling = TypeNameHandling.Auto;
 			// big graph
-			SerializerSettings.MaxDepth = int.MaxValue;
-			
+			DefaultSettings.MaxDepth = int.MaxValue;
+
 			// TODO: select level based resolver on usage
 			// only serialize properties at this state transmission level
-			SerializerSettings.ContractResolver = new SyncStateResolver(StateLevel.Full);
+			DefaultSettings.ContractResolver = new SyncStateResolver(StateLevel.Full);
 		}
 
-		public static byte[] SerializeSimulation(Simulation simulation)
+		public static byte[] Serialize<T>(T simulation)
 		{
-			var simulationString = JsonConvert.SerializeObject(simulation, SerializerSettings);
+			var simulationString = JsonConvert.SerializeObject(simulation, DefaultSettings);
 			return Encoding.UTF8.GetBytes(simulationString);
 		}
 
-		public static Simulation DeserializeSimulation(byte[] simulationBytes)
+		public static T Deserialize<T>(byte[] simulationBytes)
 		{
 			var simulationString = Encoding.UTF8.GetString(simulationBytes);
-			var simulation = JsonConvert.DeserializeObject<Simulation>(simulationString, SerializerSettings);
-			simulation.OnDeserialized();
+			var simulation = JsonConvert.DeserializeObject<T>(simulationString, DefaultSettings);
+			//TODO: reimplement
+			//simulation.OnDeserialized();
 			return simulation;
 		}
 

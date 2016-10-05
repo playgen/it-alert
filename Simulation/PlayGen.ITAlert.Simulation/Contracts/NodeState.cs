@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine.Serialization;
 
 namespace PlayGen.ITAlert.Simulation.Contracts
 {
-	public abstract class NodeState : EntityState
+	public abstract class NodeState : ITAlertEntityState
 	{
 		[SyncState(StateLevel.Ui)]
 		public Dictionary<int, int> VisitorPositions { get; set; }

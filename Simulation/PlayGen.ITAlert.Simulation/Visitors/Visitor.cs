@@ -1,11 +1,11 @@
 ﻿using System;
-using PlayGen.ITAlert.Common.Serialization;
-using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.Engine;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Visitors
 {
-	public abstract class Visitor<TState> : Entity<TState>, IVisitor
+	public abstract class Visitor<TState> : ITAlertEntity<TState>, IVisitor
 		where TState : EntityState
 	{
 		[SyncState(StateLevel.Minimal)]

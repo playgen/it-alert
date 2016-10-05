@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using PlayGen.Engine;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Common.Serialization;
-using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
 using PlayGen.ITAlert.Simulation.Interfaces;
 
