@@ -55,7 +55,6 @@
     <Compile Include="Serialization\StateLevel.cs" />
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="TickableEntity.cs" />
-    <Compile Include="TickableEntityState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

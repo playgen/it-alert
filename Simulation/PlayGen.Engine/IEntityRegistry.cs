@@ -6,6 +6,8 @@ namespace PlayGen.Engine
 	public interface IEntityRegistry : ISerializable, IDisposable
 {
 		int EntitySeed { get; }
+
+		bool TryGetEntityById(int id, out IEntity entity);
 	}
 
 	public interface IEntityRegistry<in TGameEntity> : IEntityRegistry

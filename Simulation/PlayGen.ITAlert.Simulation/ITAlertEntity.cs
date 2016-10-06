@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayGen.Engine;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 
 namespace PlayGen.ITAlert.Simulation
@@ -11,8 +12,10 @@ namespace PlayGen.ITAlert.Simulation
 	public abstract class ITAlertEntity<TState> : TickableEntity<ITAlertEntityState, TState>, IITAlertEntity<TState>
 		where TState : ITAlertEntityState
 	{
+		[SyncState(StateLevel.Full)]
 		public EntityType EntityType { get; private set; }
 
+		[SyncState(StateLevel.Full)]
 		protected ISimulation Simulation { get; private set; }
 
 		protected ITAlertEntity(ISimulation simulation, EntityType entityType) 

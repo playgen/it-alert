@@ -50,7 +50,6 @@ namespace PlayGen.Engine
 			// TODO: replace dirty hack for the entity factory
 			EntityRegistry = entityRegistry;
 			Id = entityRegistry.EntitySeed;
-			//RaiseEntityCreated(this);
 		}
 
 
@@ -59,7 +58,6 @@ namespace PlayGen.Engine
 			// TODO: replace dirty hack for the entity factory
 			EntityRegistry = entityRegistry;
 			Id = entityRegistry.EntitySeed;
-			//RaiseEntityCreated(this);
 		}
 
 		/// <summary>
