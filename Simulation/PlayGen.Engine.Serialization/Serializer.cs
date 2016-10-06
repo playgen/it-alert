@@ -38,9 +38,13 @@ namespace PlayGen.Engine.Serialization
 		}
 
 		public static byte[] Serialize<T>(T obj)
-			where T : ISerializable
+			where T : ISerializable, IEntityRegistry
 		{
-			var simulationString = JsonConvert.SerializeObject(obj, DefaultSettings);
+			var serializerSettings = DefaultSettings;
+
+			serializerSettings.ReferenceResolverProvider = () => new EntityRegistryReferenceResolver(obj);
+
+			var simulationString = JsonConvert.SerializeObject(obj, serializerSettings);
 			return Encoding.UTF8.GetBytes(simulationString);
 		}
 
@@ -73,7 +77,7 @@ namespace PlayGen.Engine.Serialization
 				{
 					var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
-					properties = new List<JsonProperty>();
+					var orderedProperties = new List<OrderedProperty>();
 
 					foreach (var prop in props)
 					{
@@ -89,7 +93,10 @@ namespace PlayGen.Engine.Serialization
 						var jsonProperty = base.CreateProperty(prop, memberSerialization);
 						jsonProperty.Writable = true;
 						jsonProperty.Readable = true;
-						properties.Add(jsonProperty);
+						orderedProperties.Add(new OrderedProperty() {
+							Property = jsonProperty,
+							Order = syncStateAttribute.Order
+						});
 					}
 
 					foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
@@ -105,9 +112,15 @@ namespace PlayGen.Engine.Serialization
 						var jsonProperty = base.CreateProperty(field, memberSerialization);
 						jsonProperty.Writable = true;
 						jsonProperty.Readable = true;
-						properties.Add(jsonProperty);
+						orderedProperties.Add(new OrderedProperty()
+						{
+							Property = jsonProperty,
+							Order = syncStateAttribute.Order
+						});
 					}
 
+					orderedProperties.Sort();
+					properties = orderedProperties.Select(op => op.Property).ToList();
 					_propertyCache.Add(type, properties);
 				}
 				return properties;

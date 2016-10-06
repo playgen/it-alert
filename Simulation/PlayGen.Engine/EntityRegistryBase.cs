@@ -8,9 +8,10 @@ namespace PlayGen.Engine
 	public class EntityRegistryBase<TGameEntity> : IEntityRegistry<TGameEntity>
 		where TGameEntity : class, IEntity
 	{
+		[SyncState(StateLevel.Full, 0)]
 		private int _entitySeed;
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Full, 1)]
 		protected Dictionary<int, TGameEntity> Entities = new Dictionary<int, TGameEntity>();
 
 		public int EntitySeed => ++_entitySeed;
@@ -55,6 +56,14 @@ namespace PlayGen.Engine
 		protected virtual void OnEntityDestroyed(TGameEntity entity)
 		{
 			
+		}
+
+		public bool TryGetEntityById(int id, out IEntity entity)
+		{
+			TGameEntity gameEntity;
+			var found = Entities.TryGetValue(id, out gameEntity);
+			entity = gameEntity;
+			return found;
 		}
 
 		public TEntity GetEntityById<TEntity>(int id)
