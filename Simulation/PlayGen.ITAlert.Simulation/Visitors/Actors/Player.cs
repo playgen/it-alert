@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Common.Serialization;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Visitors.Items;
 using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors
@@ -227,7 +227,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		private void Item_EntityDestroyed(object sender, EventArgs e)
 		{
-			var entity = (IEntity) sender;
+			var entity = (IITAlertEntity) sender;
 			if (entity.Equals(Item))
 			{
 				Item = null;

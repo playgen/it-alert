@@ -10,7 +10,7 @@ namespace PlayGen.ITAlert.Simulation.Contracts
 	/// </summary>
 	public class GameState
 	{
-		public Dictionary<int, EntityState> Entities { get; set; }
+		public Dictionary<int, ITAlertEntityState> Entities { get; set; }
 
 		public Vector GraphSize { get; set; }
 

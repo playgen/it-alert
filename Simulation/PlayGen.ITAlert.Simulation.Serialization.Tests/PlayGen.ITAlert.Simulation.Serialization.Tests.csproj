@@ -53,6 +53,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
+      <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
+      <Name>PlayGen.Engine.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
       <Name>PlayGen.ITAlert.Common</Name>

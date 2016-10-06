@@ -1,7 +1,8 @@
 ﻿using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Visitors.Actors;
 
-namespace PlayGen.ITAlert.Simulation.Interfaces
+namespace PlayGen.ITAlert.Simulation.Visitors.Items
 {
 	public interface IItem : IVisitor, IActivatable
 	{

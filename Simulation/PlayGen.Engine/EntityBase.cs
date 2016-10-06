@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using PlayGen.Engine.Components;
+using PlayGen.Engine.Serialization;
 
 namespace PlayGen.Engine
 {
-	public abstract class EntityBase : IEntity, IEquatable<IEntity>
+	public abstract class EntityBase<TGameState> : ComponentContainer, IEntity, IEquatable<IEntity>
+		where TGameState : EntityState
 	{
 		#region Event registry
 
@@ -31,14 +36,23 @@ namespace PlayGen.Engine
 
 		#endregion
 
-
-		//[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Minimal)]
 		public int Id { get; protected set; }
 
-		//[SyncState(StateLevel.Setup)]
+		[SyncState(StateLevel.Setup)]
 		protected IEntityRegistry EntityRegistry { get; set; }
-		
+
 		#region constructors
+
+		protected EntityBase(IEntityRegistry entityRegistry, IEnumerable<IComponent> components)
+			: base (components)
+		{
+			// TODO: replace dirty hack for the entity factory
+			EntityRegistry = entityRegistry;
+			Id = entityRegistry.EntitySeed;
+			//RaiseEntityCreated(this);
+		}
+
 
 		protected EntityBase(IEntityRegistry entityRegistry)
 		{
@@ -59,7 +73,7 @@ namespace PlayGen.Engine
 
 		#endregion
 
-		public abstract EntityState GetState();
+		public abstract TGameState GetState();
 
 
 		public bool Equals(IEntity other)
@@ -71,11 +85,11 @@ namespace PlayGen.Engine
 		{
 			return $"Entity [{Id}] {this.GetType()}";
 		}
-
-
-
+		
 		public virtual void OnDeserialized()
 		{
 		}
+
+
 	}
 }

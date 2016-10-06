@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using PlayGen.Engine;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
+using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
-using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors 
 {
 	public abstract class Actor<TState> : Visitor<TState>, IActor
-		where TState : EntityState
+		where TState : ITAlertEntityState
 	{
 		//TODO: make this minimal if speed varies
 		[SyncState(StateLevel.Setup)]

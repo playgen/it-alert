@@ -12,7 +12,7 @@ public interface IEntityBehaviour
 
 	EntityType EntityType { get; }
 
-	void UpdateState(EntityState state);
+	void UpdateState(ITAlertEntityState state);
 
-	void Initialize(EntityState state);
+	void Initialize(ITAlertEntityState state);
 }

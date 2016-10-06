@@ -1,14 +1,14 @@
 ﻿using System;
 using NUnit.Framework;
+using PlayGen.Engine;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Tests
 {
 	[TestFixture]
 	public class EntityTests
 	{
-		private class TestEntity : Entity<EntityState>
+		private class TestEntity : ITAlertEntity<ITAlertEntityState>
 		{
 			public TestEntity(ISimulation simulation) 
 				: base(simulation, EntityType.Undefined)
@@ -20,7 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				throw new NotImplementedException();
 			}
 
-			public override EntityState GenerateState()
+			public override ITAlertEntityState GenerateState()
 			{
 				throw new NotImplementedException();
 			}

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayGen.Engine;
-using PlayGen.ITAlert.Simulation.Interfaces;
 using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Contracts.Extensions

@@ -3,8 +3,8 @@ using System.Linq;
 using NUnit.Framework;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Simulation.Interfaces;
 using PlayGen.ITAlert.Simulation.Tests.Actors;
+using PlayGen.ITAlert.Simulation.Visitors;
 using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Tests.World

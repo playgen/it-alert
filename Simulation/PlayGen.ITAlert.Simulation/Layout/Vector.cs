@@ -1,5 +1,5 @@
 ﻿using System;
-using PlayGen.ITAlert.Common.Serialization;
+using PlayGen.Engine.Serialization;
 
 namespace PlayGen.ITAlert.Simulation.Layout
 {

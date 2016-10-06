@@ -5,8 +5,9 @@ using System.Text;
 
 namespace PlayGen.Engine
 {
-	public abstract class TickableEntity<TState> : Entity<TState>
-		where TState : EntityState
+	public abstract class TickableEntity<TGameState, TState> : Entity<TGameState, TState>
+		where TState : TGameState
+		where TGameState : EntityState
 	{
 		////[SyncState(StateLevel.Minimal)]
 		public int CurrentTick { get; protected set; }

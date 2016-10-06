@@ -22,7 +22,7 @@ public class UIEntity
 
 	public IEntityBehaviour EntityBehaviour { get { return _entityBehaviour; } }
 
-	public UIEntity(EntityState state)
+	public UIEntity(ITAlertEntityState state)
 	{
 		_gameObject = InstantiateEntity(state.EntityType.ToString());
 		_gameObject.transform.SetParent(Graph.transform);
@@ -61,7 +61,7 @@ public class UIEntity
 		return Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 	}
 
-	public void UpdateEntityState(EntityState state)
+	public void UpdateEntityState(ITAlertEntityState state)
 	{
 		_entityBehaviour.UpdateState(state);
 	}

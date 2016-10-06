@@ -59,6 +59,10 @@
     <Compile Include="World\TestSubsystem.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
       <Name>PlayGen.ITAlert.Common</Name>

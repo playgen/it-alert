@@ -5,12 +5,12 @@ using PlayGen.Engine;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.World
 {
 	public abstract class Node<TState> : ITAlertEntity<TState>, INode
-		where TState : EntityState
+		where TState : ITAlertEntityState
 	{
 		#region events
 

@@ -48,6 +48,7 @@
     <Compile Include="Contracts\Extensions\IntentExtensions.cs" />
     <Compile Include="Contracts\Intents\IntentState.cs" />
     <Compile Include="Contracts\ITAlertEntityState.cs" />
+    <Compile Include="Contracts\VisitorState.cs" />
     <Compile Include="Intents\DisownItemIntent.cs" />
     <Compile Include="Intents\InfectSystemIntent.cs" />
     <Compile Include="Intents\Intent.cs" />
@@ -55,8 +56,8 @@
     <Compile Include="Intents\PickUpItemIntent.cs" />
     <Compile Include="Contracts\Extensions\VisitorPositionExtensions.cs" />
     <Compile Include="Contracts\PositionState.cs" />
-    <Compile Include="Interfaces\IEnhancement.cs" />
-    <Compile Include="Interfaces\IITAlertEntity.cs" />
+    <Compile Include="World\Enhancements\IEnhancement.cs" />
+    <Compile Include="IITAlertEntity.cs" />
     <Compile Include="ITAlertEntity.cs" />
     <Compile Include="SimulationRules.cs" />
     <Compile Include="Utilities\IItemArrayExtensions.cs" />
@@ -75,13 +76,13 @@
     <Compile Include="Contracts\VirusState.cs" />
     <Compile Include="EntityType.cs" />
     <Compile Include="Initialization\GraphValidator.cs" />
-    <Compile Include="Interfaces\IActivatable.cs" />
-    <Compile Include="Interfaces\IActor.cs" />
-    <Compile Include="Interfaces\IInfection.cs" />
-    <Compile Include="Interfaces\IItem.cs" />
-    <Compile Include="Interfaces\INode.cs" />
-    <Compile Include="Interfaces\ISimulation.cs" />
-    <Compile Include="Interfaces\IVisitor.cs" />
+    <Compile Include="IActivatable.cs" />
+    <Compile Include="Visitors\Actors\IActor.cs" />
+    <Compile Include="Visitors\Actors\IInfection.cs" />
+    <Compile Include="Visitors\Items\IItem.cs" />
+    <Compile Include="World\INode.cs" />
+    <Compile Include="ISimulation.cs" />
+    <Compile Include="Visitors\IVisitor.cs" />
     <Compile Include="Visitors\Items\Item.cs" />
     <Compile Include="Visitors\Items\Cleaner.cs" />
     <Compile Include="Visitors\Items\Scanner.cs" />
@@ -102,6 +103,7 @@
     <Compile Include="World\Enhancements\ManualEnhancement.cs" />
     <Compile Include="World\Enhancements\RepairSpawnManual.cs" />
     <Compile Include="World\Enhancements\SubsystemEnhancement.cs" />
+    <Compile Include="World\INodeEvents.cs" />
     <Compile Include="World\Node.cs" />
     <Compile Include="World\NodeDirection.cs" />
     <Compile Include="World\Subsystem.cs" />

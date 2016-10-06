@@ -44,6 +44,12 @@
   <ItemGroup>
     <Folder Include="Serialization\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

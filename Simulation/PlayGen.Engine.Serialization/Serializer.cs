@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using ICSharpCode.SharpZipLib.GZip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 namespace PlayGen.Engine.Serialization
 {
-	public class SimulationSerializer
+	public class Serializer
 	{
 		private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
-		static SimulationSerializer()
+		static Serializer()
 		{
 			DefaultSettings.Converters.Add(new StringEnumConverter());
 			// ignore reference loops as these will be taken care of
@@ -35,19 +37,20 @@ namespace PlayGen.Engine.Serialization
 			DefaultSettings.ContractResolver = new SyncStateResolver(StateLevel.Full);
 		}
 
-		public static byte[] Serialize<T>(T simulation)
+		public static byte[] Serialize<T>(T obj)
+			where T : ISerializable
 		{
-			var simulationString = JsonConvert.SerializeObject(simulation, DefaultSettings);
+			var simulationString = JsonConvert.SerializeObject(obj, DefaultSettings);
 			return Encoding.UTF8.GetBytes(simulationString);
 		}
 
 		public static T Deserialize<T>(byte[] simulationBytes)
+			where T : ISerializable
 		{
-			var simulationString = Encoding.UTF8.GetString(simulationBytes);
-			var simulation = JsonConvert.DeserializeObject<T>(simulationString, DefaultSettings);
-			//TODO: reimplement
-			//simulation.OnDeserialized();
-			return simulation;
+			var objString = Encoding.UTF8.GetString(simulationBytes);
+			var obj = JsonConvert.DeserializeObject<T>(objString, DefaultSettings);
+			obj.OnDeserialized();
+			return obj;
 		}
 
 		#region contract resolution
@@ -117,14 +120,22 @@ namespace PlayGen.Engine.Serialization
 
 		public static byte[] Compress(byte[] input)
 		{
-			// todo implement
-			return input;
+			using (var inputStream = new MemoryStream(input))
+			using (var outputStream = new MemoryStream())
+			{
+				GZip.Compress(inputStream, outputStream, false, 5);
+				return outputStream.ToArray();
+			}
 		}
 
 		public static byte[] Decompress(byte[] input)
 		{
-			// todo implement
-			return input;
+			using (var inputStream = new MemoryStream(input))
+			using (var outputStream = new MemoryStream())
+			{
+				GZip.Decompress(inputStream, outputStream, false);
+				return outputStream.ToArray();
+			}
 		}
 
 		#endregion

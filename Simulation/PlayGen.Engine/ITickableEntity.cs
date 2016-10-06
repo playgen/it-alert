@@ -16,8 +16,15 @@ namespace PlayGen.Engine
 		void Tick(int currentTick);
 	}
 
-	public interface ITickableEntity<TState> : IEntity<TState>, ITickableEntity
-		where TState : EntityState
+	public interface ITickableEntity<out TGameState> : IEntity<TGameState>, ITickableEntity
+		where TGameState : EntityState
+	{
+		
+	}
+
+	public interface ITickableEntity<out TGameState, out TState> : IEntity<TGameState, TState>, ITickableEntity<TGameState>
+		where TState : TGameState
+		where TGameState : EntityState
 	{
 	
 	}

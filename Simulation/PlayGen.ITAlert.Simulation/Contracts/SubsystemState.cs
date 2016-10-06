@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayGen.ITAlert.Common.Serialization;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.World;
 

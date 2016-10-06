@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Simulation.Interfaces
+﻿namespace PlayGen.ITAlert.Simulation
 {
 	public interface IActivatable
 	{

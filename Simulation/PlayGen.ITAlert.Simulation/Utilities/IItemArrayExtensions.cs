@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Visitors.Items;
 
 namespace PlayGen.ITAlert.Simulation.Utilities
 {

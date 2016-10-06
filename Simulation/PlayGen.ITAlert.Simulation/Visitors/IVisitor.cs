@@ -1,7 +1,6 @@
-﻿using PlayGen.Engine;
-using PlayGen.ITAlert.Simulation.World;
+﻿using PlayGen.ITAlert.Simulation.World;
 
-namespace PlayGen.ITAlert.Simulation.Interfaces
+namespace PlayGen.ITAlert.Simulation.Visitors
 {
 	public interface IVisitor : IITAlertEntity
 	{

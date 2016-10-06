@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayGen.Engine;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Contracts;
 
 namespace PlayGen.ITAlert.Simulation
 {
 	// ReSharper disable once InconsistentNaming
-	public abstract class ITAlertEntity<TState> : TickableEntity<TState>, IITAlertEntity<TState>
-		where TState : EntityState
+	public abstract class ITAlertEntity<TState> : TickableEntity<ITAlertEntityState, TState>, IITAlertEntity<TState>
+		where TState : ITAlertEntityState
 	{
 		public EntityType EntityType { get; private set; }
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Common.Serialization;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Visitors;
+using PlayGen.ITAlert.Simulation.Visitors.Actors;
 
 namespace PlayGen.ITAlert.Simulation.World
 {

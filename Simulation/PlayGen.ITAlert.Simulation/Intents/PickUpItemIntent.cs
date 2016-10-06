@@ -1,6 +1,6 @@
-﻿using PlayGen.ITAlert.Common.Serialization;
+﻿using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.World;
 
 namespace PlayGen.ITAlert.Simulation.Intents
 {

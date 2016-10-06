@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 {
