@@ -9,7 +9,6 @@ using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Initialization;
 using PlayGen.ITAlert.Simulation.Intents;
-using PlayGen.ITAlert.Simulation.Interfaces;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Utilities;
 using PlayGen.ITAlert.Simulation.Visitors.Actors;

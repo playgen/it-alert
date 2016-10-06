@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using PlayGen.Engine;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Visitors.Actors;
+using PlayGen.ITAlert.Simulation.Visitors.Items;
 using PlayGen.ITAlert.Simulation.World;
 
-namespace PlayGen.ITAlert.Simulation.Interfaces
+namespace PlayGen.ITAlert.Simulation
 {
 	public interface ISimulation : IEntityRegistry
 	{

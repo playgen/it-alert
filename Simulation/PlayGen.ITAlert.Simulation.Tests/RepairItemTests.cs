@@ -5,7 +5,6 @@ using System.Text;
 using NUnit.Framework;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Simulation.Interfaces;
 using PlayGen.ITAlert.Simulation.Tests.World;
 using PlayGen.ITAlert.Simulation.Visitors.Items;
 using PlayGen.ITAlert.Simulation.World;

@@ -176,7 +176,7 @@ public class Director : MonoBehaviour
 	}
 
 
-	private static void CreateEntity(int id, EntityState state)
+	private static void CreateEntity(int id, ITAlertEntityState state)
 	{
 		var entity = new UIEntity(state);
 		Entities.Add(id, entity);

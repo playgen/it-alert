@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine;
-using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Simulation.World;
+﻿using System.Collections.Generic;
+using PlayGen.ITAlert.Simulation.Visitors;
 
-namespace PlayGen.ITAlert.Simulation.Interfaces
+namespace PlayGen.ITAlert.Simulation.World
 {
-	public interface INode : IEntity
+	public interface INode : IITAlertEntity
 	{
 		Dictionary<int, NodeDirection> ExitNodePositions { get; }
 

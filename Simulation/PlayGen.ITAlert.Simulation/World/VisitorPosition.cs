@@ -1,5 +1,5 @@
-﻿using PlayGen.ITAlert.Common.Serialization;
-using PlayGen.ITAlert.Simulation.Interfaces;
+﻿using PlayGen.Engine.Serialization;
+using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.World
 {

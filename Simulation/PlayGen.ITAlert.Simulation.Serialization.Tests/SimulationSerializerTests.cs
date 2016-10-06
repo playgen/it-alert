@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
 using PlayGen.ITAlert.Simulation.Visitors.Actors;
@@ -40,11 +41,11 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var randomBytes = new byte[9999];
 			random.NextBytes(randomBytes);
 
-			var compressedRandomBytes = SimulationSerializer.Compress(randomBytes);
+			var compressedRandomBytes = Serializer.Compress(randomBytes);
 
 			Assert.False(compressedRandomBytes.SequenceEqual(randomBytes));
 
-			var decompressedRandomBytes = SimulationSerializer.Decompress(compressedRandomBytes);
+			var decompressedRandomBytes = Serializer.Decompress(compressedRandomBytes);
 
 			Assert.True(decompressedRandomBytes.SequenceEqual(randomBytes));
 		}

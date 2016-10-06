@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Simulation.Interfaces;
+using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.World
 {

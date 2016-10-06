@@ -1,7 +1,8 @@
 ﻿namespace PlayGen.Engine
 {
-	public abstract class Entity<TState> : EntityBase, IEntity<TState>
-		where TState : EntityState
+	public abstract class Entity<TGameState, TState> : EntityBase<TGameState>, IEntity<TGameState, TState>
+		where TState : TGameState
+		where TGameState : EntityState
 	{
 
 		#region constructors
@@ -24,7 +25,7 @@
 
 		public abstract TState GenerateState();
 
-		public override EntityState GetState()
+		public override TGameState GetState()
 		{
 			return GenerateState();
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PlayGen.Engine.Exceptions;
+using PlayGen.Engine.Serialization;
 
 namespace PlayGen.Engine
 {
@@ -9,6 +10,7 @@ namespace PlayGen.Engine
 	{
 		private int _entitySeed;
 
+		[SyncState(StateLevel.Minimal)]
 		protected Dictionary<int, TGameEntity> Entities = new Dictionary<int, TGameEntity>();
 
 		public int EntitySeed => ++_entitySeed;

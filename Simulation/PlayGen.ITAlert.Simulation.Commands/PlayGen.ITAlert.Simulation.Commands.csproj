@@ -55,6 +55,10 @@
     <Compile Include="SpawnVirusCommand.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>

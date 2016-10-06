@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Common.Serialization;
-using PlayGen.ITAlert.Simulation.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.World
 {

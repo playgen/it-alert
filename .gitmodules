@@ -7,3 +7,9 @@
 [submodule "SUGAR"]
 	path = SUGAR
 	url = git@codebasehq.com:playgen/rage/sugar.git
+[submodule "Simulation/SharpZipLib"]
+	path = Simulation/SharpZipLib
+	url = git@github.com:playgenhub/SharpZipLib.git
+[submodule "Zenject"]
+	path = Zenject
+	url = git@github.com:playgenhub/Zenject.git

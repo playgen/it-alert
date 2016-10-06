@@ -1,8 +1,9 @@
 ﻿using System;
+using PlayGen.Engine.Serialization;
 
 namespace PlayGen.Engine
 {
-	public interface IEntityRegistry : IDisposable
+	public interface IEntityRegistry : ISerializable, IDisposable
 {
 		int EntitySeed { get; }
 	}

@@ -10,7 +10,7 @@ using UnityEngine;
 /// </summary>
 /// <typeparam name="TState">Type of the state object for this entity</typeparam>
 public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
-	where TState : EntityState
+	where TState : ITAlertEntityState
 {
 	/// <summary>
 	/// Has initialization been performed yet, prevents unity update methods from proceeding
@@ -68,7 +68,7 @@ public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
 	/// verify the type of the state received
 	/// </summary>
 	/// <param name="entityState">entity state</param>
-	protected void SetState(EntityState entityState)
+	protected void SetState(ITAlertEntityState entityState)
 	{
 		var state = entityState as TState;
 		if (state == null)
@@ -82,7 +82,7 @@ public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
 	/// Set state from simulator
 	/// </summary>
 	/// <param name="state"></param>
-	public void UpdateState(EntityState state)
+	public void UpdateState(ITAlertEntityState state)
 	{
 		SetState(state);
 		OnUpdatedState();
@@ -97,7 +97,7 @@ public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
 	/// Initialize the object from simulation state
 	/// </summary>
 	/// <param name="state"></param>
-	public void Initialize(EntityState state)
+	public void Initialize(ITAlertEntityState state)
 	{
 		SetState(state);
 		OnInitialize();
