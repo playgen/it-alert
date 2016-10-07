@@ -26,15 +26,11 @@ namespace PlayGen.Engine.Serialization
 			DefaultSettings.Formatting = Formatting.None;
 			// deal with references
 			DefaultSettings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-			DefaultSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
+			DefaultSettings.PreserveReferencesHandling = PreserveReferencesHandling.None;
 			// polymorphism
 			DefaultSettings.TypeNameHandling = TypeNameHandling.Auto;
 			// big graph
 			DefaultSettings.MaxDepth = int.MaxValue;
-
-			// TODO: select level based resolver on usage
-			// only serialize properties at this state transmission level
-			DefaultSettings.ContractResolver = new SyncStateResolver(StateLevel.Full);
 		}
 
 		public static byte[] Serialize<T>(T obj)
@@ -42,10 +38,11 @@ namespace PlayGen.Engine.Serialization
 		{
 			var serializerSettings = DefaultSettings;
 
+			serializerSettings.ContractResolver = new SyncStateContractResolver(StateLevel.Full, obj);
 			serializerSettings.ReferenceResolverProvider = () => new EntityRegistryReferenceResolver(obj);
 
-			var simulationString = JsonConvert.SerializeObject(obj, serializerSettings);
-			return Encoding.UTF8.GetBytes(simulationString);
+			var serializedString = JsonConvert.SerializeObject(obj, serializerSettings);
+			return Encoding.UTF8.GetBytes(serializedString);
 		}
 
 		public static T Deserialize<T>(byte[] simulationBytes)
@@ -56,78 +53,6 @@ namespace PlayGen.Engine.Serialization
 			obj.OnDeserialized();
 			return obj;
 		}
-
-		#region contract resolution
-
-		private class SyncStateResolver : DefaultContractResolver
-		{
-			private readonly Dictionary<Type, List<JsonProperty>> _propertyCache = new Dictionary<Type, List<JsonProperty>>();
-
-			private StateLevel Level { get; }
-
-			public SyncStateResolver(StateLevel level)
-			{
-				Level = level;
-			}
-
-			protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-			{
-				List<JsonProperty> properties;
-				if (_propertyCache.TryGetValue(type, out properties) == false)
-				{
-					var props = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-
-					var orderedProperties = new List<OrderedProperty>();
-
-					foreach (var prop in props)
-					{
-						var syncStateAttribute =
-							prop.GetCustomAttributes(true)
-								.OfType<SyncStateAttribute>()
-								.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
-						if (syncStateAttribute == null)
-						{
-							continue;
-						}
-
-						var jsonProperty = base.CreateProperty(prop, memberSerialization);
-						jsonProperty.Writable = true;
-						jsonProperty.Readable = true;
-						orderedProperties.Add(new OrderedProperty() {
-							Property = jsonProperty,
-							Order = syncStateAttribute.Order
-						});
-					}
-
-					foreach (var field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-					{
-						var syncStateAttribute =
-							field.GetCustomAttributes(true)
-								.OfType<SyncStateAttribute>()
-								.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
-						if (syncStateAttribute == null)
-						{
-							continue;
-						}
-						var jsonProperty = base.CreateProperty(field, memberSerialization);
-						jsonProperty.Writable = true;
-						jsonProperty.Readable = true;
-						orderedProperties.Add(new OrderedProperty()
-						{
-							Property = jsonProperty,
-							Order = syncStateAttribute.Order
-						});
-					}
-
-					orderedProperties.Sort();
-					properties = orderedProperties.Select(op => op.Property).ToList();
-					_propertyCache.Add(type, properties);
-				}
-				return properties;
-			}
-		}
-
-		#endregion
 
 		#region compression
 

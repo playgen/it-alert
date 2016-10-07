@@ -4,15 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40DB97CD-BB9F-4EAF-8092-39975F9719D6}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{14C24EA9-DD64-4739-910B-7E0A91A5E84F}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.CLI</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.CLI</AssemblyName>
+    <RootNamespace>PlayGen.Engine.Serialization.Tests</RootNamespace>
+    <AssemblyName>PlayGen.Engine.Serialization.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,45 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ITestEntity.cs" />
+    <Compile Include="JsonSerializerExperiements.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <Compile Include="TestEntity.cs" />
+    <Compile Include="TestEntityRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net35.csproj">
       <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
       <Name>Newtonsoft.Json.Net35</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Serialization.Tests\PlayGen.Engine.Serialization.Tests.csproj">
-      <Project>{14c24ea9-dd64-4739-910b-7e0a91a5e84f}</Project>
-      <Name>PlayGen.Engine.Serialization.Tests</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
-      <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>
+      <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
       <Name>PlayGen.Engine.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>PlayGen.Engine</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
-      <Project>{d5d14e17-c9d5-4ab2-ab74-96f95b50614f}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
-      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
