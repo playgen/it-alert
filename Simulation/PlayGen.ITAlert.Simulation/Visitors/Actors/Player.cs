@@ -156,7 +156,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 				{
 					DisownItem(true);
 				}
-
+				
 				var pickupItemIntent = currentIntent as PickUpItemIntent;
 				if (pickupItemIntent != null)
 				{

@@ -13,3 +13,6 @@
 [submodule "Zenject"]
 	path = Zenject
 	url = git@github.com:playgenhub/Zenject.git
+[submodule "Simulation/Newtonsoft.Json"]
+	path = Simulation/Newtonsoft.Json
+	url = git@github.com:JamesNK/Newtonsoft.Json.git

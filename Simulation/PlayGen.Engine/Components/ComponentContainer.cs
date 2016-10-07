@@ -85,7 +85,7 @@ namespace PlayGen.Engine.Components
 
 		private IEnumerable<TComponent> GenerateComponentImplementorCache<TComponentInterface>()
 		{
-			var implementors = _components.Keys.Where(t => t.IsAssignableFrom(typeof(TComponentInterface)));
+			var implementors = _components.Keys.Where(t => typeof(TComponentInterface).IsAssignableFrom(t));
 			return implementors.Select(i => _components[i]);
 		}
 

@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using PlayGen.Engine.Serialization;
+using PlayGen.Engine.Serialization.Tests;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Layout;
@@ -25,7 +26,19 @@ namespace PlayGen.ITAlert.CLI
 		public static void Main(string[] args)
 		{
 			//TickUntilInfection();
-			SerializationLoop();
+			//SerializationLoop();
+			JsonSerializerExperiements.TestReferenceResolution();
+
+			var simulation = ConfigHelper.GenerateSimulation(3, 4, 2, new Dictionary<ItemType, int>()
+			{
+				{ItemType.Repair, 2},
+				{ItemType.Scanner, 2},
+				{ItemType.Cleaner, 2},
+			}, 1);
+
+			var state = SimulationSerializer.SerializeSimulation(simulation);
+
+			File.WriteAllBytes(Path.Combine(DebugPath, $"out.json"), state);
 		}
 
 		//private static void TickUntilInfection()

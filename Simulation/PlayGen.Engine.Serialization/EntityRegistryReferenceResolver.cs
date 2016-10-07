@@ -51,7 +51,11 @@ namespace PlayGen.Engine.Serialization
 				string reference;
 				return _nonEntityReferences.TryGetBySecond(value, out reference);
 			}
-			return _registry.TryGetEntityById(entity.Id, out entity);
+			if (_registry.TryGetEntityById(entity.Id, out entity))
+			{
+
+			}
+			return false;
 		}
 
 		public void AddReference(object context, string reference, object value)
