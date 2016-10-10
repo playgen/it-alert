@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GameWork.Interfacing;
+using GameWork.Core.Interfacing;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.ITAlert.Photon.Players;

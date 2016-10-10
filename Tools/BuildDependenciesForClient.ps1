@@ -14,6 +14,6 @@ Build "SUGAR\PlayGen.SUGAR.sln" "Debug"
 
 Build "Simulation\PlayGen.ITAlert.sln" "UnityDebug"
 
-Build "GameWork\GameWork.sln" "Unity Client Debug"
+Build "GameWork.Unity\GameWork.Unity.sln" "Unity Client Debug"
 
 Build "Server\Photon.Loadbalancing.sln" "Unity Debug"
