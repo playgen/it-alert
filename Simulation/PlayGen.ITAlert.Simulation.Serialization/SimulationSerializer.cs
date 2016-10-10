@@ -15,12 +15,12 @@ namespace PlayGen.ITAlert.Simulation.Serialization
 	{
 		public static byte[] SerializeSimulation(Simulation simulation)
 		{
-			return Serializer.Serialize(simulation);
+			return EntityRegistrySerializer.Serialize(simulation);
 		}
 
 		public static Simulation DeserializeSimulation(byte[] simulationBytes)
 		{
-			return Serializer.Deserialize<Simulation>(simulationBytes);
+			return EntityRegistrySerializer.Deserialize<Simulation>(simulationBytes);
 		}
 	}
 }

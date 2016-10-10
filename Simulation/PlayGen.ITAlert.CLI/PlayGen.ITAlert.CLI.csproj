@@ -50,10 +50,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Net35.csproj">
-      <Project>{a9ae40ff-1a21-414a-9fe7-3be13644cc6d}</Project>
-      <Name>Newtonsoft.Json.Net35</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine.Serialization.Tests\PlayGen.Engine.Serialization.Tests.csproj">
       <Project>{14c24ea9-dd64-4739-910b-7e0a91a5e84f}</Project>
       <Name>PlayGen.Engine.Serialization.Tests</Name>
