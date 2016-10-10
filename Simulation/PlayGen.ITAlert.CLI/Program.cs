@@ -103,13 +103,13 @@ namespace PlayGen.ITAlert.CLI
 					File.WriteAllBytes(Path.Combine(DebugPath, $"pre.json"), state);
 
 					stopwatch.Reset();
-					compressedState = Serializer.Compress(state);
+					compressedState = EntityRegistrySerializer.Compress(state);
 					stopwatch.Stop();
 					Console.WriteLine($"Compress took {stopwatch.ElapsedTicks:N5}.");
 				}
 
 				stopwatch.Reset();
-				var decompressedState = Serializer.Decompress(compressedState);
+				var decompressedState = EntityRegistrySerializer.Decompress(compressedState);
 				stopwatch.Stop();
 				Console.WriteLine($"Decompress took {stopwatch.ElapsedTicks:N5}.");
 				File.WriteAllBytes(Path.Combine(DebugPath, $"post.json"), decompressedState);

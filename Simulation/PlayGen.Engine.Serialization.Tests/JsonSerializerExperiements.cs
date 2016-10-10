@@ -20,7 +20,7 @@ namespace PlayGen.Engine.Serialization.Tests
 			entityA.OtherEntity = entityB;
 			entityB.OtherEntity = entityA;
 
-			var result = Serializer.Serialize(registry);
+			var result = EntityRegistrySerializer.Serialize(registry);
 		}
 	}
 }
