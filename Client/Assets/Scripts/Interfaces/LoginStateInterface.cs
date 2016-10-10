@@ -1,5 +1,5 @@
-﻿using GameWork.Commands.Accounts;
-using GameWork.Interfacing;
+﻿using GameWork.Core.Commands.Accounts;
+using GameWork.Core.Interfacing;
 using UnityEngine;
 
 public class LoginStateInterface : StateInterface

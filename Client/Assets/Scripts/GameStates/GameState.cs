@@ -1,5 +1,6 @@
 ﻿using System;
-using GameWork.States;
+using GameWork.Core.States;
+using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
@@ -42,7 +43,7 @@ namespace PlayGen.ITAlert.GameStates
         {
             
             _stateController.Initialize();
-            _stateController.SetState(InitializingState.StateName);
+            _stateController.ChangeState(InitializingState.StateName);
 
             
             
@@ -65,7 +66,6 @@ namespace PlayGen.ITAlert.GameStates
 
         public override void Exit()
         {
-            _stateController.ExitState();
             _stateController.Terminate();
 
 	        SceneManager.UnloadScene("Network");

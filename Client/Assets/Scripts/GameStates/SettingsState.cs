@@ -1,5 +1,5 @@
 ﻿using System;
-using GameWork.States;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Network;
 
 public class SettingsState : TickableSequenceState

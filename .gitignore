@@ -72,3 +72,10 @@ Client/Assets/Plugins/Server/PhotonServer.config
 
 !/Server/deploy/bin*/*
 !/Server/deploy/Policy/
+
+# GameWork
+Client/Assets/GameWork/*/*.dll
+Client/Assets/GameWork/*/*.pdb
+Client/Assets/GameWork/*/*.pdb.meta
+Client/Assets/GameWork/*/*.mdb
+Client/Assets/GameWork/*/*.mdb.meta

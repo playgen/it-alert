@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
-using GameWork.States;
+using GameWork.Core.States;
+using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.SUGAR.Client;
@@ -51,7 +52,7 @@ public class ControllerBehaviour : MonoBehaviour
 
     void Start ()
     {
-        _stateController.SetState(LoadingState.StateName);
+        _stateController.ChangeState(LoadingState.StateName);
     }
     
     void Update ()
