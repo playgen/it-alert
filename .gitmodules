@@ -1,5 +1,5 @@
-[submodule "High-Speed-Priority-Queue-for-C-Sharp"]
-	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
+[submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
+	path = Simulation/Simulation/High-Speed-Priority-Queue-for-C-Sharp
 	url = git@github.com:playgenhub/High-Speed-Priority-Queue-for-C-Sharp.git
 [submodule "SUGAR"]
 	path = SUGAR
