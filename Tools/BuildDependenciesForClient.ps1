@@ -1,27 +1,22 @@
-$msbuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\msbuild.exe"
+#must be executed from the Tools folder
 
-$root = "it-alert"
-$scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
-$splitIndex = $scriptDir.IndexOf($root)
-$parentDir = $scriptDir.Substring(0, $splitIndex + $root.Length)
+$msbuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
 
-Write-Output $parentDir
-
-$nuget = "$parentDir\Tools\nuget.exe"
+$nuget = ".\Tools\nuget.exe"
 
 function Build
 {
     param( [string]$solution, [string]$configuration )
 
-    & $nuget restore $solution
-    & $msbuild "$solution" "/p:Configuration=$configuration"
+    & $nuget restore ".\$solution"
+    & $msbuild ".\$solution" "/p:Configuration=$configuration"
 }
 
 
-Build "$parentDir\SUGAR\PlayGen.SUGAR.sln" "Debug"
+Build "SUGAR\PlayGen.SUGAR.sln" "Debug"
 
-Build "$parentDir\Simulation\PlayGen.ITAlert.sln" "UnityDebug"
+Build "Simulation\PlayGen.ITAlert.sln" "UnityDebug"
 
-Build "$parentDir\GameWork.Unity\GameWork.Unity.sln" "Unity Client Debug"
+Build "GameWork.Unity\GameWork.Unity.sln" "Unity Client Debug"
 
-Build "$parentDir\Server\Photon.Loadbalancing.sln" "Unity Debug"
+Build "Server\Photon.Loadbalancing.sln" "Unity Debug"
