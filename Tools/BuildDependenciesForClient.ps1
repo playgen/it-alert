@@ -6,17 +6,18 @@ $nuget = ".\nuget.exe"
 
 function Build
 {
-    param( [string]$solution, [string]$configuration )
+    param( [string]$relativeDir, [string]$solution, [string]$configuration )
 
-    & $nuget restore "..\$solution"
-    & $msbuild "..\$solution" "/p:Configuration=$configuration"
+    dotnet restore "..\$relativeDir"
+    & $nuget restore "..\$relativeDir\$solution"
+    & $msbuild "..\$relativeDir\$solution" "/p:Configuration=$configuration"
 }
 
 
-Build "SUGAR\PlayGen.SUGAR.sln" "Debug"
+Build "SUGAR" "PlayGen.SUGAR.sln" "Debug"
 
-Build "Simulation\PlayGen.ITAlert.sln" "UnityDebug"
+Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
 
-Build "GameWork.Unity\GameWork.Unity.sln" "Unity Client Debug"
+Build "GameWork.Unity" "GameWork.Unity.sln" "Unity Client Debug"
 
-Build "Server\Photon.Loadbalancing.sln" "Unity Debug"
+Build "Server" "Photon.Loadbalancing.sln" "Unity Debug"
