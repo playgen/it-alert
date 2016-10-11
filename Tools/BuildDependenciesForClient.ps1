@@ -14,7 +14,7 @@ function Build
 }
 
 
-Build "SUGAR" "PlayGen.SUGAR.sln" "Debug"
+Build "SUGAR" "PlayGen.SUGAR.sln" "UnityDebug"
 
 Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
 
