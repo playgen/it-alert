@@ -2,14 +2,14 @@
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
 
-$nuget = ".\Tools\nuget.exe"
+$nuget = ".\nuget.exe"
 
 function Build
 {
     param( [string]$solution, [string]$configuration )
 
-    & $nuget restore ".\$solution"
-    & $msbuild ".\$solution" "/p:Configuration=$configuration"
+    & $nuget restore "..\$solution"
+    & $msbuild "..\$solution" "/p:Configuration=$configuration"
 }
 
 
