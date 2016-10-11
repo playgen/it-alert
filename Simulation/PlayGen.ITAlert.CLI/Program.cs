@@ -36,9 +36,23 @@ namespace PlayGen.ITAlert.CLI
 				{ItemType.Cleaner, 2},
 			}, 1);
 
-			var state = SimulationSerializer.SerializeSimulation(simulation);
+			var serializer = new SimulationSerializer();
 
-			File.WriteAllBytes(Path.Combine(DebugPath, $"out.json"), state);
+			var simulationBytes = serializer.SerializeSimulation(simulation);
+			File.WriteAllBytes(Path.Combine(DebugPath, $"full.json"), simulationBytes);
+
+			var copySimulation = serializer.DeserializeSimulation(simulationBytes);
+
+			simulation.Tick();
+
+			simulationBytes = serializer.SerializeDifferential(simulation);
+			File.WriteAllBytes(Path.Combine(DebugPath, $"diff.json"), simulationBytes);
+
+			serializer.DeserializeDifferential(simulationBytes, copySimulation);
+
+			simulationBytes = serializer.SerializeSimulation(copySimulation);
+			File.WriteAllBytes(Path.Combine(DebugPath, $"post-diff.json"), simulationBytes);
+
 		}
 
 		//private static void TickUntilInfection()
@@ -66,66 +80,66 @@ namespace PlayGen.ITAlert.CLI
 		//	}
 		//}
 
-		private static void SerializationLoop()
-		{
-			var jsonSettings = new JsonSerializerSettings();
-			jsonSettings.Converters.Add(new StringEnumConverter());
-			jsonSettings.TypeNameHandling = TypeNameHandling.Auto;
+		//private static void SerializationLoop()
+		//{
+		//	var jsonSettings = new JsonSerializerSettings();
+		//	jsonSettings.Converters.Add(new StringEnumConverter());
+		//	jsonSettings.TypeNameHandling = TypeNameHandling.Auto;
 
-			var stopwatch = new Stopwatch();
+		//	var stopwatch = new Stopwatch();
 
-			long worst = 0;
-			long sum = 0;
+		//	long worst = 0;
+		//	long sum = 0;
 
-			const int repeat = 1;
+		//	const int repeat = 1;
 
-			for (var i = 0; i < repeat; i++)
-			{
-				byte[] compressedState;
+		//	for (var i = 0; i < repeat; i++)
+		//	{
+		//		byte[] compressedState;
 
-				using (var simulation = ConfigHelper.GenerateSimulation(3, 4, 2, new Dictionary<ItemType, int>()
-				{
-					{ ItemType.Repair, 2 },
-					{ ItemType.Scanner, 2 },
-					{ ItemType.Cleaner, 2 },
-				}, 1))
-				{
-					stopwatch.Start();
-					var state = SimulationSerializer.SerializeSimulation(simulation);
-					stopwatch.Stop();
-					if (stopwatch.ElapsedTicks > worst)
-					{
-						worst = stopwatch.ElapsedTicks;
-					}
-					sum += stopwatch.ElapsedTicks;
-					Console.WriteLine($"Serialize took {stopwatch.ElapsedTicks:N5}.");
+		//		using (var simulation = ConfigHelper.GenerateSimulation(3, 4, 2, new Dictionary<ItemType, int>()
+		//		{
+		//			{ ItemType.Repair, 2 },
+		//			{ ItemType.Scanner, 2 },
+		//			{ ItemType.Cleaner, 2 },
+		//		}, 1))
+		//		{
+		//			stopwatch.Start();
+		//			var state = SimulationSerializer.SerializeSimulation(simulation);
+		//			stopwatch.Stop();
+		//			if (stopwatch.ElapsedTicks > worst)
+		//			{
+		//				worst = stopwatch.ElapsedTicks;
+		//			}
+		//			sum += stopwatch.ElapsedTicks;
+		//			Console.WriteLine($"Serialize took {stopwatch.ElapsedTicks:N5}.");
 
-					File.WriteAllBytes(Path.Combine(DebugPath, $"pre.json"), state);
+		//			File.WriteAllBytes(Path.Combine(DebugPath, $"pre.json"), state);
 
-					stopwatch.Reset();
-					compressedState = EntityRegistrySerializer.Compress(state);
-					stopwatch.Stop();
-					Console.WriteLine($"Compress took {stopwatch.ElapsedTicks:N5}.");
-				}
+		//			stopwatch.Reset();
+		//			compressedState = EntityRegistrySerializer.Compress(state);
+		//			stopwatch.Stop();
+		//			Console.WriteLine($"Compress took {stopwatch.ElapsedTicks:N5}.");
+		//		}
 
-				stopwatch.Reset();
-				var decompressedState = EntityRegistrySerializer.Decompress(compressedState);
-				stopwatch.Stop();
-				Console.WriteLine($"Decompress took {stopwatch.ElapsedTicks:N5}.");
-				File.WriteAllBytes(Path.Combine(DebugPath, $"post.json"), decompressedState);
+		//		stopwatch.Reset();
+		//		var decompressedState = EntityRegistrySerializer.Decompress(compressedState);
+		//		stopwatch.Stop();
+		//		Console.WriteLine($"Decompress took {stopwatch.ElapsedTicks:N5}.");
+		//		File.WriteAllBytes(Path.Combine(DebugPath, $"post.json"), decompressedState);
 
-				stopwatch.Reset();
-				using (var simulation = SimulationSerializer.DeserializeSimulation(decompressedState))
-				{
-					stopwatch.Stop();
-					Console.WriteLine($"Deserialize took {stopwatch.ElapsedTicks:N5}.");
+		//		stopwatch.Reset();
+		//		using (var simulation = SimulationSerializer.DeserializeSimulation(decompressedState))
+		//		{
+		//			stopwatch.Stop();
+		//			Console.WriteLine($"Deserialize took {stopwatch.ElapsedTicks:N5}.");
 
-					var subsystemState = simulation.Subsystems.Select(ss => ss.GetState()).Where(ss => (ss as SubsystemState).VisitorPositions.Any());
+		//			var subsystemState = simulation.Subsystems.Select(ss => ss.GetState()).Where(ss => (ss as SubsystemState).VisitorPositions.Any());
 
-				}
-				Thread.Sleep(100);
-			}
-			Console.WriteLine($"Worst {worst}. Average {sum / repeat}");
-		}
+		//		}
+		//		Thread.Sleep(100);
+		//	}
+		//	Console.WriteLine($"Worst {worst}. Average {sum / repeat}");
+		//}
 	}
 }

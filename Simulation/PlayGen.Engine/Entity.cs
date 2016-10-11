@@ -1,4 +1,7 @@
-﻿namespace PlayGen.Engine
+﻿using System.Collections.Generic;
+using PlayGen.Engine.Components;
+
+namespace PlayGen.Engine
 {
 	public abstract class Entity<TGameState, TState> : EntityBase<TGameState>, IEntity<TGameState, TState>
 		where TState : TGameState
@@ -7,7 +10,7 @@
 
 		#region constructors
 
-		protected Entity(IEntityRegistry entityRegistry) 
+		protected Entity(IEntityRegistry entityRegistry)
 			: base(entityRegistry)
 		{
 		}

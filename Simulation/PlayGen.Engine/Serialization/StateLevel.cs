@@ -7,7 +7,7 @@ namespace PlayGen.Engine.Serialization
 	{
 		Undefined = 0,
 		Setup = 1,
-		Minimal = 2,
+		Differential = 2,
 		Full = 3,
 		Ui = 4,
 	}

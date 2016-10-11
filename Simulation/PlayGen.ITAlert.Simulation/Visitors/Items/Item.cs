@@ -31,19 +31,19 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Items
 		/// <summary>
 		/// number of ticks the item will perform action for when activated
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		protected int ActiveDuration { get; set; }
 
 		/// <summary>
 		/// counter before automatic deactivation
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		protected int ActiveTicksRemaining { get; set; }
 
 		/// <summary>
 		/// Returns the actor owning this item, or null if unowned
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public IActor Owner { get; protected set; }
 
 		public bool HasOwner => Owner != null;

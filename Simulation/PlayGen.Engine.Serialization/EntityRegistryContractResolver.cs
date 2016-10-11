@@ -41,7 +41,24 @@ namespace PlayGen.Engine.Serialization
 
 			return contract;
 		}
-		
+
+		protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+		{
+			return base.CreateDictionaryContract(objectType);
+		}
+
+		protected override JsonArrayContract CreateArrayContract(Type objectType)
+		{
+			var contract =  base.CreateArrayContract(objectType);
+
+			//if (objectType.IsEntityCollection())
+			//{
+			//	contract.It
+			//}
+
+			return contract;
+		}
+
 		private void AttachEntityValueProviderDeserializationCallback(EntityRegistryValueProvider valueProvider)
 		{
 			valueProvider.DeserializingEntityReference += ValueProviderOnDeserializingEntityReference;
@@ -92,7 +109,8 @@ namespace PlayGen.Engine.Serialization
 						jsonProperty.Writable = true;
 						jsonProperty.Readable = true;
 
-						if (typeIsEntity && propertyInfo.PropertyType.IsEntity())
+						if ((propertyInfo.PropertyType.IsEntityCollection() || propertyInfo.PropertyType.IsEntity()) 
+							&& type.IsEntityRegistry() == false)
 						{
 							jsonProperty.ValueProvider = new EntityRegistryValueProvider(_entityRegistry, propertyInfo);
 						}
@@ -117,7 +135,7 @@ namespace PlayGen.Engine.Serialization
 						jsonProperty.Writable = true;
 						jsonProperty.Readable = true;
 
-						if (typeIsEntity && fieldInfo.FieldType.IsEntity())
+						if (fieldInfo.FieldType.IsEntity() && type.IsEntityRegistry() == false)
 						{
 							jsonProperty.ValueProvider = new EntityRegistryValueProvider(_entityRegistry, fieldInfo);
 						}

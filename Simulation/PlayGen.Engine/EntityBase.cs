@@ -6,7 +6,7 @@ using PlayGen.Engine.Serialization;
 
 namespace PlayGen.Engine
 {
-	public abstract class EntityBase<TGameState> : ComponentContainer, IEntity, IEquatable<IEntity>
+	public abstract class EntityBase<TGameState> : IEntity, IEquatable<IEntity>
 		where TGameState : EntityState
 	{
 		#region Event registry
@@ -36,22 +36,13 @@ namespace PlayGen.Engine
 
 		#endregion
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public int Id { get; protected set; }
 
 		[SyncState(StateLevel.Setup)]
 		protected IEntityRegistry EntityRegistry { get; set; }
 
 		#region constructors
-
-		protected EntityBase(IEntityRegistry entityRegistry, IEnumerable<IComponent> components)
-			: base (components)
-		{
-			// TODO: replace dirty hack for the entity factory
-			EntityRegistry = entityRegistry;
-			Id = entityRegistry.EntitySeed;
-		}
-
 
 		protected EntityBase(IEntityRegistry entityRegistry)
 		{

@@ -9,7 +9,7 @@ namespace PlayGen.ITAlert.Simulation.World.Enhancements
 		/// <summary>
 		/// Indicate whether the item is currently performing it's action
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public bool IsActive { get; private set; }
 
 		#region activation timing
@@ -17,13 +17,13 @@ namespace PlayGen.ITAlert.Simulation.World.Enhancements
 		/// <summary>
 		/// number of ticks the item will perform action for when activated
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		protected int ActiveDuration { get; }
 
 		/// <summary>
 		/// counter before automatic deactivation
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		protected int ActiveTicksRemaining;
 
 		#endregion

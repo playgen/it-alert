@@ -39,8 +39,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\ComponentBase.cs" />
     <Compile Include="Components\ComponentContainer.cs" />
+    <Compile Include="Components\IBehaviourComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
+    <Compile Include="Components\IPropertyComponent.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="EntityBase.cs" />
     <Compile Include="EntityState.cs" />

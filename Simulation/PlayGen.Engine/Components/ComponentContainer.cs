@@ -5,8 +5,10 @@ using System.Text;
 
 namespace PlayGen.Engine.Components
 {
-	public abstract class ComponentContainer : ComponentContainer<IComponent>, IComponentContainer
+	public class ComponentContainer : ComponentContainer<IComponent>, IComponentContainer
 	{
+
+		public static ComponentContainer Default => new ComponentContainer();
 
 		#region constructors
 
@@ -23,12 +25,16 @@ namespace PlayGen.Engine.Components
 
 	}
 
+	public delegate IComponentContainer GetComponentContainerDelegate();
+
 	public abstract class ComponentContainer<TComponent> : IComponentContainer<TComponent>
 		where TComponent : IComponent
 	{
+		// ReSharper disable FieldCanBeMadeReadOnly.Local
 		private Dictionary<Type, TComponent> _components;
 
 		private Dictionary<Type, IEnumerable<TComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<TComponent>>();
+		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
 		#region constructors
 
@@ -87,6 +93,15 @@ namespace PlayGen.Engine.Components
 		{
 			var implementors = _components.Keys.Where(t => typeof(TComponentInterface).IsAssignableFrom(t));
 			return implementors.Select(i => _components[i]);
+		}
+
+		public void ForEachComponentImplementing<TComponentInterface>(Action<TComponentInterface> executeDelegate)
+			where TComponentInterface : class, TComponent
+		{
+			foreach (var component in GetComponentsImplmenting<TComponentInterface>())
+			{
+				executeDelegate(component);
+			}
 		}
 
 		#endregion

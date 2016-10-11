@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 		[SyncState(StateLevel.Setup)]
 		public int Speed { get; protected set; }
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public SimpleStack<Intent> Intents { get; private set; } = new SimpleStack<Intent>();
 
 		#region Constructors
