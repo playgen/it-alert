@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlayGen.Engine;
+using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
@@ -36,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.World
 		[SyncState(StateLevel.Setup)]
 		public Dictionary<int, NodeDirection> EntranceNodePositions { get; private set; } = new Dictionary<int, NodeDirection>();
 
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public Dictionary<int, VisitorPosition> VisitorPositions { get; private set; } = new Dictionary<int, VisitorPosition>();
 
 
@@ -46,10 +47,11 @@ namespace PlayGen.ITAlert.Simulation.World
 		/// 
 		/// </summary>
 		/// <param name="simulation"></param>
+		/// <param name="components"></param>
 		/// <param name="entityType"></param>
 		/// <param name="positions"></param>
-		protected Node(ISimulation simulation, EntityType entityType, int positions)
-			: base(simulation, entityType)
+		protected Node(ISimulation simulation, IEnumerable<IComponent> components, EntityType entityType, int positions)
+			: base(simulation, components, entityType)
 		{
 			if (positions < MinPositions || positions > MaxPositions)
 			{

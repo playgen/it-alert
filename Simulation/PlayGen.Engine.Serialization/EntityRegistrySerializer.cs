@@ -93,7 +93,7 @@ namespace PlayGen.Engine.Serialization
 		{
 			var serializerSettings = GetDefaultSettings();
 
-			var contractResolver = new EntityRegistryContractResolver(StateLevel.Full, obj);
+			var contractResolver = new EntityRegistryContractResolver(StateLevel.Differential, obj);
 			serializerSettings.ContractResolver = contractResolver;
 
 			//serializerSettings.ReferenceResolverProvider = () => new EntityRegistryReferenceResolver(obj);

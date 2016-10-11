@@ -8,10 +8,10 @@ namespace PlayGen.Engine
 	public class EntityRegistryBase<TGameEntity> : IEntityRegistry<TGameEntity>
 		where TGameEntity : class, IEntity
 	{
-		[SyncState(StateLevel.Full, 0)]
+		[SyncState(StateLevel.Differential, 0)]
 		private int _entitySeed;
 
-		[SyncState(StateLevel.Full, 1)]
+		[SyncState(StateLevel.Differential, 1)]
 		protected Dictionary<int, TGameEntity> Entities = new Dictionary<int, TGameEntity>();
 
 		public int EntitySeed => ++_entitySeed;

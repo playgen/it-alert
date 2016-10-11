@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 
 namespace PlayGen.Engine
@@ -10,10 +11,10 @@ namespace PlayGen.Engine
 		where TState : TGameState
 		where TGameState : EntityState
 	{
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public int CurrentTick { get; protected set; }
 
-		protected TickableEntity(IEntityRegistry entityRegistry) 
+		protected TickableEntity(IEntityRegistry entityRegistry)
 			: base(entityRegistry)
 		{
 		}

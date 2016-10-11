@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Simulation.Intents
 {
 	public class MoveIntent : Intent
 	{
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public INode Destination { get; }
 
 		public MoveIntent(INode destination)

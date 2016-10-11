@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using PlayGen.Engine;
+using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 
@@ -17,6 +18,13 @@ namespace PlayGen.ITAlert.Simulation
 
 		[SyncState(StateLevel.Full)]
 		protected ISimulation Simulation { get; private set; }
+
+		protected ITAlertEntity(ISimulation simulation, IEnumerable<IComponent> components, EntityType entityType)
+			: base(simulation, components)
+		{
+			Simulation = simulation;
+			EntityType = entityType;
+		}
 
 		protected ITAlertEntity(ISimulation simulation, EntityType entityType) 
 			: base(simulation)

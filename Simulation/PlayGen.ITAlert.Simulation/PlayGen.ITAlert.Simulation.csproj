@@ -56,6 +56,8 @@
     <Compile Include="Intents\PickUpItemIntent.cs" />
     <Compile Include="Contracts\Extensions\VisitorPositionExtensions.cs" />
     <Compile Include="Contracts\PositionState.cs" />
+    <Compile Include="Visitors\Actors\IVirusComponent.cs" />
+    <Compile Include="Visitors\IVisitorComponent.cs" />
     <Compile Include="World\Enhancements\IEnhancement.cs" />
     <Compile Include="IITAlertEntity.cs" />
     <Compile Include="ITAlertEntity.cs" />
@@ -103,10 +105,13 @@
     <Compile Include="World\Enhancements\ManualEnhancement.cs" />
     <Compile Include="World\Enhancements\RepairSpawnManual.cs" />
     <Compile Include="World\Enhancements\SubsystemEnhancement.cs" />
+    <Compile Include="World\INodeComponent.cs" />
     <Compile Include="World\INodeEvents.cs" />
     <Compile Include="World\Node.cs" />
     <Compile Include="World\NodeDirection.cs" />
     <Compile Include="World\Subsystem.cs" />
+    <Compile Include="World\SubsystemShieldComponent.cs" />
+    <Compile Include="World\SubsystemHealthComponent.cs" />
     <Compile Include="World\VisitorPosition.cs" />
     <Compile Include="World\VistorEventArgs.cs" />
   </ItemGroup>

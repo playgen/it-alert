@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Configuration;
@@ -52,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.World
 		/// Items currently on subsystem
 		/// This is an array as the position is important for rendering in consistent coreners
 		/// </summary>
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public IItem[] Items { get; private set; } = new IItem[ItemLimit];
 
 		public bool HasActiveItem => Items.Any(i => i != null && i.IsActive);
@@ -64,14 +65,14 @@ namespace PlayGen.ITAlert.Simulation.World
 		/// <summary>
 		/// Current health of the subsystem
 		/// </summary>
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public int Health { get; private set; }
 
 
 		/// <summary>
 		/// Current health of the subsystem
 		/// </summary>
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public int Shield { get; private set; }
 
 		#endregion
@@ -93,12 +94,13 @@ namespace PlayGen.ITAlert.Simulation.World
 		/// /
 		/// </summary>
 		/// <param name="simulation"></param>
+		/// <param name="components"></param>
 		/// <param name="logicalId"></param>
 		/// <param name="enhancement"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		public Subsystem(ISimulation simulation, int logicalId, SubsystemEnhancement enhancement, int x, int y) 
-			: this(simulation, logicalId, enhancement, SimulationConstants.Positions, x, y)
+		public Subsystem(ISimulation simulation, IEnumerable<IComponent> components, int logicalId, SubsystemEnhancement enhancement, int x, int y) 
+			: this(simulation, components, logicalId, enhancement, SimulationConstants.Positions, x, y)
 		{
 		}
 
@@ -106,13 +108,14 @@ namespace PlayGen.ITAlert.Simulation.World
 		/// 
 		/// </summary>
 		/// <param name="simulation"></param>
+		/// <param name="components"></param>
 		/// <param name="logicalId"></param>
 		/// <param name="enhancement"></param>
 		/// <param name="positions"></param>
 		/// <param name="x"></param>
 		/// <param name="y"></param>
-		protected Subsystem(ISimulation simulation, int logicalId, SubsystemEnhancement enhancement, int positions, int x, int y)
-			: base(simulation, EntityType.Subsystem, positions)
+		protected Subsystem(ISimulation simulation, IEnumerable<IComponent> components, int logicalId, SubsystemEnhancement enhancement, int positions, int x, int y)
+			: base(simulation, components, EntityType.Subsystem, positions)
 		{
 			LogicalId = logicalId;
 			_enhancement = enhancement;

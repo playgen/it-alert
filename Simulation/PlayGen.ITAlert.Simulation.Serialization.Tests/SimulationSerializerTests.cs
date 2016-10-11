@@ -19,17 +19,19 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		[Test]
 		public void TestSerializationRountrip()
 		{
+
 			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 2, 2, 1);
 
-			var simBytes = SimulationSerializer.SerializeSimulation(originalSimulation);
+			var serializer = new SimulationSerializer();
+			var simBytes = serializer.SerializeSimulation(originalSimulation);
 
 			Assert.That(simBytes.Length, Is.GreaterThan(0));
 
-			var copySimulation = SimulationSerializer.DeserializeSimulation(simBytes);
+			var copySimulation = serializer.DeserializeSimulation(simBytes);
 
 			Assert.That(copySimulation, Is.Not.Null);
 
-			var copiedCopy = SimulationSerializer.SerializeSimulation(copySimulation);
+			var copiedCopy = serializer.SerializeSimulation(copySimulation);
 
 			Assert.That(copiedCopy, Is.EquivalentTo(simBytes));
 		}
@@ -53,6 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		[Test]
 		public void TestMoveIntentSerialization()
 		{
+			
 			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 1, 0, 1);
 
 			var player = originalSimulation.Players.Single();
@@ -64,8 +67,9 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			Assert.That(player.Intents.Peek(), Is.InstanceOf(typeof(MoveIntent)));
 			Assert.That((player.Intents.Peek() as MoveIntent).Destination.Id, Is.EqualTo(destination.Id));
 
-			var simBytes = SimulationSerializer.SerializeSimulation(originalSimulation);
-			var copySimulation = SimulationSerializer.DeserializeSimulation(simBytes);
+			var serializer = new SimulationSerializer();
+			var simBytes = serializer.SerializeSimulation(originalSimulation);
+			var copySimulation = serializer.DeserializeSimulation(simBytes);
 
 			player = copySimulation.Players.Single();
 
@@ -109,8 +113,10 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			Assert.That(newVirus.Intents.Peek(), Is.InstanceOf(typeof(MoveIntent)));
 
 			// copy
-			var simBytes = SimulationSerializer.SerializeSimulation(originalSimulation);
-			var copySimulation = SimulationSerializer.DeserializeSimulation(simBytes);
+			var serializer = new SimulationSerializer();
+
+			var simBytes = serializer.SerializeSimulation(originalSimulation);
+			var copySimulation = serializer.DeserializeSimulation(simBytes);
 
 			newVirus = copySimulation.GetEntityById<Virus>(infectionId.Value + 1);
 

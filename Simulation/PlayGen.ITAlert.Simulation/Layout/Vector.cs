@@ -10,9 +10,9 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		public static Vector MinusX = new Vector(-1, 0);
 		public static Vector MinusY = new Vector(0, -1);
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public int X { get; set; }
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public int Y { get; set; }
 
 		public Vector(int x, int y)

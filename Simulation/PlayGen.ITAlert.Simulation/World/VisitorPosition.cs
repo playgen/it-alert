@@ -5,13 +5,13 @@ namespace PlayGen.ITAlert.Simulation.World
 {
 	public class VisitorPosition
 	{
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public IVisitor Visitor { get; }
 
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public int CurrentTick { get; private set; }
 
-		[SyncState(StateLevel.Full)]
+		[SyncState(StateLevel.Differential)]
 		public int Position { get; private set; }
 
 		public VisitorPosition(IVisitor visitor, int position, int currentTick)

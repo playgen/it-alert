@@ -42,6 +42,7 @@
     <Compile Include="BiDirectionalDictionary.cs" />
     <Compile Include="DefaultReferenceResolver.cs" />
     <Compile Include="DeserializingEntityReferenceEventArgs.cs" />
+    <Compile Include="EntityCreationConverter.cs" />
     <Compile Include="EntityRegistryCreationConverter.cs" />
     <Compile Include="Newtonsoft.Json\EntityRegistryJsonReader.cs" />
     <Compile Include="EntityRegistryReferenceResolver.cs" />

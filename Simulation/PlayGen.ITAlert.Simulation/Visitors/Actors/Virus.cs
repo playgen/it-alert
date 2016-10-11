@@ -31,10 +31,10 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		//private static readonly Random InfectionRNG = new Random();
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		private int _enterSubsystemTick;
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public bool Visible { get; private set; }
 
 		#region Constructors
@@ -80,6 +80,8 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		protected override void OnTick()
 		{
+			base.OnTick();
+
 			Intent currentIntent;
 			if (TryGetIntent(out currentIntent))
 			{
@@ -92,6 +94,8 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 				var subsystem = CurrentNode as Subsystem;
 				if (subsystem != null)
 				{
+					ForEachComponentImplementing<IVirusComponent>(component => component.OnTickOnSubsystem(this, subsystem));
+
 					if (_enterSubsystemTick%DamageInterval == 0)
 					{
 						subsystem.ModulateHealth(DamageIncrement);

@@ -12,6 +12,17 @@ namespace PlayGen.Engine.Serialization
 			return typeof(IEntity).IsAssignableFrom(type);
 		}
 
+		public static bool IsEntityRegistry(this Type type)
+		{
+			return typeof(IEntityRegistry).IsAssignableFrom(type);
+		}
+
+		public static bool IsEntityCollection(this Type type)
+		{
+			return false;
+			return typeof(IEnumerable<IEntity>).IsAssignableFrom(type);
+		}
+
 		/// <summary>
 		/// Borrowed from newtonsoft
 		/// </summary>

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
 using PlayGen.Engine;
+using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
@@ -204,11 +205,17 @@ namespace PlayGen.ITAlert.Simulation
 		public Subsystem CreateSubsystem(NodeConfig config)
 		{
 			Subsystem subsystem;
+
+			IEnumerable<IComponent> subsystemComponents = new IComponent[]
+			{
+				new SubsystemHealthComponent(() => subsystem)
+			};
+
 			switch (config.Type)
 			{
 				case NodeType.Default:
 				default:
-					subsystem = new Subsystem(this, config.Id, null, config.X, config.Y)
+					subsystem = new Subsystem(this, subsystemComponents, config.Id, null, config.X, config.Y)
 					{
 						Name = config.Name
 					};

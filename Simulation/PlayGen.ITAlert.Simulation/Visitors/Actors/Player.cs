@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 		/// <summary>
 		/// Currently held items
 		/// </summary>
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public IItem Item { get; private set; }
 
 		public bool HasItem => Item != null;

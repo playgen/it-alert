@@ -7,10 +7,10 @@ namespace PlayGen.ITAlert.Simulation.Intents
 	public class PickUpItemIntent : MoveIntent
 	{
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public ItemType ItemType { get; private set; }
 
-		[SyncState(StateLevel.Minimal)]
+		[SyncState(StateLevel.Differential)]
 		public int ItemLocation { get; private set; }
 
 		public PickUpItemIntent(INode destination, ItemType itemType, int itemLocation)
