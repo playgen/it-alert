@@ -1,6 +1,6 @@
 [submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
-	path = Simulation/Simulation/High-Speed-Priority-Queue-for-C-Sharp
-	url = git@github.com:playgenhub/High-Speed-Priority-Queue-for-C-Sharp.git
+	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
+	url = https://github.com/playgenhub/High-Speed-Priority-Queue-for-C-Sharp.git
 [submodule "SUGAR"]
 	path = SUGAR
 	url = git@codebasehq.com:playgen/rage/sugar.git
