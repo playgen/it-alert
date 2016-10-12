@@ -38,7 +38,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviour\IBehaviourComponent.cs" />
+    <Compile Include="ComponentBase.cs" />
+    <Compile Include="ComponentConfiguration.cs" />
+    <Compile Include="ComponentContainer.cs" />
+    <Compile Include="ComponentUsageException.cs" />
+    <Compile Include="ComponentUsageAttribute.cs" />
+    <Compile Include="ComponentDependencyAttribute.cs" />
+    <Compile Include="ComponentDependencyException.cs" />
+    <Compile Include="ComponentAttributeExtensions.cs" />
+    <Compile Include="Messaging\IMessageComponent.cs" />
+    <Compile Include="Messaging\MessageFactoryComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\IPropertyComponent.cs" />
+    <Compile Include="Property\PropertyComponentBase.cs" />
+    <Compile Include="Property\RangedNumericPropertyComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

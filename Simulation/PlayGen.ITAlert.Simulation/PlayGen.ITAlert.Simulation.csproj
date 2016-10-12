@@ -44,81 +44,29 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contracts\ActorState.cs" />
-    <Compile Include="Contracts\Extensions\IntentExtensions.cs" />
-    <Compile Include="Contracts\Intents\IntentState.cs" />
-    <Compile Include="Contracts\ITAlertEntityState.cs" />
-    <Compile Include="Contracts\VisitorState.cs" />
-    <Compile Include="Intents\DisownItemIntent.cs" />
-    <Compile Include="Intents\InfectSystemIntent.cs" />
-    <Compile Include="Intents\Intent.cs" />
-    <Compile Include="Intents\MoveIntent.cs" />
-    <Compile Include="Intents\PickUpItemIntent.cs" />
-    <Compile Include="Contracts\Extensions\VisitorPositionExtensions.cs" />
-    <Compile Include="Contracts\PositionState.cs" />
-    <Compile Include="Visitors\Actors\IVirusComponent.cs" />
-    <Compile Include="Visitors\IVisitorComponent.cs" />
-    <Compile Include="World\Enhancements\IEnhancement.cs" />
-    <Compile Include="IITAlertEntity.cs" />
-    <Compile Include="ITAlertEntity.cs" />
-    <Compile Include="SimulationRules.cs" />
-    <Compile Include="Utilities\IItemArrayExtensions.cs" />
-    <Compile Include="Visitors\Actors\Actor.cs" />
-    <Compile Include="Visitors\Actors\NpcActor.cs" />
-    <Compile Include="Visitors\Actors\NpcActorType.cs" />
-    <Compile Include="Visitors\Actors\Player.cs" />
-    <Compile Include="Visitors\Actors\Virus.cs" />
-    <Compile Include="Contracts\ConnectionState.cs" />
-    <Compile Include="Contracts\EnhancementState.cs" />
-    <Compile Include="Contracts\GameState.cs" />
-    <Compile Include="Contracts\ItemState.cs" />
-    <Compile Include="Contracts\NodeState.cs" />
-    <Compile Include="Contracts\PlayerState.cs" />
-    <Compile Include="Contracts\SubsystemState.cs" />
-    <Compile Include="Contracts\VirusState.cs" />
-    <Compile Include="EntityType.cs" />
+    <Compile Include="Simulation.cs" />
     <Compile Include="Initialization\GraphValidator.cs" />
-    <Compile Include="IActivatable.cs" />
-    <Compile Include="Visitors\Actors\IActor.cs" />
-    <Compile Include="Visitors\Actors\IInfection.cs" />
-    <Compile Include="Visitors\Items\IItem.cs" />
-    <Compile Include="World\INode.cs" />
-    <Compile Include="ISimulation.cs" />
-    <Compile Include="Visitors\IVisitor.cs" />
-    <Compile Include="Visitors\Items\Item.cs" />
-    <Compile Include="Visitors\Items\Cleaner.cs" />
-    <Compile Include="Visitors\Items\Scanner.cs" />
-    <Compile Include="Visitors\Items\Repair.cs" />
-    <Compile Include="Visitors\Items\SubsystemModulator.cs" />
     <Compile Include="Layout\Layout.cs" />
     <Compile Include="Layout\LayoutException.cs" />
     <Compile Include="Layout\LayoutGenerator.cs" />
-    <Compile Include="Layout\Vector.cs" />
     <Compile Include="Initialization\NeighbourNode.cs" />
     <Compile Include="Initialization\Path.cs" />
     <Compile Include="Initialization\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Simulation.cs" />
     <Compile Include="SimulationException.cs" />
-    <Compile Include="Visitors\Visitor.cs" />
-    <Compile Include="World\Connection.cs" />
-    <Compile Include="World\Enhancements\ManualEnhancement.cs" />
-    <Compile Include="World\Enhancements\RepairSpawnManual.cs" />
-    <Compile Include="World\Enhancements\SubsystemEnhancement.cs" />
-    <Compile Include="World\INodeComponent.cs" />
-    <Compile Include="World\INodeEvents.cs" />
-    <Compile Include="World\Node.cs" />
-    <Compile Include="World\NodeDirection.cs" />
-    <Compile Include="World\Subsystem.cs" />
-    <Compile Include="World\SubsystemShieldComponent.cs" />
-    <Compile Include="World\SubsystemHealthComponent.cs" />
-    <Compile Include="World\VisitorPosition.cs" />
-    <Compile Include="World\VistorEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\High-Speed-Priority-Queue-for-C-Sharp\Priority Queue\Priority Queue.csproj">
       <Project>{1531c1ea-bd53-41d1-a34b-cfcdf79d2651}</Project>
       <Name>Priority Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
+      <Name>PlayGen.Engine.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
+      <Name>PlayGen.Engine.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
       <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
@@ -128,13 +76,21 @@
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
-      <Name>PlayGen.ITAlert.Common</Name>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">
+      <Project>{b4dc82ff-0db1-4a0c-9b12-5c6d481fbf5d}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj">
+      <Project>{3599b815-929d-4fb3-a19e-0b608bc781cc}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Entities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

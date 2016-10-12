@@ -8,6 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Utilities;
+using PlayGen.Engine.Entities;
 
 namespace PlayGen.Engine.Serialization
 {

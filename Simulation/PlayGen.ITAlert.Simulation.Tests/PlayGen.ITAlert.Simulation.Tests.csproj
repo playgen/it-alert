@@ -43,29 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\TestPlayer.cs" />
     <Compile Include="ActorTests.cs" />
-    <Compile Include="EntityTests.cs" />
     <Compile Include="ItemSelectionTests.cs" />
     <Compile Include="LayoutGeneratorTests.cs" />
     <Compile Include="PathFinderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RepairItemTests.cs" />
     <Compile Include="SimulationTests.cs" />
     <Compile Include="TestSimulation.cs" />
-    <Compile Include="World\SubsystemTests.cs" />
-    <Compile Include="World\ConnectionTests.cs" />
-    <Compile Include="World\TestConnection.cs" />
-    <Compile Include="World\TestSubsystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
-      <Name>PlayGen.ITAlert.Common</Name>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>

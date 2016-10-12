@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json.Converters;
+using PlayGen.Engine.Entities;
 
 namespace PlayGen.Engine.Serialization
 {

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using PlayGen.ITAlert.TestData;
+using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Tests
 {
