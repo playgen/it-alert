@@ -1,7 +1,7 @@
 ﻿using ExitGames.Client.Photon;
 using UnityEngine;
-using GameWork.Commands.States;
-using GameWork.Interfacing;
+using GameWork.Core.Commands.States;
+using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
 

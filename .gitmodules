@@ -1,12 +1,12 @@
-[submodule "High-Speed-Priority-Queue-for-C-Sharp"]
+[submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
 	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
 	url = git@github.com:playgenhub/High-Speed-Priority-Queue-for-C-Sharp.git
-[submodule "GameWork"]
-	path = GameWork
-	url = git@github.com:playgenhub/GameWork.git
 [submodule "SUGAR"]
 	path = SUGAR
 	url = git@codebasehq.com:playgen/rage/sugar.git
+[submodule "GameWork.Unity"]
+	path = GameWork.Unity
+	url = git@github.com:playgenhub/GameWork.Unity.git
 [submodule "Simulation/SharpZipLib"]
 	path = Simulation/SharpZipLib
 	url = git@github.com:playgenhub/SharpZipLib.git

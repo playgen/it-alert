@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
-using GameWork.States;
+using GameWork.Core.States;
+using GameWork.Core.States.Controllers;
 using UnityEngine;
 using PlayGen.ITAlert.GameStates;
 

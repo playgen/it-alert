@@ -1,5 +1,5 @@
-﻿using GameWork.Commands.Accounts;
-using GameWork.States;
+﻿using GameWork.Core.Commands.Accounts;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 
