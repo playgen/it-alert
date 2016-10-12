@@ -74,5 +74,6 @@ Client/Assets/Plugins/Server/PhotonServer.config
 !/Server/deploy/Policy/
 
 # GameWork
+Client/Assets/GameWork/*
 Client/Assets/GameWork
 Client/Assets/GameWork.meta
