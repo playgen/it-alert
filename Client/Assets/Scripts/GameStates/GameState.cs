@@ -1,5 +1,6 @@
 ﻿using System;
-using GameWork.States;
+using GameWork.Core.States;
+using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
@@ -42,7 +43,7 @@ namespace PlayGen.ITAlert.GameStates
         {
             
             _stateController.Initialize();
-            _stateController.SetState(InitializingState.StateName);
+            _stateController.ChangeState(InitializingState.StateName);
 
             
             
@@ -65,7 +66,6 @@ namespace PlayGen.ITAlert.GameStates
 
         public override void Exit()
         {
-            _stateController.ExitState();
             _stateController.Terminate();
 
 	        SceneManager.UnloadScene("Network");
@@ -78,7 +78,7 @@ namespace PlayGen.ITAlert.GameStates
             switch (_client.CurrentRoom.CurrentGame.State)
             {
                 case Network.Client.States.GameStates.Initializing:
-                    if (_stateController.CurrentStateName != InitializingState.StateName)
+                    if (_stateController.ActiveState != InitializingState.StateName)
                     {
                         _stateController.ChangeState(InitializingState.StateName);
                     }
@@ -89,7 +89,7 @@ namespace PlayGen.ITAlert.GameStates
                     break;
 
                 case Network.Client.States.GameStates.Playing:
-                    if (_stateController.CurrentStateName != PlayingState.StateName)
+                    if (_stateController.ActiveState != PlayingState.StateName)
                     {
                         _stateController.ChangeState(PlayingState.StateName);
                     }
@@ -102,7 +102,7 @@ namespace PlayGen.ITAlert.GameStates
                 case Network.Client.States.GameStates.Finalizing:
 
 
-                    if (_stateController.CurrentStateName != FinalizingState.StateName)
+                    if (_stateController.ActiveState != FinalizingState.StateName)
                     {
                         _stateController.ChangeState(FinalizingState.StateName);
                     }

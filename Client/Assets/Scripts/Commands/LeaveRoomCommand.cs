@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-using GameWork.Commands.Interfaces;
+using GameWork.Core.Commands.Interfaces;
 
 public class LeaveRoomCommand : ICommand<LobbyController>
 {

@@ -1,6 +1,6 @@
 ﻿using System;
-using GameWork.Commands.Accounts.Interfaces;
-using GameWork.Commands.Interfaces;
+using GameWork.Core.Commands.Accounts.Interfaces;
+using GameWork.Core.Commands.Interfaces;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Contracts;
 
