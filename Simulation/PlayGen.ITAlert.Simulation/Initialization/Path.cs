@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using PlayGen.ITAlert.Simulation.World;
+using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Initialization
 {

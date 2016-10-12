@@ -53,9 +53,9 @@
       <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
       <Name>PlayGen.ITAlert.Simulation.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
       <Project>{CB5C5A48-BBC4-4825-86CB-87E4037DB0C1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
+      <Name>PlayGen.ITAlert.Simulation.TestData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,10 +5,10 @@ using System.Text;
 using NUnit.Framework;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Intents;
-using PlayGen.ITAlert.Simulation.Visitors.Actors;
-using PlayGen.ITAlert.Simulation.World;
-using PlayGen.ITAlert.TestData;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc;
+using PlayGen.ITAlert.Simulation.Entities.World.Systems;
+using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 {

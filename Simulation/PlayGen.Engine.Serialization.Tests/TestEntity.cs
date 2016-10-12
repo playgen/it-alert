@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.Engine.Components;
+using PlayGen.Engine.Entities;
 
 namespace PlayGen.Engine.Serialization.Tests
 {
@@ -11,6 +13,7 @@ namespace PlayGen.Engine.Serialization.Tests
 		public int Id { get; }
 
 		public event EventHandler EntityDestroyed;
+		public IComponentContainer Container { get; }
 
 		[SyncState(StateLevel.Full)]
 		public ITestEntity OtherEntity { get; set; }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Runtime.Serialization;
 using Newtonsoft.Json.Serialization;
+using PlayGen.Engine.Entities;
 
 namespace PlayGen.Engine.Serialization
 {

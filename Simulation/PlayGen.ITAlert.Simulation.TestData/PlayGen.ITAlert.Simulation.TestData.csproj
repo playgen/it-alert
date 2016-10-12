@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CB5C5A48-BBC4-4825-86CB-87E4037DB0C1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.Simulation.TestData</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Simulation.TestData</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Client\Assets\Plugins\Simulation\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandSequenceHelper.cs" />
+    <Compile Include="ConfigHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
+      <Name>PlayGen.Engine.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
+      <Name>PlayGen.Engine.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
+      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Components\PlayGen.ITAlert.Simulation.Components.csproj">
+      <Project>{9ED71A09-13E4-4035-B3BA-C95214081D64}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
+      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
+      <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj">
+      <Project>{3599b815-929d-4fb3-a19e-0b608bc781cc}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Simulation.World;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Entities.World;
+using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 using Priority_Queue;
 
 namespace PlayGen.ITAlert.Simulation.Initialization

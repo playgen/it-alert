@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Utilities;
+using PlayGen.Engine.Entities;
 using PlayGen.Engine.Serialization.Newtonsoft.Json;
 
 namespace PlayGen.Engine.Serialization

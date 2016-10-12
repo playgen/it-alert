@@ -5,17 +5,21 @@ using System.Linq;
 using System.Media;
 using PlayGen.Engine;
 using PlayGen.Engine.Components;
+using PlayGen.Engine.Entities;
 using PlayGen.Engine.Serialization;
-using PlayGen.ITAlert.Configuration;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities;
+using PlayGen.ITAlert.Simulation.Entities.Utilities;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
+using PlayGen.ITAlert.Simulation.Entities.World;
+using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 using PlayGen.ITAlert.Simulation.Initialization;
-using PlayGen.ITAlert.Simulation.Intents;
 using PlayGen.ITAlert.Simulation.Layout;
-using PlayGen.ITAlert.Simulation.Utilities;
-using PlayGen.ITAlert.Simulation.Visitors.Actors;
-using PlayGen.ITAlert.Simulation.Visitors.Items;
-using PlayGen.ITAlert.Simulation.World;
-using PlayGen.ITAlert.Simulation.World.Enhancements;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -73,8 +77,11 @@ namespace PlayGen.ITAlert.Simulation
 		public Vector GraphSize { get; private set; }
 
 		[SyncState(StateLevel.Setup)]
-		public SimulationRules Rules { get; private set; } = new SimulationRules();
-		
+		public SimulationRules Rules { get; private set; }
+
+		[SyncState(StateLevel.Setup)]
+		public ComponentConfiguration ComponentConfiguration { get; private set; }
+
 		#region debug public
 
 		public ReadOnlyCollection<Subsystem> Subsystems => _subsystems.Values.ToList().AsReadOnly();
@@ -85,30 +92,20 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region constructors
 
-		/// <summary>
-		/// Initialize simulation from config (MASTER)
-		/// </summary>
-		/// <param name="nodeConfigs"></param>
-		/// <param name="edgeConfigs"></param>
-		/// <param name="playerConfigs"></param>
-		/// <param name="itemConfigs"></param>
-		public Simulation(List<NodeConfig> nodeConfigs,
-			List<EdgeConfig> edgeConfigs,
-			List<PlayerConfig> playerConfigs,
-			List<ItemConfig> itemConfigs)
+		public Simulation(SimulationConfiguration configuration)
 		{
-			//EntityBase.EntityCreated += Entity_EntityCreated;
-			//EntityBase.EntityDestroyed += Entity_EntityDestroyed;
-			LayoutSubsystems(nodeConfigs, edgeConfigs);
+			Rules = configuration.Rules;
+			ComponentConfiguration = configuration.ComponentConfiguration;
 
-			var subsystems = CreateSubsystems(nodeConfigs);
-			CreateConnections(subsystems, edgeConfigs);
+			LayoutSubsystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
 
+			var subsystems = CreateSubsystems(configuration.NodeConfiguration);
+			CreateConnections(subsystems, configuration.EdgeConfiguration);
 
 			CalculatePaths();
-			
-			CreatePlayers(subsystems, playerConfigs);
-			CreateItems(subsystems, itemConfigs);
+
+			CreatePlayers(subsystems, configuration.PlayerConfiguration);
+			CreateItems(subsystems, configuration.ItemConfiguration);
 		}
 
 		[Obsolete("This is not obsolete; it should never be called explicitly apart form by unit tests, it mainly exists for the serializer.", false)]
@@ -205,17 +202,13 @@ namespace PlayGen.ITAlert.Simulation
 		public Subsystem CreateSubsystem(NodeConfig config)
 		{
 			Subsystem subsystem;
-
-			IEnumerable<IComponent> subsystemComponents = new IComponent[]
-			{
-				new SubsystemHealthComponent(() => subsystem)
-			};
-
+			IComponentContainer componentContainer;
 			switch (config.Type)
 			{
 				case NodeType.Default:
 				default:
-					subsystem = new Subsystem(this, subsystemComponents, config.Id, null, config.X, config.Y)
+					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Subsystem));
+					subsystem = new Subsystem(this, componentContainer, config.Id, null, config.X, config.Y)
 					{
 						Name = config.Name
 					};
@@ -235,7 +228,9 @@ namespace PlayGen.ITAlert.Simulation
 		/// <returns></returns>
 		public Connection CreateConnection(Dictionary<int, Subsystem> subsystems, EdgeConfig edgeConfig)
 		{
-			var connection = new Connection(this, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
+			var componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Connection));
+
+			var connection = new Connection(this, componentContainer, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
 			edgeConfig.EntityId = connection.Id;
 			AddEntity(connection);
 			return connection;
@@ -243,17 +238,21 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IItem CreateItem(ItemType type)
 		{
+			IComponentContainer componentContainer;
 			IItem item;
 			switch (type)
 			{
 				case ItemType.Repair:
-					item = new Repair(this);
+					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Repair));
+					item = new Repair(this, componentContainer);
 					break;
 				case ItemType.Scanner:
-					item = new Scanner(this);
+					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Scanner));
+					item = new Scanner(this, componentContainer);
 					break;
 				case ItemType.Cleaner:
-					item = new Cleaner(this);
+					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Cleaner));
+					item = new Cleaner(this, componentContainer);
 					break;
 				//case ItemType.Tracer:
 				// not implemented
@@ -266,18 +265,22 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Player CreatePlayer(PlayerConfig playerConfig)
 		{
-			var player = new Player(this, playerConfig.Name, playerConfig.Colour);
+			var componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Player));
+
+			var player = new Player(this, componentContainer, playerConfig.Name, playerConfig.Colour);
 			AddEntity(player);
 			return player;
 		}
 
 		public IActor CreateNpc(NpcActorType type)
 		{
+			IComponentContainer componentContainer;
 			IActor actor;
 			switch (type)
 			{
 				case NpcActorType.Virus:
-					actor = new Virus(this);
+					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Virus));
+					actor = new Virus(this, componentContainer);
 					break;
 				default:
 					throw new Exception("Unkown npc type");
@@ -382,7 +385,7 @@ namespace PlayGen.ITAlert.Simulation
 				GraphSize = GraphSize,
 				CurrentTick = CurrentTick,
 				Entities = Entities.ToDictionary(ek => ek.Key, ev => ev.Value.GetState()),
-				IsGameFailure = IsGameFailure,
+				//IsGameFailure = IsGameFailure,
 			};
 		}
 
@@ -394,9 +397,9 @@ namespace PlayGen.ITAlert.Simulation
 		/// </summary>
 		/// <returns></returns>
 		//TODO: implement some sort of extensible evaluator pattern
-		public bool IsGameFailure => _subsystems.Values.All(ss => ss.IsDead);
+		//public bool IsGameFailure => _subsystems.Values.All(ss => ss.IsDead);
 
-		public bool HasViruses => Entities.OfType<IInfection>().Any();
+		//public bool HasViruses => Entities.OfType<IInfection>().Any();
 
 		#endregion
 

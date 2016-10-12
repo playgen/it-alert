@@ -50,6 +50,10 @@
     <Compile Include="TestEntityRegistry.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+      <Project>{984830D2-F939-4485-922F-D55D835C89F7}</Project>
+      <Name>PlayGen.Engine.Entities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
       <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
       <Name>PlayGen.Engine.Serialization</Name>

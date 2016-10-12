@@ -1,0 +1,56 @@
+﻿using System;
+using PlayGen.Engine.Components;
+using PlayGen.Engine.Serialization;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.World;
+
+namespace PlayGen.ITAlert.Simulation.Entities.Visitors
+{
+	public abstract class Visitor<TState> : ITAlertEntity<TState>, IVisitor
+		where TState : ITAlertEntityState
+	{
+		[SyncState(StateLevel.Differential)]
+		public INode CurrentNode { get; protected set; }
+
+		#region constructors
+
+		protected Visitor(ISimulation simulation, IComponentContainer componentContainer, EntityType entityType)
+			: base(simulation, componentContainer, entityType)
+		{
+
+		}
+
+		//protected Visitor(ISimulation simulation, EntityType entityType)
+		//	: base(simulation, entityType)
+		//{
+
+		//}
+
+		[Obsolete("This is not obsolete; it should never be called explicitly, it only exists for the serializer.", true)]
+		protected Visitor()
+		{
+			
+		}
+
+		protected override void OnTick()
+		{
+			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnTick(CurrentNode));
+		}
+
+		#endregion
+
+		public virtual void OnEnterNode(INode current)
+		{
+			CurrentNode = current;
+			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnEnterNode(current));
+		}
+
+		public virtual void OnExitNode(INode current)
+		{
+			CurrentNode = null;
+			// do nothing, log maybe
+			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnExitNode(current));
+		}
+	}
+}

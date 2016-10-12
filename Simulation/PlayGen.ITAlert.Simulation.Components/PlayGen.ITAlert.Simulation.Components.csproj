@@ -38,8 +38,43 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messaging\DamageNodeMessage.cs" />
+    <Compile Include="Messaging\DamageNodeMessageComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="World\Subsystem\ItemContainer.cs" />
+    <Compile Include="World\Systems\CombinedHealthAndShieldComponent.cs" />
+    <Compile Include="World\Systems\HealthPropertyComponent.cs" />
+    <Compile Include="World\Systems\IsInfectedPropertyComponent.cs" />
+    <Compile Include="World\Systems\SubsystemIsDeadComponent.cs" />
+    <Compile Include="World\Systems\SubsystemShieldComponent.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
+      <Name>PlayGen.Engine.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Messaging\PlayGen.Engine.Messaging.csproj">
+      <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
+      <Name>PlayGen.Engine.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
+      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj">
+      <Project>{3599b815-929d-4fb3-a19e-0b608bc781cc}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SharpZipLib\ICSharpCode.SharpZipLib\ICSharpCode.SharpZipLib.csproj">
+      <Project>{0e7413ff-eb9e-4714-acf2-be3a6a7b2ffd}</Project>
+      <Name>ICSharpCode.SharpZipLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Visitors\Actors\Npc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

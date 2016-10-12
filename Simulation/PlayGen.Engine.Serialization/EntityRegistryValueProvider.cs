@@ -7,6 +7,7 @@ using System.Reflection.Emit;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using PlayGen.Engine.Entities;
 
 namespace PlayGen.Engine.Serialization
 {

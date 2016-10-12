@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3599B815-929D-4FB3-A19E-0B608BC781CC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.Simulation.Entities</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Simulation.Entities</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IActivatable.cs" />
+    <Compile Include="IITAlertEntity.cs" />
+    <Compile Include="IntentExtensions.cs" />
+    <Compile Include="ISimulation.cs" />
+    <Compile Include="ITAlertEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\IItemArrayExtensions.cs" />
+    <Compile Include="VisitorPositionExtensions.cs" />
+    <Compile Include="Visitors\Actors\Actor.cs" />
+    <Compile Include="Visitors\Actors\IActor.cs" />
+    <Compile Include="Visitors\Actors\Intents\DisownItemIntent.cs" />
+    <Compile Include="Visitors\Actors\Intents\InfectSystemIntent.cs" />
+    <Compile Include="Visitors\Actors\Intents\Intent.cs" />
+    <Compile Include="Visitors\Actors\Intents\MoveIntent.cs" />
+    <Compile Include="Visitors\Actors\Intents\PickUpItemIntent.cs" />
+    <Compile Include="Visitors\Actors\Npc\IInfection.cs" />
+    <Compile Include="Visitors\Actors\Npc\NpcActor.cs" />
+    <Compile Include="Visitors\Actors\Npc\NpcActorType.cs" />
+    <Compile Include="Visitors\Actors\Npc\Virus.cs" />
+    <Compile Include="Visitors\Actors\Player.cs" />
+    <Compile Include="Visitors\Items\Cleaner.cs" />
+    <Compile Include="Visitors\Items\IItem.cs" />
+    <Compile Include="Visitors\Items\Item.cs" />
+    <Compile Include="Visitors\Items\Repair.cs" />
+    <Compile Include="Visitors\Items\Scanner.cs" />
+    <Compile Include="Visitors\Items\SubsystemModulator.cs" />
+    <Compile Include="Visitors\Actors\Npc\IVirusComponent.cs" />
+    <Compile Include="Visitors\IVisitor.cs" />
+    <Compile Include="Visitors\IVisitorComponent.cs" />
+    <Compile Include="Visitors\Visitor.cs" />
+    <Compile Include="World\Connection.cs" />
+    <Compile Include="World\INode.cs" />
+    <Compile Include="World\INodeComponent.cs" />
+    <Compile Include="World\INodeEvents.cs" />
+    <Compile Include="World\Node.cs" />
+    <Compile Include="World\NodeDirection.cs" />
+    <Compile Include="World\Systems\Enhancements\IEnhancement.cs" />
+    <Compile Include="World\Systems\Enhancements\ManualEnhancement.cs" />
+    <Compile Include="World\Systems\Enhancements\RepairSpawnManual.cs" />
+    <Compile Include="World\Systems\Enhancements\SubsystemEnhancement.cs" />
+    <Compile Include="World\Systems\ISubsystemComponent.cs" />
+    <Compile Include="World\Systems\Subsystem.cs" />
+    <Compile Include="World\VisitorPosition.cs" />
+    <Compile Include="World\VistorEventArgs.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+      <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
+      <Name>PlayGen.Engine.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
+      <Name>PlayGen.Engine.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>PlayGen.Engine</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
+      <Project>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
+      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">
+      <Project>{b4dc82ff-0db1-4a0c-9b12-5c6d481fbf5d}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
