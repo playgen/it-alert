@@ -77,11 +77,11 @@
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
+      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">

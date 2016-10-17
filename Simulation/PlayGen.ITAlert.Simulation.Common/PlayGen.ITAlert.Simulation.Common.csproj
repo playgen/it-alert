@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BE8E1E8B-3A04-4371-A9AA-4A0FB324ADDF}</ProjectGuid>
+    <ProjectGuid>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlayGen.ITAlert.Simulation.Common</RootNamespace>

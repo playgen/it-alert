@@ -1,5 +1,5 @@
 ﻿using System;
-using PlayGen.ITAlert.Simulation;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine;
 

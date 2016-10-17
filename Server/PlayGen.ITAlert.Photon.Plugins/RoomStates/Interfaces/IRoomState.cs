@@ -1,4 +1,4 @@
-﻿using GameWork.States.Interfaces;
+﻿using GameWork.Core.States.Interfaces;
 using Photon.Hive.Plugin;
 
 namespace PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces
