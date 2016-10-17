@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</ProjectGuid>
+    <ProjectGuid>{79FA84E4-8380-4298-A823-3C0976D527EF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlayGen.ITAlert.Simulation.Configuration</RootNamespace>
@@ -60,7 +60,7 @@
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
   </ItemGroup>

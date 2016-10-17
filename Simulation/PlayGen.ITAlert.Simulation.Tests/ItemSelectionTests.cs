@@ -5,6 +5,8 @@ using System.Text;
 using NUnit.Framework;
 using PlayGen.ITAlert.Common;
 using PlayGen.ITAlert.Configuration;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Intents;
 using PlayGen.ITAlert.Simulation.Utilities;

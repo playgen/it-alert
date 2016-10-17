@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Simulation.World;
+﻿using PlayGen.ITAlert.Simulation.Common;
 using UnityEngine;
 
 namespace Assets.Debugging.Scripts
@@ -24,7 +19,7 @@ namespace Assets.Debugging.Scripts
 
 		private string _tpsText;
 
-	    private bool _isVisible = false;
+		private bool _isVisible = false;
 
 		void Start()
 		{
@@ -34,7 +29,7 @@ namespace Assets.Debugging.Scripts
 
 		private void OnGUI()
 		{
-		    if (!_isVisible) return;
+			if (!_isVisible) return;
 
 			if (GUILayout.Button("Debug Initialize"))
 			{
@@ -58,7 +53,8 @@ namespace Assets.Debugging.Scripts
 			{
 				foreach (var subsystem in Director.Simulation.Subsystems)
 				{
-					subsystem.ModulateHealth((SimulationConstants.MaxHealth + SimulationConstants.MaxShield) / 2 * -1);
+					// TODO fix from simulation refactor
+					// subsystem.ModulateHealth((SimulationConstants.MaxHealth + SimulationConstants.MaxShield) / 2 * -1);
 				}
 			}
 			GUILayout.Label(_tpsText);
@@ -73,10 +69,10 @@ namespace Assets.Debugging.Scripts
 		// Update is called once per frame
 		void Update()
 		{
-		    if (Input.GetKeyDown(KeyCode.F1))
-		    {
-		        _isVisible = !_isVisible;
-		    }
+			if (Input.GetKeyDown(KeyCode.F1))
+			{
+				_isVisible = !_isVisible;
+			}
 
 			if (_isVisible && AutoTickOn)
 			{

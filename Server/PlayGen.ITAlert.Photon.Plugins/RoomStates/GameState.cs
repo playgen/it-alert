@@ -5,17 +5,17 @@ using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.PhotonPlugins.Extensions;
 using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
-using PlayGen.ITAlert.TestData;
-using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
+using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 {
-	public class GameState : GameWork.States.State, IRoomState
+	public class GameState : GameWork.Core.States.State, IRoomState
     {
         public const string StateName = "Game";
 
@@ -124,6 +124,8 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
                     _simulation.Tick();
 
+                    // todo fix this in acccordance with simulation refactor
+                    /*
                     if (_simulation.IsGameFailure)
                     {
                         ChangeInternalState(InternalGameState.Finalizing);
@@ -132,7 +134,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
                     {
                         ChangeInternalState(InternalGameState.Finalizing);
                     }
-                    else
+                    else*/
                     {
                         BroadcastSimulation(ServerEventCode.GameTick, _simulation);
                     }

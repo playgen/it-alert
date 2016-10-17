@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Simulation;
+﻿using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
 
 // ReSharper disable once CheckNamespace

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
-using PlayGen.ITAlert.Configuration;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine.UI;
 

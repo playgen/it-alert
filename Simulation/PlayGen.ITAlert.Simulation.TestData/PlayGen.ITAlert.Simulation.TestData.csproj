@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CB5C5A48-BBC4-4825-86CB-87E4037DB0C1}</ProjectGuid>
+    <ProjectGuid>{50651079-AC3A-447F-A710-E9049F3D1565}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlayGen.ITAlert.Simulation.TestData</RootNamespace>
@@ -62,20 +62,20 @@
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Components\PlayGen.ITAlert.Simulation.Components.csproj">
       <Project>{9ED71A09-13E4-4035-B3BA-C95214081D64}</Project>
       <Name>PlayGen.ITAlert.Simulation.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
       <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
       <Name>PlayGen.ITAlert.Simulation.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
+      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj">
       <Project>{3599b815-929d-4fb3-a19e-0b608bc781cc}</Project>

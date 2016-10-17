@@ -33,6 +33,15 @@
     <Reference Include="PhotonLoadbalancingApi">
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.Engine">
+      <HintPath>..\..\simulation\PlayGen.Engine.Entities\bin\Debug\PlayGen.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Engine.Entities">
+      <HintPath>..\..\simulation\PlayGen.Engine.Entities\bin\Debug\PlayGen.Engine.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Entities">
+      <HintPath>..\..\simulation\PlayGen.ITAlert.Simulation.Entities\bin\Debug\PlayGen.ITAlert.Simulation.Entities.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -49,37 +58,37 @@
     <Compile Include="RoomStates\LobbyState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GameWork\GameWork.Commands\GameWork.Commands.csproj">
-      <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
-      <Name>GameWork.Commands</Name>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
+      <Project>{172A1C8E-A69D-4A00-A97D-2C75275F6980}</Project>
+      <Name>GameWork.Core.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GameWork\GameWork.Interfaces\GameWork.Interfaces.csproj">
-      <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
-      <Name>GameWork.Interfaces</Name>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">
+      <Project>{7996590E-EFF0-459A-A75E-ED6FCBD4AE7F}</Project>
+      <Name>GameWork.Core.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GameWork\GameWork.States\GameWork.States.csproj">
-      <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
-      <Name>GameWork.States</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ItAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
+      <Project>{D34D64C8-DC4F-45FB-903E-B42DACA78632}</Project>
+      <Name>GameWork.Core.States</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
       <Project>{2344c836-6b6f-4259-a5a3-e12eafdba643}</Project>
       <Name>PlayGen.ITAlert.Simulation.Commands</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
+      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
       <Project>{d5d14e17-c9d5-4ab2-ab74-96f95b50614f}</Project>
       <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
+      <Project>{50651079-AC3A-447F-A710-E9049F3D1565}</Project>
+      <Name>PlayGen.ITAlert.Simulation.TestData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
-      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
       <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>

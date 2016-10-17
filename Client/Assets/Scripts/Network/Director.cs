@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Debugging.Scripts;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Serialization;
-using PlayGen.ITAlert.TestData;
-using UnityEngine.UI;
+using PlayGen.ITAlert.Simulation.TestData;
 
 // ReSharper disable CheckNamespace
 
@@ -25,15 +23,21 @@ public class Director : MonoBehaviour
 	/// </summary>
 	private static readonly Dictionary<int, UIEntity> Entities = new Dictionary<int, UIEntity>();
 
-	/// <summary>
-	/// Simulation
-	/// </summary>
-	public static Simulation Simulation;
+    /// <summary>
+    /// Serializer of the Simulation
+    /// </summary>
+    private static readonly SimulationSerializer _serializer = new SimulationSerializer();
+
+    /// <summary>
+    /// Simulation
+    /// </summary>
+    public static Simulation Simulation;
 
 	/// <summary>
 	/// Current State
 	/// </summary>
 	private static GameState _state;
+    
 
 	//TODO: load this dynamically
 	/// <summary>
@@ -219,8 +223,9 @@ public class Director : MonoBehaviour
 	{
 		Simulation = simulation;
 
-	    var didWin = !Simulation.HasViruses && !Simulation.IsGameFailure;
-        OnGameOver(didWin);
+        // todo fix this in acccordance with simulation refactor
+        /* var didWin = !Simulation.HasViruses && !Simulation.IsGameFailure;
+        OnGameOver(didWin); */
 	}
 
 	#endregion
@@ -237,10 +242,10 @@ public class Director : MonoBehaviour
 
 			if (serialize)
 			{
-				var state = SimulationSerializer.SerializeSimulation(Simulation);
+				var state = _serializer.SerializeSimulation(Simulation);
 				Simulation.Dispose();
 
-				UpdateSimulation(SimulationSerializer.DeserializeSimulation(state));
+				UpdateSimulation(_serializer.DeserializeSimulation(state));
 			}
 
 			Refresh();
