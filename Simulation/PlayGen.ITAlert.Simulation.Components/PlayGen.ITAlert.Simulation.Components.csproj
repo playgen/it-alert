@@ -41,16 +41,25 @@
     <Compile Include="Messaging\DamageNodeMessage.cs" />
     <Compile Include="Messaging\DamageNodeMessageComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Visitors\Actors\Npc\ConsumeMemoryPropertyComponent.cs" />
+    <Compile Include="Visitors\VisitorBehaviourComponentBase.cs" />
     <Compile Include="World\Systems\CombinedHealthAndShieldComponent.cs" />
+    <Compile Include="World\Systems\ConsumeMemoryComponent.cs" />
     <Compile Include="World\Systems\HealthPropertyComponent.cs" />
     <Compile Include="World\Systems\IsInfectedPropertyComponent.cs" />
     <Compile Include="World\Systems\SubsystemIsDeadComponent.cs" />
     <Compile Include="World\Systems\SubsystemShieldComponent.cs" />
+    <Compile Include="World\Systems\SystemMemoryPropertyComponent.cs" />
+    <Compile Include="World\Systems\SystemProcessorPropertyComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
       <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
       <Name>PlayGen.Engine.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+      <Project>{984830D2-F939-4485-922F-D55D835C89F7}</Project>
+      <Name>PlayGen.Engine.Entities</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine.Messaging\PlayGen.Engine.Messaging.csproj">
       <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
@@ -73,9 +82,7 @@
       <Name>ICSharpCode.SharpZipLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Visitors\Actors\Npc\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

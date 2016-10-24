@@ -33,8 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc
 
 		//private static readonly Random InfectionRNG = new Random();
 
-		[SyncState(StateLevel.Differential)]
-		private int _enterSubsystemTick;
+
 
 		[SyncState(StateLevel.Differential)]
 		public bool Visible { get; private set; }
@@ -68,11 +67,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc
 		{
 			base.OnEnterNode(current);
 
-			var subsystem = CurrentNode as Subsystem;
-			if (subsystem != null)
-			{
-				_enterSubsystemTick = 0;
-			}
+
 
 		}
 
