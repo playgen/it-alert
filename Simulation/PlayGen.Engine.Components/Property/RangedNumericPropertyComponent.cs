@@ -10,10 +10,11 @@ namespace PlayGen.Engine.Components.Property
 
 		protected RangedNumericPropertyComponent(IComponentContainer container, 
 			string propertyName, 
+			bool includeInState,
 			TValue value,
 			TValue minValue, 
 			TValue maxValue)
-			: base( container, propertyName, value)
+			: base( container, propertyName, includeInState, value)
 		{
 			MaxValue = maxValue;
 			MinValue = minValue;
@@ -24,10 +25,11 @@ namespace PlayGen.Engine.Components.Property
 	{
 		protected RangedIntegerPropertyComponent(IComponentContainer container, 
 			string propertyName, 
+			bool includeInState,
 			int value, 
 			int minValue, 
 			int maxValue) 
-			: base(container, propertyName, value, minValue, maxValue)
+			: base(container, propertyName, includeInState, value, minValue, maxValue)
 		{
 		}
 
@@ -42,10 +44,11 @@ namespace PlayGen.Engine.Components.Property
 	{
 		protected RangedDoublePropertyComponent(IComponentContainer container,
 			string propertyName, 
+			bool includeInState,
 			double value,
 			double minValue, 
 			double maxValue) 
-			: base(container, propertyName, value, minValue, maxValue)
+			: base(container, propertyName, includeInState, value, minValue, maxValue)
 		{
 		}
 

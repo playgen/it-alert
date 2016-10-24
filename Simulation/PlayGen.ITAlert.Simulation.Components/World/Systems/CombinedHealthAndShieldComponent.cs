@@ -3,7 +3,7 @@ using PlayGen.Engine.Components;
 using PlayGen.Engine.Components.Property;
 using PlayGen.ITAlert.Simulation.Common;
 
-namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Components
+namespace PlayGen.ITAlert.Simulation.Components.World.Systems
 {
 	[ComponentDependency(typeof(SubsystemHealthComponent))]
 	[ComponentDependency(typeof(SubsystemShieldComponent))]
@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Components
 		#region Constructors
 
 		public CombinedHealthAndShieldComponent(IComponentContainer componentContainer, int initialValue = SimulationConstants.MaxShield)
-			: base(componentContainer, "CombinedHealthAndShield", initialValue)
+			: base(componentContainer, "CombinedHealthAndShield", false, initialValue)
 		{
 
 		}

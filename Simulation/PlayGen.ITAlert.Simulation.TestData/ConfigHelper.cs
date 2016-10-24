@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayGen.Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.World.Systems;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;
-using PlayGen.ITAlert.Simulation.Entities.World.Systems.Components;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {
@@ -190,13 +190,13 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		}
 
 		public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight, out List<int> subsystemLogicalIds)
-        {
-            var nodeConfigs = GenerateGraphNodes(width, height);
-            var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
-            SetPlayerConfigValues(nodeConfigs, playerConfigs);
-            var itemConfigs = GetRandomItems(nodeConfigs, items);
+		{
+			var nodeConfigs = GenerateGraphNodes(width, height);
+			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			SetPlayerConfigValues(nodeConfigs, playerConfigs);
+			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
-            subsystemLogicalIds = nodeConfigs.Select(n => n.Id).ToList();
+			subsystemLogicalIds = nodeConfigs.Select(n => n.Id).ToList();
 
 			var componentConfiguration = GenerateDefaultComponentConfiguration();
 			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);

@@ -10,6 +10,8 @@
 	{
 		string PropertyName { get; }
 
+		bool IncludeInState { get; }
+
 		TPropertyType Value { get; }
 
 		void Set(TPropertyType value);

@@ -1,7 +1,7 @@
 ﻿using PlayGen.Engine.Components;
 using PlayGen.Engine.Components.Property;
 
-namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Components
+namespace PlayGen.ITAlert.Simulation.Components.World.Systems
 {
 	[ComponentDependency(typeof(SubsystemHealthComponent))]
 	public class SubsystemIsDeadComponent : PropertyComponentBase<bool>
@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Components
 		#region Constructors
 
 		public SubsystemIsDeadComponent(IComponentContainer componentContainer)
-			: base(componentContainer, "CombinedHealthAndShield", false)
+			: base(componentContainer, "IsDead", true, false)
 		{
 
 		}
