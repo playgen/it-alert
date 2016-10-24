@@ -5,14 +5,17 @@
 	{
 		public string PropertyName { get; private set; }
 
+		public bool IncludeInState { get; private set; }
+
 		private TValue _value;
 
 		public TValue Value => GetValue();
 
-		protected PropertyComponentBase(IComponentContainer container, string propertyName, TValue value) 
+		protected PropertyComponentBase(IComponentContainer container, string propertyName, bool includeInState, TValue value) 
 			: base( container)
 		{
 			PropertyName = propertyName;
+			IncludeInState = includeInState;
 			_value = value;
 		}
 

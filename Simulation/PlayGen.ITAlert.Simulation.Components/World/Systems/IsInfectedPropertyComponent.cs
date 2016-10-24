@@ -2,14 +2,14 @@
 using PlayGen.Engine.Components.Property;
 using PlayGen.ITAlert.Simulation.Common;
 
-namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Components
+namespace PlayGen.ITAlert.Simulation.Components.World.Systems
 {
 	public class IsInfectedPropertyComponent : PropertyComponentBase<bool>
 	{
 		#region Constructors
 
 		public IsInfectedPropertyComponent(IComponentContainer componentContainer, int initialValue = SimulationConstants.MaxShield)
-			: base(componentContainer, "CombinedHealthAndShield", false)
+			: base(componentContainer, "IsInfected", true, false)
 		{
 
 		}
