@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviour\BehaviourComponentBase.cs" />
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
     <Compile Include="ComponentBase.cs" />
     <Compile Include="ComponentConfiguration.cs" />
