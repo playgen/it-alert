@@ -4,11 +4,11 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.World.Systems
 {
-	public class IsInfectedPropertyComponent : PropertyComponentBase<bool>
+	public class IsInfectedPropertyComponent : ReadOnlyPropertyComponentBase<bool>
 	{
 		#region Constructors
 
-		public IsInfectedPropertyComponent(IComponentContainer componentContainer, int initialValue = SimulationConstants.MaxShield)
+		public IsInfectedPropertyComponent(IComponentContainer componentContainer)
 			: base(componentContainer, "IsInfected", true, false)
 		{
 

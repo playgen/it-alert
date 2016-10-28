@@ -1,18 +1,18 @@
 ﻿namespace PlayGen.Engine.Components.Property
 {
-	public abstract class PropertyComponentBase<TValue> : ComponentBase, IPropertyComponent<TValue>
-		where TValue : struct
+	public abstract class ReadOnlyPropertyComponentBase<TValue> : ComponentBase, IReadOnlyPropertyComponent<TValue>
 	{
 		public string PropertyName { get; private set; }
 
 		public bool IncludeInState { get; private set; }
 
-		private TValue _value;
+		// ReSharper disable once InconsistentNaming
+		protected TValue _value;
 
 		public TValue Value => GetValue();
 
-		protected PropertyComponentBase(IComponentContainer container, string propertyName, bool includeInState, TValue value) 
-			: base( container)
+		protected ReadOnlyPropertyComponentBase(IComponentContainer container, string propertyName, bool includeInState, TValue value)
+			: base(container)
 		{
 			PropertyName = propertyName;
 			IncludeInState = includeInState;
@@ -23,15 +23,23 @@
 		{
 			return _value;
 		}
+	}
+
+	public abstract class PropertyComponentBase<TValue> : ReadOnlyPropertyComponentBase<TValue>, IPropertyComponent<TValue>
+	{
+		protected PropertyComponentBase(IComponentContainer container, string propertyName, bool includeInState, TValue value) 
+			: base( container, propertyName, includeInState, value)
+		{
+		}
 
 		public virtual void Set(TValue value)
 		{
 			_value = value;
 		}
 
-		public virtual void ApplyDelta(TValue delta)
-		{
+		//public virtual void ApplyDelta(TValue delta)
+		//{
 			
-		}
+		//}
 	}
 }

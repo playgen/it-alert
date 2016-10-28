@@ -79,6 +79,7 @@
     <Compile Include="World\Systems\Enhancements\RepairSpawnManual.cs" />
     <Compile Include="World\Systems\Enhancements\SubsystemEnhancement.cs" />
     <Compile Include="World\Systems\ISubsystemComponent.cs" />
+    <Compile Include="World\Systems\ItemContainer.cs" />
     <Compile Include="World\Systems\Subsystem.cs" />
     <Compile Include="World\VisitorPosition.cs" />
     <Compile Include="World\VistorEventArgs.cs" />

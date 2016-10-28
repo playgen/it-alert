@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
+using PlayGen.Engine.Messaging;
 
 namespace PlayGen.Engine.Components
 {
@@ -12,6 +14,8 @@ namespace PlayGen.Engine.Components
 	public interface IComponentContainer<in TComponent>
 		where TComponent : IComponent
 	{
+		ISubject<IMessage> MessageHub { get; }
+
 		void AddComponent(TComponent component);
 
 		TConcreteComponent GetComponent<TConcreteComponent>() where TConcreteComponent : class, TComponent;
