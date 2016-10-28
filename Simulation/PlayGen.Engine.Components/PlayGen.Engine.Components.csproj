@@ -32,6 +32,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -56,10 +60,17 @@
     <Compile Include="Property\RangedNumericPropertyComponent.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlayGen.Engine.Messaging\PlayGen.Engine.Messaging.csproj">
+      <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
+      <Name>PlayGen.Engine.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>PlayGen.Engine</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

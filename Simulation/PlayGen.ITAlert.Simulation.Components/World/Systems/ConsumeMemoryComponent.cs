@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using PlayGen.Engine.Components;
+using PlayGen.Engine.Components.Property;
 
 namespace PlayGen.ITAlert.Simulation.Components.World.Systems
 {
-	class ConsumeMemoryComponent
+	public class ConsumeMemoryComponent : PropertyComponentBase<int>
 	{
+		public ConsumeMemoryComponent(IComponentContainer container, string propertyName, bool includeInState, int value) 
+			: base(container, "ConsumesMemory", false, 1)
+		{
+
+		}
 	}
 }

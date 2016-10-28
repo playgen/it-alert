@@ -2,20 +2,19 @@
 {
 	public interface IPropertyComponent : IComponent
 	{
-
-	}
-
-	public interface IPropertyComponent<TPropertyType> : IPropertyComponent
-		where TPropertyType : struct 
-	{
 		string PropertyName { get; }
 
 		bool IncludeInState { get; }
+	}
 
+
+	public interface IReadOnlyPropertyComponent<out TPropertyType> : IPropertyComponent
+	{
 		TPropertyType Value { get; }
+	}
 
+	public interface IPropertyComponent<TPropertyType> : IReadOnlyPropertyComponent<TPropertyType>
+	{
 		void Set(TPropertyType value);
-
-		void ApplyDelta(TPropertyType delta);
 	}
 }

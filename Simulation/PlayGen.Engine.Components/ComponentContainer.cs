@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
+using PlayGen.Engine.Messaging;
 
 namespace PlayGen.Engine.Components
 {
@@ -19,11 +21,16 @@ namespace PlayGen.Engine.Components
 		private Dictionary<Type, IEnumerable<TComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<TComponent>>();
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
+		private readonly MessageHub _messageHub;
+
+		public ISubject<IMessage> MessageHub => _messageHub;
+
 		#region constructors
 
 		public ComponentContainer()
 		{
 			_components = new Dictionary<Type, TComponent>();
+			_messageHub = new MessageHub();
 		}
 
 		#endregion

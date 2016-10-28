@@ -43,10 +43,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Visitors\Actors\Npc\ConsumeMemoryPropertyComponent.cs" />
     <Compile Include="Visitors\VisitorBehaviourComponentBase.cs" />
+    <Compile Include="World\NavigableNodeBehaviour.cs" />
     <Compile Include="World\Systems\CombinedHealthAndShieldComponent.cs" />
     <Compile Include="World\Systems\ConsumeMemoryComponent.cs" />
     <Compile Include="World\Systems\HealthPropertyComponent.cs" />
-    <Compile Include="World\Systems\IsInfectedPropertyComponent.cs" />
+    <Compile Include="World\Systems\Properties\IsInfectedPropertyComponent.cs" />
+    <Compile Include="World\Systems\ItemStoragePropertyComponent.cs" />
     <Compile Include="World\Systems\SubsystemIsDeadComponent.cs" />
     <Compile Include="World\Systems\SubsystemShieldComponent.cs" />
     <Compile Include="World\Systems\SystemMemoryPropertyComponent.cs" />
@@ -82,7 +84,9 @@
       <Name>ICSharpCode.SharpZipLib</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="World\Systems\Behaviours\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
