@@ -55,13 +55,13 @@
     <Compile Include="SpawnVirusCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
       <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>PlayGen.Engine.Entities</Name>
+      <Name>Engine.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj">
       <Project>{3599b815-929d-4fb3-a19e-0b608bc781cc}</Project>

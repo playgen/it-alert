@@ -35,17 +35,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Commands.Tests", "PlayGen.ITAlert.Simulation.Commands.Tests\PlayGen.ITAlert.Simulation.Commands.Tests.csproj", "{241C2A0B-AB53-40A9-8812-86FED7CCBFD4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine", "PlayGen.Engine\PlayGen.Engine.csproj", "{DC88053B-F802-47E1-9BE4-A7E9F795858D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Core", "Engine\Engine.Core\Engine.Core.csproj", "{DC88053B-F802-47E1-9BE4-A7E9F795858D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{1ECFA4EB-642C-46B9-B677-815DD56B26E3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Serialization", "PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj", "{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Serialization", "Engine\Engine.Serialization\Engine.Serialization.csproj", "{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{5B8C1896-A295-4C48-992F-51D983EC1EA3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{ACAFB2F3-CA8D-421B-A97D-2C938B78B592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Components", "PlayGen.Engine.Components\PlayGen.Engine.Components.csproj", "{9771FF48-FABE-4F97-A041-EA6F39057812}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Components", "Engine\Engine.Components\Engine.Components.csproj", "{9771FF48-FABE-4F97-A041-EA6F39057812}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{9AD0E533-B398-4375-96BF-D1AB140B062D}"
 EndProject
@@ -57,21 +57,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject.Commands", "..\Zenj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zenject-tests", "..\Zenject\UnityProject\Assets\Zenject\OptionalExtras\UnitTests\Editor\Zenject-tests.csproj", "{34E27462-3046-4DC7-A7FA-45E4F4F7D413}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Serialization.Tests", "PlayGen.Engine.Serialization.Tests\PlayGen.Engine.Serialization.Tests.csproj", "{14C24EA9-DD64-4739-910B-7E0A91A5E84F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Serialization.Tests", "Engine\Engine.Serialization.Tests\Engine.Serialization.Tests.csproj", "{14C24EA9-DD64-4739-910B-7E0A91A5E84F}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Newtonsoft.Json.Shared", "Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Shared.shproj", "{1AC37270-0ADC-43F6-9FC8-6FEB96686356}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Components.Tests", "PlayGen.Engine.Components.Tests\PlayGen.Engine.Components.Tests.csproj", "{82EF42EA-CFFA-4781-9FB5-FD70966870A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Components.Tests", "Engine\Engine.Components.Tests\Engine.Components.Tests.csproj", "{82EF42EA-CFFA-4781-9FB5-FD70966870A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Tests", "PlayGen.Engine.Tests\PlayGen.Engine.Tests.csproj", "{FD2A86F9-1669-43C4-BEFB-1240B4A37975}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Tests", "Engine\Engine.Tests\Engine.Tests.csproj", "{FD2A86F9-1669-43C4-BEFB-1240B4A37975}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Messaging", "PlayGen.Engine.Messaging\PlayGen.Engine.Messaging.csproj", "{24BF346A-AA43-4613-B1F0-2369DD0994F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Messaging", "Engine\Engine.Messaging\Engine.Messaging.csproj", "{24BF346A-AA43-4613-B1F0-2369DD0994F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Entities", "PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj", "{984830D2-F939-4485-922F-D55D835C89F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Entities", "Engine\Engine.Entities\Engine.Entities.csproj", "{984830D2-F939-4485-922F-D55D835C89F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Entities.Tests", "PlayGen.Engine.Entities.Tests\PlayGen.Engine.Entities.Tests.csproj", "{024A08FE-7108-4C7B-ABE0-051662BA68B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Entities.Tests", "Engine\Engine.Entities.Tests\Engine.Entities.Tests.csproj", "{024A08FE-7108-4C7B-ABE0-051662BA68B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Engine.Messaging.Tests", "PlayGen.Engine.Messaging.Tests\PlayGen.Engine.Messaging.Tests.csproj", "{D454A01E-2C50-4CFF-8F7C-4FAB87CF92ED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Messaging.Tests", "Engine\Engine.Messaging.Tests\Engine.Messaging.Tests.csproj", "{D454A01E-2C50-4CFF-8F7C-4FAB87CF92ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Entities", "PlayGen.ITAlert.Simulation.Entities\PlayGen.ITAlert.Simulation.Entities.csproj", "{3599B815-929D-4FB3-A19E-0B608BC781CC}"
 EndProject
@@ -82,6 +82,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulation", "Simulation", "{44462B28-1544-4653-B506-C4D6D5F7D416}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Components", "PlayGen.ITAlert.Simulation.Components\PlayGen.ITAlert.Simulation.Components.csproj", "{9ED71A09-13E4-4035-B3BA-C95214081D64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Entities.Interfaces", "PlayGen.ITAlert.Simulation.Entities.Interfaces\PlayGen.ITAlert.Simulation.Entities.Interfaces.csproj", "{0C6D72DE-1FFD-4411-9869-3C7A16413917}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Components.Interfaces", "PlayGen.ITAlert.Simulation.Components.Interfaces\PlayGen.ITAlert.Simulation.Components.Interfaces.csproj", "{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Components.Common", "Engine.Components.Common\Engine.Components.Common.csproj", "{888032D2-38BB-4339-B4FA-744AAC836DB5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Common", "Engine.Common\Engine.Common.csproj", "{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -433,6 +441,46 @@ Global
 		{9ED71A09-13E4-4035-B3BA-C95214081D64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9ED71A09-13E4-4035-B3BA-C95214081D64}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9ED71A09-13E4-4035-B3BA-C95214081D64}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{888032D2-38BB-4339-B4FA-744AAC836DB5}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -473,5 +521,9 @@ Global
 		{69E914DB-F45B-430A-A91A-A10DF274F14D} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{B4DC82FF-0DB1-4A0C-9B12-5C6D481FBF5D} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{9ED71A09-13E4-4035-B3BA-C95214081D64} = {44462B28-1544-4653-B506-C4D6D5F7D416}
+		{0C6D72DE-1FFD-4411-9869-3C7A16413917} = {44462B28-1544-4653-B506-C4D6D5F7D416}
+		{0AEE099E-8656-4C54-B0F8-79A5D1BD45DA} = {44462B28-1544-4653-B506-C4D6D5F7D416}
+		{888032D2-38BB-4339-B4FA-744AAC836DB5} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
+		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 	EndGlobalSection
 EndGlobal

@@ -3,6 +3,7 @@ using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.World;
 
 namespace PlayGen.ITAlert.Simulation.Entities.Visitors
@@ -15,17 +16,11 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors
 
 		#region constructors
 
-		protected Visitor(ISimulation simulation, IComponentContainer componentContainer, EntityType entityType)
-			: base(simulation, componentContainer, entityType)
+		protected Visitor(ISimulation simulation, EntityType entityType)
+			: base(simulation, entityType)
 		{
 
 		}
-
-		//protected Visitor(ISimulation simulation, EntityType entityType)
-		//	: base(simulation, entityType)
-		//{
-
-		//}
 
 		[Obsolete("This is not obsolete; it should never be called explicitly, it only exists for the serializer.", true)]
 		protected Visitor()
@@ -35,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors
 
 		protected override void OnTick()
 		{
-			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnTick(CurrentNode));
+			ForEachComponentImplementing<IVisitorComponent>(component => component.OnTick(CurrentNode));
 		}
 
 		#endregion
@@ -43,14 +38,14 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors
 		public virtual void OnEnterNode(INode current)
 		{
 			CurrentNode = current;
-			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnEnterNode(current));
+			ForEachComponentImplementing<IVisitorComponent>(component => component.OnEnterNode(current));
 		}
 
 		public virtual void OnExitNode(INode current)
 		{
 			CurrentNode = null;
 			// do nothing, log maybe
-			Container.ForEachComponentImplementing<IVisitorComponent>(component => component.OnExitNode(current));
+			ForEachComponentImplementing<IVisitorComponent>(component => component.OnExitNode(current));
 		}
 	}
 }

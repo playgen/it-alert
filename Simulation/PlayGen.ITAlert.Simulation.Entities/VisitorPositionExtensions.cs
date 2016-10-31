@@ -1,4 +1,5 @@
 ﻿using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.World;
 
 namespace PlayGen.ITAlert.Simulation.Entities

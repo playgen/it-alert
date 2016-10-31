@@ -6,6 +6,7 @@ using PlayGen.Engine.Components;
 using PlayGen.Engine.Entities;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors;
 using PlayGen.ITAlert.Simulation.Entities.World;
 
@@ -18,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Components.World
 		protected int Positions { get; set; }
 
 		/// <summary>
-		/// Outbound edges and their direction
+		/// Outbound  and their direction
 		/// </summary>
 		[SyncState(StateLevel.Setup)]
 		public Dictionary<int, NodeDirection> ExitNodePositions { get; private set; } = new Dictionary<int, NodeDirection>();
@@ -64,7 +65,7 @@ namespace PlayGen.ITAlert.Simulation.Components.World
 		}
 
 		public TVisitor GetVisitorOfType<TVisitor>()
-	where TVisitor : class, IVisitor
+			where TVisitor : class, IVisitor
 		{
 			return VisitorPositions.Values.SingleOrDefault(v => v.Visitor is TVisitor)?.Visitor as TVisitor;
 		}

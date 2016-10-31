@@ -3,6 +3,7 @@ using PlayGen.Engine.Entities;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Entities
 {
@@ -15,13 +16,6 @@ namespace PlayGen.ITAlert.Simulation.Entities
 
 		[SyncState(StateLevel.Full)]
 		protected ISimulation Simulation { get; private set; }
-
-		protected ITAlertEntity(ISimulation simulation, IComponentContainer componentContainer, EntityType entityType)
-			: base(simulation, componentContainer)
-		{
-			Simulation = simulation;
-			EntityType = entityType;
-		}
 
 		protected ITAlertEntity(ISimulation simulation, EntityType entityType) 
 			: base(simulation)

@@ -1,4 +1,6 @@
-﻿namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc
+﻿using PlayGen.ITAlert.Simulation.Entities.Interfaces;
+
+namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc
 {
 	public interface IInfection : IVisitor
 	{

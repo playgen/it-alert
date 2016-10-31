@@ -1,4 +1,5 @@
 ﻿using System;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Entities.World

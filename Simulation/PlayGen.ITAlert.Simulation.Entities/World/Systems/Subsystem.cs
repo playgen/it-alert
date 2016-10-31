@@ -6,6 +6,7 @@ using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Utilities;
 using PlayGen.ITAlert.Simulation.Entities.Visitors;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors;
@@ -90,13 +91,13 @@ namespace PlayGen.ITAlert.Simulation.Entities.World.Systems
 
 		#region constructors
 
-		public Subsystem(ISimulation simulation, IComponentContainer componentContainer, int logicalId, SubsystemEnhancement enhancement, int x, int y) 
-			: this(simulation, componentContainer, logicalId, enhancement, SimulationConstants.Positions, x, y)
+		public Subsystem(ISimulation simulation, int logicalId, SubsystemEnhancement enhancement, int x, int y) 
+			: this(simulation, logicalId, enhancement, SimulationConstants.Positions, x, y)
 		{
 		}
 
-		protected Subsystem(ISimulation simulation, IComponentContainer componentContainer, int logicalId, SubsystemEnhancement enhancement, int positions, int x, int y)
-			: base(simulation, componentContainer, EntityType.Subsystem, positions)
+		protected Subsystem(ISimulation simulation, int logicalId, SubsystemEnhancement enhancement, int positions, int x, int y)
+			: base(simulation, EntityType.Subsystem, positions)
 		{
 			LogicalId = logicalId;
 			_enhancement = enhancement;

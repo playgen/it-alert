@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Entities.World.Systems.Enhancements
 {

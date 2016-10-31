@@ -6,10 +6,12 @@ using PlayGen.Engine.Entities;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Entities.World
 {
+	[ComponentDependency(typeof(NavigableNodeComponent))]
 	public abstract class Node<TState> : ITAlertEntity<TState>, INode
 		where TState : ITAlertEntityState
 	{
@@ -47,11 +49,10 @@ namespace PlayGen.ITAlert.Simulation.Entities.World
 		/// 
 		/// </summary>
 		/// <param name="simulation"></param>
-		/// <param name="components"></param>
 		/// <param name="entityType"></param>
 		/// <param name="positions"></param>
-		protected Node(ISimulation simulation, IComponentContainer componentContainer, EntityType entityType, int positions)
-			: base(simulation, componentContainer, entityType)
+		protected Node(ISimulation simulation, EntityType entityType, int positions)
+			: base(simulation,  entityType)
 		{
 			if (positions < MinPositions || positions > MaxPositions)
 			{

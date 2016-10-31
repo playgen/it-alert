@@ -32,22 +32,22 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IActivatable.cs" />
-    <Compile Include="IITAlertEntity.cs" />
     <Compile Include="IntentExtensions.cs" />
-    <Compile Include="ISimulation.cs" />
     <Compile Include="ITAlertEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\IItemArrayExtensions.cs" />
     <Compile Include="VisitorPositionExtensions.cs" />
     <Compile Include="Visitors\Actors\Actor.cs" />
-    <Compile Include="Visitors\Actors\IActor.cs" />
     <Compile Include="Visitors\Actors\Intents\DisownItemIntent.cs" />
     <Compile Include="Visitors\Actors\Intents\InfectSystemIntent.cs" />
     <Compile Include="Visitors\Actors\Intents\Intent.cs" />
@@ -59,43 +59,38 @@
     <Compile Include="Visitors\Actors\Npc\Virus.cs" />
     <Compile Include="Visitors\Actors\Player.cs" />
     <Compile Include="Visitors\Items\Cleaner.cs" />
-    <Compile Include="Visitors\Items\IItem.cs" />
     <Compile Include="Visitors\Items\Item.cs" />
     <Compile Include="Visitors\Items\Repair.cs" />
     <Compile Include="Visitors\Items\Scanner.cs" />
     <Compile Include="Visitors\Items\SubsystemModulator.cs" />
-    <Compile Include="Visitors\Actors\Npc\IVirusComponent.cs" />
-    <Compile Include="Visitors\IVisitor.cs" />
-    <Compile Include="Visitors\IVisitorComponent.cs" />
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="World\Connection.cs" />
-    <Compile Include="World\INode.cs" />
-    <Compile Include="World\INodeComponent.cs" />
-    <Compile Include="World\INodeEvents.cs" />
     <Compile Include="World\Node.cs" />
     <Compile Include="World\NodeDirection.cs" />
-    <Compile Include="World\Systems\Enhancements\IEnhancement.cs" />
     <Compile Include="World\Systems\Enhancements\ManualEnhancement.cs" />
     <Compile Include="World\Systems\Enhancements\RepairSpawnManual.cs" />
     <Compile Include="World\Systems\Enhancements\SubsystemEnhancement.cs" />
-    <Compile Include="World\Systems\ISubsystemComponent.cs" />
     <Compile Include="World\Systems\ItemContainer.cs" />
     <Compile Include="World\Systems\Subsystem.cs" />
     <Compile Include="World\VisitorPosition.cs" />
     <Compile Include="World\VistorEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
       <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
-      <Name>PlayGen.Engine.Components</Name>
+      <Name>Engine.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
       <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>PlayGen.Engine.Entities</Name>
+      <Name>Engine.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Components.Interfaces\PlayGen.ITAlert.Simulation.Components.Interfaces.csproj">
+      <Project>{0aee099e-8656-4c54-b0f8-79a5d1bd45da}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Components.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</Project>
@@ -109,6 +104,13 @@
       <Project>{b4dc82ff-0db1-4a0c-9b12-5c6d481fbf5d}</Project>
       <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Entities.Interfaces\PlayGen.ITAlert.Simulation.Entities.Interfaces.csproj">
+      <Project>{0c6d72de-1ffd-4411-9869-3c7a16413917}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Entities.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

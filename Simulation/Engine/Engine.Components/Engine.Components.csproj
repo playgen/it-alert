@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9771FF48-FABE-4F97-A041-EA6F39057812}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Engine.Components</RootNamespace>
+    <AssemblyName>Engine.Components</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviour\ActivatableBehaviour.cs" />
+    <Compile Include="Behaviour\BehaviourComponent.cs" />
+    <Compile Include="Behaviour\IBehaviourComponent.cs" />
+    <Compile Include="ComponentBase.cs" />
+    <Compile Include="ComponentConfiguration.cs" />
+    <Compile Include="ComponentContainer.cs" />
+    <Compile Include="ComponentUsageException.cs" />
+    <Compile Include="ComponentUsageAttribute.cs" />
+    <Compile Include="ComponentDependencyAttribute.cs" />
+    <Compile Include="ComponentDependencyException.cs" />
+    <Compile Include="ComponentAttributeExtensions.cs" />
+    <Compile Include="Behaviour\IActivatableBehaviour.cs" />
+    <Compile Include="ITickableComponent.cs" />
+    <Compile Include="Behaviour\ITimedActivatableBehaviour.cs" />
+    <Compile Include="Messaging\IMessageComponent.cs" />
+    <Compile Include="Messaging\MessageFactoryComponent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\IPropertyComponent.cs" />
+    <Compile Include="Property\PropertyComponentBase.cs" />
+    <Compile Include="Property\RangedNumericPropertyComponent.cs" />
+    <Compile Include="Behaviour\TimedActivatableBehaviour.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.Messaging\Engine.Messaging.csproj">
+      <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
+      <Name>Engine.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
+      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
+      <Name>Engine.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
