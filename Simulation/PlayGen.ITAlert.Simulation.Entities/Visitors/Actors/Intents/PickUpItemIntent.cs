@@ -1,5 +1,6 @@
 ﻿using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.World;
 
 namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents

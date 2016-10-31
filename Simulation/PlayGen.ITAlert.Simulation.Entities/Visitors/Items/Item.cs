@@ -4,6 +4,7 @@ using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors;
 using PlayGen.ITAlert.Simulation.Entities.World;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;
@@ -65,12 +66,11 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Items
 		/// 
 		/// </summary>
 		/// <param name="simulation"></param>
-		/// <param name="componentContainer"></param>
 		/// <param name="itemType">The type of this item</param>
 		/// <param name="isConsumable">should item be destroyed when deactivated</param>
 		/// <param name="activeDuration">number of ticks to perform action or when activated or -1 for perptuity</param>
-		protected Item(ISimulation simulation, IComponentContainer componentContainer, ItemType itemType, bool isConsumable, int activeDuration)// int cooldown)
-			: base(simulation, componentContainer, EntityType.Item)
+		protected Item(ISimulation simulation, ItemType itemType, bool isConsumable, int activeDuration)// int cooldown)
+			: base(simulation, EntityType.Item)
 		{
 			IsConsumable = isConsumable;
 			ActiveDuration = activeDuration;

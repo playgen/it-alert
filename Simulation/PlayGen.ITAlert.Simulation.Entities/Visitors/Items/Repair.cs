@@ -2,6 +2,7 @@
 using PlayGen.Engine.Components;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Items
@@ -20,8 +21,8 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Items
 
 		#region constructors
 
-		public Repair(ISimulation simulation, IComponentContainer componentContainer) 
-			: base(simulation, componentContainer, ItemType.Repair, simulation.Rules.RepairItemsConsumable, RepairDuration)
+		public Repair(ISimulation simulation) 
+			: base(simulation, ItemType.Repair, simulation.Rules.RepairItemsConsumable, RepairDuration)
 		{
 		}
 

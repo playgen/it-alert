@@ -51,13 +51,13 @@
     <Folder Include="Builder\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
       <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
-      <Name>PlayGen.Engine.Components</Name>
+      <Name>Engine.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>

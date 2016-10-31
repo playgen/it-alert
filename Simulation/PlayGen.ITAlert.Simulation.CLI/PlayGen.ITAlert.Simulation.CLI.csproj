@@ -50,25 +50,25 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
       <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
-      <Name>PlayGen.Engine.Components</Name>
+      <Name>Engine.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
       <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>PlayGen.Engine.Entities</Name>
+      <Name>Engine.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Serialization.Tests\PlayGen.Engine.Serialization.Tests.csproj">
+    <ProjectReference Include="..\Engine\Engine.Serialization.Tests\Engine.Serialization.Tests.csproj">
       <Project>{14c24ea9-dd64-4739-910b-7e0a91a5e84f}</Project>
-      <Name>PlayGen.Engine.Serialization.Tests</Name>
+      <Name>Engine.Serialization.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Serialization\PlayGen.Engine.Serialization.csproj">
+    <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>
-      <Name>PlayGen.Engine.Serialization</Name>
+      <Name>Engine.Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>

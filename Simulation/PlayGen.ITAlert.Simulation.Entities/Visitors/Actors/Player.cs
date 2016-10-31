@@ -5,6 +5,7 @@ using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
 using PlayGen.ITAlert.Simulation.Entities.World;

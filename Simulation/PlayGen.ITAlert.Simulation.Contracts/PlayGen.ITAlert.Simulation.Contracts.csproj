@@ -54,9 +54,9 @@
     <Compile Include="VisitorState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</Project>

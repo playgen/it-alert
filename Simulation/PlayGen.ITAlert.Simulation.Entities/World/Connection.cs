@@ -4,6 +4,7 @@ using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;
@@ -44,13 +45,12 @@ namespace PlayGen.ITAlert.Simulation.Entities.World
 		/// Create a new connection
 		/// </summary>
 		/// <param name="simulation"></param>
-		/// <param name="container"></param>
 		/// <param name="head">Origin of connection</param>
 		/// <param name="headDirection">Direction connection leaves origin</param>
 		/// <param name="tail">Destination of connection</param>
 		/// <param name="weight">Weight coefficient of connection [1-9]</param>
-		public Connection(ISimulation simulation, IComponentContainer container, Subsystem head, VertexDirection headDirection, Subsystem tail, int weight)
-			: this(simulation, container, head, headDirection, tail, weight, SimulationConstants.Positions)
+		public Connection(ISimulation simulation, Subsystem head, VertexDirection headDirection, Subsystem tail, int weight)
+			: this(simulation, head, headDirection, tail, weight, SimulationConstants.Positions)
 		{
 			
 		}
@@ -59,14 +59,13 @@ namespace PlayGen.ITAlert.Simulation.Entities.World
 		/// Create a new connection
 		/// </summary>
 		/// <param name="simulation"></param>
-		/// <param name="container"></param>
 		/// <param name="head">Origin of connection</param>
 		/// <param name="headDirection">Direction connection leaves origin</param>
 		/// <param name="tail">Destination of connection</param>
 		/// <param name="weight">Weight coefficient of connection [1-9]</param>
 		/// <param name="positions">Number of position steps for simulation</param>
-		protected Connection(ISimulation simulation, IComponentContainer container, Subsystem head, VertexDirection headDirection, Subsystem tail, int weight, int positions) 
-			: base(simulation, container, EntityType.Connection, positions)
+		protected Connection(ISimulation simulation, Subsystem head, VertexDirection headDirection, Subsystem tail, int weight, int positions) 
+			: base(simulation, EntityType.Connection, positions)
 		{
 			if (head == null)
 			{

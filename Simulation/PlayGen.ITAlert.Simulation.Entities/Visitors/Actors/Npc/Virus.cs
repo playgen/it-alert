@@ -3,6 +3,7 @@ using System.Linq;
 using PlayGen.Engine.Components;
 using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
 using PlayGen.ITAlert.Simulation.Entities.World;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;

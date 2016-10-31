@@ -202,16 +202,15 @@ namespace PlayGen.ITAlert.Simulation
 		public Subsystem CreateSubsystem(NodeConfig config)
 		{
 			Subsystem subsystem;
-			IComponentContainer componentContainer;
 			switch (config.Type)
 			{
 				case NodeType.Default:
 				default:
-					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Subsystem));
-					subsystem = new Subsystem(this, componentContainer, config.Id, null, config.X, config.Y)
+					subsystem = new Subsystem(this, config.Id, null, config.X, config.Y)
 					{
 						Name = config.Name
 					};
+					ComponentConfiguration.PopulateContainerOfType(subsystem);
 					config.EntityId = subsystem.Id;
 					SubsystemsByLogicalId.Add(config.Id, subsystem);
 					break;
@@ -228,9 +227,8 @@ namespace PlayGen.ITAlert.Simulation
 		/// <returns></returns>
 		public Connection CreateConnection(Dictionary<int, Subsystem> subsystems, EdgeConfig edgeConfig)
 		{
-			var componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Connection));
-
-			var connection = new Connection(this, componentContainer, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
+			var connection = new Connection(this, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
+			ComponentConfiguration.PopulateContainerOfType(connection);
 			edgeConfig.EntityId = connection.Id;
 			AddEntity(connection);
 			return connection;
@@ -238,27 +236,24 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IItem CreateItem(ItemType type)
 		{
-			IComponentContainer componentContainer;
 			IItem item;
 			switch (type)
 			{
 				case ItemType.Repair:
-					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Repair));
-					item = new Repair(this, componentContainer);
+					item = new Repair(this);
 					break;
 				case ItemType.Scanner:
-					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Scanner));
-					item = new Scanner(this, componentContainer);
+					item = new Scanner(this);
 					break;
 				case ItemType.Cleaner:
-					componentContainer = ComponentConfiguration.GenerateContainerForType(typeof(Cleaner));
-					item = new Cleaner(this, componentContainer);
+					item = new Cleaner(this);
 					break;
 				//case ItemType.Tracer:
 				// not implemented
 				default:
 					throw new Exception("Unknown item type");
 			}
+			ComponentConfiguration.PopulateContainerOfType(item);
 			AddEntity(item);
 			return item;
 		}

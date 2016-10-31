@@ -2,6 +2,7 @@
 using PlayGen.Engine.Components;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Entities.Interfaces;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc;
 using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 
@@ -16,8 +17,8 @@ namespace PlayGen.ITAlert.Simulation.Entities.Visitors.Items
 
 		#region constructors
 
-		public Scanner(ISimulation simulation, IComponentContainer componentContainer) 
-			: base(simulation, componentContainer, ItemType.Scanner, true, ScanDuration)
+		public Scanner(ISimulation simulation) 
+			: base(simulation, ItemType.Scanner, true, ScanDuration)
 		{
 		}
 

@@ -1,4 +1,5 @@
-﻿using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
+﻿using PlayGen.ITAlert.Simulation.Entities.Interfaces;
+using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
 
 namespace PlayGen.ITAlert.Simulation.Entities.Utilities
 {
