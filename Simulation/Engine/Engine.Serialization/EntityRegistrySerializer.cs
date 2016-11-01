@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Reflection;
 using System.Text;
+using Engine.Core.Entities;
+using Engine.Core.Serialization;
+using Engine.Serialization.Newtonsoft.Json;
 using ICSharpCode.SharpZipLib.GZip;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Utilities;
-using PlayGen.Engine.Entities;
-using PlayGen.Engine.Serialization.Newtonsoft.Json;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	public class EntityRegistrySerializer
 	{

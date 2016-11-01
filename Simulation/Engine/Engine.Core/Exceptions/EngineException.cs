@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace PlayGen.Engine.Exceptions
+namespace Engine.Core.Exceptions
 {
 	public class EngineException : Exception
 	{

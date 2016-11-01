@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Entities;
+﻿using Engine.Core.Entities;
 
-namespace PlayGen.Engine.Serialization.Tests
+namespace Engine.Serialization.Tests
 {
 	public interface ITestEntity : IEntity
 	{

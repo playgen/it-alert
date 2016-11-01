@@ -1,37 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using PlayGen.ITAlert.Simulation.Entities.World.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Initialization
 {
 	public class Path : IComparable<Path>
 	{
-		public List<Subsystem> Nodes { get; private set; }
+		public List<System> Nodes { get; private set; }
 
 		public int ConnectionCost { get; private set; }
-		public int SubsystemCost { get; private set; }
+		public int SystemCost { get; private set; }
 
-		public Path(Subsystem start)
+		public Path(System start)
 		{
-			Nodes = new List<Subsystem>() { start };
+			Nodes = new List<System>() { start };
 		}
 
 		public Path(Path path)
 		{
-			Nodes = new List<Subsystem>(path.Nodes);
+			Nodes = new List<System>(path.Nodes);
 			ConnectionCost = path.ConnectionCost;
-			SubsystemCost = path.SubsystemCost;
+			SystemCost = path.SystemCost;
 		}
 
 
 		public void AddNode(NeighbourNode node)
 		{
 			ConnectionCost += node.ConnectionCost;
-			SubsystemCost += node.SubsystemCost;
-			Nodes.Add(node.Subsystem);
+			SystemCost += node.SystemCost;
+			Nodes.Add(node.System);
 		}
 
-		public bool HasNode(Subsystem node)
+		public bool HasNode(System node)
 		{
 			return Nodes.Contains(node);
 		}
@@ -53,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 
 		}
 
-		public float Priority => (10*ConnectionCost) + (0.1f*SubsystemCost);
+		public float Priority => (10*ConnectionCost) + (0.1f*SystemCost);
 
 		public bool IsCheaperThan(float otherPriority)
 		{

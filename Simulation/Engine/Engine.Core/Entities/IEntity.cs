@@ -1,8 +1,8 @@
 ﻿using System;
-using PlayGen.Engine.Components;
-using PlayGen.Engine.Serialization;
+using Engine.Core.Components;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Core.Entities
 {
 	// TODO: the dependency on Rx-Main can be broken in Engine.Entites and Simulation.Entities when we upgrade to .NET 4 and IObservable is included in System
 
@@ -10,7 +10,7 @@ namespace PlayGen.Engine.Entities
 	{
 		int Id { get; }
 
-		event EventHandler EntityDestroyed;
+		//event EventHandler EntityDestroyed;
 	}
 
 	public interface IEntity<out TGameState> : IEntity

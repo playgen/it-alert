@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
                     {
                         new SpawnVirusCommand
                         {
-                            SubsystemLogicalId = subsystemLogicalIds[Random.Next(subsystemLogicalIds.Count)]
+                            SystemLogicalId = subsystemLogicalIds[Random.Next(subsystemLogicalIds.Count)]
                         }
                     }
                 };

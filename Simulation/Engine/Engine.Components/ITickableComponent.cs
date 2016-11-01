@@ -1,4 +1,4 @@
-﻿namespace PlayGen.Engine.Components
+﻿namespace Engine.Components
 {
 	public interface ITickableComponent
 	{

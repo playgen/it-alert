@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Entities;
+using Engine.Core.Entities;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	internal static class TypeExtensions
 	{
@@ -34,7 +32,7 @@ namespace PlayGen.Engine.Serialization
 #if !(DOTNET || PORTABLE)
 			return type.IsValueType;
 #else
-            return type.GetTypeInfo().IsValueType;
+			return type.GetTypeInfo().IsValueType;
 #endif
 		}
 
@@ -43,7 +41,7 @@ namespace PlayGen.Engine.Serialization
 #if !(DOTNET || PORTABLE)
 			return type.IsInterface;
 #else
-            return type.GetTypeInfo().IsInterface;
+			return type.GetTypeInfo().IsInterface;
 #endif
 		}
 	}

@@ -1,4 +1,4 @@
-﻿namespace PlayGen.Engine.Entities
+﻿namespace Engine.Core.Entities
 {
 	public class EntityState
 	{

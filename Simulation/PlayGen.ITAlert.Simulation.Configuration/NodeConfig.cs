@@ -1,4 +1,5 @@
 ﻿using System;
+using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {

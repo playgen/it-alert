@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using PlayGen.Engine.Serialization.Tests;
+using Engine.Serialization.Tests;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
@@ -53,7 +54,7 @@ namespace PlayGen.ITAlert.Simulation.CLI
 		//		{ ItemType.Cleaner, 2 },
 		//	}, 1))
 		//	{
-		//		simulation.SpawnVirus(simulation.Subsystems.First().Id);
+		//		simulation.SpawnVirus(simulation.Systems.First().Id);
 
 		//		var i = 0;
 
@@ -62,7 +63,7 @@ namespace PlayGen.ITAlert.Simulation.CLI
 		//			var state = SimulationSerializer.SerializeSimulation(simulation);
 		//			File.WriteAllBytes(Path.Combine(DebugPath, $"{i++}.json"), state);
 
-		//			var subsystemState = simulation.Subsystems.Select(ss => ss.GetState());
+		//			var subsystemState = simulation.Systems.Select(ss => ss.GetState());
 
 		//			simulation.Tick();
 		//		}
@@ -123,7 +124,7 @@ namespace PlayGen.ITAlert.Simulation.CLI
 		//			stopwatch.Stop();
 		//			Console.WriteLine($"Deserialize took {stopwatch.ElapsedTicks:N5}.");
 
-		//			var subsystemState = simulation.Subsystems.Select(ss => ss.GetState()).Where(ss => (ss as SubsystemState).VisitorPositions.Any());
+		//			var subsystemState = simulation.Systems.Select(ss => ss.GetState()).Where(ss => (ss as SystemState).VisitorPositions.Any());
 
 		//		}
 		//		Thread.Sleep(100);

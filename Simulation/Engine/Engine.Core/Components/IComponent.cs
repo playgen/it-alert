@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PlayGen.Engine.Components
+﻿namespace Engine.Core.Components
 {
     public interface IComponent
     {

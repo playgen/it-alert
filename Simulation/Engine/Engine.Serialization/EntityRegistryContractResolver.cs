@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Text;
+using Engine.Core.Entities;
+using Engine.Core.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Newtonsoft.Json.Utilities;
-using PlayGen.Engine.Entities;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	internal class EntityRegistryContractResolver : DefaultContractResolver
 	{

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Utilities;
 
-namespace PlayGen.Engine.Serialization.Newtonsoft.Json
+namespace Engine.Serialization.Newtonsoft.Json
 {
 	internal class EntityRegistryJsonSerializer : JsonSerializer
 	{

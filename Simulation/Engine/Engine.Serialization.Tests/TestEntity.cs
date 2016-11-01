@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Components;
-using PlayGen.Engine.Entities;
+using System.Reactive.Subjects;
+using Engine.Core.Components;
+using Engine.Core.Entities;
+using Engine.Core.Messaging;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Serialization.Tests
+namespace Engine.Serialization.Tests
 {
 	public class TestEntity : ITestEntity
 	{
@@ -13,7 +14,6 @@ namespace PlayGen.Engine.Serialization.Tests
 		public int Id { get; }
 
 		public event EventHandler EntityDestroyed;
-		public IComponentContainer Container { get; }
 
 		[SyncState(StateLevel.Full)]
 		public ITestEntity OtherEntity { get; set; }
@@ -33,5 +33,30 @@ namespace PlayGen.Engine.Serialization.Tests
 			
 		}
 
+		public ISubject<IMessage> MessageHub { get; }
+		public void AddComponent(IComponent component)
+		{
+			throw new NotImplementedException();
+		}
+
+		public TConcreteComponent GetComponent<TConcreteComponent>() where TConcreteComponent : class, IComponent
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool TryGetComponent<TConcreteComponent>(out TConcreteComponent tComponent) where TConcreteComponent : class, IComponent
+		{
+			throw new NotImplementedException();
+		}
+
+		public IEnumerable<TComponentInterface> GetComponentsImplmenting<TComponentInterface>() where TComponentInterface : class, IComponent
+		{
+			throw new NotImplementedException();
+		}
+
+		public void ForEachComponentImplementing<TComponentInterface>(Action<TComponentInterface> executeDelegate) where TComponentInterface : class, IComponent
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

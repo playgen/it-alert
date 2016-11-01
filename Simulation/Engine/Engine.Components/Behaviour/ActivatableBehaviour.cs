@@ -1,4 +1,6 @@
-﻿namespace PlayGen.Engine.Components.Behaviour
+﻿using Engine.Core.Components;
+
+namespace Engine.Components.Behaviour
 {
 	public abstract class ActivatableBehaviour : BehaviourComponent, IActivatableBehaviour
 	{

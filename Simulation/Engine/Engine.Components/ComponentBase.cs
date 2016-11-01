@@ -1,14 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Util;
+﻿using Engine.Core.Components;
+using Engine.Core.Util;
+using Engine.Messaging;
+using Engine.Messaging.Extensions;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Components
 {
 	public abstract class ComponentBase : IComponent
 	{
-		protected IComponentContainer EntityComponents { get; private set; }
+		protected IComponentContainer Container { get; private set; }
+
+		private DelegatingObserver _observer;
+
+		protected DelegatingObserver Observer => _observer ?? (_observer = new DelegatingObserver().SubscribeTo(Container.MessageHub)); 
 
 		/// <summary>
 		/// 
@@ -17,7 +20,7 @@ namespace PlayGen.Engine.Components
 		protected ComponentBase(IComponentContainer container)
 		{
 			NotNullHelper.ArgumentNotNull(container, nameof(container));
-			EntityComponents = container;
+			Container = container;
 		}
 	}
 }
