@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using PlayGen.Engine.Messaging;
+using Engine.Core.Components;
+using Engine.Core.Messaging;
+using Engine.Messaging;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Components
 {
 	public class ComponentContainer : ComponentContainer<IComponent>, IComponentContainer
 	{

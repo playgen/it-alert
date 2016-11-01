@@ -1,12 +1,13 @@
 ﻿using System;
-using PlayGen.Engine.Serialization;
+using Engine.Core.Components;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Components.Behaviour
+namespace Engine.Components.Behaviour
 {
 	public abstract class TimedActivatableBehaviour : ActivatableBehaviour, ITimedActivatableBehaviour
 	{
 
-		protected TimerUnits _timerUnits;
+		protected ActivationTimerUnits _timerUnits;
 
 		private long _warmUp;
 		private long _coolDown;
@@ -26,18 +27,19 @@ namespace PlayGen.Engine.Components.Behaviour
 		/// 
 		/// </summary>
 		/// <param name="container"></param>
+		/// <param name="activationMode"></param>
 		/// <param name="timerUnits"></param>
 		/// <param name="warmUp">this is the number of unit before the item is activated</param>
 		/// <param name="coolDown">this is the </param>
 		/// <param name="canCancel"></param>
-		protected TimedActivatableBehaviour(IComponentContainer container, TimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
-			: base(container)
+		protected TimedActivatableBehaviour(IComponentContainer container, ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
+			: base(container, activationMode)
 		{
 			_timerUnits = timerUnits;
 			_warmUp = warmUp;
 			_coolDown = coolDown;
 
-			if (_timerUnits == TimerUnits.Milliseconds)
+			if (_timerUnits == ActivationTimerUnits.Milliseconds)
 			{
 				// we use the DateTime.Ticks property which is not measured in milliseconds
 				_warmUp *= 10000;
@@ -52,10 +54,10 @@ namespace PlayGen.Engine.Components.Behaviour
 			{
 				switch (_timerUnits)
 				{
-					case TimerUnits.Ticks:
+					case ActivationTimerUnits.Ticks:
 						_activationRequested = CurrentTick;
 						break;
-					case TimerUnits.Milliseconds:
+					case ActivationTimerUnits.Milliseconds:
 						_activationRequested = DateTime.Now.Ticks;
 						break;
 					default:
@@ -91,14 +93,14 @@ namespace PlayGen.Engine.Components.Behaviour
 			{
 				switch (_timerUnits)
 				{
-					case TimerUnits.Ticks:
+					case ActivationTimerUnits.Ticks:
 						if (++_activationRequested >= _warmUp)
 						{
 							base.Activate();
 							_activationRequested = -1;
 						}
 						break;
-					case TimerUnits.Milliseconds:
+					case ActivationTimerUnits.Milliseconds:
 						if (DateTime.Now.Ticks >= _activationRequested + _warmUp)
 						{
 							base.Activate();
@@ -113,13 +115,13 @@ namespace PlayGen.Engine.Components.Behaviour
 			{
 				switch (_timerUnits)
 				{
-					case TimerUnits.Ticks:
+					case ActivationTimerUnits.Ticks:
 						if (++_deactivationRequested >= _coolDown)
 						{
 							_deactivationRequested = -1;
 						}
 						break;
-					case TimerUnits.Milliseconds:
+					case ActivationTimerUnits.Milliseconds:
 						if (DateTime.Now.Ticks >= _deactivationRequested + _coolDown)
 						{
 							_deactivationRequested = -1;

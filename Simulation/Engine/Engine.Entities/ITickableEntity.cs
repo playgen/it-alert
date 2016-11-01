@@ -1,4 +1,6 @@
-﻿namespace PlayGen.Engine.Entities
+﻿using Engine.Core.Entities;
+
+namespace Engine.Entities
 {
 	public interface ITickableEntity : IEntity
 	{

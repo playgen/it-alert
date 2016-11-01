@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Messaging;
+﻿using Engine.Core.Components;
+using Engine.Core.Messaging;
 
-namespace PlayGen.Engine.Components.Messaging
+namespace Engine.Components.Messaging
 {
 	public interface IMessageComponent : IComponent
 	{

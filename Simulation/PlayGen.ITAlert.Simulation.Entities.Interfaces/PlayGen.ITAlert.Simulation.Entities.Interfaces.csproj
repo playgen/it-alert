@@ -38,20 +38,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IActivatable.cs" />
-    <Compile Include="IActor.cs" />
-    <Compile Include="IEnhancement.cs" />
-    <Compile Include="IITAlertEntity.cs" />
-    <Compile Include="IItem.cs" />
-    <Compile Include="INode.cs" />
-    <Compile Include="INodeComponent.cs" />
-    <Compile Include="INodeEvents.cs" />
-    <Compile Include="ISimulation.cs" />
-    <Compile Include="ISubsystemComponent.cs" />
-    <Compile Include="IVirusComponent.cs" />
-    <Compile Include="IVisitor.cs" />
-    <Compile Include="IVisitorComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.Planning\Engine.Planning.csproj">
+      <Project>{5FBDE4C0-3C96-4685-ACD6-0E6C170E1E4C}</Project>
+      <Name>Engine.Planning</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
+      <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
+      <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
+      <Project>{984830D2-F939-4485-922F-D55D835C89F7}</Project>
+      <Name>Engine.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
+      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
+      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">
+      <Project>{B4DC82FF-0DB1-4A0C-9B12-5C6D481FBF5D}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

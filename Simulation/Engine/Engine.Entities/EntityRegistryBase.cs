@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using PlayGen.Engine.Serialization;
+using Engine.Core.Entities;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Entities
 {
 	public class EntityRegistryBase<TGameEntity> : IEntityRegistry<TGameEntity>
 		where TGameEntity : class, IEntity

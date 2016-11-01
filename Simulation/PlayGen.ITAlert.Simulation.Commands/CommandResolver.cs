@@ -57,7 +57,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
             var spawnVirusCommand = command as SpawnVirusCommand;
             if (spawnVirusCommand != null)
             {
-                _simulation.SpawnVirus(spawnVirusCommand.SubsystemLogicalId);
+                _simulation.SpawnVirus(spawnVirusCommand.SystemLogicalId);
                 return;
             }
         }

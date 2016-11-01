@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using PlayGen.Engine.Components;
-using PlayGen.Engine.Util;
+using Engine.Components;
+using Engine.Core.Util;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {

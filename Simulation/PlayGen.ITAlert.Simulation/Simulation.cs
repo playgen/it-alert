@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Media;
-using PlayGen.Engine;
-using PlayGen.Engine.Components;
-using PlayGen.Engine.Entities;
-using PlayGen.Engine.Serialization;
+using Engine.Components;
+using Engine.Entities;
+using Engine;
+using Engine.Common;
+using Engine.Core.Components;
+using Engine.Core.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Entities;
-using PlayGen.ITAlert.Simulation.Entities.Utilities;
-using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors;
-using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
-using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc;
-using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
-using PlayGen.ITAlert.Simulation.Entities.World;
-using PlayGen.ITAlert.Simulation.Entities.World.Systems;
+using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Initialization;
 using PlayGen.ITAlert.Simulation.Layout;
+using PlayGen.ITAlert.Simulation.Systems;
+using PlayGen.ITAlert.Simulation.Visitors;
+using PlayGen.ITAlert.Simulation.Visitors.Actors;
+using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
+using PlayGen.ITAlert.Simulation.Visitors.Actors.Npc;
+using PlayGen.ITAlert.Simulation.Visitors.Items;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -37,7 +38,7 @@ namespace PlayGen.ITAlert.Simulation
 		public Dictionary<int, Player> ExternalPlayers = new Dictionary<int, Player>();
 
 		[SyncState(StateLevel.Setup)]
-		public Dictionary<int, Subsystem> SubsystemsByLogicalId = new Dictionary<int, Subsystem>();
+		public Dictionary<int, ISystem> SystemsByLogicalId = new Dictionary<int, ISystem>();
 
 		#endregion
 
@@ -52,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation
 
 
 		[SyncState(StateLevel.Full)]
-		private Dictionary<int, Subsystem> _subsystems = new Dictionary<int, Subsystem>();
+		private Dictionary<int, ISystem> _systems = new Dictionary<int, ISystem>();
 		
 		[SyncState(StateLevel.Full)]
 		private Dictionary<int, Connection> _connections = new Dictionary<int, Connection>();
@@ -84,7 +85,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region debug public
 
-		public ReadOnlyCollection<Subsystem> Subsystems => _subsystems.Values.ToList().AsReadOnly();
+		public ReadOnlyCollection<ISystem> Systems => _systems.Values.ToList().AsReadOnly();
 		public ReadOnlyCollection<Player> Players => _actors.Values.OfType<Player>().ToList().AsReadOnly();
 
 
@@ -97,9 +98,9 @@ namespace PlayGen.ITAlert.Simulation
 			Rules = configuration.Rules;
 			ComponentConfiguration = configuration.ComponentConfiguration;
 
-			LayoutSubsystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
+			LayoutSystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
 
-			var subsystems = CreateSubsystems(configuration.NodeConfiguration);
+			var subsystems = CreateSystems(configuration.NodeConfiguration);
 			CreateConnections(subsystems, configuration.EdgeConfiguration);
 
 			CalculatePaths();
@@ -130,7 +131,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region initialization
 
-		private void LayoutSubsystems(List<NodeConfig> nodeConfigs, List<EdgeConfig> edgeConfigs)
+		private void LayoutSystems(List<NodeConfig> nodeConfigs, List<EdgeConfig> edgeConfigs)
 		{
 			//var nodeDict = nodeConfigs.ToDictionary(k => k.Id, v => v);
 
@@ -149,17 +150,17 @@ namespace PlayGen.ITAlert.Simulation
 			GraphSize = new Vector(width, height);
 		}
 
-		public Dictionary<int, Subsystem> CreateSubsystems(List<NodeConfig> nodeConfigs)
+		public Dictionary<int, ISystem> CreateSystems(List<NodeConfig> nodeConfigs)
 		{
-			return nodeConfigs.ToDictionary(sc => sc.Id, CreateSubsystem);
+			return nodeConfigs.ToDictionary(sc => sc.Id, CreateSystem);
 		}
 
-		public List<Connection> CreateConnections(Dictionary<int, Subsystem> subsystems, List<EdgeConfig> edgeConfigs)
+		public List<IConnection> CreateConnections(Dictionary<int, ISystem> subsystems, List<EdgeConfig> edgeConfigs)
 		{
 			return edgeConfigs.Select(cc => CreateConnection(subsystems, cc)).ToList();
 		}
 
-		private void CreateItems(Dictionary<int, Subsystem> subsystems, List<ItemConfig> itemConfigs)
+		private void CreateItems(Dictionary<int, System> subsystems, List<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
@@ -170,12 +171,12 @@ namespace PlayGen.ITAlert.Simulation
 
 		private void CalculatePaths()
 		{
-			var routes = PathFinder.GenerateRoutes(_subsystems);
+			var routes = PathFinder.GenerateRoutes(_systems);
 
 			foreach (var routeDictionary in routes)
 			{
-				Subsystem subsystem;
-				if (!_subsystems.TryGetValue(routeDictionary.Key, out subsystem))
+				System subsystem;
+				if (!_systems.TryGetValue(routeDictionary.Key, out subsystem))
 				{
 					throw new SimulationException($"Routes found for non-existent subsystem {routeDictionary.Key}");
 				}
@@ -183,7 +184,7 @@ namespace PlayGen.ITAlert.Simulation
 			}
 		}
 
-		private void CreatePlayers(Dictionary<int, Subsystem> subsystems, List<PlayerConfig> playerConfigs)
+		private void CreatePlayers(Dictionary<int, System> subsystems, List<PlayerConfig> playerConfigs)
 		{
 			foreach (var playerConfig in playerConfigs)
 			{
@@ -199,20 +200,20 @@ namespace PlayGen.ITAlert.Simulation
 		#region entity factory 
 		//TODO: extract to separate class
 
-		public Subsystem CreateSubsystem(NodeConfig config)
+		public ISystem CreateSystem(NodeConfig config)
 		{
-			Subsystem subsystem;
+			System subsystem;
 			switch (config.Type)
 			{
 				case NodeType.Default:
 				default:
-					subsystem = new Subsystem(this, config.Id, null, config.X, config.Y)
+					subsystem = new System(this, config.Id, null, config.X, config.Y)
 					{
 						Name = config.Name
 					};
 					ComponentConfiguration.PopulateContainerOfType(subsystem);
 					config.EntityId = subsystem.Id;
-					SubsystemsByLogicalId.Add(config.Id, subsystem);
+					SystemsByLogicalId.Add(config.Id, subsystem);
 					break;
 			}
 			AddEntity(subsystem);
@@ -222,10 +223,10 @@ namespace PlayGen.ITAlert.Simulation
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="subsystems">Subsystems keyed by logical Id</param>
+		/// <param name="subsystems">Systems keyed by logical Id</param>
 		/// <param name="edgeConfig"></param>
 		/// <returns></returns>
-		public Connection CreateConnection(Dictionary<int, Subsystem> subsystems, EdgeConfig edgeConfig)
+		public Connection CreateConnection(Dictionary<int, System> subsystems, EdgeConfig edgeConfig)
 		{
 			var connection = new Connection(this, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
 			ComponentConfiguration.PopulateContainerOfType(connection);
@@ -309,11 +310,11 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			switch (entity.EntityType)
 			{
-				case EntityType.Subsystem:
-					var subsystem = entity as Subsystem;
+				case EntityType.System:
+					var subsystem = entity as System;
 					if (subsystem != null)
 					{
-						_subsystems.Add(entity.Id, subsystem);
+						_systems.Add(entity.Id, subsystem);
 					}
 					break;
 				case EntityType.Connection:
@@ -350,8 +351,8 @@ namespace PlayGen.ITAlert.Simulation
 			
 			switch (destroyedEntity.EntityType)
 			{
-				case EntityType.Subsystem:
-					_subsystems.Remove(destroyedEntity.Id);
+				case EntityType.System:
+					_systems.Remove(destroyedEntity.Id);
 					break;
 				case EntityType.Connection:
 					_connections.Remove(destroyedEntity.Id);
@@ -392,18 +393,18 @@ namespace PlayGen.ITAlert.Simulation
 		/// </summary>
 		/// <returns></returns>
 		//TODO: implement some sort of extensible evaluator pattern
-		//public bool IsGameFailure => _subsystems.Values.All(ss => ss.IsDead);
+		//public bool IsGameFailure => _systems.Values.All(ss => ss.IsDead);
 
 		//public bool HasViruses => Entities.OfType<IInfection>().Any();
 
 		#endregion
 
-		//private Subsystem GetSubsystemById(int id)
+		//private System GetSystemById(int id)
 		//{
-		//	Subsystem subsystem;
-		//	if (!_subsystems.TryGetValue(id, out subsystem))
+		//	System subsystem;
+		//	if (!_systems.TryGetValue(id, out subsystem))
 		//	{
-		//		throw new Exception($"Subsystem {id} not found");
+		//		throw new Exception($"System {id} not found");
 		//	}
 		//	return subsystem;
 		//}
@@ -412,7 +413,7 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			CurrentTick++;
 
-			foreach (var subsystems in _subsystems.Values.ToArray())
+			foreach (var subsystems in _systems.Values.ToArray())
 			{
 				subsystems.Tick(CurrentTick);
 			}
@@ -437,9 +438,9 @@ namespace PlayGen.ITAlert.Simulation
 		public void RequestMovePlayer(int playerId, int destinationId)
 		{
 			var player = _actors[playerId] as Player;
-			if (_subsystems.ContainsKey(destinationId))
+			if (_systems.ContainsKey(destinationId))
 			{
-				player?.SetDestination(_subsystems[destinationId]);
+				player?.SetDestination(_systems[destinationId]);
 			}
 		}
 
@@ -451,7 +452,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				var player = _actors[playerId] as Player;
 				var item = _items[itemId];
-				var playerSubsystem = player.CurrentNode as Subsystem;
+				var playerSystem = player.CurrentNode as System;
 
 				// TODO: move validation into player
 				if (item.IsOwnedBy(player))
@@ -467,16 +468,16 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			if (_actors.ContainsKey(playerId)
 				&& _items.ContainsKey(itemId)
-				&& _subsystems.ContainsKey(subsystemId))
+				&& _systems.ContainsKey(subsystemId))
 			{
 				var player = _actors[playerId] as Player;
 				var item = _items[itemId];
-				var destinationSubsystem = _subsystems[subsystemId];
+				var destinationSystem = _systems[subsystemId];
 
 				int itemLocation;
-				if (destinationSubsystem.Items.TryGetItemIndex(item, out itemLocation))
+				if (destinationSystem.Items.TryGetItemIndex(item, out itemLocation))
 				{
-					player?.PickUpItem(item.ItemType, itemLocation, destinationSubsystem);
+					player?.PickUpItem(item.ItemType, itemLocation, destinationSystem);
 					return true;
 				}
 			}
@@ -499,7 +500,7 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			var virus = CreateNpc(NpcActorType.Virus);
 			virus.SetIntents(new List<Intent>() { new InfectSystemIntent() });
-			SubsystemsByLogicalId[subsystemLogicalId].AddVisitor(virus, null, 0);
+			SystemsByLogicalId[subsystemLogicalId].AddVisitor(virus, null, 0);
 		}
 
 		#endregion

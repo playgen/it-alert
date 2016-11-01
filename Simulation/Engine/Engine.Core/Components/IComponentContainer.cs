@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Subjects;
-using System.Text;
-using PlayGen.Engine.Messaging;
+using Engine.Core.Messaging;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Core.Components
 {
 	public interface IComponentContainer : IComponentContainer<IComponent>, IDisposable
 	{

@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Serialization;
+﻿using System.Globalization;
+using Engine.Core.Entities;
 using Newtonsoft.Json.Serialization;
-using PlayGen.Engine.Entities;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	public class EntityRegistryReferenceResolver : IReferenceResolver
 	{

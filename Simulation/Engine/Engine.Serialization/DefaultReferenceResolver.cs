@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿using System.Globalization;
+using Engine.Serialization.Serialization;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	internal class DefaultReferenceResolver : IReferenceResolver
 	{

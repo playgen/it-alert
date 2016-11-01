@@ -1,4 +1,4 @@
-﻿namespace PlayGen.Engine.Components.Behaviour
+﻿namespace Engine.Components.Behaviour
 {
 	public interface IActivatableBehaviour
 	{

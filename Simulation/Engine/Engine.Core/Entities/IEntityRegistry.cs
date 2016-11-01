@@ -1,7 +1,7 @@
 ﻿using System;
-using PlayGen.Engine.Serialization;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Core.Entities
 {
 	public interface IEntityRegistry : ISerializable, IDisposable
 {

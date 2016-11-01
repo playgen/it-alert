@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.Engine.Exceptions;
+using Engine.Core.Exceptions;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Components
 {
 	public class ComponentDependencyException : EngineException
 	{

@@ -11,14 +11,14 @@ namespace Engine.Common
 	/// </summary>
 	public struct Vector
 	{
-		//------------------------------------------------------
-		//
-		//  Public Methods
-		//
-		//------------------------------------------------------
+		#region Internal Fields
+
+		internal double _x;
+		internal double _y;
+
+		#endregion Internal Fields
 
 		#region Public Methods
-
 
 		/// <summary>
 		/// Compares two Vector instances for exact equality.
@@ -83,7 +83,7 @@ namespace Engine.Common
 		/// <param name='o'>The object to compare to "this"</param>
 		public override bool Equals(object o)
 		{
-			if ((null == o) || !(o is Vector))
+			if (!(o is Vector))
 			{
 				return false;
 			}
@@ -144,186 +144,15 @@ namespace Engine.Common
 		//	return value;
 		//}
 
-		#endregion Public Methods
-
-		//------------------------------------------------------
-		//
-		//  Public Properties
-		//
-		//------------------------------------------------------
-
-
-
-
-		#region Public Properties
-
-		/// <summary>
-		///     X - double.  Default value is 0.
-		/// </summary>
-		public double X
-		{
-			get
-			{
-				return _x;
-			}
-
-			set
-			{
-				_x = value;
-			}
-
-		}
-
-		/// <summary>
-		///     Y - double.  Default value is 0.
-		/// </summary>
-		public double Y
-		{
-			get
-			{
-				return _y;
-			}
-
-			set
-			{
-				_y = value;
-			}
-
-		}
-
-		#endregion Public Properties
-
-		//------------------------------------------------------
-		//
-		//  Internal Properties
-		//
-		//------------------------------------------------------
-
-		#region Internal Properties
-
-
-		/// <summary>
-		/// Creates a string representation of this object based on the current culture.
-		/// </summary>
-		/// <returns>
-		/// A string representation of this object.
-		/// </returns>
-		public override string ToString()
-		{
-
-			// Delegate to the internal method which implements all ToString calls.
-			return ConvertToString(null /* format string */, null /* format provider */);
-		}
-
-		/// <summary>
-		/// Creates a string representation of this object based on the IFormatProvider
-		/// passed in.  If the provider is null, the CurrentCulture is used.
-		/// </summary>
-		/// <returns>
-		/// A string representation of this object.
-		/// </returns>
-		public string ToString(IFormatProvider provider)
-		{
-
-			// Delegate to the internal method which implements all ToString calls.
-			return ConvertToString(null /* format string */, provider);
-		}
-
-		/// <summary>
-		/// Creates a string representation of this object based on the format string
-		/// and IFormatProvider passed in.
-		/// If the provider is null, the CurrentCulture is used.
-		/// See the documentation for IFormattable for more information.
-		/// </summary>
-		/// <returns>
-		/// A string representation of this object.
-		/// </returns>
-		internal string ConvertToString(string format, IFormatProvider provider)
-		{
-			return String.Format(provider,
-									"{1:" + format + "},{2:" + format + "}",
-									_x,
-									_y);
-		}
-
-
-
-		#endregion Internal Properties
-
-		//------------------------------------------------------
-		//
-		//  Dependency Properties
-		//
-		//------------------------------------------------------
-
-		#region Dependency Properties
-
-
-
-		#endregion Dependency Properties
-
-		//------------------------------------------------------
-		//
-		//  Internal Fields
-		//
-		//------------------------------------------------------
-
-		#region Internal Fields
-
-
-		internal double _x;
-		internal double _y;
-
-
-
-
-		#endregion Internal Fields
-
-
-		//------------------------------------------------------
-		//
-		//  Constructors
-		//
-		//------------------------------------------------------
-
-		#region Constructors
-
-		/// <summary>
-		/// Constructor which sets the vector's initial values
-		/// </summary>
-		/// <param name="x"> double - The initial X </param>
-		/// <param name="y"> double - THe initial Y </param>
-		public Vector(double x, double y)
-		{
-			_x = x;
-			_y = y;
-		}
-
-		#endregion Constructors
-
-		#region Public Methods
-
 		/// <summary>
 		/// Length Property - the length of this Vector
 		/// </summary>
-		public double Length
-		{
-			get
-			{
-				return Math.Sqrt(_x * _x + _y * _y);
-			}
-		}
+		public double Length => Math.Sqrt(_x * _x + _y * _y);
 
 		/// <summary>
 		/// LengthSquared Property - the squared length of this Vector
 		/// </summary>
-		public double LengthSquared
-		{
-			get
-			{
-				return _x * _x + _y * _y;
-			}
-		}
+		public double LengthSquared => _x * _x + _y * _y;
 
 		/// <summary>
 		/// Normalize - Updates this Vector to maintain its direction, but to have a length
@@ -366,6 +195,111 @@ namespace Engine.Common
 		}
 
 		#endregion Public Methods
+
+		#region Public Properties
+
+		/// <summary>
+		///     X - double.  Default value is 0.
+		/// </summary>
+		public double X
+		{
+			get
+			{
+				return _x;
+			}
+
+			set
+			{
+				_x = value;
+			}
+
+		}
+
+		/// <summary>
+		///     Y - double.  Default value is 0.
+		/// </summary>
+		public double Y
+		{
+			get
+			{
+				return _y;
+			}
+
+			set
+			{
+				_y = value;
+			}
+
+		}
+
+		#endregion Public Properties
+
+		#region Internal Properties
+
+
+		/// <summary>
+		/// Creates a string representation of this object based on the current culture.
+		/// </summary>
+		/// <returns>
+		/// A string representation of this object.
+		/// </returns>
+		public override string ToString()
+		{
+
+			// Delegate to the internal method which implements all ToString calls.
+			return ConvertToString(null /* format string */, null /* format provider */);
+		}
+
+		/// <summary>
+		/// Creates a string representation of this object based on the IFormatProvider
+		/// passed in.  If the provider is null, the CurrentCulture is used.
+		/// </summary>
+		/// <returns>
+		/// A string representation of this object.
+		/// </returns>
+		public string ToString(IFormatProvider provider)
+		{
+
+			// Delegate to the internal method which implements all ToString calls.
+			return ConvertToString(null /* format string */, provider);
+		}
+
+		/// <summary>
+		/// Creates a string representation of this object based on the format string
+		/// and IFormatProvider passed in.
+		/// If the provider is null, the CurrentCulture is used.
+		/// See the documentation for IFormattable for more information.
+		/// </summary>
+		/// <returns>
+		/// A string representation of this object.
+		/// </returns>
+		internal string ConvertToString(string format, IFormatProvider provider)
+		{
+			return string.Format(provider,
+									"{1:" + format + "},{2:" + format + "}",
+									_x,
+									_y);
+		}
+
+
+
+		#endregion Internal Properties
+
+
+		#region Constructors
+
+		/// <summary>
+		/// Constructor which sets the vector's initial values
+		/// </summary>
+		/// <param name="x"> double - The initial X </param>
+		/// <param name="y"> double - THe initial Y </param>
+		public Vector(double x, double y)
+		{
+			_x = x;
+			_y = y;
+		}
+
+		#endregion Constructors
 
 		#region Public Operators
 		/// <summary>
@@ -489,21 +423,21 @@ namespace Engine.Common
 			return vector * (1.0 / scalar);
 		}
 
-		/// <summary>
-		/// Operator Vector * Matrix
-		/// </summary>
-		public static Vector operator *(Vector vector, Matrix matrix)
-		{
-			return matrix.Transform(vector);
-		}
+		///// <summary>
+		///// Operator Vector * Matrix
+		///// </summary>
+		//public static Vector operator *(Vector vector, Matrix matrix)
+		//{
+		//	return matrix.Transform(vector);
+		//}
 
-		/// <summary>
-		/// Multiply: Vector * Matrix
-		/// </summary>
-		public static Vector Multiply(Vector vector, Matrix matrix)
-		{
-			return matrix.Transform(vector);
-		}
+		///// <summary>
+		///// Multiply: Vector * Matrix
+		///// </summary>
+		//public static Vector Multiply(Vector vector, Matrix matrix)
+		//{
+		//	return matrix.Transform(vector);
+		//}
 
 		/// <summary>
 		/// Operator Vector * Vector, interpreted as their dot product
@@ -539,18 +473,18 @@ namespace Engine.Common
 			return vector1._x * vector2._y - vector1._y * vector2._x;
 		}
 
-		/// <summary>
-		/// Explicit conversion to Size.  Note that since Size cannot contain negative values,
-		/// the resulting size will contains the absolute values of X and Y
-		/// </summary>
-		/// <returns>
-		/// Size - A Size equal to this Vector
-		/// </returns>
-		/// <param name="vector"> Vector - the Vector to convert to a Size </param>
-		public static explicit operator Size(Vector vector)
-		{
-			return new Size(Math.Abs(vector._x), Math.Abs(vector._y));
-		}
+		///// <summary>
+		///// Explicit conversion to Size.  Note that since Size cannot contain negative values,
+		///// the resulting size will contains the absolute values of X and Y
+		///// </summary>
+		///// <returns>
+		///// Size - A Size equal to this Vector
+		///// </returns>
+		///// <param name="vector"> Vector - the Vector to convert to a Size </param>
+		//public static explicit operator Size(Vector vector)
+		//{
+		//	return new Size(Math.Abs(vector._x), Math.Abs(vector._y));
+		//}
 
 		/// <summary>
 		/// Explicit conversion to Point

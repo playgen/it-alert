@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelegatingObserver.cs" />
+    <Compile Include="Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="IMessageHub.cs" />
     <Compile Include="MessageHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

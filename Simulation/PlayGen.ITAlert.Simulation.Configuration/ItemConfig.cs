@@ -1,4 +1,6 @@
-﻿namespace PlayGen.ITAlert.Simulation.Configuration
+﻿using PlayGen.ITAlert.Simulation.Common;
+
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class ItemConfig
 	{

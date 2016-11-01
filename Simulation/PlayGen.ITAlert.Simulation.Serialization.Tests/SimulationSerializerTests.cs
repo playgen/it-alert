@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Serialization;
 using NUnit.Framework;
-using PlayGen.Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Intents;
 using PlayGen.ITAlert.Simulation.Entities.Visitors.Actors.Npc;
@@ -59,7 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 1, 0, 1);
 
 			var player = originalSimulation.Players.Single();
-			var destination = originalSimulation.Subsystems.First(s => s.Id != player.CurrentNode.Id);
+			var destination = originalSimulation.Systems.First(s => s.Id != player.CurrentNode.Id);
 
 			originalSimulation.RequestMovePlayer(player.Id, destination.Id);
 
@@ -84,10 +84,10 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 1, 0, 1);
 			originalSimulation.SpawnVirus(1);
 
-			var subsystem = originalSimulation.GetEntityById<Subsystem>(originalSimulation.SubsystemsByLogicalId[1].Id);
+			var subsystem = originalSimulation.GetEntityById<System>(originalSimulation.SystemsByLogicalId[1].Id);
 			Assert.That(subsystem.IsInfected, Is.True);
 
-			var infectionId = (subsystem.GetState() as SubsystemState).Infection;
+			var infectionId = (subsystem.GetState() as SystemState).Infection;
 			Assert.That(infectionId.HasValue);
 
 			var virus = originalSimulation.GetEntityById<Virus>(infectionId.Value);
@@ -98,9 +98,9 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 				originalSimulation.Tick();
 			}
 
-			subsystem = originalSimulation.GetEntityById<Subsystem>(originalSimulation.SubsystemsByLogicalId[1].Id);
+			subsystem = originalSimulation.GetEntityById<System>(originalSimulation.SystemsByLogicalId[1].Id);
 			Assert.That(subsystem.IsInfected, Is.True);
-			infectionId = (subsystem.GetState() as SubsystemState).Infection;
+			infectionId = (subsystem.GetState() as SystemState).Infection;
 			Assert.That(infectionId.HasValue);
 			virus = originalSimulation.GetEntityById<Virus>(infectionId.Value);
 			Assert.That(virus, Is.Not.Null);

@@ -1,7 +1,7 @@
 ﻿using System;
-using PlayGen.Engine.Exceptions;
+using Engine.Core.Exceptions;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Entities
 {
 	public class EntityRegistryException : EngineException
 	{

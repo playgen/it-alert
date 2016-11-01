@@ -1,20 +1,21 @@
 ﻿using System;
-using PlayGen.Engine.Components;
-using PlayGen.Engine.Serialization;
-using PlayGen.Engine.Util;
+using Engine.Components;
+using Engine.Core.Entities;
+using Engine.Core.Serialization;
+using Engine.Core.Util;
+using Engine.Entities.Messages;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Entities
 {
 	public abstract class EntityBase<TGameState> : ComponentContainer, IEntity, IEquatable<IEntity>
 		where TGameState : EntityState
 	{
 		#region Event registry
 
-		public event EventHandler EntityDestroyed;
-
 		private void RaiseEntityDestroyed(object entity)
 		{
-			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
+			//EntityDestroyed?.Invoke(entity, EventArgs.Empty);
+			MessageHub.OnNext(new EntityDestroyedMessage(this));
 		}
 
 		private bool _disposed;
@@ -25,6 +26,7 @@ namespace PlayGen.Engine.Entities
 			{
 				_disposed = true;
 				RaiseEntityDestroyed(this);
+				base.Dispose();
 			}
 		}
 

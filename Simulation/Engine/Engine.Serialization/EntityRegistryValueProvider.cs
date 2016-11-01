@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
+using Engine.Core.Entities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using PlayGen.Engine.Entities;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	internal class EntityRegistryValueProvider : IValueProvider
 	{

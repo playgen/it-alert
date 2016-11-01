@@ -6,7 +6,7 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Contracts
 {
-	public class SubsystemState : NodeState
+	public class SystemState : NodeState
 	{
         #region setup
 
@@ -37,8 +37,8 @@ namespace PlayGen.ITAlert.Simulation.Contracts
 
 		#region Constructor
 
-		public SubsystemState(int id) 
-			: base(id, EntityType.Subsystem)
+		public SystemState(int id) 
+			: base(id, EntityType.System)
 		{
 		}
 

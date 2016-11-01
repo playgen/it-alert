@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Engine.Core.Components;
 
-namespace PlayGen.Engine.Components.Behaviour
+namespace Engine.Components.Behaviour
 {
 	public abstract class BehaviourComponent : ComponentBase, IBehaviourComponent
 	{

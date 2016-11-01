@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using PlayGen.Engine.Entities;
+using Engine.Core.Components;
+using Engine.Core.Entities;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Components
 {
 	public delegate IComponent ComponentFactoryDelegate(IComponentContainer container);
 

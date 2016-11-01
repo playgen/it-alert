@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Engine.Core.Components;
 
-namespace PlayGen.Engine.Components
+namespace Engine.Components
 {
 	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
 	public class ComponentUsageAttribute : Attribute
@@ -15,4 +13,14 @@ namespace PlayGen.Engine.Components
 			RequiredType = requiredType;
 		}
 	}
+
+	//[AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+	//public class ComponentUsageAttribute<TContainer> : ComponentUsageAttribute
+	//	where TContainer : IComponentContainer
+	//{
+	//	public ComponentUsageAttribute() 
+	//		: base(typeof(TContainer))
+	//	{
+	//	}
+	//}
 }

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace PlayGen.Engine.Serialization.Newtonsoft.Json
+namespace Engine.Serialization.Newtonsoft.Json
 {
 	internal class EntityRegistryJsonReader : JsonSerializerInternalReader
 	{

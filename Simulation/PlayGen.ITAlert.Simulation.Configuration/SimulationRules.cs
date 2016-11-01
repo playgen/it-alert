@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	public class SimulationRules
 	{
 		[SyncState(StateLevel.Setup)]
-		public bool VirusesDieWithSubsystem { get; set; }
+		public bool VirusesDieWithSystem { get; set; }
 
 		[SyncState(StateLevel.Setup)]
 		public bool VirusesAlwaysVisible { get; set; }

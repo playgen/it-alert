@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Entities.World;
-using PlayGen.ITAlert.Simulation.Entities.World.Systems;
+using PlayGen.ITAlert.Simulation.Systems;
 using Priority_Queue;
 
 namespace PlayGen.ITAlert.Simulation.Initialization
@@ -14,35 +13,35 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 		/// </summary>
 		/// <param name="subsystems"></param>
 		/// <returns></returns>
-		public static Dictionary<int, Dictionary<Subsystem, Connection[]>> GenerateRoutes(Dictionary<int, Subsystem> subsystems)
+		public static Dictionary<int, Dictionary<ISystem, Connection[]>> GenerateRoutes(Dictionary<int, ISystem> subsystems)
 		{
-			var routesBySource = new Dictionary<int, Dictionary<Subsystem, Connection[]>>(subsystems.Count);
+			var routesBySource = new Dictionary<int, Dictionary<Systems.System, Connection[]>>(subsystems.Count);
 
 			foreach (var subsystemKvp in subsystems)
 			{
-				var otherSubsystems = subsystems.Values.Except(new[] {subsystemKvp.Value}).ToList();
-				var routesThisSubsystem = new Dictionary<Subsystem, Connection[]>(otherSubsystems.Count);
+				var otherSystems = subsystems.Values.Except(new[] {subsystemKvp.Value}).ToList();
+				var routesThisSystem = new Dictionary<ISystem, IConnection[]>(otherSystems.Count);
 
-				foreach (var otherSubsystem in otherSubsystems)
+				foreach (var otherSystem in otherSystems)
 				{
 					var directNeightbourConnection = subsystemKvp.Value.ExitNodePositions.Keys
 						.OfType<Connection>()
-						.SingleOrDefault(c => c.Tail.Equals(otherSubsystem));
+						.SingleOrDefault(c => c.Tail.Equals(otherSystem));
 					if (directNeightbourConnection != null)
 					{
-						routesThisSubsystem.Add(otherSubsystem, new [] {directNeightbourConnection});
+						routesThisSystem.Add(otherSystem, new [] {directNeightbourConnection});
 					}
 					else
 					{
-						var paths = FindPaths(subsystems.Values.ToList(), subsystemKvp.Value, otherSubsystem);
+						var paths = FindPaths(subsystems.Values.ToList(), subsystemKvp.Value, otherSystem);
 						var exitConnections = paths
 							.Where(p => p.Nodes.Count > 1)
 							.Select(p =>p.Nodes.First().ExitNodePositions.Select(en => en.Value.Node).OfType<Connection>().Single(c => c.Tail == p.Nodes[1]));
-						routesThisSubsystem.Add(otherSubsystem, exitConnections.ToArray());
+						routesThisSystem.Add(otherSystem, exitConnections.ToArray());
 					}
 				}
 
-				routesBySource.Add(subsystemKvp.Key, routesThisSubsystem);
+				routesBySource.Add(subsystemKvp.Key, routesThisSystem);
 			}
 
 			return routesBySource;
@@ -55,7 +54,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 		/// <param name="source"></param>
 		/// <param name="destination"></param>
 		/// <returns></returns>
-		public static List<Path> FindPaths(List<Subsystem> subsystems, Subsystem source, Subsystem destination)
+		public static List<Path> FindPaths(List<ISystem> subsystems, ISystem source, ISystem destination)
 		{
 			var paths = new SimplePriorityQueue<Path>();
 
@@ -81,12 +80,12 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 
 				foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint))
 				{
-					if (currentPath.HasNode(neighbourNode.Subsystem) == false)
+					if (currentPath.HasNode(neighbourNode.System) == false)
 					{
 						var newPath = new Path(currentPath);
 						newPath.AddNode(neighbourNode);
 
-						if (neighbourNode.Subsystem == destination)
+						if (neighbourNode.System == destination)
 						{
 							if (newPath.IsCheaperThanOrEqualTo(bestPath))
 							{
@@ -109,15 +108,15 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 			return bestPaths;
 		}
 
-		private static List<NeighbourNode> GetAdjacentNodes(Subsystem source, VertexDirection? entryPoint)
+		private static List<NeighbourNode> GetAdjacentNodes(ISystem source, VertexDirection? entryPoint)
 		{
 			return source.ExitNodePositions.Select(node => node.Value.Node)
 				.OfType<Connection>()
 				.Select(connection => new NeighbourNode()
 				{
-					Subsystem = connection.Tail,
+					System = connection.Tail,
 					ConnectionCost = connection.Weight,
-					SubsystemCost = entryPoint?.PositionsToExit(connection.HeadPosition) ?? 0
+					SystemCost = entryPoint?.PositionsToExit(connection.HeadPosition) ?? 0
 				})
 				.ToList();
 		}

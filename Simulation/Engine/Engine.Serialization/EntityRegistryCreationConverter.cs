@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using Engine.Core.Entities;
 using Newtonsoft.Json.Converters;
-using PlayGen.Engine.Entities;
 
-namespace PlayGen.Engine.Serialization
+namespace Engine.Serialization
 {
 	internal class EntityRegistryCreationConverter : CustomCreationConverter<IEntity>
 	{

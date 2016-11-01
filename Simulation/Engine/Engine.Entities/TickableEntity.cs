@@ -1,7 +1,7 @@
-﻿using PlayGen.Engine.Components;
-using PlayGen.Engine.Serialization;
+﻿using Engine.Core.Entities;
+using Engine.Core.Serialization;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Entities
 {
 	public abstract class TickableEntity<TGameState, TState> : Entity<TGameState, TState>
 		where TState : TGameState

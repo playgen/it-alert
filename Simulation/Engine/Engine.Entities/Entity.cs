@@ -1,6 +1,6 @@
-﻿using PlayGen.Engine.Components;
+﻿using Engine.Core.Entities;
 
-namespace PlayGen.Engine.Entities
+namespace Engine.Entities
 {
 	public abstract class Entity<TGameState, TState> : EntityBase<TGameState>, IEntity<TGameState, TState>
 		where TState : TGameState
