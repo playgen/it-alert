@@ -49,17 +49,17 @@
     <Compile Include="RoomStates\LobbyState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GameWork\GameWork.Commands\GameWork.Commands.csproj">
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
       <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
-      <Name>GameWork.Commands</Name>
+      <Name>GameWork.Core.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GameWork\GameWork.Interfaces\GameWork.Interfaces.csproj">
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">
       <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
-      <Name>GameWork.Interfaces</Name>
+      <Name>GameWork.Core.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GameWork\GameWork.States\GameWork.States.csproj">
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
       <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
-      <Name>GameWork.States</Name>
+      <Name>GameWork.Core.States</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\simulation\PlayGen.ItAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>

@@ -62,7 +62,7 @@ namespace PlayGen.ITAlert.PhotonPlugins
         {
             Initialize();
             _stateController.Initialize();
-            _stateController.SetState(LobbyState.StateName);
+            _stateController.ChangeState(LobbyState.StateName);
             
             // First player is always 1 but the player ID isn't initialized by this point.
             var playerId = info.Request.ActorNr > 0
