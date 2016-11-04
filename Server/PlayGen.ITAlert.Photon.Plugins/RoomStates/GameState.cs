@@ -15,7 +15,7 @@ using PlayGen.ITAlert.Simulation.Commands.Sequence;
 
 namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 {
-	public class GameState : GameWork.States.State, IRoomState
+	public class GameState : GameWork.Core.States.State, IRoomState
     {
         public const string StateName = "Game";
 

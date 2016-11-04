@@ -1,4 +1,4 @@
-﻿using GameWork.States;
+﻿using GameWork.Core.States.Controllers;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
 

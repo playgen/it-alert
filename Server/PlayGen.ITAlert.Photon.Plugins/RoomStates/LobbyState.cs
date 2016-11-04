@@ -1,4 +1,4 @@
-﻿using GameWork.States;
+﻿using GameWork.Core.States;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Players;
