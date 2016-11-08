@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Engine.Core.Messaging;
 
-namespace Engine.Messaging.Extensions
+namespace Engine.Core.Messaging.Extensions
 {
 	public static class DelegatingObserverExtensions
 	{

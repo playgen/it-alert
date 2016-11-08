@@ -7,7 +7,7 @@ using Engine.Core.Messaging;
 
 namespace Engine.Entities.Messages
 {
-	public class EntityDestroyedMessage : IMessage
+	public class EntityDestroyedMessage : Message
 	{
 		public IEntity Entity { get; private set; }
 

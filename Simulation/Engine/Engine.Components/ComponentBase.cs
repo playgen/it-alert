@@ -1,26 +1,36 @@
-﻿using Engine.Core.Components;
+﻿using System;
+using Engine.Components.Messaging;
+using Engine.Core.Components;
+using Engine.Core.Messaging;
 using Engine.Core.Util;
-using Engine.Messaging;
-using Engine.Messaging.Extensions;
 
 namespace Engine.Components
 {
-	public abstract class ComponentBase : IComponent
+	public abstract class ComponentBase : DelegatingObserver, IComponent
 	{
 		protected IComponentContainer Container { get; private set; }
 
-		private DelegatingObserver _observer;
+		#region constructor
 
-		protected DelegatingObserver Observer => _observer ?? (_observer = new DelegatingObserver().SubscribeTo(Container.MessageHub)); 
-
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="container"></param>
 		protected ComponentBase(IComponentContainer container)
 		{
 			NotNullHelper.ArgumentNotNull(container, nameof(container));
 			Container = container;
 		}
+
+		#endregion
+
+		#region disposal
+
+		~ComponentBase()
+		{
+			Dispose();
+		}
+
+		public virtual void Dispose()
+		{
+		}
+
+		#endregion
 	}
 }

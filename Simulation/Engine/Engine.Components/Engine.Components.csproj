@@ -48,7 +48,6 @@
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
     <Compile Include="ComponentBase.cs" />
     <Compile Include="ComponentConfiguration.cs" />
-    <Compile Include="ComponentContainer.cs" />
     <Compile Include="ComponentUsageException.cs" />
     <Compile Include="ComponentUsageAttribute.cs" />
     <Compile Include="ComponentDependencyAttribute.cs" />
@@ -57,6 +56,8 @@
     <Compile Include="Behaviour\IActivatableBehaviour.cs" />
     <Compile Include="ITickableComponent.cs" />
     <Compile Include="Behaviour\ITimedActivatableBehaviour.cs" />
+    <Compile Include="Messaging\DelegatingObserver.cs" />
+    <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="Messaging\IMessageComponent.cs" />
     <Compile Include="Messaging\MessageFactoryComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,12 +65,9 @@
     <Compile Include="Property\Property.cs" />
     <Compile Include="Property\RangedNumericProperty.cs" />
     <Compile Include="Behaviour\TimedActivatableBehaviour.cs" />
+    <Compile Include="Property\TickComponent.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine.Messaging\Engine.Messaging.csproj">
-      <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
-      <Name>Engine.Messaging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
@@ -77,6 +75,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

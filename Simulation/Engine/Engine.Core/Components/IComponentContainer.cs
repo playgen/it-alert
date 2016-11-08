@@ -12,7 +12,7 @@ namespace Engine.Core.Components
 	public interface IComponentContainer<in TComponent>
 		where TComponent : IComponent
 	{
-		ISubject<IMessage> MessageHub { get; }
+		//ISubject<IMessage> MessageHub { get; }
 
 		void AddComponent(TComponent component);
 

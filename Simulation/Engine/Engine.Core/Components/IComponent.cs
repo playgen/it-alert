@@ -1,6 +1,8 @@
-﻿namespace Engine.Core.Components
+﻿using System;
+
+namespace Engine.Core.Components
 {
-    public interface IComponent
-    {
+	public interface IComponent : IDisposable
+	{
 	}
 }
