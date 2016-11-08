@@ -1,26 +1,31 @@
 ﻿using System;
 using Engine.Components;
+using Engine.Components.Messaging;
 using Engine.Core.Entities;
 using Engine.Core.Serialization;
 using Engine.Core.Util;
 using Engine.Entities.Messages;
+using Engine.Entities.Messaging;
 
 namespace Engine.Entities
 {
-	public abstract class EntityBase<TGameState> : ComponentContainer, IEntity, IEquatable<IEntity>
+	public abstract class EntityBase<TGameState> : MessageHub, IEntity, IEquatable<IEntity>
 		where TGameState : EntityState
 	{
+		public event EventHandler EntityDestroyed;
+
 		#region Event registry
 
 		private void RaiseEntityDestroyed(object entity)
 		{
-			//EntityDestroyed?.Invoke(entity, EventArgs.Empty);
-			MessageHub.OnNext(new EntityDestroyedMessage(this));
+			// TODO: reconsider using the event for the entity container
+			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
+			OnNext(new EntityDestroyedMessage(this));
 		}
 
 		private bool _disposed;
 
-		public virtual void Dispose()
+		public override void Dispose()
 		{
 			if (_disposed == false)
 			{
@@ -39,6 +44,7 @@ namespace Engine.Entities
 
 		[SyncState(StateLevel.Differential)]
 		public int Id { get; protected set; }
+
 
 		[SyncState(StateLevel.Setup)]
 		protected IEntityRegistry EntityRegistry { get; set; }

@@ -27,6 +27,7 @@ namespace Engine.Entities
 				OnTick();
 			}
 		}
+
 		protected abstract void OnTick();
 	}
 }

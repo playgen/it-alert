@@ -41,16 +41,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DelegatingObserver.cs" />
-    <Compile Include="Extensions\DelegatingObserverExtensions.cs" />
-    <Compile Include="IMessageHub.cs" />
-    <Compile Include="MessageHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine.Components\Engine.Components.csproj">
+      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
+      <Name>Engine.Components</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>

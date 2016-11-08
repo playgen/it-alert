@@ -6,7 +6,6 @@ using Engine.Components.Behaviour;
 using Engine.Core.Entities;
 using Engine.Core.Serialization;
 using Engine.Entities.Messages;
-using Engine.Messaging;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Systems.Messages;
@@ -118,7 +117,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 			// big TODO: we have a message loop here this isnt good
 
 			// subscribe to messages from the visitor
-			visitor.MessageHub.Subscribe(Container.MessageHub);
+			visitor.Subscribe(Container);
 			// subscribe the visitor to messages from this node
 			Container.MessageHub.Subscribe(visitor.MessageHub);
 

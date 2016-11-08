@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
 using Engine.Core.Components;
-using Engine.Core.Messaging;
-using Engine.Messaging;
 
-namespace Engine.Components
+namespace Engine.Entities
 {
 	public class ComponentContainer : ComponentContainer<IComponent>, IComponentContainer
 	{
@@ -22,16 +19,15 @@ namespace Engine.Components
 		private Dictionary<Type, IEnumerable<TComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<TComponent>>();
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
-		private readonly MessageHub _messageHub;
+		private bool _disposed;
 
-		public ISubject<IMessage> MessageHub => _messageHub;
+		protected IList<TComponent> Components => _components.Values.ToList();
 
 		#region constructors
 
 		public ComponentContainer()
 		{
 			_components = new Dictionary<Type, TComponent>();
-			_messageHub = new MessageHub();
 		}
 
 		#endregion
@@ -45,7 +41,14 @@ namespace Engine.Components
 
 		public virtual void Dispose()
 		{
-			_messageHub.Dispose();
+			if (_disposed == false)
+			{
+				_disposed = true;
+				foreach (var component in _components.Values)
+				{
+					component.Dispose();
+				}
+			}
 		}
 
 		#endregion
