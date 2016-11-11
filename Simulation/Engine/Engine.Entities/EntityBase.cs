@@ -2,6 +2,7 @@
 using Engine.Components;
 using Engine.Components.Messaging;
 using Engine.Core.Entities;
+using Engine.Core.Messaging;
 using Engine.Core.Serialization;
 using Engine.Core.Util;
 using Engine.Entities.Messages;
@@ -20,7 +21,7 @@ namespace Engine.Entities
 		{
 			// TODO: reconsider using the event for the entity container
 			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
-			OnNext(new EntityDestroyedMessage(this));
+			OnNext(new EntityDestroyedMessage(MessageScope.External, this));
 		}
 
 		private bool _disposed;

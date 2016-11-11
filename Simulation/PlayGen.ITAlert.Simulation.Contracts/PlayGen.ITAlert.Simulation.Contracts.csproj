@@ -54,6 +54,10 @@
     <Compile Include="VisitorState.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine.Common\Engine.Common.csproj">
+      <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
+      <Name>Engine.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>

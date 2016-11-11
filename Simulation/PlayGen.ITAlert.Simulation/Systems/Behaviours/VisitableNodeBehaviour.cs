@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using Engine.Components;
 using Engine.Components.Behaviour;
+using Engine.Components.Property;
 using Engine.Core.Entities;
 using Engine.Core.Serialization;
 using Engine.Entities.Messages;
@@ -13,8 +15,13 @@ using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 {
+	public class VisitorPositionState : Dictionary<int, int>
+	{
+		 
+	}
+
 	[ComponentUsage(typeof(INode))]
-	public class VisitableNodeBehaviour : EntityBehaviourComponent
+	public class VisitableNodeBehaviour : Component, IEmitState<VisitorPositionState>
 	{
 		private const int MinPositions = 0;
 		private const int MaxPositions = int.MaxValue;
@@ -45,8 +52,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 
 		#region contructor
 
-		public VisitableNodeBehaviour(IEntity container, int positions) 
-			: base(container)
+		public VisitableNodeBehaviour(IEntity entity, int positions) 
+			: base(entity)
 		{
 			if (positions < MinPositions || positions > MaxPositions)
 			{
@@ -55,7 +62,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 
 			Positions = positions;
 
-			Observer.AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
+			AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
 		}
 
 
@@ -70,7 +77,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 
 		#endregion
 
+		public void SetRoutes(Dictionary<System, Connection[]> routes)
+		{
+			ExitRoutes = routes.ToDictionary(k => k.Key.Id, v => v.Value.First());
+		}
+
 		#region graph construction
+
+
 
 		public void AddExitPosition(VertexDirection position, INode node)
 		{
@@ -110,22 +124,24 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 			var sourceConnection = source as Connection;
 			var sourceSystem = sourceConnection == null ? source : sourceConnection.Head;
 			var direction = EntranceNodePositions.ContainsKey(sourceSystem.Id) ? EntranceNodePositions[sourceSystem.Id].Direction : VertexDirection.Top;
+
+			var subscriptionsDisposable = new CompositeDisposable();
 			// add to visitors
-			var visitorPosition = new VisitorPosition(visitor, direction.ToPosition(Positions) + overflow, Entity.CurrentTick);
+			var visitorPosition = new VisitorPosition(visitor, direction.ToPosition(Positions) + overflow, Entity.CurrentTick, subscriptionsDisposable);
 			VisitorPositions.Add(visitor.Id, visitorPosition);
-			
+
 			// big TODO: we have a message loop here this isnt good
 
 			// subscribe to messages from the visitor
-			visitor.Subscribe(Container);
+			subscriptionsDisposable.Add(visitor.Subscribe(Entity));
 			// subscribe the visitor to messages from this node
-			Container.MessageHub.Subscribe(visitor.MessageHub);
-
+			subscriptionsDisposable.Add(Entity.Subscribe(visitor));
+			
 			var visitorEnteredNodeMessage = new VisitorEnteredNodeMessage(visitor, (INode) Entity);
 			// notify the visitor it has entered a node
-			visitor.MessageHub.OnNext(visitorEnteredNodeMessage);
+			visitor.OnNext(visitorEnteredNodeMessage);
 			// notify other components on this node that a visitor has entered
-			Container.MessageHub.OnNext(visitorEnteredNodeMessage);
+			Entity.OnNext(visitorEnteredNodeMessage);
 		}
 
 		// TODO: this could be replaced with a disposing message from the visitor
@@ -168,6 +184,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 		protected virtual void VisitorLeaving(IVisitor visitor, INode exitNode, int overflow)
 		{
 			visitor.EntityDestroyed -= Visitor_EntityDestroyed;
+
+			VisitorPositions[visitor.Id].VisitorSubscription.Dispose();
 			VisitorPositions.Remove(visitor.Id);
 
 			visitor.OnExitNode(Entity);
@@ -183,5 +201,24 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 		//		visitorPosition.Visitor.EntityDestroyed += Visitor_EntityDestroyed;
 		//	}
 		//}
+
+		/// <summary>
+		/// Get list of adjacent nodes (from outbound connections) 
+		/// only used for virus spreading, so could be refactored
+		/// </summary>
+		/// <returns></returns>
+		public List<INode> GetAdjacentNodes()
+		{
+			return ExitNodePositions.Values.Select(v => v.Node).ToList();
+		}
+
+		public VisitorPositionState GetState()
+		{
+			return VisitorPositions.Aggregate(new VisitorPositionState(), (vps, kvp) =>
+			{
+				vps.Add(kvp.Key, kvp.Value.Position);
+				return vps;
+			}); 
+		}
 	}
 }

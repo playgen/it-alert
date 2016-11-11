@@ -1,28 +1,29 @@
 ﻿using System;
 using Engine.Components.Messaging;
 using Engine.Core.Components;
+using Engine.Core.Entities;
 using Engine.Core.Messaging;
 using Engine.Core.Util;
 
 namespace Engine.Components
 {
-	public abstract class ComponentBase : DelegatingObserver, IComponent
+	public abstract class Component : DelegatingObserver, IComponent
 	{
-		protected IComponentContainer Container { get; private set; }
+		protected IEntity Entity { get; private set; }
 
 		#region constructor
 
-		protected ComponentBase(IComponentContainer container)
+		protected Component(IEntity entity)
 		{
-			NotNullHelper.ArgumentNotNull(container, nameof(container));
-			Container = container;
+			NotNullHelper.ArgumentNotNull(entity, nameof(entity));
+			Entity = entity;
 		}
 
 		#endregion
 
 		#region disposal
 
-		~ComponentBase()
+		~Component()
 		{
 			Dispose();
 		}

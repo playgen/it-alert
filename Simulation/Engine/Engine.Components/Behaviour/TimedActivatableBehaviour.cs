@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Core.Components;
+using Engine.Core.Entities;
 using Engine.Core.Serialization;
 
 namespace Engine.Components.Behaviour
@@ -26,14 +27,14 @@ namespace Engine.Components.Behaviour
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="container"></param>
+		/// <param name="entity"></param>
 		/// <param name="activationMode"></param>
 		/// <param name="timerUnits"></param>
 		/// <param name="warmUp">this is the number of unit before the item is activated</param>
 		/// <param name="coolDown">this is the </param>
 		/// <param name="canCancel"></param>
-		protected TimedActivatableBehaviour(IComponentContainer container, ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
-			: base(container, activationMode)
+		protected TimedActivatableBehaviour(IEntity entity, ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
+			: base(entity, activationMode)
 		{
 			_timerUnits = timerUnits;
 			_warmUp = warmUp;

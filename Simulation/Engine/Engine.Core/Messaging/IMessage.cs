@@ -5,8 +5,10 @@ namespace Engine.Core.Messaging
 {
 	public interface IMessage
 	{
-		IMessageHub Origin { get; set; }
+		IMessageHub Origin { get; }
 
-		MessageScope Scope { get; }
+		void SetOrigin(IMessageHub origin);
+
+		MessageScope Scope { get; set; }
 	}
 }

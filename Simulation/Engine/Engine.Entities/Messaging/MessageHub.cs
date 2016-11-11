@@ -7,10 +7,11 @@ using System.Reactive.Subjects;
 using System.Threading;
 using Engine.Core.Components;
 using Engine.Core.Messaging;
+using Engine.Core.Messaging.Extensions;
 
 namespace Engine.Entities.Messaging
 {
-	public abstract class MessageHub : ComponentContainer, ISubject<IMessage>, IDisposable
+	public abstract class MessageHub : ComponentContainer, IMessageHub, IDisposable
 	{
 		private readonly List<IObserver<IMessage>> _internalObservers;
 
@@ -37,7 +38,7 @@ namespace Engine.Entities.Messaging
 			Dispose();
 		}
 
-		public virtual void Dispose()
+		public override void Dispose()
 		{
 			if (_disposed == false)
 			{
@@ -53,11 +54,40 @@ namespace Engine.Entities.Messaging
 
 		#endregion
 
-		public IDisposable Subscribe(IObserver<IMessage> observer)
+		public IDisposable SubscribeInternal(IObserver<IMessage> observer)
 		{
+			var writeLockObtained = false;
 			try
 			{
-				_observersLock.EnterWriteLock();
+				if (_observersLock.IsWriteLockHeld == false)
+				{
+					_observersLock.EnterWriteLock();
+					writeLockObtained = true;
+				}
+
+				_internalObservers.Add(observer);
+
+				return Disposable.Create(() => RemoveObserver(observer));
+			}
+			finally
+			{
+				if (_observersLock.IsWriteLockHeld && writeLockObtained)
+				{
+					_observersLock.ExitWriteLock();
+				}
+			}
+
+		}
+
+		public IDisposable Subscribe(IObserver<IMessage> observer)
+		{
+			var writeLockObtained = false;
+			try
+			{
+				if (_observersLock.IsWriteLockHeld == false)
+				{
+					_observersLock.EnterWriteLock();
+				}
 
 				var componentObserver = observer as IComponent;
 
@@ -102,24 +132,23 @@ namespace Engine.Entities.Messaging
 		{
 			try
 			{
+				message.SetOrigin(this);
+
 				_observersLock.EnterReadLock();
-				switch (message.Scope)
+				if (message.ProcessExternalScope())
 				{
-					case MessageScope.External:
-						foreach (var observer in _externalObservers)
-						{
-							observer.OnNext(message);
-						}
-
-						break;
-					
-					case MessageScope.Internal:
-						foreach (var observer in _internalObservers)
-						{
-							observer.OnNext(message);
-						}
-
-						break;
+					message.ClearExternalScope();
+					foreach (var observer in _externalObservers)
+					{
+						observer.OnNext(message);
+					}
+				}
+				if (message.ProcessInternalScope())
+				{
+					foreach (var observer in _internalObservers)
+					{
+						observer.OnNext(message);
+					}
 				}
 			}
 			finally

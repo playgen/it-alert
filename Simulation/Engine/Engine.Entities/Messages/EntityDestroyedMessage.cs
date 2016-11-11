@@ -11,7 +11,8 @@ namespace Engine.Entities.Messages
 	{
 		public IEntity Entity { get; private set; }
 
-		public EntityDestroyedMessage(IEntity entity)
+		public EntityDestroyedMessage(MessageScope scope, IEntity entity) 
+			: base(scope)
 		{
 			Entity = entity;
 		}

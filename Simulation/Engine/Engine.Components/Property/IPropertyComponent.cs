@@ -4,9 +4,6 @@ namespace Engine.Components.Property
 {
 	public interface IPropertyComponent : IComponent
 	{
-		string PropertyName { get; }
-
-		bool IncludeInState { get; }
 	}
 
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Components.Messaging;
 
 namespace Engine.Core.Messaging.Extensions
 {

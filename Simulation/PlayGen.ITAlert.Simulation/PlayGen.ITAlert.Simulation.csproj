@@ -50,8 +50,9 @@
   <ItemGroup>
     <Compile Include="Systems\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
     <Compile Include="Systems\Behaviours\MoveVisitingActorsBehaviour.cs" />
-    <Compile Include="Systems\Behaviours\StaticRoutesBehaviour.cs" />
+    <Compile Include="Systems\Behaviours\NetworkRoutes.cs" />
     <Compile Include="Systems\Messages\VisitorMessage.cs" />
+    <Compile Include="Systems\Properties\Name.cs" />
     <Compile Include="Visitors\Properties\CurrentLocationProperty.cs" />
     <Compile Include="Systems\Messages\DamageNodeMessage.cs" />
     <Compile Include="Systems\Messages\DamageNodeMessageComponent.cs" />
@@ -61,7 +62,7 @@
     <Compile Include="Visitors\Actors\Npc\ConsumeMemoryPropertyComponent.cs" />
     <Compile Include="Visitors\VisitorBehaviourComponent.cs" />
     <Compile Include="Systems\Behaviours\VisitableNodeBehaviour.cs" />
-    <Compile Include="Systems\Properties\CombinedHealthAndShieldComponent.cs" />
+    <Compile Include="Systems\Properties\CombinedHealthAndShield.cs" />
     <Compile Include="Systems\Behaviours\ConsumeMemoryBehaviour.cs" />
     <Compile Include="Systems\Properties\HealthPropertyComponent.cs" />
     <Compile Include="Systems\Properties\ItemStoragePropertyComponent.cs" />

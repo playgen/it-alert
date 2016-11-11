@@ -11,5 +11,10 @@ namespace Engine.Core.Messaging.Extensions
 		{
 			return (messageScope ^ scopeToRemove) & messageScope;
 		}
+
+		public static bool HasScope(this MessageScope messageScope, MessageScope testScope)
+		{
+			return (messageScope & testScope) == testScope;
+		}
 	}
 }

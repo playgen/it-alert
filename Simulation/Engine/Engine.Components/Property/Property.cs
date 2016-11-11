@@ -1,62 +1,53 @@
 ﻿using System;
 using Engine.Core.Components;
+using Engine.Core.Entities;
 
 namespace Engine.Components.Property
 {
-	public class ReadOnlyProperty<TValue> : ComponentBase, IReadOnlyPropertyComponent<TValue>
+	public class ReadOnlyProperty<TValue> : Component, IReadOnlyPropertyComponent<TValue>
 	{
-		public string PropertyName { get; private set; }
-
-		public bool IncludeInState { get; private set; }
-
 		// ReSharper disable once InconsistentNaming
 		protected TValue _value;
 
 		public TValue Value => GetValue();
 
-		private readonly Func<TValue> _valueGetter;
+		protected Func<TValue> ValueGetter;
 
-		protected ReadOnlyProperty(IComponentContainer container, string propertyName, bool includeInState)
-			: base(container)
+		protected ReadOnlyProperty(IEntity entity)
+			: base(entity)
 		{
-			PropertyName = propertyName;
-			IncludeInState = includeInState;
 			_value = default(TValue);
-			_valueGetter = () => _value;
+			ValueGetter = () => _value;
 		}
 
-		protected ReadOnlyProperty(IComponentContainer container, string propertyName, bool includeInState, TValue value)
-			: base(container)
+		protected ReadOnlyProperty(IEntity entity, TValue value)
+			: base(entity)
 		{
-			PropertyName = propertyName;
-			IncludeInState = includeInState;
 			_value = value;
-			_valueGetter = () => _value;
+			ValueGetter = () => _value;
 		}
 
-		public ReadOnlyProperty(IComponentContainer container, string propertyName, bool includeInState, Func<TValue> valueGetter)
-			: base(container)
+		public ReadOnlyProperty(IEntity entity, Func<TValue> valueGetter)
+			: base(entity)
 		{
-			PropertyName = propertyName;
-			IncludeInState = includeInState;
-			_valueGetter = valueGetter;
+			ValueGetter = valueGetter;
 		}
 
 		protected virtual TValue GetValue()
 		{
-			return _valueGetter();
+			return ValueGetter();
 		}
 	}
 
 	public abstract class Property<TValue> : ReadOnlyProperty<TValue>, IPropertyComponent<TValue>
 	{
-		protected Property(IComponentContainer container, string propertyName, bool includeInState) 
-			: base(container, propertyName, includeInState)
+		protected Property(IEntity entity) 
+			: base(entity)
 		{
 		}
 
-		protected Property(IComponentContainer container, string propertyName, bool includeInState, TValue value)
-			: base(container, propertyName, includeInState, value)
+		protected Property(IEntity entity, TValue value)
+			: base(entity, value)
 		{
 		}
 

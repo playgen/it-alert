@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using Engine.Serialization.Serialization;
+using Newtonsoft.Json.Serialization;
 
 namespace Engine.Serialization
 {
