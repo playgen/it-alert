@@ -4,8 +4,6 @@ using System.Linq;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Entities.World.Systems;
-using PlayGen.ITAlert.Simulation.Systems.Properties;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {
@@ -127,10 +125,10 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		{
 			var configuration = new ComponentConfiguration();
 
-			var subsystemType = typeof(Systems.System);
-			configuration.AddFactoryMethod(subsystemType, typeof(SystemHealth), (componentContainer) => new SystemHealth(componentContainer, SimulationConstants.MaxHealth, SimulationConstants.MaxHealth));
-			configuration.AddFactoryMethod(subsystemType, typeof(SystemShield), (componentContainer) => new SystemShield(componentContainer, SimulationConstants.MaxShield, SimulationConstants.MaxShield));
-			configuration.AddFactoryMethod(subsystemType, typeof(CombinedHealthAndShieldComponent), (componentContainer) => new CombinedHealthAndShieldComponent(componentContainer));
+			//var subsystemType = typeof(Systems.System);
+			//configuration.AddFactoryMethod(subsystemType, typeof(SystemHealth), (componentContainer) => new SystemHealth(componentContainer, SimulationConstants.MaxHealth, SimulationConstants.MaxHealth));
+			//configuration.AddFactoryMethod(subsystemType, typeof(SystemShield), (componentContainer) => new SystemShield(componentContainer, SimulationConstants.MaxShield, SimulationConstants.MaxShield));
+			//configuration.AddFactoryMethod(subsystemType, typeof(CombinedHealthAndShield), (componentContainer) => new CombinedHealthAndShield(componentContainer));
 
 			return configuration;
 		}

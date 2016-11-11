@@ -43,10 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviour\ActivatableBehaviour.cs" />
-    <Compile Include="Behaviour\EntityBehaviourComponent.cs" />
-    <Compile Include="Behaviour\BehaviourComponent.cs" />
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
-    <Compile Include="ComponentBase.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="ComponentConfiguration.cs" />
     <Compile Include="ComponentUsageException.cs" />
     <Compile Include="ComponentUsageAttribute.cs" />
@@ -60,12 +58,16 @@
     <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="Messaging\IMessageComponent.cs" />
     <Compile Include="Messaging\MessageFactoryComponent.cs" />
+    <Compile Include="Messaging\TickMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Property\IEmitState.cs" />
     <Compile Include="Property\IPropertyComponent.cs" />
     <Compile Include="Property\Property.cs" />
     <Compile Include="Property\RangedNumericProperty.cs" />
     <Compile Include="Behaviour\TimedActivatableBehaviour.cs" />
+    <Compile Include="Property\StateCollector.cs" />
     <Compile Include="Property\TickComponent.cs" />
+    <Compile Include="StateBucket.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
@@ -76,9 +78,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

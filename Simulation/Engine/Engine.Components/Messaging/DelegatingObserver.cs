@@ -4,21 +4,12 @@ using Engine.Core.Messaging;
 
 namespace Engine.Components.Messaging
 {
-	//public delegate void MessageDelegate<in TMessage>(TMessage message) where TMessage : IMessage;
 
 	public class DelegatingObserver : IObserver<IMessage>
 	{
 		private Dictionary<Type, List<Action<IMessage>>> _messageTypeSubscriptions;
 
 		protected Dictionary<Type, List<Action<IMessage>>> MessageTypeSubscriptions => _messageTypeSubscriptions ?? (_messageTypeSubscriptions = new Dictionary<Type, List<Action<IMessage>>>());
-
-		#region constructors
-
-		public DelegatingObserver()
-		{
-		}
-
-		#endregion
 
 		#region IObserver
 

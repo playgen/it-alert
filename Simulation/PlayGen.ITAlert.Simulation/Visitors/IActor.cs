@@ -5,8 +5,8 @@ namespace PlayGen.ITAlert.Simulation.Visitors
 {
 	public interface IActor : IVisitor
 	{
-		int MovementSpeed { get; }
+		//int MovementSpeed { get; }
 
-		void SetIntents(IList<Intent> intents);
+		//void SetIntents(IList<Intent> intents);
 	}
 }

@@ -1,8 +1,9 @@
 ﻿using Engine.Core.Components;
+using Engine.Core.Entities;
 
 namespace Engine.Components.Behaviour
 {
-	public abstract class ActivatableBehaviour : BehaviourComponent, IActivatableBehaviour
+	public abstract class ActivatableBehaviour : Component, IActivatableBehaviour
 	{
 		public enum ActivationTimerUnits
 		{
@@ -30,8 +31,8 @@ namespace Engine.Components.Behaviour
 
 		#region constructor
 
-		protected ActivatableBehaviour(IComponentContainer container, ActivationMode activationMode) 
-			: base(container)
+		protected ActivatableBehaviour(IEntity entity, ActivationMode activationMode) 
+			: base(entity)
 		{
 			_activationMode = activationMode;
 		}

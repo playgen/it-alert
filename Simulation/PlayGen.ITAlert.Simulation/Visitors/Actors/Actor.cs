@@ -20,8 +20,8 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		#region Constructors
 
-		protected Actor(ISimulation simulation, IComponentContainer componentContainer, EntityType entityType, int movementSpeed)
-			: base(simulation, componentContainer, entityType)
+		protected Actor(ISimulation simulation, EntityType entityType, int movementSpeed)
+			: base(simulation, entityType)
 		{
 			MovementSpeed = movementSpeed;
 		}

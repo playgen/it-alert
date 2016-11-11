@@ -2,6 +2,7 @@
 using Engine.Core.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Systems.Behaviours;
 using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Systems
@@ -112,13 +113,13 @@ namespace PlayGen.ITAlert.Simulation.Systems
 		/// <param name="visitor"></param>
 		/// <param name="source">ignored for connections</param>
 		/// <param name="offset"></param>
-		public override void AddVisitor(IVisitor visitor, INode source, int offset)
-		{
-			// subsystems tick before connections:
-			// if there is overflow movement (offset > 0) then we shouldnt move this again in the same tick, so set the tick counter on the position
-			VisitorPositions.Add(visitor.Id, new VisitorPosition(visitor, offset, offset > 0 ? CurrentTick + 1 : CurrentTick));
+		//public override void AddVisitor(IVisitor visitor, INode source, int offset)
+		//{
+		//	// subsystems tick before connections:
+		//	// if there is overflow movement (offset > 0) then we shouldnt move this again in the same tick, so set the tick counter on the position
+		//	VisitorPositions.Add(visitor.Id, new VisitorPosition(visitor, offset, offset > 0 ? CurrentTick + 1 : CurrentTick));
 
-		}
+		//}
 		
 		#region state snapshot
 
@@ -127,7 +128,7 @@ namespace PlayGen.ITAlert.Simulation.Systems
 			// return values that only this class knows about, anything else will be in the other entity's state
 
 			// all we care about are the visitors positions, so generate a dictionary keyed by the entity id
-			var visitors = VisitorPositions.ToDictionary(k => k.Key, v => v.Value.Position);
+			var visitors = VisitorPositionState.ToDictionary(k => k.Key, v => v.Value.Position);
 
 			var state = new ConnectionState(Id)
 			{
@@ -148,26 +149,6 @@ namespace PlayGen.ITAlert.Simulation.Systems
 			MoveVisitors();
 		}
 
-		private void MoveVisitors()
-		{
-			foreach (var visitorPosition in VisitorPositions.ToArray())
-			{
-				var actor = visitorPosition.Value.Visitor as IActor;
-				if (actor != null)
-				{
-					var position = visitorPosition.Value.Position;
-					var nextPosition = (position + actor.MovementSpeed);
-
-					if (position == (Weight-1) || nextPosition >= Weight)
-					{
-						var overflow = Math.Max(nextPosition - Weight, 0);
-						VisitorLeaving(actor, Tail, overflow);
-						continue;
-					}
-					visitorPosition.Value.UpdatePosition(nextPosition, CurrentTick);
-				}
-			}
-		}
 
 	}
 }

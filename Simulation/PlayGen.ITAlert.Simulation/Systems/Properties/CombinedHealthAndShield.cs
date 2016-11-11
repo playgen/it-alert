@@ -1,25 +1,26 @@
 ﻿using System;
 using Engine.Components;
 using Engine.Components.Property;
+using Engine.Core.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Properties
 {
 	[ComponentDependency(typeof(SystemHealth))]
 	[ComponentDependency(typeof(SystemShield))]
-	public class CombinedHealthAndShieldComponent : Property<int>
+	public class CombinedHealthAndShield : Property<int>
 	{
 		private SystemHealth _health;
 		private SystemShield _shield;
 
 		// lazy loaders
-		private SystemHealth Health => _health ?? (_health = Container.GetComponent<SystemHealth>());
-		private SystemShield Shield => _shield ?? (_shield = Container.GetComponent<SystemShield>());
+		private SystemHealth Health => _health ?? (_health = Entity.GetComponent<SystemHealth>());
+		private SystemShield Shield => _shield ?? (_shield = Entity.GetComponent<SystemShield>());
 
 		#region Constructors
 
-		public CombinedHealthAndShieldComponent(IComponentContainer componentContainer, int initialValue = SimulationConstants.MaxShield)
-			: base(componentContainer, "CombinedHealthAndShield", false, initialValue)
+		public CombinedHealthAndShield(IEntity entity, int initialValue = SimulationConstants.MaxShield)
+			: base(entity, "CombinedHealthAndShield", false, initialValue)
 		{
 
 		}
@@ -37,7 +38,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Properties
 			return Health.Value + Shield.Value;
 		}
 
-		public override void ApplyDelta(int delta)
+		public void ApplyDelta(int delta)
 		{
 			if (delta > 0)
 			{

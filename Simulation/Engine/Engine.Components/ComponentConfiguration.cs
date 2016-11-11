@@ -48,16 +48,16 @@ namespace Engine.Components
 			factoryDelegates.Add(factoryDelegate);
 		}
 
-		public IComponentContainer GenerateContainerForType(Type entityType)
-		{
-			if (_componentFactories.ContainsKey(entityType))
-			{
-				var componentContainer = new ComponentContainer();
-				PopulateContainerForType(entityType, componentContainer);
-				return componentContainer;
-			}
-			return ComponentContainer.Default;
-		}
+		//public IComponentContainer GenerateContainerForType(Type entityType)
+		//{
+		//	if (_componentFactories.ContainsKey(entityType))
+		//	{
+		//		var componentContainer = new ComponentContainer();
+		//		PopulateContainerForType(entityType, componentContainer);
+		//		return componentContainer;
+		//	}
+		//	return ComponentContainer.Default;
+		//}
 
 		public void PopulateContainerOfType<TEntity>(TEntity entity)
 			where TEntity : IEntity, IComponentContainer

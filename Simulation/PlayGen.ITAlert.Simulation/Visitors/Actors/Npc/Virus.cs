@@ -86,7 +86,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors.Npc
 				var subsystem = CurrentNode as System;
 				if (subsystem != null)
 				{
-					//Container.ForEachComponentImplementing<IVirusComponent>(component => component.OnTickOnSystem(this, subsystem));
+					//Entity.ForEachComponentImplementing<IVirusComponent>(component => component.OnTickOnSystem(this, subsystem));
 
 					//if (_enterSystemTick%DamageInterval == 0)
 					//{

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PlayGen.Engine;
+using Engine.Common;
 using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Contracts

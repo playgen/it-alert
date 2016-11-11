@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Core.Components;
+using Engine.Core.Entities;
 
 namespace Engine.Components.Property
 {
@@ -9,13 +10,11 @@ namespace Engine.Components.Property
 		public TValue MaxValue { get; private set; }
 		public TValue MinValue { get; private set; }
 
-		protected RangedNumericProperty(IComponentContainer container, 
-			string propertyName, 
-			bool includeInState,
+		protected RangedNumericProperty(IEntity entity, 
 			TValue value,
 			TValue minValue, 
 			TValue maxValue)
-			: base( container, propertyName, includeInState, value)
+			: base(entity, value)
 		{
 			MaxValue = maxValue;
 			MinValue = minValue;
@@ -24,13 +23,11 @@ namespace Engine.Components.Property
 
 	public abstract class RangedIntegerProperty : RangedNumericProperty<int>
 	{
-		protected RangedIntegerProperty(IComponentContainer container, 
-			string propertyName, 
-			bool includeInState,
+		protected RangedIntegerProperty(IEntity entity, 
 			int value, 
 			int minValue, 
 			int maxValue) 
-			: base(container, propertyName, includeInState, value, minValue, maxValue)
+			: base(entity, value, minValue, maxValue)
 		{
 		}
 
@@ -43,13 +40,11 @@ namespace Engine.Components.Property
 
 	public abstract class RangedDoubleProperty : RangedNumericProperty<double>
 	{
-		protected RangedDoubleProperty(IComponentContainer container,
-			string propertyName, 
-			bool includeInState,
+		protected RangedDoubleProperty(IEntity entity,
 			double value,
 			double minValue, 
 			double maxValue) 
-			: base(container, propertyName, includeInState, value, minValue, maxValue)
+			: base(entity, value, minValue, maxValue)
 		{
 		}
 

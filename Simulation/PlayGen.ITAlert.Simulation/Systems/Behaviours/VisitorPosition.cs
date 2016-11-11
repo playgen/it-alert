@@ -1,4 +1,5 @@
-﻿using Engine.Core.Serialization;
+﻿using System;
+using Engine.Core.Serialization;
 using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
@@ -14,11 +15,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 		[SyncState(StateLevel.Differential)]
 		public int Position { get; private set; }
 
-		public VisitorPosition(IVisitor visitor, int position, int currentTick)
+		public IDisposable VisitorSubscription { get; private set; }
+
+		public VisitorPosition(IVisitor visitor, int position, int currentTick, IDisposable visitorSubscription)
 		{
 			Visitor = visitor;
 			Position = position;
 			CurrentTick = currentTick;
+			VisitorSubscription = visitorSubscription;
 		}
 
 		/// <summary>

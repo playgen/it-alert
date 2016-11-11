@@ -1,5 +1,6 @@
 ﻿using Engine.Components;
 using Engine.Components.Property;
+using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Properties
 {
@@ -9,12 +10,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Properties
 		private SystemHealth _health;
 
 		// lazy loaders
-		private SystemHealth Health => _health ?? (_health = Container.GetComponent<SystemHealth>());
+		private SystemHealth Health => _health ?? (_health = Entity.GetComponent<SystemHealth>());
 
 		#region Constructors
 
-		public SystemIsDeadComponent(IComponentContainer componentContainer)
-			: base(componentContainer, "IsDead", true, false)
+		public SystemIsDeadComponent(IEntity entity)
+			: base(entity, "IsDead", true, false)
 		{
 
 		}
