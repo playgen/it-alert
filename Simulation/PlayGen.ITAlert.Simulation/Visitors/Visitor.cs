@@ -1,13 +1,13 @@
 ﻿using System;
 using Engine.Core.Serialization;
+using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Visitors
 {
-	public abstract class Visitor<TState> : ITAlertEntity<TState>, IVisitor
-		where TState : ITAlertEntityState
+	public abstract class Visitor : Entity, IVisitor
 	{
 		[SyncState(StateLevel.Differential)]
 		public INode CurrentNode { get; protected set; }

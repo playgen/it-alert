@@ -1,4 +1,5 @@
 ﻿using Engine.Components.Property;
+using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Properties
 {
@@ -6,8 +7,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Properties
 	{
 		#region Constructors
 
-		public IsInfectedPropertyComponent(IComponentContainer componentContainer)
-			: base(componentContainer, "IsInfected", true, false)
+		public IsInfectedPropertyComponent(IEntity entity)
+			: base(entity, false)
 		{
 
 		}

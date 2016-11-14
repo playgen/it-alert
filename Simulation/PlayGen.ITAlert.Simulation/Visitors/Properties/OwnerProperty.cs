@@ -7,7 +7,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Properties
 	[ComponentUsage(typeof(IItem))]
 	public class OwnerProperty : Property<IITAlertEntity>
 	{
-		public OwnerProperty(IComponentContainer container) 
+		public OwnerProperty(IEntity entity) 
 			: base(container, "Owner", true)
 		{
 		}

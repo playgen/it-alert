@@ -3,9 +3,7 @@ using Engine.Core.Serialization;
 
 namespace Engine.Entities
 {
-	public abstract class TickableEntity<TGameState, TState> : Entity<TGameState, TState>
-		where TState : TGameState
-		where TGameState : EntityState
+	public abstract class TickableEntity : Entity
 	{
 		[SyncState(StateLevel.Differential)]
 		public int CurrentTick { get; protected set; }

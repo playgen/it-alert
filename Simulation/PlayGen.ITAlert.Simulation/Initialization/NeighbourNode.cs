@@ -4,6 +4,6 @@
 	{
 		public int ConnectionCost { get; set; }
 		public int SystemCost { get; set; }
-		public System System { get; set; }
+		public Systems.System System { get; set; }
 	}
 }

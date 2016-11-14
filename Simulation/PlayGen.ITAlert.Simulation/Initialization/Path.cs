@@ -5,19 +5,19 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 {
 	public class Path : IComparable<Path>
 	{
-		public List<System> Nodes { get; private set; }
+		public List<Systems.System> Nodes { get; private set; }
 
 		public int ConnectionCost { get; private set; }
 		public int SystemCost { get; private set; }
 
-		public Path(System start)
+		public Path(Systems.System start)
 		{
-			Nodes = new List<System>() { start };
+			Nodes = new List<Systems.System>() { start };
 		}
 
 		public Path(Path path)
 		{
-			Nodes = new List<System>(path.Nodes);
+			Nodes = new List<Systems.System>(path.Nodes);
 			ConnectionCost = path.ConnectionCost;
 			SystemCost = path.SystemCost;
 		}
@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 			Nodes.Add(node.System);
 		}
 
-		public bool HasNode(System node)
+		public bool HasNode(Systems.System node)
 		{
 			return Nodes.Contains(node);
 		}

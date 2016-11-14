@@ -1,12 +1,18 @@
-﻿namespace PlayGen.ITAlert.Simulation.Visitors
+﻿using Engine.Components;
+using Engine.Core.Components;
+using Engine.Core.Entities;
+using Engine.Core.Serialization;
+using PlayGen.ITAlert.Simulation.Systems;
+
+namespace PlayGen.ITAlert.Simulation.Visitors
 {
-	public abstract class VisitorBehaviourComponent : BehaviourComponent, IVisitorComponent
+	public abstract class VisitorBehaviourComponent : Component, IVisitorComponent
 	{
 		[SyncState(StateLevel.Differential)]
 		private int _enterCurrentNodeTick;
 
-		protected VisitorBehaviourComponent(IComponentContainer container) 
-			: base(container)
+		protected VisitorBehaviourComponent(IEntity entity) 
+			: base(entity)
 		{
 		}
 

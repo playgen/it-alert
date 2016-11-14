@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Messages
 {
-	public class VisitorEnteringNodeMessage : IMessage
+	public class VisitorEnteringNodeMessage : Message
 	{
 		public IVisitor Visitor { get; private set; }
 
@@ -15,7 +15,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Messages
 
 		public int MovementOverflow { get; private set; }
 
-		public VisitorEnteringNodeMessage(IVisitor visitor, INode source, int movementOverflow)
+		public VisitorEnteringNodeMessage(MessageScope scope, IVisitor visitor, INode source, int movementOverflow) 
+			: base(scope)
 		{
 			Visitor = visitor;
 			Source = source;
@@ -23,34 +24,45 @@ namespace PlayGen.ITAlert.Simulation.Systems.Messages
 		}
 	}
 
-	public class VisitorEnteredNodeMessage : IMessage
+	public class VisitorEnteredNodeMessage : Message
 	{
 		public IVisitor Visitor { get; private set; }
 
 		public INode Node { get; private set; }
 
-		public VisitorEnteredNodeMessage(IVisitor visitor, INode node)
+		public VisitorEnteredNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+			: base(scope)
 		{
 			Visitor = visitor;
 			Node = node;
 		}
 	}
 
-	public class VisitorLeavingNodeMessage : NodeVisitorMessage
+	public class VisitorLeavingNodeMessage : Message
 	{
+		public IVisitor Visitor { get; private set; }
 
+		public INode Node { get; private set; }
 
-		public VisitorLeavingNodeMessage(IVisitor visitor, INode source) 
-			: base(visitor, source)
+		public VisitorLeavingNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+			: base(scope)
 		{
+			Visitor = visitor;
+			Node = node;
 		}
 	}
 
-	public class VisitorLeftNodeMessage : NodeVisitorMessage
+	public class VisitorLeftNodeMessage : Message
 	{
-		public VisitorLeftNodeMessage(IVisitor visitor, INode source) 
-			: base(visitor, source)
+		public IVisitor Visitor { get; private set; }
+
+		public INode Node { get; private set; }
+
+		public VisitorLeftNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+			: base(scope)
 		{
+			Visitor = visitor;
+			Node = node;
 		}
 	}
 

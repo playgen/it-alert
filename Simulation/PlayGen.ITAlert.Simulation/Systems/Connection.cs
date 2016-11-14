@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Core.Entities;
 using Engine.Core.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Contracts;
@@ -7,7 +8,7 @@ using PlayGen.ITAlert.Simulation.Visitors;
 
 namespace PlayGen.ITAlert.Simulation.Systems
 {
-	public class Connection : ITAlertEntity<ConnectionState>, INode
+	public class Connection : IEntity, INode
 	{
 		/// <summary>
 		/// The cost (bandwidth) of this connection
@@ -123,32 +124,24 @@ namespace PlayGen.ITAlert.Simulation.Systems
 		
 		#region state snapshot
 
-		public override ConnectionState GenerateState()
-		{
-			// return values that only this class knows about, anything else will be in the other entity's state
+		//public ConnectionState GenerateState()
+		//{
+		//	// return values that only this class knows about, anything else will be in the other entity's state
 
-			// all we care about are the visitors positions, so generate a dictionary keyed by the entity id
-			var visitors = VisitorPositionState.ToDictionary(k => k.Key, v => v.Value.Position);
+		//	// all we care about are the visitors positions, so generate a dictionary keyed by the entity id
+		//	var visitors = VisitorPositionState.ToDictionary(k => k.Key, v => v.Value.Position);
 
-			var state = new ConnectionState(Id)
-			{
-				Head = Head.Id,
-				Tail = Tail.Id,
-				RelativeWeight = RelativeWeight,
-				Weight = Weight,
-				VisitorPositions = visitors,
-			};
-			return state;
-		}
+		//	var state = new ConnectionState(Id)
+		//	{
+		//		Head = Head.Id,
+		//		Tail = Tail.Id,
+		//		RelativeWeight = RelativeWeight,
+		//		Weight = Weight,
+		//		VisitorPositions = visitors,
+		//	};
+		//	return state;
+		//}
 
 		#endregion
-
-		protected override void OnTick()
-		{
-			//base.OnTick();
-			MoveVisitors();
-		}
-
-
 	}
 }

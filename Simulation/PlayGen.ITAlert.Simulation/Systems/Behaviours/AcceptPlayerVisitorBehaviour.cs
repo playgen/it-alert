@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using Engine.Components;
 using Engine.Components.Behaviour;
@@ -13,16 +14,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 {
 	[ComponentUsage(typeof(INode))]
 	[ComponentDependency(typeof(VisitableNodeBehaviour))]
-	public class AcceptPlayerVisitorBehaviour : EntityBehaviourComponent
+	public class AcceptPlayerVisitorBehaviour : Component
 	{
 		private readonly VisitableNodeBehaviour _visitableNode;
 
-		public AcceptPlayerVisitorBehaviour(IEntity container) 
-			: base(container)
+		public AcceptPlayerVisitorBehaviour(IEntity entity) 
+			: base(entity)
 		{
-			_visitableNode = container.GetComponent<VisitableNodeBehaviour>();
+			_visitableNode = entity.GetComponent<VisitableNodeBehaviour>();
 
-			Observer.AddSubscription<VisitorEnteringNodeMessage>(VisitorEnteringNode);
+			AddSubscription<VisitorEnteringNodeMessage>(VisitorEnteringNode);
 
 		}
 
@@ -33,7 +34,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 			var player = visitorEnteringNodeMessage.Visitor as Player;
 			if (player != null)
 			{
-				_visitableNode.AddVisitor(visitorEnteringNodeMessage.Visitor, position, offset);
+				//_visitableNode.AddVisitor(visitorEnteringNodeMessage.Visitor, position, offset);
 
 				//OnPlayerEnterDestination(player);
 			}

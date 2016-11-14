@@ -5,6 +5,10 @@ using System.Text;
 using Engine.Components;
 using Engine.Components.Behaviour;
 using Engine.Core.Entities;
+using PlayGen.ITAlert.Simulation.Visitors;
+using PlayGen.ITAlert.Simulation.Visitors.Actors;
+using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
+using PlayGen.ITAlert.Simulation.Visitors.Actors.Npc;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 {

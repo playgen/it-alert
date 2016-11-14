@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 {
-	public class Player : Actor<PlayerState>
+	public class Player : Actor
 	{
 		[SyncState(StateLevel.Setup)]
 		public string Name { get; private set; }
@@ -55,26 +55,26 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		#region State
 
-		public override PlayerState GenerateState()
-		{
-			return new PlayerState(Id)
-			{
-				Name = Name,
-				Colour = Colour,
+		//public override PlayerState GenerateState()
+		//{
+		//	return new PlayerState(Id)
+		//	{
+		//		Name = Name,
+		//		Colour = Colour,
 
-				InventoryItem = Item?.Id,
-			};
-		}
+		//		InventoryItem = Item?.Id,
+		//	};
+		//}
 
-		public override void OnDeserialized()
-		{
-			CurrentSystem = CurrentNode as System;
-			if (Item != null)
-			{
-				Item.EntityDestroyed += Item_EntityDestroyed;
-			}
-			base.OnDeserialized();
-		}
+		//public override void OnDeserialized()
+		//{
+		//	CurrentSystem = CurrentNode as Systems.System;
+		//	if (Item != null)
+		//	{
+		//		Item.EntityDestroyed += Item_EntityDestroyed;
+		//	}
+		//	base.OnDeserialized();
+		//}
 
 		#endregion
 
@@ -82,7 +82,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		public override void OnEnterNode(INode current)
 		{
-			CurrentSystem = current as System;
+			CurrentSystem = current as Systems.System;
 			base.OnEnterNode(current);
 		}
 
@@ -90,7 +90,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		#region Commands
 
-		public void PickUpItem(ItemType itemType, int itemLocation, System subsystem)
+		public void PickUpItem(ItemType itemType, int itemLocation, Systems.System subsystem)
 		{
 			var intents = new List<Intent>() {new PickUpItemIntent(subsystem, itemType, itemLocation)};
 
@@ -117,12 +117,12 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 		{
 			if (Item != null && Item != item)
 			{
-				Item.EntityDestroyed -= Item_EntityDestroyed;
+				//Item.EntityDestroyed -= Item_EntityDestroyed;
 				Item.SetOwnership(null);
 			}
 			if (item != null)
 			{
-				item.EntityDestroyed += Item_EntityDestroyed;
+				//item.EntityDestroyed += Item_EntityDestroyed;
 				item.SetOwnership(this);
 			}
 			Item = item;
@@ -144,93 +144,93 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 
 		#region Tick
 
-		protected override void OnTick()
-		{
-			Intent currentIntent;
-			if (TryGetIntent(out currentIntent))
-			{
-				if (currentIntent is DisownItemIntent)
-				{
-					DisownItem(true);
-				}
+		//protected override void OnTick()
+		//{
+		//	Intent currentIntent;
+		//	if (TryGetIntent(out currentIntent))
+		//	{
+		//		if (currentIntent is DisownItemIntent)
+		//		{
+		//			DisownItem(true);
+		//		}
 				
-				var pickupItemIntent = currentIntent as PickUpItemIntent;
-				if (pickupItemIntent != null)
-				{
-					PickupItem(pickupItemIntent);
-				}
-				else
-				{
-					var moveIntent = currentIntent as MoveIntent;
-					if (moveIntent != null)
-					{
-						if (CurrentNode == moveIntent.Destination)
-						{
-							Intents.Pop();
-							if (HasItem && Item.CanBeDropped())
-							{
-								CurrentSystem.TryAddItem(Item);
-							}
-						}
-						else if (Item?.IsOnSystem ?? false)
-						{
-							CurrentSystem.GetItem(Item);
-						}
-					}
-				}
-			}
-		}
+		//		var pickupItemIntent = currentIntent as PickUpItemIntent;
+		//		if (pickupItemIntent != null)
+		//		{
+		//			PickupItem(pickupItemIntent);
+		//		}
+		//		else
+		//		{
+		//			var moveIntent = currentIntent as MoveIntent;
+		//			if (moveIntent != null)
+		//			{
+		//				if (CurrentNode == moveIntent.Destination)
+		//				{
+		//					Intents.Pop();
+		//					if (HasItem && Item.CanBeDropped())
+		//					{
+		//						CurrentSystem.TryAddItem(Item);
+		//					}
+		//				}
+		//				else if (Item?.IsOnSystem ?? false)
+		//				{
+		//					CurrentSystem.GetItem(Item);
+		//				}
+		//			}
+		//		}
+		//	}
+		//}
 		
-		private void DisownItem(bool pop)
-		{
-			if (HasItem == false && pop)
-			{
-				Intents.Pop();
-			}
-			else if (HasItem)
-			{
-				SetItem(null);
-			}
-		}
+		//private void DisownItem(bool pop)
+		//{
+		//	if (HasItem == false && pop)
+		//	{
+		//		Intents.Pop();
+		//	}
+		//	else if (HasItem)
+		//	{
+		//		SetItem(null);
+		//	}
+		//}
 
-		private void DropItem(IItem item)
-		{
-			Item.Drop();
-			SetItem(null);
-		}
+		//private void DropItem(IItem item)
+		//{
+		//	Item.Drop();
+		//	SetItem(null);
+		//}
 
-		private void PickupItem(PickUpItemIntent pickupItemIntent)
-		{
-			if (IsOnSystem && CurrentSystem.Equals(pickupItemIntent.Destination))
-			{
-				IItem item;
-				if (CurrentSystem.TryGetItem(pickupItemIntent.ItemType, this, pickupItemIntent.ItemLocation, out item)
-					&& (Item?.Equals(item) ?? false) == false)
-				{
-					if (HasItem)
-					{
-						if (CurrentSystem.HasItem(Item) == false && CurrentSystem.CanAddItem() == false)
-						{
-							CurrentSystem.GetItem(item);
-						}
-						Item?.Drop();
-						SetItem(null);
-					}
-					SetItem(item);
-				}
-				Intents.Pop();
-			}
-		}
+		//private void PickupItem(PickUpItemIntent pickupItemIntent)
+		//{
+		//	if (IsOnSystem && CurrentSystem.Equals(pickupItemIntent.Destination))
+		//	{
+		//		IItem item;
+		//		if (CurrentSystem.TryGetItem(pickupItemIntent.ItemType, this, pickupItemIntent.ItemLocation, out item)
+		//			&& (Item?.Equals(item) ?? false) == false)
+		//		{
+		//			if (HasItem)
+		//			{
+		//				if (CurrentSystem.HasItem(Item) == false && CurrentSystem.CanAddItem() == false)
+		//				{
+		//					CurrentSystem.GetItem(item);
+		//				}
+		//				Item?.Drop();
+		//				SetItem(null);
+		//			}
+		//			SetItem(item);
+		//		}
+		//		Intents.Pop();
+		//	}
+		//}
 
-		private void Item_EntityDestroyed(object sender, EventArgs e)
-		{
-			var entity = (IITAlertEntity) sender;
-			if (entity.Equals(Item))
-			{
-				Item = null;
-			}
-			entity.EntityDestroyed -= Item_EntityDestroyed;
-		}
+		//private void Item_EntityDestroyed(object sender, EventArgs e)
+		//{
+		//	var entity = (IITAlertEntity) sender;
+		//	if (entity.Equals(Item))
+		//	{
+		//		Item = null;
+		//	}
+		//	entity.EntityDestroyed -= Item_EntityDestroyed;
+		//}
 
 		#endregion
 

@@ -212,7 +212,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 			return ExitNodePositions.Values.Select(v => v.Node).ToList();
 		}
 
-		public VisitorPositionState GetState()
+		public object GetState()
 		{
 			return VisitorPositions.Aggregate(new VisitorPositionState(), (vps, kvp) =>
 			{
