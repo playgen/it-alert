@@ -1,4 +1,4 @@
-﻿using PlayGen.Engine.Serialization;
+﻿using Engine.Core.Serialization;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {

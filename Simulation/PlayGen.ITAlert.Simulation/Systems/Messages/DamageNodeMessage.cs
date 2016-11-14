@@ -2,7 +2,10 @@
 
 namespace PlayGen.ITAlert.Simulation.Systems.Messages
 {
-	public class DamageNodeMessage : IMessage
+	public class DamageNodeMessage : Message
 	{
+		public DamageNodeMessage(MessageScope scope) : base(scope)
+		{
+		}
 	}
 }

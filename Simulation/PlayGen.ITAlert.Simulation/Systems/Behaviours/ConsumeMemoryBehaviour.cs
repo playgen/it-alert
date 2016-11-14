@@ -1,11 +1,13 @@
 ﻿using Engine.Components.Property;
+using Engine.Core.Components;
+using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 {
-	public class ConsumeMemoryBehaviour : Property<int>
+	public class ConsumeMemory : Property<int>
 	{
-		public ConsumeMemoryBehaviour(IComponentContainer container, string propertyName, bool includeInState, int value) 
-			: base(container, "ConsumesMemory", false, 1)
+		public ConsumeMemory(IEntity entity, string propertyName, bool includeInState, int value) 
+			: base(entity, 1)
 		{
 
 		}

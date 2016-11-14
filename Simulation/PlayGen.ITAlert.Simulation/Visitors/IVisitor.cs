@@ -1,8 +1,9 @@
-﻿using PlayGen.ITAlert.Simulation.Systems;
+﻿using Engine.Core.Entities;
+using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Visitors
 {
-	public interface IVisitor : IITAlertEntity
+	public interface IVisitor : IEntity
 	{
 		INode CurrentNode { get; }
 

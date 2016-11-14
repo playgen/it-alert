@@ -8,8 +8,7 @@ using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors 
 {
-	public abstract class Actor<TState> : Visitor<TState>, IActor
-		where TState : ITAlertEntityState
+	public abstract class Actor : Visitor, IActor
 	{
 		//TODO: make this minimal if speed varies
 		[SyncState(StateLevel.Setup)]

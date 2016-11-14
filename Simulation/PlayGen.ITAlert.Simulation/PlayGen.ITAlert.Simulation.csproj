@@ -74,7 +74,6 @@
     <Compile Include="Visitors\IActor.cs" />
     <Compile Include="Systems\IConnection.cs" />
     <Compile Include="Systems\IEnhancement.cs" />
-    <Compile Include="IITAlertEntity.cs" />
     <Compile Include="Visitors\IItem.cs" />
     <Compile Include="Systems\INode.cs" />
     <Compile Include="Systems\INodeComponent.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="ISimulation.cs" />
     <Compile Include="Systems\ISystem.cs" />
     <Compile Include="Systems\ISystemComponent.cs" />
-    <Compile Include="ITAlertEntity.cs" />
     <Compile Include="Visitors\IVirusComponent.cs" />
     <Compile Include="Visitors\IVisitor.cs" />
     <Compile Include="Visitors\IVisitorComponent.cs" />
@@ -107,9 +105,6 @@
     <Compile Include="Visitors\Items\SubsystemModulator.cs" />
     <Compile Include="Visitors\Visitor.cs" />
     <Compile Include="Systems\Connection.cs" />
-    <Compile Include="Systems\Enhancements\ManualEnhancement.cs" />
-    <Compile Include="Systems\Enhancements\RepairSpawnManual.cs" />
-    <Compile Include="Systems\Enhancements\SubsystemEnhancement.cs" />
     <Compile Include="Systems\ItemContainer.cs" />
     <Compile Include="Systems\System.cs" />
     <Compile Include="Simulation.cs" />

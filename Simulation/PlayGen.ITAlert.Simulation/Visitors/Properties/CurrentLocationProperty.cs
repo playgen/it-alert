@@ -9,7 +9,7 @@ namespace PlayGen.ITAlert.Simulation.Visitors.Properties
 	[ComponentUsage(typeof(IVisitor))]
 	public class CurrentLocationProperty : Property<INode>
 	{
-		public CurrentLocationProperty(IComponentContainer container) 
+		public CurrentLocationProperty(IEntity entity) 
 			: base(container, "CurrentLocation", true)
 		{
 			Observer.AddSubscription<VisitorEnteredNodeMessage>(VisitorEnteredNode);

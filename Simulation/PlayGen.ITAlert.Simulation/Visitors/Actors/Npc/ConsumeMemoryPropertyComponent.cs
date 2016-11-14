@@ -1,11 +1,12 @@
-﻿using PlayGen.ITAlert.Simulation.Systems;
+﻿using Engine.Core.Entities;
+using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors.Npc
 {
 	public class EmitConsumeMemoryBehviourBehaviourComponent : VisitorBehaviourComponent
 	{ 
-		public EmitConsumeMemoryBehviourBehaviourComponent(IComponentContainer container) 
-			: base(container)
+		public EmitConsumeMemoryBehviourBehaviourComponent(IEntity entity) 
+			: base(entity)
 		{
 		}
 

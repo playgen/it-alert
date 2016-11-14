@@ -1,16 +1,23 @@
-﻿using Engine.Core.Entities;
+﻿using System;
+using Engine.Core.Entities;
+using Engine.Core.Messaging;
+using Engine.Core.Serialization;
+using Engine.Core.Util;
+using Engine.Entities.Messages;
+using Engine.Entities.Messaging;
 
 namespace Engine.Entities
 {
-	public abstract class Entity<TGameState, TState> : EntityBase<TGameState>, IEntity<TGameState, TState>
-		where TState : TGameState
-		where TGameState : EntityState
+	public abstract class Entity : MessageHub, IEntity, IEquatable<IEntity>
 	{
 
 		#region constructors
 		protected Entity(IEntityRegistry entityRegistry)
-			: base(entityRegistry)
+			: base()
 		{
+			NotNullHelper.ArgumentNotNull(entityRegistry, nameof(entityRegistry));
+			EntityRegistry = entityRegistry;
+			Id = entityRegistry.EntitySeed;
 		}
 
 		/// <summary>
@@ -23,11 +30,56 @@ namespace Engine.Entities
 
 		#endregion
 
-		public abstract TState GenerateState();
+		public event EventHandler EntityDestroyed;
 
-		public override TGameState GetState()
+		#region Event registry
+
+		private void RaiseEntityDestroyed(object entity)
 		{
-			return GenerateState();
+			// TODO: reconsider using the event for the entity container
+			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
+			OnNext(new EntityDestroyedMessage(MessageScope.External, this));
+		}
+
+		private bool _disposed;
+
+		public override void Dispose()
+		{
+			if (_disposed == false)
+			{
+				_disposed = true;
+				RaiseEntityDestroyed(this);
+				base.Dispose();
+			}
+		}
+
+		~Entity()
+		{
+			Dispose();
+		}
+
+		#endregion
+
+		[SyncState(StateLevel.Differential)]
+		public int Id { get; protected set; }
+
+
+		[SyncState(StateLevel.Setup)]
+		protected IEntityRegistry EntityRegistry { get; set; }
+
+
+		public bool Equals(IEntity other)
+		{
+			return Id == other?.Id;
+		}
+
+		public override string ToString()
+		{
+			return $"Entity [{Id}] {this.GetType()}";
+		}
+
+		public virtual void OnDeserialized()
+		{
 		}
 	}
 }

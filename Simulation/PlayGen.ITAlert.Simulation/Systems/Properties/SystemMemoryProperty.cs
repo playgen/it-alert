@@ -1,4 +1,5 @@
 ﻿using Engine.Components.Property;
+using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Properties
 {
@@ -6,14 +7,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Properties
 	{
 		#region Constructors
 
-		public SystemMemoryProperty(IComponentContainer componentContainer, int initialValue, int maxValue)
-			: base(componentContainer, "SystemMemory", true, initialValue, 0, maxValue)
+		public SystemMemoryProperty(IEntity entity, int initialValue, int maxValue)
+			: base(entity, initialValue, 0, maxValue)
 		{
 		}
 
 		#endregion
 
-		public override void ApplyDelta(int delta)
+		public void ApplyDelta(int delta)
 		{
 			Set(Value + delta);
 		}
