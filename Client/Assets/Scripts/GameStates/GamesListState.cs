@@ -1,86 +1,104 @@
-﻿using GameWork.Core.States;
+﻿using ExitGames.Client.Photon.Voice;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Network;
-using PlayGen.ITAlert.Network.Client;
+using Client = PlayGen.ITAlert.Network.Client.Client;
 
 public class GamesListState : TickableSequenceState
 {
-    private readonly GamesListController _gameListController;
-    private readonly GamesListStateInterface _interface;
-    private readonly JoinGameController _joinGameController;
-    private readonly Client _client;
+	private readonly GamesListController _gameListController;
+	private readonly GamesListStateInterface _interface;
+	private readonly JoinGameController _joinGameController;
+	private readonly Client _client;
 
-    public const string StateName = "GameListState";
+	public const string StateName = "GameListState";
 
+	private float _refreshInterval = 5.0f;
+	private float _lastRefresh = 0f;
 
-    public GamesListState(GamesListStateInterface @interface, GamesListController gameListController, JoinGameController joinGameController, Client client)
-    {
-        _interface = @interface;
-        _gameListController = gameListController;
-        _joinGameController = joinGameController;
-        _client = client;
-    }
+	public GamesListState(GamesListStateInterface @interface, GamesListController gameListController, JoinGameController joinGameController, Client client)
+	{
+		_interface = @interface;
+		_gameListController = gameListController;
+		_joinGameController = joinGameController;
+		_client = client;
+	}
 
-    public override void Initialize()
-    {
-        _interface.Initialize();
-    }
+	public override void Initialize()
+	{
+		_interface.Initialize();
+	}
 
-    public override void Terminate()
-    {
-        _interface.Terminate();
-    }
+	public override void Terminate()
+	{
+		_interface.Terminate();
+	}
 
-    public override void Enter()
-    {
-        _client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
-        _gameListController.GamesListSuccessEvent += _interface.OnGamesListSuccess;
+	public override void Enter()
+	{
+		_client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
+		_gameListController.GamesListSuccessEvent += _interface.OnGamesListSuccess;
 
-        _interface.Enter();
-    }
+		_interface.Enter();
+	}
 
-    public override void Exit()
-    {
-        _client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
-        _gameListController.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
-        _interface.Exit();
-    }
+	public override void Exit()
+	{
+		_client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
+		_gameListController.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
+		_interface.Exit();
+	}
 
-    public override void Tick(float deltaTime)
-    {
-        if (_interface.HasCommands)
-        {
-            var command = _interface.TakeFirstCommand();
+	public override void Tick(float deltaTime)
+	{
+		if (_interface.HasCommands)
+		{
+			var command = _interface.TakeFirstCommand();
 
-            var refreshCommand = command as RefreshGamesListCommand;
-            if (refreshCommand != null)
-            {
-                refreshCommand.Execute(_gameListController);
-                return;
-            }
+			var refreshCommand = command as RefreshGamesListCommand;
+			if (refreshCommand != null)
+			{
+				ExecuteRefresh(refreshCommand);
+				return;
+			}
+			else
+			{
+				_lastRefresh += deltaTime;
+				if (_lastRefresh >= _refreshInterval)
+				{
+					ExecuteRefresh(new RefreshGamesListCommand());
+				}
+			}
 
-            var joinCommand = command as JoinGameCommand;
-            if (joinCommand != null)
-            {
-                joinCommand.Execute(_joinGameController);
-            }
+			var joinCommand = command as JoinGameCommand;
+			if (joinCommand != null)
+			{
+				joinCommand.Execute(_joinGameController);
+			}
 
-            var commandResolver = new StateCommandResolver();
-            commandResolver.HandleSequenceStates(command, this);
-        }
-    }
+			var commandResolver = new StateCommandResolver();
+			commandResolver.HandleSequenceStates(command, this);
+		}
+	}
 
-    public override string Name
-    {
-        get { return StateName; }
-    }
+	private void ExecuteRefresh(RefreshGamesListCommand refreshCommand)
+	{
+		refreshCommand.Execute(_gameListController);
+		_lastRefresh = 0f;
 
-    public override void NextState()
-    {
-        ChangeState(LobbyState.StateName);
-    }
+	}
 
-    public override void PreviousState()
-    {
-        ChangeState(MenuState.StateName);
-    }
+	public override string Name
+	{
+		get { return StateName; }
+	}
+
+	public override void NextState()
+	{
+		ChangeState(LobbyState.StateName);
+	}
+
+	public override void PreviousState()
+	{
+		ChangeState(MenuState.StateName);
+	}
 }

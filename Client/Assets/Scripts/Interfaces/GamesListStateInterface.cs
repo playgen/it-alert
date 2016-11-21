@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections;
+using ExitGames.Client.Photon;
 using UnityEngine;
 using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
@@ -27,9 +28,10 @@ public class GamesListStateInterface : StateInterface
 
 		_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
 		_gameItemPrefab = Resources.Load("GameItem") as GameObject;
-	}
 
-	private void OnRefreshClick()
+	}
+	
+	public void OnRefreshClick()
 	{
 		EnqueueCommand(new RefreshGamesListCommand());
 	}
@@ -54,12 +56,12 @@ public class GamesListStateInterface : StateInterface
 		EnqueueCommand(new JoinGameCommand(name));
 	}
 
-    public void OnJoinGameSuccess(ClientRoom clientRoom)
-    {
-        EnqueueCommand(new NextStateCommand());
-    }
+	public void OnJoinGameSuccess(ClientRoom clientRoom)
+	{
+		EnqueueCommand(new NextStateCommand());
+	}
 
-    public void OnGamesListSuccess(RoomInfo[] rooms)
+	public void OnGamesListSuccess(RoomInfo[] rooms)
 	{
 
 		foreach (Transform child in _gameListObject.transform)
@@ -72,7 +74,7 @@ public class GamesListStateInterface : StateInterface
 		foreach (var room in rooms)
 		{
 			var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-		    var name = room.name;
+			var name = room.name;
 			gameItem.FindChild("Name").GetComponent<Text>().text = name;
 			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
 			gameItem.SetParent(_gameListObject.transform);
@@ -91,7 +93,14 @@ public class GamesListStateInterface : StateInterface
 			offset -= height;
 
 			// add listener to each button to join specifc game 
-			gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener( delegate{ JoinGame(name); } );
+			if (room.playerCount < room.maxPlayers)
+			{
+				gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener(delegate { JoinGame(name); });
+			}
+			else
+			{
+				gameItem.FindChild("Join").gameObject.SetActive(false);
+			}
 		}
 		// Set the content box to be the correct size for our elements
 		_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);

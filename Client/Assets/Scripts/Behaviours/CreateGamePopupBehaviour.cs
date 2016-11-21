@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,27 +9,49 @@ public class CreateGamePopupBehaviour : MonoBehaviour
     public InputField GameNameInputField;
     public InputField PlayerNumberInputField;
 
+	public Button IncrementPlayersButton;
+	public Button DecrementPlayersButton;
+
     private int _maxPlayers = 6;
 
-    public GameDetails GetGameDetails()
+	private int _playerCount = 2;
+
+	void Awake()
+	{
+		PlayerNumberInputField.text = _playerCount.ToString();
+
+		PlayerNumberInputField.onValueChanged.AddListener(OnChangePlayerCount);
+		IncrementPlayersButton.onClick.AddListener(() => OnChangePlayerCount(1));
+		DecrementPlayersButton.onClick.AddListener(() => OnChangePlayerCount(-1));
+	}
+
+	private void OnChangePlayerCount(int increment)
+	{
+		_playerCount = Math.Max(1, Math.Min(_playerCount + increment, _maxPlayers));
+		PlayerNumberInputField.text = _playerCount.ToString();
+	}
+
+	private void OnChangePlayerCount(string value)
+	{
+		int playerCount;
+
+		if (Int32.TryParse(value, out playerCount))
+		{
+			_playerCount = Math.Max(1, Math.Min(playerCount, _maxPlayers));
+		}
+
+		PlayerNumberInputField.text = _playerCount.ToString();
+	}
+
+	public GameDetails GetGameDetails()
     {
         return new GameDetails(GameNameInputField.text, PlayerNumberInputField.text);
     }
-
-
-    public void ResetFields()
+	
+	public void ResetFields()
     {
         GameNameInputField.text = Guid.NewGuid().ToString().Substring(0,8);
         PlayerNumberInputField.text = "";
-    }
-
-    public void CheckPlayerNumberInput()
-    {
-        var playerInput = Convert.ToInt32(PlayerNumberInputField.text);
-        // clamp input
-        playerInput = Mathf.Clamp(playerInput, 1, _maxPlayers);
-        // Set Text to clamped value
-        PlayerNumberInputField.text = playerInput.ToString();
     }
 
     public struct GameDetails
@@ -45,7 +68,21 @@ public class CreateGamePopupBehaviour : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab) && Input.GetKey(KeyCode.LeftShift) && EventSystem.current.currentSelectedGameObject != null)
+	    if (EventSystem.current.currentSelectedGameObject == PlayerNumberInputField.gameObject)
+	    {
+		    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Plus) || Input.GetKeyDown(KeyCode.KeypadPlus))
+		    {
+			    OnChangePlayerCount(1);
+		    }
+			else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Minus) || Input.GetKeyDown(KeyCode.KeypadMinus))
+		    {
+			    OnChangePlayerCount(-1);
+		    }
+	    }
+
+        if (Input.GetKeyDown(KeyCode.Tab) 
+			&& (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) 
+			&& EventSystem.current.currentSelectedGameObject != null)
         {
             var next = EventSystem.current.currentSelectedGameObject.GetComponent<Selectable>().FindSelectableOnUp();
 

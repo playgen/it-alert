@@ -179,7 +179,7 @@ namespace ExitGames.PhotonClient.Photon
             {
                 if (this.ReportDebugOfLevel(DebugLevel.ALL))
                 {
-                    this.Listener.DebugReturn(DebugLevel.ALL, "Receiving by websocket. this.State: " + State);
+                    this.Listener.DebugReturn(DebugLevel.ALL, "Receiving by websocket. this.State: " + ClientState);
                 }
                 State = PhotonSocketState.Connected;
 				while (State == PhotonSocketState.Connected)
@@ -217,7 +217,7 @@ namespace ExitGames.PhotonClient.Photon
 							{
 								if (this.ReportDebugOfLevel(DebugLevel.ERROR))
 								{
-									this.EnqueueDebugReturn(DebugLevel.ERROR, "Receive issue. State: " + this.State + ". Server: '" + this.ServerAddress + "' Exception: " + e);
+									this.EnqueueDebugReturn(DebugLevel.ERROR, "Receive issue. State: " + this.ClientState + ". Server: '" + this.ServerAddress + "' Exception: " + e);
 								}
 								this.HandleException(StatusCode.ExceptionOnReceive);
 							}
@@ -235,7 +235,7 @@ namespace ExitGames.PhotonClient.Photon
 							{
 								if (this.ReportDebugOfLevel(DebugLevel.ERROR))
 								{
-									this.EnqueueDebugReturn(DebugLevel.ERROR, "Receive issue. State: " + this.State + ". Server: '" + this.ServerAddress + "' Exception: " + e);
+									this.EnqueueDebugReturn(DebugLevel.ERROR, "Receive issue. State: " + this.ClientState + ". Server: '" + this.ServerAddress + "' Exception: " + e);
 								}
 								this.HandleException(StatusCode.ExceptionOnReceive);
 							}
