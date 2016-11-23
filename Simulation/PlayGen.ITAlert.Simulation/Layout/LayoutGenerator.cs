@@ -52,28 +52,28 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			return layout;
 		}
 
-		private static void AddToLayout(Layout layout, int sourceId, VertexDirection sourcePosition, int destinationId)
+		private static void AddToLayout(Layout layout, int sourceId, Common.EdgeDirection sourcePosition, int destinationId)
 		{
 			var currentVector = layout.GetVectorById(sourceId);
 			var nextVector = currentVector;
 
 			switch (sourcePosition)
 			{
-				case VertexDirection.Right:
+				case Common.EdgeDirection.East:
 					nextVector = currentVector + Vector.PlusX;
 					if (layout.VectorExists(nextVector))
 					{
 						layout.PushCol(nextVector.X);
 					}
 					break;
-				case VertexDirection.Bottom:
+				case Common.EdgeDirection.South:
 					nextVector = currentVector + Vector.PlusY;
 					if (layout.VectorExists(nextVector))
 					{
 						layout.PushRow(nextVector.Y);
 					}
 					break;
-				case VertexDirection.Left:
+				case Common.EdgeDirection.West:
 					nextVector = currentVector + Vector.MinusX;
 					if (layout.VectorExists(nextVector) || nextVector.X < 0)
 					{
@@ -81,7 +81,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 						nextVector = currentVector;
 					}
 					break;
-				case VertexDirection.Top:
+				case Common.EdgeDirection.North:
 					nextVector = currentVector + Vector.MinusY;
 					if (layout.VectorExists(nextVector) || nextVector.Y < 0)
 					{

@@ -43,15 +43,15 @@ namespace PlayGen.ITAlert.Simulation.TestData
 					if (j < width - 1)
 					{
 						var edgeWeight = Random.Next(1, weight);
-						edgeConfigs.Add(new EdgeConfig(thisId, VertexDirection.Right, nextX, edgeWeight));
-						edgeConfigs.Add(new EdgeConfig(nextX, VertexDirection.Left, thisId, edgeWeight));
+						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.East, nextX, edgeWeight));
+						edgeConfigs.Add(new EdgeConfig(nextX, EdgeDirection.West, thisId, edgeWeight));
 					}
 					if (i < height - 1)
 					{
 						var edgeWeight = Random.Next(1, weight);
 
-						edgeConfigs.Add(new EdgeConfig(thisId, VertexDirection.Bottom, nextY, edgeWeight));
-						edgeConfigs.Add(new EdgeConfig(nextY, VertexDirection.Top, thisId, edgeWeight));
+						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.South, nextY, edgeWeight));
+						edgeConfigs.Add(new EdgeConfig(nextY, EdgeDirection.North, thisId, edgeWeight));
 					}
 				}
 			}

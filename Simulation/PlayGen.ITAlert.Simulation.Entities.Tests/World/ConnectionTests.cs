@@ -74,66 +74,66 @@ namespace PlayGen.ITAlert.Simulation.Entities.Tests.World
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 1, Ticks = 24, Overflow = 0}
-			).SetName("Speed 1, Bottom, Weight 1"),
+			).SetName("Speed 1, South, Weight 1"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Right, Weight = 1 },
 				new VisitorMovementParams() { Speed = 1, Ticks = 24, Overflow = 0}
-			).SetName("Speed 1, Right, Weight 1"),
+			).SetName("Speed 1, East, Weight 1"),
 			new TestCaseData(
 
 			// speed multipliers
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 2, Ticks = 12, Overflow = 0 }
-			).SetName("Speed 2, Bottom, Weight 1"),
+			).SetName("Speed 2, South, Weight 1"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 3, Ticks = 8, Overflow = 0}
-			).SetName("Speed 3, Bottom, Weight 1"),
+			).SetName("Speed 3, South, Weight 1"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 4, Ticks = 6, Overflow = 0 }
-			).SetName("Speed 4, Bottom, Weight 1"),
+			).SetName("Speed 4, South, Weight 1"),
 			new TestCaseData(
 
 			// overflow
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 5, Ticks = 5, Overflow = 1 }
-			).SetName("Speed 5, Bottom, Weight 1, Overflow"),
+			).SetName("Speed 5, South, Weight 1, Overflow"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 7, Ticks = 4, Overflow = 4}
-			).SetName("Speed 7, Bottom, Weight 1, Overflow"),
+			).SetName("Speed 7, South, Weight 1, Overflow"),
 			new TestCaseData(
 
 			// weight
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 2 },
 				new VisitorMovementParams() { Speed = 1, Ticks = 48, Overflow = 0}
-			).SetName("Speed 1, Bottom, Weight 2"),
+			).SetName("Speed 1, South, Weight 2"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Right, Weight = 3 },
 				new VisitorMovementParams() { Speed = 1, Ticks = 72, Overflow = 0}
-			).SetName("Speed 1, Right, Weight 3"),
+			).SetName("Speed 1, East, Weight 3"),
 
 			//initial offset
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 1, Ticks = 19, Overflow = 0, InitialPosition = 6}
-			).SetName("Speed 1, Bottom, Weight 1, Offset 6"),
+			).SetName("Speed 1, South, Weight 1, Offset 6"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Right, Weight = 1 },
 				new VisitorMovementParams() { Speed = 2, Ticks = 10, Overflow = 0, InitialPosition = 6}
-			).SetName("Speed 2, Right, Weight 1, Offset 6"),
+			).SetName("Speed 2, East, Weight 1, Offset 6"),
 
 			// combination
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Bottom, Weight = 1 },
 				new VisitorMovementParams() { Speed = 2, Ticks = 11, Overflow = 1, InitialPosition = 5}
-			).SetName("Speed 2, Bottom, Weight 1, Offset 5"),
+			).SetName("Speed 2, South, Weight 1, Offset 5"),
 			new TestCaseData(
 				new GraphParams() { Positions = 24, Direction = VertexDirection.Right, Weight = 2 },
 				// start at position 5, have 43 steps to traverse at 2 per tick = 22, plus one for offset
 				new VisitorMovementParams() { Speed = 2, Ticks = 23, Overflow = 1, InitialPosition = 5}
-			).SetName("Speed 2, Right, Weight 2, Offset 5"),
+			).SetName("Speed 2, East, Weight 2, Offset 5"),
 
 		};
 

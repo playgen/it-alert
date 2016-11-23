@@ -10,10 +10,9 @@ namespace PlayGen.ITAlert.Simulation.Common
 	/// <typeparam name="T"></typeparam>
 	public class SimpleStack<T>
 	{
-		[SyncState(StateLevel.Full)]
-		public List<T> Items { get; private set;  } = new List<T>();
+		private readonly List<T> _items = new List<T>();
 
-		public int Count => Items.Count;
+		public int Count => _items.Count;
 
 		public bool Any()
 		{
@@ -22,24 +21,41 @@ namespace PlayGen.ITAlert.Simulation.Common
 
 		public void Clear()
 		{
-			Items.Clear();
+			_items.Clear();
+		}
+
+		public void Set(IEnumerable<T> items)
+		{
+			_items.Clear();
+			_items.AddRange(items);
 		}
 
 		public void Push(T item)
 		{
-			Items.Add(item);
+			_items.Add(item);
 		}
 
 		public T Pop()
 		{
-			var item = Items.Last();
-			Items.RemoveAt(Items.Count - 1);
+			var item = _items.Last();
+			_items.RemoveAt(_items.Count - 1);
 			return item;
 		}
 
 		public T Peek()
 		{
-			return Items.Last();
+			return _items.Last();
+		}
+
+		public bool TryPeek(out T last)
+		{
+			if (_items.Count > 0)
+			{
+				last = Peek();
+				return true;
+			}
+			last = default(T);
+			return false;
 		}
 	}
 }

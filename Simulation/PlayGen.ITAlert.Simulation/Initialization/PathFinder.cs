@@ -76,7 +76,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 
 				var entryPoint = currentPath.Nodes.Count > 1
 					? currentPath.Nodes[currentPath.Nodes.Count - 1].EntranceNodePositions[currentPath.Nodes[currentPath.Nodes.Count - 2].Id].Direction
-					: (VertexDirection?) null;
+					: (EdgeDirection?) null;
 
 				foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint))
 				{
@@ -108,7 +108,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 			return bestPaths;
 		}
 
-		private static List<NeighbourNode> GetAdjacentNodes(ISystem source, VertexDirection? entryPoint)
+		private static List<NeighbourNode> GetAdjacentNodes(ISystem source, EdgeDirection? entryPoint)
 		{
 			return source.ExitNodePositions.Select(node => node.Value.Node)
 				.OfType<Connection>()

@@ -8,14 +8,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public int EntityId { get; set; }
 
 		public int Source { get; }
-		public VertexDirection SourcePosition { get; }
+		public EdgeDirection SourcePosition { get; }
 
 		public int Destination { get; }
-		//public VertexDirection DestinationPosition { get; }
+		//public EdgeDirection DestinationPosition { get; }
 
 		public int Weight { get; }
 
-		public EdgeConfig(int source, VertexDirection sourcePosition, int destination, int weight = 1){
+		public EdgeConfig(int source, EdgeDirection sourcePosition, int destination, int weight = 1){
 			Source = source;
 			SourcePosition = sourcePosition;
 			Destination = destination;

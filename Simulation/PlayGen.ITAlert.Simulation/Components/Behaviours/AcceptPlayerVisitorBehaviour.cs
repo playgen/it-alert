@@ -13,15 +13,15 @@ using PlayGen.ITAlert.Simulation.Visitors.Actors;
 namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
 {
 	[ComponentUsage(typeof(INode))]
-	[ComponentDependency(typeof(VisitableNodeBehaviour))]
+	[ComponentDependency(typeof(Visitors))]
 	public class AcceptPlayerVisitorBehaviour : Component
 	{
-		private readonly VisitableNodeBehaviour _visitableNode;
+		private readonly Visitors _visitableNode;
 
 		public AcceptPlayerVisitorBehaviour(IEntity entity) 
 			: base(entity)
 		{
-			_visitableNode = entity.GetComponent<VisitableNodeBehaviour>();
+			_visitableNode = entity.GetComponent<Visitors>();
 
 			AddSubscription<VisitorEnteringNodeMessage>(VisitorEnteringNode);
 

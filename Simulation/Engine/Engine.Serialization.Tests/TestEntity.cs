@@ -33,7 +33,6 @@ namespace Engine.Serialization.Tests
 			
 		}
 
-		public ISubject<IMessage> MessageHub { get; }
 		public void AddComponent(IComponent component)
 		{
 			throw new NotImplementedException();
@@ -55,6 +54,26 @@ namespace Engine.Serialization.Tests
 		}
 
 		public void ForEachComponentImplementing<TComponentInterface>(Action<TComponentInterface> executeDelegate) where TComponentInterface : class, IComponent
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OnNext(IMessage value)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OnError(Exception error)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void OnCompleted()
+		{
+			throw new NotImplementedException();
+		}
+
+		public IDisposable Subscribe(IObserver<IMessage> observer)
 		{
 			throw new NotImplementedException();
 		}

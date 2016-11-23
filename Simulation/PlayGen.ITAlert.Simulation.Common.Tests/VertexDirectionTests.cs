@@ -5,11 +5,11 @@ namespace PlayGen.ITAlert.Simulation.Common.Tests
 	[TestFixture]
 	public class VertexDirectionTests
 	{
-		[TestCase(VertexDirection.Top, VertexDirection.Bottom)]
-		[TestCase(VertexDirection.Bottom, VertexDirection.Top)]
-		[TestCase(VertexDirection.Left, VertexDirection.Right)]
-		[TestCase(VertexDirection.Right, VertexDirection.Left)]
-		public void TestComplmentaryCalculation(VertexDirection source, VertexDirection complement)
+		[TestCase(EdgeDirection.North, EdgeDirection.South)]
+		[TestCase(EdgeDirection.South, EdgeDirection.North)]
+		[TestCase(EdgeDirection.West, EdgeDirection.East)]
+		[TestCase(EdgeDirection.East, EdgeDirection.West)]
+		public void TestComplmentaryCalculation(EdgeDirection source, EdgeDirection complement)
 		{
 			Assert.AreEqual(complement, source.OppositePosition());
 		}

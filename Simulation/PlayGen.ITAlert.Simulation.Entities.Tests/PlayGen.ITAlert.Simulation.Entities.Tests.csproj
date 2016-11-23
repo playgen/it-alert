@@ -52,15 +52,15 @@
     <Compile Include="World\TestSubsystem.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Engine.Components\PlayGen.Engine.Components.csproj">
+    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
       <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
       <Name>PlayGen.Engine.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine.Entities\PlayGen.Engine.Entities.csproj">
+    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
       <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
       <Name>PlayGen.Engine.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Engine\PlayGen.Engine.csproj">
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>PlayGen.Engine</Name>
     </ProjectReference>

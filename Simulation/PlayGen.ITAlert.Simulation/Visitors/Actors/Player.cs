@@ -9,26 +9,8 @@ using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Visitors.Actors
 {
-	public class Player : Actor
+	public class Player
 	{
-		[SyncState(StateLevel.Setup)]
-		public string Name { get; private set; }
-
-		[SyncState(StateLevel.Setup)]
-		public string Colour { get; private set;  }
-
-		/// <summary>
-		/// Currently held items
-		/// </summary>
-		[SyncState(StateLevel.Differential)]
-		public IItem Item { get; private set; }
-
-		public bool HasItem => Item != null;
-
-		public Systems.System CurrentSystem { get; private set; }
-
-		public bool IsOnSystem => CurrentSystem != null;
-
 		#region constructors
 
 		public Player(ISimulation simulation, 

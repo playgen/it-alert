@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			var sim = new TestSimulation();
 			var subsystem = sim.CreateSubsystem(new NodeConfig(1));
 			var otherSubsystem = sim.CreateSubsystem(new NodeConfig(2));
-			var connection = sim.CreateConnection(sim.SubsystemsByLogicalId, new EdgeConfig(1, VertexDirection.Left, 2));
+			var connection = sim.CreateConnection(sim.SubsystemsByLogicalId, new EdgeConfig(1, EdgeDirection.West, 2));
 
 			var player = sim.CreatePlayer(new PlayerConfig());
 			sim.SubsystemsByLogicalId[1].AddVisitor(player, null, 0);
