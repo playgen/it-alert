@@ -52,6 +52,8 @@
     <Compile Include="ComponentDependencyException.cs" />
     <Compile Include="ComponentAttributeExtensions.cs" />
     <Compile Include="Behaviour\IActivatableBehaviour.cs" />
+    <Compile Include="FlagComponent.cs" />
+    <Compile Include="IFlagComponent.cs" />
     <Compile Include="ITickableComponent.cs" />
     <Compile Include="Behaviour\ITimedActivatableBehaviour.cs" />
     <Compile Include="Messaging\DelegatingObserver.cs" />

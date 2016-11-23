@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reactive.Subjects;
-using Engine.Core.Messaging;
-
 namespace Engine.Core.Components
 {
 	public interface IComponentContainer : IComponentContainer<IComponent>, IDisposable

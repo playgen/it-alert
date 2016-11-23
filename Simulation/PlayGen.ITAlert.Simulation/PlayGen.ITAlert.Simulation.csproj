@@ -48,55 +48,60 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Systems\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
-    <Compile Include="Systems\Behaviours\MoveVisitingActorsBehaviour.cs" />
-    <Compile Include="Systems\Behaviours\NetworkRoutes.cs" />
-    <Compile Include="Systems\Messages\VisitorMessage.cs" />
-    <Compile Include="Systems\Properties\Name.cs" />
+    <Compile Include="Archetypes.cs" />
+    <Compile Include="Archetypes\Subsystem.cs" />
+    <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
+    <Compile Include="Components\Behaviours\VisitorMovementSystem.cs" />
+    <Compile Include="Components\Behaviours\NetworkRoutes.cs" />
+    <Compile Include="Components\Messages\VisitorMessage.cs" />
+    <Compile Include="Components\Properties\ContinuousMovement.cs" />
+    <Compile Include="Components\Properties\EndToEndMovement.cs" />
+    <Compile Include="Components\Properties\ExitRoutes.cs" />
+    <Compile Include="Components\Properties\ExitPositions.cs" />
+    <Compile Include="Components\Properties\EntrancePositions.cs" />
+    <Compile Include="Components\Properties\IMovementType.cs" />
+    <Compile Include="Components\Properties\MovementCost.cs" />
+    <Compile Include="Components\Properties\Name.cs" />
+    <Compile Include="Components\Properties\RelativeWeight.cs" />
     <Compile Include="Visitors\Properties\CurrentLocationProperty.cs" />
-    <Compile Include="Systems\Messages\DamageNodeMessage.cs" />
-    <Compile Include="Systems\Messages\DamageNodeMessageComponent.cs" />
-    <Compile Include="Layout\NodeDirection.cs" />
+    <Compile Include="Components\Messages\DamageNodeMessage.cs" />
+    <Compile Include="Components\Messages\DamageNodeMessageComponent.cs" />
+    <Compile Include="Layout\EdgeDirection.cs" />
     <Compile Include="Visitors\Properties\OwnerProperty.cs" />
-    <Compile Include="Systems\Behaviours\VisitorPosition.cs" />
-    <Compile Include="Visitors\Actors\Npc\ConsumeMemoryPropertyComponent.cs" />
+    <Compile Include="Components\Behaviours\VisitorPosition.cs" />
+    <Compile Include="Components\ConsumeMemoryPropertyComponent.cs" />
     <Compile Include="Visitors\VisitorBehaviourComponent.cs" />
-    <Compile Include="Systems\Behaviours\VisitableNodeBehaviour.cs" />
-    <Compile Include="Systems\Properties\CombinedHealthAndShield.cs" />
-    <Compile Include="Systems\Behaviours\ConsumeMemoryBehaviour.cs" />
-    <Compile Include="Systems\Properties\HealthPropertyComponent.cs" />
-    <Compile Include="Systems\Properties\ItemStoragePropertyComponent.cs" />
-    <Compile Include="Systems\Properties\IsInfectedPropertyComponent.cs" />
-    <Compile Include="Systems\Properties\SubsystemIsDeadComponent.cs" />
-    <Compile Include="Systems\Properties\SubsystemShieldComponent.cs" />
-    <Compile Include="Systems\Properties\SystemMemoryProperty.cs" />
-    <Compile Include="Systems\Properties\SystemProcessorPropertyComponent.cs" />
+    <Compile Include="Components\Properties\Visitors.cs" />
+    <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
+    <Compile Include="Components\Behaviours\ConsumeMemoryBehaviour.cs" />
+    <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
+    <Compile Include="Components\Properties\ItemStoragePropertyComponent.cs" />
+    <Compile Include="Components\Properties\IsInfectedPropertyComponent.cs" />
+    <Compile Include="Components\Properties\SubsystemIsDeadComponent.cs" />
+    <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />
+    <Compile Include="Components\Properties\SystemMemoryProperty.cs" />
+    <Compile Include="Components\Properties\SystemProcessorPropertyComponent.cs" />
     <Compile Include="Visitors\IActor.cs" />
-    <Compile Include="Systems\IConnection.cs" />
-    <Compile Include="Systems\IEnhancement.cs" />
+    <Compile Include="Components\IConnection.cs" />
     <Compile Include="Visitors\IItem.cs" />
-    <Compile Include="Systems\INode.cs" />
-    <Compile Include="Systems\INodeComponent.cs" />
-    <Compile Include="Systems\INodeEvents.cs" />
+    <Compile Include="Components\INodeComponent.cs" />
+    <Compile Include="Components\INodeEvents.cs" />
     <Compile Include="Visitors\Extensions\IntentExtensions.cs" />
     <Compile Include="Visitors\IPlayer.cs" />
     <Compile Include="ISimulation.cs" />
-    <Compile Include="Systems\ISystem.cs" />
-    <Compile Include="Systems\ISystemComponent.cs" />
+    <Compile Include="Components\ISystem.cs" />
+    <Compile Include="Components\ISystemComponent.cs" />
     <Compile Include="Visitors\IVirusComponent.cs" />
     <Compile Include="Visitors\IVisitor.cs" />
     <Compile Include="Visitors\IVisitorComponent.cs" />
-    <Compile Include="Systems\Extensions\IItemArrayExtensions.cs" />
+    <Compile Include="Components\Extensions\IItemArrayExtensions.cs" />
     <Compile Include="VisitorPositionExtensions.cs" />
-    <Compile Include="Visitors\Actors\Actor.cs" />
-    <Compile Include="Visitors\Actors\Intents\DisownItemIntent.cs" />
-    <Compile Include="Visitors\Actors\Intents\InfectSystemIntent.cs" />
-    <Compile Include="Visitors\Actors\Intents\Intent.cs" />
-    <Compile Include="Visitors\Actors\Intents\MoveIntent.cs" />
-    <Compile Include="Visitors\Actors\Intents\PickUpItemIntent.cs" />
-    <Compile Include="Visitors\Actors\Npc\IInfection.cs" />
-    <Compile Include="Visitors\Actors\Npc\NpcActor.cs" />
-    <Compile Include="Visitors\Actors\Npc\Virus.cs" />
+    <Compile Include="Intents\DisownItemIntent.cs" />
+    <Compile Include="Intents\InfectSystemIntent.cs" />
+    <Compile Include="Intents\Intent.cs" />
+    <Compile Include="Intents\MoveIntent.cs" />
+    <Compile Include="Intents\PickUpItemIntent.cs" />
+    <Compile Include="Archetypes\Virus.cs" />
     <Compile Include="Visitors\Actors\Player.cs" />
     <Compile Include="Visitors\Items\Cleaner.cs" />
     <Compile Include="Visitors\Items\Item.cs" />
@@ -104,9 +109,7 @@
     <Compile Include="Visitors\Items\Scanner.cs" />
     <Compile Include="Visitors\Items\SubsystemModulator.cs" />
     <Compile Include="Visitors\Visitor.cs" />
-    <Compile Include="Systems\Connection.cs" />
-    <Compile Include="Systems\ItemContainer.cs" />
-    <Compile Include="Systems\System.cs" />
+    <Compile Include="Components\ItemContainer.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Initialization\GraphValidator.cs" />
     <Compile Include="Layout\Layout.cs" />
@@ -119,11 +122,11 @@
     <Compile Include="Exceptions\SimulationException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine.Common\Engine.Common.csproj">
+    <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
       <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
       <Name>Engine.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine.Planning\Engine.Planning.csproj">
+    <ProjectReference Include="..\Engine\Engine.Planning\Engine.Planning.csproj">
       <Project>{5fbde4c0-3c96-4685-acd6-0e6c170e1e4c}</Project>
       <Name>Engine.Planning</Name>
     </ProjectReference>

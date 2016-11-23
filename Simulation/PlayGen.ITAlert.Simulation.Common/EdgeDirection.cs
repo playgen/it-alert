@@ -1,14 +1,14 @@
 ﻿namespace PlayGen.ITAlert.Simulation.Common
 {
-    public enum VertexDirection
+    public enum EdgeDirection
     {
-        Top = 0,
+        North = 0,
         //TopRight
-        Right = 1,
+        East = 90,
         //BottomRight
-        Bottom = 2,
+        South = 180,
         //BottomLeft
-        Left = 3,
+        West = 270,
         //TopLeft
     }
 }

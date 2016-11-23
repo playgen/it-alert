@@ -4,32 +4,34 @@ namespace PlayGen.ITAlert.Simulation.Common
 {
 	public static class VertexDirectionExtensions
 	{
-		public static VertexDirection OppositePosition(this VertexDirection position)
+		const int EdgeDirectionMax = 2 * (int) EdgeDirection.South;
+
+		public static EdgeDirection OppositePosition(this EdgeDirection position)
 		{
-			return (VertexDirection)(((int)position + 2) % 4);
+			return (EdgeDirection)(((int)position + (int)EdgeDirection.South) % EdgeDirectionMax);
 		}
 
 
-		public static int ToPosition(this VertexDirection direction, int positions)
+		public static int ToPosition(this EdgeDirection direction, int positions)
 		{
 			switch (direction)
 			{
-				case VertexDirection.Top:
+				case EdgeDirection.North:
 					return 0;
-				case VertexDirection.Right:
+				case EdgeDirection.East:
 					return positions / 4;
-				case VertexDirection.Bottom:
+				case EdgeDirection.South:
 					return positions / 2;
-				case VertexDirection.Left:
+				case EdgeDirection.West:
 					return (3 * positions) / 4;;
 				default:
 					throw new Exception("Invalid position");
 			}
 		}
 
-		public static int PositionsToExit(this VertexDirection direction, VertexDirection exit)
+		public static int PositionsToExit(this EdgeDirection direction, EdgeDirection exit)
 		{
-			return (4 + ((int) exit - (int) direction))%4;
+			return (EdgeDirectionMax + ((int) exit - (int) direction)) % EdgeDirectionMax;
 		}
 	}
 }

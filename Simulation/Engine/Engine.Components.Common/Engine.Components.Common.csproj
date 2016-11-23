@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1B0A8C03-8A9A-4A3B-9C36-D750CEDB9853}</ProjectGuid>
+    <ProjectGuid>{888032D2-38BB-4339-B4FA-744AAC836DB5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.Simulation.Tests</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.Simulation.Tests</AssemblyName>
+    <RootNamespace>Engine.Components.Common</RootNamespace>
+    <AssemblyName>Engine.Components.Common</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,50 +30,33 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.4.1\lib\net35\nunit.framework.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActorTests.cs" />
-    <Compile Include="ItemSelectionTests.cs" />
-    <Compile Include="LayoutGeneratorTests.cs" />
-    <Compile Include="PathFinderTests.cs" />
+    <Compile Include="CartesianCoordinate2DProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimulationTests.cs" />
-    <Compile Include="TestSimulation.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
-      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+    <ProjectReference Include="..\Engine.Common\Engine.Common.csproj">
+      <Project>{c3e9dd6e-3807-4290-a857-a4e9d47cf7e1}</Project>
+      <Name>Engine.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    <ProjectReference Include="..\Engine.Components\Engine.Components.csproj">
+      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
+      <Name>Engine.Components</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
-      <Project>{D5D14E17-C9D5-4AB2-AB74-96F95B50614F}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
-      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
+    <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
+      <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
+      <Name>Engine.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
