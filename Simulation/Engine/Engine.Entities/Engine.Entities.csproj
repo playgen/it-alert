@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="ComponentContainer.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="EntityRegistryBase.cs" />
+    <Compile Include="EntityRegistry.cs" />
     <Compile Include="EntityRegistryException.cs" />
     <Compile Include="ITickableEntity.cs" />
     <Compile Include="Messages\EntityDestroyedMessage.cs" />

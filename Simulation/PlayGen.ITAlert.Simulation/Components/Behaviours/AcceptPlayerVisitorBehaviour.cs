@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive;
-using System.Text;
 using Engine.Components;
-using Engine.Components.Behaviour;
 using Engine.Core.Entities;
-using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Systems.Messages;
 using PlayGen.ITAlert.Simulation.Visitors.Actors;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
+namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
-	[ComponentUsage(typeof(INode))]
-	[ComponentDependency(typeof(Visitors))]
+	[ComponentDependency(typeof(Components.Properties.Visitors))]
 	public class AcceptPlayerVisitorBehaviour : Component
 	{
-		private readonly Visitors _visitableNode;
+		private readonly Components.Properties.Visitors _visitableNode;
 
 		public AcceptPlayerVisitorBehaviour(IEntity entity) 
 			: base(entity)
 		{
-			_visitableNode = entity.GetComponent<Visitors>();
+			_visitableNode = entity.GetComponent<Components.Properties.Visitors>();
 
 			AddSubscription<VisitorEnteringNodeMessage>(VisitorEnteringNode);
 

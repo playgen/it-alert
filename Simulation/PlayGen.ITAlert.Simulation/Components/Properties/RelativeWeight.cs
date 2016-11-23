@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Components.Property;
 using Engine.Core.Entities;
-using PlayGen.ITAlert.Simulation.Common;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Properties
+namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class RelativeWeight : ReadOnlyProperty<int>
 	{

@@ -3,7 +3,7 @@ using Engine.Core.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Systems;
-using PlayGen.ITAlert.Simulation.Visitors;
+using PlayGen.ITAlert.Simulation.VisitorsProperty;
 
 namespace PlayGen.ITAlert.Simulation
 {

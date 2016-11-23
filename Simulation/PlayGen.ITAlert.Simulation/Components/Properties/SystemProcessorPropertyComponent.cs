@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Simulation.Systems.Properties
+﻿namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	class SystemProcessorPropertyComponent
 	{

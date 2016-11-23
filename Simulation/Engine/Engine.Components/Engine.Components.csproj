@@ -46,6 +46,7 @@
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentConfiguration.cs" />
+    <Compile Include="ComponentRegistry.cs" />
     <Compile Include="ComponentUsageException.cs" />
     <Compile Include="ComponentUsageAttribute.cs" />
     <Compile Include="ComponentDependencyAttribute.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Property\StateCollector.cs" />
     <Compile Include="Property\TickComponent.cs" />
     <Compile Include="StateBucket.cs" />
+    <Compile Include="System.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">

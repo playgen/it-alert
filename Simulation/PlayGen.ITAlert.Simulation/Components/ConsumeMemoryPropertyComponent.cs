@@ -1,7 +1,7 @@
 ﻿using Engine.Core.Entities;
 using PlayGen.ITAlert.Simulation.Systems;
 
-namespace PlayGen.ITAlert.Simulation.Visitors.Actors.Npc
+namespace PlayGen.ITAlert.Simulation.VisitorsProperty.Actors.Npc
 {
 	public class EmitConsumeMemoryBehviourBehaviourComponent : VisitorBehaviourComponent
 	{ 

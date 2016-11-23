@@ -1,5 +1,5 @@
-﻿using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Systems.Behaviours;
+﻿using PlayGen.ITAlert.Simulation.Components.Behaviours;
+using PlayGen.ITAlert.Simulation.Contracts;
 
 namespace PlayGen.ITAlert.Simulation
 {

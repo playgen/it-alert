@@ -2,7 +2,7 @@
 
 namespace Engine.Serialization.Tests
 {
-	public class TestEntityRegistry : EntityRegistryBase<ITestEntity>
+	public class TestEntityRegistry : EntityRegistry<ITestEntity>
 	{
 
 	}

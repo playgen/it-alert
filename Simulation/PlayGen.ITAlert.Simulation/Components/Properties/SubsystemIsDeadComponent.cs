@@ -2,7 +2,7 @@
 using Engine.Components.Property;
 using Engine.Core.Entities;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Properties
+namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	[ComponentDependency(typeof(SystemHealth))]
 	public class SystemIsDeadComponent : Property<bool>
