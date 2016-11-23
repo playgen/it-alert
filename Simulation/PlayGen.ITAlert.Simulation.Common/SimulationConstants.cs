@@ -16,6 +16,11 @@
 		//TODO: max weight only really exists because of the prioirty generation in the pathfinding algorithm
 		public const int ConnectionMaxWeight = 4;
 
+		/// <summary>
+		/// number of units to mvoe every tick
+		/// </summary>
+		public const int MaxSpeed = 4;
+
 
 		/// <summary>
 		/// number of units to mvoe every tick

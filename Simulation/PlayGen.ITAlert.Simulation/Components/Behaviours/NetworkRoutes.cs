@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Components.Property;
 using Engine.Core.Entities;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Behaviours
+namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
 	public class NetworkRoutes : ReadOnlyProperty<Dictionary<int, Connection>>
 	{

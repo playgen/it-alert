@@ -9,6 +9,7 @@ using Engine;
 using Engine.Common;
 using Engine.Core.Components;
 using Engine.Core.Serialization;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
@@ -28,85 +29,76 @@ namespace PlayGen.ITAlert.Simulation
 	/// Simulation class
 	/// Handles all autonomous functionality of the game
 	/// </summary>
-	public class Simulation : EntityRegistryBase<IITAlertEntity>, ISimulation
+	public class Simulation : ISimulation
 	{
 		private bool _disposed;
 
-		#region external entity mapping
+		//#region external entity mapping
 
-		[SyncState(StateLevel.Setup)]
-		public Dictionary<int, Player> ExternalPlayers = new Dictionary<int, Player>();
+		//[SyncState(StateLevel.Setup)]
+		//public Dictionary<int, Player> ExternalPlayers = new Dictionary<int, Player>();
 
-		[SyncState(StateLevel.Setup)]
-		public Dictionary<int, ISystem> SystemsByLogicalId = new Dictionary<int, ISystem>();
+		//[SyncState(StateLevel.Setup)]
+		//public Dictionary<int, ISystem> SystemsByLogicalId = new Dictionary<int, ISystem>();
 
-		#endregion
+		//#endregion
 
-		#region entities
+		//#region entities
 
-		// ReSharper disable FieldCanBeMadeReadOnly.Local
+		//// ReSharper disable FieldCanBeMadeReadOnly.Local
 
-		/// <summary>
-		/// The global entity registry
-		/// </summary>
+		///// <summary>
+		///// The global entity registry
+		///// </summary>
+		////[SyncState(StateLevel.Full)]
+
+
 		//[SyncState(StateLevel.Full)]
+		//private Dictionary<int, ISystem> _systems = new Dictionary<int, ISystem>();
 
-
-		[SyncState(StateLevel.Full)]
-		private Dictionary<int, ISystem> _systems = new Dictionary<int, ISystem>();
-		
-		[SyncState(StateLevel.Full)]
-		private Dictionary<int, Connection> _connections = new Dictionary<int, Connection>();
-
-		[SyncState(StateLevel.Full)]
-		private Dictionary<int, IActor> _actors = new Dictionary<int, IActor>();
-		
-		[SyncState(StateLevel.Full)]
-		private Dictionary<int, IItem> _items = new Dictionary<int, IItem>();
-
-		// ReSharper restore FieldCanBeMadeReadOnly.Local
-		
 		//[SyncState(StateLevel.Full)]
+		//private Dictionary<int, Connection> _connections = new Dictionary<int, Connection>();
+
+		//[SyncState(StateLevel.Full)]
+		//private Dictionary<int, IActor> _actors = new Dictionary<int, IActor>();
+
+		//[SyncState(StateLevel.Full)]
+		//private Dictionary<int, IItem> _items = new Dictionary<int, IItem>();
+
+		//// ReSharper restore FieldCanBeMadeReadOnly.Local
+
+		////[SyncState(StateLevel.Full)]
 
 
-		#endregion
+		//#endregion
 
-		[SyncState(StateLevel.Full)]
-		public int CurrentTick { get; private set; } = 0;
+		//[SyncState(StateLevel.Full)]
+		//public int CurrentTick { get; private set; } = 0;
 
-		[SyncState(StateLevel.Full)]
-		public Vector GraphSize { get; private set; }
+		//[SyncState(StateLevel.Full)]
+		//public Vector GraphSize { get; private set; }
 
-		[SyncState(StateLevel.Setup)]
-		public SimulationRules Rules { get; private set; }
+		//[SyncState(StateLevel.Setup)]
+		//public SimulationRules Rules { get; private set; }
 
 		[SyncState(StateLevel.Setup)]
 		public ComponentConfiguration ComponentConfiguration { get; private set; }
 
-		#region debug public
+		//#region debug public
 
-		public ReadOnlyCollection<ISystem> Systems => _systems.Values.ToList().AsReadOnly();
-		public ReadOnlyCollection<Player> Players => _actors.Values.OfType<Player>().ToList().AsReadOnly();
+		//public ReadOnlyCollection<ISystem> Systems => _systems.Values.ToList().AsReadOnly();
+		//public ReadOnlyCollection<Player> Players => _actors.Values.OfType<Player>().ToList().AsReadOnly();
 
 
-		#endregion
+		//#endregion
 
 		#region constructors
 
 		public Simulation(SimulationConfiguration configuration)
 		{
-			Rules = configuration.Rules;
 			ComponentConfiguration = configuration.ComponentConfiguration;
 
-			LayoutSystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
-
-			var subsystems = CreateSystems(configuration.NodeConfiguration);
-			CreateConnections(subsystems, configuration.EdgeConfiguration);
-
-			CalculatePaths();
-
-			CreatePlayers(subsystems, configuration.PlayerConfiguration);
-			CreateItems(subsystems, configuration.ItemConfiguration);
+			InitializeGraphEntities();
 		}
 
 		[Obsolete("This is not obsolete; it should never be called explicitly apart form by unit tests, it mainly exists for the serializer.", false)]
@@ -130,6 +122,25 @@ namespace PlayGen.ITAlert.Simulation
 		#endregion
 
 		#region initialization
+
+		private void InitializeSystems()
+		{
+			
+		}
+
+		private void InitializeGraphEntities()
+		{
+			LayoutSystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
+
+			var subsystems = CreateSystems(configuration.NodeConfiguration);
+			CreateConnections(subsystems, configuration.EdgeConfiguration);
+
+			CalculatePaths();
+
+			CreatePlayers(subsystems, configuration.PlayerConfiguration);
+			CreateItems(subsystems, configuration.ItemConfiguration);
+
+		}
 
 		private void LayoutSystems(List<NodeConfig> nodeConfigs, List<EdgeConfig> edgeConfigs)
 		{

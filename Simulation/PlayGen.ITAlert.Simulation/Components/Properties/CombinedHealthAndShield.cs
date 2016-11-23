@@ -4,7 +4,7 @@ using Engine.Components.Property;
 using Engine.Core.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Properties
+namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	[ComponentDependency(typeof(SystemHealth))]
 	[ComponentDependency(typeof(SystemShield))]

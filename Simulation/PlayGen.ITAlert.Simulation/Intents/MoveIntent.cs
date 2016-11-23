@@ -1,14 +1,12 @@
-﻿using Engine.Core.Serialization;
-using PlayGen.ITAlert.Simulation.Systems;
+﻿using Engine.Planning;
 
-namespace PlayGen.ITAlert.Simulation.Visitors.Actors.Intents
+namespace PlayGen.ITAlert.Simulation.Intents
 {
 	public class MoveIntent : Intent
 	{
-		[SyncState(StateLevel.Differential)]
-		public INode Destination { get; }
+		public int Destination { get; }
 
-		public MoveIntent(INode destination)
+		public MoveIntent(int destination)
 		{
 			Destination = destination;
 		}

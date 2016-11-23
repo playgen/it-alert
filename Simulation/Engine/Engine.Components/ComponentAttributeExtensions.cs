@@ -54,56 +54,56 @@ namespace Engine.Components
 
 		#region usage
 
-		public static IEnumerable<Type> GetComponentUsageTypes(this IComponent component)
-		{
-			return component.GetType().GetComponentUsageTypes();
-		}
+		//public static IEnumerable<Type> GetComponentUsageTypes(this IComponent component)
+		//{
+		//	return component.GetType().GetComponentUsageTypes();
+		//}
 
-		public static IEnumerable<Type> GetComponentUsageTypes(this Type componentType)
-		{
-			Type[] usageTypes;
-			if (ComponentUsageTypeCache.TryGetValue(componentType, out usageTypes) == false)
-			{
-				usageTypes = GenerateComponentUsageTypes(componentType);
-				ComponentUsageTypeCache.Add(componentType, usageTypes);
-			}
-			return usageTypes;
-		}
+		//public static IEnumerable<Type> GetComponentUsageTypes(this Type componentType)
+		//{
+		//	Type[] usageTypes;
+		//	if (ComponentUsageTypeCache.TryGetValue(componentType, out usageTypes) == false)
+		//	{
+		//		usageTypes = GenerateComponentUsageTypes(componentType);
+		//		ComponentUsageTypeCache.Add(componentType, usageTypes);
+		//	}
+		//	return usageTypes;
+		//}
 
-		private static Type[] GenerateComponentUsageTypes(this Type componentType)
-		{
-			var usageAttributes = componentType.GetCustomAttributes(typeof(ComponentUsageAttribute), true);
-			return usageAttributes.OfType<ComponentUsageAttribute>().Select(da => da.RequiredType).ToArray();
-		}
+		//private static Type[] GenerateComponentUsageTypes(this Type componentType)
+		//{
+		//	var usageAttributes = componentType.GetCustomAttributes(typeof(ComponentUsageAttribute), true);
+		//	return usageAttributes.OfType<ComponentUsageAttribute>().Select(da => da.RequiredType).ToArray();
+		//}
 
-		public static bool IsComponentUsageValid(this IComponent component, IEntity entity)
-		{
-			return component.IsComponentUsageValid(entity.GetType());
-		}
+		//public static bool IsComponentUsageValid(this IComponent component, IEntity entity)
+		//{
+		//	return component.IsComponentUsageValid(entity.GetType());
+		//}
 
-		public static bool IsComponentUsageValid(this IComponent component, Type entityType)
-		{
-			return component.GetType().IsComponentUsageValid(entityType);
-		}
+		//public static bool IsComponentUsageValid(this IComponent component, Type entityType)
+		//{
+		//	return component.GetType().IsComponentUsageValid(entityType);
+		//}
 
-		public static bool IsComponentUsageValid(this Type componentType, Type entityType)
-		{
-			Dictionary<Type, bool> usageChecks;
-			if (ComponentUsageCheckCache.TryGetValue(componentType, out usageChecks) == false)
-			{
-				usageChecks = new Dictionary<Type, bool>();
-				ComponentUsageCheckCache.Add(componentType, usageChecks);
-			}
+		//public static bool IsComponentUsageValid(this Type componentType, Type entityType)
+		//{
+		//	Dictionary<Type, bool> usageChecks;
+		//	if (ComponentUsageCheckCache.TryGetValue(componentType, out usageChecks) == false)
+		//	{
+		//		usageChecks = new Dictionary<Type, bool>();
+		//		ComponentUsageCheckCache.Add(componentType, usageChecks);
+		//	}
 
-			bool checkResult;
-			if (usageChecks.TryGetValue(entityType, out checkResult) == false)
-			{
-				checkResult = componentType.GetComponentUsageTypes().Any(type => type.IsAssignableFrom(entityType));
-				usageChecks.Add(entityType, checkResult);
-			}
+		//	bool checkResult;
+		//	if (usageChecks.TryGetValue(entityType, out checkResult) == false)
+		//	{
+		//		checkResult = componentType.GetComponentUsageTypes().Any(type => type.IsAssignableFrom(entityType));
+		//		usageChecks.Add(entityType, checkResult);
+		//	}
 
-			return checkResult;
-		}
+		//	return checkResult;
+		//}
 
 		#endregion
 	}

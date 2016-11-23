@@ -1,4 +1,4 @@
-﻿using PlayGen.ITAlert.Simulation.Visitors;
+﻿using PlayGen.ITAlert.Simulation.VisitorsProperty;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Extensions
 {

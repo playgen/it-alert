@@ -8,7 +8,7 @@ using Engine.Entities.Messaging;
 
 namespace Engine.Entities
 {
-	public abstract class Entity : MessageHub, IEntity, IEquatable<IEntity>
+	public class Entity : MessageHub, IEntity, IEquatable<IEntity>
 	{
 
 		#region constructors
@@ -39,6 +39,7 @@ namespace Engine.Entities
 			// TODO: reconsider using the event for the entity container
 			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
 			OnNext(new EntityDestroyedMessage(MessageScope.External, this));
+			EntityDestroyed = null;
 		}
 
 		private bool _disposed;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Core.Messaging;
-using PlayGen.ITAlert.Simulation.Visitors;
+using PlayGen.ITAlert.Simulation.VisitorsProperty;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Messages
 {
