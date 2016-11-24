@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using Engine.Components.Property;
@@ -16,21 +17,26 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			Lock,
 		}
 
-		public ItemContainer[] Items { get; private set; }
+		public List<ItemContainer> Items { get; private set; }
 
 		public int ItemLimit { get; set; }
 
-		private readonly OverLimitBehaviour _overLimitBehaviour;
+		private OverLimitBehaviour _overLimitBehaviour;
 
 		public ItemStorageProperty(IEntity entity) : base(entity)
 		{
 		}
 
-		public ItemStorageProperty(IEntity entity, int maxItems, int itemLimit, OverLimitBehaviour overLimitBehaviour) 
+		public ItemStorageProperty(IEntity entity, int itemLimit, OverLimitBehaviour overLimitBehaviour) 
 			: base(entity)
 		{
 			ItemLimit = itemLimit;
-			Items = new ItemContainer[maxItems];
+			Items = new List<ItemContainer>();
+			SetOverLimitBehaviour(overLimitBehaviour);
+		}
+
+		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
+		{
 			_overLimitBehaviour = overLimitBehaviour;
 		}
 
@@ -38,7 +44,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		{
 			if (limit < ItemLimit)
 			{
-				for (var i = Items.Length - 1; i >= ItemLimit; i--)
+				for (var i = Items.Count - 1; i >= ItemLimit; i--)
 				{
 					var itemContainer = Items[i];
 					if (_overLimitBehaviour == OverLimitBehaviour.Dispose)
@@ -54,7 +60,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			}
 			else if (limit > ItemLimit)
 			{
-				for (var i = Items.Length - 1; i >= ItemLimit; i--)
+				for (var i = Items.Count - 1; i >= ItemLimit; i--)
 				{
 					var itemContainer = Items[i];
 					itemContainer.Enabled = true;
@@ -134,24 +140,24 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		//	return Items.Any(ic => ic.Item == item);
 		//}
 
-		//public bool TryAddItem(IItem item)
-		//{
-		//	if (item != null)
-		//	{
-		//		for (var i = 0; i < ItemLimit; i++)
-		//		{
-		//			var itemContainer = Items[i];
-		//			if (itemContainer.Item == null)
-		//			{
-		//				Items[i].Item = item;
-		//				//TODO: implement with message
-		//				//item.OnEnterNode(this);
-		//				return true;
-		//			}
-		//		}
-		//	}
-		//	return false;
-		//}
+		public bool TryAddItem(IEntity item)
+		{
+			if (item != null)
+			{
+				for (var i = 0; i < ItemLimit; i++)
+				{
+					var itemContainer = Items[i];
+					if (itemContainer.Item == null)
+					{
+						Items[i].Item = item;
+						//TODO: implement with message
+						//item.OnEnterNode(this);
+						return true;
+					}
+				}
+			}
+			return false;
+		}
 
 
 		#endregion

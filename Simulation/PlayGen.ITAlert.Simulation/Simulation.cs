@@ -7,10 +7,14 @@ using Engine.Components;
 using Engine.Entities;
 using Engine;
 using Engine.Common;
+using Engine.Components.Common;
 using Engine.Core.Components;
+using Engine.Core.Entities;
 using Engine.Core.Serialization;
+using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Exceptions;
@@ -22,6 +26,10 @@ using PlayGen.ITAlert.Simulation.Visitors.Actors;
 using PlayGen.ITAlert.Simulation.Visitors.Actors.Intents;
 using PlayGen.ITAlert.Simulation.Visitors.Actors.Npc;
 using PlayGen.ITAlert.Simulation.Visitors.Items;
+using PlayGen.ITAlert.Simulation.VisitorsProperty;
+using PlayGen.ITAlert.Simulation.VisitorsProperty.Actors;
+using PlayGen.ITAlert.Simulation.VisitorsProperty.Actors.Intents;
+using PlayGen.ITAlert.Simulation.VisitorsProperty.Items;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -29,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation
 	/// Simulation class
 	/// Handles all autonomous functionality of the game
 	/// </summary>
-	public class Simulation : ISimulation
+	public class Simulation
 	{
 		private bool _disposed;
 
@@ -92,13 +100,17 @@ namespace PlayGen.ITAlert.Simulation
 
 		//#endregion
 
+		private readonly EntityRegistry _entityRegistry;
+
 		#region constructors
 
 		public Simulation(SimulationConfiguration configuration)
 		{
 			ComponentConfiguration = configuration.ComponentConfiguration;
 
-			InitializeGraphEntities();
+			_entityRegistry = new EntityRegistry();
+
+			InitializeGraphEntities(configuration);
 		}
 
 		[Obsolete("This is not obsolete; it should never be called explicitly apart form by unit tests, it mainly exists for the serializer.", false)]
@@ -128,14 +140,14 @@ namespace PlayGen.ITAlert.Simulation
 			
 		}
 
-		private void InitializeGraphEntities()
+		private void InitializeGraphEntities(SimulationConfiguration configuration)
 		{
 			LayoutSystems(configuration.NodeConfiguration, configuration.EdgeConfiguration);
 
 			var subsystems = CreateSystems(configuration.NodeConfiguration);
-			CreateConnections(subsystems, configuration.EdgeConfiguration);
+			var connections = CreateConnections(subsystems, configuration.EdgeConfiguration);
 
-			CalculatePaths();
+			CalculatePaths(subsystems, connections);
 
 			CreatePlayers(subsystems, configuration.PlayerConfiguration);
 			CreateItems(subsystems, configuration.ItemConfiguration);
@@ -158,31 +170,90 @@ namespace PlayGen.ITAlert.Simulation
 
 			var width = nodeConfigs.Max(v => v.X) - nodeConfigs.Min(v => v.X);
 			var height = nodeConfigs.Max(v => v.Y) - nodeConfigs.Min(v => v.Y);
-			GraphSize = new Vector(width, height);
+			var graphSize = new Vector(width, height);
 		}
 
-		public Dictionary<int, ISystem> CreateSystems(List<NodeConfig> nodeConfigs)
+		public Dictionary<int, IEntity> CreateSystems(List<NodeConfig> nodeConfigs)
 		{
 			return nodeConfigs.ToDictionary(sc => sc.Id, CreateSystem);
 		}
+		
 
-		public List<IConnection> CreateConnections(Dictionary<int, ISystem> subsystems, List<EdgeConfig> edgeConfigs)
+		public IEntity CreateSystem(NodeConfig config)
+		{
+			var subsystem = new Entity(_entityRegistry);
+			switch (config.Type)
+			{
+				case NodeType.Default:
+				default:
+					ComponentConfiguration.PopulateContainerForArchetype("Subsystem", subsystem);
+
+					config.EntityId = subsystem.Id;
+
+					//SystemsByLogicalId.Add(config.Id, subsystem);
+					break;
+			}
+
+			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
+			subsystem.GetComponent<Name>().SetValue(config.Name);
+
+			subsystem.GetComponent<ItemStorageProperty>().SetItemLimit(4);
+			subsystem.GetComponent<ItemStorageProperty>().SetOverLimitBehaviour(ItemStorageProperty.OverLimitBehaviour.Dispose);
+
+			_entityRegistry.AddEntity(subsystem);
+
+			return subsystem;
+		}
+
+		public List<IEntity> CreateConnections(Dictionary<int, IEntity> subsystems, List<EdgeConfig> edgeConfigs)
 		{
 			return edgeConfigs.Select(cc => CreateConnection(subsystems, cc)).ToList();
 		}
 
-		private void CreateItems(Dictionary<int, System> subsystems, List<ItemConfig> itemConfigs)
+		public IEntity CreateConnection(Dictionary<int, IEntity> subsystems, EdgeConfig edgeConfig)
+		{
+			var connection = new Entity(_entityRegistry);
+
+			ComponentConfiguration.PopulateContainerForArchetype(Archetypes.Connection.Name, connection);
+
+
+			var head = subsystems[edgeConfig.Source];
+			var tail = subsystems[edgeConfig.Destination];
+
+			connection.GetComponent<MovementCost>().SetValue(edgeConfig.Weight);
+
+			connection.GetComponent<EntrancePositions>().Value.Add(head.Id, 0);
+			connection.GetComponent<ExitPositions>().Value.Add(tail.Id, SimulationConstants.ConnectionPositions * edgeConfig.Length);
+
+			head.GetComponent<ExitPositions>().Value.Add(connection.Id, edgeConfig.SourcePosition.ToPosition(SimulationConstants.SubsystemPositions));
+			tail.GetComponent<EntrancePositions>().Value.Add(connection.Id, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
+
+			edgeConfig.EntityId = connection.Id;
+			_entityRegistry.AddEntity(connection);
+			return connection;
+		}
+
+		private void CreateItems(Dictionary<int, IEntity> subsystems, List<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
 				var item = CreateItem(itemConfig.Type);
-				subsystems[itemConfig.StartingLocation].TryAddItem(item);
+				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorageProperty>().TryAddItem(item);
 			}
 		}
 
-		private void CalculatePaths()
+		public IEntity CreateItem(ItemType type)
 		{
-			var routes = PathFinder.GenerateRoutes(_systems);
+			var item = new Entity(_entityRegistry);
+			ComponentConfiguration.PopulateContainerForArchetype(type.ToString(), item);
+			_entityRegistry.AddEntity(item);
+			return item;
+		}
+
+
+		private void CalculatePaths(Dictionary<int, IEntity> subsystems, IList<IEntity> connections)
+		{
+			var routes = PathFinder.GenerateRoutes(subsystems.Values, connections);
 
 			foreach (var routeDictionary in routes)
 			{
@@ -211,25 +282,6 @@ namespace PlayGen.ITAlert.Simulation
 		#region entity factory 
 		//TODO: extract to separate class
 
-		public ISystem CreateSystem(NodeConfig config)
-		{
-			System subsystem;
-			switch (config.Type)
-			{
-				case NodeType.Default:
-				default:
-					subsystem = new System(this, config.Id, null, config.X, config.Y)
-					{
-						Name = config.Name
-					};
-					ComponentConfiguration.PopulateContainerOfType(subsystem);
-					config.EntityId = subsystem.Id;
-					SystemsByLogicalId.Add(config.Id, subsystem);
-					break;
-			}
-			AddEntity(subsystem);
-			return subsystem;
-		}
 
 		/// <summary>
 		/// 
@@ -237,38 +289,8 @@ namespace PlayGen.ITAlert.Simulation
 		/// <param name="subsystems">Systems keyed by logical Id</param>
 		/// <param name="edgeConfig"></param>
 		/// <returns></returns>
-		public Connection CreateConnection(Dictionary<int, System> subsystems, EdgeConfig edgeConfig)
-		{
-			var connection = new Connection(this, subsystems[edgeConfig.Source], edgeConfig.SourcePosition, subsystems[edgeConfig.Destination], edgeConfig.Weight);
-			ComponentConfiguration.PopulateContainerOfType(connection);
-			edgeConfig.EntityId = connection.Id;
-			AddEntity(connection);
-			return connection;
-		}
 
-		public IItem CreateItem(ItemType type)
-		{
-			IItem item;
-			switch (type)
-			{
-				case ItemType.Repair:
-					item = new Repair(this);
-					break;
-				case ItemType.Scanner:
-					item = new Scanner(this);
-					break;
-				case ItemType.Cleaner:
-					item = new Cleaner(this);
-					break;
-				//case ItemType.Tracer:
-				// not implemented
-				default:
-					throw new Exception("Unknown item type");
-			}
-			ComponentConfiguration.PopulateContainerOfType(item);
-			AddEntity(item);
-			return item;
-		}
+
 
 		public Player CreatePlayer(PlayerConfig playerConfig)
 		{

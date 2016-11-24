@@ -1,10 +1,10 @@
-﻿using PlayGen.ITAlert.Simulation.VisitorsProperty;
+﻿using Engine.Core.Entities;
 
-namespace PlayGen.ITAlert.Simulation.Systems
+namespace PlayGen.ITAlert.Simulation.Components
 {
 	public class ItemContainer
 	{
-		public IItem Item { get; set; }
+		public IEntity Item { get; set; }
 
 		public bool HasItem => Item != null;
 

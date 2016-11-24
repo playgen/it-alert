@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Core.Components;
 
 namespace Engine.Entities
@@ -14,20 +15,20 @@ namespace Engine.Entities
 		where TComponent : IComponent
 	{
 		// ReSharper disable FieldCanBeMadeReadOnly.Local
-		private Dictionary<Type, TComponent> _components;
+		private HashSet<TComponent> _components;
 
 		private Dictionary<Type, IEnumerable<TComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<TComponent>>();
 		// ReSharper restore FieldCanBeMadeReadOnly.Local
 
 		private bool _disposed;
 
-		protected IList<TComponent> Components => _components.Values.ToList();
+		protected IList<TComponent> Components => _components.ToList();
 
 		#region constructors
 
 		public ComponentContainer()
 		{
-			_components = new Dictionary<Type, TComponent>();
+			_components = new HashSet<TComponent>();
 		}
 
 		#endregion
@@ -44,7 +45,7 @@ namespace Engine.Entities
 			if (_disposed == false)
 			{
 				_disposed = true;
-				foreach (var component in _components.Values)
+				foreach (var component in _components)
 				{
 					component.Dispose();
 				}
@@ -57,34 +58,27 @@ namespace Engine.Entities
 
 		public void AddComponent(TComponent component)
 		{
-			_components.Add(component.GetType(), component);
+			_components.Add(component);
+		}
+		public bool HasComponent<TComponentInterface>()
+			where TComponentInterface : class, TComponent
+		{
+			return GetComponentsInternal<TComponentInterface>().Any();
 		}
 
-		public TConcreteComponent GetComponent<TConcreteComponent>()
-			where TConcreteComponent : class, TComponent
+		public TComponentInterface GetComponent<TComponentInterface>()
+			where TComponentInterface : class, TComponent
 		{
-			TComponent component;
-			if (_components.TryGetValue(typeof(TConcreteComponent), out component))
-			{
-				return component as TConcreteComponent;
-			}
-			return null;
+			return GetComponentsInternal<TComponentInterface>().Single();
 		}
 
-		public bool TryGetComponent<TConcreteComponent>(out TConcreteComponent tComponent)
-			where TConcreteComponent : class, TComponent
+		public IEnumerable<TComponentInterface> GetComponents<TComponentInterface>()
+			where TComponentInterface : class, TComponent
 		{
-			TComponent component;
-			if (_components.TryGetValue(typeof(TConcreteComponent), out component))
-			{
-				tComponent = component as TConcreteComponent;
-				return tComponent != null;
-			}
-			tComponent = null;
-			return false;
+			return GetComponentsInternal<TComponentInterface>();
 		}
-		
-		public IEnumerable<TComponentInterface> GetComponentsImplmenting<TComponentInterface>()
+
+		private IEnumerable<TComponentInterface> GetComponentsInternal<TComponentInterface>()
 			where TComponentInterface : class, TComponent
 		{
 			IEnumerable<TComponent> components;
@@ -93,23 +87,18 @@ namespace Engine.Entities
 				components = GenerateComponentImplementorCache<TComponentInterface>();
 				_componentsByImplementation.Add(typeof(TComponentInterface), components);
 			}
-
 			return components.Cast<TComponentInterface>();
+		}
+
+		public bool HasComponentsImplmenting<TComponentInterface>()
+			where TComponentInterface : class, TComponent
+		{
+			return GetComponents<TComponentInterface>().Any();
 		}
 
 		private IEnumerable<TComponent> GenerateComponentImplementorCache<TComponentInterface>()
 		{
-			var implementors = _components.Keys.Where(t => typeof(TComponentInterface).IsAssignableFrom(t));
-			return implementors.Select(i => _components[i]);
-		}
-
-		public void ForEachComponentImplementing<TComponentInterface>(Action<TComponentInterface> executeDelegate)
-			where TComponentInterface : class, TComponent
-		{
-			foreach (var component in GetComponentsImplmenting<TComponentInterface>())
-			{
-				executeDelegate(component);
-			}
+			return _components.Where(t => t is TComponentInterface);
 		}
 
 		#endregion

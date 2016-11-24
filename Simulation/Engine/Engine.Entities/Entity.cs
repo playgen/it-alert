@@ -12,7 +12,7 @@ namespace Engine.Entities
 	{
 
 		#region constructors
-		protected Entity(IEntityRegistry entityRegistry)
+		public Entity(IEntityRegistry entityRegistry)
 			: base()
 		{
 			NotNullHelper.ArgumentNotNull(entityRegistry, nameof(entityRegistry));
@@ -23,7 +23,7 @@ namespace Engine.Entities
 		/// <summary>
 		/// Serialization constructor
 		/// </summary>
-		protected Entity()
+		private Entity()
 		{
 			
 		}

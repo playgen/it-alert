@@ -14,6 +14,6 @@ namespace Engine.Components.Property
 
 	public interface IPropertyComponent<TPropertyType> : IReadOnlyPropertyComponent<TPropertyType>
 	{
-		void Set(TPropertyType value);
+		void SetValue(TPropertyType value);
 	}
 }

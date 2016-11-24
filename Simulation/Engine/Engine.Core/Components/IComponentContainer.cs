@@ -9,16 +9,11 @@ namespace Engine.Core.Components
 	public interface IComponentContainer<in TComponent>
 		where TComponent : IComponent
 	{
-		//ISubject<IMessage> MessageHub { get; }
-
 		void AddComponent(TComponent component);
+		bool HasComponent<TComponentInterface>() where TComponentInterface : class, TComponent;
 
-		TConcreteComponent GetComponent<TConcreteComponent>() where TConcreteComponent : class, TComponent;
-
-		bool TryGetComponent<TConcreteComponent>(out TConcreteComponent tComponent) where TConcreteComponent : class, TComponent;
-
-		IEnumerable<TComponentInterface> GetComponentsImplmenting<TComponentInterface>() where TComponentInterface : class, TComponent;
-
-		void ForEachComponentImplementing<TComponentInterface>(Action<TComponentInterface> executeDelegate) where TComponentInterface : class, TComponent;
+		TComponentInterface GetComponent<TComponentInterface>() where TComponentInterface : class, TComponent;
+		
+		IEnumerable<TComponentInterface> GetComponents<TComponentInterface>() where TComponentInterface : class, TComponent;
 	}
 }

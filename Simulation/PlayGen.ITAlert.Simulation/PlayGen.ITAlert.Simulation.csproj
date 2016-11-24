@@ -48,9 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archetypes\Connection.cs" />
-    <Compile Include="Archetypes\Node.cs" />
-    <Compile Include="Archetypes\Subsystem.cs" />
+    <Compile Include="Archetypes.cs" />
     <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
     <Compile Include="Components\Flags\Node.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
@@ -103,14 +101,6 @@
     <Compile Include="Intents\InfectSystemIntent.cs" />
     <Compile Include="Intents\MoveIntent.cs" />
     <Compile Include="Intents\PickUpItemIntent.cs" />
-    <Compile Include="Archetypes\Virus.cs" />
-    <Compile Include="Archetypes\Player.cs" />
-    <Compile Include="Archetypes\Cleaner.cs" />
-    <Compile Include="Archetypes\Item.cs" />
-    <Compile Include="Archetypes\Repair.cs" />
-    <Compile Include="Archetypes\Scanner.cs" />
-    <Compile Include="Archetypes\SubsystemModulator.cs" />
-    <Compile Include="Components\Visitor.cs" />
     <Compile Include="Components\ItemContainer.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Initialization\GraphValidator.cs" />
@@ -131,6 +121,10 @@
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
       <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
       <Name>Engine.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Components.Common\Engine.Components.Common.csproj">
+      <Project>{888032D2-38BB-4339-B4FA-744AAC836DB5}</Project>
+      <Name>Engine.Components.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Planning\Engine.Planning.csproj">
       <Project>{5fbde4c0-3c96-4685-acd6-0e6c170e1e4c}</Project>

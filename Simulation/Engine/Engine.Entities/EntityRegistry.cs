@@ -5,6 +5,11 @@ using Engine.Core.Serialization;
 
 namespace Engine.Entities
 {
+	public class EntityRegistry : EntityRegistry<IEntity>
+	{
+		
+	}
+
 	public class EntityRegistry<TGameEntity> : IEntityRegistry<TGameEntity>
 		where TGameEntity : class, IEntity
 	{

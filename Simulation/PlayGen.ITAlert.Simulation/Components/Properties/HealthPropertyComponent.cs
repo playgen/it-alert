@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		public void ApplyDelta(int delta)
 		{
-			Set(Value + delta);
+			SetValue(Value + delta);
 		}
 	}
 }

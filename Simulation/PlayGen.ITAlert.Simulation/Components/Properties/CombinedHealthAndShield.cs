@@ -27,10 +27,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		#endregion
 
-		public override void Set(int value)
+		public override void SetValue(int value)
 		{
 			var newValue = Math.Max(0, Math.Min(SimulationConstants.MaxHealth, value));
-			base.Set(newValue);
+			base.SetValue(newValue);
 		}
 
 		protected override int GetValue()

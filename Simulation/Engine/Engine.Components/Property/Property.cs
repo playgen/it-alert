@@ -51,7 +51,7 @@ namespace Engine.Components.Property
 		{
 		}
 
-		public virtual void Set(TValue value)
+		public virtual void SetValue(TValue value)
 		{
 			_value = value;
 		}
