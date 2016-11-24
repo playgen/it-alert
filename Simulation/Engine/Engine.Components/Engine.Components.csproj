@@ -46,6 +46,7 @@
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
     <Compile Include="Component.cs" />
     <Compile Include="ComponentConfiguration.cs" />
+    <Compile Include="ComponentLookupException.cs" />
     <Compile Include="ComponentRegistry.cs" />
     <Compile Include="ComponentUsageException.cs" />
     <Compile Include="ComponentUsageAttribute.cs" />

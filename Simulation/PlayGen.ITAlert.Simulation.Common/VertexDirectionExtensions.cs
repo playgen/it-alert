@@ -29,6 +29,27 @@ namespace PlayGen.ITAlert.Simulation.Common
 			}
 		}
 
+		public static EdgeDirection FromPosition(this int position, int positions)
+		{
+			if (positions == 0)
+			{
+				return EdgeDirection.North;
+			}
+			if (position == positions/4)
+			{
+				return EdgeDirection.East;
+			}
+			if (position == positions / 2)
+			{
+				return EdgeDirection.South;
+			}
+			if (position == (3 * positions) / 4)
+			{
+				return EdgeDirection.West;
+			}
+			throw new Exception("Position was not an exact EdgeDirection");
+		}
+
 		public static int PositionsToExit(this EdgeDirection direction, EdgeDirection exit)
 		{
 			return (EdgeDirectionMax + ((int) exit - (int) direction)) % EdgeDirectionMax;

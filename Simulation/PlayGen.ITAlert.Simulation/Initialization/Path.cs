@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Initialization
 {
 	public class Path : IComparable<Path>
 	{
-		public List<Systems.System> Nodes { get; private set; }
+		public List<int> Nodes { get; private set; }
 
 		public int ConnectionCost { get; private set; }
 		public int SystemCost { get; private set; }
 
-		public Path(Systems.System start)
+		public Path(int start)
 		{
-			Nodes = new List<Systems.System>() { start };
+			Nodes = new List<int>() { start };
 		}
 
 		public Path(Path path)
 		{
-			Nodes = new List<Systems.System>(path.Nodes);
+			Nodes = new List<int>(path.Nodes);
 			ConnectionCost = path.ConnectionCost;
 			SystemCost = path.SystemCost;
 		}
@@ -30,7 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 			Nodes.Add(node.System);
 		}
 
-		public bool HasNode(Systems.System node)
+		public bool HasNode(int node)
 		{
 			return Nodes.Contains(node);
 		}

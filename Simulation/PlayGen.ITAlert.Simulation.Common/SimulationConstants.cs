@@ -8,9 +8,13 @@
 		LowestShieldAndCost,	
 	}
 
+	/// <summary>
+	/// This is where tuning constants for the simulation engine should be declared
+	/// </summary>
 	public static class SimulationConstants
 	{
-		public const int Positions = 24;
+		public const int SubsystemPositions = 24;
+		public const int ConnectionPositions = 24;
 
 		public const int ConnectionMinWeight = 1;
 		//TODO: max weight only really exists because of the prioirty generation in the pathfinding algorithm
@@ -19,7 +23,7 @@
 		/// <summary>
 		/// number of units to mvoe every tick
 		/// </summary>
-		public const int MaxSpeed = 4;
+		public const int PlayerMaxSpeed = 4;
 
 
 		/// <summary>

@@ -9,10 +9,10 @@ using Engine.Core.Entities;
 
 namespace Engine.Components.Common
 {
-	public class CartesianCoordinate2DProperty : Property<Vector>
+	public class Coordinate2DProperty : Property<Vector>
 	{
-		public CartesianCoordinate2DProperty(IEntity entity, Vector value) 
-			: base(entity, value)
+		public Coordinate2DProperty(IEntity entity) 
+			: base(entity)
 		{
 		}
 	}

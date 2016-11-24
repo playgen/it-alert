@@ -1,25 +1,21 @@
-﻿using Engine.Components;
-using Engine.Components.Property;
-using Engine.Core.Components;
-using PlayGen.ITAlert.Simulation.Systems;
+﻿using Engine.Components.Property;
+using Engine.Core.Entities;
 using PlayGen.ITAlert.Simulation.Systems.Messages;
 
-namespace PlayGen.ITAlert.Simulation.VisitorsProperty.Properties
+namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	[ComponentUsage(typeof(IVisitor))]
-	public class CurrentLocationProperty : Property<INode>
+	public class CurrentLocationProperty : Property<int>
 	{
 		public CurrentLocationProperty(IEntity entity) 
-			: base(container, "CurrentLocation", true)
+			: base(entity)
 		{
-			Observer.AddSubscription<VisitorEnteredNodeMessage>(VisitorEnteredNode);
 
 		}
 
 		private void VisitorEnteredNode(VisitorEnteredNodeMessage visitorEnteredNodeMessage)
 		{
-			if (visitorEnteredNodeMessage.Visitor.Equals())
-			Set(visitorEnteredNodeMessage.Node);
+			//if (visitorEnteredNodeMessage.Visitor.Equals())
+			//SetValue(visitorEnteredNodeMessage.Node);
 		}
 	}
 }

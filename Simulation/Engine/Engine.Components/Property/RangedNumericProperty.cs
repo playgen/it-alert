@@ -31,10 +31,10 @@ namespace Engine.Components.Property
 		{
 		}
 
-		public override void Set(int value)
+		public override void SetValue(int value)
 		{
 			value = Math.Max(MinValue, Math.Min(MaxValue, value));
-			base.Set(value);
+			base.SetValue(value);
 		}
 	}
 
@@ -48,10 +48,10 @@ namespace Engine.Components.Property
 		{
 		}
 
-		public override void Set(double value)
+		public override void SetValue(double value)
 		{
 			value = Math.Max(MinValue, Math.Min(MaxValue, value));
-			base.Set(value);
+			base.SetValue(value);
 		}
 	}
 }

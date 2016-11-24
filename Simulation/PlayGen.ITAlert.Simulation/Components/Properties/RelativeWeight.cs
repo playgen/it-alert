@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			//// calculate weight
 			//var length = Math.Max(1, Math.Max(Math.Abs(Head.X - Tail.X), Math.Abs(Head.Y - Tail.Y)));
 			//RelativeWeight = weight;
-			//Weight = Positions * weight * length;
+			//Weight = ConnectionPositions * weight * length;
 			return 0;
 		} 
 	}
