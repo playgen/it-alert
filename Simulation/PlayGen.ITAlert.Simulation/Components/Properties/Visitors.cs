@@ -13,11 +13,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		 
 	}
 
-	public class Visitors : ReadOnlyProperty<Dictionary<int, VisitorPosition>>, IEmitState<VisitorPositionState>
+	public class Visitors : ReadOnlyProperty<Dictionary<int, IEntity>>, IEmitState<VisitorPositionState>
 	{
 		#region contructor
 
-		public Visitors(IEntity entity, int positions) 
+		public Visitors(IEntity entity) 
 			: base(entity)
 		{
 			AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
@@ -32,11 +32,12 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		public object GetState()
 		{
-			return Value.Aggregate(new VisitorPositionState(), (vps, kvp) =>
-			{
-				vps.Add(kvp.Key, kvp.Value.Position);
-				return vps;
-			});
+			//return Value.Aggregate(new VisitorPositionState(), (vps, kvp) =>
+			//{
+			//	vps.Add(kvp.Key, kvp.Value.Position);
+			//	return vps;
+			//});
+			return null;
 		}
 
 	}

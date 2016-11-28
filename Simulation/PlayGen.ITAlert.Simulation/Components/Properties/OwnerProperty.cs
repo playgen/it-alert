@@ -1,14 +1,12 @@
-﻿using Engine.Components;
-using Engine.Components.Property;
-using Engine.Core.Components;
+﻿using Engine.Components.Property;
+using Engine.Core.Entities;
 
-namespace PlayGen.ITAlert.Simulation.VisitorsProperty.Properties
+namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	[ComponentUsage(typeof(IItem))]
-	public class OwnerProperty : Property<IITAlertEntity>
+	public class OwnerProperty : Property<int>
 	{
 		public OwnerProperty(IEntity entity) 
-			: base(container, "Owner", true)
+			: base(entity)
 		{
 		}
 	}

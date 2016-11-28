@@ -1,6 +1,6 @@
 ﻿using Engine.Core.Messaging;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Messages
+namespace PlayGen.ITAlert.Simulation.Components.Messages
 {
 	public class DamageNodeMessage : Message
 	{

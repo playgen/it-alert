@@ -1,6 +1,6 @@
 ﻿using Engine.Components.Property;
 using Engine.Core.Entities;
-using PlayGen.ITAlert.Simulation.Systems.Messages;
+using PlayGen.ITAlert.Simulation.Components.Messages;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {

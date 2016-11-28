@@ -1,4 +1,6 @@
-﻿namespace PlayGen.ITAlert.Simulation.VisitorsProperty.Actors.Intents
+﻿using Engine.Planning;
+
+namespace PlayGen.ITAlert.Simulation.Intents
 {
 	public class DisownItemIntent : Intent
 	{

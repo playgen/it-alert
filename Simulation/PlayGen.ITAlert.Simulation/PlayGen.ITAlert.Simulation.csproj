@@ -50,17 +50,18 @@
   <ItemGroup>
     <Compile Include="Archetypes.cs" />
     <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
+    <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
+    <Compile Include="Components\Behaviours\IMovementComponent.cs" />
+    <Compile Include="Components\Behaviours\ConnectionMovement.cs" />
     <Compile Include="Components\Flags\Node.cs" />
+    <Compile Include="Components\Properties\GraphNode.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
     <Compile Include="Components\Properties\MovementSpeed.cs" />
     <Compile Include="MovementMethod.cs" />
     <Compile Include="Systems\VisitorMovement.cs" />
-    <Compile Include="Components\Behaviours\NetworkRoutes.cs" />
     <Compile Include="Components\Messages\VisitorMessage.cs" />
     <Compile Include="Components\Properties\Movement.cs" />
     <Compile Include="Components\Properties\ExitRoutes.cs" />
-    <Compile Include="Components\Properties\ExitPositionsProperty.cs" />
-    <Compile Include="Components\Properties\EntrancePositions.cs" />
     <Compile Include="Components\Properties\IMovementType.cs" />
     <Compile Include="Components\Properties\MovementCost.cs" />
     <Compile Include="Components\Properties\Name.cs" />
@@ -71,9 +72,8 @@
     <Compile Include="Layout\EdgeDirection.cs" />
     <Compile Include="Components\Properties\OwnerProperty.cs" />
     <Compile Include="Components\Behaviours\VisitorPosition.cs" />
-    <Compile Include="Components\ConsumeMemoryPropertyComponent.cs" />
     <Compile Include="Components\VisitorBehaviourComponent.cs" />
-    <Compile Include="Components\Properties\VisitorsProperty.cs" />
+    <Compile Include="Components\Properties\Visitors.cs" />
     <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
     <Compile Include="Components\Behaviours\ConsumeMemoryBehaviour.cs" />
     <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
@@ -83,20 +83,6 @@
     <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />
     <Compile Include="Components\Properties\SystemMemoryProperty.cs" />
     <Compile Include="Components\Properties\SystemProcessorPropertyComponent.cs" />
-    <Compile Include="Components\IActor.cs" />
-    <Compile Include="Components\IConnection.cs" />
-    <Compile Include="Components\IItem.cs" />
-    <Compile Include="Components\INodeComponent.cs" />
-    <Compile Include="Components\INodeEvents.cs" />
-    <Compile Include="Extensions\IntentExtensions.cs" />
-    <Compile Include="Components\IPlayer.cs" />
-    <Compile Include="ISimulation.cs" />
-    <Compile Include="Components\ISystem.cs" />
-    <Compile Include="Components\ISystemComponent.cs" />
-    <Compile Include="Components\IVirusComponent.cs" />
-    <Compile Include="Components\IVisitorComponent.cs" />
-    <Compile Include="Components\Extensions\IItemArrayExtensions.cs" />
-    <Compile Include="VisitorPositionExtensions.cs" />
     <Compile Include="Intents\DisownItemIntent.cs" />
     <Compile Include="Intents\InfectSystemIntent.cs" />
     <Compile Include="Intents\MoveIntent.cs" />
@@ -167,7 +153,10 @@
       <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Components\Extensions\" />
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

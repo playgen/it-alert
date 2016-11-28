@@ -17,7 +17,9 @@ namespace Engine.Components.Property
 
 		private StateBucket GetStateBucket()
 		{
-			var stateDict = Entity.GetComponentsImplmenting<IEmitState>().Select(c => c.GetState()).ToDictionary(k => k.GetType(), v => v);
+			var stateDict = Entity.GetComponents<IEmitState>()
+				.Select(c => c.GetState())
+				.ToDictionary(k => k.GetType(), v => v);
 			return new StateBucket(stateDict);
 		}
 	}

@@ -46,11 +46,9 @@
     <Compile Include="Entity.cs" />
     <Compile Include="EntityRegistry.cs" />
     <Compile Include="EntityRegistryException.cs" />
-    <Compile Include="ITickableEntity.cs" />
     <Compile Include="Messages\EntityDestroyedMessage.cs" />
     <Compile Include="Messaging\MessageHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TickableEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine.Components\Engine.Components.csproj">

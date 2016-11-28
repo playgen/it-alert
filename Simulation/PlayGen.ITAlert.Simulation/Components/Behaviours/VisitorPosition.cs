@@ -1,29 +1,39 @@
 ﻿using System;
+using System.Reactive.Disposables;
+using Engine.Components;
+using Engine.Components.Messaging;
 using Engine.Core.Entities;
 using Engine.Core.Serialization;
-using PlayGen.ITAlert.Simulation.VisitorsProperty;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
-	public class VisitorPosition
+	public class VisitorPosition : Component
 	{
-		[SyncState(StateLevel.Differential)]
-		public IEntity Visitor { get; }
-
-		[SyncState(StateLevel.Differential)]
 		public int CurrentTick { get; private set; }
 
-		[SyncState(StateLevel.Differential)]
 		public int Position { get; private set; }
 
-		public IDisposable VisitorSubscription { get; private set; }
+		public IEntity Host { get; private set; }
 
-		public VisitorPosition(IEntity visitor, int position, int currentTick, IDisposable visitorSubscription)
+		private IDisposable _visitorSubscription;
+
+		public VisitorPosition(IEntity entity) 
+			: base(entity)
 		{
-			Visitor = visitor;
-			Position = position;
-			CurrentTick = currentTick;
-			VisitorSubscription = visitorSubscription;
+
+			// host subscribe to messages from the visitor
+			// visitor subscribe to messages from the host
+		}
+
+		public void SetHost(IEntity host)
+		{
+			Host = host;
+			_visitorSubscription?.Dispose();
+			_visitorSubscription = new CompositeDisposable
+			{
+				Host.Subscribe(Entity),
+				Entity.Subscribe(Host),
+			};
 		}
 
 		/// <summary>
@@ -32,7 +42,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 		/// <param name="position"></param>
 		/// <param name="currentTick"></param>
 		/// <returns>True if the position was updated. False if this position has been updated already this tick.</returns>
-		public bool UpdatePosition(int position, int currentTick)
+		public bool SetPosition(int position, int currentTick)
 		{
 			if (currentTick > CurrentTick)
 			{
@@ -41,6 +51,12 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 				return true;
 			}
 			return false;
+		}
+
+		protected override void OnDispose()
+		{
+			_visitorSubscription?.Dispose();
+			base.OnDispose();
 		}
 	}
 }
