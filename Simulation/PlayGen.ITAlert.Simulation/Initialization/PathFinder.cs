@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 			foreach (var subsystemKvp in subsystemsById)
 			{
 				var otherSystems = subsystemsById.Values.Except(new[] {subsystemKvp.Value}).ToList();
-				var routesThisSystem = new Dictionary<ISystem, IConnection[]>(otherSystems.Count);
+				//var routesThisSystem = new Dictionary<ISystem, IConnection[]>(otherSystems.Count);
 
 				foreach (var otherSystem in otherSystems)
 				{
@@ -38,16 +38,21 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 					//}
 					//else
 					//{
-					var paths = FindPaths(subsystems, subsystemKvp.Value, otherSystem);
+					var paths = FindPaths(subsystemsById, connectionsById, subsystemKvp.Value, otherSystem);
 
-					var exitConnections = paths
-						.Where(p => p.Nodes.Count > 1) // there is more than just the start node
-						.Select(p => subsystemsById[p.Nodes.First()].GetComponent<ExitPositions>().Value.Select(en => en.Value.Node).OfType<Connection>().Single(c => c.Tail == p.Nodes[1]));
-					routesThisSystem.Add(otherSystem, exitConnections.ToArray());
+					//TODO: reimplement
+					//var exitConnections = paths
+					//	.Where(p => p.Nodes.Count > 1) // there is more than just the start node
+					//	.Select(p => subsystemsById[p.Nodes.First()]
+					//		.GetComponent<ExitPositions>().Value
+					//		.Select(en => en.Value.Node)
+					//		.Single(c => c.Tail == p.Nodes[1])
+					//	);
+					//routesThisSystem.Add(otherSystem, exitConnections.ToArray());
 					//}
 				}
 
-				routesBySource.Add(subsystemKvp.Key, routesThisSystem);
+				//routesBySource.Add(subsystemKvp.Key, routesThisSystem);
 			}
 
 			return routesBySource;
@@ -60,7 +65,7 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 		/// <param name="source"></param>
 		/// <param name="destination"></param>
 		/// <returns></returns>
-		public static List<Path> FindPaths(Dictionary<int, IEntity> subsystems, IEntity source, IEntity destination)
+		public static List<Path> FindPaths(Dictionary<int, IEntity> subsystems, Dictionary<int, IEntity> connections, IEntity source, IEntity destination)
 		{
 			var paths = new SimplePriorityQueue<Path>();
 
@@ -87,44 +92,45 @@ namespace PlayGen.ITAlert.Simulation.Initialization
 						.FromPosition(SimulationConstants.SubsystemPositions)
 					: (EdgeDirection?) null;
 
-				foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint))
-				{
-					if (currentPath.HasNode(neighbourNode.System) == false)
-					{
-						var newPath = new Path(currentPath);
-						newPath.AddNode(neighbourNode);
+				//foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint, connections))
+				//{
+				//	if (currentPath.HasNode(neighbourNode.System) == false)
+				//	{
+				//		var newPath = new Path(currentPath);
+				//		newPath.AddNode(neighbourNode);
 
-						if (neighbourNode.System == destination)
-						{
-							if (newPath.IsCheaperThanOrEqualTo(bestPath))
-							{
-								if (newPath.IsCheaperThan(bestPath))
-								{
-									bestPaths.Clear();
-								}
-								bestPath = newPath.Priority;
-								bestPaths.Add(newPath);
-							}
-						}
-						else if (newPath.IsCheaperThanOrEqualTo(bestPath))
-						{
-							paths.Enqueue(newPath, newPath.Priority);
-						}
-					}
-				}
+				//		if (neighbourNode.System == destination)
+				//		{
+				//			if (newPath.IsCheaperThanOrEqualTo(bestPath))
+				//			{
+				//				if (newPath.IsCheaperThan(bestPath))
+				//				{
+
+				//					bestPaths.Clear();
+				//				}
+				//				bestPath = newPath.Priority;
+				//				bestPaths.Add(newPath);
+				//			}
+				//		}
+				//		else if (newPath.IsCheaperThanOrEqualTo(bestPath))
+				//		{
+				//			paths.Enqueue(newPath, newPath.Priority);
+				//		}
+				//	}
+				//}
 			}
 
 			return bestPaths;
 		}
 
-		private static List<NeighbourNode> GetAdjacentNodes(IEntity source, EdgeDirection? entryPoint)
+		private static List<NeighbourNode> GetAdjacentNodes(IEntity source, EdgeDirection? entryPoint, Dictionary<int, IEntity> connections)
 		{
-			return source.GetComponent<ExitPositions>().Value.Select(node =>  node.Key)
+			return source.GetComponent<ExitPositions>().Value
 				.Select(connection => new NeighbourNode()
 				{
-					System = connection,
-					ConnectionCost = connection. .Weight,
-					SystemCost = entryPoint?.PositionsToExit(connection.HeadPosition) ?? 0
+					System = connection.Key,
+					ConnectionCost = connections[connection.Key].GetComponent<MovementCost>().Value,
+					SystemCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
 				})
 				.ToList();
 		}

@@ -6,10 +6,10 @@ using Engine.Core.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ExitRoutes : ReadOnlyProperty<Dictionary<int, int>>
+	public class ExitRoutes : ReadOnlyProperty<Dictionary<IEntity, IEntity>>
 	{
 		public ExitRoutes(IEntity entity) 
-			: base(entity, new Dictionary<int, int>())
+			: base(entity, new Dictionary<IEntity, IEntity>())
 		{
 		}
 	}

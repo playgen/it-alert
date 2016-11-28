@@ -61,7 +61,6 @@
     <Compile Include="Messaging\DelegatingObserver.cs" />
     <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="Messaging\IMessageComponent.cs" />
-    <Compile Include="Messaging\MessageFactoryComponent.cs" />
     <Compile Include="Messaging\TickMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Property\IEmitState.cs" />

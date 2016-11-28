@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Engine.Core.Entities;
 using Engine.Core.Messaging;
-using PlayGen.ITAlert.Simulation.VisitorsProperty;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Messages
+namespace PlayGen.ITAlert.Simulation.Components.Messages
 {
 	public class VisitorEnteringNodeMessage : Message
 	{
-		public IVisitor Visitor { get; private set; }
+		public IEntity Visitor { get; private set; }
 
-		public INode Source { get; private set; }
+		public IEntity Source { get; private set; }
 
 		public int MovementOverflow { get; private set; }
 
-		public VisitorEnteringNodeMessage(MessageScope scope, IVisitor visitor, INode source, int movementOverflow) 
+		public VisitorEnteringNodeMessage(MessageScope scope, IEntity visitor, IEntity source, int movementOverflow) 
 			: base(scope)
 		{
 			Visitor = visitor;
@@ -26,11 +25,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Messages
 
 	public class VisitorEnteredNodeMessage : Message
 	{
-		public IVisitor Visitor { get; private set; }
+		public IEntity Visitor { get; private set; }
 
-		public INode Node { get; private set; }
+		public IEntity Node { get; private set; }
 
-		public VisitorEnteredNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+		public VisitorEnteredNodeMessage(MessageScope scope, IEntity visitor, IEntity node) 
 			: base(scope)
 		{
 			Visitor = visitor;
@@ -40,11 +39,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Messages
 
 	public class VisitorLeavingNodeMessage : Message
 	{
-		public IVisitor Visitor { get; private set; }
+		public IEntity Visitor { get; private set; }
 
-		public INode Node { get; private set; }
+		public IEntity Node { get; private set; }
 
-		public VisitorLeavingNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+		public VisitorLeavingNodeMessage(MessageScope scope, IEntity visitor, IEntity node) 
 			: base(scope)
 		{
 			Visitor = visitor;
@@ -54,11 +53,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Messages
 
 	public class VisitorLeftNodeMessage : Message
 	{
-		public IVisitor Visitor { get; private set; }
+		public IEntity Visitor { get; private set; }
 
-		public INode Node { get; private set; }
+		public IEntity Node { get; private set; }
 
-		public VisitorLeftNodeMessage(MessageScope scope, IVisitor visitor, INode node) 
+		public VisitorLeftNodeMessage(MessageScope scope, IEntity visitor, IEntity node) 
 			: base(scope)
 		{
 			Visitor = visitor;

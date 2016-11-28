@@ -1,12 +1,13 @@
-﻿using Engine.Planning;
+﻿using Engine.Core.Entities;
+using Engine.Planning;
 
 namespace PlayGen.ITAlert.Simulation.Intents
 {
 	public class MoveIntent : Intent
 	{
-		public int Destination { get; }
+		public IEntity Destination { get; }
 
-		public MoveIntent(int destination)
+		public MoveIntent(IEntity destination)
 		{
 			Destination = destination;
 		}

@@ -9,6 +9,8 @@ namespace Engine.Components
 {
 	public abstract class Component : DelegatingObserver, IComponent
 	{
+		private bool _disposed;
+
 		protected IEntity Entity { get; private set; }
 
 		#region constructor
@@ -30,6 +32,16 @@ namespace Engine.Components
 
 		public virtual void Dispose()
 		{
+			if (_disposed == false)
+			{
+				OnDispose();
+				_disposed = true;
+			}
+		}
+
+		protected virtual void OnDispose()
+		{
+			
 		}
 
 		#endregion

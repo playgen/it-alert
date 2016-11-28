@@ -6,6 +6,7 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Components.Common;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Behaviours;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation
@@ -18,9 +19,8 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Node = new Archetype("Node")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
-				entity => new Visitors(entity, SimulationConstants.SubsystemPositions),
-				entity => new EntrancePositions(entity),
-				entity => new ExitPositions(entity),
+				entity => new Visitors(entity),
+				entity => new GraphNode(entity), 
 				entity => new ExitRoutes(entity), 
 			});
 
@@ -29,29 +29,33 @@ namespace PlayGen.ITAlert.Simulation
 			.Extends(Node)
 			.HasComponent(entity => new Name(entity))
 			.HasComponent(entity => new Coordinate2DProperty(entity))
-			.HasComponent(entity => new Movement(entity)
+			.HasComponent(entity => new SubsystemMovement(entity)
 			{
-				MovementMethod = MovementMethod.Continuous,
 				Positions = SimulationConstants.SubsystemPositions,
 			})			
 			.HasComponent(entity => new ItemStorageProperty(entity));
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
-			.HasComponent(entity => new Movement(entity)
+			.HasComponent(entity => new ConnectionMovement(entity)
 			{
-				MovementMethod = MovementMethod.Linear,
 				Positions = SimulationConstants.ConnectionPositions,
 			});
 
 		private static readonly Archetype Actor = new Archetype("Actor")
-			.HasComponent(entity => new CurrentLocationProperty(entity))
-			.HasComponent(entity => new IntentsProperty(entity));
+			.HasComponents(new ComponentFactoryDelegate[]
+			{
+				entity => new CurrentLocationProperty(entity),
+				entity => new IntentsProperty(entity),
+				entity => new VisitorPosition(entity), 
+			});
 
 		public static readonly Archetype Player = new Archetype("Player")
 			.Extends(Actor)
 			.HasComponent(entity => new Name(entity));
-			
+
+		public static readonly Archetype Virus = new Archetype("Virus")
+			.Extends(Actor);
 	};
 
 }

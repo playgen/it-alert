@@ -13,7 +13,7 @@ namespace Engine.Components
 
 		public ComponentDependencyException(string archetype, Type componentType, Type dependencyType)
 			// ReSharper disable once UseStringInterpolation
-			: base (string.Format("Component dependency not satisfied. EntityType: {0}, ComponentType: {1}, DependencyType: {2}", entityType.AssemblyQualifiedName, componentType.AssemblyQualifiedName, dependencyType.AssemblyQualifiedName))
+			: base (string.Format("Component dependency not satisfied. Archetype: {0}, ComponentType: {1}, DependencyType: {2}", archetype, componentType.AssemblyQualifiedName, dependencyType.AssemblyQualifiedName))
 		{
 			Archetype = archetype;
 			ComponentType = componentType;

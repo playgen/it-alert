@@ -1,21 +1,23 @@
-﻿namespace Engine.Serialization.Tests
-{
-	public class JsonSerializerExperiements
-	{
-		public static void TestReferenceResolution()
-		{
-			var registry = new TestEntityRegistry();
+﻿//using Engine.Entities;
 
-			var entityA = new TestEntity(registry);
-			registry.AddEntity(entityA);
+//namespace Engine.Serialization.Tests
+//{
+//	public class JsonSerializerExperiements
+//	{
+//		public static void TestReferenceResolution()
+//		{
+//			var registry = new EntityRegistry();
 
-			var entityB = new TestEntity(registry);
-			registry.AddEntity(entityB);
+//			var entityA = new Entity(registry);
+//			registry.AddEntity(entityA);
 
-			entityA.OtherEntity = entityB;
-			entityB.OtherEntity = entityA;
+//			var entityB = new Entity(registry);
+//			registry.AddEntity(entityB);
 
-			var result = EntityRegistrySerializer.Serialize(registry);
-		}
-	}
-}
+//			entityA.OtherEntity = entityB;
+//			entityB.OtherEntity = entityA;
+
+//			var result = EntityRegistrySerializer.Serialize(registry);
+//		}
+//	}
+//}
