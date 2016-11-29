@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Components
+namespace Engine.Components
 {
 	public interface IComponent : IDisposable
 	{

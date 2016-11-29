@@ -1,5 +1,5 @@
 ﻿using System;
-using Engine.Core.Entities;
+using Engine.Entities;
 using Newtonsoft.Json.Converters;
 
 namespace Engine.Serialization

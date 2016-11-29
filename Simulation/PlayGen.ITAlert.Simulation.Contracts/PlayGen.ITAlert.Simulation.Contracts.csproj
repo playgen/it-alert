@@ -43,7 +43,6 @@
     <Compile Include="EnhancementState.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Intents\IntentState.cs" />
-    <Compile Include="ITAlertEntityState.cs" />
     <Compile Include="ItemState.cs" />
     <Compile Include="NodeState.cs" />
     <Compile Include="PlayerState.cs" />

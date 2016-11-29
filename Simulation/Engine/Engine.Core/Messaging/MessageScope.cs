@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Messaging
+namespace Engine.Messaging
 {
 	[Flags]
 	public enum MessageScope

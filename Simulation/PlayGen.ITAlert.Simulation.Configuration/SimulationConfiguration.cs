@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using Engine.Archetypes;
 using Engine.Components;
-using Engine.Core.Util;
+using Engine.Systems;
+using Engine.Util;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -13,13 +15,16 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public SimulationRules Rules { get; private set; }
 
-		public ComponentConfiguration ComponentConfiguration { get; private set; }
+		public List<Archetype> Archetypes { get; private set; }
+
+		public List<ISystem> Systems { get; private set; }
 
 		public SimulationConfiguration(List<NodeConfig> nodeConfiguration, 
 			List<EdgeConfig> edgeConfiguration, 
 			List<PlayerConfig> playerConfiguration, 
 			List<ItemConfig> itemConfiguration, 
-			ComponentConfiguration componentConfiguration = null,
+			List<Archetype> archetypes,
+			List<ISystem> systems = null, 
 			SimulationRules rules = null) 
 		{
 			NotNullHelper.ArgumentNotNull(nodeConfiguration, nameof(nodeConfiguration));
@@ -31,8 +36,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			EdgeConfiguration = edgeConfiguration;
 			PlayerConfiguration = playerConfiguration;
 			ItemConfiguration = itemConfiguration;
+			Archetypes = archetypes;
+			Systems = systems ?? new List<ISystem>();
 			Rules = rules ?? new SimulationRules();
-			ComponentConfiguration = componentConfiguration ?? new ComponentConfiguration();
 		}
 	}
 }

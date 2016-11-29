@@ -4,9 +4,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Engine.Components.Behaviour;
-using Engine.Components.Messaging;
-using Engine.Core.Components;
-using Engine.Core.Entities;
+using Engine.Entities;
+using Engine.Messaging;
 
 namespace Engine.Components.Property
 {

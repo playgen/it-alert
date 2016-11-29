@@ -4,8 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Common;
 using Engine.Components.Property;
-using Engine.Core.Components;
-using Engine.Core.Entities;
+using Engine.Entities;
 
 namespace Engine.Components.Common
 {

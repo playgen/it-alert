@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Engine.Core.Entities;
+using Engine.Entities;
 
 namespace Engine.Serialization
 {

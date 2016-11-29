@@ -1,4 +1,4 @@
-﻿using Engine.Core.Messaging;
+﻿using Engine.Messaging;
 
 namespace PlayGen.ITAlert.Simulation.Components.Messages
 {

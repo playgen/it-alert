@@ -29,7 +29,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			return nodeConfigs;
 		}
 
-		public static List<EdgeConfig> GenerateFullyConnectedGrid(int width, int height, int weight)
+		public static List<EdgeConfig> GenerateFullyConnectedConfiguration(int width, int height, int weight)
 		{
 			var edgeConfigs = new List<EdgeConfig>();
 			for (var i = 0; i < height; i++)
@@ -121,9 +121,9 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			return GenerateItemConfig(nodeConfigs, enumCounts);
 		}
 
-		private static ComponentConfiguration GenerateDefaultComponentConfiguration()
+		private static ComponentFactory GenerateDefaultComponentConfiguration()
 		{
-			var configuration = new ComponentConfiguration();
+			var configuration = new ComponentFactory();
 
 			//var subsystemType = typeof(Systems.System);
 			//configuration.AddFactoryMethod(subsystemType, typeof(SystemHealth), (componentContainer) => new SystemHealth(componentContainer, SimulationConstants.MaxHealth, SimulationConstants.MaxHealth));
@@ -138,7 +138,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, int players, Dictionary<ItemType, int> items, int weight)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			var playerConfigs = GeneratePlayerConfigs(nodeConfigs, players);
 			var itemConfigs = GenerateItemConfig(nodeConfigs, items);
 
@@ -151,7 +151,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, Dictionary<ItemType, int> items, int weight)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GenerateItemConfig(nodeConfigs, items);
 
@@ -164,7 +164,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, int players, int items, int weight)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			var playerConfigs = GeneratePlayerConfigs(nodeConfigs, players);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
@@ -177,7 +177,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
@@ -190,7 +190,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight, out List<int> subsystemLogicalIds)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedGrid(width, height, weight);
+			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 

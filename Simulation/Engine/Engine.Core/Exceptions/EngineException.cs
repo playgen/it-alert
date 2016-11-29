@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Exceptions
+namespace Engine.Exceptions
 {
 	public class EngineException : Exception
 	{

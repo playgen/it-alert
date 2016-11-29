@@ -1,5 +1,4 @@
-﻿using Engine.Core.Components;
-using Engine.Core.Entities;
+﻿using Engine.Entities;
 
 namespace Engine.Components.Behaviour
 {

@@ -1,4 +1,4 @@
-﻿namespace Engine.Core.Serialization
+﻿namespace Engine.Serialization
 {
 	public interface ISerializable
 	{

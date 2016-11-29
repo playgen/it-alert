@@ -24,42 +24,42 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
         public void ProcessCommand(ICommand command)
         {
-            if (command == null) return;
+            //if (command == null) return;
 
-            var requestMovePlayerCommand = command as RequestMovePlayerCommand;
-            if (requestMovePlayerCommand != null)
-            {
-                _simulation.RequestMovePlayer(requestMovePlayerCommand.PlayerId, requestMovePlayerCommand.DestinationId);
-                return;
-            }
+            //var requestMovePlayerCommand = command as RequestMovePlayerCommand;
+            //if (requestMovePlayerCommand != null)
+            //{
+            //    _simulation.RequestMovePlayer(requestMovePlayerCommand.PlayerId, requestMovePlayerCommand.DestinationId);
+            //    return;
+            //}
 
-            var requestActivateItemCommand = command as RequestActivateItemCommand;
-            if (requestActivateItemCommand != null)
-            {
-                _simulation.RequestActivateItem(requestActivateItemCommand.PlayerId, requestActivateItemCommand.ItemId);
-                return;
-            }
+            //var requestActivateItemCommand = command as RequestActivateItemCommand;
+            //if (requestActivateItemCommand != null)
+            //{
+            //    _simulation.RequestActivateItem(requestActivateItemCommand.PlayerId, requestActivateItemCommand.ItemId);
+            //    return;
+            //}
 
-            var requestDropItemCommand = command as RequestDropItemCommand;
-            if (requestDropItemCommand != null)
-            {
-                _simulation.RequestDropItem(requestDropItemCommand.PlayerId, requestDropItemCommand.ItemId);
-                return;
-            }
+            //var requestDropItemCommand = command as RequestDropItemCommand;
+            //if (requestDropItemCommand != null)
+            //{
+            //    _simulation.RequestDropItem(requestDropItemCommand.PlayerId, requestDropItemCommand.ItemId);
+            //    return;
+            //}
 
-            var requestPickupItemCommand = command as RequestPickupItemCommand;
-            if (requestPickupItemCommand != null)
-            {
-                _simulation.RequestPickupItem(requestPickupItemCommand.PlayerId, requestPickupItemCommand.ItemId, requestPickupItemCommand.LocationId);
-                return;
-            }
+            //var requestPickupItemCommand = command as RequestPickupItemCommand;
+            //if (requestPickupItemCommand != null)
+            //{
+            //    _simulation.RequestPickupItem(requestPickupItemCommand.PlayerId, requestPickupItemCommand.ItemId, requestPickupItemCommand.LocationId);
+            //    return;
+            //}
 
-            var spawnVirusCommand = command as SpawnVirusCommand;
-            if (spawnVirusCommand != null)
-            {
-                _simulation.SpawnVirus(spawnVirusCommand.SystemLogicalId);
-                return;
-            }
+            //var spawnVirusCommand = command as SpawnVirusCommand;
+            //if (spawnVirusCommand != null)
+            //{
+            //    _simulation.SpawnVirus(spawnVirusCommand.SystemLogicalId);
+            //    return;
+            //}
         }
     }
 }

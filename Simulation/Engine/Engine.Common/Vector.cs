@@ -13,8 +13,8 @@ namespace Engine.Common
 	{
 		#region Internal Fields
 
-		internal double _x;
-		internal double _y;
+		internal int _x;
+		internal int _y;
 
 		#endregion Internal Fields
 
@@ -147,12 +147,12 @@ namespace Engine.Common
 		/// <summary>
 		/// Length Property - the length of this Vector
 		/// </summary>
-		public double Length => Math.Sqrt(_x * _x + _y * _y);
+		public int Length => (int)Math.Sqrt(_x * _x + _y * _y);
 
 		/// <summary>
 		/// LengthSquared Property - the squared length of this Vector
 		/// </summary>
-		public double LengthSquared => _x * _x + _y * _y;
+		public int LengthSquared => _x * _x + _y * _y;
 
 		/// <summary>
 		/// Normalize - Updates this Vector to maintain its direction, but to have a length
@@ -201,7 +201,7 @@ namespace Engine.Common
 		/// <summary>
 		///     X - double.  Default value is 0.
 		/// </summary>
-		public double X
+		public int X
 		{
 			get
 			{
@@ -218,7 +218,7 @@ namespace Engine.Common
 		/// <summary>
 		///     Y - double.  Default value is 0.
 		/// </summary>
-		public double Y
+		public int Y
 		{
 			get
 			{
@@ -293,7 +293,7 @@ namespace Engine.Common
 		/// </summary>
 		/// <param name="x"> double - The initial X </param>
 		/// <param name="y"> double - THe initial Y </param>
-		public Vector(double x, double y)
+		public Vector(int x, int y)
 		{
 			_x = x;
 			_y = y;
@@ -374,7 +374,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Operator Vector * double
 		/// </summary>
-		public static Vector operator *(Vector vector, double scalar)
+		public static Vector operator *(Vector vector, int scalar)
 		{
 			return new Vector(vector._x * scalar,
 								vector._y * scalar);
@@ -383,7 +383,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Multiply: Vector * double
 		/// </summary>
-		public static Vector Multiply(Vector vector, double scalar)
+		public static Vector Multiply(Vector vector, int scalar)
 		{
 			return new Vector(vector._x * scalar,
 								vector._y * scalar);
@@ -392,7 +392,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Operator double * Vector
 		/// </summary>
-		public static Vector operator *(double scalar, Vector vector)
+		public static Vector operator *(int scalar, Vector vector)
 		{
 			return new Vector(vector._x * scalar,
 								vector._y * scalar);
@@ -401,7 +401,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Multiply: double * Vector
 		/// </summary>
-		public static Vector Multiply(double scalar, Vector vector)
+		public static Vector Multiply(int scalar, Vector vector)
 		{
 			return new Vector(vector._x * scalar,
 								vector._y * scalar);
@@ -410,17 +410,17 @@ namespace Engine.Common
 		/// <summary>
 		/// Operator Vector / double
 		/// </summary>
-		public static Vector operator /(Vector vector, double scalar)
+		public static Vector operator /(Vector vector, int scalar)
 		{
-			return vector * (1.0 / scalar);
+			return vector * (1 / scalar);
 		}
 
 		/// <summary>
 		/// Multiply: Vector / double
 		/// </summary>
-		public static Vector Divide(Vector vector, double scalar)
+		public static Vector Divide(Vector vector, int scalar)
 		{
-			return vector * (1.0 / scalar);
+			return vector * (1 / scalar);
 		}
 
 		///// <summary>

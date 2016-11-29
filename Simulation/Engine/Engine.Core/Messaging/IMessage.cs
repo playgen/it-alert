@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Engine.Core.Components;
-
-namespace Engine.Core.Messaging
+﻿namespace Engine.Messaging
 {
 	public interface IMessage
 	{

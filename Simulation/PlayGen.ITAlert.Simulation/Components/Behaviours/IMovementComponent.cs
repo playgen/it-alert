@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Engine.Core.Components;
-using Engine.Core.Entities;
+using Engine.Components;
+using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {

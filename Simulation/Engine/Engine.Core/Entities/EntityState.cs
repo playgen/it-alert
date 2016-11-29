@@ -1,4 +1,4 @@
-﻿namespace Engine.Core.Entities
+﻿namespace Engine.Entities
 {
 	public class EntityState
 	{

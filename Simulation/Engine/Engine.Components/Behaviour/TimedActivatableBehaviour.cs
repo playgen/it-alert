@@ -1,7 +1,6 @@
 ﻿using System;
-using Engine.Core.Components;
-using Engine.Core.Entities;
-using Engine.Core.Serialization;
+using Engine.Entities;
+using Engine.Serialization;
 
 namespace Engine.Components.Behaviour
 {

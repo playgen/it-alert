@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Serialization
+namespace Engine.Serialization
 {
 	[AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
 	public class SyncStateAttribute : Attribute
