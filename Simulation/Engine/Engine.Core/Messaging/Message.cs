@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Engine.Core.Components;
 
-namespace Engine.Core.Messaging
+namespace Engine.Messaging
 {
 	public abstract class Message : IMessage
 	{

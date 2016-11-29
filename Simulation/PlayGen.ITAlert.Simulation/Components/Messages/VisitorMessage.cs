@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.Core.Entities;
-using Engine.Core.Messaging;
+using Engine.Entities;
+using Engine.Messaging;
 
 namespace PlayGen.ITAlert.Simulation.Components.Messages
 {

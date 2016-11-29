@@ -1,8 +1,7 @@
 ﻿using System.Globalization;
 using System.IO;
 using System.Text;
-using Engine.Core.Entities;
-using Engine.Core.Serialization;
+using Engine.Entities;
 using Engine.Serialization.Newtonsoft.Json;
 using ICSharpCode.SharpZipLib.GZip;
 using Newtonsoft.Json;

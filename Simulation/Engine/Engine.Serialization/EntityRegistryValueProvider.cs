@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
-using Engine.Core.Entities;
+using Engine.Entities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 

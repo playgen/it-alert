@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Engine.Core.Entities;
+using Engine.Entities;
 
 namespace Engine.Components.Property
 {

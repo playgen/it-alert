@@ -1,4 +1,4 @@
-﻿using Engine.Core.Entities;
+﻿using Engine.Entities;
 
 namespace Engine.Serialization.Tests
 {

@@ -17,7 +17,7 @@ namespace Engine.Common
 		/// </summary>
 		/// <param name="x">The value for the X coordinate of the new Point</param>
 		/// <param name="y">The value for the Y coordinate of the new Point</param>
-		public Point(double x, double y)
+		public Point(int x, int y)
 		{
 			_x = x;
 			_y = y;
@@ -32,7 +32,7 @@ namespace Engine.Common
 		/// </summary>
 		/// <param name="offsetX"> The offset in the x dimension </param>
 		/// <param name="offsetY"> The offset in the y dimension </param>
-		public void Offset(double offsetX, double offsetY)
+		public void Offset(int offsetX, int offsetY)
 		{
 			_x += offsetX;
 			_y += offsetY;
@@ -171,7 +171,7 @@ namespace Engine.Common
 
 		/// <summary>
 		/// Compares two Point instances for exact equality.
-		/// Note that double values can acquire error when operated upon, such that
+		/// Note that int values can acquire error when operated upon, such that
 		/// an exact comparison between two values which are logically equal may fail.
 		/// Furthermore, using this equality operator, Double.NaN is not equal to itself.
 		/// </summary>
@@ -188,7 +188,7 @@ namespace Engine.Common
 
 		/// <summary>
 		/// Compares two Point instances for exact inequality.
-		/// Note that double values can acquire error when operated upon, such that
+		/// Note that int values can acquire error when operated upon, such that
 		/// an exact comparison between two values which are logically equal may fail.
 		/// Furthermore, using this equality operator, Double.NaN is not equal to itself.
 		/// </summary>
@@ -204,7 +204,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Compares two Point instances for object equality.  In this equality
 		/// Double.NaN is equal to itself, unlike in numeric equality.
-		/// Note that double values can acquire error when operated upon, such that
+		/// Note that int values can acquire error when operated upon, such that
 		/// an exact comparison between two values which
 		/// are logically equal may fail.
 		/// </summary>
@@ -222,7 +222,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Equals - compares this Point with the passed in object.  In this equality
 		/// Double.NaN is equal to itself, unlike in numeric equality.
-		/// Note that double values can acquire error when operated upon, such that
+		/// Note that int values can acquire error when operated upon, such that
 		/// an exact comparison between two values which
 		/// are logically equal may fail.
 		/// </summary>
@@ -244,7 +244,7 @@ namespace Engine.Common
 		/// <summary>
 		/// Equals - compares this Point with the passed in object.  In this equality
 		/// Double.NaN is equal to itself, unlike in numeric equality.
-		/// Note that double values can acquire error when operated upon, such that
+		/// Note that int values can acquire error when operated upon, such that
 		/// an exact comparison between two values which
 		/// are logically equal may fail.
 		/// </summary>
@@ -308,9 +308,9 @@ namespace Engine.Common
 		#region Public Properties
 
 		/// <summary>
-		///     X - double.  Default value is 0.
+		///     X - int.  Default value is 0.
 		/// </summary>
-		public double X
+		public int X
 		{
 			get
 			{
@@ -325,9 +325,9 @@ namespace Engine.Common
 		}
 
 		/// <summary>
-		///     Y - double.  Default value is 0.
+		///     Y - int.  Default value is 0.
 		/// </summary>
-		public double Y
+		public int Y
 		{
 			get
 			{
@@ -454,8 +454,8 @@ namespace Engine.Common
 		#region Internal Fields
 
 
-		internal double _x;
-		internal double _y;
+		internal int _x;
+		internal int _y;
 
 
 

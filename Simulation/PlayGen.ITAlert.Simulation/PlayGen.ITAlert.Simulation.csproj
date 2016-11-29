@@ -148,10 +148,6 @@
       <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">
-      <Project>{b4dc82ff-0db1-4a0c-9b12-5c6d481fbf5d}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Extensions\" />

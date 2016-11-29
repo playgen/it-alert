@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Reactive.Disposables;
 using Engine.Components;
-using Engine.Components.Messaging;
-using Engine.Core.Entities;
-using Engine.Core.Serialization;
+using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {

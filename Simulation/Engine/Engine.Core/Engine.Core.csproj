@@ -7,7 +7,7 @@
     <ProjectGuid>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Engine.Core</RootNamespace>
+    <RootNamespace>Engine</RootNamespace>
     <AssemblyName>Engine.Core</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -43,25 +43,53 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetypes\Archetype.cs" />
+    <Compile Include="bin\ComponentRegistry.cs" />
+    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\ComponentAttributeExtensions.cs" />
+    <Compile Include="Components\ComponentDependencyAttribute.cs" />
+    <Compile Include="Components\ComponentDependencyException.cs" />
     <Compile Include="Components\ComponentEntityTuple.cs" />
+    <Compile Include="Components\ComponentFactory.cs" />
+    <Compile Include="Components\ComponentLookupException.cs" />
+    <Compile Include="Components\ComponentUsageAttribute.cs" />
+    <Compile Include="Components\ComponentUsageException.cs" />
+    <Compile Include="Components\FlagComponent.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentRegistry.cs" />
+    <Compile Include="Components\IFlagComponent.cs" />
+    <Compile Include="Components\ITickableComponent.cs" />
+    <Compile Include="Components\StateBucket.cs" />
+    <Compile Include="ECS.cs" />
+    <Compile Include="Entities\ComponentContainer.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\EntityDestroyedMessage.cs" />
+    <Compile Include="Entities\EntityRegistry.cs" />
+    <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
     <Compile Include="Entities\IEntity.cs" />
     <Compile Include="Entities\IEntityRegistry.cs" />
     <Compile Include="Exceptions\EngineException.cs" />
+    <Compile Include="Messaging\DelegatingObserver.cs" />
+    <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="Messaging\Extensions\MessageExtensions.cs" />
     <Compile Include="Messaging\Extensions\MessageScopeExtensions.cs" />
     <Compile Include="Messaging\IMessage.cs" />
+    <Compile Include="Messaging\IMessageComponent.cs" />
     <Compile Include="Messaging\IMessageHub.cs" />
     <Compile Include="Messaging\Message.cs" />
+    <Compile Include="Messaging\MessageHub.cs" />
     <Compile Include="Messaging\MessageScope.cs" />
+    <Compile Include="Messaging\TickMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ISerializable.cs" />
     <Compile Include="Serialization\StateLevel.cs" />
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="Systems\ISystem.cs" />
+    <Compile Include="Systems\ISystemRegistry.cs" />
+    <Compile Include="Systems\System.cs" />
+    <Compile Include="Systems\SystemRegistry.cs" />
     <Compile Include="Util\NotNullHelper.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Components.Property;
-using Engine.Core.Entities;
+using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
 

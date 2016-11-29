@@ -1,6 +1,4 @@
-﻿using Engine.Core.Components;
-
-namespace Engine.Components.Property
+﻿namespace Engine.Components.Property
 {
 	public interface IPropertyComponent : IComponent
 	{

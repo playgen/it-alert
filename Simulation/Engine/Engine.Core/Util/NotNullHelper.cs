@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Util
+namespace Engine.Util
 {
 	public static class NotNullHelper
 	{

@@ -8,16 +8,12 @@ using Engine.Entities;
 using Engine;
 using Engine.Common;
 using Engine.Components.Common;
-using Engine.Core.Components;
-using Engine.Core.Entities;
-using Engine.Core.Serialization;
 using Engine.Planning;
+using Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Contracts;
-using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Initialization;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Systems;
@@ -28,108 +24,22 @@ namespace PlayGen.ITAlert.Simulation
 	/// Simulation class
 	/// Handles all autonomous functionality of the game
 	/// </summary>
-	public class Simulation
+	public class Simulation : ECS
 	{
-		private bool _disposed;
-
-		//#region external entity mapping
-
-		//[SyncState(StateLevel.Setup)]
-		//public Dictionary<int, Player> ExternalPlayers = new Dictionary<int, Player>();
-
-		//[SyncState(StateLevel.Setup)]
-		//public Dictionary<int, ISystem> SystemsByLogicalId = new Dictionary<int, ISystem>();
-
-		//#endregion
-
-		//#region entities
-
-		//// ReSharper disable FieldCanBeMadeReadOnly.Local
-
-		///// <summary>
-		///// The global entity registry
-		///// </summary>
-		////[SyncState(StateLevel.Full)]
-
-
-		//[SyncState(StateLevel.Full)]
-		//private Dictionary<int, ISystem> _systems = new Dictionary<int, ISystem>();
-
-		//[SyncState(StateLevel.Full)]
-		//private Dictionary<int, Connection> _connections = new Dictionary<int, Connection>();
-
-		//[SyncState(StateLevel.Full)]
-		//private Dictionary<int, IActor> _actors = new Dictionary<int, IActor>();
-
-		//[SyncState(StateLevel.Full)]
-		//private Dictionary<int, IItem> _items = new Dictionary<int, IItem>();
-
-		//// ReSharper restore FieldCanBeMadeReadOnly.Local
-
-		////[SyncState(StateLevel.Full)]
-
-
-		//#endregion
-
-		//[SyncState(StateLevel.Full)]
-		//public int CurrentTick { get; private set; } = 0;
-
-		//[SyncState(StateLevel.Full)]
-		//public Vector GraphSize { get; private set; }
-
-		//[SyncState(StateLevel.Setup)]
-		//public SimulationRules Rules { get; private set; }
-
-		[SyncState(StateLevel.Setup)]
-		public ComponentConfiguration ComponentConfiguration { get; private set; }
-
-		//#region debug public
-
-		//public ReadOnlyCollection<ISystem> Systems => _systems.Values.ToList().AsReadOnly();
-		//public ReadOnlyCollection<Player> Players => _actors.Values.OfType<Player>().ToList().AsReadOnly();
-
-
-		//#endregion
-
-		private readonly EntityRegistry _entityRegistry;
-
-		#region constructors
 
 		public Simulation(SimulationConfiguration configuration)
 		{
-			ComponentConfiguration = configuration.ComponentConfiguration;
+			// TODO: replace temporay copy from configuration
+			// populate system registry 
+			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system));
+			configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
 
-			_entityRegistry = new EntityRegistry();
 
+			// initialization
 			InitializeGraphEntities(configuration);
 		}
-
-		[Obsolete("This is not obsolete; it should never be called explicitly apart form by unit tests, it mainly exists for the serializer.", false)]
-		public Simulation()
-		{
-		}
-
-		~Simulation()
-		{
-			if (_disposed == false)
-			{
-				Dispose();
-			}
-		}
-
-		public void Dispose()
-		{
-			_disposed = true;
-		}
-
-		#endregion
-
+	
 		#region initialization
-
-		private void InitializeSystems()
-		{
-			
-		}
 
 		private void InitializeGraphEntities(SimulationConfiguration configuration)
 		{
@@ -172,12 +82,12 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateSystem(NodeConfig config)
 		{
-			var subsystem = new Entity(_entityRegistry);
+			var subsystem = new Entity(EntityRegistry);
 			switch (config.Type)
 			{
 				case NodeType.Default:
 				default:
-					ComponentConfiguration.PopulateContainerForArchetype("Subsystem", subsystem);
+					ComponentFactory.PopulateContainerForArchetype("Subsystem", subsystem);
 
 					config.EntityId = subsystem.Id;
 
@@ -191,7 +101,7 @@ namespace PlayGen.ITAlert.Simulation
 			subsystem.GetComponent<ItemStorageProperty>().SetItemLimit(4);
 			subsystem.GetComponent<ItemStorageProperty>().SetOverLimitBehaviour(ItemStorageProperty.OverLimitBehaviour.Dispose);
 
-			_entityRegistry.AddEntity(subsystem);
+			EntityRegistry.AddEntity(subsystem);
 
 			return subsystem;
 		}
@@ -205,7 +115,7 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			var connection = new Entity(_entityRegistry);
 
-			ComponentConfiguration.PopulateContainerForArchetype(Archetypes.Connection.Name, connection);
+			ComponentFactory.PopulateContainerForArchetype(Archetypes.Connection.Name, connection);
 			
 			var head = subsystems[edgeConfig.Source];
 			var tail = subsystems[edgeConfig.Destination];
@@ -235,7 +145,7 @@ namespace PlayGen.ITAlert.Simulation
 		public IEntity CreateItem(ItemType type)
 		{
 			var item = new Entity(_entityRegistry);
-			ComponentConfiguration.PopulateContainerForArchetype(type.ToString(), item);
+			ComponentFactory.PopulateContainerForArchetype(type.ToString(), item);
 			_entityRegistry.AddEntity(item);
 			return item;
 		}
@@ -264,7 +174,7 @@ namespace PlayGen.ITAlert.Simulation
 		public IEntity CreatePlayer(PlayerConfig playerConfig)
 		{
 			var player = new Entity(_entityRegistry);
-			ComponentConfiguration.PopulateContainerForArchetype(Archetypes.Player.Name, player);
+			ComponentFactory.PopulateContainerForArchetype(Archetypes.Player.Name, player);
 			_entityRegistry.AddEntity(player);
 			return player;
 		}
@@ -279,7 +189,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				case NpcActorType.Virus:
 					actor = new Entity(_entityRegistry);
-					ComponentConfiguration.PopulateContainerForArchetype(Archetypes.Virus.Name, actor);
+					ComponentFactory.PopulateContainerForArchetype(Archetypes.Virus.Name, actor);
 					break;
 				default:
 					throw new Exception("Unkown npc type");

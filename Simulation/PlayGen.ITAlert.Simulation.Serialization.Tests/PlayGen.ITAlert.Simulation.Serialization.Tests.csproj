@@ -77,10 +77,6 @@
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Contracts\PlayGen.ITAlert.Simulation.Contracts.csproj">
-      <Project>{b4dc82ff-0db1-4a0c-9b12-5c6d481fbf5d}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
       <Project>{D5D14E17-C9D5-4AB2-AB74-96F95B50614F}</Project>
       <Name>PlayGen.ITAlert.Simulation.Serialization</Name>

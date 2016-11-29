@@ -49,6 +49,10 @@
     <Folder Include="Builder\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.Archetypes\Engine.Archetypes.csproj">
+      <Project>{328F17C7-3F8C-4F0A-9BDE-76FD05522F7B}</Project>
+      <Name>Engine.Archetypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
       <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
       <Name>Engine.Components</Name>

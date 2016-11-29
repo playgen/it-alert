@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Engine.Common;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 
@@ -52,6 +53,11 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			return layout;
 		}
 
+		private static Vector PlusX = new Vector(1,0);
+		private static Vector PlusY = new Vector(0, 1);
+		private static Vector MinusX = new Vector(-1, 0);
+		private static Vector MinusY = new Vector(0, -1);
+
 		private static void AddToLayout(Layout layout, int sourceId, Common.EdgeDirection sourcePosition, int destinationId)
 		{
 			var currentVector = layout.GetVectorById(sourceId);
@@ -60,21 +66,21 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			switch (sourcePosition)
 			{
 				case Common.EdgeDirection.East:
-					nextVector = currentVector + Vector.PlusX;
+					nextVector = currentVector + PlusX;
 					if (layout.VectorExists(nextVector))
 					{
 						layout.PushCol(nextVector.X);
 					}
 					break;
 				case Common.EdgeDirection.South:
-					nextVector = currentVector + Vector.PlusY;
+					nextVector = currentVector + PlusY;
 					if (layout.VectorExists(nextVector))
 					{
 						layout.PushRow(nextVector.Y);
 					}
 					break;
 				case Common.EdgeDirection.West:
-					nextVector = currentVector + Vector.MinusX;
+					nextVector = currentVector + MinusX;
 					if (layout.VectorExists(nextVector) || nextVector.X < 0)
 					{
 						layout.PushCol(currentVector.X);
@@ -82,7 +88,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 					}
 					break;
 				case Common.EdgeDirection.North:
-					nextVector = currentVector + Vector.MinusY;
+					nextVector = currentVector + MinusY;
 					if (layout.VectorExists(nextVector) || nextVector.Y < 0)
 					{
 						layout.PushRow(currentVector.Y);

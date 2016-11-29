@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Engine.Core.Serialization
+namespace Engine.Serialization
 {
 	[Flags]
 	public enum StateLevel

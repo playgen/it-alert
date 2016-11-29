@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
-using Engine.Core.Entities;
-using Engine.Core.Serialization;
+using Engine.Entities;
+using Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Systems;
 

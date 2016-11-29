@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Engine.Components;
-using Engine.Core.Entities;
+using Engine.Entities;
 
-namespace Engine.Core.Components
+namespace Engine.Components
 {
 	public interface IComponentRegistry : IComponentRegistry<IComponent>
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using Engine.Components;
 using Engine.Components.Property;
-using Engine.Core.Entities;
+using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
