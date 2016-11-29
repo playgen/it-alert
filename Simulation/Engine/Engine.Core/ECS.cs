@@ -35,6 +35,19 @@ namespace Engine
 			Archetypes = new Dictionary<string, Archetype>();
 		}
 
+		public IEntity CreateEntityFromArchetype(string archetyeName)
+		{
+			Archetype archetype;
+			if (Archetypes.TryGetValue(archetyeName, out archetype))
+			{
+				var entity = EntityRegistry.CreateEntity();
+				ComponentFactory.PopulateContainerForArchetype(archetyeName, entity);
+				EntityRegistry.AddEntity(entity);
+				return entity;
+			}
+			throw new KeyNotFoundException("");
+		}
+
 		public void Dispose()
 		{
 			if (_disposed == false)

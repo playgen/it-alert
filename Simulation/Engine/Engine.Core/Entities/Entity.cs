@@ -1,5 +1,4 @@
 ﻿using System;
-using Engine.Core.Messaging;
 using Engine.Messaging;
 using Engine.Serialization;
 using Engine.Util;
@@ -63,7 +62,6 @@ namespace Engine.Entities
 		public int Id { get; protected set; }
 
 
-		[SyncState(StateLevel.Setup)]
 		protected IEntityRegistry EntityRegistry { get; set; }
 
 
