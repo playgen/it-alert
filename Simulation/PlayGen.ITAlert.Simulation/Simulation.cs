@@ -113,9 +113,9 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateConnection(Dictionary<int, IEntity> subsystems, EdgeConfig edgeConfig)
 		{
-			var connection = new Entity(_entityRegistry);
+			var connection = EntityRegistry.CreateEntity();
 
-			ComponentFactory.PopulateContainerForArchetype(Archetypes.Connection.Name, connection);
+			ComponentFactory.PopulateContainerForArchetype(Archetypes[Connection.Name, connection);
 			
 			var head = subsystems[edgeConfig.Source];
 			var tail = subsystems[edgeConfig.Destination];

@@ -57,8 +57,7 @@
     <Compile Include="Components\Properties\GraphNode.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
     <Compile Include="Components\Properties\MovementSpeed.cs" />
-    <Compile Include="MovementMethod.cs" />
-    <Compile Include="Systems\VisitorMovement.cs" />
+    <Compile Include="Components\Systems\VisitorMovement.cs" />
     <Compile Include="Components\Messages\VisitorMessage.cs" />
     <Compile Include="Components\Properties\Movement.cs" />
     <Compile Include="Components\Properties\ExitRoutes.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="Layout\EdgeDirection.cs" />
     <Compile Include="Components\Properties\OwnerProperty.cs" />
     <Compile Include="Components\Behaviours\VisitorPosition.cs" />
-    <Compile Include="Components\VisitorBehaviourComponent.cs" />
     <Compile Include="Components\Properties\Visitors.cs" />
     <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
     <Compile Include="Components\Behaviours\ConsumeMemoryBehaviour.cs" />
@@ -83,19 +81,19 @@
     <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />
     <Compile Include="Components\Properties\SystemMemoryProperty.cs" />
     <Compile Include="Components\Properties\SystemProcessorPropertyComponent.cs" />
-    <Compile Include="Intents\DisownItemIntent.cs" />
-    <Compile Include="Intents\InfectSystemIntent.cs" />
-    <Compile Include="Intents\MoveIntent.cs" />
-    <Compile Include="Intents\PickUpItemIntent.cs" />
+    <Compile Include="Components\Intents\DisownItemIntent.cs" />
+    <Compile Include="Components\Intents\InfectSystemIntent.cs" />
+    <Compile Include="Components\Intents\MoveIntent.cs" />
+    <Compile Include="Components\Intents\PickUpItemIntent.cs" />
     <Compile Include="Components\ItemContainer.cs" />
     <Compile Include="Simulation.cs" />
-    <Compile Include="Initialization\GraphValidator.cs" />
+    <Compile Include="Layout\GraphValidator.cs" />
     <Compile Include="Layout\Layout.cs" />
     <Compile Include="Layout\LayoutException.cs" />
     <Compile Include="Layout\LayoutGenerator.cs" />
-    <Compile Include="Initialization\NeighbourNode.cs" />
-    <Compile Include="Initialization\Path.cs" />
-    <Compile Include="Initialization\PathFinder.cs" />
+    <Compile Include="Layout\NeighbourNode.cs" />
+    <Compile Include="Layout\Path.cs" />
+    <Compile Include="Layout\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\SimulationException.cs" />
   </ItemGroup>

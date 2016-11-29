@@ -9,7 +9,7 @@ namespace Engine.Components
 
 	public class ComponentFactory
 	{
-		private readonly Dictionary<string, HashSet<Type>> _componentTypes;
+		private readonly Dictionary<string, bool> _archetypeValidation;
 
 		private readonly Dictionary<string, List<ComponentFactoryDelegate>> _componentFactories;
 
@@ -17,27 +17,14 @@ namespace Engine.Components
 
 		public ComponentFactory()
 		{
-			_componentTypes = new Dictionary<string, HashSet<Type>>();
+			_archetypeValidation = new Dictionary<string, bool>();
 			_componentFactories = new Dictionary<string, List<ComponentFactoryDelegate>>();
 		}
 
 		#endregion
 
-		public void AddFactoryMethod(string archetype, Type componentType, ComponentFactoryDelegate factoryDelegate)
+		public void AddFactoryMethod(string archetype, ComponentFactoryDelegate factoryDelegate)
 		{
-			//if (componentType.IsComponentUsageValid(entityType) == false)
-			//{
-			//	throw new ComponentUsageException(componentType, entityType);
-			//}
-
-			HashSet<Type> componentTypes;
-			if (_componentTypes.TryGetValue(archetype, out componentTypes) == false)
-			{
-				componentTypes = new HashSet<Type>();
-				_componentTypes.Add(archetype, componentTypes);
-			}
-			componentTypes.Add(componentType);
-
 			List<ComponentFactoryDelegate> factoryDelegates;
 			if (_componentFactories.TryGetValue(archetype, out factoryDelegates) == false)
 			{
@@ -47,29 +34,32 @@ namespace Engine.Components
 			factoryDelegates.Add(factoryDelegate);
 		}
 
-		public void PopulateContainerForArchetype(string archetype, IEntity componentContainer)
+		public void PopulateContainerForArchetype(string archetype, IComponentContainer componentContainer)
 		{
 			List<ComponentFactoryDelegate> factoryDelegates;
-			if (_componentFactories.TryGetValue(archetype, out factoryDelegates))
+			if (_componentFactories.TryGetValue(archetype, out factoryDelegates) == false)
 			{
-				foreach (var factoryDelegate in factoryDelegates)
-				{
-					componentContainer.AddComponent(factoryDelegate(componentContainer));
-				}
+				throw new ComponentLookupException($"Component specification not found for archetype: {archetype}");
 			}
+			foreach (var factoryDelegate in factoryDelegates)
+			{
+				componentContainer.AddComponent(factoryDelegate(componentContainer));
+			}
+
 		}
 
 		public void ValidateComponentDependencies()
 		{
-			foreach (var archetype in _componentTypes.Keys)
+			foreach (var archetype in _archetypeValidation.Keys)
 			{
+				
 				ValidateDependenciesForArchetype(archetype);
 			}
 		}
 
-		private void ValidateDependenciesForArchetype(string archetype)
+		private void ValidateDependenciesForArchetype(string archetype, IComponentContainer componentContainer)
 		{
-			foreach (var componentType in _componentTypes[archetype])
+			foreach (var component in componentContainer.)
 			{
 				foreach (var componentDependency in componentType.GetComponentDependencyTypes())
 				{

@@ -5,12 +5,13 @@ using Engine.Components;
 
 namespace Engine.Entities
 {
-	public class ComponentContainer
+	public class ComponentContainer : IComponentContainer
 	{
 		public static ComponentContainer Default => new ComponentContainer();
 
-		private HashSet<IComponent> _components;
-		protected IList<IComponent> Components => _components.ToList();
+		private readonly HashSet<IComponent> _components;
+
+		public IList<IComponent> Components => _components.ToList();
 
 		private Dictionary<Type, IEnumerable<IComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<IComponent>>();
 		// ReSharper restore FieldCanBeMadeReadOnly.Local

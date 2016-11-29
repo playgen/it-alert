@@ -6,8 +6,10 @@ namespace Engine.Entities
 	public interface IEntityRegistry : ISerializable, IDisposable
 {
 		int EntitySeed { get; }
+
 		bool TryGetEntityById(int id, out IEntity entity);
-		TEntity GetEntityById<TEntity>(int id) where TEntity : class, IEntity;
+		IEntity GetEntityById(int id);
+
 		void AddEntity(IEntity entity);
 
 		IEntity CreateEntity();
