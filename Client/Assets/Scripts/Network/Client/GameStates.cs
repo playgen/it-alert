@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Network.Client.States
+﻿namespace Assets.Scripts.Network.Client
 {
     public enum GameStates
     {
