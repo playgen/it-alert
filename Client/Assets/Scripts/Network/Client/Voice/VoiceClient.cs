@@ -18,7 +18,8 @@ namespace PlayGen.ITAlert.Network.Client.Voice
 
         public bool IsTransmitting
         {
-            get { return _rec.IsTransmitting; }
+	        get { return false; //_rec.IsTransmitting; }
+	        }
         }
 
         public static Dictionary<int, bool> TransmittingStatuses
@@ -63,15 +64,15 @@ namespace PlayGen.ITAlert.Network.Client.Voice
 
         public void OnJoinedRoom()
         {
-            var gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
-            _rec = gameObject.GetComponent<PhotonVoiceRecorder>();
+            //var gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
+            //_rec = gameObject.GetComponent<PhotonVoiceRecorder>();
 
-            _rec.enabled = true;
+            //_rec.enabled = true;
         }
 
         public void OnLeftRoom()
         {
-            _rec.enabled = false;
+            //_rec.enabled = false;
         }
 
         public void StartTransmission()
@@ -92,7 +93,7 @@ namespace PlayGen.ITAlert.Network.Client.Voice
                 return;
             }
 
-            _rec.Transmit = true;
+            //_rec.Transmit = true;
         }
 
         public void StopTransmission()
@@ -113,7 +114,7 @@ namespace PlayGen.ITAlert.Network.Client.Voice
                 return;
             }
             
-            _rec.Transmit = false;
+            //_rec.Transmit = false;
         }
 
         [System.Diagnostics.Conditional("LOGGING_ENABLED")]

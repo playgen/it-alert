@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.Network.Client
         private readonly PhotonClient _photonClient;
         private Simulation.Simulation _simulationState;
 
-        public States.GameStates State { get; private set; }
+        public Assets.Scripts.Network.Client.GameStates State { get; private set; }
 
         public bool HasSimulationState
         {
@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Network.Client
         {
             _photonClient = photonClient;
 
-            State = States.GameStates.Initializing;
+            State = Assets.Scripts.Network.Client.GameStates.Initializing;
 
             _photonClient.EventRecievedEvent += OnRecievedEvent;
 
@@ -64,16 +64,16 @@ namespace PlayGen.ITAlert.Network.Client
                     break;
 
                 case (byte)ServerEventCode.GameTick:
-                    if (State != States.GameStates.Playing)
+                    if (State != Assets.Scripts.Network.Client.GameStates.Playing)
                     {
-                        State = States.GameStates.Playing;
+                        State = Assets.Scripts.Network.Client.GameStates.Playing;
                     }
 
                     _simulationState = (Simulation.Simulation)content;
                     break;
 
                 case (byte)ServerEventCode.GameFinalized:
-                    State = States.GameStates.Finalizing;
+                    State = Assets.Scripts.Network.Client.GameStates.Finalizing;
 
                     _simulationState = (Simulation.Simulation)content;
 

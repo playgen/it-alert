@@ -77,7 +77,7 @@ namespace PlayGen.ITAlert.GameStates
 
             switch (_client.CurrentRoom.CurrentGame.State)
             {
-                case Network.Client.States.GameStates.Initializing:
+                case Assets.Scripts.Network.Client.GameStates.Initializing:
                     if (_stateController.ActiveState != InitializingState.StateName)
                     {
                         _stateController.ChangeState(InitializingState.StateName);
@@ -88,7 +88,7 @@ namespace PlayGen.ITAlert.GameStates
                     }
                     break;
 
-                case Network.Client.States.GameStates.Playing:
+                case Assets.Scripts.Network.Client.GameStates.Playing:
                     if (_stateController.ActiveState != PlayingState.StateName)
                     {
                         _stateController.ChangeState(PlayingState.StateName);
@@ -99,7 +99,7 @@ namespace PlayGen.ITAlert.GameStates
                     }
                     break;
 
-                case Network.Client.States.GameStates.Finalizing:
+                case Assets.Scripts.Network.Client.GameStates.Finalizing:
 
 
                     if (_stateController.ActiveState != FinalizingState.StateName)

@@ -5,205 +5,205 @@ using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.PhotonPlugins.Extensions;
 using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
+using PlayGen.ITAlert.TestData;
+using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
-using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 {
 	public class GameState : GameWork.Core.States.State, IRoomState
-    {
-        public const string StateName = "Game";
+	{
+		public const string StateName = "Game";
 
-        private readonly PluginBase _plugin;
-	    private readonly PlayerManager _playerManager;
+		private readonly PluginBase _plugin;
+		private readonly PlayerManager _playerManager;
 
-        private Simulation.Simulation _simulation;
-	    private CommandSequence _commandSequence;
-        private CommandResolver _resolver;
-        private InternalGameState _internalState;
-        private int _tickIntervalMS = 100;
-        private object _tickTimer;
+		private Simulation.Simulation _simulation;
+		private CommandSequence _commandSequence;
+		private CommandResolver _resolver;
+		private InternalGameState _internalState;
+		private int _tickIntervalMS = 100;
+		private object _tickTimer;
 
-        public override string Name
-        {
-            get { return StateName; }
-        }
+		private ICommand _command = new RequestMovePlayerCommand();
 
-        public GameState(PluginBase plugin, PlayerManager playerManager)
-        {
-            _plugin = plugin;
-            _playerManager = playerManager;
-        }
+		public override string Name
+		{
+			get { return StateName; }
+		}
 
-        public override void Initialize()
-        {
-            _plugin.PluginHost.TryRegisterType(typeof(Simulation.Simulation),
-                SerializableTypes.SimulationState,
-                Serializer.SerializeSimulation,
-                Serializer.DeserializeSimulation);
-        }
+		public GameState(PluginBase plugin, PlayerManager playerManager)
+		{
+			_plugin = plugin;
+			_playerManager = playerManager;
+		}
 
-        #region Events
-        public void OnCreate(ICreateGameCallInfo info)
-        {
-        }
+		public override void Initialize()
+		{
+			_plugin.PluginHost.TryRegisterType(typeof(Simulation.Simulation),
+				SerializableTypes.SimulationState,
+				Serializer.SerializeSimulation,
+				Serializer.DeserializeSimulation);
+		}
 
-        public void OnJoin(IJoinGameCallInfo info)
-        {
-        }
+		#region Events
+		public void OnCreate(ICreateGameCallInfo info)
+		{
+		}
 
-        public void OnLeave(ILeaveGameCallInfo info)
-        {
-        }
-        
-        public void OnRaiseEvent(IRaiseEventCallInfo info)
-        {
-            switch (info.Request.EvCode)
-            {
-                case (byte)PlayerEventCode.GameInitialized:
-                    _playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameInitialized);
+		public void OnJoin(IJoinGameCallInfo info)
+		{
+		}
 
-                    if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameInitialized)
-                    {
-                        ChangeInternalState(InternalGameState.Playing);
-                    }
-                    break;
+		public void OnLeave(ILeaveGameCallInfo info)
+		{
+		}
+		
+		public void OnRaiseEvent(IRaiseEventCallInfo info)
+		{
+			switch (info.Request.EvCode)
+			{
+				case (byte)PlayerEventCode.GameInitialized:
+					_playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameInitialized);
 
-                case (byte)PlayerEventCode.GameCommand:
-                    var command = Serializer.Deserialize<ICommand>((byte[]) info.Request.Data);
-                    _resolver.ProcessCommand(command);
-                    break;
+					if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameInitialized)
+					{
+						ChangeInternalState(InternalGameState.Playing);
+					}
+					break;
 
-                case (byte)PlayerEventCode.GameFinalized:
-                    _playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameFinalized);
+				case (byte)PlayerEventCode.GameCommand:
+					var command = Serializer.Deserialize<ICommand>((byte[]) info.Request.Data);
+					_resolver.ProcessCommand(command);
+					break;
 
-                    if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameFinalized)
-                    {
-                        ChangeState(LobbyState.StateName);   
-                    }
-                    break;
-            }
-        }
-        #endregion
+				case (byte)PlayerEventCode.GameFinalized:
+					_playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameFinalized);
 
-        public override void Enter()
-        {
-            _plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
+					if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameFinalized)
+					{
+						ChangeState(LobbyState.StateName);   
+					}
+					break;
+			}
+		}
+		#endregion
 
-            List<int> subsystemLogicalIds;
-            _simulation = InitializeSimulation(out subsystemLogicalIds);
-            _commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
-            _resolver = new CommandResolver(_simulation);
-            
-            ChangeInternalState(InternalGameState.Initializing);
-        }
+		public override void Enter()
+		{
+			_plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
 
-        public override void Exit()
-        {
-            _resolver = null;
-            _simulation.Dispose();
-            _simulation = null;
-        }
-        
-        private void Tick()
-        {          
-            switch (_internalState)
-            {
-                case InternalGameState.Initializing:
-                    break;
+			List<int> subsystemLogicalIds;
+			_simulation = InitializeSimulation(out subsystemLogicalIds);
+			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+			_resolver = new CommandResolver(_simulation);
+			
+			ChangeInternalState(InternalGameState.Initializing);
+		}
 
-                case InternalGameState.Playing:
+		public override void Exit()
+		{
+			_resolver = null;
+			_simulation.Dispose();
+			_simulation = null;
+		}
+		
+		private void Tick()
+		{          
+			switch (_internalState)
+			{
+				case InternalGameState.Initializing:
+					break;
 
-                    var commands = _commandSequence.Tick();
-                    _resolver.ProcessCommands(commands);
+				case InternalGameState.Playing:
 
-                    _simulation.Tick();
+					var commands = _commandSequence.Tick();
+					_resolver.ProcessCommands(commands);
 
-                    // todo fix this in acccordance with simulation refactor
-                    /*
-                    if (_simulation.IsGameFailure)
-                    {
-                        ChangeInternalState(InternalGameState.Finalizing);
-                    }
-                    else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-                    {
-                        ChangeInternalState(InternalGameState.Finalizing);
-                    }
-                    else*/
-                    {
-                        BroadcastSimulation(ServerEventCode.GameTick, _simulation);
-                    }
-                    
-                    break;
+					_simulation.Tick();
 
-                case InternalGameState.Finalizing:
-                    break;
-            }
-        }
+					if (_simulation.IsGameFailure)
+					{
+						ChangeInternalState(InternalGameState.Finalizing);
+					}
+					else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+					{
+						ChangeInternalState(InternalGameState.Finalizing);
+					}
+					else
+					{
+						BroadcastSimulation(ServerEventCode.GameTick, _simulation);
+					}
+					
+					break;
 
-        private void ChangeInternalState(InternalGameState toState)
-        {
-            switch (toState)
-            {
-                case InternalGameState.Initializing:
-                    BroadcastSimulation(ServerEventCode.GameInitialized, _simulation);
-                    break;
-                    
-                case InternalGameState.Playing:
-                    _tickTimer = CreateTickTimer();
-                    break;
+				case InternalGameState.Finalizing:
+					break;
+			}
+		}
 
-                case InternalGameState.Finalizing:
-                    DestroyTimer(_tickTimer);
-                    BroadcastSimulation(ServerEventCode.GameFinalized, _simulation);
-                    break;
-            }
+		private void ChangeInternalState(InternalGameState toState)
+		{
+			switch (toState)
+			{
+				case InternalGameState.Initializing:
+					BroadcastSimulation(ServerEventCode.GameInitialized, _simulation);
+					break;
+					
+				case InternalGameState.Playing:
+					_tickTimer = CreateTickTimer();
+					break;
 
-            _internalState = toState;
-        }
+				case InternalGameState.Finalizing:
+					DestroyTimer(_tickTimer);
+					BroadcastSimulation(ServerEventCode.GameFinalized, _simulation);
+					break;
+			}
 
-        private void BroadcastSimulation(ServerEventCode eventCode, Simulation.Simulation simulation)
-        {
-            _plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
-                (byte) eventCode,
-                _simulation);
-        }
-        
-        private object CreateTickTimer()
-        {
-            return _plugin.PluginHost.CreateTimer(
-                Tick,
-                _tickIntervalMS,
-                _tickIntervalMS);
-        }
+			_internalState = toState;
+		}
 
-        private void DestroyTimer(object timer)
-        {
-            _plugin.PluginHost.StopTimer(timer);
-        }
+		private void BroadcastSimulation(ServerEventCode eventCode, Simulation.Simulation simulation)
+		{
+			_plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
+				(byte) eventCode,
+				_simulation);
+		}
+		
+		private object CreateTickTimer()
+		{
+			return _plugin.PluginHost.CreateTimer(
+				Tick,
+				_tickIntervalMS,
+				_tickIntervalMS);
+		}
 
-        private Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
-        {
-            var players = _plugin.PluginHost.GameActorsActive.Select(p =>
-            {
-                var player = _playerManager.Get(p.ActorNr);
+		private void DestroyTimer(object timer)
+		{
+			_plugin.PluginHost.StopTimer(timer);
+		}
 
-                return new PlayerConfig
-                {
-                    ExternalId = player.Id,
-                    Name = player.Name,
-                    Colour = "#" + player.Color,
-                };
-            }).ToList();
+		private Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
+		{
+			var players = _plugin.PluginHost.GameActorsActive.Select(p =>
+			{
+				var player = _playerManager.Get(p.ActorNr);
 
-            // todo make config data driven
-            var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
-            return simulation;
-        }
-    }
+				return new PlayerConfig
+				{
+					ExternalId = player.Id,
+					Name = player.Name,
+					Colour = "#" + player.Color,
+				};
+			}).ToList();
+
+			// todo make config data driven
+			var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
+			return simulation;
+		}
+	}
 }
