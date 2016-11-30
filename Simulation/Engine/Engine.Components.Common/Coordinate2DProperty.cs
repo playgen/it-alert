@@ -10,9 +10,5 @@ namespace Engine.Components.Common
 {
 	public class Coordinate2DProperty : Property<Vector>
 	{
-		public Coordinate2DProperty(IEntity entity) 
-			: base(entity)
-		{
-		}
 	}
 }

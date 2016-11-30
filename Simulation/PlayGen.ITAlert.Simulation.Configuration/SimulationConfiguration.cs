@@ -17,14 +17,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public List<Archetype> Archetypes { get; private set; }
 
-		public List<ISystem> Systems { get; private set; }
+		public List<SystemFactoryDelegate> Systems { get; private set; }
 
 		public SimulationConfiguration(List<NodeConfig> nodeConfiguration, 
 			List<EdgeConfig> edgeConfiguration, 
 			List<PlayerConfig> playerConfiguration, 
 			List<ItemConfig> itemConfiguration, 
 			List<Archetype> archetypes,
-			List<ISystem> systems = null, 
+			List<SystemFactoryDelegate> systems = null, 
 			SimulationRules rules = null) 
 		{
 			NotNullHelper.ArgumentNotNull(nodeConfiguration, nameof(nodeConfiguration));
@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			PlayerConfiguration = playerConfiguration;
 			ItemConfiguration = itemConfiguration;
 			Archetypes = archetypes;
-			Systems = systems ?? new List<ISystem>();
+			Systems = systems ?? new List<SystemFactoryDelegate>();
 			Rules = rules ?? new SimulationRules();
 		}
 	}

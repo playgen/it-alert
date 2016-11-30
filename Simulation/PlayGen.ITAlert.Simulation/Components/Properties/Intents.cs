@@ -11,8 +11,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class IntentsProperty : ReadOnlyProperty<SimpleStack<Intent>>
 	{
-		public IntentsProperty(IEntity entity) 
-			: base(entity, new SimpleStack<Intent>())
+		public IntentsProperty() 
+			: base(new SimpleStack<Intent>())
 		{
 		}
 

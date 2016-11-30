@@ -13,7 +13,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		public Dictionary<IEntity, int> ExitPositions { get; private set; }
 
-		public GraphNode(IEntity entity) : base(entity)
+		public GraphNode() 
+			: base()
 		{
 			EntrancePositions = new Dictionary<IEntity, int>();
 			ExitPositions = new Dictionary<IEntity, int>();

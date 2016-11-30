@@ -23,12 +23,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		private OverLimitBehaviour _overLimitBehaviour;
 
-		public ItemStorageProperty(IEntity entity) : base(entity)
+		public ItemStorageProperty() 
+			: base()
 		{
+			Items = new List<ItemContainer>();
 		}
 
-		public ItemStorageProperty(IEntity entity, int itemLimit, OverLimitBehaviour overLimitBehaviour) 
-			: base(entity)
+		public ItemStorageProperty(int itemLimit, OverLimitBehaviour overLimitBehaviour) 
+			: this()
 		{
 			ItemLimit = itemLimit;
 			Items = new List<ItemContainer>();

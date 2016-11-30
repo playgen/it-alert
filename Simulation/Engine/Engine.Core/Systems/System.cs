@@ -17,5 +17,9 @@ namespace Engine.Systems
 			ComponentRegistry = componentRegistry;
 			EntityRegistry = entityRegistry;
 		}
+
+		public virtual void Tick(int currentTick)
+		{
+		}
 	}
 }

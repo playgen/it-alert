@@ -7,8 +7,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 	{
 		#region Constructors
 
-		public SystemHealth(IEntity entity, int initialValue, int maxValue)
-			: base(entity, initialValue, 0, maxValue)
+		public SystemHealth(int initialValue, int maxValue)
+			: base(initialValue, 0, maxValue)
 		{
 		}
 

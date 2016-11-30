@@ -12,22 +12,22 @@ namespace Engine.Components.Property
 
 		protected Func<TValue> ValueGetter;
 
-		protected ReadOnlyProperty(IEntity entity)
-			: base(entity)
+		protected ReadOnlyProperty()
+			: base()
 		{
 			_value = default(TValue);
 			ValueGetter = () => _value;
 		}
 
-		protected ReadOnlyProperty(IEntity entity, TValue value)
-			: base(entity)
+		protected ReadOnlyProperty(TValue value)
+			: base()
 		{
 			_value = value;
 			ValueGetter = () => _value;
 		}
 
-		public ReadOnlyProperty(IEntity entity, Func<TValue> valueGetter)
-			: base(entity)
+		public ReadOnlyProperty(Func<TValue> valueGetter)
+			: base()
 		{
 			ValueGetter = valueGetter;
 		}
@@ -40,13 +40,13 @@ namespace Engine.Components.Property
 
 	public abstract class Property<TValue> : ReadOnlyProperty<TValue>, IPropertyComponent<TValue>
 	{
-		protected Property(IEntity entity) 
-			: base(entity)
+		protected Property() 
+			: base()
 		{
 		}
 
-		protected Property(IEntity entity, TValue value)
-			: base(entity, value)
+		protected Property(TValue value)
+			: base(value)
 		{
 		}
 

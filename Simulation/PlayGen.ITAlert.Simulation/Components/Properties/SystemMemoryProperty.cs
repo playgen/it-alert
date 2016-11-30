@@ -7,8 +7,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 	{
 		#region Constructors
 
-		public SystemMemoryProperty(IEntity entity, int initialValue, int maxValue)
-			: base(entity, initialValue, 0, maxValue)
+		public SystemMemoryProperty(int initialValue, int maxValue)
+			: base(initialValue, 0, maxValue)
 		{
 		}
 

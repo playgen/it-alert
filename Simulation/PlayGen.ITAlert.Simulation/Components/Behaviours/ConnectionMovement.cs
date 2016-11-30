@@ -13,14 +13,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 	public class ConnectionMovement : Movement
 	{
-
-
-		public ConnectionMovement(IEntity entity) 
-			: base(entity)
-		{
-
-		}
-
 		public override void MoveVisitors(int currentTick)
 		{
 			var movementCost = Entity.GetComponent<MovementCost>()?.Value ?? 1;
@@ -46,14 +38,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 			}
 		}
 
-
-
 		public override void AddVisitor(IEntity visitor, IEntity source, int initialPosition, int currentTick)
 		{
 			var position = GraphNode.EntrancePositions[source] + initialPosition;
 			AddVisitor(visitor, position, currentTick);
 		}
-
-
 	}
 }

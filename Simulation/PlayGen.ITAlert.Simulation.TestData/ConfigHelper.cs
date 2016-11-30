@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Archetypes;
 using Engine.Components;
+using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {
@@ -121,15 +124,24 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			return GenerateItemConfig(nodeConfigs, enumCounts);
 		}
 
-		private static ComponentFactory GenerateDefaultComponentConfiguration()
+		private static SimulationConfiguration GenerateConfiguration(List<NodeConfig> nodeConfiguration,
+			List<EdgeConfig> edgeConfiguration,
+			List<PlayerConfig> playerConfiguration,
+			List<ItemConfig> itemConfiguration)
 		{
-			var configuration = new ComponentFactory();
-
-			//var subsystemType = typeof(Systems.System);
-			//configuration.AddFactoryMethod(subsystemType, typeof(SystemHealth), (componentContainer) => new SystemHealth(componentContainer, SimulationConstants.MaxHealth, SimulationConstants.MaxHealth));
-			//configuration.AddFactoryMethod(subsystemType, typeof(SystemShield), (componentContainer) => new SystemShield(componentContainer, SimulationConstants.MaxShield, SimulationConstants.MaxShield));
-			//configuration.AddFactoryMethod(subsystemType, typeof(CombinedHealthAndShield), (componentContainer) => new CombinedHealthAndShield(componentContainer));
-
+			var archetypes = new List<Archetype>()
+			{
+				GameEntities.Subsystem,
+				GameEntities.Connection,
+				GameEntities.Player,
+				GameEntities.Virus,
+			};
+			var systems = new List<SystemFactoryDelegate>()
+			{
+				(c, e) => new VisitorMovement(c, e)
+			};
+			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
+			
 			return configuration;
 		}
 
@@ -142,9 +154,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			var playerConfigs = GeneratePlayerConfigs(nodeConfigs, players);
 			var itemConfigs = GenerateItemConfig(nodeConfigs, items);
 
-			var componentConfiguration = GenerateDefaultComponentConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);
-
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
 			return new Simulation(configuration);
 		}
 
@@ -155,9 +165,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GenerateItemConfig(nodeConfigs, items);
 
-			var componentConfiguration = GenerateDefaultComponentConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);
-
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
 			return new Simulation(configuration);
 		}
 
@@ -168,9 +176,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			var playerConfigs = GeneratePlayerConfigs(nodeConfigs, players);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
-			var componentConfiguration = GenerateDefaultComponentConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);
-
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
 			return new Simulation(configuration);
 		}
 
@@ -181,9 +187,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
-			var componentConfiguration = GenerateDefaultComponentConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);
-
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
 			return new Simulation(configuration);
 		}
 
@@ -196,12 +200,12 @@ namespace PlayGen.ITAlert.Simulation.TestData
 
 			subsystemLogicalIds = nodeConfigs.Select(n => n.Id).ToList();
 
-			var componentConfiguration = GenerateDefaultComponentConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, componentConfiguration);
 
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
 			return new Simulation(configuration);
 		}
 
 		#endregion
+
 	}
 }

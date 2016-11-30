@@ -14,8 +14,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		#region Constructors
 
-		public SystemIsDeadComponent(IEntity entity)
-			: base(entity, false)
+		public SystemIsDeadComponent()
+			: base(false)
 		{
 
 		}

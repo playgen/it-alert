@@ -9,11 +9,10 @@ namespace Engine.Components.Property
 		public TValue MaxValue { get; private set; }
 		public TValue MinValue { get; private set; }
 
-		protected RangedNumericProperty(IEntity entity, 
-			TValue value,
+		protected RangedNumericProperty(TValue value,
 			TValue minValue, 
 			TValue maxValue)
-			: base(entity, value)
+			: base(value)
 		{
 			MaxValue = maxValue;
 			MinValue = minValue;
@@ -22,11 +21,10 @@ namespace Engine.Components.Property
 
 	public abstract class RangedIntegerProperty : RangedNumericProperty<int>
 	{
-		protected RangedIntegerProperty(IEntity entity, 
-			int value, 
+		protected RangedIntegerProperty(int value, 
 			int minValue, 
 			int maxValue) 
-			: base(entity, value, minValue, maxValue)
+			: base(value, minValue, maxValue)
 		{
 		}
 
@@ -39,11 +37,10 @@ namespace Engine.Components.Property
 
 	public abstract class RangedDoubleProperty : RangedNumericProperty<double>
 	{
-		protected RangedDoubleProperty(IEntity entity,
-			double value,
+		protected RangedDoubleProperty(double value,
 			double minValue, 
 			double maxValue) 
-			: base(entity, value, minValue, maxValue)
+			: base(value, minValue, maxValue)
 		{
 		}
 

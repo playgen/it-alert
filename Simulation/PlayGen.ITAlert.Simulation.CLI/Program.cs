@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Simulation.CLI
 
 		public static void Main(string[] args)
 		{
-
+			var simulation = ConfigHelper.GenerateSimulation(3, 3, 3, 3, 1);
 		}
 	}
 }

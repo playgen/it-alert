@@ -35,13 +35,13 @@ namespace Engine
 			Archetypes = new Dictionary<string, Archetype>();
 		}
 
-		public IEntity CreateEntityFromArchetype(string archetyeName)
+		public IEntity CreateEntityFromArchetype(string archetypeName)
 		{
 			Archetype archetype;
-			if (Archetypes.TryGetValue(archetyeName, out archetype))
+			if (Archetypes.TryGetValue(archetypeName, out archetype))
 			{
 				var entity = EntityRegistry.CreateEntity();
-				ComponentFactory.PopulateContainerForArchetype(archetyeName, entity);
+				ComponentFactory.PopulateContainerForArchetype(archetypeName, entity);
 				EntityRegistry.AddEntity(entity);
 				return entity;
 			}

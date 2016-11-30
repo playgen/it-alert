@@ -54,7 +54,6 @@
     <Compile Include="Components\ComponentLookupException.cs" />
     <Compile Include="Components\ComponentUsageAttribute.cs" />
     <Compile Include="Components\ComponentUsageException.cs" />
-    <Compile Include="Components\FlagComponent.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentRegistry.cs" />

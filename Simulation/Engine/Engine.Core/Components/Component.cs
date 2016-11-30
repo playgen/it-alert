@@ -13,10 +13,8 @@ namespace Engine.Components
 
 		#region constructor
 
-		protected Component(IEntity entity)
+		protected Component()
 		{
-			NotNullHelper.ArgumentNotNull(entity, nameof(entity));
-			Entity = entity;
 		}
 
 		#endregion
@@ -43,5 +41,11 @@ namespace Engine.Components
 		}
 
 		#endregion
+
+		public virtual void Initialize(IEntity entity)
+		{
+			NotNullHelper.ArgumentNotNull(entity, nameof(entity));
+			Entity = entity;
+		}
 	}
 }

@@ -21,12 +21,6 @@ namespace Engine.Components.Property
 
 	public class TickComponent : ReadOnlyProperty<int>, IBehaviourComponent, ITickableComponent, IEmitState<TickState>
 	{
-		protected TickComponent(IEntity entity) 
-			: base(entity)
-		{
-
-		}
-
 		public virtual void Tick(int currentTick)
 		{
 			if (_value < currentTick)

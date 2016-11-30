@@ -26,14 +26,13 @@ namespace Engine.Components.Behaviour
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="entity"></param>
 		/// <param name="activationMode"></param>
 		/// <param name="timerUnits"></param>
 		/// <param name="warmUp">this is the number of unit before the item is activated</param>
 		/// <param name="coolDown">this is the </param>
 		/// <param name="canCancel"></param>
-		protected TimedActivatableBehaviour(IEntity entity, ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
-			: base(entity, activationMode)
+		protected TimedActivatableBehaviour(ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
+			: base(activationMode)
 		{
 			_timerUnits = timerUnits;
 			_warmUp = warmUp;

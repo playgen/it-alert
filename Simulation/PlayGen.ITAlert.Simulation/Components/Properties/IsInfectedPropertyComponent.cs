@@ -7,8 +7,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 	{
 		#region Constructors
 
-		public IsInfectedPropertyComponent(IEntity entity)
-			: base(entity, false)
+		public IsInfectedPropertyComponent()
+			: base(false)
 		{
 
 		}

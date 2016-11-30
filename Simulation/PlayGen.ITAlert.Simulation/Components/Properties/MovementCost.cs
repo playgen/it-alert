@@ -8,8 +8,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class MovementCost : RangedIntegerProperty
 	{
-		public MovementCost(IEntity entity, int value, int maxValue) 
-			: base(entity, value, 0, maxValue)
+		public MovementCost(int maxValue)
+			: base(1, 0, maxValue)
+		{
+		}
+
+		public MovementCost(int value, int maxValue) 
+			: base(value, 0, maxValue)
 		{
 		}
 	}

@@ -30,8 +30,8 @@ namespace Engine.Components.Behaviour
 
 		#region constructor
 
-		protected ActivatableBehaviour(IEntity entity, ActivationMode activationMode) 
-			: base(entity)
+		protected ActivatableBehaviour(ActivationMode activationMode) 
+			: base()
 		{
 			_activationMode = activationMode;
 		}
