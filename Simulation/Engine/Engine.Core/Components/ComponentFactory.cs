@@ -5,7 +5,7 @@ using Engine.Entities;
 
 namespace Engine.Components
 {
-	public delegate IComponent ComponentFactoryDelegate(IEntity container);
+	public delegate IComponent ComponentFactoryDelegate();
 
 	public class ComponentFactory
 	{
@@ -23,6 +23,11 @@ namespace Engine.Components
 
 		#endregion
 
+		public void AddFactoryMethods(string archetype, IEnumerable<ComponentFactoryDelegate> factoryDelegates)
+		{
+			factoryDelegates.ToList().ForEach(fd => AddFactoryMethod(archetype, fd));
+		}
+
 		public void AddFactoryMethod(string archetype, ComponentFactoryDelegate factoryDelegate)
 		{
 			List<ComponentFactoryDelegate> factoryDelegates;
@@ -34,7 +39,7 @@ namespace Engine.Components
 			factoryDelegates.Add(factoryDelegate);
 		}
 
-		public void PopulateContainerForArchetype(string archetype, IComponentContainer componentContainer)
+		public void PopulateContainerForArchetype(string archetype, IEntity componentContainer)
 		{
 			List<ComponentFactoryDelegate> factoryDelegates;
 			if (_componentFactories.TryGetValue(archetype, out factoryDelegates) == false)
@@ -43,29 +48,31 @@ namespace Engine.Components
 			}
 			foreach (var factoryDelegate in factoryDelegates)
 			{
-				componentContainer.AddComponent(factoryDelegate(componentContainer));
+				componentContainer.AddComponent(factoryDelegate());
 			}
-
+			foreach (var component in componentContainer.Components)
+			{
+				component.Initialize(componentContainer);
+			}
 		}
 
-		public void ValidateComponentDependencies()
+		public void ValidateComponentDependencies(IComponentContainer componentContainer)
 		{
 			foreach (var archetype in _archetypeValidation.Keys)
 			{
-				
-				ValidateDependenciesForArchetype(archetype);
+				ValidateDependenciesForArchetype(archetype, componentContainer);
 			}
 		}
 
 		private void ValidateDependenciesForArchetype(string archetype, IComponentContainer componentContainer)
 		{
-			foreach (var component in componentContainer.)
+			foreach (var component in componentContainer.Components)
 			{
-				foreach (var componentDependency in componentType.GetComponentDependencyTypes())
+				foreach (var componentDependency in component.GetType().GetComponentDependencyTypes())
 				{
-					if (_componentTypes[archetype].Contains(componentDependency) == false && _componentTypes[archetype].Any(type => componentDependency.IsAssignableFrom(type)))
+					if (componentContainer.Components.Any(c => componentDependency.IsInstanceOfType(c)) == false)
 					{
-						throw new ComponentDependencyException(archetype, componentType, componentDependency);
+						throw new ComponentDependencyException(archetype, component.GetType(), componentDependency);
 					}
 				}
 			}

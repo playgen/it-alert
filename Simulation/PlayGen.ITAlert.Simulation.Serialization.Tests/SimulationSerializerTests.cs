@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Engine.Serialization;
 using NUnit.Framework;
-using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.Simulation.Serialization.Tests

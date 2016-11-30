@@ -15,14 +15,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 		private IDisposable _visitorSubscription;
 
-		public VisitorPosition(IEntity entity) 
-			: base(entity)
-		{
-
-			// host subscribe to messages from the visitor
-			// visitor subscribe to messages from the host
-		}
-
 		public void SetHost(IEntity host)
 		{
 			Host = host;

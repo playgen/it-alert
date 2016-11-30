@@ -31,10 +31,9 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			// TODO: replace temporay copy from configuration
 			// populate system registry 
-			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system));
 			configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
-
-
+			configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
+			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system(ComponentRegistry, EntityRegistry)));
 			// initialization
 			InitializeGraphEntities(configuration);
 		}
@@ -82,26 +81,14 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateSystem(NodeConfig config)
 		{
-			var subsystem = new Entity(EntityRegistry);
-			switch (config.Type)
-			{
-				case NodeType.Default:
-				default:
-					ComponentFactory.PopulateContainerForArchetype("Subsystem", subsystem);
-
-					config.EntityId = subsystem.Id;
-
-					//SystemsByLogicalId.Add(config.Id, subsystem);
-					break;
-			}
+			var subsystem = CreateEntityFromArchetype(GameEntities.Subsystem.Name);
+			config.EntityId = subsystem.Id;
 
 			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
 			subsystem.GetComponent<Name>().SetValue(config.Name);
 
 			subsystem.GetComponent<ItemStorageProperty>().SetItemLimit(4);
 			subsystem.GetComponent<ItemStorageProperty>().SetOverLimitBehaviour(ItemStorageProperty.OverLimitBehaviour.Dispose);
-
-			EntityRegistry.AddEntity(subsystem);
 
 			return subsystem;
 		}
@@ -113,9 +100,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateConnection(Dictionary<int, IEntity> subsystems, EdgeConfig edgeConfig)
 		{
-			var connection = EntityRegistry.CreateEntity();
-
-			ComponentFactory.PopulateContainerForArchetype(Archetypes[Connection.Name, connection);
+			var connection = CreateEntityFromArchetype(GameEntities.Connection.Name);
 			
 			var head = subsystems[edgeConfig.Source];
 			var tail = subsystems[edgeConfig.Destination];
@@ -129,7 +114,6 @@ namespace PlayGen.ITAlert.Simulation
 			tail.GetComponent<GraphNode>().EntrancePositions.Add(connection, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
 
 			edgeConfig.EntityId = connection.Id;
-			_entityRegistry.AddEntity(connection);
 			return connection;
 		}
 
@@ -144,9 +128,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateItem(ItemType type)
 		{
-			var item = new Entity(_entityRegistry);
-			ComponentFactory.PopulateContainerForArchetype(type.ToString(), item);
-			_entityRegistry.AddEntity(item);
+			var item = CreateEntityFromArchetype(type.ToString());
 			return item;
 		}
 
@@ -173,9 +155,7 @@ namespace PlayGen.ITAlert.Simulation
 		}
 		public IEntity CreatePlayer(PlayerConfig playerConfig)
 		{
-			var player = new Entity(_entityRegistry);
-			ComponentFactory.PopulateContainerForArchetype(Archetypes.Player.Name, player);
-			_entityRegistry.AddEntity(player);
+			var player = CreateEntityFromArchetype(GameEntities.Player.Name);
 			return player;
 		}
 		#endregion
@@ -184,32 +164,19 @@ namespace PlayGen.ITAlert.Simulation
 
 		public IEntity CreateNpc(NpcActorType type)
 		{
-			IEntity actor;
+			IEntity actor = CreateEntityFromArchetype(type.ToString());
 			switch (type)
 			{
 				case NpcActorType.Virus:
-					actor = new Entity(_entityRegistry);
-					ComponentFactory.PopulateContainerForArchetype(Archetypes.Virus.Name, actor);
+					// set some initial values here	
 					break;
 				default:
 					throw new Exception("Unkown npc type");
 			}
-			_entityRegistry.AddEntity(actor);
 			return actor;
 		}
 
 		#endregion
-
-		public GameState GetState()
-		{
-			return new GameState()
-			{
-				//GraphSize = GraphSize,
-				//CurrentTick = CurrentTick,
-				//Entities = Entities.ToDictionary(ek => ek.Key, ev => ev.Value.GetState()),
-				//IsGameFailure = IsGameFailure,
-			};
-		}
 
 		#region commands
 

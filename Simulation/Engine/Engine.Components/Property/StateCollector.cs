@@ -8,8 +8,8 @@ namespace Engine.Components.Property
 {
 	public class StateCollector : ReadOnlyProperty<StateBucket>
 	{
-		protected StateCollector(IEntity entity) 
-			: base(entity)
+		protected StateCollector() 
+			: base()
 		{
 			ValueGetter = GetStateBucket;
 

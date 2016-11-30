@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Components;
+using Engine.Entities;
 
 namespace Engine.Systems
 {
+	public delegate ISystem SystemFactoryDelegate(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry);
+
 	public class SystemRegistry : ISystemRegistry
 	{
 		private readonly List<ISystem> _systems;

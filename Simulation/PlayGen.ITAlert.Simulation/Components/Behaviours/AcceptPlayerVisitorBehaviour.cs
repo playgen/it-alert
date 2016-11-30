@@ -10,11 +10,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 	[ComponentDependency(typeof(Properties.Visitors))]
 	public class AcceptPlayerVisitorBehaviour : Component
 	{
-		private readonly Properties.Visitors _visitableNode;
+		private Properties.Visitors _visitableNode;
 
-		public AcceptPlayerVisitorBehaviour(IEntity entity) 
-			: base(entity)
+		public override void Initialize(IEntity entity)
 		{
+			base.Initialize(entity);
 			_visitableNode = entity.GetComponent<Components.Properties.Visitors>();
 
 			AddSubscription<VisitorEnteringNodeMessage>(VisitorEnteringNode);

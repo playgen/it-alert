@@ -19,8 +19,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		#region Constructors
 
-		public CombinedHealthAndShield(IEntity entity, int initialValue = SimulationConstants.MaxShield)
-			: base(entity, initialValue)
+		public CombinedHealthAndShield(int initialValue = SimulationConstants.MaxShield)
+			: base(initialValue)
 		{
 
 		}

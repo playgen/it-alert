@@ -8,8 +8,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class ExitRoutes : ReadOnlyProperty<Dictionary<IEntity, IEntity>>
 	{
-		public ExitRoutes(IEntity entity) 
-			: base(entity, new Dictionary<IEntity, IEntity>())
+		public ExitRoutes() 
+			: base(new Dictionary<IEntity, IEntity>())
 		{
 		}
 	}

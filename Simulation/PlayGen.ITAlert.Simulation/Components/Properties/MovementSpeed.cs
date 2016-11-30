@@ -9,13 +9,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class MovementSpeed : RangedIntegerProperty
 	{
-		public MovementSpeed(IEntity entity) 
-			: this(entity, 1, SimulationConstants.PlayerMaxSpeed)
+		public MovementSpeed() 
+			: this(1, SimulationConstants.PlayerMaxSpeed)
 		{
 		}
 
-		public MovementSpeed(IEntity entity, int value, int maxValue) 
-			: base(entity, value, 0, maxValue)
+		public MovementSpeed(int value, int maxValue) 
+			: base(value, 0, maxValue)
 		{
 		}
 	}

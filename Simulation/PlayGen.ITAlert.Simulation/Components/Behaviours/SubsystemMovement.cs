@@ -18,10 +18,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 	[ComponentDependency(typeof(ExitRoutes))]
 	public class SubsystemMovement : Movement
 	{
-		private readonly ExitRoutes _exitRoutes;
+		private ExitRoutes _exitRoutes;
 
-		public SubsystemMovement(IEntity entity) : base(entity)
+		public override void Initialize(IEntity entity)
 		{
+			base.Initialize(entity);
 			_exitRoutes = Entity.GetComponent<ExitRoutes>();
 		}
 

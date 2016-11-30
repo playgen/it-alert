@@ -48,12 +48,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archetypes.cs" />
+    <Compile Include="GameEntities.cs" />
     <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
     <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
     <Compile Include="Components\Behaviours\IMovementComponent.cs" />
     <Compile Include="Components\Behaviours\ConnectionMovement.cs" />
-    <Compile Include="Components\Flags\Node.cs" />
     <Compile Include="Components\Properties\GraphNode.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
     <Compile Include="Components\Properties\MovementSpeed.cs" />
@@ -149,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Extensions\" />
+    <Folder Include="Components\Flags\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>

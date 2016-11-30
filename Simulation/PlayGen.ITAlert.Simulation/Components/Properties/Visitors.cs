@@ -14,11 +14,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 	public class Visitors : ReadOnlyProperty<Dictionary<int, IEntity>>, IEmitState<VisitorPositionState>
 	{
-		#region contructor
-
-		public Visitors(IEntity entity) 
-			: base(entity)
+		public Visitors() 
+			: base(new Dictionary<int, IEntity>())
 		{
+		}
+
+		public override void Initialize(IEntity entity)
+		{
+			base.Initialize(entity);
 			AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
 		}
 
@@ -26,8 +29,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		{
 			Value.Remove(entityDestroyedMessage.Entity.Id);
 		}
-
-		#endregion
 
 		public object GetState()
 		{

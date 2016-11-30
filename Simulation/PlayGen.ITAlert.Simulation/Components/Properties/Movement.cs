@@ -19,9 +19,9 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		public int Positions { get; set; }
 
-		protected Movement(IEntity entity) 
-			: base(entity)
+		public override void Initialize(IEntity entity)
 		{
+			base.Initialize(entity);
 			GraphNode = Entity.GetComponent<GraphNode>();
 			Visitors = Entity.GetComponent<Visitors>();
 		}

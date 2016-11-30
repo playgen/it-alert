@@ -8,13 +8,12 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class Name : Property<string>
 	{
-		public Name(IEntity entity) 
-			: base(entity)
+		public Name() : base()
 		{
 		}
 
-		public Name(IEntity entity, string value) 
-			: base(entity, value)
+		public Name(string value) 
+			: base(value)
 		{
 		}
 	}

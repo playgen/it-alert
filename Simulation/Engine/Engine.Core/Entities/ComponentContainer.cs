@@ -22,7 +22,7 @@ namespace Engine.Entities
 
 		public ComponentContainer()
 		{
-			_components = new HashSet<TComponent>();
+			_components = new HashSet<IComponent>();
 		}
 
 		#endregion
@@ -50,32 +50,32 @@ namespace Engine.Entities
 
 		#region components
 
-		public void AddComponent(TComponent component)
+		public void AddComponent(IComponent component)
 		{
 			_components.Add(component);
 		}
 		public bool HasComponent<TComponentInterface>()
-			where TComponentInterface : class, TComponent
+			where TComponentInterface : class, IComponent
 		{
 			return GetComponentsInternal<TComponentInterface>().Any();
 		}
 
 		public TComponentInterface GetComponent<TComponentInterface>()
-			where TComponentInterface : class, TComponent
+			where TComponentInterface : class, IComponent
 		{
 			return GetComponentsInternal<TComponentInterface>().Single();
 		}
 
 		public IEnumerable<TComponentInterface> GetComponents<TComponentInterface>()
-			where TComponentInterface : class, TComponent
+			where TComponentInterface : class, IComponent
 		{
 			return GetComponentsInternal<TComponentInterface>();
 		}
 
 		private IEnumerable<TComponentInterface> GetComponentsInternal<TComponentInterface>()
-			where TComponentInterface : class, TComponent
+			where TComponentInterface : class, IComponent
 		{
-			IEnumerable<TComponent> components;
+			IEnumerable<IComponent> components;
 			if (_componentsByImplementation.TryGetValue(typeof(TComponentInterface), out components) == false)
 			{
 				components = GenerateComponentImplementorCache<TComponentInterface>();
@@ -85,12 +85,12 @@ namespace Engine.Entities
 		}
 
 		public bool HasComponentsImplmenting<TComponentInterface>()
-			where TComponentInterface : class, TComponent
+			where TComponentInterface : class, IComponent
 		{
 			return GetComponents<TComponentInterface>().Any();
 		}
 
-		private IEnumerable<TComponent> GenerateComponentImplementorCache<TComponentInterface>()
+		private IEnumerable<IComponent> GenerateComponentImplementorCache<TComponentInterface>()
 		{
 			return _components.Where(t => t is TComponentInterface);
 		}

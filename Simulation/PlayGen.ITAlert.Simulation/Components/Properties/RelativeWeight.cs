@@ -8,8 +8,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class RelativeWeight : ReadOnlyProperty<int>
 	{
-		protected RelativeWeight(IEntity entity) 
-			: base(entity)
+		protected RelativeWeight() 
+			: base()
 		{
 			ValueGetter = CalculateWeight;
 		}
