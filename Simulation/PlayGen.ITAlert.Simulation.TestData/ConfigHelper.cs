@@ -133,8 +133,18 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			{
 				GameEntities.Subsystem,
 				GameEntities.Connection,
+
 				GameEntities.Player,
 				GameEntities.Virus,
+
+				GameEntities.Repair,
+				GameEntities.Analyser,
+				GameEntities.Capture,
+				GameEntities.Cleaner,
+				GameEntities.Scanner,
+				GameEntities.Tracer,
+
+				GameEntities.Analysis,
 			};
 			var systems = new List<SystemFactoryDelegate>()
 			{
