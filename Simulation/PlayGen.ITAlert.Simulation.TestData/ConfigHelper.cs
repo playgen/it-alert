@@ -5,8 +5,8 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Systems;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {

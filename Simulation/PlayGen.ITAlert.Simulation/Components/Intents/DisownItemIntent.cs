@@ -1,8 +1,9 @@
 ﻿using Engine.Planning;
 
-namespace PlayGen.ITAlert.Simulation.Intents
+namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
-	public class DisownItemIntent : Intent
+	public class DisownItemIntent : IIntent
 	{
+
 	}
 }

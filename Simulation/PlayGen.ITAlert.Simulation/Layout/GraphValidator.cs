@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Layout;
 
-namespace PlayGen.ITAlert.Simulation.Initialization
+namespace PlayGen.ITAlert.Simulation.Layout
 {
 	public static class GraphValidator
 	{

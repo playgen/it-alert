@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Simulation.Initialization
+﻿namespace PlayGen.ITAlert.Simulation.Layout
 {
 	public struct NeighbourNode
 	{

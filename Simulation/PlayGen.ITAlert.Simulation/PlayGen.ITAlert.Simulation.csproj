@@ -48,6 +48,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Intents\ActivateItemIntent.cs" />
+    <Compile Include="Components\Systems\ItemActivation.cs" />
+    <Compile Include="Components\Systems\ItemManagement.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
     <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
@@ -60,7 +63,6 @@
     <Compile Include="Components\Messages\VisitorMessage.cs" />
     <Compile Include="Components\Properties\Movement.cs" />
     <Compile Include="Components\Properties\ExitRoutes.cs" />
-    <Compile Include="Components\Properties\IMovementType.cs" />
     <Compile Include="Components\Properties\MovementCost.cs" />
     <Compile Include="Components\Properties\Name.cs" />
     <Compile Include="Components\Properties\RelativeWeight.cs" />
@@ -72,14 +74,13 @@
     <Compile Include="Components\Behaviours\VisitorPosition.cs" />
     <Compile Include="Components\Properties\Visitors.cs" />
     <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
-    <Compile Include="Components\Behaviours\ConsumeMemoryBehaviour.cs" />
+    <Compile Include="Components\Properties\ConsumeMemory.cs" />
     <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
     <Compile Include="Components\Properties\ItemStorageProperty.cs" />
     <Compile Include="Components\Properties\IsInfectedPropertyComponent.cs" />
     <Compile Include="Components\Properties\SubsystemIsDeadComponent.cs" />
     <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />
     <Compile Include="Components\Properties\SystemMemoryProperty.cs" />
-    <Compile Include="Components\Properties\SystemProcessorPropertyComponent.cs" />
     <Compile Include="Components\Intents\DisownItemIntent.cs" />
     <Compile Include="Components\Intents\InfectSystemIntent.cs" />
     <Compile Include="Components\Intents\MoveIntent.cs" />

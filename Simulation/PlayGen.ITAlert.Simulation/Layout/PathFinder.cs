@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Properties;
-using PlayGen.ITAlert.Simulation.Systems;
 using Priority_Queue;
 
-namespace PlayGen.ITAlert.Simulation.Initialization
+namespace PlayGen.ITAlert.Simulation.Layout
 {
 	public class PathFinder
 	{

@@ -2,7 +2,7 @@
 
 namespace Engine.Components.Behaviour
 {
-	public abstract class ActivatableBehaviour : Component, IActivatableBehaviour
+	public abstract class Activatable : Component, IActivatableBehaviour
 	{
 		public enum ActivationTimerUnits
 		{
@@ -10,7 +10,6 @@ namespace Engine.Components.Behaviour
 			Milliseconds,
 			Signals,
 		}
-
 
 		public enum ActivationMode
 		{
@@ -30,7 +29,7 @@ namespace Engine.Components.Behaviour
 
 		#region constructor
 
-		protected ActivatableBehaviour(ActivationMode activationMode) 
+		protected Activatable(ActivationMode activationMode) 
 			: base()
 		{
 			_activationMode = activationMode;

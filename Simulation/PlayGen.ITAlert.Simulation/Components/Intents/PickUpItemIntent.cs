@@ -1,23 +1,15 @@
 ﻿using Engine.Entities;
-using Engine.Serialization;
-using PlayGen.ITAlert.Simulation.Common;
+using Engine.Planning;
 
-namespace PlayGen.ITAlert.Simulation.Intents
+namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
-	public class PickUpItemIntent : MoveIntent
+	public class PickUpItemIntent : IIntent
 	{
+		public IEntity Item { get; private set; }
 
-		[SyncState(StateLevel.Differential)]
-		public ItemType ItemType { get; private set; }
-
-		[SyncState(StateLevel.Differential)]
-		public int ItemLocation { get; private set; }
-
-		public PickUpItemIntent(IEntity destination, ItemType itemType, int itemLocation)
-			: base (destination)
+		public PickUpItemIntent(IEntity item)
 		{
-			ItemType = itemType;
-			ItemLocation = itemLocation;
+			Item = item;
 		}
 	}
 }

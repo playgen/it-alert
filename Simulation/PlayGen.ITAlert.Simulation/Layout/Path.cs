@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PlayGen.ITAlert.Simulation.Initialization
+namespace PlayGen.ITAlert.Simulation.Layout
 {
 	public class Path : IComparable<Path>
 	{

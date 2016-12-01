@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Simulation.Serialization;
 using System;
 using System.Linq;
 

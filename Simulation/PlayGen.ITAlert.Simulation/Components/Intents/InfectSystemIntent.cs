@@ -1,8 +1,8 @@
 ﻿using Engine.Planning;
 
-namespace PlayGen.ITAlert.Simulation.Intents
+namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
-    public class InfectSystemIntent : Intent
+    public class InfectSystemIntent : IIntent
     {
     }
 }

@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviour\ActivatableBehaviour.cs" />
+    <Compile Include="Behaviour\Activatable.cs" />
     <Compile Include="Behaviour\IBehaviourComponent.cs" />
     <Compile Include="Behaviour\IActivatableBehaviour.cs" />
     <Compile Include="Behaviour\ITimedActivatableBehaviour.cs" />
@@ -51,7 +51,7 @@
     <Compile Include="Property\IPropertyComponent.cs" />
     <Compile Include="Property\Property.cs" />
     <Compile Include="Property\RangedNumericProperty.cs" />
-    <Compile Include="Behaviour\TimedActivatableBehaviour.cs" />
+    <Compile Include="Behaviour\TimedActivatable.cs" />
     <Compile Include="Property\StateCollector.cs" />
     <Compile Include="Property\TickComponent.cs" />
   </ItemGroup>
