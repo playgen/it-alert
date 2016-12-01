@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 using Engine.Components;
 using Engine.Entities;
-using Engine.Planning;
-using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Messages;
-using PlayGen.ITAlert.Simulation.Components.Properties;
-using PlayGen.ITAlert.Simulation.Intents;
 
-namespace PlayGen.ITAlert.Simulation.Systems
+namespace PlayGen.ITAlert.Simulation.Components.Systems
 {
 	[ComponentDependency(typeof(IMovementComponent))]
 	public class VisitorMovement : Engine.Systems.System

@@ -14,9 +14,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Initialization;
 using PlayGen.ITAlert.Simulation.Layout;
-using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation
 {

@@ -16,6 +16,8 @@ namespace PlayGen.ITAlert.Simulation
 	/// </summary>
 	public static class GameEntities
 	{
+		#region nodes
+
 		private static readonly Archetype Node = new Archetype("Node")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
@@ -23,7 +25,6 @@ namespace PlayGen.ITAlert.Simulation
 				() => new GraphNode(),
 				() => new ExitRoutes(), 
 			});
-
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
@@ -43,6 +44,10 @@ namespace PlayGen.ITAlert.Simulation
 			})
 			.HasComponent(() => new MovementCost(4));
 
+		#endregion
+
+		#region actors
+
 		private static readonly Archetype Actor = new Archetype("Actor")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
@@ -57,6 +62,49 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor);
-	};
 
+		#endregion
+
+		#region items
+
+		private static readonly Archetype Item = new Archetype("Item")
+			.HasComponents(new ComponentFactoryDelegate[]
+			{
+				() => new OwnerProperty(),
+				() => new ConsumeMemory(),
+			});
+
+		public static readonly Archetype Scanner = new Archetype("Scanner")
+			.Extends(Item);
+
+		public static readonly Archetype Repair = new Archetype("Repair")
+			.Extends(Item);
+
+		public static readonly Archetype Cleaner = new Archetype("Cleaner")
+			.Extends(Item);
+
+		public static readonly Archetype Analyser = new Archetype("Analyser")
+			.Extends(Item);
+
+		public static readonly Archetype Tracer = new Archetype("Tracer")
+			.Extends(Item);
+
+		public static readonly Archetype Capture = new Archetype("Capture")
+			.Extends(Item);
+
+		#endregion
+
+		#region subsystem enhancements
+
+		private static readonly Archetype Enhancement = new Archetype("Enhancement")
+			.HasComponents(new ComponentFactoryDelegate[]
+			{
+
+			});
+
+		public static readonly Archetype Analysis = new Archetype("Analysis")
+			.Extends(Enhancement);
+
+		#endregion
+	}
 }

@@ -2,7 +2,6 @@
 using Engine.Entities;
 using Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Layout
 {

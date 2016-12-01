@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Engine.Planning
 {
-    public class Intent
+    public interface IIntent
     {
     }
 }

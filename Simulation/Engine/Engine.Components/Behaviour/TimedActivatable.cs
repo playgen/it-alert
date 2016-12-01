@@ -4,7 +4,7 @@ using Engine.Serialization;
 
 namespace Engine.Components.Behaviour
 {
-	public abstract class TimedActivatableBehaviour : ActivatableBehaviour, ITimedActivatableBehaviour
+	public abstract class TimedActivatable : Activatable, ITimedActivatableBehaviour
 	{
 
 		protected ActivationTimerUnits _timerUnits;
@@ -31,7 +31,7 @@ namespace Engine.Components.Behaviour
 		/// <param name="warmUp">this is the number of unit before the item is activated</param>
 		/// <param name="coolDown">this is the </param>
 		/// <param name="canCancel"></param>
-		protected TimedActivatableBehaviour(ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
+		protected TimedActivatable(ActivationMode activationMode, ActivationTimerUnits timerUnits, int warmUp, int coolDown, bool canCancel) 
 			: base(activationMode)
 		{
 			_timerUnits = timerUnits;

@@ -7,9 +7,9 @@ using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Intents;
 using PlayGen.ITAlert.Simulation.Components.Messages;
 using PlayGen.ITAlert.Simulation.Components.Properties;
-using PlayGen.ITAlert.Simulation.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
@@ -35,7 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 				IEntity exitNode = null;
 
-				Intent visitorIntent;
+				IIntent visitorIntent;
 				if (visitorIntents != null && visitorIntents.TryPeek(out visitorIntent))
 				{
 					var moveIntent = visitorIntent as MoveIntent;

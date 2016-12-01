@@ -5,7 +5,6 @@ using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
