@@ -85,8 +85,8 @@ namespace PlayGen.ITAlert.Simulation
 			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
 			subsystem.GetComponent<Name>().SetValue(config.Name);
 
-			subsystem.GetComponent<ItemStorageProperty>().SetItemLimit(4);
-			subsystem.GetComponent<ItemStorageProperty>().SetOverLimitBehaviour(ItemStorageProperty.OverLimitBehaviour.Dispose);
+			subsystem.GetComponent<ItemStorage>().SetItemLimit(4);
+			subsystem.GetComponent<ItemStorage>().SetOverLimitBehaviour(ItemStorage.OverLimitBehaviour.Dispose);
 
 			return subsystem;
 		}
@@ -120,7 +120,7 @@ namespace PlayGen.ITAlert.Simulation
 			foreach (var itemConfig in itemConfigs)
 			{
 				var item = CreateItem(itemConfig.Type);
-				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorageProperty>().TryAddItem(item);
+				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().TryAddItem(item);
 			}
 		}
 

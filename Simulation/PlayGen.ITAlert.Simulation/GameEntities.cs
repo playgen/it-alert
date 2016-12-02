@@ -34,7 +34,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				Positions = SimulationConstants.SubsystemPositions,
 			})			
-			.HasComponent(() => new ItemStorageProperty());
+			.HasComponent(() => new ItemStorage());
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
