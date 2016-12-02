@@ -48,6 +48,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
     <Compile Include="Components\Intents\ActivateItemIntent.cs" />
     <Compile Include="Components\Systems\ItemActivation.cs" />
     <Compile Include="Components\Systems\ItemManagement.cs" />
@@ -76,7 +77,7 @@
     <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
     <Compile Include="Components\Properties\ConsumeMemory.cs" />
     <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
-    <Compile Include="Components\Properties\ItemStorageProperty.cs" />
+    <Compile Include="Components\Properties\ItemStorage.cs" />
     <Compile Include="Components\Properties\IsInfectedPropertyComponent.cs" />
     <Compile Include="Components\Properties\SubsystemIsDeadComponent.cs" />
     <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />

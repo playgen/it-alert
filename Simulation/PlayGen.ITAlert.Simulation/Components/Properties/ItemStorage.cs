@@ -4,11 +4,12 @@ using System.Linq;
 using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
+using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ItemStorageProperty : Component, IPropertyComponent
+	public class ItemStorage : Component, IPropertyComponent
 	{
 		public enum OverLimitBehaviour
 		{
@@ -16,58 +17,76 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			Lock,
 		}
 
-		public List<ItemContainer> Items { get; private set; }
+		public ItemContainer[] Items { get; private set; }
 
 		public int ItemLimit { get; set; }
 
+		private int _maxItemLimit;
+
 		private OverLimitBehaviour _overLimitBehaviour;
 
-		public ItemStorageProperty() 
+		public ItemStorage(int maxItems) 
 			: base()
 		{
-			Items = new List<ItemContainer>();
+			_maxItemLimit = maxItems;
+			Items = new ItemContainer[maxItems];
 		}
 
-		public ItemStorageProperty(int itemLimit, OverLimitBehaviour overLimitBehaviour) 
-			: this()
-		{
-			ItemLimit = itemLimit;
-			Items = new List<ItemContainer>();
-			SetOverLimitBehaviour(overLimitBehaviour);
-		}
+		//public ItemStorage(int itemLimit, OverLimitBehaviour overLimitBehaviour) 
+		//	: this()
+		//{
+		//	ItemLimit = itemLimit;
+		//	Items = new List<ItemContainer>();
+		//	SetOverLimitBehaviour(overLimitBehaviour);
+		//}
 
 		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
 		{
 			_overLimitBehaviour = overLimitBehaviour;
 		}
 
+		public void SetCustomContainer(int position, ItemContainer container)
+		{
+			NotNullHelper.ArgumentNotNull(container, nameof(container));
+			if (position >= Items.Length)
+			{
+				throw new InvalidOperationException($"Custome item container positions {position} exceeds storage capacity {Items.Length}");
+			}
+			Items[position] = container;
+			_maxItemLimit -= 1;
+		}
+
 		public void SetItemLimit(int limit)
 		{
-			if (limit < ItemLimit)
+			if (limit < _maxItemLimit)
 			{
-				for (var i = Items.Count - 1; i >= ItemLimit; i--)
+				if (limit < ItemLimit)
 				{
-					var itemContainer = Items[i];
-					if (_overLimitBehaviour == OverLimitBehaviour.Dispose)
+					for (var i = Items.Length - 1; i >= ItemLimit; i--)
 					{
-						if (itemContainer.Item != null)
+						var itemContainer = Items[i];
+						if (_overLimitBehaviour == OverLimitBehaviour.Dispose)
 						{
-							itemContainer.Item.Dispose();
-							itemContainer.Item = null;
+							if (itemContainer.Item != null)
+							{
+								itemContainer.Item.Dispose();
+								itemContainer.Item = null;
+							}
+							itemContainer.Enabled = false;
 						}
-						itemContainer.Enabled = false;
 					}
 				}
-			}
-			else if (limit > ItemLimit)
-			{
-				for (var i = Items.Count - 1; i >= ItemLimit; i--)
+				else if (limit > ItemLimit)
 				{
-					var itemContainer = Items[i];
-					itemContainer.Enabled = true;
+					for (var i = Items.Length - 1; i >= ItemLimit; i--)
+					{
+						//TODO: test if item container is of regular sort
+						var itemContainer = Items[i];
+						itemContainer.Enabled = true;
+					}
 				}
+				ItemLimit = limit;
 			}
-			ItemLimit = limit;
 		}
 
 		#region items 
