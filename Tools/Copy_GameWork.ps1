@@ -1,24 +1,24 @@
 # Must be run from ./Tools directory
 
-# Copy Gamework.Core Unity GameWork.unity
+# Copy Gamework.Core into GameWork.unity
 Push-Location "../GameWork.Unity/Tools"
 & "./Copy_GameWorkCore.ps1"
 Pop-Location
 
 # Copy GameWork.Unity
 
-function CopyGameworkComponent([string] $sourcePath, [string] $destPath)
+function CopyGameworkComponent([string] $sourceDir, [string] $destDir)
 {
-    If(Test-Path $destPath)
+    If(Test-Path $destDir)
     {
-        Write-Output "Removing: $destPath"
-        Remove-Item $destPath -Recurse
+        Write-Output "Removing: $destDir"
+        Remove-Item $destDir -Recurse
     }
 
-    New-Item -ItemType directory $destPath | Out-Null
+    New-Item -ItemType directory $destDir | Out-Null
 
-    Get-ChildItem -Path $sourcePath | Copy-Item -Destination $destPath -Recurse -Container
+    Get-ChildItem -Path $sourceDir | Copy-Item -Destination $destDir -Recurse -Container
 }
 
-CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Core" "..\Client\Assets\GameWork\Core"
-CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Unity" "..\Client\Assets\GameWork\Unity"
+CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Core" "..\Unity\Assets\GameWork\Core"
+CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Unity" "..\Unity\Assets\GameWork\Unity"
