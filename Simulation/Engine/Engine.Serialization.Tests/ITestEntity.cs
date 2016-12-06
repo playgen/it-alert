@@ -2,7 +2,7 @@
 
 namespace Engine.Serialization.Tests
 {
-	public interface ITestEntity : IEntity
+	public interface ITestEntity : Entity
 	{
 	}
 }

@@ -5,9 +5,9 @@ namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
 	public class PickUpItemIntent : IIntent
 	{
-		public IEntity Item { get; private set; }
+		public Entity Item { get; private set; }
 
-		public PickUpItemIntent(IEntity item)
+		public PickUpItemIntent(Entity item)
 		{
 			Item = item;
 		}

@@ -11,11 +11,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 		public int Position { get; private set; }
 
-		public IEntity Host { get; private set; }
+		public Entity Host { get; private set; }
 
 		private IDisposable _visitorSubscription;
 
-		public void SetHost(IEntity host)
+		public void SetHost(Entity host)
 		{
 			Host = host;
 			_visitorSubscription?.Dispose();

@@ -20,7 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 	{
 		private ExitRoutes _exitRoutes;
 
-		public override void Initialize(IEntity entity)
+		public override void Initialize(Entity entity)
 		{
 			base.Initialize(entity);
 			_exitRoutes = Entity.GetComponent<ExitRoutes>();
@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 				var visitorPosition = visitor.GetComponent<VisitorPosition>();
 				var visitorIntents = visitor.GetComponent<IntentsProperty>();
 
-				IEntity exitNode = null;
+				Entity exitNode = null;
 
 				IIntent visitorIntent;
 				if (visitorIntents != null && visitorIntents.TryPeek(out visitorIntent))
@@ -73,7 +73,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 			}
 		}
 
-		public override void AddVisitor(IEntity visitor, IEntity source, int initialPosition, int currentTick)
+		public override void AddVisitor(Entity visitor, Entity source, int initialPosition, int currentTick)
 		{
 			// determine entrance position
 			var direction = GraphNode.EntrancePositions.ContainsKey(source) 

@@ -9,11 +9,11 @@ namespace Engine.Components
 	public class ComponentEntityTuple<TComponent> : IEquatable<ComponentEntityTuple<TComponent>>
 		where TComponent : IComponent
 	{
-		public IEntity Entity { get; }
+		public Entity Entity { get; }
 
 		public TComponent Component { get; }
 
-		public ComponentEntityTuple(IEntity entity, TComponent component)
+		public ComponentEntityTuple(Entity entity, TComponent component)
 		{
 			Entity = entity;
 			Component = component;

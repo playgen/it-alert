@@ -19,7 +19,7 @@ namespace Engine.Components.Property
 		}
 	}
 
-	public class TickComponent : ReadOnlyProperty<int>, IBehaviourComponent, ITickableComponent, IEmitState<TickState>
+	public class TickComponent : ReadOnlyProperty<int>, IBehaviourComponent, ITickableComponent, IEmitState
 	{
 		public virtual void Tick(int currentTick)
 		{

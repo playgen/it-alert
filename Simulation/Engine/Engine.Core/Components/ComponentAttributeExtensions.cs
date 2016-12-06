@@ -74,7 +74,7 @@ namespace Engine.Components
 		//	return usageAttributes.OfType<ComponentUsageAttribute>().Select(da => da.RequiredType).ToArray();
 		//}
 
-		//public static bool IsComponentUsageValid(this IComponent component, IEntity entity)
+		//public static bool IsComponentUsageValid(this IComponent component, Entity entity)
 		//{
 		//	return component.IsComponentUsageValid(entity.GetType());
 		//}

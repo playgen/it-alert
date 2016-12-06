@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		/// </summary>
 		/// <param name="subsystems"></param>
 		/// <returns>Dictionary keyed by id of subsystem of (dictionary keyed by destination of exit id)</returns>
-		public static Dictionary<int, Dictionary<int, int>> GenerateRoutes(IList<IEntity> subsystems, IList<IEntity> connections)
+		public static Dictionary<int, Dictionary<int, int>> GenerateRoutes(IList<Entity> subsystems, IList<Entity> connections)
 		{
 			var subsystemsById = subsystems.ToDictionary(k => k.Id, v => v);
 			var connectionsById = connections.ToDictionary(k => k.Id, v => v);
@@ -62,7 +62,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		/// <param name="source"></param>
 		/// <param name="destination"></param>
 		/// <returns></returns>
-		public static List<Path> FindPaths(Dictionary<int, IEntity> subsystems, Dictionary<int, IEntity> connections, IEntity source, IEntity destination)
+		public static List<Path> FindPaths(Dictionary<int, Entity> subsystems, Dictionary<int, Entity> connections, Entity source, Entity destination)
 		{
 			var paths = new SimplePriorityQueue<Path>();
 
@@ -120,7 +120,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			return bestPaths;
 		}
 
-		//private static List<NeighbourNode> GetAdjacentNodes(IEntity source, EdgeDirection? entryPoint, Dictionary<int, IEntity> connections)
+		//private static List<NeighbourNode> GetAdjacentNodes(Entity source, EdgeDirection? entryPoint, Dictionary<int, Entity> connections)
 		//{
 		//	return source.GetComponent<GraphNode>().ExitPositions
 		//		.Select(connection => new NeighbourNode()

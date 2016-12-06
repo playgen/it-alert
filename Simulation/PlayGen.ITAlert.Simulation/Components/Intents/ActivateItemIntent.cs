@@ -9,10 +9,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
 	public class ActivateItemIntent : IIntent
 	{
-		public IEntity Item { get; }
-		public IEntity Node { get; }
+		public Entity Item { get; }
+		public Entity Node { get; }
 
-		public ActivateItemIntent(IEntity item, IEntity node)
+		public ActivateItemIntent(Entity item, Entity node)
 		{
 			Item = item;
 			Node = node;

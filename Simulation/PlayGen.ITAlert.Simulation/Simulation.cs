@@ -71,15 +71,15 @@ namespace PlayGen.ITAlert.Simulation
 			var graphSize = new Vector(width, height);
 		}
 
-		public Dictionary<int, IEntity> CreateSystems(List<NodeConfig> nodeConfigs)
+		public Dictionary<int, Entity> CreateSystems(List<NodeConfig> nodeConfigs)
 		{
 			return nodeConfigs.ToDictionary(sc => sc.Id, CreateSystem);
 		}
 		
 
-		public IEntity CreateSystem(NodeConfig config)
+		public Entity CreateSystem(NodeConfig config)
 		{
-			var subsystem = CreateEntityFromArchetype(GameEntities.Subsystem.Name);
+			var subsystem = CreateEntityFromArchetype(config.Type.ToString());
 			config.EntityId = subsystem.Id;
 
 			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
@@ -91,12 +91,12 @@ namespace PlayGen.ITAlert.Simulation
 			return subsystem;
 		}
 
-		public List<IEntity> CreateConnections(Dictionary<int, IEntity> subsystems, List<EdgeConfig> edgeConfigs)
+		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, List<EdgeConfig> edgeConfigs)
 		{
 			return edgeConfigs.Select(cc => CreateConnection(subsystems, cc)).ToList();
 		}
 
-		public IEntity CreateConnection(Dictionary<int, IEntity> subsystems, EdgeConfig edgeConfig)
+		public Entity CreateConnection(Dictionary<int, Entity> subsystems, EdgeConfig edgeConfig)
 		{
 			var connection = CreateEntityFromArchetype(GameEntities.Connection.Name);
 			
@@ -115,7 +115,7 @@ namespace PlayGen.ITAlert.Simulation
 			return connection;
 		}
 
-		private void CreateItems(Dictionary<int, IEntity> subsystems, List<ItemConfig> itemConfigs)
+		private void CreateItems(Dictionary<int, Entity> subsystems, List<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
@@ -124,14 +124,14 @@ namespace PlayGen.ITAlert.Simulation
 			}
 		}
 
-		public IEntity CreateItem(ItemType type)
+		public Entity CreateItem(ItemType type)
 		{
 			var item = CreateEntityFromArchetype(type.ToString());
 			return item;
 		}
 
 
-		private void CalculatePaths(Dictionary<int, IEntity> subsystems, IList<IEntity> connections)
+		private void CalculatePaths(Dictionary<int, Entity> subsystems, IList<Entity> connections)
 		{
 			var routes = PathFinder.GenerateRoutes(subsystems.Values.ToList(), connections);
 
@@ -141,7 +141,7 @@ namespace PlayGen.ITAlert.Simulation
 			}
 		}
 
-		private void CreatePlayers(Dictionary<int, IEntity> subsystems, List<PlayerConfig> playerConfigs)
+		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)
 		{
 			foreach (var playerConfig in playerConfigs)
 			{
@@ -151,7 +151,7 @@ namespace PlayGen.ITAlert.Simulation
 				subsystems[startingLocationId].GetComponent<IMovementComponent>().AddVisitor(player);
 			}
 		}
-		public IEntity CreatePlayer(PlayerConfig playerConfig)
+		public Entity CreatePlayer(PlayerConfig playerConfig)
 		{
 			var player = CreateEntityFromArchetype(GameEntities.Player.Name);
 			return player;
@@ -160,9 +160,9 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region entity factory 
 
-		public IEntity CreateNpc(NpcActorType type)
+		public Entity CreateNpc(NpcActorType type)
 		{
-			IEntity actor = CreateEntityFromArchetype(type.ToString());
+			Entity actor = CreateEntityFromArchetype(type.ToString());
 			switch (type)
 			{
 				case NpcActorType.Virus:

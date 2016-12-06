@@ -2,12 +2,15 @@
 
 namespace PlayGen.ITAlert.Simulation.Components
 {
-	public class ItemContainer
+	public class ItemContainer : IItemContainer
 	{
-		public IEntity Item { get; set; }
+		public virtual string ContainerGlyph => null;
 
-		public bool HasItem => Item != null;
+		public Entity Item { get; set; }
 
-		public bool Enabled { get; set; }
+		public virtual bool HasItem => Item != null;
+		public virtual bool Enabled { get; set; }
+		public virtual bool CanDrop => Enabled && HasItem == false;
+		public virtual bool CanPickup => Enabled && HasItem;
 	}
 }

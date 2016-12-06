@@ -9,7 +9,15 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ItemStorage : Component, IPropertyComponent
+	public class ItemStorageState : List<ItemContainer>
+	{
+		public ItemStorageState(IEnumerable<ItemContainer> collection) 
+			: base(collection)
+		{
+		}
+	}
+
+	public class ItemStorage : Component, IPropertyComponent, IEmitState
 	{
 		public enum OverLimitBehaviour
 		{
@@ -50,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			NotNullHelper.ArgumentNotNull(container, nameof(container));
 			if (position >= Items.Length)
 			{
-				throw new InvalidOperationException($"Custome item container positions {position} exceeds storage capacity {Items.Length}");
+				throw new InvalidOperationException($"Custom item container positions {position} exceeds storage capacity {Items.Length}");
 			}
 			Items[position] = container;
 			_maxItemLimit -= 1;
@@ -98,7 +106,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		///// <param name="requestor"></param>
 		///// <param name="item">Item reference if available</param>
 		///// <returns>Boolean indiciting whether item was obtained</returns>
-		//public bool TryGetItem(ItemType itemType, IEntity requestor, out IEntity item)
+		//public bool TryGetItem(ItemType itemType, Entity requestor, out Entity item)
 		//{
 		//	//TODO: probably lock here if we get multiple callers
 		//	for (var i = 0; i < ItemLimit; i++)
@@ -120,7 +128,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		///// <param name="item">Item reference if available</param>
 		///// <param name="requestor"></param>
 		///// <returns>Boolean indiciting whether item was obtained</returns>
-		//public bool TryGetItem(ItemType itemType, IEntity requestor, int itemLocation, out IItem item)
+		//public bool TryGetItem(ItemType itemType, Entity requestor, int itemLocation, out IItem item)
 		//{
 		//	var itemContainer = Items[itemLocation];
 		//	if (itemContainer != null
@@ -160,7 +168,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		//	return Items.Any(ic => ic.Item == item);
 		//}
 
-		public bool TryAddItem(IEntity item)
+		public bool TryAddItem(Entity item)
 		{
 			if (item != null)
 			{
@@ -181,5 +189,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 
 		#endregion
+
+		public object GetState()
+		{
+			return new ItemStorageState(Items.ToList());
+		}
 	}
 }

@@ -3,7 +3,7 @@ using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class OwnerProperty : Property<IEntity>
+	public class OwnerProperty : Property<Entity>
 	{
 	}
 }

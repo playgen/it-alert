@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 	{
 		private Properties.Visitors _visitableNode;
 
-		public override void Initialize(IEntity entity)
+		public override void Initialize(Entity entity)
 		{
 			base.Initialize(entity);
 			_visitableNode = entity.GetComponent<Components.Properties.Visitors>();

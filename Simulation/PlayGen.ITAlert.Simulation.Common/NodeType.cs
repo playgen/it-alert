@@ -1,7 +1,13 @@
 ﻿namespace PlayGen.ITAlert.Simulation.Common
 {
-    public enum NodeType
-    {
-        Default
-    }
+	public enum NodeType
+	{
+		Subsystem,
+
+		Analysis,
+
+		Antivirus,
+
+		Database,
+	}
 }

@@ -8,12 +8,12 @@ namespace PlayGen.ITAlert.Simulation.Layout
 	public class EdgeDirection
 	{
 		[SyncState(StateLevel.Setup)]
-		public IEntity Node { get; }
+		public Entity Node { get; }
 
 		[SyncState(StateLevel.Setup)]
 		public Common.EdgeDirection Direction { get; }
 
-		public EdgeDirection(IEntity node, Common.EdgeDirection direction)
+		public EdgeDirection(Entity node, Common.EdgeDirection direction)
 		{
 			Node = node;
 			Direction = direction;

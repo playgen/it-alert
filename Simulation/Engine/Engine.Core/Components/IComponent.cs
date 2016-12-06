@@ -5,6 +5,6 @@ namespace Engine.Components
 {
 	public interface IComponent : IDisposable
 	{
-		void Initialize(IEntity entity);
+		void Initialize(Entity entity);
 	}
 }

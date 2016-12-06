@@ -6,13 +6,13 @@ namespace Engine.Serialization
 {
 	public class EntityRegistryReferenceResolver : IReferenceResolver
 	{
-		private IEntityRegistry _registry;
+		private EntityRegistry _registry;
 
 		private BidirectionalDictionary<string, object> _nonEntityReferences = new BidirectionalDictionary<string, object>();
 
 		private int _referenceCount;
 
-		public EntityRegistryReferenceResolver(IEntityRegistry registry)
+		public EntityRegistryReferenceResolver(EntityRegistry registry)
 		{
 			_registry = registry;
 		}
@@ -24,7 +24,7 @@ namespace Engine.Serialization
 
 		public string GetReference(object context, object value)
 		{
-			var entity = value as IEntity;
+			var entity = value as Entity;
 			string reference;
 			if (entity == null)
 			{
@@ -44,7 +44,7 @@ namespace Engine.Serialization
 
 		public bool IsReferenced(object context, object value)
 		{
-			var entity = value as IEntity;
+			var entity = value as Entity;
 			if (entity == null)
 			{
 				string reference;

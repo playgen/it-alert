@@ -74,7 +74,7 @@ namespace Engine.Serialization
 		#endregion
 
 		public static byte[] Serialize<T>(T obj)
-			where T : ISerializable, IEntityRegistry
+			where T : ISerializable, EntityRegistry
 		{
 			var serializerSettings = GetDefaultSettings();
 			serializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
@@ -85,7 +85,7 @@ namespace Engine.Serialization
 		}
 
 		public byte[] SerializeDifferential<T>(T obj)
-			where T : ISerializable, IEntityRegistry
+			where T : ISerializable, EntityRegistry
 		{
 			var serializerSettings = GetDefaultSettings();
 
@@ -112,7 +112,7 @@ namespace Engine.Serialization
 		}
 
 		public void DeserializeDifferential<T>(byte[] simulationBytes, T entityRegistry)
-			where T : ISerializable, IEntityRegistry
+			where T : ISerializable, EntityRegistry
 		{
 			var serializerSettings = GetDefaultSettings();
 

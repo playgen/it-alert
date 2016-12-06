@@ -9,15 +9,15 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	public class GraphNode : Component
 	{
-		public Dictionary<IEntity, int> EntrancePositions { get; private set; }
+		public Dictionary<Entity, int> EntrancePositions { get; private set; }
 
-		public Dictionary<IEntity, int> ExitPositions { get; private set; }
+		public Dictionary<Entity, int> ExitPositions { get; private set; }
 
 		public GraphNode() 
 			: base()
 		{
-			EntrancePositions = new Dictionary<IEntity, int>();
-			ExitPositions = new Dictionary<IEntity, int>();
+			EntrancePositions = new Dictionary<Entity, int>();
+			ExitPositions = new Dictionary<Entity, int>();
 		}
 	}
 }

@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public string Name { get; set; }
 
 		public NodeConfig(int id, 
-			NodeType type = NodeType.Default, 
+			NodeType type = NodeType.Subsystem, 
 			EnhancementType enhancement = EnhancementType.None)
 		{
 			//TODO: allow setting initial health
@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public bool Equals(NodeConfig other)
 		{
-			return Id == other.Id;
+			return Id == other?.Id;
 		}
 
 		public override int GetHashCode()

@@ -5,11 +5,11 @@ using Newtonsoft.Json.Converters;
 
 namespace Engine.Serialization
 {
-	internal class EntityCreationConverter : CustomCreationConverter<IEntity>
+	internal class EntityCreationConverter : CustomCreationConverter<Entity>
 	{
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly EntityRegistry _entityRegistry;
 
-		public EntityCreationConverter(IEntityRegistry entityRegistry)
+		public EntityCreationConverter(EntityRegistry entityRegistry)
 		{
 			_entityRegistry = entityRegistry;
 		}
@@ -21,7 +21,7 @@ namespace Engine.Serialization
 				return null;
 			}
 
-			IEntity value = Create(objectType);
+			Entity value = Create(objectType);
 			if (value == null)
 			{
 				throw new JsonSerializationException("No object created.");
@@ -31,9 +31,9 @@ namespace Engine.Serialization
 			return value;
 		}
 
-		public override IEntity Create(Type objectType)
+		public override Entity Create(Type objectType)
 		{
-			//IEntity entity;
+			//Entity entity;
 			//_entityRegistry.TryGetEntityById()
 			return null;
 		}

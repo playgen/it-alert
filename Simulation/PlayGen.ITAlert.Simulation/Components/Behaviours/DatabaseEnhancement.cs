@@ -9,11 +9,11 @@ using PlayGen.ITAlert.Simulation.Components.Properties;
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
 	[ComponentDependency(typeof(ItemStorage))]
-	public class AnalyserEnhancement : Component
+	public class DatabaseEnhancement : Component
 	{
 		private ItemStorage _itemStorage;
 
-		public AnalyserEnhancement()
+		public DatabaseEnhancement()
 		{
 		}
 

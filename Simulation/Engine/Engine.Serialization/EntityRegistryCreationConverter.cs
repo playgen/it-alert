@@ -4,16 +4,16 @@ using Newtonsoft.Json.Converters;
 
 namespace Engine.Serialization
 {
-	internal class EntityRegistryCreationConverter : CustomCreationConverter<IEntity>
+	internal class EntityRegistryCreationConverter : CustomCreationConverter<Entity>
 	{
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly EntityRegistry _entityRegistry;
 
-		public EntityRegistryCreationConverter(IEntityRegistry entityRegistry)
+		public EntityRegistryCreationConverter(EntityRegistry entityRegistry)
 		{
 			_entityRegistry = entityRegistry;
 		}
 
-		public override IEntity Create(Type objectType)
+		public override Entity Create(Type objectType)
 		{
 
 			//if (_entityRegistry.TryGetEntityById())

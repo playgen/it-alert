@@ -48,8 +48,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Behaviours\DatabaseEnhancement.cs" />
+    <Compile Include="Components\Behaviours\AntivirusEnhancement.cs" />
     <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
+    <Compile Include="Components\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateItemIntent.cs" />
+    <Compile Include="Components\EnhancementItemContainer.cs" />
     <Compile Include="Components\Systems\ItemActivation.cs" />
     <Compile Include="Components\Systems\ItemManagement.cs" />
     <Compile Include="GameEntities.cs" />

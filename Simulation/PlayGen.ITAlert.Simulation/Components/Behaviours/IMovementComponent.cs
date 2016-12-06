@@ -11,8 +11,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 	{
 		void MoveVisitors(int currentTick);
 
-		void AddVisitor(IEntity visitor);
+		void AddVisitor(Entity visitor);
 
-		void AddVisitor(IEntity visitor, IEntity source, int initialPosition, int currentTick);
+		void AddVisitor(Entity visitor, Entity source, int initialPosition, int currentTick);
 	}
 }

@@ -13,14 +13,14 @@ namespace Engine.Serialization
 
 		private readonly Dictionary<Type, List<JsonProperty>> _propertyCache = new Dictionary<Type, List<JsonProperty>>();
 
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly EntityRegistry _entityRegistry;
 
 		private StateLevel Level { get; }
 
 
 		private readonly List<Action> _entityReferenceResolverQueue = new List<Action>();
 
-		public EntityRegistryContractResolver(StateLevel level, IEntityRegistry registry)
+		public EntityRegistryContractResolver(StateLevel level, EntityRegistry registry)
 		{
 			_entityRegistry = registry;
 			Level = level;
