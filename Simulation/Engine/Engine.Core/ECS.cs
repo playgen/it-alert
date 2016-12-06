@@ -7,6 +7,7 @@ using Engine.bin;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
+using System.Reactive.Disposables;
 
 namespace Engine
 {
@@ -15,9 +16,9 @@ namespace Engine
 	{
 		private bool _disposed;
 
-		protected IEntityRegistry EntityRegistry { get; private set; }
+		protected EntityRegistry EntityRegistry { get; private set; }
 
-		protected IComponentRegistry ComponentRegistry { get; private set; }
+		protected ComponentRegistry ComponentRegistry { get; private set; }
 		
 		protected ISystemRegistry SystemRegistry { get; private set; }
 
@@ -32,20 +33,29 @@ namespace Engine
 			SystemRegistry = new SystemRegistry();
 			ComponentFactory = new ComponentFactory();
 
+			ComponentFactory.EntityComponentBound += EntityComponentBound;
+
 			Archetypes = new Dictionary<string, Archetype>();
 		}
 
-		public IEntity CreateEntityFromArchetype(string archetypeName)
+		private void EntityComponentBound(IComponent component, Entity entity)
+		{
+			foreach (var componentInterface in component.GetType().GetInterfaces().OfType<IComponent>())
+			{
+				//ComponentRegistry
+			}
+		}
+
+		public Entity CreateEntityFromArchetype(string archetypeName)
 		{
 			Archetype archetype;
 			if (Archetypes.TryGetValue(archetypeName, out archetype))
 			{
 				var entity = EntityRegistry.CreateEntity();
 				ComponentFactory.PopulateContainerForArchetype(archetypeName, entity);
-				EntityRegistry.AddEntity(entity);
 				return entity;
 			}
-			throw new KeyNotFoundException("");
+			throw new KeyNotFoundException($"No archetype found for key '{archetypeName}'");
 		}
 
 		public void Dispose()
@@ -54,6 +64,22 @@ namespace Engine
 			{
 				
 			}
+		}
+
+		public Dictionary<int, StateBucket> GetState()
+		{
+			var states = new Dictionary<int, StateBucket>();
+
+			foreach (var entity in EntityRegistry.Entities.Values)
+			{
+				var stateBucket = new StateBucket();
+				foreach (var statefulComponent in entity.GetComponents<IEmitState>())
+				{
+					stateBucket.Add(statefulComponent.GetState());
+				}
+			}
+
+			return states;
 		}
 	}
 }

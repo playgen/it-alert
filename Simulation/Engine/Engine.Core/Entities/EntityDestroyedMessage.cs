@@ -7,9 +7,9 @@ namespace Engine.Entities
 {
 	public class EntityDestroyedMessage : Message
 	{
-		public IEntity Entity { get; private set; }
+		public Entity Entity { get; private set; }
 
-		public EntityDestroyedMessage(MessageScope scope, IEntity entity) 
+		public EntityDestroyedMessage(MessageScope scope, Entity entity) 
 			: base(scope)
 		{
 			Entity = entity;

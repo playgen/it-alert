@@ -14,13 +14,13 @@ namespace Engine.Serialization
 		
 		internal event EventHandler<DeserializingEntityReferenceEventArgs> DeserializingEntityReference;
 
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly EntityRegistry _entityRegistry;
 		private readonly MemberInfo _memberInfo;
 
 		private Func<object, object> _getter;
 		private Action<object, object> _setter;
 
-		public EntityRegistryValueProvider(IEntityRegistry entityRegistry, MemberInfo memberInfo)
+		public EntityRegistryValueProvider(EntityRegistry entityRegistry, MemberInfo memberInfo)
 		{
 			_entityRegistry = entityRegistry;
 			_memberInfo = memberInfo;
@@ -39,7 +39,7 @@ namespace Engine.Serialization
 				var entityId = int.Parse(stringValue.Substring(EntityPrefix.Length - 1));
 
 				//TODO: investigate if we need to defer these until the entity registry has been deserialized
-				IEntity entity;
+				Entity entity;
 				if (_entityRegistry.TryGetEntityById(entityId, out entity))
 				{
 					OnDeserializingEntityReference(new DeserializingEntityReferenceEventArgs(() => _setter(target, entity)));
@@ -69,7 +69,7 @@ namespace Engine.Serialization
 
 				if (value != null)
 				{
-					var entity = value as IEntity;
+					var entity = value as Entity;
 					if (entity == null)
 					{
 						throw new InvalidOperationException("value object is not an entity");

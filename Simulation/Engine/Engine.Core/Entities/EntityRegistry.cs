@@ -4,22 +4,43 @@ using Engine.Serialization;
 
 namespace Engine.Entities
 {
-	public class EntityRegistry : IEntityRegistry
+	public class EntityRegistry
 	{
-		[SyncState(StateLevel.Differential, 0)]
 		private int _entitySeed;
 
-		[SyncState(StateLevel.Differential, 1)]
-		protected Dictionary<int, IEntity> Entities = new Dictionary<int, IEntity>();
+		public Dictionary<int, Entity> Entities { get; }
 
-		public int EntitySeed => ++_entitySeed;
+		public Queue<Entity> EntityPool { get; }
 
-		public IEntity CreateEntity()
+		private int EntitySeed => ++_entitySeed;
+
+		public int LastEntityId => _entitySeed;
+
+		public EntityRegistry()
 		{
-			return new Entity(this);
+			Entities = new Dictionary<int, Entity>();
+			EntityPool = new Queue<Entity>();
 		}
 
-		public void AddEntity(IEntity entity)
+		public Entity CreateEntity()
+		{
+			var entity = EntityPool.Count > 0 ? EntityPool.Dequeue() : new Entity();
+			entity.Reset(EntitySeed);
+
+			entity.EntityDestroyed += EntityOnEntityDestroyed;
+
+			AddEntity(entity);
+
+			return entity;
+		}
+
+		private void EntityOnEntityDestroyed(Entity entity)
+		{
+			Entities.Remove(entity.Id);
+			EntityPool.Enqueue(entity);
+		}
+
+		private void AddEntity(Entity entity)
 		{
 			if (Entities.ContainsKey(entity.Id))
 			{
@@ -27,25 +48,21 @@ namespace Engine.Entities
 			}
 			Entities.Add(entity.Id, entity);
 
-			entity.EntityDestroyed += Entity_EntityDestroyed;
-
 			OnEntityAdded(entity);
 		}
 
-		protected virtual void OnEntityAdded(IEntity entity)
+		protected virtual void OnEntityAdded(Entity entity)
 		{
 			
 		}
 
 		private void Entity_EntityDestroyed(object sender, EventArgs e)
 		{
-			var destroyedEntity = sender as IEntity;
+			var destroyedEntity = sender as Entity;
 			if (destroyedEntity == null)
 			{
 				throw new Exception("A non-entity raised the entity destroyed event; this should be impossible!");
 			}
-
-			destroyedEntity.EntityDestroyed -= Entity_EntityDestroyed;
 
 			if (Entities.ContainsKey(destroyedEntity.Id) == false)
 			{
@@ -56,22 +73,22 @@ namespace Engine.Entities
 			OnEntityDestroyed(destroyedEntity);
 		}
 
-		protected virtual void OnEntityDestroyed(IEntity entity)
+		protected virtual void OnEntityDestroyed(Entity entity)
 		{
 			
 		}
 
-		public bool TryGetEntityById(int id, out IEntity entity)
+		public bool TryGetEntityById(int id, out Entity entity)
 		{
-			IEntity gameEntity;
+			Entity gameEntity;
 			var found = Entities.TryGetValue(id, out gameEntity);
 			entity = gameEntity;
 			return found;
 		}
 
-		public IEntity GetEntityById(int id)
+		public Entity GetEntityById(int id)
 		{
-			IEntity entity;
+			Entity entity;
 			if (Entities.TryGetValue(id, out entity))
 			{
 				return entity;
@@ -86,7 +103,6 @@ namespace Engine.Entities
 		{
 			foreach (var entity in Entities.Values)
 			{
-				entity.EntityDestroyed += Entity_EntityDestroyed;
 				entity.OnDeserialized();
 			}
 		}

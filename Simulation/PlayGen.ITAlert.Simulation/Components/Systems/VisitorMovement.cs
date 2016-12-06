@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.bin;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
@@ -10,7 +11,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Systems
 	[ComponentDependency(typeof(IMovementComponent))]
 	public class VisitorMovement : Engine.Systems.System
 	{
-		public VisitorMovement(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry) 
+		public VisitorMovement(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
 			: base(componentRegistry, entityRegistry)
 		{
 		}

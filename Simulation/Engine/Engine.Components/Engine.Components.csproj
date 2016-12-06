@@ -47,7 +47,6 @@
     <Compile Include="Behaviour\IActivatableBehaviour.cs" />
     <Compile Include="Behaviour\ITimedActivatableBehaviour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Property\IEmitState.cs" />
     <Compile Include="Property\IPropertyComponent.cs" />
     <Compile Include="Property\Property.cs" />
     <Compile Include="Property\RangedNumericProperty.cs" />

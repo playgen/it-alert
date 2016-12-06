@@ -9,7 +9,7 @@ namespace Engine.Components
 	{
 		private bool _disposed;
 
-		protected IEntity Entity { get; private set; }
+		protected Entity Entity { get; private set; }
 
 		#region constructor
 
@@ -42,7 +42,7 @@ namespace Engine.Components
 
 		#endregion
 
-		public virtual void Initialize(IEntity entity)
+		public virtual void Initialize(Entity entity)
 		{
 			NotNullHelper.ArgumentNotNull(entity, nameof(entity));
 			Entity = entity;

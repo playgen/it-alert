@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.bin;
 using Engine.Components;
 using Engine.Entities;
 
 namespace Engine.Systems
 {
-	public delegate ISystem SystemFactoryDelegate(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry);
+	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry);
 
 	public class SystemRegistry : ISystemRegistry
 	{

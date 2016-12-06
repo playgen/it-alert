@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		public int Positions { get; set; }
 
-		public override void Initialize(IEntity entity)
+		public override void Initialize(Entity entity)
 		{
 			base.Initialize(entity);
 			GraphNode = Entity.GetComponent<GraphNode>();
@@ -27,14 +27,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		}
 
 		public abstract void MoveVisitors(int currentTick);
-		public void AddVisitor(IEntity visitor)
+		public void AddVisitor(Entity visitor)
 		{
 			AddVisitor(visitor, 0, 0);
 		}
 
-		public abstract void AddVisitor(IEntity visitor, IEntity source, int initialPosition, int currentTick);
+		public abstract void AddVisitor(Entity visitor, Entity source, int initialPosition, int currentTick);
 
-		protected void AddVisitor(IEntity visitor, int position, int currentTick)
+		protected void AddVisitor(Entity visitor, int position, int currentTick)
 		{
 			var visitorPosition = visitor.GetComponent<VisitorPosition>();
 			visitorPosition.SetHost(Entity);

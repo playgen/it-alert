@@ -27,8 +27,8 @@ namespace PlayGen.ITAlert.Simulation.Entities.Tests
 //		//[Test]
 //		//public void TestEntityCreatedEvent()
 //		//{
-//		//	IEntity lastEntityCreated = null;
-//		//	EntityBase.EntityCreated += (sender, args) => lastEntityCreated = sender as IEntity;
+//		//	Entity lastEntityCreated = null;
+//		//	EntityBase.EntityCreated += (sender, args) => lastEntityCreated = sender as Entity;
 //
 //		//	Assert.Null(lastEntityCreated);
 //
@@ -48,12 +48,12 @@ namespace PlayGen.ITAlert.Simulation.Entities.Tests
 //		{
 //			var sim = new TestSimulation();
 //
-//			IEntity lastEntityDestroyed = null;
-//			IEntity tempEntity;
+//			Entity lastEntityDestroyed = null;
+//			Entity tempEntity;
 //
 //			using (var testOne = new TestEntity(sim))
 //			{
-//				testOne.EntityDestroyed += (sender, args) => lastEntityDestroyed = sender as IEntity;
+//				testOne.EntityDelegate += (sender, args) => lastEntityDestroyed = sender as Entity;
 //
 //				Assert.Null(lastEntityDestroyed);
 //				tempEntity = testOne;
@@ -65,7 +65,7 @@ namespace PlayGen.ITAlert.Simulation.Entities.Tests
 //			Assert.AreEqual(tempEntity, lastEntityDestroyed);
 //
 //			var testTwo = new TestEntity(sim);
-//			testTwo.EntityDestroyed += (sender, args) => lastEntityDestroyed = sender as IEntity;
+//			testTwo.EntityDelegate += (sender, args) => lastEntityDestroyed = sender as Entity;
 //			testTwo.Dispose();
 //
 //			Assert.NotNull(lastEntityDestroyed);

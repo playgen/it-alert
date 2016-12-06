@@ -7,11 +7,15 @@ namespace Engine.Components
 {
 	public delegate IComponent ComponentFactoryDelegate();
 
-	public class ComponentFactory
+	public delegate void EntityComponentBinding(IComponent component, Entity entity);
+
+	public class ComponentFactory : IComponentFactory
 	{
 		private readonly Dictionary<string, bool> _archetypeValidation;
 
 		private readonly Dictionary<string, List<ComponentFactoryDelegate>> _componentFactories;
+
+		public EntityComponentBinding EntityComponentBound;
 
 		#region constructor
 
@@ -39,7 +43,7 @@ namespace Engine.Components
 			factoryDelegates.Add(factoryDelegate);
 		}
 
-		public void PopulateContainerForArchetype(string archetype, IEntity componentContainer)
+		public void PopulateContainerForArchetype(string archetype, Entity componentContainer)
 		{
 			List<ComponentFactoryDelegate> factoryDelegates;
 			if (_componentFactories.TryGetValue(archetype, out factoryDelegates) == false)
@@ -48,7 +52,9 @@ namespace Engine.Components
 			}
 			foreach (var factoryDelegate in factoryDelegates)
 			{
-				componentContainer.AddComponent(factoryDelegate());
+				var component = factoryDelegate();
+				componentContainer.AddComponent(component);
+				EntityComponentBound?.Invoke(component, componentContainer);
 			}
 			foreach (var component in componentContainer.Components)
 			{

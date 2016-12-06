@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archetypes\Archetype.cs" />
-    <Compile Include="bin\ComponentRegistry.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentAttributeExtensions.cs" />
     <Compile Include="Components\ComponentDependencyAttribute.cs" />
@@ -52,11 +51,14 @@
     <Compile Include="Components\ComponentEntityTuple.cs" />
     <Compile Include="Components\ComponentFactory.cs" />
     <Compile Include="Components\ComponentLookupException.cs" />
+    <Compile Include="Components\ComponentRegistry.cs" />
     <Compile Include="Components\ComponentUsageAttribute.cs" />
     <Compile Include="Components\ComponentUsageException.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
+    <Compile Include="Components\IComponentFactory.cs" />
     <Compile Include="Components\IComponentRegistry.cs" />
+    <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
     <Compile Include="Components\ITickableComponent.cs" />
     <Compile Include="Components\StateBucket.cs" />
@@ -67,8 +69,6 @@
     <Compile Include="Entities\EntityRegistry.cs" />
     <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
-    <Compile Include="Entities\IEntity.cs" />
-    <Compile Include="Entities\IEntityRegistry.cs" />
     <Compile Include="Exceptions\EngineException.cs" />
     <Compile Include="Messaging\DelegatingObserver.cs" />
     <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />

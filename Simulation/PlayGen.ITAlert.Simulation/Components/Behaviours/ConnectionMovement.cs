@@ -38,7 +38,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 			}
 		}
 
-		public override void AddVisitor(IEntity visitor, IEntity source, int initialPosition, int currentTick)
+		public override void AddVisitor(Entity visitor, Entity source, int initialPosition, int currentTick)
 		{
 			var position = GraphNode.EntrancePositions[source] + initialPosition;
 			AddVisitor(visitor, position, currentTick);

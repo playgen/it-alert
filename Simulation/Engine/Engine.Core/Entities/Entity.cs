@@ -5,50 +5,48 @@ using Engine.Util;
 
 namespace Engine.Entities
 {
-	public class Entity : MessageHub, IEntity, IEquatable<IEntity>
+	public delegate void EntityDelegate(Entity entity);
+
+	public class Entity : MessageHub, IEquatable<Entity>
 	{
+		public int Id { get; protected set; }
+
+		protected bool _disposed;
 
 		#region constructors
-		public Entity(IEntityRegistry entityRegistry)
+
+		public Entity()
 			: base()
 		{
-			NotNullHelper.ArgumentNotNull(entityRegistry, nameof(entityRegistry));
-			EntityRegistry = entityRegistry;
-			Id = entityRegistry.EntitySeed;
-		}
-
-		/// <summary>
-		/// Serialization constructor
-		/// </summary>
-		private Entity()
-		{
-			
 		}
 
 		#endregion
 
-		public event EventHandler EntityDestroyed;
+		public event EntityDelegate EntityDestroyed;
+
+		public void Reset(int id)
+		{
+			Id = id;
+			_disposed = false;
+
+			Components.Clear();
+		}
 
 		#region Event registry
 
-		private void RaiseEntityDestroyed(object entity)
+		private void RaiseEntityDestroyed()
 		{
 			// TODO: reconsider using the event for the entity container
-			EntityDestroyed?.Invoke(entity, EventArgs.Empty);
+			EntityDestroyed?.Invoke(this);
 			OnNext(new EntityDestroyedMessage(MessageScope.External, this));
 			EntityDestroyed = null;
 		}
 
-		private bool _disposed;
-
 		public override void Dispose()
 		{
-			if (_disposed == false)
-			{
-				_disposed = true;
-				RaiseEntityDestroyed(this);
-				base.Dispose();
-			}
+			_disposed = true;
+			RaiseEntityDestroyed();
+			base.Dispose();
 		}
 
 		~Entity()
@@ -58,14 +56,11 @@ namespace Engine.Entities
 
 		#endregion
 
-		[SyncState(StateLevel.Differential)]
-		public int Id { get; protected set; }
+
+		protected EntityRegistry EntityRegistry { get; set; }
 
 
-		protected IEntityRegistry EntityRegistry { get; set; }
-
-
-		public bool Equals(IEntity other)
+		public bool Equals(Entity other)
 		{
 			return Id == other?.Id;
 		}

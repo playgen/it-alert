@@ -8,18 +8,18 @@ namespace Engine.Serialization
 	{
 		public static bool IsEntity(this Type type)
 		{
-			return typeof(IEntity).IsAssignableFrom(type);
+			return typeof(Entity).IsAssignableFrom(type);
 		}
 
 		public static bool IsEntityRegistry(this Type type)
 		{
-			return typeof(IEntityRegistry).IsAssignableFrom(type);
+			return typeof(EntityRegistry).IsAssignableFrom(type);
 		}
 
 		public static bool IsEntityCollection(this Type type)
 		{
 			return false;
-			return typeof(IEnumerable<IEntity>).IsAssignableFrom(type);
+			return typeof(IEnumerable<Entity>).IsAssignableFrom(type);
 		}
 
 		/// <summary>

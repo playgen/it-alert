@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.bin;
 using Engine.Components;
 using Engine.Entities;
 
@@ -8,11 +9,11 @@ namespace Engine.Systems
 {
 	public class System : ISystem
 	{
-		protected IComponentRegistry ComponentRegistry { get; }
+		protected ComponentRegistry ComponentRegistry { get; }
 
-		protected IEntityRegistry EntityRegistry { get; }
+		protected EntityRegistry EntityRegistry { get; }
 
-		public System(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
+		public System(ComponentRegistry componentRegistry, EntityRegistry entityRegistry)
 		{
 			ComponentRegistry = componentRegistry;
 			EntityRegistry = entityRegistry;

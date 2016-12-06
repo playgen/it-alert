@@ -26,16 +26,6 @@ namespace PlayGen.ITAlert.Simulation
 				() => new ExitRoutes(), 
 			});
 
-		public static readonly Archetype Subsystem = new Archetype("Subsystem")
-			.Extends(Node)
-			.HasComponent(() => new Name())
-			.HasComponent(() => new Coordinate2DProperty())
-			.HasComponent(() => new SubsystemMovement()
-			{
-				Positions = SimulationConstants.SubsystemPositions,
-			})			
-			.HasComponent(() => new ItemStorage());
-
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
 			.HasComponent(() => new ConnectionMovement()
@@ -43,6 +33,28 @@ namespace PlayGen.ITAlert.Simulation
 				Positions = SimulationConstants.ConnectionPositions,
 			})
 			.HasComponent(() => new MovementCost(4));
+
+		public static readonly Archetype Subsystem = new Archetype("Subsystem")
+			.Extends(Node)
+			.HasComponent(() => new Name())
+			.HasComponent(() => new Coordinate2DProperty())
+			.HasComponent(() => new SubsystemMovement()
+			{
+				Positions = SimulationConstants.SubsystemPositions,
+			})
+			.HasComponent(() => new ItemStorage(SimulationConstants.SubsystemMaxItems));
+
+		public static readonly Archetype Analysis = new Archetype("Analysis")
+			.Extends(Subsystem)
+			.HasComponent(() => new AnalyserEnhancement());
+
+		public static readonly Archetype Antivirus = new Archetype("Antivirus")
+			.Extends(Subsystem)
+			.HasComponent(() => new AntivirusEnhancement());
+
+		public static readonly Archetype Database = new Archetype("Database")
+			.Extends(Subsystem)
+			.HasComponent(() => new DatabaseEnhancement());
 
 		#endregion
 
@@ -92,18 +104,8 @@ namespace PlayGen.ITAlert.Simulation
 		public static readonly Archetype Capture = new Archetype("Capture")
 			.Extends(Item);
 
-		#endregion
-
-		#region subsystem enhancements
-
-		private static readonly Archetype Enhancement = new Archetype("Enhancement")
-			.HasComponents(new ComponentFactoryDelegate[]
-			{
-
-			});
-
-		public static readonly Archetype Analysis = new Archetype("Analysis")
-			.Extends(Enhancement);
+		public static readonly Archetype Data = new Archetype("Data")
+			.Extends(Item);
 
 		#endregion
 	}
