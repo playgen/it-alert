@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Engine.Common;
 using PlayGen.ITAlert.Simulation.Common;
 
 #pragma warning disable 649
 
 // ReSharper disable CheckNamespace
-public class ConnectionBehaviour : EntityBehaviour<PlayGen.ITAlert.Simulation.Contracts.ConnectionState>
+public class ConnectionBehaviour : EntityBehaviour
 {
 	[SerializeField]
 	private Color[] _weightColors = new Color[]

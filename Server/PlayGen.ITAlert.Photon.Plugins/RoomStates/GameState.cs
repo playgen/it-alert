@@ -5,13 +5,13 @@ using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.PhotonPlugins.Extensions;
 using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
-using PlayGen.ITAlert.TestData;
-using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
+using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 {
@@ -124,20 +124,20 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 					var commands = _commandSequence.Tick();
 					_resolver.ProcessCommands(commands);
 
-					_simulation.Tick();
+					//_simulation.Tick();
 
-					if (_simulation.IsGameFailure)
-					{
-						ChangeInternalState(InternalGameState.Finalizing);
-					}
-					else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-					{
-						ChangeInternalState(InternalGameState.Finalizing);
-					}
-					else
-					{
+					//if (_simulation.IsGameFailure)
+					//{
+					//	ChangeInternalState(InternalGameState.Finalizing);
+					//}
+					//else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+					//{
+					//	ChangeInternalState(InternalGameState.Finalizing);
+					//}
+					//else
+					//{
 						BroadcastSimulation(ServerEventCode.GameTick, _simulation);
-					}
+					//}
 					
 					break;
 

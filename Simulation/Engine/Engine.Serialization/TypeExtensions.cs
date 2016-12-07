@@ -11,7 +11,7 @@ namespace Engine.Serialization
 			return typeof(Entity).IsAssignableFrom(type);
 		}
 
-		public static bool IsEntityRegistry(this Type type)
+		public static bool IsECS(this Type type)
 		{
 			return typeof(EntityRegistry).IsAssignableFrom(type);
 		}

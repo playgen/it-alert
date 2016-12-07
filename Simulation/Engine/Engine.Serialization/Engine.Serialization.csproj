@@ -48,15 +48,15 @@
     <Compile Include="DeserializingEntityReferenceEventArgs.cs" />
     <Compile Include="EntityCreationConverter.cs" />
     <Compile Include="EntityRegistryCreationConverter.cs" />
-    <Compile Include="Newtonsoft.Json\EntityRegistryJsonReader.cs" />
+    <Compile Include="Newtonsoft.Json\ECSJsonReader.cs" />
     <Compile Include="EntityRegistryReferenceResolver.cs" />
-    <Compile Include="EntityRegistryValueProvider.cs" />
+    <Compile Include="ECSValueProvider.cs" />
     <Compile Include="ILGeneratorExtensions.cs" />
-    <Compile Include="Newtonsoft.Json\EntityRegistryJsonSerializer.cs" />
+    <Compile Include="Newtonsoft.Json\ECSJsonSerializer.cs" />
     <Compile Include="OrderedProperty.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EntityRegistrySerializer.cs" />
-    <Compile Include="EntityRegistryContractResolver.cs" />
+    <Compile Include="ECSSerializer.cs" />
+    <Compile Include="ECSContractResolver.cs" />
     <Compile Include="TypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

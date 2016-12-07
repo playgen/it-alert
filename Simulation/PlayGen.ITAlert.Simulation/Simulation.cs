@@ -24,6 +24,10 @@ namespace PlayGen.ITAlert.Simulation
 	/// </summary>
 	public class Simulation : ECS
 	{
+		//TODO: replace with some sort of global components - or make the simulation or rather 'graph' or something an entity with the layout components on it
+
+		public Vector GraphSize { get; private set; }
+
 
 		public Simulation(SimulationConfiguration configuration)
 		{
@@ -68,7 +72,7 @@ namespace PlayGen.ITAlert.Simulation
 
 			var width = nodeConfigs.Max(v => v.X) - nodeConfigs.Min(v => v.X);
 			var height = nodeConfigs.Max(v => v.Y) - nodeConfigs.Min(v => v.Y);
-			var graphSize = new Vector(width, height);
+			GraphSize = new Vector(width, height);
 		}
 
 		public Dictionary<int, Entity> CreateSystems(List<NodeConfig> nodeConfigs)

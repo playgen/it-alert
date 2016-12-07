@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine.UI;
 
 // ReSharper disable CheckNamespace
-public class ItemBehaviour : EntityBehaviour<ItemState>
+public class ItemBehaviour : EntityBehaviour
 {
 	[SerializeField]
 	private Image _activationTimerImage;
