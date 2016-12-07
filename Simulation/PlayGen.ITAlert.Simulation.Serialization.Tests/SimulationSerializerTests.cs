@@ -41,11 +41,11 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var randomBytes = new byte[9999];
 			random.NextBytes(randomBytes);
 
-			var compressedRandomBytes = EntityRegistrySerializer.Compress(randomBytes);
+			var compressedRandomBytes = ECSSerializer.Compress(randomBytes);
 
 			Assert.False(compressedRandomBytes.SequenceEqual(randomBytes));
 
-			var decompressedRandomBytes = EntityRegistrySerializer.Decompress(compressedRandomBytes);
+			var decompressedRandomBytes = ECSSerializer.Decompress(compressedRandomBytes);
 
 			Assert.True(decompressedRandomBytes.SequenceEqual(randomBytes));
 		}

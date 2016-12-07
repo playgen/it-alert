@@ -1,6 +1,5 @@
-﻿using PlayGen.ITAlert.Simulation.Contracts;
-
-public class EnhancementBehaviour : EntityBehaviour<EnhancementState>
+﻿
+public class EnhancementBehaviour : EntityBehaviour
 {
 	#region Initialization
 	public void Start()

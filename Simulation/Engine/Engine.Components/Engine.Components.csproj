@@ -51,7 +51,6 @@
     <Compile Include="Property\Property.cs" />
     <Compile Include="Property\RangedNumericProperty.cs" />
     <Compile Include="Behaviour\TimedActivatable.cs" />
-    <Compile Include="Property\StateCollector.cs" />
     <Compile Include="Property\TickComponent.cs" />
   </ItemGroup>
   <ItemGroup>

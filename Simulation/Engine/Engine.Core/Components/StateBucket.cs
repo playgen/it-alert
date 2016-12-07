@@ -7,15 +7,18 @@ namespace Engine.Components
 {
 	public class StateBucket
 	{
+		public int EntityId { get; }
+
 		private readonly Dictionary<Type, object> _stateDictionary;
 
-		public StateBucket()
-			: this (new Dictionary<Type, object>())
+		public StateBucket(int entityId)
+			: this (entityId, new Dictionary<Type, object>())
 		{
 		}
 
-		public StateBucket(Dictionary<Type, object> stateDictionary)
+		public StateBucket(int entityId, Dictionary<Type, object> stateDictionary)
 		{
+			EntityId = entityId;
 			_stateDictionary = stateDictionary;
 		}
 

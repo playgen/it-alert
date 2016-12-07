@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Contracts;
 using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
 
@@ -23,21 +23,21 @@ public class Director : MonoBehaviour
 	/// </summary>
 	private static readonly Dictionary<int, UIEntity> Entities = new Dictionary<int, UIEntity>();
 
-    /// <summary>
-    /// Serializer of the Simulation
-    /// </summary>
-    private static readonly SimulationSerializer _serializer = new SimulationSerializer();
+	/// <summary>
+	/// Serializer of the Simulation
+	/// </summary>
+	private static readonly SimulationSerializer _serializer = new SimulationSerializer();
 
-    /// <summary>
-    /// Simulation
-    /// </summary>
-    public static Simulation Simulation;
+	/// <summary>
+	/// Simulation
+	/// </summary>
+	public static Simulation Simulation;
 
 	/// <summary>
 	/// Current State
 	/// </summary>
 	private static GameState _state;
-    
+	
 
 	//TODO: load this dynamically
 	/// <summary>
@@ -66,8 +66,8 @@ public class Director : MonoBehaviour
 
 	public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
 
-    private static GameObject _gameOverWon;
-    private static GameObject _gameOverLost;
+	private static GameObject _gameOverWon;
+	private static GameObject _gameOverLost;
 
 	public static PlayerBehaviour[] Players { get; private set; }
 
@@ -99,10 +99,10 @@ public class Director : MonoBehaviour
 		//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
 		_player.EnableDecorator();
 
-        // todo fixup for refactor
-        //PlayerCommands.Client =	new DebugClientProxy();
-    }
-    private static Simulation InitializeTestSimulation()
+		// todo fixup for refactor
+		//PlayerCommands.Client =	new DebugClientProxy();
+	}
+	private static Simulation InitializeTestSimulation()
 	{
 		var width = 6;
 		var height = 3;
@@ -126,10 +126,10 @@ public class Director : MonoBehaviour
 
 		Initialized = true;
 
-        _gameOverWon = GameObjectUtilities.FindGameObject("Canvas/GameOverWon");
-	    _gameOverWon.SetActive(false);
+		_gameOverWon = GameObjectUtilities.FindGameObject("Canvas/GameOverWon");
+		_gameOverWon.SetActive(false);
 
-        _gameOverLost = GameObjectUtilities.FindGameObject("Canvas/GameOverLost");
+		_gameOverLost = GameObjectUtilities.FindGameObject("Canvas/GameOverLost");
 		_gameOverLost.SetActive(false);
 	}
 
@@ -141,11 +141,11 @@ public class Director : MonoBehaviour
 
 	private static void SetPlayer(int playerServerId)
 	{
-		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+		//var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
 		
-		var playerState = Simulation.ExternalPlayers[playerServerId];
-		_player = players.Single(p => p.Id == playerState.Id);
-		_player.SetActive();
+		//var playerState = Simulation.ExternalPlayers[playerServerId];
+		//_player = players.Single(p => p.Id == playerState.Id);
+		//_player.SetActive();
 	}
 
 	/// <summary>
@@ -207,25 +207,25 @@ public class Director : MonoBehaviour
 		}
 	}
 
-    private static void OnGameOver(bool didWin)
-    {
-        if (didWin)
-        {
-            _gameOverWon.SetActive(true);
-        }
-        else
-        {
-            _gameOverLost.SetActive(true);
-        }
-    }
-    
+	private static void OnGameOver(bool didWin)
+	{
+		if (didWin)
+		{
+			_gameOverWon.SetActive(true);
+		}
+		else
+		{
+			_gameOverLost.SetActive(true);
+		}
+	}
+	
 	public static void Finalise(Simulation simulation)
 	{
 		Simulation = simulation;
 
-        // todo fix this in acccordance with simulation refactor
-        /* var didWin = !Simulation.HasViruses && !Simulation.IsGameFailure;
-        OnGameOver(didWin); */
+		// todo fix this in acccordance with simulation refactor
+		/* var didWin = !Simulation.HasViruses && !Simulation.IsGameFailure;
+		OnGameOver(didWin); */
 	}
 
 	#endregion
@@ -235,21 +235,21 @@ public class Director : MonoBehaviour
 	/// </summary>
 	public static void Tick(bool serialize)
 	{
-		//TODO: replace super lazy way of stopping the game
-		if (Initialized && _state.IsGameFailure == false)
-		{
-			Simulation.Tick();
+		////TODO: replace super lazy way of stopping the game
+		//if (Initialized && _state.IsGameFailure == false)
+		//{
+		//	//Simulation.Tick();
 
-			if (serialize)
-			{
-				var state = _serializer.SerializeSimulation(Simulation);
-				Simulation.Dispose();
+		//	if (serialize)
+		//	{
+		//		var state = _serializer.SerializeSimulation(Simulation);
+		//		Simulation.Dispose();
 
-				UpdateSimulation(_serializer.DeserializeSimulation(state));
-			}
+		//		UpdateSimulation(_serializer.DeserializeSimulation(state));
+		//	}
 
 			Refresh();
-		}
+//		}
 	}
 
 	public static void Refresh()
@@ -279,14 +279,16 @@ public class Director : MonoBehaviour
 
 	public static string GetScore()
 	{
-		return GetInitialized(() => _state.Score.ToString());
+		return "0";
+		//return GetInitialized(() => _state.Score.ToString());
 	}
 
 	public static string GetTimer()
 	{
 		//TODO: returning the tick is only temporary
-		
-		return GetInitialized(() => _state.CurrentTick.ToString());
+		return "0";
+
+		//return GetInitialized(() => _state.CurrentTick.ToString());
 	}
 
 	#endregion
@@ -297,28 +299,28 @@ public class Director : MonoBehaviour
 
 	public static void RequestMovePlayer(int destinationId)
 	{
-		Simulation.RequestMovePlayer(_player.Id, destinationId);
+		//Simulation.RequestMovePlayer(_player.Id, destinationId);
 	}
 
 	public static void RequestActivateItem(int itemId)
 	{
-		Simulation.RequestActivateItem(_player.Id, itemId);
+		//Simulation.RequestActivateItem(_player.Id, itemId);
 	}
 
 	public static void RequestDropItem(int itemId)
 	{
-		Simulation.RequestDropItem(_player.Id, itemId);
+		//Simulation.RequestDropItem(_player.Id, itemId);
 	}
 
 	public static void RequestPickupItem(int itemId, int subsystemId)
 	{
-		Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
+		//Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
 	}
 
 	public static void SpawnVirus()
 	{
-		var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
-		Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
+		//var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
+		//Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
 	}
 
 	#endregion

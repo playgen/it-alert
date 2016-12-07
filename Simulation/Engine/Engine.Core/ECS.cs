@@ -16,9 +16,9 @@ namespace Engine
 	{
 		private bool _disposed;
 
-		protected EntityRegistry EntityRegistry { get; private set; }
+		public EntityRegistry EntityRegistry { get; private set; }
 
-		protected ComponentRegistry ComponentRegistry { get; private set; }
+		public ComponentRegistry ComponentRegistry { get; private set; }
 		
 		protected ISystemRegistry SystemRegistry { get; private set; }
 
@@ -68,15 +68,17 @@ namespace Engine
 
 		public Dictionary<int, StateBucket> GetState()
 		{
+			//TODO: object pool
 			var states = new Dictionary<int, StateBucket>();
 
 			foreach (var entity in EntityRegistry.Entities.Values)
 			{
-				var stateBucket = new StateBucket();
+				var stateBucket = new StateBucket(entity.Id);
 				foreach (var statefulComponent in entity.GetComponents<IEmitState>())
 				{
 					stateBucket.Add(statefulComponent.GetState());
 				}
+				states.Add(entity.Id, stateBucket);
 			}
 
 			return states;

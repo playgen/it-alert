@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using Engine.Serialization.Tests;
+using System.Linq;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
@@ -16,6 +17,11 @@ namespace PlayGen.ITAlert.Simulation.CLI
 		public static void Main(string[] args)
 		{
 			var simulation = ConfigHelper.GenerateSimulation(3, 3, 3, 3, 1);
+
+			var state = simulation.GetState();
+
+			VisitorPositionState visitorPositionState;
+			var playerLocations = state.Where(s => s.Value.TryGet(out visitorPositionState) && visitorPositionState.Any());
 		}
 	}
 }

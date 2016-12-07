@@ -10,33 +10,33 @@ namespace PlayGen.ITAlert.Simulation.Serialization
 {
 	public class SimulationSerializer
 	{
-		private readonly EntityRegistrySerializer _serializer;
+		private readonly ECSSerializer _serializer;
 
 		public SimulationSerializer()
 		{
-			_serializer = new EntityRegistrySerializer();
+			_serializer = new ECSSerializer();
 		}
 
-		//public byte[] SerializeSimulation(Simulation simulation)
-		//{
-		//	return EntityRegistrySerializer.Serialize(simulation);
-		//}
-
-		//public Simulation DeserializeSimulation(byte[] simulationBytes)
-		//{
-		//	return EntityRegistrySerializer.Deserialize<Simulation>(simulationBytes);
-		//}
-
-		//public byte[] SerializeDifferential(Simulation simulation)
-		//{
-		//	return _serializer.SerializeDifferential<Simulation>(simulation);
-		//}
-		
-		//public void DeserializeDifferential(byte[] simulationBytes, Simulation simulation)
-		//{
-		//	_serializer.DeserializeDifferential<Simulation>(simulationBytes, simulation);
-		//}
-
+	public byte[] SerializeSimulation(Simulation simulation)
+	{
+		return ECSSerializer.Serialize(simulation);
 	}
+
+	public Simulation DeserializeSimulation(byte[] simulationBytes)
+	{
+		return null; // ECSSerializer.Deserialize(simulationBytes);
+	}
+
+	public byte[] SerializeDifferential(Simulation simulation)
+	{
+		return _serializer.SerializeDifferential(simulation);
+	}
+
+	public void DeserializeDifferential(byte[] simulationBytes, Simulation simulation)
+	{
+		_serializer.DeserializeDifferential(simulationBytes, simulation);
+	}
+
+}
 
 }

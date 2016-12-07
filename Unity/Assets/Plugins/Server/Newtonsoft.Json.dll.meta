@@ -1,28 +1,16 @@
 fileFormatVersion: 2
-guid: a30cc6da6662a2444aa8ddd2bee0db67
-timeCreated: 1476713537
+guid: b1df3d4b67952384cb1d3a8616d663ac
+timeCreated: 1481131823
 licenseType: Free
 PluginImporter:
   serializedVersion: 1
   iconMap: {}
   executionOrder: {}
   isPreloaded: 0
-  isOverridable: 0
   platformData:
     Any:
-      enabled: 0
-      settings:
-        Exclude Android: 1
-        Exclude Editor: 1
-        Exclude Linux: 1
-        Exclude Linux64: 1
-        Exclude LinuxUniversal: 1
-        Exclude OSXIntel: 1
-        Exclude OSXIntel64: 1
-        Exclude OSXUniversal: 1
-        Exclude Win: 1
-        Exclude Win64: 1
-        Exclude iOS: 1
+      enabled: 1
+      settings: {}
     Editor:
       enabled: 0
       settings:

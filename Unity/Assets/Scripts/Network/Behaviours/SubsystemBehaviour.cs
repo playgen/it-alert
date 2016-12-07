@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine;
 using UnityEngine.UI;
 #pragma warning disable 649
 
 // ReSharper disable once CheckNamespace
-public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
+public class SubsystemBehaviour : EntityBehaviour
 {
 	//01
 	//23
@@ -59,16 +58,22 @@ public class SubsystemBehaviour : EntityBehaviour<SubsystemState>
 
 	#region public state 
 
-	public int LogicalId { get { return EntityState.LogicalId; } }
+	//public int LogicalId { get { return EntityState.LogicalId; } }
 
-	public bool HasActiveItem { get { return EntityState.HasActiveItem; } }
+	public bool HasActiveItem
+	{
+		get { return false; }
+	}
+
+	//EntityState.HasActiveItem; } }
 
 	#endregion
 
 	#region movement constants
 
 	private static float _connectionScaleCoefficient;
-	private static readonly int PathPointsInSubsystem = SimulationConstants.Positions;
+	// TODO: read from sim constants
+	private static readonly int PathPointsInSubsystem = 24;
 	private const int SquareSideCount = 4;
 	private static readonly float PointsPerSide = (float)PathPointsInSubsystem / SquareSideCount;
 

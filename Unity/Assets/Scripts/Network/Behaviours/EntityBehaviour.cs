@@ -1,6 +1,6 @@
 ﻿using System;
+using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -8,9 +8,7 @@ using UnityEngine;
 /// <summary>
 /// Base class for all behaviour scripts attached to simulator entities
 /// </summary>
-/// <typeparam name="TState">Type of the state object for this entity</typeparam>
-public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
-	where TState : ITAlertEntityState
+public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 {
 	/// <summary>
 	/// Has initialization been performed yet, prevents unity update methods from proceeding
@@ -20,12 +18,12 @@ public abstract class EntityBehaviour<TState> : MonoBehaviour, IEntityBehaviour
 	/// <summary>
 	/// state of this entity
 	/// </summary>
-	protected TState EntityState { get; private set; }
+	protected StateBucket EntityState { get; private set; }
 
 	/// <summary>
 	/// Id of this entity
 	/// </summary>
-	public int Id { get { return EntityState.Id; } }
+	public int Id { get { return EntityState.EntityId; } }
 
 	public EntityType EntityType { get { return EntityState.EntityType; } }
 

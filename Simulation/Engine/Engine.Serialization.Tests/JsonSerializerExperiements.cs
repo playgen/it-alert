@@ -17,7 +17,7 @@
 //			entityA.OtherEntity = entityB;
 //			entityB.OtherEntity = entityA;
 
-//			var result = EntityRegistrySerializer.Serialize(registry);
+//			var result = ECSSerializer.Serialize(registry);
 //		}
 //	}
 //}

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine;
 
 
 // ReSharper disable once CheckNamespace
-public class PlayerBehaviour : EntityBehaviour<PlayerState>
+public class PlayerBehaviour : EntityBehaviour
 {
 	/// <summary>
 	/// number of positions to store
@@ -22,7 +21,10 @@ public class PlayerBehaviour : EntityBehaviour<PlayerState>
 
 	public bool IsTalking = false;
 
-	public int? InventoryItem { get { return EntityState.InventoryItem; } }
+	public int? InventoryItem
+	{
+		get { return null; }
+	} // EntityState.InventoryItem; } }
 
 	private Color _playerColor;
 	public Color PlayerColor { get { return _playerColor;;} }
@@ -103,15 +105,15 @@ public class PlayerBehaviour : EntityBehaviour<PlayerState>
 
 	private void ManageInventory(Vector2 itemPosition)
 	{
-		if (EntityState.InventoryItem.HasValue)
-		{
-			var item = Director.GetEntity(EntityState.InventoryItem.Value);
-			if ((item.EntityBehaviour as ItemBehaviour).IsOnSubsystem == false)
-			{
-				item.GameObject.transform.position = itemPosition;
-				//item.GameObject.transform.localScale = Vector3.one*UIConstants.ItemPlayerScale;
-			}
-		}
+		//if (EntityState.InventoryItem.HasValue)
+		//{
+		//	var item = Director.GetEntity(EntityState.InventoryItem.Value);
+		//	if ((item.EntityBehaviour as ItemBehaviour).IsOnSubsystem == false)
+		//	{
+		//		item.GameObject.transform.position = itemPosition;
+		//		//item.GameObject.transform.localScale = Vector3.one*UIConstants.ItemPlayerScale;
+		//	}
+		//}
 	}
 
 	public void EnableDecorator()

@@ -10,120 +10,119 @@ using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
-    using System.Linq;
+	using System.Linq;
 
-    public class GameState : TickableSequenceState
-    {
-        public const string StateName = "GameState";
+	public class GameState : TickableSequenceState
+	{
+		public const string StateName = "GameState";
 
-        private readonly TickableStateController _stateController;
-        private readonly Client _client;
-        private readonly VoiceController _voiceController;
-        private readonly GameStateInterface _interface;
-        private readonly LobbyController _lobbyController;
+		private readonly TickableStateController _stateController;
+		private readonly Client _client;
+		private readonly VoiceController _voiceController;
+		private readonly GameStateInterface _interface;
+		private readonly LobbyController _lobbyController;
 
-        public override string Name
-        {
-            get { return StateName; }
-        }
+		public override string Name
+		{
+			get { return StateName; }
+		}
 
-        public GameState(Client client, GameStateInterface @interface, LobbyController lobbyController, VoiceController voiceController)
-        {
-            _client = client;
-            _interface = @interface;
-            _stateController = new TickableStateController(new InitializingState(_client),
-                new PlayingState(_client),
-                new FinalizingState(_client));
+		public GameState(Client client, GameStateInterface @interface, LobbyController lobbyController, VoiceController voiceController)
+		{
+			_client = client;
+			_interface = @interface;
+			_stateController = new TickableStateController(new InitializingState(_client),
+				new PlayingState(_client),
+				new FinalizingState(_client));
 
-            _lobbyController = lobbyController;
-            _voiceController = voiceController;
-        }
+			_lobbyController = lobbyController;
+			_voiceController = voiceController;
+		}
 
-        public override void Enter()
-        {
-            
-            _stateController.Initialize();
-            _stateController.ChangeState(InitializingState.StateName);
+		public override void Enter()
+		{
+			_stateController.Initialize();
+			_stateController.ChangeState(InitializingState.StateName);
 
-            
-            
-            SceneManager.LoadScene("Network");
-            SceneManager.activeSceneChanged += SceneLoaded;
-            Debug.Log(SceneManager.GetActiveScene().name);
-            
-        }
+			
+			
+			SceneManager.LoadScene("Network");
+			SceneManager.activeSceneChanged += SceneLoaded;
+			Debug.Log(SceneManager.GetActiveScene().name);
+			
+		}
 
-        private void SceneLoaded(Scene arg0, Scene scene)
-        {
-            Debug.Log(SceneManager.GetActiveScene().name);
+		private void SceneLoaded(Scene arg0, Scene scene)
+		{
+			Debug.Log(SceneManager.GetActiveScene().name);
 
-            Director.Client = _client;
+			Director.Client = _client;
 
-            _interface.Initialize();
-            _interface.SetPlayerColors(_client.CurrentRoom.Players);
-            _interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
-        }
+			_interface.Initialize();
+			_interface.SetPlayerColors(_client.CurrentRoom.Players);
+			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
+		}
 
-        public override void Exit()
-        {
-            _stateController.Terminate();
+		public override void Exit()
+		{
+			_stateController.Terminate();
 
-	        SceneManager.UnloadScene("Network");
-        }
+			SceneManager.UnloadScene("Network");
+		}
 
-        public override void Tick(float deltaTime)
-        {
-            _voiceController.HandleVoiceInput();
+		public override void Tick(float deltaTime)
+		{
+			_voiceController.HandleVoiceInput();
 
-            switch (_client.CurrentRoom.CurrentGame.State)
-            {
-                case Assets.Scripts.Network.Client.GameStates.Initializing:
-                    if (_stateController.ActiveState != InitializingState.StateName)
-                    {
-                        _stateController.ChangeState(InitializingState.StateName);
-                    }
-                    else
-                    {
-                        _stateController.Tick(deltaTime);
-                    }
-                    break;
+			switch (_client.CurrentRoom.CurrentGame.State)
+			{
+				case Assets.Scripts.Network.Client.GameStates.Initializing:
+					if (_stateController.ActiveState != InitializingState.StateName)
+					{
+						_stateController.ChangeState(InitializingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
 
-                case Assets.Scripts.Network.Client.GameStates.Playing:
-                    if (_stateController.ActiveState != PlayingState.StateName)
-                    {
-                        _stateController.ChangeState(PlayingState.StateName);
-                    }
-                    else
-                    {
-                        _stateController.Tick(deltaTime);
-                    }
-                    break;
+				case Assets.Scripts.Network.Client.GameStates.Playing:
+					if (_stateController.ActiveState != PlayingState.StateName)
+					{
+						_stateController.ChangeState(PlayingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
 
-                case Assets.Scripts.Network.Client.GameStates.Finalizing:
+				case Assets.Scripts.Network.Client.GameStates.Finalizing:
 
 
-                    if (_stateController.ActiveState != FinalizingState.StateName)
-                    {
-                        _stateController.ChangeState(FinalizingState.StateName);
-                    }
-                    else
-                    {
-                        _stateController.Tick(deltaTime);
-                    }
-                    break;
-            }
+					if (_stateController.ActiveState != FinalizingState.StateName)
+					{
+						_stateController.ChangeState(FinalizingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
+			}
 
-            _interface.UpdateChatPanel();
-        }
+			_interface.UpdateChatPanel();
+		}
 
-        public override void NextState()
-        {
-            ChangeState(LobbyState.StateName);
-        }
+		public override void NextState()
+		{
+			ChangeState(LobbyState.StateName);
+		}
 
-        public override void PreviousState()
-        {
-            ChangeState(LobbyState.StateName);
-        }
-    }
+		public override void PreviousState()
+		{
+			ChangeState(LobbyState.StateName);
+		}
+	}
 }
