@@ -32,7 +32,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\Client\Assets\Plugins\Simulation\</OutputPath>
+    <OutputPath>..\..\Unity\Assets\Plugins\Simulation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,124 +42,88 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Behaviours\DatabaseEnhancement.cs" />
-    <Compile Include="Components\Behaviours\AntivirusEnhancement.cs" />
-    <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
-    <Compile Include="Components\IItemContainer.cs" />
-    <Compile Include="Components\Intents\ActivateItemIntent.cs" />
-    <Compile Include="Components\EnhancementItemContainer.cs" />
-    <Compile Include="Components\Systems\ItemActivation.cs" />
-    <Compile Include="Components\Systems\ItemManagement.cs" />
-    <Compile Include="GameEntities.cs" />
-    <Compile Include="Components\Behaviours\AcceptPlayerVisitorBehaviour.cs" />
-    <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
-    <Compile Include="Components\Behaviours\IMovementComponent.cs" />
-    <Compile Include="Components\Behaviours\ConnectionMovement.cs" />
-    <Compile Include="Components\Properties\GraphNode.cs" />
-    <Compile Include="Components\Properties\Intents.cs" />
-    <Compile Include="Components\Properties\MovementSpeed.cs" />
-    <Compile Include="Components\Systems\VisitorMovement.cs" />
-    <Compile Include="Components\Messages\VisitorMessage.cs" />
-    <Compile Include="Components\Properties\Movement.cs" />
-    <Compile Include="Components\Properties\ExitRoutes.cs" />
-    <Compile Include="Components\Properties\MovementCost.cs" />
-    <Compile Include="Components\Properties\Name.cs" />
-    <Compile Include="Components\Properties\RelativeWeight.cs" />
-    <Compile Include="Components\Properties\CurrentLocationProperty.cs" />
-    <Compile Include="Components\Messages\DamageNodeMessage.cs" />
-    <Compile Include="Components\Messages\DamageNodeMessageComponent.cs" />
-    <Compile Include="Layout\EdgeDirection.cs" />
-    <Compile Include="Components\Properties\OwnerProperty.cs" />
-    <Compile Include="Components\Behaviours\VisitorPosition.cs" />
-    <Compile Include="Components\Properties\Visitors.cs" />
-    <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
-    <Compile Include="Components\Properties\ConsumeMemory.cs" />
-    <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
-    <Compile Include="Components\Properties\ItemStorage.cs" />
-    <Compile Include="Components\Properties\IsInfectedPropertyComponent.cs" />
-    <Compile Include="Components\Properties\SubsystemIsDeadComponent.cs" />
-    <Compile Include="Components\Properties\SubsystemShieldComponent.cs" />
-    <Compile Include="Components\Properties\SystemMemoryProperty.cs" />
-    <Compile Include="Components\Intents\DisownItemIntent.cs" />
-    <Compile Include="Components\Intents\InfectSystemIntent.cs" />
-    <Compile Include="Components\Intents\MoveIntent.cs" />
-    <Compile Include="Components\Intents\PickUpItemIntent.cs" />
-    <Compile Include="Components\ItemContainer.cs" />
-    <Compile Include="Simulation.cs" />
-    <Compile Include="Layout\GraphValidator.cs" />
+    <Compile Include="Contracts\ActorState.cs" />
+    <Compile Include="Contracts\Extensions\IntentExtensions.cs" />
+    <Compile Include="Contracts\Intents\IntentState.cs" />
+    <Compile Include="Intents\DisownItemIntent.cs" />
+    <Compile Include="Intents\InfectSystemIntent.cs" />
+    <Compile Include="Intents\Intent.cs" />
+    <Compile Include="Intents\MoveIntent.cs" />
+    <Compile Include="Intents\PickUpItemIntent.cs" />
+    <Compile Include="Contracts\Extensions\VisitorPositionExtensions.cs" />
+    <Compile Include="Contracts\PositionState.cs" />
+    <Compile Include="Interfaces\IEnhancement.cs" />
+    <Compile Include="SimulationRules.cs" />
+    <Compile Include="Utilities\IItemArrayExtensions.cs" />
+    <Compile Include="Visitors\Actors\Actor.cs" />
+    <Compile Include="Visitors\Actors\NpcActor.cs" />
+    <Compile Include="Visitors\Actors\NpcActorType.cs" />
+    <Compile Include="Visitors\Actors\Player.cs" />
+    <Compile Include="Visitors\Actors\Virus.cs" />
+    <Compile Include="Contracts\ConnectionState.cs" />
+    <Compile Include="Contracts\EnhancementState.cs" />
+    <Compile Include="Contracts\EntityState.cs" />
+    <Compile Include="Contracts\GameState.cs" />
+    <Compile Include="Contracts\ItemState.cs" />
+    <Compile Include="Contracts\NodeState.cs" />
+    <Compile Include="Contracts\PlayerState.cs" />
+    <Compile Include="Contracts\SubsystemState.cs" />
+    <Compile Include="Contracts\VirusState.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="EntityBase.cs" />
+    <Compile Include="EntityType.cs" />
+    <Compile Include="Initialization\GraphValidator.cs" />
+    <Compile Include="Interfaces\IActivatable.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
+    <Compile Include="Interfaces\IActor.cs" />
+    <Compile Include="Interfaces\IInfection.cs" />
+    <Compile Include="Interfaces\IItem.cs" />
+    <Compile Include="Interfaces\INode.cs" />
+    <Compile Include="Interfaces\ISimulation.cs" />
+    <Compile Include="Interfaces\IVisitor.cs" />
+    <Compile Include="Visitors\Items\Item.cs" />
+    <Compile Include="Visitors\Items\Cleaner.cs" />
+    <Compile Include="Visitors\Items\Scanner.cs" />
+    <Compile Include="Visitors\Items\Repair.cs" />
+    <Compile Include="Visitors\Items\SubsystemModulator.cs" />
     <Compile Include="Layout\Layout.cs" />
     <Compile Include="Layout\LayoutException.cs" />
     <Compile Include="Layout\LayoutGenerator.cs" />
-    <Compile Include="Layout\NeighbourNode.cs" />
-    <Compile Include="Layout\Path.cs" />
-    <Compile Include="Layout\PathFinder.cs" />
+    <Compile Include="Layout\Vector.cs" />
+    <Compile Include="Initialization\NeighbourNode.cs" />
+    <Compile Include="Initialization\Path.cs" />
+    <Compile Include="Initialization\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Exceptions\SimulationException.cs" />
+    <Compile Include="Simulation.cs" />
+    <Compile Include="SimulationException.cs" />
+    <Compile Include="Visitors\Visitor.cs" />
+    <Compile Include="World\Connection.cs" />
+    <Compile Include="World\Enhancements\ManualEnhancement.cs" />
+    <Compile Include="World\Enhancements\RepairSpawnManual.cs" />
+    <Compile Include="World\Enhancements\SubsystemEnhancement.cs" />
+    <Compile Include="World\Node.cs" />
+    <Compile Include="World\NodeDirection.cs" />
+    <Compile Include="World\Subsystem.cs" />
+    <Compile Include="World\VisitorPosition.cs" />
+    <Compile Include="World\VistorEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Archetypes\Engine.Archetypes.csproj">
-      <Project>{328F17C7-3F8C-4F0A-9BDE-76FD05522F7B}</Project>
-      <Name>Engine.Archetypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
-      <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
-      <Name>Engine.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Components.Common\Engine.Components.Common.csproj">
-      <Project>{888032D2-38BB-4339-B4FA-744AAC836DB5}</Project>
-      <Name>Engine.Components.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Planning\Engine.Planning.csproj">
-      <Project>{5fbde4c0-3c96-4685-acd6-0e6c170e1e4c}</Project>
-      <Name>Engine.Planning</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Messaging\Engine.Messaging.csproj">
-      <Project>{24bf346a-aa43-4613-b1f0-2369dd0994f2}</Project>
-      <Name>Engine.Messaging</Name>
-    </ProjectReference>
     <ProjectReference Include="..\High-Speed-Priority-Queue-for-C-Sharp\Priority Queue\Priority Queue.csproj">
       <Project>{1531c1ea-bd53-41d1-a34b-cfcdf79d2651}</Project>
       <Name>Priority Queue</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
-      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
-      <Name>Engine.Components</Name>
+    <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
+      <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
+      <Name>PlayGen.ITAlert.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
-      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>Engine.Entities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
-      <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
-      <Name>Engine.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
-      <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
-      <Name>Engine.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
+    <ProjectReference Include="..\PlayGen.ITAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
+      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
+      <Name>PlayGen.ITAlert.Configuration</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Extensions\" />
-    <Folder Include="Components\Flags\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
