@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using Engine.Components.Common;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using UnityEngine;
 using UnityEngine.UI;
 #pragma warning disable 649
@@ -117,7 +119,8 @@ public class SubsystemBehaviour : EntityBehaviour
 
 	private void SetPosition()
 	{
-		transform.position = new Vector3(UIConstants.NetworkOffset.x + (UIConstants.SubsystemSpacing.x * EntityState.X), UIConstants.NetworkOffset.y + (UIConstants.SubsystemSpacing.y * EntityState.Y));
+		var coordinate = EntityState.Get<CoordinateState>();
+		transform.position = new Vector3(UIConstants.NetworkOffset.x + (UIConstants.SubsystemSpacing.x * coordinate.X), UIConstants.NetworkOffset.y + (UIConstants.SubsystemSpacing.y * coordinate.Y));
 		_itemPositions = CornerItemOffsets.Select(c => c + (Vector2)_connectionSquare.transform.position).ToArray();
 	}
 
@@ -162,64 +165,66 @@ public class SubsystemBehaviour : EntityBehaviour
 
 	private void SetName()
 	{
-		_nameText.text = EntityState.Name;
+		//_nameText.text = EntityState.Name;
 	}
 
 	private void SetHealth()
 	{
-		_health.transform.localScale = new Vector3(EntityState.Health, 1);
+		//_health.transform.localScale = new Vector3(EntityState.Health, 1);
 	}
 
 	private void SetShield()
 	{
-		_shield.transform.localScale = new Vector3(EntityState.Shield, 1);
+		//_shield.transform.localScale = new Vector3(EntityState.Shield, 1);
 	}
 
 	private void SetSystemProperties()
 	{
-		if (EntityState.Disabled)
-		{
-			//SetName("SYSTEM OFFLINE");
-			_iconRenderer.color = new Color(0,0,0,0.5f);
-		}
-		else if (EntityState.Infection.HasValue)
-		{
-			Color infectedColor;
-			ColorUtility.TryParseHtmlString("#E32730", out infectedColor);
-			_iconRenderer.color = infectedColor - new Color(0, 0, 0, 1 - _iconRenderer.color.a);
+		//TODO: reimplement
+		//if (EntityState.Disabled)
+		//{
+		//	//SetName("SYSTEM OFFLINE");
+		//	_iconRenderer.color = new Color(0,0,0,0.5f);
+		//}
+		//else if (EntityState.Infection.HasValue)
+		//{
+		//	Color infectedColor;
+		//	ColorUtility.TryParseHtmlString("#E32730", out infectedColor);
+		//	_iconRenderer.color = infectedColor - new Color(0, 0, 0, 1 - _iconRenderer.color.a);
 
-			var virus = Director.GetEntity(EntityState.Infection.Value);
-			//TODO: get center of square properly
-			virus.GameObject.transform.position = transform.position;
-		}
-		else
-		{
+		//	var virus = Director.GetEntity(EntityState.Infection.Value);
+		//	//TODO: get center of square properly
+		//	virus.GameObject.transform.position = transform.position;
+		//}
+		//else
+		//{
 			_iconRenderer.color = Color.white;
 			//_nameText.text = Name.ToUpper();
-		}
+		//}
 	}
 
 	public void SetItems()
 	{
-		for (var i = 0; i < EntityState.ItemPositions.Length; i++)
-		{
-			if (EntityState.ItemPositions[i].HasValue)
-			{
-				var item = Director.GetEntity(EntityState.ItemPositions[i].Value);
-				var itemBehaviour = item.GameObject.GetComponent<ItemBehaviour>();
-				if (itemBehaviour.Dragging == false)
-				{
-					if (itemBehaviour.IsActive)
-					{
-						item.GameObject.transform.position = _connectionSquare.transform.position;
-					}
-					else
-					{
-						item.GameObject.transform.position = _itemPositions[i];
-					}
-				}
-			}
-		}
+		//TODO: reimplement
+		//for (var i = 0; i < EntityState.ItemPositions.Length; i++)
+		//{
+		//	if (EntityState.ItemPositions[i].HasValue)
+		//	{
+		//		var item = Director.GetEntity(EntityState.ItemPositions[i].Value);
+		//		var itemBehaviour = item.GameObject.GetComponent<ItemBehaviour>();
+		//		if (itemBehaviour.Dragging == false)
+		//		{
+		//			if (itemBehaviour.IsActive)
+		//			{
+		//				item.GameObject.transform.position = _connectionSquare.transform.position;
+		//			}
+		//			else
+		//			{
+		//				item.GameObject.transform.position = _itemPositions[i];
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	#endregion
@@ -228,7 +233,9 @@ public class SubsystemBehaviour : EntityBehaviour
 
 	private void MoveVisitors()
 	{
-		foreach (var visitor in EntityState.VisitorPositions)
+		var visitorPositions = EntityState.Get<VisitorPositionState>();
+
+		foreach (var visitor in visitorPositions)
 		{
 			UpdateVisitorMovement(Director.GetEntity(visitor.Key).GameObject, visitor.Value);
 		}

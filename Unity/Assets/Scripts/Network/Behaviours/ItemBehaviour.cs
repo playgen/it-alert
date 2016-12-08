@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
 using UnityEngine.UI;
 
@@ -24,13 +25,32 @@ public class ItemBehaviour : EntityBehaviour
 
 	#region public state
 
-	public bool IsActive { get { return EntityState != null && EntityState.Active; } }
+	public bool IsActive
+	{
+		get
+		{
+			return false;
+			//EntityState != null && EntityState.Active;
+		}
+	}
 
-	public int? Owner { get { return EntityState == null ? (int?) null : EntityState.Owner; } }
+	public int? Owner
+	{
+		get
+		{
+			return EntityState == null ? (int?) null : EntityState.Get<Owner>().Id;
+		}
+	}
 
-	public ItemType Type { get { return EntityState.ItemType; } }
+	//public ItemType Type { get { return EntityState.ItemType; } }
 
-	public bool IsOnSubsystem { get { return EntityState.CurrentNode.HasValue; } }
+	public bool IsOnSubsystem
+	{
+		get
+		{
+			return false; //EntityState.CurrentNode.HasValue;
+		}
+	}
 
 	#endregion
 
@@ -57,27 +77,27 @@ public class ItemBehaviour : EntityBehaviour
 	{
 		string spriteName;
 
-		switch (Type)
-		{
-			case ItemType.Repair:
-				spriteName = "tool_repair";
-				break;
+		//switch (Type)
+		//{
+		//	case ItemType.Repair:
+		//		spriteName = "tool_repair";
+		//		break;
 
-			case ItemType.Scanner:
-				spriteName = "tool_scanner";
-				break;
+		//	case ItemType.Scanner:
+		//		spriteName = "tool_scanner";
+		//		break;
 
-			//case ItemType.Tracer:
-			//	spriteName = "tool_tracer";
-			//	break;
+		//	//case ItemType.Tracer:
+		//	//	spriteName = "tool_tracer";
+		//	//	break;
 
-			case ItemType.Cleaner:
+		//	case ItemType.Cleaner:
 				spriteName = "tool_cleaner";
-				break;
+		//		break;
 
-			default:
-				return;
-		}
+		//	default:
+		//		return;
+		//}
 		//TODO: this can probably be optimised by precaching a dictionary of assets to item type
 		GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spriteName);
 	}
@@ -109,15 +129,15 @@ public class ItemBehaviour : EntityBehaviour
 	private void UpdateItemColor()
 	{
 		bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
-		if (EntityState.Owner.HasValue && isWhite)
+		if (Owner.HasValue && isWhite)
 		{
-			var playerColour = Director.GetEntity(EntityState.Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
+			var playerColour = Director.GetEntity(Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
 			_iconRenderer.color = playerColour;
 			_activationTimerImage.color = playerColour;
 
 			//TriggerHint();
 		}
-		else if (!EntityState.Owner.HasValue && !isWhite)
+		else if (!Owner.HasValue && !isWhite)
 		{
 			_iconRenderer.color = Color.white;
 			_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
@@ -127,14 +147,15 @@ public class ItemBehaviour : EntityBehaviour
 
 	private void UpdateActivationTimer()
 	{
-		if (EntityState.Active)
-		{
-			_activationTimerImage.fillAmount = 1f - (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
-		}
-		else
-		{
+		// TODO: reimplement active test
+		//if (EntityState.Active)
+		//{
+		//	_activationTimerImage.fillAmount = 1f - (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
+		//}
+		//else
+		//{
 			_activationTimerImage.fillAmount = 0f;
-		}
+		//}
 	}
 
 	#endregion
@@ -170,16 +191,17 @@ public class ItemBehaviour : EntityBehaviour
 			}
 			else
 			{
-				PlayerCommands.PickupItem(Id, EntityState.CurrentNode.Value);
+				//PlayerCommands.PickupItem(Id, EntityState.CurrentNode.Value);
 			}
 		}
 	}
 
 	public bool CanActivate()
 	{
-		return EntityState.Active == false 
-			&& EntityState.CanActivate 
-			&& (EntityState.Owner.HasValue == false || EntityState.Owner.Value == Director.Player.Id);
+		return false;
+			//EntityState.Active == false 
+			//&& EntityState.CanActivate 
+			//&& (EntityState.Owner.HasValue == false || EntityState.Owner.Value == Director.Player.Id);
 	}
 
 	public void Deactivate()

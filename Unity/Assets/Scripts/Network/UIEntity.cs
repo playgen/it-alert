@@ -1,8 +1,9 @@
 ﻿
 using System;
+using Engine.Components;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Contracts;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -23,14 +24,15 @@ public class UIEntity
 
 	public IEntityBehaviour EntityBehaviour { get { return _entityBehaviour; } }
 
-	public UIEntity(ITAlertEntityState state)
+	public UIEntity(StateBucket state)
 	{
-		_gameObject = InstantiateEntity(state.EntityType.ToString());
+		var entityType = state.Get<EntityTypeProperty>().Value;
+		_gameObject = InstantiateEntity(entityType.ToString());
 		_gameObject.transform.SetParent(Graph.transform);
 
-		switch (state.EntityType)
+		switch (entityType)
 		{
-			case EntityType.Subsystem:
+			case EntityType.System:
 				_entityBehaviour = GameObject.GetComponent<SubsystemBehaviour>();
 				break;
 			case EntityType.Enhancement:
@@ -62,7 +64,7 @@ public class UIEntity
 		return Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 	}
 
-	public void UpdateEntityState(ITAlertEntityState state)
+	public void UpdateEntityState(StateBucket state)
 	{
 		_entityBehaviour.UpdateState(state);
 	}

@@ -54,6 +54,7 @@
     <Compile Include="Components\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateItemIntent.cs" />
     <Compile Include="Components\EnhancementItemContainer.cs" />
+    <Compile Include="Components\Properties\EntityTypeProperty.cs" />
     <Compile Include="Components\Systems\ItemActivation.cs" />
     <Compile Include="Components\Systems\ItemManagement.cs" />
     <Compile Include="GameEntities.cs" />

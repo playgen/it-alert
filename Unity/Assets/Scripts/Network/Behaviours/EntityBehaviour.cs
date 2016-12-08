@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -23,9 +24,15 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	/// <summary>
 	/// Id of this entity
 	/// </summary>
-	public int Id { get { return EntityState.EntityId; } }
+	public int Id
+	{
+		get
+		{
+			return EntityState.EntityId;
+		}
+	}
 
-	public EntityType EntityType { get { return EntityState.EntityType; } }
+	public EntityType EntityType { get; private set; }
 
 
 	#region Unity Update
@@ -66,21 +73,17 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	/// verify the type of the state received
 	/// </summary>
 	/// <param name="entityState">entity state</param>
-	protected void SetState(ITAlertEntityState entityState)
+	protected void SetState(StateBucket entityState)
 	{
-		var state = entityState as TState;
-		if (state == null)
-		{
-			throw new InvalidCastException("EntityState is of wrong type for entity");
-		}
-		EntityState = state;
+		EntityState = entityState;
+		EntityType = entityState.Get<EntityTypeProperty>().Value;
 	}
 
 	/// <summary>
 	/// Set state from simulator
 	/// </summary>
 	/// <param name="state"></param>
-	public void UpdateState(ITAlertEntityState state)
+	public void UpdateState(StateBucket state)
 	{
 		SetState(state);
 		OnUpdatedState();
@@ -95,7 +98,7 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	/// Initialize the object from simulation state
 	/// </summary>
 	/// <param name="state"></param>
-	public void Initialize(ITAlertEntityState state)
+	public void Initialize(StateBucket state)
 	{
 		SetState(state);
 		OnInitialize();

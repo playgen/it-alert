@@ -11,6 +11,7 @@ using PlayGen.ITAlert.Simulation.Components.Messages;
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
 	[ComponentDependency(typeof(Visitors))]
+	[ComponentDependency(typeof(VisitorPosition))]
 	[ComponentDependency(typeof(GraphNode))]
 	public abstract class Movement : Component, IMovementComponent
 	{

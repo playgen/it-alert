@@ -9,6 +9,6 @@ namespace Engine.Systems
 	{
 		void RegisterSystem(ISystem system);
 
-		void Tick();
+		void Tick(int currentTick);
 	}
 }

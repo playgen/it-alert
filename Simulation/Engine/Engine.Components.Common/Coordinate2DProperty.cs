@@ -8,7 +8,7 @@ using Engine.Entities;
 
 namespace Engine.Components.Common
 {
-	public class CoordinateState
+	public class CoordinateState : IComponentState
 	{
 		public int X { get; }
 		public int Y { get; }
@@ -22,7 +22,7 @@ namespace Engine.Components.Common
 
 	public class Coordinate2DProperty : Property<Vector>, IEmitState
 	{
-		public object GetState()
+		public IComponentState GetState()
 		{
 			return new CoordinateState(Value.X, Value.Y);
 		}

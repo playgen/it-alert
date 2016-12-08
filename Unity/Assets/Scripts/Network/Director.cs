@@ -10,6 +10,8 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
+using Engine;
+using Engine.Components;
 
 // ReSharper disable CheckNamespace
 
@@ -36,7 +38,7 @@ public class Director : MonoBehaviour
 	/// <summary>
 	/// Current State
 	/// </summary>
-	private static GameState _state;
+	private static EcsState _state;
 	
 
 	//TODO: load this dynamically
@@ -73,7 +75,14 @@ public class Director : MonoBehaviour
 
 	public static CommandResolver LocaResolver { get; private set; }
 
-	public static SimulationRules Rules { get { return Simulation != null ? Simulation.Rules : new SimulationRules(); } }
+	public static SimulationRules Rules
+	{
+		get
+		{
+			return //Simulation != null ? Simulation.Rules : 
+			new SimulationRules();
+		}
+	}
 
 	/// <summary>
 	/// Get entity wrapper by id
@@ -141,11 +150,12 @@ public class Director : MonoBehaviour
 
 	private static void SetPlayer(int playerServerId)
 	{
-		//var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
-		
+		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+
 		//var playerState = Simulation.ExternalPlayers[playerServerId];
-		//_player = players.Single(p => p.Id == playerState.Id);
-		//_player.SetActive();
+		// TODO: reimplement
+		_player = players.First();
+		_player.SetActive();
 	}
 
 	/// <summary>
@@ -153,12 +163,12 @@ public class Director : MonoBehaviour
 	/// </summary>
 	private static void CreateInitialEntities()
 	{
-		foreach (var stateEntity in _state.Entities)
+		foreach (var stateEntity in _state.EntityStates)
 		{
 			CreateEntity(stateEntity.Key, stateEntity.Value);
 		}
 		// initialize after the entities have been created as some will need to reference each other
-		foreach (var stateEntity in _state.Entities)
+		foreach (var stateEntity in _state.EntityStates)
 		{
 			GetEntity(stateEntity.Key).EntityBehaviour.Initialize(stateEntity.Value);
 		}
@@ -176,11 +186,14 @@ public class Director : MonoBehaviour
 
 	private static void SetState()
 	{
-		_state = Simulation.GetState();
+		if (Simulation != null)
+		{
+			_state = Simulation.GetState();
+		}
 	}
 
 
-	private static void CreateEntity(int id, ITAlertEntityState state)
+	private static void CreateEntity(int id, StateBucket state)
 	{
 		var entity = new UIEntity(state);
 		Entities.Add(id, entity);
@@ -188,22 +201,25 @@ public class Director : MonoBehaviour
 
 	private static void UpdateEntityStates()
 	{
-		foreach (var newEntity in _state.Entities.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
+		if (_state != null)
 		{
-			CreateEntity(newEntity.Key, newEntity.Value);
-			GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
-		}
+			foreach (var newEntity in _state.EntityStates.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
+			{
+				CreateEntity(newEntity.Key, newEntity.Value);
+				GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+			}
 
-		foreach (var stateEntity in _state.Entities)
-		{
-			GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
-		}
-		// remove dead entities
-		// TODO: make sure nothing is still referencing these
-		foreach (var entityToRemove in Entities.Keys.Except(_state.Entities.Keys).ToArray())
-		{
-			Destroy(GetEntity(entityToRemove).GameObject);
-			Entities.Remove(entityToRemove);
+			foreach (var stateEntity in _state.EntityStates)
+			{
+				GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
+			}
+			// remove dead entities
+			// TODO: make sure nothing is still referencing these
+			foreach (var entityToRemove in Entities.Keys.Except(_state.EntityStates.Keys).ToArray())
+			{
+				Destroy(GetEntity(entityToRemove).GameObject);
+				Entities.Remove(entityToRemove);
+			}
 		}
 	}
 
@@ -236,10 +252,9 @@ public class Director : MonoBehaviour
 	public static void Tick(bool serialize)
 	{
 		////TODO: replace super lazy way of stopping the game
-		//if (Initialized && _state.IsGameFailure == false)
-		//{
-		//	//Simulation.Tick();
-
+		if (Initialized) // && _state.IsGameFailure == false)
+		{
+			Simulation.Tick();
 		//	if (serialize)
 		//	{
 		//		var state = _serializer.SerializeSimulation(Simulation);
@@ -249,7 +264,7 @@ public class Director : MonoBehaviour
 		//	}
 
 			Refresh();
-//		}
+		}
 	}
 
 	public static void Refresh()

@@ -9,7 +9,7 @@ using Engine.Messaging;
 
 namespace Engine.Components.Property
 {
-	public class TickState
+	public class TickState : IComponentState
 	{
 		public int CurrentTick { get; }
 
@@ -36,7 +36,7 @@ namespace Engine.Components.Property
 			return _value;
 		}
 
-		public object GetState()
+		public IComponentState GetState()
 		{
 			return new TickState(_value);
 		}

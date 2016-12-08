@@ -58,7 +58,7 @@ namespace Engine.bin
 			}
 		}
 
-		public IEnumerable<ComponentEntityTuple<TComponentInterface>> GetComponentEntitesImplmenting<TComponentInterface>()
+		public IEnumerable<TComponentInterface> GetComponentEntitesImplmenting<TComponentInterface>()
 			where TComponentInterface : class, TComponent
 		{
 			HashSet<ComponentEntityTuple<TComponent>> componentEntities;
@@ -67,7 +67,7 @@ namespace Engine.bin
 				componentEntities = new HashSet<ComponentEntityTuple<TComponent>>();
 			}
 
-			return componentEntities.Cast<ComponentEntityTuple<TComponentInterface>>();
+			return componentEntities.Select(c => c.Component).Cast<TComponentInterface>().ToList();
 		}
 
 	}

@@ -16,13 +16,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Systems
 		{
 		}
 
-		public void Tick(int currentTick)
+		public override void Tick(int currentTick)
 		{
 			var nodes = ComponentRegistry.GetComponentEntitesImplmenting<IMovementComponent>();
 
 			foreach (var node in nodes)
 			{
-				node.Component.MoveVisitors(currentTick);
+				node.MoveVisitors(currentTick);
 			}
 		}
 	}

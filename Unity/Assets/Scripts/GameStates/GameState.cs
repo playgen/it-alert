@@ -59,8 +59,11 @@ namespace PlayGen.ITAlert.GameStates
 			Director.Client = _client;
 
 			_interface.Initialize();
-			_interface.SetPlayerColors(_client.CurrentRoom.Players);
-			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
+			if (_client != null && _client.CurrentRoom != null)
+			{
+				_interface.SetPlayerColors(_client.CurrentRoom.Players);
+				_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
+			}
 		}
 
 		public override void Exit()
@@ -74,44 +77,47 @@ namespace PlayGen.ITAlert.GameStates
 		{
 			_voiceController.HandleVoiceInput();
 
-			switch (_client.CurrentRoom.CurrentGame.State)
+			if (_client != null && _client.CurrentRoom != null)
 			{
-				case Assets.Scripts.Network.Client.GameStates.Initializing:
-					if (_stateController.ActiveState != InitializingState.StateName)
-					{
-						_stateController.ChangeState(InitializingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+				switch (_client.CurrentRoom.CurrentGame.State)
+				{
+					case Assets.Scripts.Network.Client.GameStates.Initializing:
+						if (_stateController.ActiveState != InitializingState.StateName)
+						{
+							_stateController.ChangeState(InitializingState.StateName);
+						}
+						else
+						{
+							_stateController.Tick(deltaTime);
+						}
+						break;
 
-				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState != PlayingState.StateName)
-					{
-						_stateController.ChangeState(PlayingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+					case Assets.Scripts.Network.Client.GameStates.Playing:
+						if (_stateController.ActiveState != PlayingState.StateName)
+						{
+							_stateController.ChangeState(PlayingState.StateName);
+						}
+						else
+						{
+							_stateController.Tick(deltaTime);
+						}
+						break;
 
-				case Assets.Scripts.Network.Client.GameStates.Finalizing:
+					case Assets.Scripts.Network.Client.GameStates.Finalizing:
 
 
-					if (_stateController.ActiveState != FinalizingState.StateName)
-					{
-						_stateController.ChangeState(FinalizingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+						if (_stateController.ActiveState != FinalizingState.StateName)
+						{
+							_stateController.ChangeState(FinalizingState.StateName);
+						}
+						else
+						{
+							_stateController.Tick(deltaTime);
+						}
+						break;
+				}
+
 			}
-
 			_interface.UpdateChatPanel();
 		}
 

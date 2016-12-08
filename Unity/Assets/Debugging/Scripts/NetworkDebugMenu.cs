@@ -51,17 +51,17 @@ namespace Assets.Debugging.Scripts
 			}
 			if (GUILayout.Button("Damage Subsystems"))
 			{
-				foreach (var subsystem in Director.Simulation.Subsystems)
-				{
-					// TODO fix from simulation refactor
-					// subsystem.ModulateHealth((SimulationConstants.MaxHealth + SimulationConstants.MaxShield) / 2 * -1);
-				}
+				//foreach (var subsystem in Director.Simulation.Subsystems)
+				//{
+				//	// TODO fix from simulation refactor
+				//	// subsystem.ModulateHealth((SimulationConstants.MaxHealth + SimulationConstants.MaxShield) / 2 * -1);
+				//}
 			}
 			GUILayout.Label(_tpsText);
-			Director.Rules.VirusesDieWithSubsystem = GUILayout.Toggle(Director.Rules.VirusesDieWithSubsystem, "Viruses Die");
-			Director.Rules.VirusesAlwaysVisible = GUILayout.Toggle(Director.Rules.VirusesAlwaysVisible, "Viruses Visible");
-			Director.Rules.VirusesSpread = GUILayout.Toggle(Director.Rules.VirusesSpread, "Viruses Spread");
-			Director.Rules.RepairItemsConsumable = GUILayout.Toggle(Director.Rules.RepairItemsConsumable, "Repair Items Consumed");
+			//Director.Rules.VirusesDieWithSubsystem = GUILayout.Toggle(Director.Rules.VirusesDieWithSubsystem, "Viruses Die");
+			//Director.Rules.VirusesAlwaysVisible = GUILayout.Toggle(Director.Rules.VirusesAlwaysVisible, "Viruses Visible");
+			//Director.Rules.VirusesSpread = GUILayout.Toggle(Director.Rules.VirusesSpread, "Viruses Spread");
+			//Director.Rules.RepairItemsConsumable = GUILayout.Toggle(Director.Rules.RepairItemsConsumable, "Repair Items Consumed");
 			InputHandler.DebugLog = GUILayout.Toggle(InputHandler.DebugLog, "Log InputHandler");
 			PlayerCommands.DebugLog = GUILayout.Toggle(PlayerCommands.DebugLog, "Log PlayerCommands");
 		}

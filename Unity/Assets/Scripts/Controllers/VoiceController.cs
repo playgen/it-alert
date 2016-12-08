@@ -19,11 +19,11 @@ public class VoiceController
 
     public void HandleVoiceInput()
     {
-        if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
+        if (Input.GetKey(KeyCode.Tab) && _voiceClient != null && !_voiceClient.IsTransmitting)
         {
             _voiceClient.StartTransmission();
         }
-        else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
+        else if (!Input.GetKey(KeyCode.Tab) && _voiceClient != null && _voiceClient.IsTransmitting)
         {
             _voiceClient.StopTransmission();
         }

@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ItemStorageState : List<ItemContainer>
+	public class ItemStorageState : List<ItemContainer>, IComponentState
 	{
 		public ItemStorageState(IEnumerable<ItemContainer> collection) 
 			: base(collection)
@@ -190,7 +190,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 
 		#endregion
 
-		public object GetState()
+		public IComponentState GetState()
 		{
 			return new ItemStorageState(Items.ToList());
 		}

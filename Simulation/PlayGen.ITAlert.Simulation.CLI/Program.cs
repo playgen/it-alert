@@ -21,7 +21,9 @@ namespace PlayGen.ITAlert.Simulation.CLI
 			var state = simulation.GetState();
 
 			VisitorPositionState visitorPositionState;
-			var playerLocations = state.Where(s => s.Value.TryGet(out visitorPositionState) && visitorPositionState.Any());
+			var playerLocations = state.EntityStates.Where(s => s.Value.TryGet(out visitorPositionState) && visitorPositionState.Any());
+
+			simulation.Tick();
 		}
 	}
 }
