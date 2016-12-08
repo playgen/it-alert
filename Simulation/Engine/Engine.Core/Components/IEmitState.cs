@@ -6,11 +6,6 @@ namespace Engine.Components
 {
 	public interface IEmitState : IComponent
 	{
-		object GetState();
-	}
-
-	public interface IEmitState<out TState> : IEmitState
-	{
-		TState GetState();
+		IComponentState GetState();
 	}
 }

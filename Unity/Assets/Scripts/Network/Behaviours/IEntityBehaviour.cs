@@ -1,5 +1,5 @@
-﻿using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Contracts;
+﻿using Engine.Components;
+using PlayGen.ITAlert.Simulation.Common;
 
 // ReSharper disable once CheckNamespace
 public interface IEntityBehaviour
@@ -8,7 +8,7 @@ public interface IEntityBehaviour
 
 	EntityType EntityType { get; }
 
-	void UpdateState(ITAlertEntityState state);
+	void UpdateState(StateBucket state);
 
-	void Initialize(ITAlertEntityState state);
+	void Initialize(StateBucket state);
 }

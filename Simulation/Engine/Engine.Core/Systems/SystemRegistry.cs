@@ -14,10 +14,6 @@ namespace Engine.Systems
 	{
 		private readonly List<ISystem> _systems;
 
-		public int CurrentTick => _currentTick;
-
-		private int _currentTick = 0;
-
 		public SystemRegistry()
 		{
 			_systems = new List<ISystem>();
@@ -31,13 +27,11 @@ namespace Engine.Systems
 		// TODO: not all systems should be tickable - but we dont have a use case for anything else yet
 		// perhaps some systems are event driven and just exist to respond to messages on the...
 		// TODO: implement system to system message bus
-		public void Tick()
+		public void Tick(int currentTick)
 		{
-			var tick = ++_currentTick;
-
 			foreach (var system in _systems)
 			{
-				system.Tick(tick);
+				system.Tick(currentTick);
 			}
 		}
 	}

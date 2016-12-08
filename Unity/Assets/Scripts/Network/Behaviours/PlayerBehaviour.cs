@@ -55,11 +55,11 @@ public class PlayerBehaviour : EntityBehaviour
 
 	private void SetColor()
 	{
-		if (ColorUtility.TryParseHtmlString(EntityState.Colour, out _playerColor))
-		{
-			GetComponent<SpriteRenderer>().color = _playerColor;
+		//if (ColorUtility.TryParseHtmlString(EntityState.Colour, out _playerColor))
+		//{
+		//	GetComponent<SpriteRenderer>().color = _playerColor;
 
-		}
+		//}
 	}
 
 	#endregion

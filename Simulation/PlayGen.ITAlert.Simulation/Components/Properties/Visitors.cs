@@ -8,7 +8,7 @@ using PlayGen.ITAlert.Simulation.Components.Behaviours;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public sealed class VisitorPositionState : Dictionary<int, int>
+	public sealed class VisitorPositionState : Dictionary<int, int>, IComponentState
 	{
 		 
 	}
@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			Value.Remove(entityDestroyedMessage.Entity.Id);
 		}
 
-		public object GetState()
+		public IComponentState GetState()
 		{
 			return Value.Aggregate(new VisitorPositionState(), (vps, kvp) =>
 			{

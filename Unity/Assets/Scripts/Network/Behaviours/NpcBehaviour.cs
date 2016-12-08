@@ -54,32 +54,33 @@ public class NpcBehaviour : EntityBehaviour
 
 	private void HandlePulse()
 	{
-		_spriteRenderer.enabled = EntityState.Visible;
+		//TODO: reimplement pulse => visible property
+		//_spriteRenderer.enabled = EntityState.Visible;
 
-		if (EntityState.Active)
-		{
-			if (_pulseDown)
-			{
-				_spriteRenderer.color -= new Color(0, 0, 0, 0.05f);
-			}
-			else
-			{
-				_spriteRenderer.color += new Color(0, 0, 0, 0.05f);
-			}
-			if (_spriteRenderer.color.a <= 0)
-			{
-				_pulseDown = false;
-			}
-			else if (_spriteRenderer.color.a >= 1)
-			{
-				_pulseDown = true;
-			}
-		}
-		else
-		{
-			_pulseDown = false;
-			_spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1);
-		}
+		//if (EntityState.Active)
+		//{
+		//	if (_pulseDown)
+		//	{
+		//		_spriteRenderer.color -= new Color(0, 0, 0, 0.05f);
+		//	}
+		//	else
+		//	{
+		//		_spriteRenderer.color += new Color(0, 0, 0, 0.05f);
+		//	}
+		//	if (_spriteRenderer.color.a <= 0)
+		//	{
+		//		_pulseDown = false;
+		//	}
+		//	else if (_spriteRenderer.color.a >= 1)
+		//	{
+		//		_pulseDown = true;
+		//	}
+		//}
+		//else
+		//{
+		//	_pulseDown = false;
+		//	_spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1);
+		//}
 	}
 
 	#endregion

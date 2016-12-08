@@ -16,6 +16,8 @@ namespace Engine
 	{
 		private bool _disposed;
 
+		private int _tick;
+
 		public EntityRegistry EntityRegistry { get; private set; }
 
 		public ComponentRegistry ComponentRegistry { get; private set; }
@@ -40,10 +42,10 @@ namespace Engine
 
 		private void EntityComponentBound(IComponent component, Entity entity)
 		{
-			foreach (var componentInterface in component.GetType().GetInterfaces().OfType<IComponent>())
-			{
-				//ComponentRegistry
-			}
+			//foreach (var componentInterface in component.GetType().GetInterfaces().Where(i => typeof(IComponent).IsAssignableFrom(i)))
+			//{
+			ComponentRegistry.AddComponentBinding(entity, component);
+			//}
 		}
 
 		public Entity CreateEntityFromArchetype(string archetypeName)
@@ -66,7 +68,7 @@ namespace Engine
 			}
 		}
 
-		public Dictionary<int, StateBucket> GetState()
+		public EcsState GetState()
 		{
 			//TODO: object pool
 			var states = new Dictionary<int, StateBucket>();
@@ -81,7 +83,12 @@ namespace Engine
 				states.Add(entity.Id, stateBucket);
 			}
 
-			return states;
+			return new EcsState(states);
+		}
+
+		public void Tick()
+		{
+			SystemRegistry.Tick(++_tick);
 		}
 	}
 }

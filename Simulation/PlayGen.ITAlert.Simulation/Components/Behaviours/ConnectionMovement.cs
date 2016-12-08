@@ -10,7 +10,8 @@ using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
-
+	[ComponentDependency(typeof(MovementCost))]
+	[ComponentDependency(typeof(MovementSpeed))]
 	public class ConnectionMovement : Movement
 	{
 		public override void MoveVisitors(int currentTick)

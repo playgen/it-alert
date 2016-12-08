@@ -28,6 +28,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
+			.HasComponent(() => new EntityTypeProperty(EntityType.Connection))
 			.HasComponent(() => new ConnectionMovement()
 			{
 				Positions = SimulationConstants.ConnectionPositions,
@@ -36,6 +37,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
+			.HasComponent(() => new EntityTypeProperty(EntityType.System))
 			.HasComponent(() => new Name())
 			.HasComponent(() => new Coordinate2DProperty())
 			.HasComponent(() => new SubsystemMovement()
@@ -66,14 +68,17 @@ namespace PlayGen.ITAlert.Simulation
 				() => new CurrentLocationProperty(),
 				() => new IntentsProperty(),
 				() => new VisitorPosition(), 
+				() => new MovementSpeed(), 
 			});
 
 		public static readonly Archetype Player = new Archetype("Player")
 			.Extends(Actor)
+			.HasComponent(() => new EntityTypeProperty(EntityType.Player))
 			.HasComponent(() => new Name());
 
 		public static readonly Archetype Virus = new Archetype("Virus")
-			.Extends(Actor);
+			.Extends(Actor)
+			.HasComponent(() => new EntityTypeProperty(EntityType.Npc));
 
 		#endregion
 
@@ -82,6 +87,7 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Item = new Archetype("Item")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
+				() => new EntityTypeProperty(EntityType.Item),
 				() => new OwnerProperty(),
 				() => new ConsumeMemory(),
 			});

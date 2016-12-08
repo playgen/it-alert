@@ -225,7 +225,7 @@ public class ITAlertClientInterface : MonoBehaviour
 
 			if (_lastSimulation != null)
 			{
-				GUILayout.Label("Pending Simulation: " + _lastSimulation.CurrentTick);
+				//GUILayout.Label("Pending Simulation: " + _lastSimulation.CurrentTick);
 			}
 		}
 		GUILayout.EndVertical();

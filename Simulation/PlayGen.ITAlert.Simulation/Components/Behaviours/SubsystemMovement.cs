@@ -13,8 +13,8 @@ using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
-	[ComponentDependency(typeof(Visitors))]
-	[ComponentDependency(typeof(GraphNode))]
+	[ComponentDependency(typeof(IntentsProperty))]
+	[ComponentDependency(typeof(MovementSpeed))]
 	[ComponentDependency(typeof(ExitRoutes))]
 	public class SubsystemMovement : Movement
 	{

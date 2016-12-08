@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using Engine.Common;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Properties;
 
 #pragma warning disable 649
 
@@ -42,7 +44,8 @@ public class ConnectionBehaviour : EntityBehaviour
 	/// </summary>
 	protected override void OnInitialize()
 	{
-		DrawConnection(EntityState.Head, EntityState.Tail);
+		var graphNode = EntityState.Get<GraphNode>();
+		DrawConnection(graphNode.EntrancePositions.Single().Key.Id, graphNode.ExitPositions.Single().Key.Id);
 	}
 
 	private void DrawConnection(int headId, int tailId)
@@ -63,13 +66,13 @@ public class ConnectionBehaviour : EntityBehaviour
 		_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
 
 		//scale and position the connection accordingly
-		var relativeWeight = (SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
+		var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
 		transform.localScale = new Vector2(relativeWeight, distance - (tail.ConnectionSquareRadius * 2));
 		transform.eulerAngles = new Vector3(0, 0, _angle + 90);
 
-		GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
-		transform.Find("Start Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
-		transform.Find("End Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+		//GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+		//transform.Find("Start Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+		//transform.Find("End Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
 
 		//adjust node images to correct scale
 		_headPos = ScaleEndPoint(headPos, tail.ConnectionSquareRadius);
@@ -126,11 +129,12 @@ public class ConnectionBehaviour : EntityBehaviour
 
 	private void MoveVisitors()
 	{
-		foreach (var visitor in EntityState.VisitorPositions)
+		var visitorPositions = EntityState.Get<VisitorPositionState>();
+		foreach (var visitor in visitorPositions)
 		{
 			UpdateVisitorMovement(Director.GetEntity(visitor.Key), visitor.Value);
 		}
-		_currentVisitors.RemoveWhere(v => EntityState.VisitorPositions.ContainsKey(v) == false);
+		_currentVisitors.RemoveWhere(v => visitorPositions.ContainsKey(v) == false);
 	}
 
 	private void UpdateVisitorMovement(UIEntity visitor, int pathPoint)
@@ -146,7 +150,7 @@ public class ConnectionBehaviour : EntityBehaviour
 
 	private Vector3 GetPositionFromPathPoint(int pathPoint)
 	{
-		return Vector3.Lerp(_headPos, _tailPos, (float)pathPoint / EntityState.Weight);
+		return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/1); //EntityState.Weight);
 	}
 
 
