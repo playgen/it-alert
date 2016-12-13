@@ -42,7 +42,7 @@ public class ControllerBehaviour : MonoBehaviour
         var voiceController = new VoiceController(_client);
 
         _stateController = new TickableStateController<TickableSequenceState>(  
-            new LoginState(new LoginStateInterface(), new LoginController(factory.Session), new RegisterController(factory.Account), popupController, _client), 
+            new LoginState(), 
             new LoadingState(new LoadingStateInterface()),
             new MenuState(new MenuStateInterface(), quickGameController, _client),
             new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, voiceController),
