@@ -4,7 +4,7 @@ using PlayGen.SUGAR.Unity;
 
 public class LoginState : TickableSequenceState
 {
-    public const string StateName = "LoginState";
+	public const string StateName = "LoginState";
 
 	public override void PreviousState()
 	{

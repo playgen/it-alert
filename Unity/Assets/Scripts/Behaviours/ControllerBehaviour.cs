@@ -8,50 +8,50 @@ using PlayGen.SUGAR.Client;
 
 public class ControllerBehaviour : MonoBehaviour
 {
-    private const string GamePlugin = "RoomControllerPlugin";
+	private const string GamePlugin = "RoomControllerPlugin";
 
-    private TickableStateController<TickableSequenceState> _stateController;
-    private string _gameVersion = "1";
+	private TickableStateController<TickableSequenceState> _stateController;
+	private string _gameVersion = "1";
 
 	private Client _client;
 
 	void Awake()
-    {
-        DontDestroyOnLoad(transform.gameObject);
+	{
+		DontDestroyOnLoad(transform.gameObject);
 
-        var clientBase = this.gameObject.AddComponent<PhotonClient>();
-        clientBase.Initialize(_gameVersion, GamePlugin);
+		var clientBase = this.gameObject.AddComponent<PhotonClient>();
+		clientBase.Initialize(_gameVersion, GamePlugin);
 
-        _client = new Client(clientBase);
+		_client = new Client(clientBase);
 
 		StartCoroutine(ClientLoop());
 
-        var factory = new SUGARClient("http://localhost:62312/");
+		var factory = new SUGARClient("http://localhost:62312/");
 
-        PlayerCommands.Client = _client;
+		PlayerCommands.Client = _client;
 
-        var popupController = new PopupController();
-        PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
-        PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
-        PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
-        //PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
+		var popupController = new PopupController();
+		PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
+		PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
+		PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
+		//PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
 
-        var joinGameController = new JoinGameController(_client);
-        var createGameController = new CreateGameController(_client);
-        var quickGameController = new QuickGameController(_client, createGameController, 4);
-        var voiceController = new VoiceController(_client);
+		var joinGameController = new JoinGameController(_client);
+		var createGameController = new CreateGameController(_client);
+		var quickGameController = new QuickGameController(_client, createGameController, 4);
+		var voiceController = new VoiceController(_client);
 
-        _stateController = new TickableStateController<TickableSequenceState>(  
-            new LoginState(), 
-            new LoadingState(new LoadingStateInterface()),
-            new MenuState(new MenuStateInterface(), quickGameController, _client),
-            new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, voiceController),
-            new GamesListState(new GamesListStateInterface(), new GamesListController(_client), joinGameController, _client),
-            new CreateGameState(new CreateGameStateInterface(), createGameController, _client), 
-            new SettingsState(new SettingsStateInterface()),
-            new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
-            );
-        _stateController.Initialize();
+		_stateController = new TickableStateController<TickableSequenceState>(  
+			new LoginState(), 
+			new LoadingState(new LoadingStateInterface()),
+			new MenuState(new MenuStateInterface(), quickGameController, _client),
+			new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, voiceController),
+			new GamesListState(new GamesListStateInterface(), new GamesListController(_client), joinGameController, _client),
+			new CreateGameState(new CreateGameStateInterface(), createGameController, _client), 
+			new SettingsState(new SettingsStateInterface()),
+			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
+			);
+		_stateController.Initialize();
 	}
 
 	private IEnumerator ClientLoop()
@@ -82,13 +82,13 @@ public class ControllerBehaviour : MonoBehaviour
 	}
 
 	void Start ()
-    {
-        _stateController.ChangeState(LoadingState.StateName);
-    }
-    
-    void Update ()
-    {
-        _stateController.Tick(Time.deltaTime);
-    }
+	{
+		_stateController.ChangeState(LoadingState.StateName);
+	}
+	
+	void Update ()
+	{
+		_stateController.Tick(Time.deltaTime);
+	}
 
 }
