@@ -4,75 +4,75 @@ using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 
 public class MenuStateInterface : StateInterface
 {
-    private GameObject _mainMenuPanel;
-    private GameObject _createGamePopup;
+	private GameObject _mainMenuPanel;
+	private GameObject _createGamePopup;
 
-    public override void Initialize()
-    {
-        // Main Menu
-        _mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
-        var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer", true);
+	public override void Initialize()
+	{
+		// Main Menu
+		_mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
+		var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer", true);
 
-        var logoutButton = menu.GetButton("LogoutButtonContainer");
-        logoutButton.onClick.AddListener(OnLogoutClick);
+		var quitButton = menu.GetButton("QuitButtonContainer");
+		quitButton.onClick.AddListener(OnQuitClick);
 
-        var createGameButton = menu.GetButton("CreateGameButtonContainer");
-        createGameButton.onClick.AddListener(OnCreateGameClick);
+		var createGameButton = menu.GetButton("CreateGameButtonContainer");
+		createGameButton.onClick.AddListener(OnCreateGameClick);
 
-        var joinGameButton = menu.GetButton("JoinGameButtonContainer");
-        joinGameButton.onClick.AddListener(OnJoinGameClick);
+		var joinGameButton = menu.GetButton("JoinGameButtonContainer");
+		joinGameButton.onClick.AddListener(OnJoinGameClick);
 
-        var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
-        quickMatchButton.onClick.AddListener(OnQuickMatchClick);
+		var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
+		quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 
-        var settingsButton = menu.GetButton("SettingsButtonContainer");
-        settingsButton.onClick.AddListener(OnSettingsClick);
-    }
+		var settingsButton = menu.GetButton("SettingsButtonContainer");
+		settingsButton.onClick.AddListener(OnSettingsClick);
+	}
 
-    private void OnJoinGameClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
-    }
+	private void OnJoinGameClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
+	}
 
-    private void OnCreateGameClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
-    }
+	private void OnCreateGameClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
+	}
 
-    private void OnQuickMatchClick()
-    {
-        EnqueueCommand(new QuickGameCommand());
-    }
+	private void OnQuickMatchClick()
+	{
+		EnqueueCommand(new QuickGameCommand());
+	}
 
-    private void OnSettingsClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
-    }
+	private void OnSettingsClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
+	}
 
-    private void OnLogoutClick()
-    {
-        //EnqueueCommand(new LogoutCommand());
-        EnqueueCommand(new PreviousStateCommand());
-    }
+	private void OnQuitClick()
+	{
+		Application.Quit();
+	}
 
 
-    public override void Enter()
-    {
-        _mainMenuPanel.SetActive(true);
-    }
+	public override void Enter()
+	{
+		_mainMenuPanel.SetActive(true);
+	}
 
-    public override void Exit()
-    {
-        _mainMenuPanel.SetActive(false);
-    }
+	public override void Exit()
+	{
+		_mainMenuPanel.SetActive(false);
+	}
 
-    public void OnJoinGameSuccess(ClientRoom clientRoom)
-    {
-        EnqueueCommand(new NextStateCommand());
-    }
+	public void OnJoinGameSuccess(ClientRoom clientRoom)
+	{
+		EnqueueCommand(new NextStateCommand());
+	}
 }

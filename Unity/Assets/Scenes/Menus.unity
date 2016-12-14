@@ -736,9 +736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0a4aa2d1048d074b8db49c3b12e1835, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UsernameInputField: {fileID: 0}
-  PasswordInputField: {fileID: 0}
-  StatusText: {fileID: 0}
 --- !u!222 &101070788
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2023,8 +2020,13 @@ Prefab:
     - target: {fileID: 114000013496830746, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
       propertyPath: _allowAutoLogin
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114000013496830746, guid: 991ef3e1f70851f458b55f5f7eae55a2,
+        type: 2}
+      propertyPath: _loginUserInterface
+      value: 
+      objectReference: {fileID: 504078614}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 991ef3e1f70851f458b55f5f7eae55a2, type: 2}
   m_IsPrefabParent: 0
@@ -2170,15 +2172,13 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 622958088}
-  - component: {fileID: 622958090}
-  - component: {fileID: 622958089}
   m_Layer: 5
   m_Name: StatusPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &622958088
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2194,43 +2194,10 @@ RectTransform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.1}
+  m_AnchorMax: {x: 1, y: 0.2}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &622958089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 622958087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.053}
-  m_RaycastTarget: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
---- !u!222 &622958090
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 622958087}
 --- !u!1 &632463440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2733,7 +2700,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 720309199}
-  - component: {fileID: 720309200}
   m_Layer: 5
   m_Name: JoinGameContainer
   m_TagString: Untagged
@@ -2761,13 +2727,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &720309200
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 222000012239365462, guid: bfc56447304418143b528f02268e8b38,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 720309198}
 --- !u!1001 &728350827
 Prefab:
   m_ObjectHideFlags: 0
@@ -4865,7 +4824,7 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 42
-    m_Alignment: 4
+    m_Alignment: 7
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
@@ -6037,15 +5996,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 110478, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
       propertyPath: m_Name
-      value: LogoutButtonContainer
+      value: QuitButtonContainer
       objectReference: {fileID: 0}
     - target: {fileID: 175604, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
       propertyPath: m_Name
-      value: LogoutButton
+      value: QuitButton
       objectReference: {fileID: 0}
     - target: {fileID: 11465384, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
       propertyPath: m_Text
-      value: Logout
+      value: Quit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
@@ -6136,7 +6095,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1408231521}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.01465147, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6238,7 +6197,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1430712726}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 521.3274, y: 472.1453, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 909005974}
@@ -6899,7 +6858,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1628713449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.8205663, y: 0.17580596, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -6914,7 +6873,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1630521561}
-  - component: {fileID: 1630521562}
   m_Layer: 5
   m_Name: CreateGameContainer
   m_TagString: Untagged
@@ -6942,13 +6900,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &1630521562
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 222000012239365462, guid: bfc56447304418143b528f02268e8b38,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1630521560}
 --- !u!1 &1641526989
 GameObject:
   m_ObjectHideFlags: 0
