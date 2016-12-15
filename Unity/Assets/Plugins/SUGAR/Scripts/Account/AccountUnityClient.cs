@@ -12,16 +12,18 @@ namespace PlayGen.SUGAR.Unity
 	[DisallowMultipleComponent]
 	public class AccountUnityClient : MonoBehaviour
 	{
-		[SerializeField] private LoginUserInterface _loginUserInterface;
+		[SerializeField]
+		private LoginUserInterface _loginUserInterface;
 
-		[SerializeField] private bool _allowAutoLogin;
+		[SerializeField]
+		private bool _allowAutoLogin;
 
 		public bool AllowAutoLogin
 		{
 			get { return _allowAutoLogin; }
 		}
 
-		#if UNITY_EDITOR
+#if UNITY_EDITOR
 		private string _autoLoginSourceToken;
 
 		private bool _autoLoginSourcePassRequired;
@@ -31,11 +33,13 @@ namespace PlayGen.SUGAR.Unity
 		private string _autoLoginPassword;
 
 		private bool _autoLoginAuto;
-		#endif
+#endif
 
-		[SerializeField] private bool _allowRegister;
+		[SerializeField]
+		private bool _allowRegister;
 
-		[SerializeField] private string _defaultSourceToken = "SUGAR";
+		[SerializeField]
+		private string _defaultSourceToken = "SUGAR";
 
 		private CommandLineOptions _options;
 
@@ -49,12 +53,12 @@ namespace PlayGen.SUGAR.Unity
 				var newInterface = Instantiate(_loginUserInterface.gameObject, canvas.transform, false);
 				newInterface.name = _loginUserInterface.name;
 				_loginUserInterface = newInterface.GetComponent<LoginUserInterface>();
-				_loginUserInterface.RegisterButtonDisplay(_allowRegister);
 			}
+			_loginUserInterface.RegisterButtonDisplay(_allowRegister);
 			_loginUserInterface.gameObject.SetActive(false);
 		}
 
-		public void TrySignIn(Action<bool> success)
+		public void DisplayPanel(Action<bool> success)
 		{
 			_signInCallback = success;
 
@@ -68,6 +72,16 @@ namespace PlayGen.SUGAR.Unity
 			}
 		}
 
+		public void HidePanel()
+		{
+			if (_loginUserInterface != null)
+			{
+				_loginUserInterface.Hide();
+				_loginUserInterface.Login -= LoginUserInterfaceOnLogin;
+				_loginUserInterface.Register -= LoginUserInterfaceOnRegister;
+			}
+		}
+
 		private IEnumerator CheckConfigLoad()
 		{
 			while (SUGARManager.Client == null)
@@ -77,11 +91,11 @@ namespace PlayGen.SUGAR.Unity
 			SignIn();
 		}
 
-		public void SignIn()
+		private void SignIn()
 		{
 			if (_allowAutoLogin)
 			{
-				#if UNITY_EDITOR
+#if UNITY_EDITOR
 				_autoLoginSourcePassRequired = !EditorPrefs.HasKey("AutoLoginSourcePassRequired") || EditorPrefs.GetBool("AutoLoginSourcePassRequired");
 				_autoLoginAuto = !EditorPrefs.HasKey("AutoLoginAuto") || EditorPrefs.GetBool("AutoLoginAuto");
 				_autoLoginUsername = EditorPrefs.HasKey("AutoLoginUsername") ? EditorPrefs.GetString("AutoLoginUsername") : string.Empty;
@@ -96,9 +110,9 @@ namespace PlayGen.SUGAR.Unity
 					_options = CommandLineUtility.ParseArgs(new[] { "-u" + _autoLoginUsername, "-s" + _autoLoginSourceToken, _autoLoginAuto ? "-a" : "" });
 				}
 				Debug.Log(_options.UserId + " : " + _options.AuthenticationSource + " : " + _options.Password);
-				#else
+#else
 				_options = CommandLineUtility.ParseArgs(System.Environment.GetCommandLineArgs());
-				#endif
+#endif
 			}
 			if (_options != null && _options.AuthenticationSource == null)
 			{
@@ -130,12 +144,10 @@ namespace PlayGen.SUGAR.Unity
 				if (_loginUserInterface != null)
 				{
 					_loginUserInterface.SetStatus("Success! " + response.User.Id + ": " + response.User.Name);
-					_loginUserInterface.Hide();
 				}
 				SUGARManager.CurrentUser = response.User;
 				_signInCallback(true);
-				_loginUserInterface.Login -= LoginUserInterfaceOnLogin;
-				_loginUserInterface.Register -= LoginUserInterfaceOnRegister;
+				HidePanel();
 			},
 			exception =>
 			{

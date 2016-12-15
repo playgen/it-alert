@@ -31,6 +31,6 @@ public class ButtonList
 
     public Button GetButton(string containerName)
     {
-        return _buttons.First(o => o.name.Equals(containerName)).transform.GetChild(0).GetComponent<Button>();
+        return _buttons.First(o => o.name.Equals(containerName)).transform.GetChild(0).GetComponent<Button>() ?? _buttons.First(o => o.name.Equals(containerName)).GetComponent<Button>();
     }
 }
