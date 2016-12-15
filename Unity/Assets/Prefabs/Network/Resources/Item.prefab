@@ -16,12 +16,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013167173420}
-  - 61: {fileID: 61000014181957784}
-  - 114: {fileID: 114000013143237420}
-  - 212: {fileID: 212000011269916218}
+  - component: {fileID: 4000013167173420}
+  - component: {fileID: 61000014181957784}
+  - component: {fileID: 114000013143237420}
+  - component: {fileID: 212000011269916218}
   m_Layer: 0
   m_Name: Item
   m_TagString: Item
@@ -34,12 +34,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 224: {fileID: 224000013477252750}
-  - 223: {fileID: 223000010091266288}
-  - 222: {fileID: 222000013310449300}
-  - 114: {fileID: 114000010972897720}
+  - component: {fileID: 224000013477252750}
+  - component: {fileID: 223000010091266288}
+  - component: {fileID: 222000013310449300}
+  - component: {fileID: 114000010972897720}
   m_Layer: 0
   m_Name: ActivationTimer
   m_TagString: Untagged
@@ -56,11 +56,11 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -6.247759, y: 1.0464813, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 77.93358}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 224000013477252750}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &61000014181957784
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -129,7 +129,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -137,7 +139,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
@@ -170,8 +172,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: -626181079
-  m_SortingOrder: 2
+  m_SortingLayerID: 1238663097
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &224000013477252750
 RectTransform:
@@ -182,10 +184,10 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000013167173420}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0.005, y: -0.005}

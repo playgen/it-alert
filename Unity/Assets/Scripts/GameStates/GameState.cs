@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
-	using System.Linq;
-
 	public class GameState : TickableSequenceState
 	{
 		public const string StateName = "GameState";
@@ -41,24 +39,8 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Enter()
 		{
-			
 			_stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
-
-			
-			
-			SceneManager.LoadScene("Network");
-			SceneManager.activeSceneChanged += SceneLoaded;
-			Debug.Log(SceneManager.GetActiveScene().name);
-			
-		}
-
-		private void SceneLoaded(Scene arg0, Scene scene)
-		{
-			Debug.Log(SceneManager.GetActiveScene().name);
-
-			Director.Client = _client;
-
 			_interface.Initialize();
 			_interface.SetPlayerColors(_client.CurrentRoom.Players);
 			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
@@ -67,8 +49,6 @@ namespace PlayGen.ITAlert.GameStates
 		public override void Exit()
 		{
 			_stateController.Terminate();
-
-			SceneManager.UnloadScene("Network");
 		}
 
 		public override void Tick(float deltaTime)
