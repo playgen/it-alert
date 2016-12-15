@@ -89,7 +89,7 @@ namespace PlayGen.ITAlert.GameStates
 					break;
 
 				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState != PlayingState.StateName)
+					if (_stateController.ActiveState != PlayingState.StateName || _stateController.ActiveState != PausedState.StateName)
 					{
 						_stateController.ChangeState(PlayingState.StateName);
 					}

@@ -13,13 +13,18 @@ public class LoginState : TickableSequenceState
 
 	public override void Enter()
 	{
-		SUGARManager.Account.TrySignIn(success =>
+		SUGARManager.Account.DisplayPanel(success =>
 		{
 			if (success)
 			{
 				NextState();
 			}
 		});
+	}
+
+	public override void Exit()
+	{
+		SUGARManager.Account.HidePanel();
 	}
 
 	public override void Tick(float deltaTime)
