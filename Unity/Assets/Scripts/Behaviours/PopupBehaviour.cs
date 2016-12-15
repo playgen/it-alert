@@ -33,7 +33,7 @@ public class PopupBehaviour : MonoBehaviour
 		foreach (var buttonOutput in outputs)
 		{
 			var buttonObject = Instantiate(buttonPrefab) as GameObject;
-			SetButton(buttonObject.transform.GetChild(0).GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
+			SetButton(buttonObject.GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
 			
 			//now set the parent of the object
 			buttonObject.transform.parent = _buttonContainer.transform;
