@@ -105,7 +105,7 @@ public class LobbyStateInterface : StateInterface
             _ready = true;
 
         }
-        _readyButton.gameObject.GetComponent<Text>().text = text;
+        _readyButton.gameObject.GetComponentInChildren<Text>().text = text;
     }
 
     public void RefreshPlayerList()

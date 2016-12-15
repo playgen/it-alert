@@ -18,7 +18,7 @@ public class UIEntity
 
 	private readonly IEntityBehaviour _entityBehaviour;
 
-	private static GameObject Graph = GameObject.Find("Graph");
+	private static GameObject Graph = GameObjectUtilities.FindGameObject("Game/Graph");
 
 	public IEntityBehaviour EntityBehaviour { get { return _entityBehaviour; } }
 
