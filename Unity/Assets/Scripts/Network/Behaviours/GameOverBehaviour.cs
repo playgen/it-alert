@@ -3,8 +3,18 @@
 // ReSharper disable once CheckNamespace
 public class GameOverBehaviour : MonoBehaviour
 {
+	public enum GameOverCondition
+	{
+		Success,
+		Failure
+	}
+
 	[SerializeField]
 	private GameObject _bigVirus;
+
+	[SerializeField]
+	private GameOverCondition _condition;
+
 
 	private static readonly Vector3 InitialOffset = new Vector3(0, 1000);
 
@@ -13,6 +23,7 @@ public class GameOverBehaviour : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+		Director.GameOverBehaviours.Add(_condition, this.transform.gameObject);
 	}
 
 	void Awake()

@@ -32,7 +32,6 @@ public class ConnectionBehaviour : EntityBehaviour
 
 	public void Start()
 	{
-		
 	}
 
 	public void Awake()

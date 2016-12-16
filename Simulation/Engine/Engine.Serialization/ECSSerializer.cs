@@ -78,7 +78,8 @@ namespace Engine.Serialization
 			var serializerSettings = GetDefaultSettings();
 			serializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 
-			var serializedString = JsonConvert.SerializeObject(obj, serializerSettings);
+			var serializer = new ECSSerializer();
+			var serializedString = serializer.SerializeObject(obj, serializerSettings);
 
 			return Encoding.UTF8.GetBytes(serializedString);
 		}
@@ -102,7 +103,8 @@ namespace Engine.Serialization
 			var serializerSettings = GetDefaultSettings();
 
 			var objString = Encoding.UTF8.GetString(simulationBytes);
-			var obj = JsonConvert.DeserializeObject<ECS>(objString, serializerSettings);
+			var serializer = new ECSSerializer();
+			var obj = serializer.DeserializeObject<ECS>(objString, serializerSettings);
 
 			//obj.OnDeserialized();
 			return obj;

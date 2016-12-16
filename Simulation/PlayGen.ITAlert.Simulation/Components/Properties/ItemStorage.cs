@@ -48,6 +48,19 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		//	SetOverLimitBehaviour(overLimitBehaviour);
 		//}
 
+		public override void Initialize(Entity entity)
+		{
+			base.Initialize(entity);
+
+			for (var i = 0; i < _maxItemLimit; i++)
+			{
+				if (Items[i] == null)
+				{
+					Items[i] = new ItemContainer();
+				}
+			}
+		}
+
 		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
 		{
 			_overLimitBehaviour = overLimitBehaviour;

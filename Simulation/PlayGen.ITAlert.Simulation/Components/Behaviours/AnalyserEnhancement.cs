@@ -5,6 +5,7 @@ using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.UI.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
@@ -21,6 +22,15 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 		{
 			base.Initialize(entity);
 			_itemStorage = Entity.GetComponent<ItemStorage>();
+
+			_itemStorage.SetCustomContainer(2, new EnhancementItemContainer());
 		}
+	}
+
+	public class AnalyserItemContainer : EnhancementItemContainer
+	{
+		public override string SpriteName => SpriteConstants.ItemContainerAnalysisSample;
+
+
 	}
 }
