@@ -11,8 +11,6 @@ using UnityEngine.UI;
 
 public class GameStateInterface : StateInterface
 {
-	private GameObject _gamePanel;
-	private GameObject _gameContainer;
 	private GameObject _chatPanel;
 	private GameObject _playerChatItemPrefab;
 	private Dictionary<int, string> _playerColors;
@@ -20,12 +18,8 @@ public class GameStateInterface : StateInterface
 
 	public override void Initialize()
 	{
-		_gamePanel = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer");
-		_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
 		_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer/Chat").gameObject;
 		_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
-		_gamePanel.SetActive(true);
-		_gameContainer.SetActive(true);
 	}
 
 	public override void Enter()
@@ -35,8 +29,7 @@ public class GameStateInterface : StateInterface
 
 	public override void Exit()
 	{
-		_gamePanel.SetActive(false);
-		_gameContainer.SetActive(false);
+		
 	}
 
 	public void PopulateChatPanel(PhotonPlayer[] players)
