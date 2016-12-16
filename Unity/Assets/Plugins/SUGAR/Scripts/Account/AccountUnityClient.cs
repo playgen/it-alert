@@ -147,6 +147,7 @@ namespace PlayGen.SUGAR.Unity
 			},
 			exception =>
 			{
+				Debug.LogError(exception);
 				if (_loginUserInterface != null)
 				{
 					_loginUserInterface.SetStatus("Login Error: " + exception.Message);
