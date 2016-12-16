@@ -5,7 +5,7 @@ using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Players;
-
+using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -40,14 +40,16 @@ public class LobbyState : TickableSequenceState
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
-        _client.CurrentRoom.PlayerListUpdatedEvent += _interface.OnPlayersChanged;
+        _client.CurrentRoom.SetPlayerExternalId(SUGARManager.CurrentUser.Id);
+        _client.CurrentRoom.SetPlayerName(SUGARManager.CurrentUser.Name);
 
+        _client.CurrentRoom.PlayerListUpdatedEvent += _interface.OnPlayersChanged;
         _client.JoinedRoomEvent += _interface.OnJoinedRoom;
         _client.LeftRoomEvent += _interface.OnLeaveSuccess;
         _client.CurrentRoom.GameEnteredEvent += OnGameEntered;
+
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.RoomInfo.maxPlayers));
         _interface.SetRoomName(_client.CurrentRoom.RoomInfo.name);
-
         _interface.Enter();        
     }
 
@@ -126,7 +128,7 @@ public class LobbyState : TickableSequenceState
         
         if (_client.CurrentRoom != null && _client.CurrentRoom.IsMasterClient)
         {
-            if (_client.CurrentRoom.Players != null && _client.CurrentRoom.Players.All(p => p.Status == PlayerStatuses.Ready))
+            if (_client.CurrentRoom.Players != null && _client.CurrentRoom.Players.All(p => p.Status == PlayerStatus.Ready))
             {
                 _client.CurrentRoom.StartGame(false);
             }

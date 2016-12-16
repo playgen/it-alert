@@ -1,6 +1,6 @@
 ﻿namespace PlayGen.ITAlert.Photon.Players
 {
-    public enum PlayerStatuses
+    public enum PlayerStatus
     {
         Error,
 

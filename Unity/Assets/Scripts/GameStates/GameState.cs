@@ -4,6 +4,7 @@ using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -44,14 +45,11 @@ namespace PlayGen.ITAlert.GameStates
 			
 			_stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
-
-			
 			
 			SceneManager.LoadScene("Network");
 			SceneManager.activeSceneChanged += SceneLoaded;
 			Debug.Log(SceneManager.GetActiveScene().name);
-			
-		}
+        }
 
 		private void SceneLoaded(Scene arg0, Scene scene)
 		{

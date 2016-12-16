@@ -97,7 +97,7 @@ public class GameStateInterface : StateInterface
 
         foreach (var player in players)
         {
-            _playerColors.Add(player.Id, player.Color);
+            _playerColors.Add(player.PhotonId, player.Color);
         }
     }
 

@@ -13,7 +13,7 @@ public class LoginState : TickableSequenceState
 
 	public override void Enter()
 	{
-		SUGARManager.Account.TrySignIn(success =>
+		SUGARManager.Account.DisplayPanel(success =>
 		{
 			if (success)
 			{
