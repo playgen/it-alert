@@ -2,12 +2,14 @@
 {
     public class Player
     {
-        public int Id { get; set; }
+        public int PhotonId { get; set; }
+
+        public int? ExternalId { get; set; }
 
         public string Name { get; set; }
 
         public string Color { get; set; }
 
-        public PlayerStatuses Status { get; set; }
+        public PlayerStatus Status { get; set; }
     }
 }

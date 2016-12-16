@@ -79,3 +79,5 @@ Unity/Assets/GameWork/*
 Unity/Assets/GameWork
 Unity/Assets/GameWork.meta
 Unity/Build/
+Unity/Assets/Plugins/PlayGen.SUGAR.Unity/
+Unity/Unity.csproj.DotSettings

@@ -38,7 +38,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
-    <Compile Include="PlayerManager.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStates\InternalGameState.cs" />
     <Compile Include="RoomStates\RoomStateController.cs" />
@@ -69,10 +68,6 @@
       <Project>{2344c836-6b6f-4259-a5a3-e12eafdba643}</Project>
       <Name>PlayGen.ITAlert.Simulation.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
-      <Project>{d5d14e17-c9d5-4ab2-ab74-96f95b50614f}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
@@ -100,10 +95,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Photon.LoadBalancing\Photon.LoadBalancing.csproj">
-      <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
-      <Name>Photon.LoadBalancing</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

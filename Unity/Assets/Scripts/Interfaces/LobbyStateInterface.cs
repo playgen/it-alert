@@ -231,7 +231,7 @@ public class LobbyStateInterface : StateInterface
     {
         RefreshPlayerList();
         SetPlayerColors(players.ToDictionary(
-            p => p.Id,
+            p => p.PhotonId,
             p => p.Color));
     }
 }
