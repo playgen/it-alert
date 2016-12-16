@@ -21,10 +21,10 @@ public class InputHandler : MonoBehaviour
 	private const float CligDragThreshold = 0.2f;
 
 	private float _mouseDown = 0;
-    private Vector2 _mouseDownPos;
-    private Vector2 _minDragBounds;
-    private Vector2 _maxDragBounds;
-    private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
+	private Vector2 _mouseDownPos;
+	private Vector2 _minDragBounds;
+	private Vector2 _maxDragBounds;
+	private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
 	private bool _dragging;
 
 	public static bool DebugLog { get; set; }
@@ -81,70 +81,70 @@ public class InputHandler : MonoBehaviour
 		{
 			//Debug.Log("InputHandler::MouseDown");
 			_mouseDown = Time.time;
-		    _mouseDownPos = Input.mousePosition;
-		    GetDragBounds();
+			_mouseDownPos = Input.mousePosition;
+			GetDragBounds();
 		}
 
 		if (Input.GetMouseButton(0))
 		{
-		    if (IsMouseOutsideBounds())
+			if (IsMouseOutsideBounds())
 			{
 				Log("InputHandler::Dragging");
 
 				_dragging = true;
-                OnDrag();
-                //DragItem();
-            }
+				OnDrag();
+				//DragItem();
+			}
 		}
 
 		if (Input.GetMouseButtonUp(0))
 		{
-		    if (!_dragging)
-		    {
-		        Log("InputHandler::Click");
+			if (!_dragging)
+			{
+				Log("InputHandler::Click");
 
-		        OnClick();
-		    }
-		    else
-		    {
-		        Log("InputHandler::Drop");
+				OnClick();
+			}
+			else
+			{
+				Log("InputHandler::Drop");
 
-		        _dragging = false;
-		        OnDrop();
-		    }
-		    DragStop();
-            ResetBoundValues();
+				_dragging = false;
+				OnDrop();
+			}
+			DragStop();
+			ResetBoundValues();
 
 		}
 	}
 
-    private void GetDragBounds()
-    {
-        if (_selectedItem == null)
-        {
-            var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-            var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
-            if (itemHits.Length == 1)
-            {
-                _selectedItemHit = itemHits.Single();
-                _selectedItem = _selectedItemHit.Value.collider.GetComponent<ItemBehaviour>();
-                //get the bounds of the selected item
-                _minDragBounds = _selectedItemHit.Value.collider.bounds.min;
-                _maxDragBounds = _selectedItemHit.Value.collider.bounds.max;
-            }
-        }   
-    }
+	private void GetDragBounds()
+	{
+		//if (_selectedItem == null)
+		//{
+		//    var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+		//    var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+		//    if (itemHits.Length == 1)
+		//    {
+		//        _selectedItemHit = itemHits.Single();
+		//        _selectedItem = _selectedItemHit.Value.collider.GetComponent<ItemBehaviour>();
+		//        //get the bounds of the selected item
+		//        _minDragBounds = _selectedItemHit.Value.collider.bounds.min;
+		//        _maxDragBounds = _selectedItemHit.Value.collider.bounds.max;
+		//    }
+		//}   
+	}
 
-    private bool IsMouseOutsideBounds()
-    {
-        //if (_minDragBounds == _defaultDragBounds || _maxDragBounds == _defaultDragBounds)
-        //    return false;
-        var inputPosition = (Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position);
-        return inputPosition.x < _minDragBounds.x || inputPosition.y < _minDragBounds.y ||
-               inputPosition.x > _maxDragBounds.x || inputPosition.y > _maxDragBounds.y;
-    }
+	private bool IsMouseOutsideBounds()
+	{
+		//if (_minDragBounds == _defaultDragBounds || _maxDragBounds == _defaultDragBounds)
+		//    return false;
+		var inputPosition = (Vector2)(Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position);
+		return inputPosition.x < _minDragBounds.x || inputPosition.y < _minDragBounds.y ||
+			   inputPosition.x > _maxDragBounds.x || inputPosition.y > _maxDragBounds.y;
+	}
 
-    #region Clicks
+	#region Clicks
 
 	private void OnClick()
 	{
@@ -194,8 +194,8 @@ public class InputHandler : MonoBehaviour
 	{
 		if (_selectedSubsystem == null && _selectedItem != null)
 		{
-            _selectedItem.OnClick(true);
-            var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+			_selectedItem.OnClick(true);
+			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
 			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 			//var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
@@ -211,8 +211,8 @@ public class InputHandler : MonoBehaviour
 				//_selectedItem.OnClick(true);
 			}
 		}
-       // Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
-        DragItem();
+	   // Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
+		DragItem();
 	}
 
 	private void DragItem()
@@ -259,9 +259,9 @@ public class InputHandler : MonoBehaviour
 				if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releaseHit.point))
 				{
 					PlayerCommands.ActivateItem(item.Id);
-                }
-                PlayerCommands.DisownItem(item.Id);
-            }
+				}
+				PlayerCommands.DisownItem(item.Id);
+			}
 			DragStop();
 		}
 
@@ -273,13 +273,13 @@ public class InputHandler : MonoBehaviour
 		_selectedItem = null;
 		_selectedSubsystem = null;
 		_dragging = false;
-	    //ResetBoundValues();
+		//ResetBoundValues();
 	}
 
-    private void ResetBoundValues()
-    {
-        _maxDragBounds = _defaultDragBounds;
-        _minDragBounds = _defaultDragBounds;
-    }
-    #endregion
+	private void ResetBoundValues()
+	{
+		_maxDragBounds = _defaultDragBounds;
+		_minDragBounds = _defaultDragBounds;
+	}
+	#endregion
 }

@@ -152,10 +152,15 @@
       <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.UI.Common\PlayGen.ITAlert.UI.Common.csproj">
+      <Project>{3971b49f-c720-4057-b2e7-4757e9ce1872}</Project>
+      <Name>PlayGen.ITAlert.UI.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Components\Extensions\" />
     <Folder Include="Components\Flags\" />
+    <Folder Include="Components\NewFolder1\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>

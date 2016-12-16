@@ -84,6 +84,9 @@ public class Director : MonoBehaviour
 		}
 	}
 
+	public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
+	
+
 	/// <summary>
 	/// Get entity wrapper by id
 	/// </summary>
@@ -135,11 +138,10 @@ public class Director : MonoBehaviour
 
 		Initialized = true;
 
-		_gameOverWon = GameObjectUtilities.FindGameObject("Canvas/GameOverWon");
-		_gameOverWon.SetActive(false);
-
-		_gameOverLost = GameObjectUtilities.FindGameObject("Canvas/GameOverLost");
-		_gameOverLost.SetActive(false);
+		foreach (var behaviour in GameOverBehaviours)
+		{
+			behaviour.Value.SetActive(false);
+		}
 	}
 
 	private void Awake()
@@ -225,14 +227,8 @@ public class Director : MonoBehaviour
 
 	private static void OnGameOver(bool didWin)
 	{
-		if (didWin)
-		{
-			_gameOverWon.SetActive(true);
-		}
-		else
-		{
-			_gameOverLost.SetActive(true);
-		}
+		var behaviour = didWin ? GameOverBehaviours[GameOverBehaviour.GameOverCondition.Success] : GameOverBehaviours[GameOverBehaviour.GameOverCondition.Failure];
+		behaviour.SetActive(true);
 	}
 	
 	public static void Finalise(Simulation simulation)

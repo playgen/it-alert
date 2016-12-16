@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.GameStates
 
 			
 			
-			SceneManager.LoadScene("Network");
+			SceneManager.LoadScene("Network", LoadSceneMode.Additive);
 			SceneManager.activeSceneChanged += SceneLoaded;
 			Debug.Log(SceneManager.GetActiveScene().name);
 			
