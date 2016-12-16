@@ -5,7 +5,7 @@ using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
 using UnityEngine.UI;
 
-public class SettingsStateInterface : StateInterface
+public class SettingsStateInterface : TickableStateInterface
 {
 	private GameObject _settingsPanel;
 	private SettingCreation _creator;
@@ -27,12 +27,12 @@ public class SettingsStateInterface : StateInterface
 		var music = _creator.Volume("Music Volume");
 		var sfx = _creator.Volume("SFX Volume");
 		var buttonLayout = _creator.HorizontalLayout("Buttons");
-		var apply = _creator.Custom<Button>("Apply", SettingObjectType.Button, true);
-		apply.onClick.AddListener(delegate { OnApplyClick(resolution, fullScreen, microphone, receive, music, sfx); });
-		_creator.AddToLayout(buttonLayout, apply);
 		var cancel = _creator.Custom<Button>("Cancel", SettingObjectType.Button, true);
 		_creator.AddToLayout(buttonLayout, cancel);
 		cancel.onClick.AddListener(OnBackClick);
+		var apply = _creator.Custom<Button>("Apply", SettingObjectType.Button, true);
+		apply.onClick.AddListener(delegate { OnApplyClick(resolution, fullScreen, microphone, receive, music, sfx); });
+		_creator.AddToLayout(buttonLayout, apply);
 	}
 
 	private void OnBackClick()
@@ -51,7 +51,6 @@ public class SettingsStateInterface : StateInterface
 		PlayerPrefs.SetFloat(music.name, music.value);
 		PlayerPrefs.SetFloat(sfx.name, sfx.value);
 		_creator.RebuildLayout();
-		OnBackClick();
 	}
 
 	public override void Enter()
@@ -62,5 +61,13 @@ public class SettingsStateInterface : StateInterface
 	public override void Exit()
 	{
 		_settingsPanel.SetActive(false);
+	}
+
+	public override void Tick(float deltaTime)
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			OnBackClick();
+		}
 	}
 }

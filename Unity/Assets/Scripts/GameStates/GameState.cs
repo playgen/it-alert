@@ -30,11 +30,19 @@ namespace PlayGen.ITAlert.GameStates
 			_client = client;
 			_interface = @interface;
 			_stateController = new TickableStateController(new InitializingState(_client),
-				new PlayingState(_client),
-				new FinalizingState(_client));
+				new PlayingState(new PlayingStateInterface(), _client),
+				new PausedState(new PausedStateInterface(), _client),
+				new FinalizingState(_client),
+				new SettingsState(new SettingsStateInterface()));
 
+			_stateController.ChangeParentStateEvent += ChangeState;
 			_lobbyController = lobbyController;
 			_voiceController = voiceController;
+		}
+
+		public override void Terminate()
+		{
+			_stateController.ChangeParentStateEvent -= ChangeState;
 		}
 
 		public override void Enter()
@@ -69,7 +77,7 @@ namespace PlayGen.ITAlert.GameStates
 					break;
 
 				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState != PlayingState.StateName || _stateController.ActiveState != PausedState.StateName)
+					if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
 					{
 						_stateController.ChangeState(PlayingState.StateName);
 					}
@@ -80,8 +88,6 @@ namespace PlayGen.ITAlert.GameStates
 					break;
 
 				case Assets.Scripts.Network.Client.GameStates.Finalizing:
-
-
 					if (_stateController.ActiveState != FinalizingState.StateName)
 					{
 						_stateController.ChangeState(FinalizingState.StateName);
@@ -98,7 +104,7 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void NextState()
 		{
-			ChangeState(LobbyState.StateName);
+			ChangeState(MenuState.StateName);
 		}
 
 		public override void PreviousState()

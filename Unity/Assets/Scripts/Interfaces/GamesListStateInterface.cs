@@ -13,17 +13,18 @@ public class GamesListStateInterface : StateInterface
 	private GameObject _joinGamePanel;
 	private GameObject _gameListObject;
 	private GameObject _gameItemPrefab;
+	private ButtonList _buttons;
 
 	public override void Initialize()
 	{
 		// Join Game Popup
 		_joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
-		var panelButtons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
+		_buttons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
 
-		var backButton = panelButtons.GetButton("BackButtonContainer");
+		var backButton = _buttons.GetButton("BackButtonContainer");
 		backButton.onClick.AddListener(OnBackClick);
 
-		var refreshButton = panelButtons.GetButton("RefreshButtonContainer");
+		var refreshButton = _buttons.GetButton("RefreshButtonContainer");
 		refreshButton.onClick.AddListener(OnRefreshClick);
 
 		_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
@@ -44,6 +45,7 @@ public class GamesListStateInterface : StateInterface
 	public override void Enter()
 	{
 		_joinGamePanel.SetActive(true);
+		_buttons.BestFit();
 		OnRefreshClick();
 	}
 	public override void Exit()
