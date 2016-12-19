@@ -2,7 +2,6 @@
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.PhotonPlugins.Extensions;
 using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
 
@@ -13,14 +12,14 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
         public const string StateName = "Lobby";
         
         private readonly PluginBase _plugin;
-        private readonly PlayerManager _playerManager;
+        private readonly Photon.Players.PlayerManager _playerManager;
 
         public override string Name
         {
             get { return StateName; }
         }
 
-        public LobbyState(PluginBase plugin, PlayerManager playerManager)
+        public LobbyState(PluginBase plugin, Photon.Players.PlayerManager playerManager)
         {
             _plugin = plugin;
             _playerManager = playerManager;
@@ -32,11 +31,11 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
             switch (info.Request.EvCode)
             {
                 case (byte)PlayerEventCode.SetReady:
-                    ChangePlayerStatus(info.ActorNr, PlayerStatuses.Ready);
+                    ChangePlayerStatus(info.ActorNr, PlayerStatus.Ready);
                     break;
 
                 case (byte)PlayerEventCode.SetNotReady:
-                    ChangePlayerStatus(info.ActorNr, PlayerStatuses.NotReady);
+                    ChangePlayerStatus(info.ActorNr, PlayerStatus.NotReady);
                     break;
 
                 case (byte)PlayerEventCode.StartGame:
@@ -62,7 +61,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
         public override void Enter()
         {
-            _playerManager.ChangeAllStatuses(PlayerStatuses.NotReady);
+            _playerManager.ChangeAllStatuses(PlayerStatus.NotReady);
             _plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
         }
 
@@ -72,7 +71,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
         private void StartGame(bool force, bool close)
         {
-            if (force || _playerManager.CombinedPlayerStatuses == PlayerStatuses.Ready)
+            if (force || _playerManager.CombinedPlayerStatus == PlayerStatus.Ready)
             {
                 if (close)
                 {
@@ -83,7 +82,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
             }
         }
 
-        private void ChangePlayerStatus(int playerId, PlayerStatuses status)
+        private void ChangePlayerStatus(int playerId, PlayerStatus status)
         {
             var didChange = _playerManager.ChangeStatus(playerId, status);
             if (didChange)

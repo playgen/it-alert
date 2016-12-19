@@ -1,5 +1,4 @@
 ﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.States.Interfaces;
 
 public class ChangePlayerColorCommand : ICommand<LobbyController>
 {

@@ -6,17 +6,19 @@
     public enum PlayerEventCode : byte
     {
         // Room
-        ChangeName = 1,
+        ChangeExternalId = 1,
 
-        ChangeColor = 2,
+        ChangeName = 2,
 
-        SetReady = 3,
+        ChangeColor = 3,
 
-        SetNotReady = 4,
+        SetReady = 4,
 
-        ListPlayers = 5,
+        SetNotReady = 5,
 
-        StartGame = 6,
+        ListPlayers = 6,
+
+        StartGame = 7,
 
         // Game
         GameInitialized = 11,

@@ -26,7 +26,7 @@ public class LobbyController : ICommandAction
 
         foreach (var player in _client.CurrentRoom.Players)
         {
-            var lobbyPlayer = new LobbyPlayer(player.Name, player.Status == PlayerStatuses.Ready, player.Id, player.Color);
+            var lobbyPlayer = new LobbyPlayer(player.Name, player.Status == PlayerStatus.Ready, player.PhotonId, player.Color);
             lobbyPlayers.Add(lobbyPlayer);
         }
 
@@ -34,7 +34,7 @@ public class LobbyController : ICommandAction
 
         if (_client.CurrentRoom.IsMasterClient)
         {
-            var numReadyPlayers = this._client.CurrentRoom.Players.Count(p => p.Status == PlayerStatuses.Ready);
+            var numReadyPlayers = this._client.CurrentRoom.Players.Count(p => p.Status == PlayerStatus.Ready);
             Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
             if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
