@@ -20,6 +20,7 @@ public class SettingCreation : MonoBehaviour {
 	[SerializeField]
 	private GameObject _button;
 	private TextAnchor _labelAnchor = TextAnchor.MiddleRight;
+	private Resolution _previousResolution;
 
 	private void OnValidate()
 	{
@@ -39,6 +40,16 @@ public class SettingCreation : MonoBehaviour {
 		{
 			_button = null;
 		}
+	}
+
+	private void Update()
+	{
+		if (_previousResolution.width != Screen.currentResolution.width || _previousResolution.height != Screen.currentResolution.height)
+		{
+			_previousResolution = Screen.currentResolution;
+			RebuildLayout();
+		}
+
 	}
 
 	public Dropdown Resolution(int minWidth, int minHeight, Resolution[] newResolutions = null, bool layoutHorizontal = true, string title = "Resolution", bool showOnMobile = false)
@@ -188,7 +199,22 @@ public class SettingCreation : MonoBehaviour {
 		{
 			case SettingObjectType.Dropdown:
 				var dropdown = Instantiate(_dropdown);
-				AddToLayout(layout, dropdown.GetComponent<Dropdown>() ?? dropdown.GetComponentInChildren<Dropdown>());
+				var dropdownComp = dropdown.GetComponent<Dropdown>() ?? dropdown.GetComponentInChildren<Dropdown>();
+				AddToLayout(layout, dropdownComp);
+				var templateCanvas = dropdownComp.template.gameObject.AddComponent<Canvas>();
+				templateCanvas.overrideSorting = false;
+				var parentObject = transform.parent;
+				var parentCanvas = parentObject.GetComponent<Canvas>();
+				while (parentCanvas == null && parentObject != transform.root)
+				{
+					parentObject = parentObject.parent;
+					parentCanvas = parentObject.GetComponent<Canvas>();
+				}
+				if (parentCanvas != null)
+				{
+					templateCanvas.sortingOrder = parentCanvas.sortingOrder;
+					templateCanvas.sortingLayerName = parentCanvas.sortingLayerName;
+				}
 				dropdown.name = setting.Title;
 				break;
 			case SettingObjectType.Slider:

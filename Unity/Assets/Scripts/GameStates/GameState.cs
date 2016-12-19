@@ -56,6 +56,7 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Exit()
 		{
+			_interface.Exit();
 			_stateController.Terminate();
 		}
 

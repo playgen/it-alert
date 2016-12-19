@@ -18,7 +18,7 @@ public class GameStateInterface : StateInterface
 
 	public override void Initialize()
 	{
-		_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer/Chat").gameObject;
+		_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
 		_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
 	}
 
@@ -29,7 +29,7 @@ public class GameStateInterface : StateInterface
 
 	public override void Exit()
 	{
-		
+		_chatPanel.SetActive(false);
 	}
 
 	public void PopulateChatPanel(PhotonPlayer[] players)
@@ -38,6 +38,8 @@ public class GameStateInterface : StateInterface
 		{
 			GameObject.Destroy(child.gameObject);
 		}
+
+		_chatPanel.SetActive(true);
 
 		var offset = 0f;
 		var maximumPlayersPossible = 6f; // the maximum number of players the game currently supports - Not the max for the room
@@ -60,7 +62,7 @@ public class GameStateInterface : StateInterface
 			soundIcon.color = nameText.color;
 			_playerVoiceIcons[player.ID] = soundIcon;
 
-			playerItem.SetParent(_chatPanel.transform);
+			playerItem.SetParent(_chatPanel.transform, false);
 
 			// set anchors
 			var playerItemRect = playerItem.GetComponent<RectTransform>();

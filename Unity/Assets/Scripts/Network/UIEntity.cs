@@ -25,7 +25,7 @@ public class UIEntity
 	public UIEntity(EntityState state)
 	{
 		_gameObject = InstantiateEntity(state.EntityType.ToString());
-		_gameObject.transform.SetParent(Graph.transform);
+		_gameObject.transform.SetParent(Graph.transform, false);
 
 		switch (state.EntityType)
 		{

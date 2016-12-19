@@ -70,7 +70,7 @@ public class GamesListStateInterface : StateInterface
 		{
 			GameObject.Destroy(child.gameObject);
 		}
-		var offset = 0f;
+		var offset = 0.5f;
 		var height = _gameItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
 		// Populate Game list UI
 		foreach (var room in rooms)
@@ -79,7 +79,7 @@ public class GamesListStateInterface : StateInterface
 			var name = room.name;
 			gameItem.FindChild("Name").GetComponent<Text>().text = name;
 			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
-			gameItem.SetParent(_gameListObject.transform);
+			gameItem.SetParent(_gameListObject.transform, false);
 
 			// set anchors
 			var gameItemRect = gameItem.GetComponent<RectTransform>();
