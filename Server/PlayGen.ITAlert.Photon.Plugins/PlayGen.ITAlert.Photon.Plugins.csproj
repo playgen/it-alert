@@ -34,18 +34,21 @@
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStates\InternalGameState.cs" />
-    <Compile Include="RoomStates\RoomStateController.cs" />
-    <Compile Include="RoomStates\Interfaces\IRoomState.cs" />
+    <Compile Include="RoomStateController.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="PluginFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
+    <Compile Include="RoomStates\RoomState.cs" />
+    <Compile Include="SUGAR\SUGARConfigurationSection.cs" />
+    <Compile Include="SUGAR\SUGARController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
@@ -75,6 +78,10 @@
     <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
       <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
       <Name>PlayGen.ITAlert.TestData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj">
+      <Project>{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}</Project>
+      <Name>PlayGen.SUGAR.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
       <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>

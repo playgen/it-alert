@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Photon.Hive.Plugin;
 
-namespace PlayGen.ITAlert.PhotonPlugins
+namespace PlayGen.ITAlert.Photon.Plugins
 {
     public class PluginFactory : IPluginFactory
     {

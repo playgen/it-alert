@@ -1,32 +1,27 @@
-﻿using GameWork.Core.States;
-using Photon.Hive.Plugin;
+﻿using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.PhotonPlugins.Extensions;
-using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
+using PlayGen.ITAlert.Photon.Plugins.Extensions;
+using PlayGen.ITAlert.Photon.Plugins.SUGAR;
 
-namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
+namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
-    public class LobbyState : State, IRoomState
+    public class LobbyState : RoomState
     {
-        public const string StateName = "Lobby";
-        
-        private readonly PluginBase _plugin;
-        private readonly Photon.Players.PlayerManager _playerManager;
+        public const string StateName = "Lobby";     
 
         public override string Name
         {
             get { return StateName; }
         }
 
-        public LobbyState(PluginBase plugin, Photon.Players.PlayerManager playerManager)
+        public LobbyState(PluginBase plugin, PlayerManager playerManager, SUGARController sugarController)
+            : base(plugin, playerManager, sugarController)
         {
-            _plugin = plugin;
-            _playerManager = playerManager;
         }
 
         #region Events
-        public void OnRaiseEvent(IRaiseEventCallInfo info)
+        public override void OnRaiseEvent(IRaiseEventCallInfo info)
         {
             switch (info.Request.EvCode)
             {
@@ -45,15 +40,15 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
             }
         }
 
-        public void OnCreate(ICreateGameCallInfo info)
+        public override void OnCreate(ICreateGameCallInfo info)
         {
         }
 
-        public void OnJoin(IJoinGameCallInfo info)
+        public override void OnJoin(IJoinGameCallInfo info)
         {
         }
 
-        public void OnLeave(ILeaveGameCallInfo info)
+        public override void OnLeave(ILeaveGameCallInfo info)
         {
         }
 
@@ -61,8 +56,8 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
         public override void Enter()
         {
-            _playerManager.ChangeAllStatuses(PlayerStatus.NotReady);
-            _plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+            PlayerManager.ChangeAllStatuses(PlayerStatus.NotReady);
+            Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
         }
 
         public override void Exit()
@@ -71,11 +66,11 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
         private void StartGame(bool force, bool close)
         {
-            if (force || _playerManager.CombinedPlayerStatus == PlayerStatus.Ready)
+            if (force || PlayerManager.CombinedPlayerStatus == PlayerStatus.Ready)
             {
                 if (close)
                 {
-                    _plugin.SetRoomOpen(false);
+                    Plugin.SetRoomOpen(false);
                 }
 
                 ChangeState(GameState.StateName);
@@ -84,10 +79,10 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
         private void ChangePlayerStatus(int playerId, PlayerStatus status)
         {
-            var didChange = _playerManager.ChangeStatus(playerId, status);
+            var didChange = PlayerManager.ChangeStatus(playerId, status);
             if (didChange)
             {
-                _plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
             }
         }
     }
