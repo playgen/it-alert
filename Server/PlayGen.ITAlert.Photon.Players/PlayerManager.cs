@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace PlayGen.ITAlert.Photon.Players.Extensions
+namespace PlayGen.ITAlert.Photon.Players
 {
     public class PlayerManager
     {
@@ -9,35 +9,35 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 
         public Player[] Players => _players.ToArray();
 
-        public PlayerStatuses CombinedPlayerStatuses
+        public PlayerStatus CombinedPlayerStatus
         {
             get
             {
-                if (_players.Any(p => p.Status == PlayerStatuses.NotReady))
+                if (_players.Any(p => p.Status == PlayerStatus.NotReady))
                 {
-                    return PlayerStatuses.NotReady;
+                    return PlayerStatus.NotReady;
                 }
-                else if (_players.All(p => p.Status == PlayerStatuses.Ready))
+                else if (_players.All(p => p.Status == PlayerStatus.Ready))
                 {
-                    return PlayerStatuses.Ready;
+                    return PlayerStatus.Ready;
                 }
-                else if (_players.All(p => p.Status == PlayerStatuses.GameInitialized))
+                else if (_players.All(p => p.Status == PlayerStatus.GameInitialized))
                 {
-                    return PlayerStatuses.GameInitialized;
+                    return PlayerStatus.GameInitialized;
                 }
-                else if (_players.All(p => p.Status == PlayerStatuses.GameFinalized))
+                else if (_players.All(p => p.Status == PlayerStatus.GameFinalized))
                 {
-                    return PlayerStatuses.GameFinalized;
+                    return PlayerStatus.GameFinalized;
                 }
 
-                return PlayerStatuses.Error;
+                return PlayerStatus.Error;
             }
         }
 
         public bool ChangeName(int id, string name)
         {
             var didChange = false;
-            var player = _players.Single(p => p.Id == id);
+            var player = _players.Single(p => p.PhotonId == id);
 
             if (player.Name != name)
             {
@@ -51,7 +51,7 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
         public bool ChangeColor(int id, string color)
         {
             var didChange = false;
-            var player = _players.Single(p => p.Id == id);
+            var player = _players.Single(p => p.PhotonId == id);
             
             if (player.Color != color)
             {
@@ -62,10 +62,10 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
             return didChange;
         }
 
-        public bool ChangeStatus(int id, PlayerStatuses status)
+        public bool ChangeStatus(int id, PlayerStatus status)
         {
             var didChange = false;
-            var player = _players.Single(p => p.Id == id);
+            var player = _players.Single(p => p.PhotonId == id);
 
             if (player.Status != status)
             {
@@ -76,7 +76,21 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
             return didChange;
         }
 
-        public void ChangeAllStatuses(PlayerStatuses status)
+        public bool ChangeExternalId(int id, int externalId)
+        {
+            var didChange = false;
+            var player = _players.Single(p => p.PhotonId == id);
+
+            if (player.ExternalId != externalId)
+            {
+                player.ExternalId= externalId;
+                didChange = true;
+            }
+
+            return didChange;
+        }
+
+        public void ChangeAllStatuses(PlayerStatus status)
         {
             foreach (var player in _players)
             {
@@ -88,7 +102,7 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
         {
             for (var i = 0; i < _players.Count; i++)
             {
-                if (_players[i].Id == id)
+                if (_players[i].PhotonId == id)
                 {
                     _players.RemoveAt(i);
                     break;
@@ -96,11 +110,12 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
             }
         }
 
-        public Player Create(int playerId, string name, string color, PlayerStatuses status)
+        public Player Create(int photonId, int? externalId, string name, string color, PlayerStatus status)
         {
             var player = new Player
             {
-                Id = playerId,
+                PhotonId = photonId,
+                ExternalId = externalId,
                 Name = name,
                 Color = color,
                 Status = status,
@@ -113,7 +128,7 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 
         public Player Get(int id)
         {
-            return _players.Single(p => p.Id == id);
+            return _players.Single(p => p.PhotonId == id);
         }
     }
 }

@@ -8,7 +8,6 @@ using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
 using PlayGen.ITAlert.TestData;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
@@ -68,9 +67,9 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 			switch (info.Request.EvCode)
 			{
 				case (byte)PlayerEventCode.GameInitialized:
-					_playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameInitialized);
+					_playerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
 
-					if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameInitialized)
+					if (_playerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
 					{
 						ChangeInternalState(InternalGameState.Playing);
 					}
@@ -82,9 +81,9 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 					break;
 
 				case (byte)PlayerEventCode.GameFinalized:
-					_playerManager.ChangeStatus(info.ActorNr, PlayerStatuses.GameFinalized);
+					_playerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
 
-					if (_playerManager.CombinedPlayerStatuses == PlayerStatuses.GameFinalized)
+					if (_playerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
 					{
 						ChangeState(LobbyState.StateName);   
 					}
@@ -195,7 +194,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
 				return new PlayerConfig
 				{
-					ExternalId = player.Id,
+					ExternalId = player.PhotonId,
 					Name = player.Name,
 					Colour = "#" + player.Color,
 				};

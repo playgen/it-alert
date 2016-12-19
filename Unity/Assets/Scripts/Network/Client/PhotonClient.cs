@@ -352,7 +352,12 @@ namespace PlayGen.ITAlert.Network.Client
 			}
 		}
 
-		public override void OnJoinedLobby()
+	    public override void OnFailedToConnectToPhoton(DisconnectCause cause)
+	    {
+	        Log("Failed to Connect to Photon: " + cause);
+	    }
+
+	    public override void OnJoinedLobby()
 		{
 			if (ConnectedEvent != null)
 			{

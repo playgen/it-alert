@@ -97,6 +97,11 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
+        public void SetPlayerExternalId(int id)
+        {
+            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeExternalId, id);
+        }
+
         public void SetPlayerName(string name)
         {
             _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeName, name);
