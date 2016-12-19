@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
 using Engine.Planning;
@@ -9,18 +10,38 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class IntentsProperty : ReadOnlyProperty<SimpleStack<IIntent>>
+	public class IntentsProperty : Component
 	{
+		//TODO: make this a reference to a more memory efficient storage pool
+		private readonly SimpleStack<IIntent> _intents;
+
 		public IntentsProperty() 
-			: base(new SimpleStack<IIntent>())
 		{
+			_intents = new SimpleStack<IIntent>();
 		}
 
-		public bool HasIntents => Value.Any();
+		public bool HasIntents => _intents.Any();
+
+
+		public void Enqueue(IIntent intent)
+		{
+			_intents.Push(intent);
+		}
+
+		public void Replace(IIntent intent)
+		{
+			_intents.Clear();
+			Enqueue(intent);
+		}
+
+		public IIntent Pop()
+		{
+			return _intents.Pop();
+		}
 
 		public bool TryPeek(out IIntent last)
 		{
-			return Value.TryPeek(out last);
+			return _intents.TryPeek(out last);
 		}
 
 		public bool TryPeekIntent<TIntent>(out TIntent last) 

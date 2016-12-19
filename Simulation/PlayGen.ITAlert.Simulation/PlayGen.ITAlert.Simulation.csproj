@@ -48,13 +48,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Activation\ActivationState.cs" />
+    <Compile Include="Components\Activation\Activation.cs" />
     <Compile Include="Components\Behaviours\DatabaseEnhancement.cs" />
     <Compile Include="Components\Behaviours\AntivirusEnhancement.cs" />
     <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
+    <Compile Include="Components\Behaviours\IActivatable.cs" />
+    <Compile Include="Components\Behaviours\IActivation.cs" />
+    <Compile Include="Components\Activation\TimedActivation.cs" />
     <Compile Include="Components\IItemContainer.cs" />
-    <Compile Include="Components\Intents\ActivateItemIntent.cs" />
-    <Compile Include="Components\EnhancementItemContainer.cs" />
+    <Compile Include="Components\Intents\ActivateIntent - Copy.cs" />
+    <Compile Include="Components\Intents\ActivateIntent.cs" />
     <Compile Include="Components\Properties\EntityTypeProperty.cs" />
+    <Compile Include="Components\Properties\ItemActivator.cs" />
+    <Compile Include="Components\Properties\MalwareGenome.cs" />
+    <Compile Include="Components\Properties\Destination.cs" />
     <Compile Include="Components\Systems\ItemActivation.cs" />
     <Compile Include="Components\Systems\ItemManagement.cs" />
     <Compile Include="GameEntities.cs" />
@@ -76,7 +84,7 @@
     <Compile Include="Components\Messages\DamageNodeMessage.cs" />
     <Compile Include="Components\Messages\DamageNodeMessageComponent.cs" />
     <Compile Include="Layout\EdgeDirection.cs" />
-    <Compile Include="Components\Properties\OwnerProperty.cs" />
+    <Compile Include="Components\Properties\Owner.cs" />
     <Compile Include="Components\Behaviours\VisitorPosition.cs" />
     <Compile Include="Components\Properties\Visitors.cs" />
     <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />

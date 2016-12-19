@@ -21,6 +21,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 		{
 			base.Initialize(entity);
 			_itemStorage = Entity.GetComponent<ItemStorage>();
+
 		}
 	}
 }

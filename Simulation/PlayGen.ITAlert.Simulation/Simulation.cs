@@ -83,7 +83,18 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateSystem(NodeConfig config)
 		{
-			var subsystem = CreateEntityFromArchetype(config.Type.ToString());
+			Entity subsystem;
+			switch (config.Enhancement)
+			{
+				case EnhancementType.Analysis:
+				case EnhancementType.Antivirus:
+					subsystem = CreateEntityFromArchetype(config.Enhancement.ToString());
+					break;
+				default:
+					subsystem = CreateEntityFromArchetype(config.Type.ToString());
+					break;
+			}
+			
 			config.EntityId = subsystem.Id;
 
 			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
@@ -238,7 +249,7 @@ namespace PlayGen.ITAlert.Simulation
 		//	var player = _actors[playerId] as Player;
 		//	var item = _items[itemId] as IItem;
 
-		//	if (item.Owner == player)
+		//	if (item.OwnerState == player)
 		//	{
 		//		//TODO: test this is legal! is there already an active item?
 		//		item.Activate();

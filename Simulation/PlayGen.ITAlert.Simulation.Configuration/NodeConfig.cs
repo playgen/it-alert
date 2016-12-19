@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public NodeType Type { get; }
 
-		public EnhancementType Enhancement { get; }
+		public EnhancementType Enhancement { get; set; }
 		
 		public int X { get; set; }
 		public int Y { get; set; }

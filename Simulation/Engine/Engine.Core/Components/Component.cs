@@ -9,15 +9,7 @@ namespace Engine.Components
 	{
 		private bool _disposed;
 
-		protected Entity Entity { get; private set; }
-
-		#region constructor
-
-		protected Component()
-		{
-		}
-
-		#endregion
+		public Entity Entity { get; private set; }
 
 		#region disposal
 
