@@ -7,8 +7,8 @@
     <ProjectGuid>{CA3E391B-7EAB-428E-B869-2C974E211067}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.PhotonPlugins</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.PhotonPlugins</AssemblyName>
+    <RootNamespace>PlayGen.ITAlert.Photon.Plugins</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Photon.Plugins</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -106,10 +106,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="SUGARConfiguration.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.Photon.Plugins\bin\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
