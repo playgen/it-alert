@@ -81,3 +81,4 @@ Unity/Assets/GameWork.meta
 Unity/Build/
 Unity/Assets/Plugins/PlayGen.SUGAR.Unity/
 Unity/Unity.csproj.DotSettings
+Server/Photon.LoadBalancing/SUGARConfiguration.config

@@ -82,8 +82,9 @@ namespace PlayGen.SUGAR.Unity
 			var www = new WWW(path);
 			yield return www;
 
-			SUGARManager.config = JsonConvert.DeserializeObject<Config>(www.text);
-			Debug.Log(SUGARManager.config.BaseUri);
+            SUGARManager.config = JsonConvert.DeserializeObject<Config>(www.text);
+
+            Debug.Log(SUGARManager.config.BaseUri);
 
 			_baseAddress = SUGARManager.config.BaseUri;
 			SetUpClient();
@@ -103,11 +104,11 @@ namespace PlayGen.SUGAR.Unity
 			}
 		}
 
-		private string ConfigPath
+		public static string ConfigPath
 		{
 			get
 			{
-				string path = Application.streamingAssetsPath + "/SUGAR.config.json";
+				var path = Application.streamingAssetsPath + "/SUGAR.config.json";
 				#if UNITY_EDITOR_WIN || UNITY_STANDALONE_WIN
 				//path = "file:///" + path;
 				#endif
