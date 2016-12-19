@@ -1,73 +1,68 @@
-﻿using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using System;
+using GameWork.Core.States;
+using GameWork.Core.States.Controllers;
+
+using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
 
 public class MenuState : TickableSequenceState
 {
-	private readonly MenuStateInterface _interface;
-	private readonly QuickGameController _controller;
-	private readonly Client _client;
 	public const string StateName = "MenuState";
 
-	public MenuState(MenuStateInterface @interface, QuickGameController controller, Client client)
-	{
-		_interface = @interface;
-		_controller = controller;
-		_client = client;
-	}
-
-	public override void Initialize()
-	{
-		_interface.Initialize();
-	}
-
-	public override void Terminate()
-	{
-		_interface.Terminate();
-	}
-
-	public override void Enter()
-	{
-		_client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
-		_interface.Enter();
-	}
-
-	public override void Exit()
-	{
-		_client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
-		_interface.Exit();
-	}
-
-	public override void NextState()
-	{
-		ChangeState(LobbyState.StateName);
-	}
-
-	public override void PreviousState()
-	{
-		ChangeState(LoginState.StateName);
-	}
+	private readonly TickableStateController _stateController;
+	private readonly Client _client;
 
 	public override string Name
 	{
 		get { return StateName; }
 	}
 
+	public MenuState(Client client, VoiceController voiceController)
+	{
+		_client = client;
+
+		var joinGameController = new JoinGameController(_client);
+		var createGameController = new CreateGameController(_client);
+		var quickGameController = new QuickGameController(_client, createGameController, 4);
+
+		_stateController = new TickableStateController(
+			new MainMenuState(new MenuStateInterface(), quickGameController, _client),
+			new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, voiceController),
+			new GamesListState(new GamesListStateInterface(), new GamesListController(_client), joinGameController, _client),
+			new CreateGameState(new CreateGameStateInterface(), createGameController, _client),
+			new SettingsState(new SettingsStateInterface()));
+
+		_stateController.ChangeParentStateEvent += ChangeState;
+	}
+
+	public override void Terminate()
+	{
+		_stateController.ChangeParentStateEvent -= ChangeState;
+	}
+
+	public override void Enter()
+	{
+		_stateController.Initialize();
+		_stateController.ChangeState(MainMenuState.StateName);
+	}
+
+	public override void Exit()
+	{
+		_stateController.Terminate();
+	}
+
 	public override void Tick(float deltaTime)
 	{
-		_interface.Tick(deltaTime);
-		if ( _interface.HasCommands)
-		{
-			var command = _interface.TakeFirstCommand();
+		_stateController.Tick(deltaTime);
+	}
 
-			var quickGameCommand = command as QuickGameCommand;
-			if (quickGameCommand != null)
-			{
-				quickGameCommand.Execute(_controller);
-			}
+	public override void NextState()
+	{
+		ChangeState(GameState.StateName);
+	}
 
-			var commandResolver = new StateCommandResolver();
-			commandResolver.HandleSequenceStates(command, this);
-		}
+	public override void PreviousState()
+	{
+
 	}
 }

@@ -99,6 +99,6 @@ public class GamesListState : TickableSequenceState
 
 	public override void PreviousState()
 	{
-		ChangeState(MenuState.StateName);
+		ChangeState(MainMenuState.StateName);
 	}
 }

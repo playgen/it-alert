@@ -37,19 +37,12 @@ public class ControllerBehaviour : MonoBehaviour
 		PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
 		//PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
 
-		var joinGameController = new JoinGameController(_client);
-		var createGameController = new CreateGameController(_client);
-		var quickGameController = new QuickGameController(_client, createGameController, 4);
 		var voiceController = new VoiceController(_client);
 
-		_stateController = new TickableStateController<TickableSequenceState>(  
-			new LoginState(), 
+		_stateController = new TickableStateController<TickableSequenceState>(
 			new LoadingState(new LoadingStateInterface()),
-			new MenuState(new MenuStateInterface(), quickGameController, _client),
-			new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, voiceController),
-			new GamesListState(new GamesListStateInterface(), new GamesListController(_client), joinGameController, _client),
-			new CreateGameState(new CreateGameStateInterface(), createGameController, _client), 
-			new SettingsState(new SettingsStateInterface()),
+			new LoginState(),
+			new MenuState(_client, voiceController),
 			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
 			);
 		_stateController.Initialize();
@@ -91,5 +84,4 @@ public class ControllerBehaviour : MonoBehaviour
 	{
 		_stateController.Tick(Time.deltaTime);
 	}
-
 }

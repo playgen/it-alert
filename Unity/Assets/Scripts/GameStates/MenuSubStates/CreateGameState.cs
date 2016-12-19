@@ -70,6 +70,6 @@ public class CreateGameState : TickableSequenceState
 
     public override void PreviousState()
     {
-        ChangeState(MenuState.StateName);
+        ChangeState(MainMenuState.StateName);
     }
 }

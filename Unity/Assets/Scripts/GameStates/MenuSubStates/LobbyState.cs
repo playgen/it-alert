@@ -75,7 +75,7 @@ public class LobbyState : TickableSequenceState
     public override void PreviousState()
     {
         
-       ChangeState(MenuState.StateName);
+       ChangeState(MainMenuState.StateName);
     }
 
     public override string Name
