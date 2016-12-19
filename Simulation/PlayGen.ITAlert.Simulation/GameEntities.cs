@@ -44,6 +44,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				Positions = SimulationConstants.SubsystemPositions,
 			})
+			.HasComponent(() => new ItemActivator())
 			.HasComponent(() => new ItemStorage(SimulationConstants.SubsystemMaxItems));
 
 		public static readonly Archetype Analysis = new Archetype("Analysis")
@@ -78,7 +79,8 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
-			.HasComponent(() => new EntityTypeProperty(EntityType.Npc));
+			.HasComponent(() => new EntityTypeProperty(EntityType.Npc))
+			.HasComponent(() => new MalwareGenome());
 
 		#endregion
 
@@ -88,7 +90,7 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
 				() => new EntityTypeProperty(EntityType.Item),
-				() => new OwnerProperty(),
+				() => new Owner(),
 				() => new ConsumeMemory(),
 			});
 

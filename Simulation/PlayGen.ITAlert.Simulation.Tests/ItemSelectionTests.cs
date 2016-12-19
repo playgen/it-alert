@@ -55,7 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			var itemState = item.GenerateState();
 //			Assert.That(itemState, Is.Not.Null, "Item returned null state");
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(subsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(itemState.Owner.HasValue, Is.False, "ItemState return wrong owner");
+//			Assert.That(itemState.OwnerState.HasValue, Is.False, "ItemState return wrong owner");
 //
 //			Assert.That(player.HasItem, Is.False, "Player already has item");
 //			Assert.That(player.IsOnSubsystem, "Player not on subsystem");
@@ -64,12 +64,12 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			player.Tick(tick);
 //			Assert.That(player.HasItem, "Player does not have item after pickup");
 //			Assert.That(item.HasOwner, "Item should have owner");
-//			Assert.That(item.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(item.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			Assert.That(item.IsOnSubsystem, "Item should be on subsystem");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(subsystem.Id), "ItemState has wrong subsystem id");
 //
-//			Assert.That(itemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(itemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //			Assert.That(subsystem.HasItem(item), "subsystem no longer has item");
 //
 //			playerState = player.GenerateState();
@@ -82,10 +82,10 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			player.Tick(++tick);
 //			Assert.That(item.IsOnSubsystem, Is.False, "Item should have left subsystem");
 //			Assert.That(item.HasOwner, "Item should have owner");
-//			Assert.That(item.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(item.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.HasValue, Is.False, "ItemState should have no subsystem id");
-//			Assert.That(itemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(itemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //
 //			playerState = player.GenerateState();
 //			Assert.That(playerState.InventoryItem.Value, Is.EqualTo(item.Id), "PlayerState inventory item id incorrect");
@@ -97,21 +97,21 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //
 //			Assert.That(item.IsOnSubsystem, Is.False, "Item should not be on subsystem");
 //			Assert.That(item.HasOwner, "Item should have owner");
-//			Assert.That(item.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(item.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.HasValue, Is.False, "ItemState should have no subsystem id");
-//			Assert.That(itemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(itemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //
 //			// process arrive at destination
 //			player.Tick(++tick);
 //
 //			Assert.That(player.HasItem, "Player does not have item after pickup");
 //			Assert.That(item.HasOwner, "Item should have owner");
-//			Assert.That(item.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(item.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			Assert.That(item.IsOnSubsystem, "Item should be on subsystem");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(itemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(itemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //			Assert.That(otherSubsystem.HasItem(item), "subsystem no longer has item");
 //
 //			playerState = player.GenerateState();
@@ -129,7 +129,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			Assert.That(item.IsOnSubsystem, "Item should be on subsystem");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(itemState.Owner.HasValue, Is.False, "ItemState has owner after disown");
+//			Assert.That(itemState.OwnerState.HasValue, Is.False, "ItemState has owner after disown");
 //			Assert.That(otherSubsystem.HasItem(item), "subsystem no longer has item");
 //
 //			playerState = player.GenerateState();
@@ -141,7 +141,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			var otherItemState = otherItem.GenerateState();
 //			Assert.That(otherItemState, Is.Not.Null, "Item returned null state");
 //			Assert.That(otherItemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(otherItemState.Owner.HasValue, Is.False, "ItemState return wrong owner");
+//			Assert.That(otherItemState.OwnerState.HasValue, Is.False, "ItemState return wrong owner");
 //
 //			Assert.That(player.HasItem, Is.False, "Player already has item");
 //			Assert.That(player.IsOnSubsystem, "Player not on subsystem");
@@ -157,11 +157,11 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //
 //			Assert.That(player.HasItem, "Player does not have item after pickup");
 //			Assert.That(otherItem.HasOwner, "Item should have owner");
-//			Assert.That(otherItem.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(otherItem.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			Assert.That(otherItem.IsOnSubsystem, "Item should be on subsystem");
 //			otherItemState = otherItem.GenerateState();
 //			Assert.That(otherItemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(otherItemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(otherItemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //			Assert.That(otherSubsystem.HasItem(otherItem), "subsystem no longer has item");
 //
 //			playerState = player.GenerateState();
@@ -171,7 +171,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			Assert.That(item.IsOnSubsystem, "Item should be on subsystem");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(itemState.Owner.HasValue, Is.False, "ItemState has owner after disown");
+//			Assert.That(itemState.OwnerState.HasValue, Is.False, "ItemState has owner after disown");
 //			Assert.That(otherSubsystem.HasItem(item), "subsystem no longer has item");
 //
 //			// pickup withcurrent item selected
@@ -187,11 +187,11 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //
 //			Assert.That(player.HasItem, "Player does not have item after pickup");
 //			Assert.That(item.HasOwner, "Item should have owner");
-//			Assert.That(item.Owner.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
+//			Assert.That(item.OwnerState.Id, Is.EqualTo(player.Id), "Item owner id incorrect");
 //			Assert.That(item.IsOnSubsystem, "Item should be on subsystem");
 //			itemState = item.GenerateState();
 //			Assert.That(itemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(itemState.Owner.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
+//			Assert.That(itemState.OwnerState.Value, Is.EqualTo(player.Id), "ItemState owner id incorrect");
 //			Assert.That(otherSubsystem.HasItem(item), "subsystem no longer has item");
 //
 //			playerState = player.GenerateState();
@@ -201,7 +201,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			Assert.That(otherItem.IsOnSubsystem, "Item should be on subsystem");
 //			otherItemState = otherItem.GetState() as ItemState;
 //			Assert.That(otherItemState.CurrentNode.Value, Is.EqualTo(otherSubsystem.Id), "ItemState has wrong subsystem id");
-//			Assert.That(otherItemState.Owner.HasValue, Is.False, "ItemState has owner after disown");
+//			Assert.That(otherItemState.OwnerState.HasValue, Is.False, "ItemState has owner after disown");
 //			Assert.That(otherSubsystem.HasItem(item), "subsystem no longer has item");
 //		}
 	}

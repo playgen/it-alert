@@ -68,10 +68,12 @@
     <Compile Include="Entities\ComponentContainer.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityDestroyedMessage.cs" />
+    <Compile Include="Entities\EntityExtensions.cs" />
     <Compile Include="Entities\EntityRegistry.cs" />
     <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
     <Compile Include="Exceptions\EngineException.cs" />
+    <Compile Include="IECS.cs" />
     <Compile Include="Messaging\DelegatingObserver.cs" />
     <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
     <Compile Include="Messaging\Extensions\MessageExtensions.cs" />

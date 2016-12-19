@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.Common;
 using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
@@ -10,15 +9,17 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ItemStorageState : List<ItemContainer>, IComponentState
+	public class ActiveItemState : IComponentState
 	{
-		public ItemStorageState(IEnumerable<ItemContainer> collection) 
-			: base(collection)
+		private ItemContainer Item { get; }
+
+		public ActiveItemState(ItemContainer item)
 		{
+			Item = item;
 		}
 	}
 
-	public class ItemStorage : Component, IPropertyComponent, IEmitState
+	public class ItemActivator : Component, IPropertyComponent, IEmitState
 	{
 		public enum OverLimitBehaviour
 		{
@@ -26,19 +27,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			Lock,
 		}
 
-		public ItemContainer[] Items { get; private set; }
+		public ItemContainer Item { get; private set; }
 
 		public int ItemLimit { get; set; }
 
-		private int _maxItemLimit;
-
-		private OverLimitBehaviour _overLimitBehaviour;
-
-		public ItemStorage(int maxItems) 
+		public ItemActivator() 
 			: base()
 		{
-			_maxItemLimit = maxItems;
-			Items = new ItemContainer[maxItems];
+			Item = new ItemContainer();
 		}
 
 		//public ItemStorage(int itemLimit, OverLimitBehaviour overLimitBehaviour) 
@@ -52,63 +48,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		public override void Initialize(Entity entity)
 		{
 			base.Initialize(entity);
-
-			for (var i = 0; i < _maxItemLimit; i++)
-			{
-				if (Items[i] == null)
-				{
-					Items[i] = new ItemContainer();
-				}
-			}
-		}
-
-		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
-		{
-			_overLimitBehaviour = overLimitBehaviour;
-		}
-
-		public void SetCustomContainer(int position, ItemContainer container)
-		{
-			NotNullHelper.ArgumentNotNull(container, nameof(container));
-			if (position >= Items.Length)
-			{
-				throw new InvalidOperationException($"Custom item container positions {position} exceeds storage capacity {Items.Length}");
-			}
-			Items[position] = container;
-			_maxItemLimit -= 1;
-		}
-
-		public void SetItemLimit(int limit)
-		{
-			if (limit < _maxItemLimit)
-			{
-				if (limit < ItemLimit)
-				{
-					for (var i = Items.Length - 1; i >= ItemLimit; i--)
-					{
-						var itemContainer = Items[i];
-						if (_overLimitBehaviour == OverLimitBehaviour.Dispose)
-						{
-							if (itemContainer.Item != null)
-							{
-								itemContainer.Item.Dispose();
-								itemContainer.Item = null;
-							}
-							itemContainer.Enabled = false;
-						}
-					}
-				}
-				else if (limit > ItemLimit)
-				{
-					for (var i = Items.Length - 1; i >= ItemLimit; i--)
-					{
-						//TODO: test if item container is of regular sort
-						var itemContainer = Items[i];
-						itemContainer.Enabled = true;
-					}
-				}
-				ItemLimit = limit;
-			}
 		}
 
 		#region items 
@@ -182,27 +121,31 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		//	return Items.Any(ic => ic.Item == item);
 		//}
 
-		public bool TryAddItem(Entity item)
-		{
-			if (item != null)
-			{
-				var itemContainer = Items.OfTypeExact<ItemContainer>().FirstOrDefault(ic => ic.CanDrop);
-				if (itemContainer == null)
-				{
-					return false;
-				}
-				itemContainer.Item = item;
-				return true;
-			}
-			return false;
-		}
+		//public bool TryAddItem(Entity item)
+		//{
+		//	if (item != null)
+		//	{
+		//		for (var i = 0; i < ItemLimit; i++)
+		//		{
+		//			var itemContainer = Items[i];
+		//			if (itemContainer.Item == null)
+		//			{
+		//				Items[i].Item = item;
+		//				//TODO: implement with message
+		//				//item.OnEnterNode(this);
+		//				return true;
+		//			}
+		//		}
+		//	}
+		//	return false;
+		//}
 
 
 		#endregion
 
 		public IComponentState GetState()
 		{
-			return new ItemStorageState(Items.ToList());
+			return new ActiveItemState(Item);
 		}
 	}
 }

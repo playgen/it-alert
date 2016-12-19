@@ -12,7 +12,7 @@ using System.Reactive.Disposables;
 namespace Engine
 {
 	// ReSharper disable once InconsistentNaming
-	public abstract class ECS : IDisposable
+	public abstract class ECS : IDisposable, IECS
 	{
 		private bool _disposed;
 

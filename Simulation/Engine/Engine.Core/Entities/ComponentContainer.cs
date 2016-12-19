@@ -66,6 +66,13 @@ namespace Engine.Entities
 			return GetComponentsInternal<TComponentInterface>().Single();
 		}
 
+		public bool TryGetComponent<TComponentInterface>(out TComponentInterface component)
+			where TComponentInterface : class, IComponent
+		{
+			component = GetComponentsInternal<TComponentInterface>().SingleOrDefault();
+			return component != null;
+		}
+
 		public IEnumerable<TComponentInterface> GetComponents<TComponentInterface>()
 			where TComponentInterface : class, IComponent
 		{
