@@ -104,7 +104,7 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void NextState()
 		{
-			ChangeState(MenuState.StateName);
+			ChangeState(MainMenuState.StateName);
 		}
 
 		public override void PreviousState()
