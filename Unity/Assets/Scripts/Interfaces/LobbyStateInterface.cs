@@ -153,7 +153,7 @@ public class LobbyStateInterface : StateInterface
 			soundIcon.color = color;    
 			_playerVoiceIcons[player.Id] = soundIcon;
 
-			playerItem.SetParent(_playerListObject.transform);
+			playerItem.SetParent(_playerListObject.transform, false);
 
 			// set anchors
 			var playerItemRect = playerItem.GetComponent<RectTransform>();
@@ -172,7 +172,7 @@ public class LobbyStateInterface : StateInterface
 		for (var i = players.Length; i < _lobbyPlayerMax; i++)
 		{
 			var playerSpace = Object.Instantiate(_playerSpacePrefab).transform;
-			playerSpace.SetParent(_playerListObject.transform);
+			playerSpace.SetParent(_playerListObject.transform, false);
 
 			// set anchors
 			var playerSpaceRect = playerSpace.GetComponent<RectTransform>();

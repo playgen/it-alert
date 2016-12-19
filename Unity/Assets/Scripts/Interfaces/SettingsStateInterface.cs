@@ -50,7 +50,6 @@ public class SettingsStateInterface : TickableStateInterface
 		PlayerPrefs.SetFloat(receive.name, receive.value);
 		PlayerPrefs.SetFloat(music.name, music.value);
 		PlayerPrefs.SetFloat(sfx.name, sfx.value);
-		_creator.RebuildLayout();
 	}
 
 	public override void Enter()
