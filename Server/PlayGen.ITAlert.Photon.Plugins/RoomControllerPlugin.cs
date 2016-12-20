@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.Photon.Plugins.Extensions;
 using PlayGen.ITAlert.Photon.Plugins.RoomStates;
 using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Plugins.SUGAR;
+using PlayGen.ITAlert.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins
 {
@@ -17,7 +17,7 @@ namespace PlayGen.ITAlert.Photon.Plugins
         public const int ServerPlayerId = 0;
         
         private readonly PlayerManager _playerManager = new PlayerManager();
-        private readonly SUGARController _sugarController = new SUGARController();
+        private readonly Controller _sugarController = new Controller();
         private readonly RoomStateController _stateController;
 
         public override string Name => PluginName;

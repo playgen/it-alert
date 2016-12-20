@@ -2,7 +2,7 @@
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Plugins.Extensions;
-using PlayGen.ITAlert.Photon.Plugins.SUGAR;
+using PlayGen.ITAlert.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
             get { return StateName; }
         }
 
-        public LobbyState(PluginBase plugin, PlayerManager playerManager, SUGARController sugarController)
+        public LobbyState(PluginBase plugin, PlayerManager playerManager, Controller sugarController)
             : base(plugin, playerManager, sugarController)
         {
         }

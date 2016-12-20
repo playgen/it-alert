@@ -1,22 +1,22 @@
-﻿using System;
+﻿using PlayGen.SUGAR.Contracts.Shared;
+using System;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Common.Shared;
-using PlayGen.SUGAR.Contracts.Shared;
 
-namespace PlayGen.ITAlert.Photon.Plugins.SUGAR
+namespace PlayGen.ITAlert.Photon.SUGAR
 {
-    public class SUGARController : IDisposable
+    public class Controller : IDisposable
     {
-        private readonly SUGARConfigurationSection _sugarConfig;
+        private readonly Configuration _sugarConfig;
         private readonly SUGARClient _sugarClient;
         private readonly AccountResponse _loggedInAccount;
         
         private bool _isDisposed;
         private MatchResponse _match;
 
-        public SUGARController()
+        public Controller()
         {
-            _sugarConfig = SUGARConfigurationSection.GetSection();
+            _sugarConfig = ConfigurationLoader.Load();
             _sugarClient = new SUGARClient(_sugarConfig.BaseAddress);
             _loggedInAccount = _sugarClient.Session.Login(_sugarConfig.GameId, new AccountRequest
             {
@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.SUGAR
             });
         }
 
-        ~SUGARController()
+        ~Controller()
         {
             Dispose();
         }
@@ -35,7 +35,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.SUGAR
         {
             if (_isDisposed) return;
 
-            _sugarClient.Session.Logout();
+            _sugarClient?.Session.Logout();
         }
 
         public void StartMatch()

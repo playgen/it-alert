@@ -7,10 +7,10 @@ using PlayGen.ITAlert.Photon.Plugins.Extensions;
 using PlayGen.ITAlert.TestData;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Plugins.SUGAR;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
+using PlayGen.ITAlert.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 			get { return StateName; }
 		}
 
-		public GameState(PluginBase plugin, PlayerManager playerManager, SUGARController sugarController) 
+		public GameState(PluginBase plugin, PlayerManager playerManager, Controller sugarController) 
             : base(plugin, playerManager, sugarController)
 		{
 		}
