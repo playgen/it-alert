@@ -18,7 +18,7 @@ public class PlayingStateInterface : TickableStateInterface
 		_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
 	}
 
-	private void OnPauselick()
+	private void OnPauseClick()
 	{
 		EnqueueCommand(new ChangeStateCommand(PausedState.StateName));
 	}
@@ -39,7 +39,7 @@ public class PlayingStateInterface : TickableStateInterface
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
-			OnPauselick();
+            OnPauseClick();
 		}
 	}
 }

@@ -45,7 +45,8 @@ namespace Debugging
 			GameStateButton(CreateGameState.StateName, MenuState.StateName);
 			GameStateButton(SettingsState.StateName, MenuState.StateName);
 			GameStateButton(GameState.StateName);
-		}
+            GameStateButton(FeedbackState.StateName);
+        }
 
 		private object GetField(Type type, object instance, string fieldName)
 		{
