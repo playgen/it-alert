@@ -3,23 +3,20 @@ using System.Linq;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
-using PlayGen.ITAlert.PhotonPlugins.Extensions;
-using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
+using PlayGen.ITAlert.Photon.Plugins.Extensions;
 using PlayGen.ITAlert.TestData;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Plugins.SUGAR;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
 
-namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
+namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
-	public class GameState : GameWork.Core.States.State, IRoomState
+	public class GameState : RoomState
 	{
 		public const string StateName = "Game";
-
-		private readonly PluginBase _plugin;
-		private readonly PlayerManager _playerManager;
 
 		private Simulation.Simulation _simulation;
 		private CommandSequence _commandSequence;
@@ -28,48 +25,45 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 		private int _tickIntervalMS = 100;
 		private object _tickTimer;
 
-		private ICommand _command = new RequestMovePlayerCommand();
-
 		public override string Name
 		{
 			get { return StateName; }
 		}
 
-		public GameState(PluginBase plugin, PlayerManager playerManager)
+		public GameState(PluginBase plugin, PlayerManager playerManager, SUGARController sugarController) 
+            : base(plugin, playerManager, sugarController)
 		{
-			_plugin = plugin;
-			_playerManager = playerManager;
 		}
 
 		public override void Initialize()
 		{
-			_plugin.PluginHost.TryRegisterType(typeof(Simulation.Simulation),
+			Plugin.PluginHost.TryRegisterType(typeof(Simulation.Simulation),
 				SerializableTypes.SimulationState,
 				Serializer.SerializeSimulation,
 				Serializer.DeserializeSimulation);
 		}
 
 		#region Events
-		public void OnCreate(ICreateGameCallInfo info)
+		public override void OnCreate(ICreateGameCallInfo info)
 		{
 		}
 
-		public void OnJoin(IJoinGameCallInfo info)
+		public override void OnJoin(IJoinGameCallInfo info)
 		{
 		}
 
-		public void OnLeave(ILeaveGameCallInfo info)
+		public override void OnLeave(ILeaveGameCallInfo info)
 		{
 		}
 		
-		public void OnRaiseEvent(IRaiseEventCallInfo info)
+		public override void OnRaiseEvent(IRaiseEventCallInfo info)
 		{
 			switch (info.Request.EvCode)
 			{
 				case (byte)PlayerEventCode.GameInitialized:
-					_playerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
+					PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
 
-					if (_playerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
+					if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
 					{
 						ChangeInternalState(InternalGameState.Playing);
 					}
@@ -81,9 +75,9 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 					break;
 
 				case (byte)PlayerEventCode.GameFinalized:
-					_playerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
+					PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
 
-					if (_playerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
+					if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
 					{
 						ChangeState(LobbyState.StateName);   
 					}
@@ -94,7 +88,7 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
 		public override void Enter()
 		{
-			_plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
+			Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
 
 			List<int> subsystemLogicalIds;
 			_simulation = InitializeSimulation(out subsystemLogicalIds);
@@ -102,10 +96,14 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 			_resolver = new CommandResolver(_simulation);
 			
 			ChangeInternalState(InternalGameState.Initializing);
+
+		    SugarController.StartMatch();
 		}
 
 		public override void Exit()
 		{
+            SugarController.EndMatch();
+
 			_resolver = null;
 			_simulation.Dispose();
 			_simulation = null;
@@ -168,14 +166,14 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
 		private void BroadcastSimulation(ServerEventCode eventCode, Simulation.Simulation simulation)
 		{
-			_plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
+			Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
 				(byte) eventCode,
 				_simulation);
 		}
 		
 		private object CreateTickTimer()
 		{
-			return _plugin.PluginHost.CreateTimer(
+			return Plugin.PluginHost.CreateTimer(
 				Tick,
 				_tickIntervalMS,
 				_tickIntervalMS);
@@ -183,14 +181,14 @@ namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
 
 		private void DestroyTimer(object timer)
 		{
-			_plugin.PluginHost.StopTimer(timer);
+			Plugin.PluginHost.StopTimer(timer);
 		}
 
 		private Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
 		{
-			var players = _plugin.PluginHost.GameActorsActive.Select(p =>
+			var players = Plugin.PluginHost.GameActorsActive.Select(p =>
 			{
-				var player = _playerManager.Get(p.ActorNr);
+				var player = PlayerManager.Get(p.ActorNr);
 
 				return new PlayerConfig
 				{

@@ -7,8 +7,8 @@
     <ProjectGuid>{CA3E391B-7EAB-428E-B869-2C974E211067}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.PhotonPlugins</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.PhotonPlugins</AssemblyName>
+    <RootNamespace>PlayGen.ITAlert.Photon.Plugins</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Photon.Plugins</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -34,18 +34,21 @@
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStates\InternalGameState.cs" />
-    <Compile Include="RoomStates\RoomStateController.cs" />
-    <Compile Include="RoomStates\Interfaces\IRoomState.cs" />
+    <Compile Include="RoomStateController.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="PluginFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
+    <Compile Include="RoomStates\RoomState.cs" />
+    <Compile Include="SUGAR\SUGARConfigurationSection.cs" />
+    <Compile Include="SUGAR\SUGARController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
@@ -76,6 +79,10 @@
       <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
       <Name>PlayGen.ITAlert.TestData</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj">
+      <Project>{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}</Project>
+      <Name>PlayGen.SUGAR.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
       <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
       <Name>PlayGen.ITAlert.Photon.Players</Name>
@@ -99,10 +106,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="SUGARConfiguration.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.PhotonPlugins\bin\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.Photon.Plugins\bin\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,12 +1,12 @@
 ﻿using GameWork.Core.States.Controllers;
 using Photon.Hive.Plugin;
-using PlayGen.ITAlert.PhotonPlugins.RoomStates.Interfaces;
+using PlayGen.ITAlert.Photon.Plugins.RoomStates;
 
-namespace PlayGen.ITAlert.PhotonPlugins.RoomStates
+namespace PlayGen.ITAlert.Photon.Plugins
 {
-    public class RoomStateController : StateController<IRoomState>
+    public class RoomStateController : StateController<RoomState>
     {
-        public RoomStateController(params IRoomState[] states) : base(states)
+        public RoomStateController(params RoomState[] states) : base(states)
         {
         }
 

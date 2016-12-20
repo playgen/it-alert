@@ -51,7 +51,7 @@ namespace PlayGen.ITAlert.GameStates
 			_stateController.ChangeState(InitializingState.StateName);
 			_interface.Initialize();
 			_interface.SetPlayerColors(_client.CurrentRoom.Players);
-			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
+			_interface.PopulateChatPanel(_client.CurrentRoom.Players);
 		}
 
 		public override void Exit()
