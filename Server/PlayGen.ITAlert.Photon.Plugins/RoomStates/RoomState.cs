@@ -1,6 +1,6 @@
 ﻿using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Plugins.SUGAR;
+using PlayGen.ITAlert.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
@@ -8,9 +8,9 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
     {
         protected readonly PluginBase Plugin;
         protected readonly PlayerManager PlayerManager;
-        protected readonly SUGARController SugarController;
+        protected readonly Controller SugarController;
 
-        protected RoomState(PluginBase plugin, PlayerManager playerManager, SUGARController sugarController)
+        protected RoomState(PluginBase plugin, PlayerManager playerManager, Controller sugarController)
         {
             Plugin = plugin;
             PlayerManager = playerManager;

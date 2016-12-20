@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PlayGen.ITAlert.Photon.Plugins</RootNamespace>
     <AssemblyName>PlayGen.ITAlert.Photon.Plugins</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,13 +30,13 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PhotonLoadbalancingApi">
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
@@ -47,8 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="RoomStates\RoomState.cs" />
-    <Compile Include="SUGAR\SUGARConfigurationSection.cs" />
-    <Compile Include="SUGAR\SUGARController.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
@@ -79,14 +79,6 @@
       <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
       <Name>PlayGen.ITAlert.TestData</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj">
-      <Project>{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}</Project>
-      <Name>PlayGen.SUGAR.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
-      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
-      <Name>PlayGen.ITAlert.Photon.Players</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
@@ -94,6 +86,14 @@
     <ProjectReference Include="..\Hive\PhotonHive\PhotonHive.csproj">
       <Project>{E1F918F4-F581-4280-9D91-3CF77B24C290}</Project>
       <Name>PhotonHive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Photon.LoadBalancing\Photon.LoadBalancing.csproj">
+      <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
+      <Name>Photon.LoadBalancing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
+      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
+      <Name>PlayGen.ITAlert.Photon.Players</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Events\PlayGen.ITAlert.Photon.Events.csproj">
       <Project>{b4eaa34f-88b2-43fe-85aa-cd66056ec75e}</Project>
@@ -103,10 +103,13 @@
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.SUGAR\PlayGen.ITAlert.Photon.SUGAR.csproj">
+      <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
+      <Name>PlayGen.ITAlert.Photon.SUGAR</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="SUGARConfiguration.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
