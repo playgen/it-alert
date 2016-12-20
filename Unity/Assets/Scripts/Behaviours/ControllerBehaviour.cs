@@ -43,8 +43,9 @@ public class ControllerBehaviour : MonoBehaviour
 			new LoadingState(new LoadingStateInterface()),
 			new LoginState(),
 			new MenuState(_client, voiceController),
-			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
-			);
+			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController),
+            new FeedbackState(_client, new FeedbackStateInterface())
+            );
 		_stateController.Initialize();
 	}
 
