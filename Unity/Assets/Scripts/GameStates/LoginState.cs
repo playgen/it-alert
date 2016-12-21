@@ -22,6 +22,11 @@ public class LoginState : TickableSequenceState
 		});
 	}
 
+	public override void Exit()
+	{
+		SUGARManager.Account.HidePanel();
+	}
+
 	public override void Tick(float deltaTime)
 	{
 		

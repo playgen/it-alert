@@ -47,7 +47,7 @@ namespace PlayGen.ITAlert.Editor.SUGAR
 
 			if (string.IsNullOrEmpty(baseAddress))
 			{
-				baseAddress = LoadBaseAddress();
+				baseAddress = LoadBaseAddress(unityManager);
 			}
 
             _sugarClient = new SUGARClient(baseAddress);
@@ -107,9 +107,14 @@ namespace PlayGen.ITAlert.Editor.SUGAR
 	        });
 	    }
 
-        private static string LoadBaseAddress()
+        private static string LoadBaseAddress(SUGARUnityManager unityManager)
 		{
-		    var data = File.ReadAllText(SUGARUnityManager.ConfigPath);
+            var path = (string)unityManager
+              .GetType()
+              .GetProperty("ConfigPath", BindingFlags.NonPublic | BindingFlags.Instance)
+              .GetValue(unityManager, null);
+
+            var data = File.ReadAllText(path);
 			var config = JsonConvert.DeserializeObject<Config>(data);
 
 			return config.BaseUri;

@@ -1,13 +1,15 @@
 ﻿namespace Assets.Scripts.Network.Client
 {
-    public enum GameStates
-    {
-        None,
+	public enum GameStates
+	{
+		None,
 
-        Initializing,
+		Initializing,
 
-        Playing,
+		Playing,
 
-        Finalizing
-    }
+		Paused,
+
+		Finalizing
+	}
 }

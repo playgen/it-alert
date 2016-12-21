@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: c71ef4b2bd9de7146b1983ee454b8c35
-timeCreated: 1481555323
+guid: 162515848a180fe47bc04f14f0a4ab81
+timeCreated: 1482244457
 licenseType: Free
 PluginImporter:
   serializedVersion: 1
@@ -24,14 +24,9 @@ PluginImporter:
         Exclude OSXIntel: 1
         Exclude OSXIntel64: 1
         Exclude OSXUniversal: 1
-        Exclude SamsungTV: 1
-        Exclude Tizen: 1
-        Exclude WebGL: 1
         Exclude Win: 1
         Exclude Win64: 1
-        Exclude WindowsStoreApps: 1
         Exclude iOS: 1
-        Exclude tvOS: 1
     Editor:
       enabled: 0
       settings:
@@ -62,10 +57,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: None
-    SamsungTV:
-      enabled: 0
-      settings:
-        STV_MODEL: STANDARD_15
     Win:
       enabled: 0
       settings:
@@ -78,16 +69,7 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-        DontProcess: False
-        PlaceholderPath: 
-        SDK: AnySDK
-        ScriptingBackend: AnyScriptingBackend
     iOS:
-      enabled: 0
-      settings:
-        CompileFlags: 
-        FrameworkDependencies: 
-    tvOS:
       enabled: 0
       settings:
         CompileFlags: 

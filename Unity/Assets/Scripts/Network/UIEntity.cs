@@ -18,14 +18,14 @@ public class UIEntity
 
 	private readonly IEntityBehaviour _entityBehaviour;
 
-	private static GameObject Graph = GameObject.Find("Graph");
+	private static GameObject Graph = GameObjectUtilities.FindGameObject("Game/Graph");
 
 	public IEntityBehaviour EntityBehaviour { get { return _entityBehaviour; } }
 
 	public UIEntity(EntityState state)
 	{
 		_gameObject = InstantiateEntity(state.EntityType.ToString());
-		_gameObject.transform.SetParent(Graph.transform);
+		_gameObject.transform.SetParent(Graph.transform, false);
 
 		switch (state.EntityType)
 		{

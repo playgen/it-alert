@@ -60,9 +60,7 @@ Unity/Assets/Plugins/Simulation/*
 !Unity/Assets/Plugins/Simulation/*.dll.meta
 Unity/Assets/Plugins/GameWork/*
 !Unity/Assets/Plugins/GameWork/*.dll.meta
-Unity/Assets/Plugins/SUGAR/*
-!Unity/Assets/Plugins/SUGAR/*.dll.meta
-!Unity/Assets/Plugins/SUGAR/Scripts
+Unity/Assets/Plugins/SUGAR/Internal/*
 
 # we want photon server lib dlls
 !/Server/lib/*
