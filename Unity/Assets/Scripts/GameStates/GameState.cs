@@ -4,15 +4,12 @@ using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
-	using System.Linq;
-
 	public class GameState : TickableSequenceState
 	{
 		public const string StateName = "GameState";
@@ -33,40 +30,34 @@ namespace PlayGen.ITAlert.GameStates
 			_client = client;
 			_interface = @interface;
 			_stateController = new TickableStateController(new InitializingState(_client),
-				new PlayingState(_client),
-				new FinalizingState(_client));
+				new PlayingState(new PlayingStateInterface(), _client),
+				new PausedState(new PausedStateInterface(), _client),
+				new FinalizingState(_client),
+				new SettingsState(new SettingsStateInterface()));
 
+			_stateController.ChangeParentStateEvent += ChangeState;
 			_lobbyController = lobbyController;
 			_voiceController = voiceController;
 		}
 
+		public override void Terminate()
+		{
+			_stateController.ChangeParentStateEvent -= ChangeState;
+		}
+
 		public override void Enter()
 		{
-			
 			_stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
-			
-			SceneManager.LoadScene("Network");
-			SceneManager.activeSceneChanged += SceneLoaded;
-			Debug.Log(SceneManager.GetActiveScene().name);
-        }
-
-		private void SceneLoaded(Scene arg0, Scene scene)
-		{
-			Debug.Log(SceneManager.GetActiveScene().name);
-
-			Director.Client = _client;
-
 			_interface.Initialize();
 			_interface.SetPlayerColors(_client.CurrentRoom.Players);
-			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
+			_interface.PopulateChatPanel(_client.CurrentRoom.Players);
 		}
 
 		public override void Exit()
 		{
+			_interface.Exit();
 			_stateController.Terminate();
-
-			SceneManager.UnloadScene("Network");
 		}
 
 		public override void Tick(float deltaTime)
@@ -87,7 +78,7 @@ namespace PlayGen.ITAlert.GameStates
 					break;
 
 				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState != PlayingState.StateName)
+					if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
 					{
 						_stateController.ChangeState(PlayingState.StateName);
 					}
@@ -98,8 +89,6 @@ namespace PlayGen.ITAlert.GameStates
 					break;
 
 				case Assets.Scripts.Network.Client.GameStates.Finalizing:
-
-
 					if (_stateController.ActiveState != FinalizingState.StateName)
 					{
 						_stateController.ChangeState(FinalizingState.StateName);
@@ -116,7 +105,7 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void NextState()
 		{
-			ChangeState(LobbyState.StateName);
+			ChangeState(MainMenuState.StateName);
 		}
 
 		public override void PreviousState()

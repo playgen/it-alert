@@ -122,10 +122,10 @@ public class Director : MonoBehaviour
 
 		Initialized = true;
 
-        _gameOverWon = GameObjectUtilities.FindGameObject("Canvas/GameOverWon");
+        _gameOverWon = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer/GameOverWon");
 	    _gameOverWon.SetActive(false);
 
-        _gameOverLost = GameObjectUtilities.FindGameObject("Canvas/GameOverLost");
+        _gameOverLost = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer/GameOverLost");
 		_gameOverLost.SetActive(false);
 	}
 

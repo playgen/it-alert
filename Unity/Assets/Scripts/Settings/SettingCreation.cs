@@ -20,6 +20,7 @@ public class SettingCreation : MonoBehaviour {
 	[SerializeField]
 	private GameObject _button;
 	private TextAnchor _labelAnchor = TextAnchor.MiddleRight;
+	private Resolution _previousResolution;
 
 	private void OnValidate()
 	{
@@ -39,6 +40,16 @@ public class SettingCreation : MonoBehaviour {
 		{
 			_button = null;
 		}
+	}
+
+	private void Update()
+	{
+		if (_previousResolution.width != Screen.currentResolution.width || _previousResolution.height != Screen.currentResolution.height)
+		{
+			_previousResolution = Screen.currentResolution;
+			RebuildLayout();
+		}
+
 	}
 
 	public Dropdown Resolution(int minWidth, int minHeight, Resolution[] newResolutions = null, bool layoutHorizontal = true, string title = "Resolution", bool showOnMobile = false)
@@ -150,27 +161,6 @@ public class SettingCreation : MonoBehaviour {
 			addObj = addObj.parent;
 		}
 		addObj.SetParent(layout.transform, false);
-		foreach (Transform trans in layout.transform)
-		{
-			var aspect = trans.GetComponent<AspectRatioFitter>() ?? trans.gameObject.AddComponent<AspectRatioFitter>();
-			var layoutElement = trans.GetComponent<LayoutElement>() ?? trans.gameObject.AddComponent<LayoutElement>();
-			aspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
-			var canvasSize = ((RectTransform)GetComponentInParent<Canvas>().transform).rect.size;
-			if (layout.GetComponent<LayoutElement>().preferredHeight * layout.GetComponent<AspectRatioFitter>().aspectRatio > canvasSize.x)
-			{
-				layout.GetComponent<LayoutElement>().preferredHeight = canvasSize.x / layout.GetComponent<AspectRatioFitter>().aspectRatio;
-			}
-			if (layout.GetType() == typeof(HorizontalLayoutGroup))
-			{
-				layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight;
-				aspect.aspectRatio = layout.GetComponent<AspectRatioFitter>().aspectRatio / layout.transform.childCount;
-			}
-			else
-			{
-				layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight / layout.transform.childCount;
-				aspect.aspectRatio = layout.GetComponent<AspectRatioFitter>().aspectRatio * layout.transform.childCount;
-			}
-		}
 	}
 
 	public void SetLabelAlignment(TextAnchor align)
@@ -209,7 +199,22 @@ public class SettingCreation : MonoBehaviour {
 		{
 			case SettingObjectType.Dropdown:
 				var dropdown = Instantiate(_dropdown);
-				AddToLayout(layout, dropdown.GetComponent<Dropdown>() ?? dropdown.GetComponentInChildren<Dropdown>());
+				var dropdownComp = dropdown.GetComponent<Dropdown>() ?? dropdown.GetComponentInChildren<Dropdown>();
+				AddToLayout(layout, dropdownComp);
+				var templateCanvas = dropdownComp.template.gameObject.AddComponent<Canvas>();
+				templateCanvas.overrideSorting = false;
+				var parentObject = transform.parent;
+				var parentCanvas = parentObject.GetComponent<Canvas>();
+				while (parentCanvas == null && parentObject != transform.root)
+				{
+					parentObject = parentObject.parent;
+					parentCanvas = parentObject.GetComponent<Canvas>();
+				}
+				if (parentCanvas != null)
+				{
+					templateCanvas.sortingOrder = parentCanvas.sortingOrder;
+					templateCanvas.sortingLayerName = parentCanvas.sortingLayerName;
+				}
 				dropdown.name = setting.Title;
 				break;
 			case SettingObjectType.Slider:
@@ -230,17 +235,57 @@ public class SettingCreation : MonoBehaviour {
 	public void RebuildLayout()
 	{
 		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
-		var textObjs = GetComponentsInChildren<Text>();
 
+		foreach (LayoutGroup layout in GetComponentsInChildren<LayoutGroup>())
+		{
+			if (layout.gameObject != gameObject)
+			{
+				foreach (Transform trans in layout.transform)
+				{
+					var aspect = trans.GetComponent<AspectRatioFitter>() ?? trans.gameObject.AddComponent<AspectRatioFitter>();
+					var layoutElement = trans.GetComponent<LayoutElement>() ?? trans.gameObject.AddComponent<LayoutElement>();
+					aspect.aspectMode = AspectRatioFitter.AspectMode.HeightControlsWidth;
+					var canvasSize = ((RectTransform)GetComponentInParent<Canvas>().transform).rect.size;
+					if (layout.GetComponent<RectTransform>().sizeDelta.x > canvasSize.x)
+					{
+						layout.GetComponent<LayoutElement>().preferredHeight = canvasSize.x / layout.GetComponent<AspectRatioFitter>().aspectRatio;
+					}
+					if (layout.GetType() == typeof(HorizontalLayoutGroup))
+					{
+						layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight;
+						aspect.aspectRatio = layout.GetComponent<AspectRatioFitter>().aspectRatio / layout.transform.childCount;
+					}
+					else
+					{
+						layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight / layout.transform.childCount;
+						aspect.aspectRatio = layout.GetComponent<AspectRatioFitter>().aspectRatio * layout.transform.childCount;
+					}
+				}
+			}
+		}
+
+		LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)transform);
+
+		var textObjs = GetComponentsInChildren<Text>();
 		int smallestFontSize = 0;
 		foreach (var text in textObjs)
 		{
 			text.resizeTextForBestFit = true;
+			text.resizeTextMinSize = 1;
+			text.resizeTextMaxSize = 100;
+			text.cachedTextGenerator.Invalidate();
 			text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
 			text.resizeTextForBestFit = false;
-			if (text.cachedTextGenerator.fontSizeUsedForBestFit < smallestFontSize || smallestFontSize == 0)
+			var newSize = text.cachedTextGenerator.fontSizeUsedForBestFit;
+			var newSizeRescale = text.rectTransform.rect.size.x / text.cachedTextGenerator.rectExtents.size.x;
+			if (text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y < newSizeRescale)
 			{
-				smallestFontSize = text.cachedTextGenerator.fontSizeUsedForBestFit;
+				newSizeRescale = text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y;
+			}
+			newSize = Mathf.FloorToInt(newSize * newSizeRescale);
+			if (newSize < smallestFontSize || smallestFontSize == 0)
+			{
+				smallestFontSize = newSize;
 			}
 		}
 		foreach (var text in textObjs)

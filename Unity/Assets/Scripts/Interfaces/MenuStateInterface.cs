@@ -8,30 +8,31 @@ using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 
-public class MenuStateInterface : StateInterface
+public class MenuStateInterface : TickableStateInterface
 {
 	private GameObject _mainMenuPanel;
 	private GameObject _createGamePopup;
+	private ButtonList _buttons;
 
 	public override void Initialize()
 	{
 		// Main Menu
 		_mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
-		var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer", true);
+		_buttons = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer");
 
-		var quitButton = menu.GetButton("QuitButtonContainer");
+		var quitButton = _buttons.GetButton("QuitButtonContainer");
 		quitButton.onClick.AddListener(OnQuitClick);
 
-		var createGameButton = menu.GetButton("CreateGameButtonContainer");
+		var createGameButton = _buttons.GetButton("CreateGameButtonContainer");
 		createGameButton.onClick.AddListener(OnCreateGameClick);
 
-		var joinGameButton = menu.GetButton("JoinGameButtonContainer");
+		var joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
 		joinGameButton.onClick.AddListener(OnJoinGameClick);
 
-		var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
+		var quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
 		quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 
-		var settingsButton = menu.GetButton("SettingsButtonContainer");
+		var settingsButton = _buttons.GetButton("SettingsButtonContainer");
 		settingsButton.onClick.AddListener(OnSettingsClick);
 	}
 
@@ -60,15 +61,23 @@ public class MenuStateInterface : StateInterface
 		Application.Quit();
 	}
 
-
 	public override void Enter()
 	{
 		_mainMenuPanel.SetActive(true);
+		_buttons.BestFit();
 	}
 
 	public override void Exit()
 	{
 		_mainMenuPanel.SetActive(false);
+	}
+
+	public override void Tick(float deltaTime)
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			OnQuitClick();
+		}
 	}
 
 	public void OnJoinGameSuccess(ClientRoom clientRoom)

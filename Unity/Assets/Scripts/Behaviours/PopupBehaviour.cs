@@ -33,10 +33,10 @@ public class PopupBehaviour : MonoBehaviour
 		foreach (var buttonOutput in outputs)
 		{
 			var buttonObject = Instantiate(buttonPrefab) as GameObject;
-			SetButton(buttonObject.transform.GetChild(0).GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
+			SetButton(buttonObject.GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
 			
 			//now set the parent of the object
-			buttonObject.transform.parent = _buttonContainer.transform;
+			buttonObject.transform.SetParent(_buttonContainer.transform, false);
 			_buttonsGameObjects.Add(buttonObject);
 		}
 	}
@@ -52,7 +52,7 @@ public class PopupBehaviour : MonoBehaviour
 		_contentPanel = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/PopupContentContainer").gameObject;
 
 		//set the content to be child of the content panel
-		contentParent.transform.parent = _contentPanel.transform;
+		contentParent.transform.SetParent(_contentPanel.transform, false);
 
 		//set the position and padding of the content panel	
 		contentParent.anchorMin = new Vector2(0f, 0f);
@@ -94,7 +94,7 @@ public class PopupBehaviour : MonoBehaviour
 	    }
         // Add the default on click action
 	    button.onClick.AddListener(() => defaultAction());
-		button.gameObject.GetComponent<Text>().text = text;
+		button.gameObject.GetComponentInChildren<Text>().text = text;
 	}
 	public struct Output
 	{

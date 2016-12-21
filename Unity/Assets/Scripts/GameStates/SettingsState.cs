@@ -36,7 +36,8 @@ public class SettingsState : TickableSequenceState
 
     public override void Tick(float deltaTime)
     {
-        if (_interface.HasCommands)
+		_interface.Tick(deltaTime);
+		if (_interface.HasCommands)
         {
             var command = _interface.TakeFirstCommand();
 
@@ -57,6 +58,6 @@ public class SettingsState : TickableSequenceState
 
     public override void PreviousState()
     {
-        ChangeState(MenuState.StateName);
+        BackState();
     }
 }
