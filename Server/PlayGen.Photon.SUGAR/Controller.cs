@@ -1,9 +1,9 @@
-﻿using PlayGen.SUGAR.Contracts.Shared;
-using System;
+﻿using System;
 using PlayGen.SUGAR.Client;
 using PlayGen.SUGAR.Common.Shared;
+using PlayGen.SUGAR.Contracts.Shared;
 
-namespace PlayGen.ITAlert.Photon.SUGAR
+namespace PlayGen.Photon.SUGAR
 {
     public class Controller : IDisposable
     {

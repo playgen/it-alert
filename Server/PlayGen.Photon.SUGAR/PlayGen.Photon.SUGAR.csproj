@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D5D14E17-C9D5-4AB2-AB74-96F95B50614F}</ProjectGuid>
+    <ProjectGuid>{F62B5705-BF54-498A-B662-704C0B50C0B6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.Simulation.Serialization</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.Simulation.Serialization</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>PlayGen.Photon.SUGAR</RootNamespace>
+    <AssemblyName>PlayGen.Photon.SUGAR</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,44 +30,39 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\Unity\Assets\Plugins\Simulation\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\Server\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\PlayGen.ITAlert.Photon.Serialization\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SimulationSerializer.cs" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SUGARConfiguration.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ConfigurationLoader.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Controller.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\PlayGen.ITAlert.Photon.Messaging\PlayGen.ITAlert.Photon.Messaging.csproj">
-      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.ITAlert.Photon.Messaging</Name>
+    <ProjectReference Include="..\..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj">
+      <Project>{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}</Project>
+      <Name>PlayGen.SUGAR.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
-      <Project>{BE8E1E8B-3A04-4371-A9AA-4A0FB324ADDF}</Project>
-      <Name>PlayGen.ITAlert.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

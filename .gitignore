@@ -19,6 +19,7 @@ artifacts/
 *.user
 *.userosscache
 *.sln.docstates
+**/AssemblyInfo.cs
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
