@@ -1,9 +1,13 @@
 ﻿#define LOGGING_ENABLED
 using System;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
+using PlayGen.ITAlert.Photon.Events;
+using PlayGen.ITAlert.Photon.Messaging;
+using PlayGen.ITAlert.Photon.Serialization;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -310,6 +314,13 @@ namespace PlayGen.ITAlert.Network.Client
 
 		#region Events
 
+	    public void SendMessage(Message message)
+	    {
+	        var serializedMessage = Serializer.Serialize(message);
+
+            RaiseEvent((byte)ClientEventCode.Message, serializedMessage);
+        }
+
 		public void RaiseEvent(byte eventCode, object eventContext = null)
 		{
 			if (!PhotonNetwork.connected)
@@ -325,7 +336,7 @@ namespace PlayGen.ITAlert.Network.Client
 
 			PhotonNetwork.RaiseEvent(eventCode, eventContext, true, new RaiseEventOptions()
 			{
-				TargetActors = new int[1] {0},
+				TargetActors = new int[] {0},
 			});
 		}
 

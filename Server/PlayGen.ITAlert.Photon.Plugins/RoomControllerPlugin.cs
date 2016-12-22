@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Players;
@@ -7,7 +8,9 @@ using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.Photon.Plugins.Extensions;
 using PlayGen.ITAlert.Photon.Plugins.RoomStates;
 using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.SUGAR;
+using PlayGen.ITAlert.Photon.Messaging;
+using PlayGen.Photon.SUGAR;
+using PlayGen.ITAlert.Photon.Players.Commands;
 
 namespace PlayGen.ITAlert.Photon.Plugins
 {
@@ -34,31 +37,67 @@ namespace PlayGen.ITAlert.Photon.Plugins
         {
             switch (info.Request.EvCode)
             {
-                case (byte)PlayerEventCode.ListPlayers:
-                    this.BroadcastSpecific(new List<int>() {info.ActorNr},  
-                        ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
-                    break;
+                case (byte)ClientEventCode.Message:
+                    var message = Serializer.Deserialize<Message>((byte[])info.Request.Data);
 
-                case (byte)PlayerEventCode.ChangeExternalId:
-                    if (_playerManager.ChangeExternalId(info.ActorNr, (int)info.Request.Data))
+                    switch (message.Channel)
                     {
-                        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                        case Channels.SimulationState:
+                            break;
+
+                        case Channels.SimulationCommand:
+                            break;
+
+                        case Channels.Players:
+                            var listPlayersMessage = message as ListPlayersMessage;
+                            if (listPlayersMessage != null)
+                            {
+                                this.BroadcastSpecific(new List<int> { listPlayersMessage.PhotonId },
+                                    ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                                break;
+                            }
+
+                            var updatePlayerMessage = message as UpdatePlayerMessage;
+                            if(updatePlayerMessage != null)
+                            {
+                                _playerManager.UpdatePlayer(updatePlayerMessage.Player);
+                                this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                                break;
+                            }
+
+
+                            throw new Exception("Unhandled Players Message");
+
+                        default:
+                            throw new ArgumentOutOfRangeException();
                     }
                     break;
 
-                case (byte)PlayerEventCode.ChangeName:
-                    if(_playerManager.ChangeName(info.ActorNr, (string)info.Request.Data))
-                    {
-                        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
-                    }
-                    break;
+                //case (byte)ClientEventCode.ListPlayers:
+                //    this.BroadcastSpecific(new List<int>() {info.ActorNr},  
+                //        ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                //    break;
 
-                case (byte)PlayerEventCode.ChangeColor:
-                    if (_playerManager.ChangeColor(info.ActorNr, (string)info.Request.Data))
-                    {
-                        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
-                    }
-                    break;
+                //case (byte)ClientEventCode.ChangeExternalId:
+                //    if (_playerManager.ChangeExternalId(info.ActorNr, (int)info.Request.Data))
+                //    {
+                //        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                //    }
+                //    break;
+
+                //case (byte)ClientEventCode.ChangeName:
+                //    if(_playerManager.ChangeName(info.ActorNr, (string)info.Request.Data))
+                //    {
+                //        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                //    }
+                //    break;
+
+                //case (byte)ClientEventCode.ChangeColor:
+                //    if (_playerManager.ChangeColor(info.ActorNr, (string)info.Request.Data))
+                //    {
+                //        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                //    }
+                //    break;
             }
 
             _stateController.OnRaiseEvent(info);

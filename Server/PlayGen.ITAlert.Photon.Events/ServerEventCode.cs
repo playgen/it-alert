@@ -5,19 +5,22 @@
     /// </summary>
     public enum ServerEventCode : byte
     {
+        // System
+        Message = 101,
+
         // Players
-        PlayerList = 101,
+        PlayerList = 111,
 
         // Game
-        GameEntered = 111,
+        GameEntered = 121,
 
-        GameInitialized = 112,
+        GameInitialized = 122,
 
-        GameTick = 113,
+        GameTick = 123,
 
-        GameFinalized = 114,
+        GameFinalized = 124,
 
         // Lobby
-        LobbyRentered = 121
+        LobbyRentered = 131
     }
 }

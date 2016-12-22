@@ -42,7 +42,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlayerEventCode.cs" />
+    <Compile Include="ClientEventCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerEventCode.cs" />
   </ItemGroup>

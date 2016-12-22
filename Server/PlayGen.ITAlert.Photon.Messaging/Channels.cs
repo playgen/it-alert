@@ -6,6 +6,6 @@
 
         SimulationCommand,
 
-        Player,
+        Players,
     }
 }

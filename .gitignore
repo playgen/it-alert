@@ -70,8 +70,12 @@ Server/**/log
 # ignore app config in plugins
 Unity/Assets/Plugins/Server/PhotonServer.config
 
-!/Server/deploy/bin*/*
 !/Server/deploy/Policy/
+!/Server/deploy/bin*/*
+Server/deploy/bin*/PlayGen.*
+Server/deploy/bin*/GameWork.*
+Server/deploy/bin*/Priority Queue*
+Server/deploy/bin*/Newtonsoft*
 
 # GameWork
 Unity/Assets/GameWork/*

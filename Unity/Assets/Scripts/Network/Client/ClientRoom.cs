@@ -3,6 +3,8 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Serialization;
 using System;
 using PlayGen.ITAlert.Network.Client.Voice;
+using PlayGen.ITAlert.Photon.Messaging;
+using PlayGen.ITAlert.Photon.Players.Commands;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -75,7 +77,11 @@ namespace PlayGen.ITAlert.Network.Client
 
         public void RefreshPlayers()
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ListPlayers);
+            _photonClient.SendMessage(new ListPlayersMessage
+            {
+                Channel = Channels.Players,
+                PhotonId = _photonClient.Player.ID,
+            });
         }
 
         public void Leave()
@@ -88,32 +94,32 @@ namespace PlayGen.ITAlert.Network.Client
         {
             if (isReady)
             {
-                _photonClient.RaiseEvent((byte)PlayerEventCode.SetReady);
+                _photonClient.RaiseEvent((byte)ClientEventCode.SetReady);
             }
             else
             {
-                _photonClient.RaiseEvent((byte)PlayerEventCode.SetNotReady);
+                _photonClient.RaiseEvent((byte)ClientEventCode.SetNotReady);
             }
         }
 
         public void SetPlayerExternalId(int id)
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeExternalId, id);
+            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeExternalId, id);
         }
 
         public void SetPlayerName(string name)
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeName, name);
+            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeName, name);
         }
 
         public void SetColor(string color)
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeColor, color);
+            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeColor, color);
         }
 
         public void StartGame(bool forceStart, bool closeRoom = true)
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.StartGame,
+            _photonClient.RaiseEvent((byte)ClientEventCode.StartGame,
                 new bool[] { forceStart, closeRoom });
         }
         

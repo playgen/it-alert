@@ -10,7 +10,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
-using PlayGen.ITAlert.Photon.SUGAR;
+using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
@@ -60,28 +60,28 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 		{
 			switch (info.Request.EvCode)
 			{
-				case (byte)PlayerEventCode.GameInitialized:
-					PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
+				//case (byte)ClientEventCode.GameInitialized:
+				//	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
 
-					if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
-					{
-						ChangeInternalState(InternalGameState.Playing);
-					}
-					break;
+				//	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
+				//	{
+				//		ChangeInternalState(InternalGameState.Playing);
+				//	}
+				//	break;
 
-				case (byte)PlayerEventCode.GameCommand:
+				case (byte)ClientEventCode.GameCommand:
 					var command = Serializer.Deserialize<ICommand>((byte[]) info.Request.Data);
 					_resolver.ProcessCommand(command);
 					break;
 
-				case (byte)PlayerEventCode.GameFinalized:
-					PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
+				//case (byte)ClientEventCode.GameFinalized:
+				//	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
 
-					if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
-					{
-						ChangeState(LobbyState.StateName);   
-					}
-					break;
+				//	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
+				//	{
+				//		ChangeState(LobbyState.StateName);   
+				//	}
+				//	break;
 			}
 		}
 		#endregion
