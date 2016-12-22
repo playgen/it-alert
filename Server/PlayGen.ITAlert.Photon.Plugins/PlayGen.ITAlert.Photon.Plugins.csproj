@@ -91,6 +91,10 @@
       <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
       <Name>Photon.LoadBalancing</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messaging\PlayGen.ITAlert.Photon.Messaging.csproj">
+      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
+      <Name>PlayGen.ITAlert.Photon.Messaging</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
       <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
       <Name>PlayGen.ITAlert.Photon.Players</Name>
@@ -103,9 +107,9 @@
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Photon.SUGAR\PlayGen.ITAlert.Photon.SUGAR.csproj">
+    <ProjectReference Include="..\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj">
       <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
-      <Name>PlayGen.ITAlert.Photon.SUGAR</Name>
+      <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

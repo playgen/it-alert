@@ -45,7 +45,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameWork.Core.States", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.SUGAR.Client", "..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj", "{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.SUGAR", "PlayGen.ITAlert.Photon.SUGAR\PlayGen.ITAlert.Photon.SUGAR.csproj", "{F62B5705-BF54-498A-B662-704C0B50C0B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.SUGAR", "PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj", "{F62B5705-BF54-498A-B662-704C0B50C0B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Messaging", "PlayGen.ITAlert.Photon.Messaging\PlayGen.ITAlert.Photon.Messaging.csproj", "{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -249,6 +251,16 @@ Global
 		{F62B5705-BF54-498A-B662-704C0B50C0B6}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
 		{F62B5705-BF54-498A-B662-704C0B50C0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F62B5705-BF54-498A-B662-704C0B50C0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Debug_Unity_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Debug_Unity_Client|Any CPU.Build.0 = Debug|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

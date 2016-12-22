@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Photon.SUGAR
+﻿namespace PlayGen.Photon.SUGAR
 {
     public class Configuration
     {

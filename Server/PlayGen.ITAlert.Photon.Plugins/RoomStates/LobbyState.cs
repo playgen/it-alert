@@ -2,7 +2,7 @@
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Plugins.Extensions;
-using PlayGen.ITAlert.Photon.SUGAR;
+using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
