@@ -25,15 +25,15 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
         {
             switch (info.Request.EvCode)
             {
-                case (byte)PlayerEventCode.SetReady:
-                    ChangePlayerStatus(info.ActorNr, PlayerStatus.Ready);
-                    break;
+                //case (byte)ClientEventCode.SetReady:
+                //    ChangePlayerStatus(info.ActorNr, PlayerStatus.Ready);
+                //    break;
 
-                case (byte)PlayerEventCode.SetNotReady:
-                    ChangePlayerStatus(info.ActorNr, PlayerStatus.NotReady);
-                    break;
+                //case (byte)ClientEventCode.SetNotReady:
+                //    ChangePlayerStatus(info.ActorNr, PlayerStatus.NotReady);
+                //    break;
 
-                case (byte)PlayerEventCode.StartGame:
+                case (byte)ClientEventCode.StartGame:
                     var data = (bool[])info.Request.Data;
                     StartGame(data[0], data[1]);
                     break;
@@ -77,13 +77,13 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
             }
         }
 
-        private void ChangePlayerStatus(int playerId, PlayerStatus status)
-        {
-            var didChange = PlayerManager.ChangeStatus(playerId, status);
-            if (didChange)
-            {
-                Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
-            }
-        }
+        //private void ChangePlayerStatus(int playerId, PlayerStatus status)
+        //{
+        //    var didChange = PlayerManager.ChangeStatus(playerId, status);
+        //    if (didChange)
+        //    {
+        //        Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
+        //    }
+        //}
     }
 }

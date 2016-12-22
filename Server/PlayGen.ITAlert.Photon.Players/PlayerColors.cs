@@ -2,8 +2,7 @@
 {
     public static class PlayerColors
     {
-        public static readonly string[] Colors = new string[]
-        {
+        public static readonly string[] Colors = {
             "88CCEE",
             "44AA99",
             "118833",

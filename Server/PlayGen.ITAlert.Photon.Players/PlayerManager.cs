@@ -5,27 +5,27 @@ namespace PlayGen.ITAlert.Photon.Players
 {
     public class PlayerManager
     {
-        private readonly List<Player> _players = new List<Player>(10);
+        private readonly Dictionary<int, Player> _players = new Dictionary<int, Player>(10);
 
-        public Player[] Players => _players.ToArray();
+        public Player[] Players => _players.Values.ToArray();
 
         public PlayerStatus CombinedPlayerStatus
         {
             get
             {
-                if (_players.Any(p => p.Status == PlayerStatus.NotReady))
+                if (_players.Any(p => p.Value.Status == PlayerStatus.NotReady))
                 {
                     return PlayerStatus.NotReady;
                 }
-                else if (_players.All(p => p.Status == PlayerStatus.Ready))
+                else if (_players.All(p => p.Value.Status == PlayerStatus.Ready))
                 {
                     return PlayerStatus.Ready;
                 }
-                else if (_players.All(p => p.Status == PlayerStatus.GameInitialized))
+                else if (_players.All(p => p.Value.Status == PlayerStatus.GameInitialized))
                 {
                     return PlayerStatus.GameInitialized;
                 }
-                else if (_players.All(p => p.Status == PlayerStatus.GameFinalized))
+                else if (_players.All(p => p.Value.Status == PlayerStatus.GameFinalized))
                 {
                     return PlayerStatus.GameFinalized;
                 }
@@ -34,80 +34,22 @@ namespace PlayGen.ITAlert.Photon.Players
             }
         }
 
-        public bool ChangeName(int id, string name)
+        public void UpdatePlayer(Player player)
         {
-            var didChange = false;
-            var player = _players.Single(p => p.PhotonId == id);
-
-            if (player.Name != name)
-            {
-                player.Name = name;
-                didChange = true;
-            }
-
-            return didChange;
-        }
-
-        public bool ChangeColor(int id, string color)
-        {
-            var didChange = false;
-            var player = _players.Single(p => p.PhotonId == id);
-            
-            if (player.Color != color)
-            {
-                player.Color = color;
-                didChange = true;
-            }
-            
-            return didChange;
-        }
-
-        public bool ChangeStatus(int id, PlayerStatus status)
-        {
-            var didChange = false;
-            var player = _players.Single(p => p.PhotonId == id);
-
-            if (player.Status != status)
-            {
-                player.Status = status;
-                didChange = true;
-            }
-
-            return didChange;
-        }
-
-        public bool ChangeExternalId(int id, int externalId)
-        {
-            var didChange = false;
-            var player = _players.Single(p => p.PhotonId == id);
-
-            if (player.ExternalId != externalId)
-            {
-                player.ExternalId= externalId;
-                didChange = true;
-            }
-
-            return didChange;
+            _players[player.PhotonId] = player;
         }
 
         public void ChangeAllStatuses(PlayerStatus status)
         {
-            foreach (var player in _players)
+            foreach (var player in _players.Values)
             {
                 player.Status = status;
             }
         }
 
-        public void Remove(int id)
+        public void Remove(int photonId)
         {
-            for (var i = 0; i < _players.Count; i++)
-            {
-                if (_players[i].PhotonId == id)
-                {
-                    _players.RemoveAt(i);
-                    break;
-                }
-            }
+            _players.Remove(photonId);
         }
 
         public Player Create(int photonId, int? externalId, string name, string color, PlayerStatus status)
@@ -121,14 +63,14 @@ namespace PlayGen.ITAlert.Photon.Players
                 Status = status,
             };
 
-            _players.Add(player);
+            _players[photonId] = player;
 
             return player;
         }
 
-        public Player Get(int id)
+        public Player Get(int photonId)
         {
-            return _players.Single(p => p.PhotonId == id);
+            return _players[photonId];
         }
     }
 }

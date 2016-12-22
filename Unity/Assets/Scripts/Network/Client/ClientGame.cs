@@ -34,18 +34,18 @@ namespace PlayGen.ITAlert.Network.Client
 
         public void SetGameInitialized()
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.GameInitialized);
+            _photonClient.RaiseEvent((byte)ClientEventCode.GameInitialized);
         }
 
         public void SendGameCommand(Simulation.Commands.Interfaces.ICommand command)
         {
             var serializedCommand = Serializer.Serialize(command);
-            _photonClient.RaiseEvent((byte)PlayerEventCode.GameCommand, serializedCommand);
+            _photonClient.RaiseEvent((byte)ClientEventCode.GameCommand, serializedCommand);
         }
 
         public void SetGameFinalized()
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.GameFinalized);
+            _photonClient.RaiseEvent((byte)ClientEventCode.GameFinalized);
         }
 
         public Simulation.Simulation TakeSimulationState()
