@@ -51,9 +51,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Server\PlayGen.ITAlert.Photon.Messaging\PlayGen.ITAlert.Photon.Messaging.csproj">
+    <ProjectReference Include="..\..\Server\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
       <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.ITAlert.Photon.Messaging</Name>
+      <Name>PlayGen.Photon.Messaging</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Common\PlayGen.ITAlert.Common.csproj">
       <Project>{BE8E1E8B-3A04-4371-A9AA-4A0FB324ADDF}</Project>
