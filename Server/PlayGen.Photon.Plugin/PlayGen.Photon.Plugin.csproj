@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CA3E391B-7EAB-428E-B869-2C974E211067}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.Photon.Plugin</RootNamespace>
+    <AssemblyName>PlayGen.Photon.Plugin</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PhotonLoadbalancingApi">
+      <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extensions\PluginBaseExtensions.cs" />
+    <Compile Include="Interfaces\IMessageSerializationHandler.cs" />
+    <Compile Include="Interfaces\IRoomStateControllerFactory.cs" />
+    <Compile Include="Messenger.cs" />
+    <Compile Include="RoomControllerPlugin.cs" />
+    <Compile Include="RoomStateController.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoomState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
+      <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
+      <Name>GameWork.Core.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">
+      <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
+      <Name>GameWork.Core.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
+      <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
+      <Name>GameWork.Core.States</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
+      <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
+      <Name>PhotonHivePlugin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hive\PhotonHive\PhotonHive.csproj">
+      <Project>{E1F918F4-F581-4280-9D91-3CF77B24C290}</Project>
+      <Name>PhotonHive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
+      <Project>{E5664C3B-0B84-46FF-84D2-3603B9202C6F}</Project>
+      <Name>PlayGen.Photon.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
+      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
+      <Name>PlayGen.Photon.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Players\PlayGen.Photon.Players.csproj">
+      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
+      <Name>PlayGen.Photon.Players</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj">
+      <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
+      <Name>PlayGen.Photon.SUGAR</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.Photon.Plugin\bin\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
