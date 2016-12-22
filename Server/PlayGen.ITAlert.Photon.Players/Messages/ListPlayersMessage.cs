@@ -1,6 +1,6 @@
 ﻿namespace PlayGen.ITAlert.Photon.Players.Commands
 {
-    public class ListPlayersMessage : PlayersMessage
+    public class ListPlayersMessage : PlayerMessage
     {
     }
 }

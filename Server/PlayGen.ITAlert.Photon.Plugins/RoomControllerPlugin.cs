@@ -11,6 +11,7 @@ using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Messaging;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Players.Commands;
+using PlayGen.ITAlert.Photon.Players.Messages;
 
 namespace PlayGen.ITAlert.Photon.Plugins
 {
@@ -52,8 +53,14 @@ namespace PlayGen.ITAlert.Photon.Plugins
                             var listPlayersMessage = message as ListPlayersMessage;
                             if (listPlayersMessage != null)
                             {
+                                var serializedMessage = Serializer.Serialize(new ListedPlayersMessage
+                                {
+                                    Channel = Channels.Players,
+                                    Players = _playerManager.Players,
+                                });
+
                                 this.BroadcastSpecific(new List<int> { listPlayersMessage.PhotonId },
-                                    ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                                    ServerPlayerId, (byte)ServerEventCode.Message, serializedMessage);
                                 break;
                             }
 

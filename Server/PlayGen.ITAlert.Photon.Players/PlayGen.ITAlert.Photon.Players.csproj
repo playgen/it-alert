@@ -47,8 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Messages\ListedPlayersMessage.cs" />
     <Compile Include="Messages\ListPlayersMessage.cs" />
-    <Compile Include="Messages\PlayersMessage.cs" />
+    <Compile Include="Messages\PlayerMessage.cs" />
     <Compile Include="Messages\UpdatePlayerMessage.cs" />
     <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="PlayerColors.cs" />
