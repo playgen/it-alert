@@ -2,7 +2,7 @@
 
 namespace PlayGen.ITAlert.Photon.Players.Commands
 {
-    public abstract class PlayersMessage : Message
+    public abstract class PlayerMessage : Message
     {
         public int PhotonId { get; set; }
     }

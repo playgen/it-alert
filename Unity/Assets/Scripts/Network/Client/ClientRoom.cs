@@ -5,6 +5,7 @@ using System;
 using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.ITAlert.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Players.Commands;
+using PlayGen.ITAlert.Photon.Players.Messages;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -125,16 +126,33 @@ namespace PlayGen.ITAlert.Network.Client
         
         private void OnRecievedEvent(byte eventCode, object content, int senderId)
         {
+            var message = Serializer.Deserialize<Message>((byte[])content);
+
+            var listedPlayersMessage = message as ListedPlayersMessage;
+            if (listedPlayersMessage != null)
+            {
+                Players = listedPlayersMessage.Players;
+                if (PlayerListUpdatedEvent != null)
+                {
+                    PlayerListUpdatedEvent(Players);
+                }
+                return;
+            }
+            
+
             switch (eventCode)
             {
-                case (byte)ServerEventCode.PlayerList:
-                    Players = (Player[])content;
-
-                    if (PlayerListUpdatedEvent != null)
-                    {
-                        PlayerListUpdatedEvent(Players);
-                    }
-                    break;
+                //case (byte)ServerEventCode.PlayerList:
+                //    //Players = (Player[])content;
+                //    var listedPlayersMessage = message as ListedPlayersMessage;
+                //    if (listedPlayersMessage != null)
+                //    {
+                //        if (PlayerListUpdatedEvent != null)
+                //        {
+                //            PlayerListUpdatedEvent(listedPlayersMessage.Players);
+                //        }
+                //    }
+                //    break;
 
                 case (byte)ServerEventCode.GameEntered:
 
