@@ -13,11 +13,10 @@ function Build
     & $msbuild "..\$relativeDir\$solution" "/p:Configuration=$configuration"
 }
 
+Build "GameWork.Unity" "GameWork.Unity.sln" "Unity Debug"
 
-#Build "SUGAR" "PlayGen.SUGAR.sln" "Debug"
+Build "SUGAR" "PlayGen.SUGAR.sln" "Debug_Unity_Client"
 
-#Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
+Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
 
-#Build "Server" "Photon.Loadbalancing.sln" "Unity Debug"
-
-#Build "GameWork.Unity" "GameWork.Unity.sln" "Unity Debug"
+Build "Server" "Photon.Loadbalancing.sln" "Debug_Unity_Client"

@@ -50,7 +50,9 @@
     <Compile Include="EventCode.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageSubscriptionHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

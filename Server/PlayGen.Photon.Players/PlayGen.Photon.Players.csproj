@@ -51,7 +51,6 @@
     <Compile Include="PlayerColors.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayerManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PlayerStatus.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +62,9 @@
       <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
       <Name>PlayGen.Photon.Messaging</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
