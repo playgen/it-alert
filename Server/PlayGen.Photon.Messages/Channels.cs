@@ -3,5 +3,7 @@
     public enum Channels : byte
     {
         Players = 0,
+
+        Room = 1,
     }
 }

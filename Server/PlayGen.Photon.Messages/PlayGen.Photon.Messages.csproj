@@ -48,10 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channels.cs" />
-    <Compile Include="ListedPlayersMessage.cs" />
-    <Compile Include="ListPlayersMessage.cs" />
-    <Compile Include="PlayersMessage.cs" />
-    <Compile Include="UpdatePlayerMessage.cs" />
+    <Compile Include="Players\ListedPlayersMessage.cs" />
+    <Compile Include="Players\ListPlayersMessage.cs" />
+    <Compile Include="Players\PlayersMessage.cs" />
+    <Compile Include="Room\RoomMessage.cs" />
+    <Compile Include="Room\StartGameMessage.cs" />
+    <Compile Include="Players\UpdatePlayerMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">

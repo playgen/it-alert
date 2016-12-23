@@ -1,8 +1,9 @@
 ﻿using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
+using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
 
-namespace PlayGen.Photon.Plugin.RoomStates
+namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
     public class LobbyState : RoomState
     {

@@ -1,5 +1,5 @@
-﻿using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Serialization;
+﻿using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -25,27 +25,22 @@ namespace PlayGen.ITAlert.Network.Client
             State = Assets.Scripts.Network.Client.GameStates.Initializing;
 
             _photonClient.EventRecievedEvent += OnRecievedEvent;
-
-            _photonClient.RegisterSerializableType(typeof(Simulation.Simulation),
-                SerializableTypes.SimulationState,
-                Serializer.SerializeSimulation,
-                Serializer.DeserializeSimulation);
         }
 
         public void SetGameInitialized()
         {
-            _photonClient.RaiseEvent((byte)ClientEventCode.GameInitialized);
+            //_photonClient.RaiseEvent((byte)ClientEventCode.GameInitialized);
         }
 
         public void SendGameCommand(Simulation.Commands.Interfaces.ICommand command)
         {
-            var serializedCommand = Serializer.Serialize(command);
-            _photonClient.RaiseEvent((byte)ClientEventCode.GameCommand, serializedCommand);
+            //var serializedCommand = Serializer.Serialize(command);
+            //_photonClient.RaiseEvent((byte)ClientEventCode.GameCommand, serializedCommand);
         }
 
         public void SetGameFinalized()
         {
-            _photonClient.RaiseEvent((byte)ClientEventCode.GameFinalized);
+            //_photonClient.RaiseEvent((byte)ClientEventCode.GameFinalized);
         }
 
         public Simulation.Simulation TakeSimulationState()
@@ -57,28 +52,28 @@ namespace PlayGen.ITAlert.Network.Client
 
         private void OnRecievedEvent(byte eventCode, object content, int senderId)
         {
-            switch (eventCode)
-            {
-                case (byte)ServerEventCode.GameInitialized:
-                    _simulationState = (Simulation.Simulation)content;
-                    break;
+            //switch (eventCode)
+            //{
+            //    case (byte)ServerEventCode.GameInitialized:
+            //        _simulationState = (Simulation.Simulation)content;
+            //        break;
 
-                case (byte)ServerEventCode.GameTick:
-                    if (State != Assets.Scripts.Network.Client.GameStates.Playing)
-                    {
-                        State = Assets.Scripts.Network.Client.GameStates.Playing;
-                    }
+            //    case (byte)ServerEventCode.GameTick:
+            //        if (State != Assets.Scripts.Network.Client.GameStates.Playing)
+            //        {
+            //            State = Assets.Scripts.Network.Client.GameStates.Playing;
+            //        }
 
-                    _simulationState = (Simulation.Simulation)content;
-                    break;
+            //        _simulationState = (Simulation.Simulation)content;
+            //        break;
 
-                case (byte)ServerEventCode.GameFinalized:
-                    State = Assets.Scripts.Network.Client.GameStates.Finalizing;
+            //    case (byte)ServerEventCode.GameFinalized:
+            //        State = Assets.Scripts.Network.Client.GameStates.Finalizing;
 
-                    _simulationState = (Simulation.Simulation)content;
+            //        _simulationState = (Simulation.Simulation)content;
 
-                    break;
-            }
+            //        break;
+            //}
         }
     }
 }

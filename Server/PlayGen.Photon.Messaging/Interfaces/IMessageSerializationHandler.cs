@@ -1,6 +1,4 @@
-﻿using PlayGen.Photon.Messaging;
-
-namespace PlayGen.Photon.Plugin.Interfaces
+﻿namespace PlayGen.Photon.Messaging.Interfaces
 {
     public interface IMessageSerializationHandler
     {

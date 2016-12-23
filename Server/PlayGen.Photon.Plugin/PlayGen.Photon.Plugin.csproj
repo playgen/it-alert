@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
-    <Compile Include="Interfaces\IMessageSerializationHandler.cs" />
     <Compile Include="Interfaces\IRoomStateControllerFactory.cs" />
     <Compile Include="Messenger.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
@@ -94,7 +93,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.Photon.Plugin\bin\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,8 +3,8 @@
 
   <PropertyGroup>
     <PluginName>PlayGen.Photon.Plugin</PluginName>
-    <PluginAssemblyName>PlayGen.Photon.Plugin.dll</PluginAssemblyName>
-    <PluginType>PlayGen.Photon.Plugin.PluginFactory</PluginType>
+    <PluginAssemblyName>PlayGen.ITAlert.Photon.Plugin.dll</PluginAssemblyName>
+    <PluginType>PlayGen.ITAlert.Photon.Plugin.ITAlertPluginFactory</PluginType>
 
     <PluginBaseUrl>http://photon-forward.webscript.io</PluginBaseUrl>
 

@@ -1,5 +1,4 @@
 ﻿using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Players;
 
 namespace PlayGen.Photon.Messages
 {
@@ -7,6 +6,6 @@ namespace PlayGen.Photon.Messages
     {
         public override int Channel => (int)Channels.Players;
 
-        public int PhotonId { get; set; }
+        public virtual int PhotonId { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Messaging.Interfaces;
 
-namespace PlayGen.ITAlert.Photon.Plugin
+namespace PlayGen.Photon.Unity.Messaging
 {
     public class ITAlertMessageSerializationHandler : IMessageSerializationHandler
     {
@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
         public TMessage Deserialize<TMessage>(byte[] message) where TMessage : Message
         {
-            return Serializer.Deserialize<TMessage>(message);
+            return Serializer.Deserialize<TMessage>(message);   
         }
     }
 }

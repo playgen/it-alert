@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventCode.cs" />
+    <Compile Include="Interfaces\IMessageSerializationHandler.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageSubscriptionHandler.cs" />
   </ItemGroup>

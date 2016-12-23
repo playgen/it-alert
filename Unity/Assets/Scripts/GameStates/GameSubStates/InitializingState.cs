@@ -44,7 +44,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
             {
                 Director.Initialize(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState(),
-                    _networkClient.CurrentRoom.Player.ID);
+                    _networkClient.CurrentRoom.Player.PhotonId);
                 Director.Refresh();
 
                 _networkClient.CurrentRoom.CurrentGame.SetGameInitialized();

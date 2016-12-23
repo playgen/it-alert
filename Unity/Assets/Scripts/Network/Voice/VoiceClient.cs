@@ -1,5 +1,6 @@
 ﻿#define LOGGING_ENABLED
 using System.Collections.Generic;
+using PlayGen.Photon.Unity;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Network.Client.Voice
