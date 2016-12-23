@@ -1,4 +1,4 @@
-﻿namespace PlayGen.Photon.Plugin.RoomStates
+﻿namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
     public enum InternalGameState
     {

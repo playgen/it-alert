@@ -1,11 +1,13 @@
-﻿using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Serialization;
-using System;
+﻿using System;
+using System.Linq;
 using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Photon.Messaging;
-using PlayGen.ITAlert.Photon.Players.Commands;
-using PlayGen.ITAlert.Photon.Players.Messages;
+using PlayGen.Photon.Players;
+using PlayGen.Photon.Unity;
+using PlayGen.Photon.Unity.Messaging;
+using PlayGen.Photon.Messaging;
+using System.Collections.Generic;
+using PlayGen.ITAlert.Photon.Messages.Room;
+using PlayGen.Photon.Messages;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -22,9 +24,11 @@ namespace PlayGen.ITAlert.Network.Client
         public event Action<ClientGame> GameEnteredEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
         public event Action<PhotonPlayer> OtherPlayerLeftEvent;
-        public event Action<Player[]> PlayerListUpdatedEvent;
+        public event Action<List<Player>> PlayerListUpdatedEvent;
 
-        public Player[] Players { get; private set; }
+        public Messenger Messenger { get; private set; }
+
+        public List<Player> Players { get; private set; }
 
         public ClientGame CurrentGame { get; private set; }
 
@@ -49,19 +53,17 @@ namespace PlayGen.ITAlert.Network.Client
         }
 
         // todod change to use our own player representation
-        public PhotonPlayer Player
+        public Player Player
         {
-            get { return _photonClient.Player; }
+            get { return Players.Single(p => p.PhotonId == _photonClient.Player.ID); }
         }
 
         public ClientRoom(PhotonClient photonClient)
         {
             _photonClient = photonClient;
 
-            _photonClient.RegisterSerializableType(typeof(Player),
-                SerializableTypes.Player,
-                Serializer.Serialize,
-                Serializer.Deserialize<Player>);
+            Messenger = new Messenger(new ITAlertMessageSerializationHandler(),  photonClient);
+            Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
 
             _voiceClient = new VoiceClient();
             _voiceClient.OnJoinedRoom();
@@ -73,15 +75,14 @@ namespace PlayGen.ITAlert.Network.Client
 
         ~ClientRoom()
         {
-            _photonClient.EventRecievedEvent -= OnRecievedEvent;
+            Dispose();
         }
-
+        
         public void RefreshPlayers()
         {
-            _photonClient.SendMessage(new ListPlayersMessage
+            Messenger.SendMessage(new ListPlayersMessage
             {
-                Channel = Channels.Players,
-                PhotonId = _photonClient.Player.ID,
+                PhotonId = _photonClient.Player.ID
             });
         }
 
@@ -91,43 +92,88 @@ namespace PlayGen.ITAlert.Network.Client
             _photonClient.LeaveRoom();
         }
 
-        public void SetReady(bool isReady)
+        public void UpdatePlayer(Player player)
         {
-            if (isReady)
+            Messenger.SendMessage(new UpdatePlayerMessage
             {
-                _photonClient.RaiseEvent((byte)ClientEventCode.SetReady);
-            }
-            else
-            {
-                _photonClient.RaiseEvent((byte)ClientEventCode.SetNotReady);
-            }
-        }
-
-        public void SetPlayerExternalId(int id)
-        {
-            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeExternalId, id);
-        }
-
-        public void SetPlayerName(string name)
-        {
-            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeName, name);
-        }
-
-        public void SetColor(string color)
-        {
-            _photonClient.RaiseEvent((byte)ClientEventCode.ChangeColor, color);
+                Player = player
+            });
         }
 
         public void StartGame(bool forceStart, bool closeRoom = true)
         {
-            _photonClient.RaiseEvent((byte)ClientEventCode.StartGame,
-                new bool[] { forceStart, closeRoom });
+            Messenger.SendMessage(new StartGameMessage
+            {
+                Force = forceStart,
+                Close = closeRoom,
+            });
         }
-        
-        private void OnRecievedEvent(byte eventCode, object content, int senderId)
-        {
-            var message = Serializer.Deserialize<Message>((byte[])content);
 
+        public void OnRecievedEvent(byte eventCode, object content, int senderId)
+        {
+            if (eventCode == (byte) PlayGen.Photon.Messaging.EventCode.Message)
+            {
+                if (!Messenger.TryProcessMessage((byte[])content))
+                {
+                    throw new Exception("Couldn't process as message: " + content);
+                }
+            }
+        }
+
+
+        //var listedPlayersMessage = message as ListedPlayersMessage;
+            //if (listedPlayersMessage != null)
+            //{
+            //    Players = listedPlayersMessage.Players;
+            //    if (PlayerListUpdatedEvent != null)
+            //    {
+            //        PlayerListUpdatedEvent(Players);
+            //    }
+            //    return;
+            //}
+            
+
+            //switch (eventCode)
+            //{
+            //    //case (byte)ServerEventCode.PlayerList:
+            //    //    //Players = (Player[])content;
+            //    //    var listedPlayersMessage = message as ListedPlayersMessage;
+            //    //    if (listedPlayersMessage != null)
+            //    //    {
+            //    //        if (PlayerListUpdatedEvent != null)
+            //    //        {
+            //    //            PlayerListUpdatedEvent(listedPlayersMessage.Players);
+            //    //        }
+            //    //    }
+            //    //    break;
+
+            //    case (byte)ServerEventCode.GameEntered:
+
+            //        CurrentGame = new ClientGame(_photonClient);
+
+            //        if (GameEnteredEvent != null)
+            //        {
+            //            GameEnteredEvent(CurrentGame);
+            //        }
+            //        break;
+            //}
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
+
+                _voiceClient.OnLeftRoom();
+                CurrentGame = null;
+                _photonClient.EventRecievedEvent -= OnRecievedEvent;
+
+                _isDisposed = true;
+            }
+        }
+
+        private void ProcessPlayersMessage(Message message)
+        {
             var listedPlayersMessage = message as ListedPlayersMessage;
             if (listedPlayersMessage != null)
             {
@@ -137,44 +183,6 @@ namespace PlayGen.ITAlert.Network.Client
                     PlayerListUpdatedEvent(Players);
                 }
                 return;
-            }
-            
-
-            switch (eventCode)
-            {
-                //case (byte)ServerEventCode.PlayerList:
-                //    //Players = (Player[])content;
-                //    var listedPlayersMessage = message as ListedPlayersMessage;
-                //    if (listedPlayersMessage != null)
-                //    {
-                //        if (PlayerListUpdatedEvent != null)
-                //        {
-                //            PlayerListUpdatedEvent(listedPlayersMessage.Players);
-                //        }
-                //    }
-                //    break;
-
-                case (byte)ServerEventCode.GameEntered:
-
-                    CurrentGame = new ClientGame(_photonClient);
-
-                    if (GameEnteredEvent != null)
-                    {
-                        GameEnteredEvent(CurrentGame);
-                    }
-                    break;
-            }
-        }
-
-        public void Dispose()
-        {
-            if (!_isDisposed)
-            {
-                _voiceClient.OnLeftRoom();
-                CurrentGame = null;
-                _photonClient.EventRecievedEvent -= OnRecievedEvent;
-
-                _isDisposed = true;
             }
         }
 

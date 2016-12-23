@@ -1,15 +1,11 @@
-﻿#define LOGGING_ENABLED
-using System;
+﻿using System;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
-using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Messaging;
-using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.ITAlert.Network.Client;
 
-namespace PlayGen.ITAlert.Network.Client
+namespace PlayGen.Photon.Unity
 {
 	public class PhotonClient : PunBehaviour
 	{
@@ -24,7 +20,7 @@ namespace PlayGen.ITAlert.Network.Client
 		public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
 		public event Action<PhotonPlayer> OtherPlayerLeftRoomEvent;
 
-		public PhotonPlayer Player
+        public PhotonPlayer Player
 		{
 			get { return PhotonNetwork.player; }
 		}
@@ -313,14 +309,6 @@ namespace PlayGen.ITAlert.Network.Client
 		#endregion
 
 		#region Events
-
-	    public void SendMessage(Message message)
-	    {
-	        var serializedMessage = Serializer.Serialize(message);
-
-            RaiseEvent((byte)ClientEventCode.Message, serializedMessage);
-        }
-
 		public void RaiseEvent(byte eventCode, object eventContext = null)
 		{
 			if (!PhotonNetwork.connected)
@@ -342,14 +330,14 @@ namespace PlayGen.ITAlert.Network.Client
 
 		private void OnPhotonEvent(byte eventCode, object content, int senderId)
 		{
-			if (EventRecievedEvent == null)
-			{
-				Log("Event Recieved but no event callbacks have been connected.");
-				return;
-			}
+            if (EventRecievedEvent == null)
+            {
+                Log("Event Recieved but no event callbacks have been connected.");
+                return;
+            }
 
-			EventRecievedEvent(eventCode, content, senderId);
-		}
+            EventRecievedEvent(eventCode, content, senderId);
+        }
 
 		#endregion
 
@@ -419,10 +407,11 @@ namespace PlayGen.ITAlert.Network.Client
 
 		#endregion
 
-		[System.Diagnostics.Conditional("LOGGING_ENABLED")]
 		private void Log(string message)
 		{
+            // todo use gamework logger
 			Debug.Log("Network.PhotonClient: " + message);
+            // todo make event based
 			PopupUtility.LogError("Network.PhotonClient: " + message);
 		}
 	}

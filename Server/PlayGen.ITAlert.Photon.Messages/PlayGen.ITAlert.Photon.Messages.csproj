@@ -48,8 +48,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channels.cs" />
-    <Compile Include="Room\RoomMessage.cs" />
-    <Compile Include="Room\StartGameMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">

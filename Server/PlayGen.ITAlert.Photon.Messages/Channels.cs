@@ -4,7 +4,7 @@
     {
         Players = PlayGen.Photon.Messages.Channels.Players,
 
-        Room = 10,
+        Room = PlayGen.Photon.Messages.Channels.Room,
 
         SimulationState = 11,
 

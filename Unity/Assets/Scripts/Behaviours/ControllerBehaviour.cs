@@ -5,6 +5,7 @@ using GameWork.Core.States;
 using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.Photon.Unity;
 using PlayGen.SUGAR.Client;
 
 public class ControllerBehaviour : MonoBehaviour

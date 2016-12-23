@@ -1,4 +1,5 @@
-﻿using PlayGen.Photon.Messaging;
+﻿using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.Photon.Messages.Room
 {

@@ -2,12 +2,9 @@
 using System.Linq;
 using GameWork.Core.States;
 using PlayGen.ITAlert.GameStates;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Photon.Players;
+using PlayGen.Photon.Players;
 using PlayGen.SUGAR.Unity;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LobbyState : TickableSequenceState
 {
@@ -40,8 +37,7 @@ public class LobbyState : TickableSequenceState
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
-        _client.CurrentRoom.SetPlayerExternalId(SUGARManager.CurrentUser.Id);
-        _client.CurrentRoom.SetPlayerName(SUGARManager.CurrentUser.Name);
+        UpdatePlayerFromSUGAR();
 
         _client.CurrentRoom.PlayerListUpdatedEvent += _interface.OnPlayersChanged;
         _client.JoinedRoomEvent += _interface.OnJoinedRoom;
@@ -135,6 +131,14 @@ public class LobbyState : TickableSequenceState
         }
 
         _interface.UpdateVoiceStatuses();
+    }
+
+    private void UpdatePlayerFromSUGAR()
+    {
+        var player = _client.CurrentRoom.Player;
+        player.ExternalId = SUGARManager.CurrentUser.Id;
+        player.Name = SUGARManager.CurrentUser.Name;
+        _client.CurrentRoom.UpdatePlayer(player);
     }
 }
 

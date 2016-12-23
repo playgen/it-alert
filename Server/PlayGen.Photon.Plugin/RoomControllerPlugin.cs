@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
@@ -8,6 +7,7 @@ using PlayGen.Photon.Players.Extensions;
 using PlayGen.Photon.Plugin.Interfaces;
 using PlayGen.Photon.SUGAR;
 using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messaging.Interfaces;
 
 namespace PlayGen.Photon.Plugin
 {

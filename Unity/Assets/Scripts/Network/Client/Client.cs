@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.Network.Client
 {
