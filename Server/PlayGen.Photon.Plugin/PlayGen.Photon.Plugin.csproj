@@ -46,7 +46,6 @@
     <Compile Include="Messenger.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStateController.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomState.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +88,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

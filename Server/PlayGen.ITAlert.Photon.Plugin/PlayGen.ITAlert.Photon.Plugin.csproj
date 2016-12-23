@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="RoomStates\InternalGameState.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
@@ -76,6 +75,9 @@
       <Project>{f62b5705-bf54-498a-b662-704c0b50c0b6}</Project>
       <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,7 +19,6 @@ artifacts/
 *.user
 *.userosscache
 *.sln.docstates
-**/AssemblyInfo.cs
 
 # Visual Studio cache files
 # files ending in .cache can be ignored
@@ -90,3 +89,4 @@ Server/PlayGen.Photon.SUGAR/SUGARConfiguration.json
 Server/deploy/bin_Win32/PhotonServer.config
 Server/deploy/bin_Win64/PhotonServer.config
 !Server/nuget/*
+Server/Plugins/lib/PhotonHivePlugin.dll
