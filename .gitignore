@@ -86,8 +86,7 @@ Unity/Assets/Plugins/PlayGen.SUGAR.Unity/
 Unity/Unity.csproj.DotSettings
 
 # Photon
-Server/Photon.LoadBalancing/SUGARConfiguration.config
-Server/PlayGen.ITAlert.Photon.SUGAR/SUGARConfiguration.json
+Server/PlayGen.Photon.SUGAR/SUGARConfiguration.json
 Server/deploy/bin_Win32/PhotonServer.config
 Server/deploy/bin_Win64/PhotonServer.config
 !Server/nuget/*
