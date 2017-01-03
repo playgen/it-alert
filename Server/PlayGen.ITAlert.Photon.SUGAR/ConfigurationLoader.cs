@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using Newtonsoft.Json;
+using System.IO;
 
 namespace PlayGen.ITAlert.Photon.SUGAR
 {
@@ -10,7 +11,7 @@ namespace PlayGen.ITAlert.Photon.SUGAR
             var data = File.ReadAllText(path);
 
             // todo find out why referencing json here causes bad ref for the client 
-            //return JsonConvert.DeserializeObject<Configuration>(data);
+            return JsonConvert.DeserializeObject<Configuration>(data);
             
             // hackey temporary solution
             var lines = File.ReadAllLines(path);
