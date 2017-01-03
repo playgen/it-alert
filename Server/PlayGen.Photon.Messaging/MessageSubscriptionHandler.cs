@@ -13,6 +13,7 @@ namespace PlayGen.Photon.Messaging
             if (!_subscribers.TryGetValue(channel, out channelSubscribers))
             {
                 channelSubscribers = new List<Action<Message>>();
+                _subscribers[channel] = channelSubscribers;
             }
 
             channelSubscribers.Add(messageRecievedCallback);
