@@ -43,6 +43,7 @@
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
     <Compile Include="Interfaces\IRoomStateControllerFactory.cs" />
     <Compile Include="Messenger.cs" />
+    <Compile Include="PlayerManagerHandler.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStateController.cs" />
     <Compile Include="RoomState.cs" />
