@@ -46,20 +46,28 @@
   <ItemGroup>
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
+    <Compile Include="Components\Behaviours\ConsumeCPUMalwareEffect.cs" />
+    <Compile Include="Components\Behaviours\ConsumeMemoryMalwareEffect.cs" />
     <Compile Include="Components\Behaviours\DatabaseEnhancement.cs" />
     <Compile Include="Components\Behaviours\AntivirusEnhancement.cs" />
     <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
     <Compile Include="Components\Behaviours\IActivatable.cs" />
     <Compile Include="Components\Behaviours\IActivation.cs" />
     <Compile Include="Components\Activation\TimedActivation.cs" />
+    <Compile Include="Components\Behaviours\IMalwareEffect.cs" />
     <Compile Include="Components\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateIntent.cs" />
+    <Compile Include="Components\Properties\ConsumeCPU.cs" />
     <Compile Include="Components\Properties\EntityTypeProperty.cs" />
     <Compile Include="Components\Properties\ItemActivator.cs" />
     <Compile Include="Components\Properties\MalwareGenome.cs" />
     <Compile Include="Components\Properties\Destination.cs" />
+    <Compile Include="Components\Properties\CPUResource.cs" />
+    <Compile Include="Components\Properties\MemoryResource.cs" />
     <Compile Include="Components\Systems\ItemActivation.cs" />
     <Compile Include="Components\Systems\ItemManagement.cs" />
+    <Compile Include="Components\Systems\MalwareEffects.cs" />
+    <Compile Include="Components\Systems\SubsystemResources.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
     <Compile Include="Components\Behaviours\IMovementComponent.cs" />
@@ -78,7 +86,6 @@
     <Compile Include="Components\Properties\Owner.cs" />
     <Compile Include="Components\Behaviours\VisitorPosition.cs" />
     <Compile Include="Components\Properties\Visitors.cs" />
-    <Compile Include="Components\Properties\CombinedHealthAndShield.cs" />
     <Compile Include="Components\Properties\ConsumeMemory.cs" />
     <Compile Include="Components\Properties\HealthPropertyComponent.cs" />
     <Compile Include="Components\Properties\ItemStorage.cs" />

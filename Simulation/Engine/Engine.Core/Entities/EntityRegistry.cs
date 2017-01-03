@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
+using Engine.Components;
 using Engine.Serialization;
 
 namespace Engine.Entities
@@ -12,31 +14,32 @@ namespace Engine.Entities
 
 		public Queue<Entity> EntityPool { get; }
 
-		private int EntitySeed => ++_entitySeed;
+		public int NextEntityId => Interlocked.Increment(ref _entitySeed);
 
-		public int LastEntityId => _entitySeed;
+		private ComponentRegistry _componentRegistry;
 
-		public EntityRegistry()
+
+		// TODO: need a DI solution
+		public EntityRegistry(ComponentRegistry componentRegistry)
 		{
+			_componentRegistry = componentRegistry;
 			Entities = new Dictionary<int, Entity>();
 			EntityPool = new Queue<Entity>();
 		}
 
 		public Entity CreateEntity()
 		{
-			var entity = EntityPool.Count > 0 ? EntityPool.Dequeue() : new Entity();
-			entity.Reset(EntitySeed);
-
+			var entity = EntityPool.Count > 0 ? EntityPool.Dequeue() : new Entity(this, _componentRegistry);
+			entity.Initialize();
 			entity.EntityDestroyed += EntityOnEntityDestroyed;
-
 			AddEntity(entity);
-
 			return entity;
 		}
 
 		private void EntityOnEntityDestroyed(Entity entity)
 		{
 			Entities.Remove(entity.Id);
+
 			EntityPool.Enqueue(entity);
 		}
 
@@ -53,7 +56,7 @@ namespace Engine.Entities
 
 		protected virtual void OnEntityAdded(Entity entity)
 		{
-			
+
 		}
 
 		private void Entity_EntityDestroyed(object sender, EventArgs e)
@@ -75,7 +78,7 @@ namespace Engine.Entities
 
 		protected virtual void OnEntityDestroyed(Entity entity)
 		{
-			
+
 		}
 
 		public bool TryGetEntityById(int id, out Entity entity)

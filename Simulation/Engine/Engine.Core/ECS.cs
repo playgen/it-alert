@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Archetypes;
-using Engine.bin;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
@@ -30,8 +29,9 @@ namespace Engine
 
 		protected ECS()
 		{
-			EntityRegistry = new EntityRegistry();
+			//TODO: DI!
 			ComponentRegistry = new ComponentRegistry();
+			EntityRegistry = new EntityRegistry(ComponentRegistry);
 			SystemRegistry = new SystemRegistry();
 			ComponentFactory = new ComponentFactory();
 

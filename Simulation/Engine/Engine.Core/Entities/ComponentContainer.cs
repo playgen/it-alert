@@ -7,7 +7,7 @@ namespace Engine.Entities
 {
 	public class ComponentContainer : IComponentContainer
 	{
-		public static ComponentContainer Default => new ComponentContainer();
+		protected ComponentRegistry ComponentRegistry { get; }
 
 		private readonly HashSet<IComponent> _components;
 
@@ -20,8 +20,9 @@ namespace Engine.Entities
 		
 		#region constructors
 
-		public ComponentContainer()
+		public ComponentContainer(ComponentRegistry componentRegistry)
 		{
+			ComponentRegistry = componentRegistry;
 			_components = new HashSet<IComponent>();
 		}
 

@@ -45,7 +45,9 @@ namespace PlayGen.ITAlert.Simulation
 				Positions = SimulationConstants.SubsystemPositions,
 			})
 			.HasComponent(() => new ItemActivator())
-			.HasComponent(() => new ItemStorage(SimulationConstants.SubsystemMaxItems));
+			.HasComponent(() => new ItemStorage(SimulationConstants.SubsystemMaxItems))
+			.HasComponent(() => new MemoryResource(0, 4))
+			.HasComponent(() => new CPUResource(0, 4));
 
 		public static readonly Archetype Analysis = new Archetype("Analysis")
 			.Extends(Subsystem)
@@ -77,10 +79,17 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponent(() => new EntityTypeProperty(EntityType.Player))
 			.HasComponent(() => new Name());
 
+		#region viruses
+
 		public static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
 			.HasComponent(() => new EntityTypeProperty(EntityType.Npc))
-			.HasComponent(() => new MalwareGenome());
+			.HasComponent(() => new MalwareGenome())
+			.HasComponent(() => new ConsumeMemory(0))
+			.HasComponent(() => new ConsumeCPU(0));
+
+
+		#endregion
 
 		#endregion
 
