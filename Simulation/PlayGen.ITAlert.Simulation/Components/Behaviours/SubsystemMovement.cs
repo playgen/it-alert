@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Intents;
-using PlayGen.ITAlert.Simulation.Components.Messages;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
@@ -61,7 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 					{
 						var overflow = Math.Max(nextPosition - exitPosition, 0);
 
-						Visitors.Value.Remove(visitor.Id);
+						RemoveVisitor(visitor);
 
 						exitNode.GetComponent<IMovementComponent>().AddVisitor(visitor, Entity, overflow, currentTick);
 					}

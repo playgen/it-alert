@@ -4,9 +4,7 @@ using System.Linq;
 using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
-using Engine.Messaging;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Messages;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
@@ -42,12 +40,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 			visitorPosition.SetPosition(position, currentTick);
 
 			Visitors.Value.Add(visitor.Id, visitor);
+			visitor.EntityDestroyed += RemoveVisitor;
+		}
 
-			var visitorEnteredNodeMessage = new VisitorEnteredNodeMessage(MessageScope.Internal, visitor, Entity);
-			// notify the visitor it has entered a node
-			visitor.OnNext(visitorEnteredNodeMessage);
-			// notify other components on this node that a visitor has entered
-			Entity.OnNext(visitorEnteredNodeMessage);
+		protected void RemoveVisitor(Entity visitor)
+		{
+			visitor.EntityDestroyed -= RemoveVisitor;
+			Visitors.Value.Remove(visitor.Id);
 		}
 	}
 }

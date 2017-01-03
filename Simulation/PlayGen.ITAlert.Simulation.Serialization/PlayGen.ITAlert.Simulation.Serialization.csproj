@@ -47,10 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
-      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>Engine.Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>
       <Name>Engine.Serialization</Name>

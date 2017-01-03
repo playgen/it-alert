@@ -49,10 +49,6 @@
       <Project>{c3e9dd6e-3807-4290-a857-a4e9d47cf7e1}</Project>
       <Name>Engine.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine.Components\Engine.Components.csproj">
-      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
-      <Name>Engine.Components</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>
