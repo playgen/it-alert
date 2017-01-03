@@ -15,6 +15,8 @@ public class FeedbackStateInterface : StateInterface
 	private GameObject _entryPrefab;
 	private GameObject _slotPrefab;
 	private ButtonList _buttons;
+	private GameObject _rankingImage;
+	private GameObject _error;
 	private Dictionary<string, List<string>> _playerRankings = new Dictionary<string, List<string>>();
 	private Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>> _rankingObjects = new Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>>();
 
@@ -25,6 +27,8 @@ public class FeedbackStateInterface : StateInterface
 		_entryPrefab = Resources.Load("FeedbackEntry") as GameObject;
 		_slotPrefab = Resources.Load("FeedbackSlot") as GameObject;
 		_buttons = new ButtonList("FeedbackContainer/FeedbackPanelContainer/FeedbackButtons");
+		_error = GameObjectUtilities.FindGameObject("FeedbackContainer/FeedbackPanelContainer/Error");
+		_rankingImage = GameObjectUtilities.FindGameObject("FeedbackContainer/FeedbackPanelContainer/FeedbackPanel/RankingImage");
 
 		var sendButton = _buttons.GetButton("SendButtonContainer");
 		sendButton.onClick.AddListener(OnSendClick);
@@ -51,21 +55,24 @@ public class FeedbackStateInterface : StateInterface
 	{
 		foreach (Transform child in _feedbackPanel.transform)
 		{
-			GameObject.Destroy(child.gameObject);
+			if (child != _rankingImage.transform)
+			{
+				GameObject.Destroy(child.gameObject);
+			}
 		}
 		_playerRankings.Clear();
 		_rankingObjects.Clear();
 
 		//To-Do: Get the list of evaluation criteria from somewhere
 
-		var evaluationSections = new[] { "Cooperation", "Leadership", "Communication" };
+		var evaluationSections = new[] { "Cooperation", "Leadership", "Communication"};
 
 		players = players.Where(p => p.PhotonId != current.ID).ToArray();
 
 		var playerList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 		var emptySlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
 		emptySlot.GetComponent<Image>().enabled = false;
-		emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.5f;
+		emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 
 		foreach (var player in players)
 		{
@@ -86,7 +93,7 @@ public class FeedbackStateInterface : StateInterface
 			var sectionList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 
 			var headerObj = Object.Instantiate(_entryPrefab, sectionList.transform, false);
-			headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.5f;
+			headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 			headerObj.GetComponent<Text>().text = section;
 
 			_playerRankings.Add(section, new List<string>());
@@ -104,6 +111,8 @@ public class FeedbackStateInterface : StateInterface
 			}
 		}
 		_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+		_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
+		_rankingImage.transform.SetAsLastSibling();
 		RebuildLayout();
 	}
 
@@ -122,9 +131,17 @@ public class FeedbackStateInterface : StateInterface
 		}
 		if (_playerRankings[newList][position] != null)
 		{
-			if (position == _playerRankings[newList].Count - 1)
+			if (flowDown)
 			{
 				flowDown = false;
+				for (int i = position; i < _playerRankings[newList].Count; i++)
+				{
+					if (_playerRankings[newList][i] == null)
+					{
+						flowDown = true;
+						break;
+					}
+				}
 			}
 			var rearrangedSlot = _rankingObjects[newList][position + (flowDown ? 1 : -1)].Key;
 			var rearrangedPlayer = _rankingObjects[newList][position].Value;
@@ -146,6 +163,7 @@ public class FeedbackStateInterface : StateInterface
 		}
 		drag.transform.SetParent(slot.transform, false);
 		_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+		_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 		return true;
 	}
 
