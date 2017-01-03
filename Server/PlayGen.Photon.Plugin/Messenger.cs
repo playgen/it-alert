@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Photon.Hive.Plugin;
-using Photon.Hive.Serialization;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Messaging.Interfaces;
 using PlayGen.Photon.Plugin.Extensions;
-using PlayGen.Photon.Plugin.Interfaces;
 
 namespace PlayGen.Photon.Plugin
 {
@@ -39,8 +37,8 @@ namespace PlayGen.Photon.Plugin
      
         public void SendAllMessage(int senderPhotonId, Message message)
         {
-            var serializedMessage = Serializer.Serialize(message);
-            _photonPlugin.BroadcastAll(senderPhotonId, 0, serializedMessage);
+            var serializedMessage = _serializationHandler.Serialize(message);
+            _photonPlugin.BroadcastAll(senderPhotonId, (byte)EventCode.Message, serializedMessage);
         }
 
         public bool TryProcessMessage(byte[] content)

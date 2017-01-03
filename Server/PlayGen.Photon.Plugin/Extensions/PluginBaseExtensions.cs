@@ -13,7 +13,7 @@ namespace PlayGen.Photon.Plugin.Extensions
             plugin.PluginHost.BroadcastEvent(ReciverGroup.All,
                 0,
                 0,
-                (byte)eventCode,
+                eventCode,
                 new Dictionary<byte, object>()
                 {
                     {(byte)ParameterKey.Data, content},
@@ -27,7 +27,7 @@ namespace PlayGen.Photon.Plugin.Extensions
             plugin.PluginHost.BroadcastEvent(
                 recieverIds, 
                 senderId, 
-                (byte)eventCode, 
+                eventCode, 
                 new Dictionary<byte, object>()
                 {
                     {(byte)ParameterKey.Data, content},

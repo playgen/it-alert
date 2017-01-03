@@ -11,7 +11,7 @@ using PlayGen.Photon.Messaging.Interfaces;
 
 namespace PlayGen.Photon.Plugin
 {
-    public class RoomControllerPlugin : PluginBase
+    public class RoomControllerPlugin : PluginBase, IDisposable
     {
         public const string PluginName = "RoomControllerPlugin";
         public const int ServerPlayerId = 0;
@@ -20,6 +20,8 @@ namespace PlayGen.Photon.Plugin
         private readonly PlayerManager _playerManager = new PlayerManager();
         private readonly Controller _sugarController = new Controller();
         private readonly RoomStateController _stateController;
+
+        private bool _isDisposed;
 
         public override string Name => PluginName;
 
@@ -34,7 +36,16 @@ namespace PlayGen.Photon.Plugin
 
         ~RoomControllerPlugin()
         {
+            Dispose();
+        }
+
+        public void Dispose()
+        {
+            if (_isDisposed) return;
+
             _messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
+
+            _isDisposed = true;
         }
 
         public override void OnRaiseEvent(IRaiseEventCallInfo info)
@@ -98,15 +109,14 @@ namespace PlayGen.Photon.Plugin
 
         private void AddAndBroadcastPlayer(int playerId)
         {
-            var existingPlayerIds = _playerManager.PlayersPhotonIds;
+            var existingPlayers = _playerManager.PlayersPhotonIds;
 
             var name = "player" + playerId;
             var status = PlayerStatus.NotReady;
             var color = _playerManager.Players.GetUnusedColor();
 
             _playerManager.Create(playerId, null, name, color, status);
-
-            _messenger.SendMessage(existingPlayerIds, ServerPlayerId, new ListedPlayersMessage
+            _messenger.SendMessage(existingPlayers, ServerPlayerId, new ListedPlayersMessage
             {
                 Players = _playerManager.Players,
             });

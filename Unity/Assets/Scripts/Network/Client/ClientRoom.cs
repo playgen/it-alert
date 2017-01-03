@@ -52,7 +52,6 @@ namespace PlayGen.ITAlert.Network.Client
             get { return _photonClient.IsMasterClient; }
         }
 
-        // todod change to use our own player representation
         public Player Player
         {
             get { return Players.Single(p => p.PhotonId == _photonClient.Player.ID); }
@@ -120,44 +119,6 @@ namespace PlayGen.ITAlert.Network.Client
             }
         }
 
-
-        //var listedPlayersMessage = message as ListedPlayersMessage;
-            //if (listedPlayersMessage != null)
-            //{
-            //    Players = listedPlayersMessage.Players;
-            //    if (PlayerListUpdatedEvent != null)
-            //    {
-            //        PlayerListUpdatedEvent(Players);
-            //    }
-            //    return;
-            //}
-            
-
-            //switch (eventCode)
-            //{
-            //    //case (byte)ServerEventCode.PlayerList:
-            //    //    //Players = (Player[])content;
-            //    //    var listedPlayersMessage = message as ListedPlayersMessage;
-            //    //    if (listedPlayersMessage != null)
-            //    //    {
-            //    //        if (PlayerListUpdatedEvent != null)
-            //    //        {
-            //    //            PlayerListUpdatedEvent(listedPlayersMessage.Players);
-            //    //        }
-            //    //    }
-            //    //    break;
-
-            //    case (byte)ServerEventCode.GameEntered:
-
-            //        CurrentGame = new ClientGame(_photonClient);
-
-            //        if (GameEnteredEvent != null)
-            //        {
-            //            GameEnteredEvent(CurrentGame);
-            //        }
-            //        break;
-            //}
-
         public void Dispose()
         {
             if (!_isDisposed)
@@ -184,6 +145,22 @@ namespace PlayGen.ITAlert.Network.Client
                 }
                 return;
             }
+        }
+
+        // todo subscribe
+        private void ProcessRoomMessage(Message message)
+        {
+            //    case (byte)ServerEventCode.GameEntered:
+
+            //        CurrentGame = new ClientGame(_photonClient);
+
+            //        if (GameEnteredEvent != null)
+            //        {
+            //            GameEnteredEvent(CurrentGame);
+            //        }
+            //        break;
+            //}
+
         }
 
         internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)

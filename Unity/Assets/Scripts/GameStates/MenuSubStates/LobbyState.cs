@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States;
 using PlayGen.ITAlert.GameStates;
@@ -37,7 +38,7 @@ public class LobbyState : TickableSequenceState
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
-        UpdatePlayerFromSUGAR();
+        _client.CurrentRoom.PlayerListUpdatedEvent += UpdateThisPlayerFromSUGAR;
 
         _client.CurrentRoom.PlayerListUpdatedEvent += _interface.OnPlayersChanged;
         _client.JoinedRoomEvent += _interface.OnJoinedRoom;
@@ -133,13 +134,13 @@ public class LobbyState : TickableSequenceState
         _interface.UpdateVoiceStatuses();
     }
 
-    private void UpdatePlayerFromSUGAR()
+    private void UpdateThisPlayerFromSUGAR(List<Player> players)
     {
+        _client.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;
+
         var player = _client.CurrentRoom.Player;
         player.ExternalId = SUGARManager.CurrentUser.Id;
         player.Name = SUGARManager.CurrentUser.Name;
         _client.CurrentRoom.UpdatePlayer(player);
     }
 }
-
-

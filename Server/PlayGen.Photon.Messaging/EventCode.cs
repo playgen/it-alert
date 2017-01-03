@@ -2,6 +2,6 @@
 {
     public enum EventCode : byte
     {
-        Message = 1
+        Message = 101
     }
 }
