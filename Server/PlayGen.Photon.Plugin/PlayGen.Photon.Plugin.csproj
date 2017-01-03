@@ -46,7 +46,7 @@
     <Compile Include="PlayerManagerHandler.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStateController.cs" />
-    <Compile Include="RoomState.cs" />
+    <Compile Include="States\RoomState.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">

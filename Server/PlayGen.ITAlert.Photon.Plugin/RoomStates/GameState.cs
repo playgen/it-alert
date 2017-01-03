@@ -1,198 +1,191 @@
-﻿//using System.Collections.Generic;
-//using Photon.Hive.Plugin;
-//using PlayGen.ITAlert.Photon.Serialization;
-//using PlayGen.Photon.Players;
-//using PlayGen.Photon.SUGAR;
+﻿using System;
+using Photon.Hive.Plugin;
+using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.Photon.Messages.Room;
+using PlayGen.Photon.Messaging;
+using PlayGen.Photon.Players;
+using PlayGen.Photon.Plugin;
+using PlayGen.Photon.Plugin.States;
+using PlayGen.Photon.SUGAR;
 
-//namespace PlayGen.Photon.Plugin.RoomStates
-//{
-//	public class GameState : RoomState
-//	{
-//		public const string StateName = "Game";
+namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
+{
+    public class GameState : RoomState
+    {
+        public const string StateName = "Game";
 
-//		private ITAlert.Simulation.Simulation _simulation;
-//		private CommandSequence _commandSequence;
-//		private CommandResolver _resolver;
-//		private InternalGameState _internalState;
-//		private int _tickIntervalMS = 100;
-//		private object _tickTimer;
+        //private ITAlert.Simulation.Simulation _simulation;
+        //private CommandSequence _commandSequence;
+        //private CommandResolver _resolver;
+        //private InternalGameState _internalState;
+        //private int _tickIntervalMS = 100;
+        //private object _tickTimer;
 
-//		public override string Name
-//		{
-//			get { return StateName; }
-//		}
+        public override string Name => StateName;
 
-//		public GameState(PluginBase plugin, PlayerManager playerManager, Controller sugarController) 
-//            : base(plugin, playerManager, sugarController)
-//		{
-//		}
+        public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+            : base(photonPlugin, messenger, playerManager, sugarController)
+        {
+        }
 
-//		public override void Initialize()
-//		{
-//			Plugin.PluginHost.TryRegisterType(typeof(ITAlert.Simulation.Simulation),
-//				SerializableTypes.SimulationState,
-//				Serializer.SerializeSimulation,
-//				Serializer.DeserializeSimulation);
-//		}
+        
+        //public override void OnRaiseEvent(IRaiseEventCallInfo info)
+        //{
+        //    switch (info.Request.EvCode)
+        //    {
+        //        //case (byte)ClientEventCode.GameInitialized:
+        //        //	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
 
-//		#region Events
-//		public override void OnCreate(ICreateGameCallInfo info)
-//		{
-//		}
+        //        //	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
+        //        //	{
+        //        //		ChangeInternalState(InternalGameState.Playing);
+        //        //	}
+        //        //	break;
 
-//		public override void OnJoin(IJoinGameCallInfo info)
-//		{
-//		}
+        //        case (byte)ClientEventCode.GameCommand:
+        //            var command = Serializer.Deserialize<ICommand>((byte[])info.Request.Data);
+        //            _resolver.ProcessCommand(command);
+        //            break;
 
-//		public override void OnLeave(ILeaveGameCallInfo info)
-//		{
-//		}
-		
-//		public override void OnRaiseEvent(IRaiseEventCallInfo info)
-//		{
-//			switch (info.Request.EvCode)
-//			{
-//				//case (byte)ClientEventCode.GameInitialized:
-//				//	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
+        //            //case (byte)ClientEventCode.GameFinalized:
+        //            //	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
 
-//				//	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
-//				//	{
-//				//		ChangeInternalState(InternalGameState.Playing);
-//				//	}
-//				//	break;
+        //            //	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
+        //            //	{
+        //            //		ChangeState(LobbyState.StateName);   
+        //            //	}
+        //            //	break;
+        //    }
+        //}
 
-//				case (byte)ClientEventCode.GameCommand:
-//					var command = Serializer.Deserialize<ICommand>((byte[]) info.Request.Data);
-//					_resolver.ProcessCommand(command);
-//					break;
+        public override void Enter()
+        {
+            Messenger.Subscribe((int)Channels.Room, ProcessRoomMessage);
 
-//				//case (byte)ClientEventCode.GameFinalized:
-//				//	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
+            Messenger.SendAllMessage(RoomControllerPlugin.ServerPlayerId, new GameStartedMessage());
 
-//				//	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
-//				//	{
-//				//		ChangeState(LobbyState.StateName);   
-//				//	}
-//				//	break;
-//			}
-//		}
-//		#endregion
+            //Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
 
-//		public override void Enter()
-//		{
-//			Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
+            //List<int> subsystemLogicalIds;
+            //_simulation = InitializeSimulation(out subsystemLogicalIds);
+            //_commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+            //_resolver = new CommandResolver(_simulation);
 
-//			List<int> subsystemLogicalIds;
-//			_simulation = InitializeSimulation(out subsystemLogicalIds);
-//			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
-//			_resolver = new CommandResolver(_simulation);
-			
-//			ChangeInternalState(InternalGameState.Initializing);
+            //ChangeInternalState(InternalGameState.Initializing);
 
-//		    SugarController.StartMatch();
-//		}
+            //SugarController.StartMatch();
+        }
 
-//		public override void Exit()
-//		{
-//            SugarController.EndMatch();
+        public override void Exit()
+        {
+            Messenger.Unsubscribe((int)Channels.Room, ProcessRoomMessage);
 
-//			_resolver = null;
-//			_simulation.Dispose();
-//			_simulation = null;
-//		}
-		
-//		private void Tick()
-//		{          
-//			switch (_internalState)
-//			{
-//				case InternalGameState.Initializing:
-//					break;
+            //SugarController.EndMatch();
 
-//				case InternalGameState.Playing:
+            //_resolver = null;
+            //_simulation.Dispose();
+            //_simulation = null;
+        }
 
-//					var commands = _commandSequence.Tick();
-//					_resolver.ProcessCommands(commands);
+        private void ProcessRoomMessage(Message message)
+        {
+            // todo player quit message
 
-//					_simulation.Tick();
+            throw new Exception($"Unhandled Room Message: ${message}");
+        }
 
-//					if (_simulation.IsGameFailure)
-//					{
-//						ChangeInternalState(InternalGameState.Finalizing);
-//					}
-//					else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-//					{
-//						ChangeInternalState(InternalGameState.Finalizing);
-//					}
-//					else
-//					{
-//						BroadcastSimulation(ServerEventCode.GameTick, _simulation);
-//					}
-					
-//					break;
+        private void Tick()
+        {
+            //switch (_internalState)
+            //{
+            //    case InternalGameState.Initializing:
+            //        break;
 
-//				case InternalGameState.Finalizing:
-//					break;
-//			}
-//		}
+            //    case InternalGameState.Playing:
 
-//		private void ChangeInternalState(InternalGameState toState)
-//		{
-//			switch (toState)
-//			{
-//				case InternalGameState.Initializing:
-//					BroadcastSimulation(ServerEventCode.GameInitialized, _simulation);
-//					break;
-					
-//				case InternalGameState.Playing:
-//					_tickTimer = CreateTickTimer();
-//					break;
+            //        var commands = _commandSequence.Tick();
+            //        _resolver.ProcessCommands(commands);
 
-//				case InternalGameState.Finalizing:
-//					DestroyTimer(_tickTimer);
-//					BroadcastSimulation(ServerEventCode.GameFinalized, _simulation);
-//					break;
-//			}
+            //        _simulation.Tick();
 
-//			_internalState = toState;
-//		}
+            //        if (_simulation.IsGameFailure)
+            //        {
+            //            ChangeInternalState(InternalGameState.Finalizing);
+            //        }
+            //        else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+            //        {
+            //            ChangeInternalState(InternalGameState.Finalizing);
+            //        }
+            //        else
+            //        {
+            //            BroadcastSimulation(ServerEventCode.GameTick, _simulation);
+            //        }
 
-//		private void BroadcastSimulation(ServerEventCode eventCode, ITAlert.Simulation.Simulation simulation)
-//		{
-//			Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
-//				(byte) eventCode,
-//				_simulation);
-//		}
-		
-//		private object CreateTickTimer()
-//		{
-//			return Plugin.PluginHost.CreateTimer(
-//				Tick,
-//				_tickIntervalMS,
-//				_tickIntervalMS);
-//		}
+            //        break;
 
-//		private void DestroyTimer(object timer)
-//		{
-//			Plugin.PluginHost.StopTimer(timer);
-//		}
+            //    case InternalGameState.Finalizing:
+            //        break;
+            //}
+        }
 
-//		private ITAlert.Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
-//		{
-//			var players = Plugin.PluginHost.GameActorsActive.Select(p =>
-//			{
-//				var player = PlayerManager.Get(p.ActorNr);
+        private void ChangeInternalState(InternalGameState toState)
+        {
+            //switch (toState)
+            //{
+            //    case InternalGameState.Initializing:
+            //        BroadcastSimulation(ServerEventCode.GameInitialized, _simulation);
+            //        break;
 
-//				return new PlayerConfig
-//				{
-//					ExternalId = player.PhotonId,
-//					Name = player.Name,
-//					Colour = "#" + player.Color,
-//				};
-//			}).ToList();
+            //    case InternalGameState.Playing:
+            //        _tickTimer = CreateTickTimer();
+            //        break;
 
-//			// todo make config data driven
-//			var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
-//			return simulation;
-//		}
-//	}
-//}
+            //    case InternalGameState.Finalizing:
+            //        DestroyTimer(_tickTimer);
+            //        BroadcastSimulation(ServerEventCode.GameFinalized, _simulation);
+            //        break;
+            //}
+
+            //_internalState = toState;
+        }
+
+        //private void BroadcastSimulation(ServerEventCode eventCode, ITAlert.Simulation.Simulation simulation)
+        //{
+        //    Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
+        //        (byte)eventCode,
+        //        _simulation);
+        //}
+
+        //private object CreateTickTimer()
+        //{
+        //    return Plugin.PluginHost.CreateTimer(
+        //        Tick,
+        //        _tickIntervalMS,
+        //        _tickIntervalMS);
+        //}
+
+        //private void DestroyTimer(object timer)
+        //{
+        //    Plugin.PluginHost.StopTimer(timer);
+        //}
+
+        //private ITAlert.Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
+        //{
+        //    var players = Plugin.PluginHost.GameActorsActive.Select(p =>
+        //    {
+        //        var player = PlayerManager.Get(p.ActorNr);
+
+        //        return new PlayerConfig
+        //        {
+        //            ExternalId = player.PhotonId,
+        //            Name = player.Name,
+        //            Colour = "#" + player.Color,
+        //        };
+        //    }).ToList();
+
+        //    // todo make config data driven
+        //    var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
+        //    return simulation;
+        //}
+    }
+}

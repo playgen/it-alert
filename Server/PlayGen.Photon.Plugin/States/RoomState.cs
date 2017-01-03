@@ -2,7 +2,7 @@
 using PlayGen.Photon.Players;
 using PlayGen.Photon.SUGAR;
 
-namespace PlayGen.Photon.Plugin
+namespace PlayGen.Photon.Plugin.States
 {
     public abstract class RoomState : GameWork.Core.States.State
     {

@@ -1,6 +1,6 @@
 ﻿using PlayGen.Photon.Messaging;
 
-namespace PlayGen.Photon.Messages
+namespace PlayGen.Photon.Messages.Players
 {
     public abstract class PlayersMessage : Message
     {

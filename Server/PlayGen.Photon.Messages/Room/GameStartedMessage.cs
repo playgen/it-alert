@@ -2,7 +2,7 @@
 
 namespace PlayGen.Photon.Messages.Room
 {
-    public  abstract class RoomMessage : Message
+    public class GameStartedMessage : Message
     {
         public override int Channel => (int)Channels.Room;
     }

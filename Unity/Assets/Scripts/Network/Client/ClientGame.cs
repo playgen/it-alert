@@ -1,5 +1,4 @@
-﻿using PlayGen.ITAlert.Photon.Serialization;
-using PlayGen.Photon.Unity;
+﻿using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.Network.Client
 {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.Photon.Messages.Room;
 using PlayGen.Photon.Players;
 using UnityEngine;
 
@@ -38,7 +38,7 @@ public class LobbyController : ICommandAction
             if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
                 Debug.Log("All Ready!");
-                _client.CurrentRoom.StartGame(true); // force start = true?
+                StartGame(true); // force start = true?
             }
         }
     }
@@ -73,6 +73,15 @@ public class LobbyController : ICommandAction
         _client.CurrentRoom.UpdatePlayer(player);
 
         RefreshPlayerList();
+    }
+
+    public void StartGame(bool forceStart, bool closeRoom = true)
+    {
+        _client.CurrentRoom.Messenger.SendMessage(new StartGameMessage
+        {
+            Force = forceStart,
+            Close = closeRoom,
+        });
     }
 
     public struct LobbyPlayer

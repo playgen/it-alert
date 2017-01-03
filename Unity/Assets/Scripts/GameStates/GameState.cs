@@ -1,12 +1,7 @@
-﻿using System;
-using GameWork.Core.States;
+﻿using GameWork.Core.States;
 using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
