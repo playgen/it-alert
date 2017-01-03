@@ -13,17 +13,18 @@ public class GamesListStateInterface : StateInterface
 	private GameObject _joinGamePanel;
 	private GameObject _gameListObject;
 	private GameObject _gameItemPrefab;
+	private ButtonList _buttons;
 
 	public override void Initialize()
 	{
 		// Join Game Popup
 		_joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
-		var panelButtons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
+		_buttons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
 
-		var backButton = panelButtons.GetButton("BackButtonContainer");
+		var backButton = _buttons.GetButton("BackButtonContainer");
 		backButton.onClick.AddListener(OnBackClick);
 
-		var refreshButton = panelButtons.GetButton("RefreshButtonContainer");
+		var refreshButton = _buttons.GetButton("RefreshButtonContainer");
 		refreshButton.onClick.AddListener(OnRefreshClick);
 
 		_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
@@ -44,6 +45,7 @@ public class GamesListStateInterface : StateInterface
 	public override void Enter()
 	{
 		_joinGamePanel.SetActive(true);
+		_buttons.BestFit();
 		OnRefreshClick();
 	}
 	public override void Exit()
@@ -68,7 +70,7 @@ public class GamesListStateInterface : StateInterface
 		{
 			GameObject.Destroy(child.gameObject);
 		}
-		var offset = 0f;
+		var offset = 0.5f;
 		var height = _gameItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
 		// Populate Game list UI
 		foreach (var room in rooms)
@@ -77,7 +79,7 @@ public class GamesListStateInterface : StateInterface
 			var name = room.name;
 			gameItem.FindChild("Name").GetComponent<Text>().text = name;
 			gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" + room.maxPlayers.ToString();
-			gameItem.SetParent(_gameListObject.transform);
+			gameItem.SetParent(_gameListObject.transform, false);
 
 			// set anchors
 			var gameItemRect = gameItem.GetComponent<RectTransform>();

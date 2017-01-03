@@ -20,5 +20,5 @@ function CopyGameworkComponent([string] $sourceDir, [string] $destDir)
     Get-ChildItem -Path $sourceDir | Copy-Item -Destination $destDir -Recurse -Container
 }
 
-CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Core" "..\Unity\Assets\GameWork\Core"
-CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Unity" "..\Unity\Assets\GameWork\Unity"
+CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Core" "..\Unity\Assets\Plugins\GameWork\Core"
+CopyGameworkComponent "..\GameWork.Unity\UnityProject\Assets\GameWork\Unity" "..\Unity\Assets\Plugins\GameWork\Unity"
