@@ -46,9 +46,7 @@ namespace PlayGen.ITAlert.Network.Client
 			_photonClient.ConnectedEvent += OnConnected;
 			_photonClient.DisconnectedEvent += OnDisconnected;
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
-			_photonClient.LeftRoomEvent += OnLeftRoom;
-			
-			//_photonClient.Connect();
+			_photonClient.LeftRoomEvent += OnLeftRoom;		
 		}
 
 		public void Connect()

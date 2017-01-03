@@ -7,10 +7,11 @@ using PlayGen.ITAlert.Network.Client;
 
 namespace PlayGen.Photon.Unity
 {
-	public class PhotonClient : PunBehaviour
+	public class PhotonClient : PunBehaviour, IDisposable
 	{
 		private string _gameVersion;
 		private string _gamePlugin;
+		private bool _isDisposed;
 
 		public event Action<byte, object, int> EventRecievedEvent;
 		public event Action ConnectedEvent;
@@ -20,7 +21,7 @@ namespace PlayGen.Photon.Unity
 		public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
 		public event Action<PhotonPlayer> OtherPlayerLeftRoomEvent;
 
-        public PhotonPlayer Player
+		public PhotonPlayer Player
 		{
 			get { return PhotonNetwork.player; }
 		}
@@ -81,7 +82,12 @@ namespace PlayGen.Photon.Unity
 		{
 			get { return PhotonNetwork.playerList; }
 		}
-		
+
+		~PhotonClient()
+		{
+			Dispose();
+		}
+
 		public void Initialize(string gameVersion, string gamePlugin)
 		{
 			_gameVersion = gameVersion;
@@ -89,6 +95,15 @@ namespace PlayGen.Photon.Unity
 
 			PhotonNetwork.autoJoinLobby = true;
 			PhotonNetwork.OnEventCall += OnPhotonEvent;
+		}
+
+		public void Dispose()
+		{
+			if (_isDisposed) return;
+
+			PhotonNetwork.OnEventCall -= OnPhotonEvent;
+
+			_isDisposed = true;
 		}
 
 		public bool Connect()
@@ -330,14 +345,14 @@ namespace PlayGen.Photon.Unity
 
 		private void OnPhotonEvent(byte eventCode, object content, int senderId)
 		{
-            if (EventRecievedEvent == null)
-            {
-                Log("Event Recieved but no event callbacks have been connected.");
-                return;
-            }
+			if (EventRecievedEvent == null)
+			{
+				Log("Event Recieved but no event callbacks have been connected.");
+				return;
+			}
 
-            EventRecievedEvent(eventCode, content, senderId);
-        }
+			EventRecievedEvent(eventCode, content, senderId);
+		}
 
 		#endregion
 
@@ -351,12 +366,12 @@ namespace PlayGen.Photon.Unity
 			}
 		}
 
-	    public override void OnFailedToConnectToPhoton(DisconnectCause cause)
-	    {
-	        Log("Failed to Connect to Photon: " + cause);
-	    }
+		public override void OnFailedToConnectToPhoton(DisconnectCause cause)
+		{
+			Log("Failed to Connect to Photon: " + cause);
+		}
 
-	    public override void OnJoinedLobby()
+		public override void OnJoinedLobby()
 		{
 			if (ConnectedEvent != null)
 			{
@@ -409,9 +424,9 @@ namespace PlayGen.Photon.Unity
 
 		private void Log(string message)
 		{
-            // todo use gamework logger
+			// todo use gamework logger
 			Debug.Log("Network.PhotonClient: " + message);
-            // todo make event based
+			// todo make event based
 			PopupUtility.LogError("Network.PhotonClient: " + message);
 		}
 	}
