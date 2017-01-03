@@ -17,6 +17,8 @@ namespace Engine.Components.Property
 			MaxValue = maxValue;
 			MinValue = minValue;
 		}
+
+		public abstract float GetValueAsProportion();
 	}
 
 	public abstract class RangedIntegerProperty : RangedNumericProperty<int>
@@ -33,6 +35,12 @@ namespace Engine.Components.Property
 			value = Math.Max(MinValue, Math.Min(MaxValue, value));
 			base.SetValue(value);
 		}
+
+		public override float GetValueAsProportion()
+		{
+			var range = (MaxValue - MinValue);
+			return range > 0 ? Value / range : 0;
+		}
 	}
 
 	public abstract class RangedDoubleProperty : RangedNumericProperty<double>
@@ -48,6 +56,34 @@ namespace Engine.Components.Property
 		{
 			value = Math.Max(MinValue, Math.Min(MaxValue, value));
 			base.SetValue(value);
+		}
+
+		public override float GetValueAsProportion()
+		{
+			var range = (MaxValue - MinValue);
+			return (float) (range > 0 ? Value / range : 0);
+		}
+	}
+
+	public abstract class RangedFloatProperty : RangedNumericProperty<float>
+	{
+		protected RangedFloatProperty(float value,
+			float minValue,
+			float maxValue)
+			: base(value, minValue, maxValue)
+		{
+		}
+
+		public override void SetValue(float value)
+		{
+			value = Math.Max(MinValue, Math.Min(MaxValue, value));
+			base.SetValue(value);
+		}
+
+		public override float GetValueAsProportion()
+		{
+			var range = (MaxValue - MinValue);
+			return range > 0 ? Value / range : 0;
 		}
 	}
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Engine.Components;
 using Engine.Entities;
+using Engine.Util;
 
-namespace Engine.bin
+namespace Engine.Components
 {
 	public class ComponentRegistry : ComponentRegistry<IComponent>
 	{
@@ -14,15 +14,22 @@ namespace Engine.bin
 	public class ComponentRegistry<TComponent>
 		where TComponent : IComponent
 	{
-		private readonly Dictionary<Type, Type> _componentInterfaces;
+		//private readonly Dictionary<Type, Type> _componentInterfaces;
 
-
+		private Dictionary<Type, HashSet<Type>> _componentTypeImplementations;
+		
 		private readonly Dictionary<Type, HashSet<ComponentEntityTuple<TComponent>>> _componentEntities;
 
 		public ComponentRegistry()
 		{
-			_componentInterfaces = new Dictionary<Type, Type>();
+			//_componentInterfaces = new Dictionary<Type, Type>();
 			_componentEntities = new Dictionary<Type, HashSet<ComponentEntityTuple<TComponent>>>();
+
+			_componentTypeImplementations = ModuleLoader.GetTypesImplementing<TComponent>()
+				.SelectMany(componentType => componentType.GetInterfaces()
+					.Select(componentInterface => new {ComponentType = componentType, Interface = componentInterface}))
+				.GroupBy(componentTuple => componentTuple.Interface)
+				.ToDictionary(k => k.Key, v => new HashSet<Type>(v.Select(componentTuple => componentTuple.ComponentType)));
 		}
 
 		public void AddComponentBinding(Entity entity, TComponent component)

@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Components;
 //using Engine.Messaging;
 using Engine.Serialization;
 using Engine.Util;
@@ -14,20 +15,23 @@ namespace Engine.Entities
 
 		protected bool _disposed;
 
+		protected EntityRegistry EntityRegistry { get; }
+
 		#region constructors
 
-		public Entity()
-			: base()
+		public Entity(EntityRegistry entityRegistry, ComponentRegistry componentRegistry)
+			: base(componentRegistry)
 		{
+			EntityRegistry = entityRegistry;
 		}
 
 		#endregion
 
 		public event EntityDelegate EntityDestroyed;
 
-		public void Reset(int id)
+		public void Initialize()
 		{
-			Id = id;
+			Id = EntityRegistry.NextEntityId;
 			_disposed = false;
 
 			Components.Clear();
@@ -45,9 +49,13 @@ namespace Engine.Entities
 
 		public override void Dispose()
 		{
-			_disposed = true;
-			RaiseEntityDestroyed();
-			base.Dispose();
+			//TODO: interlock this perhaps, once we want to support multithreading
+			if (_disposed == false)
+			{
+				_disposed = true;
+				RaiseEntityDestroyed();
+				base.Dispose();
+			}
 		}
 
 		~Entity()
@@ -56,10 +64,6 @@ namespace Engine.Entities
 		}
 
 		#endregion
-
-
-		protected EntityRegistry EntityRegistry { get; set; }
-
 
 		public bool Equals(Entity other)
 		{

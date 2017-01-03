@@ -7,9 +7,9 @@ using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Systems
 {
-	public class ItemManagement : Engine.Systems.System
+	public class SubsystemResources : Engine.Systems.System
 	{
-		public ItemManagement(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
+		public SubsystemResources(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
 			: base(componentRegistry, entityRegistry)
 		{
 		}

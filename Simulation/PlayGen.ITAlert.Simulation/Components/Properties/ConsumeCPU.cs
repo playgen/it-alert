@@ -2,15 +2,15 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
 {
-	public class ConsumeMemory : Property<int>
+	public class ConsumeCPU : Property<int>
 	{
-		public ConsumeMemory() 
+		public ConsumeCPU() 
 			: base(1)
 		{
 
 		}
 
-		public ConsumeMemory(int value) 
+		public ConsumeCPU(int value) 
 			: base(value)
 		{
 		}

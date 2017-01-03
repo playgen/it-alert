@@ -78,9 +78,11 @@
     <Compile Include="Serialization\StateLevel.cs" />
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="Systems\ISystem.cs" />
+    <Compile Include="Systems\ISystemComponent.cs" />
     <Compile Include="Systems\ISystemRegistry.cs" />
     <Compile Include="Systems\System.cs" />
     <Compile Include="Systems\SystemRegistry.cs" />
+    <Compile Include="Util\ModuleLoader.cs" />
     <Compile Include="Util\NotNullHelper.cs" />
   </ItemGroup>
   <ItemGroup>
