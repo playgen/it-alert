@@ -10,8 +10,6 @@ using UnityEngine.SceneManagement;
 
 namespace PlayGen.ITAlert.GameStates
 {
-	using System.Linq;
-
 	public class GameState : TickableSequenceState
 	{
 		public const string StateName = "GameState";
@@ -32,98 +30,82 @@ namespace PlayGen.ITAlert.GameStates
 			_client = client;
 			_interface = @interface;
 			_stateController = new TickableStateController(new InitializingState(_client),
-				new PlayingState(_client),
-				new FinalizingState(_client));
+				new PlayingState(new PlayingStateInterface(), _client),
+				new PausedState(new PausedStateInterface(), _client),
+				new FinalizingState(_client),
+				new SettingsState(new SettingsStateInterface()));
 
+			_stateController.ChangeParentStateEvent += ChangeState;
 			_lobbyController = lobbyController;
 			_voiceController = voiceController;
+		}
+
+		public override void Terminate()
+		{
+			_stateController.ChangeParentStateEvent -= ChangeState;
 		}
 
 		public override void Enter()
 		{
 			_stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
-
-			
-			
-			SceneManager.LoadScene("Network", LoadSceneMode.Additive);
-			SceneManager.activeSceneChanged += SceneLoaded;
-			Debug.Log(SceneManager.GetActiveScene().name);
-			
-		}
-
-		private void SceneLoaded(Scene arg0, Scene scene)
-		{
-			Debug.Log(SceneManager.GetActiveScene().name);
-
-			Director.Client = _client;
-
 			_interface.Initialize();
-			if (_client != null && _client.CurrentRoom != null)
-			{
-				_interface.SetPlayerColors(_client.CurrentRoom.Players);
-				_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
-			}
+			_interface.SetPlayerColors(_client.CurrentRoom.Players);
+			_interface.PopulateChatPanel(_client.CurrentRoom.ListCurrentRoomPlayers);
 		}
 
 		public override void Exit()
 		{
+			_interface.Exit();
 			_stateController.Terminate();
-
-			SceneManager.UnloadScene("Network");
 		}
 
 		public override void Tick(float deltaTime)
 		{
 			_voiceController.HandleVoiceInput();
 
-			if (_client != null && _client.CurrentRoom != null)
+			switch (_client.CurrentRoom.CurrentGame.State)
 			{
-				switch (_client.CurrentRoom.CurrentGame.State)
-				{
-					case Assets.Scripts.Network.Client.GameStates.Initializing:
-						if (_stateController.ActiveState != InitializingState.StateName)
-						{
-							_stateController.ChangeState(InitializingState.StateName);
-						}
-						else
-						{
-							_stateController.Tick(deltaTime);
-						}
-						break;
+				case Assets.Scripts.Network.Client.GameStates.Initializing:
+					if (_stateController.ActiveState != InitializingState.StateName)
+					{
+						_stateController.ChangeState(InitializingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
 
-					case Assets.Scripts.Network.Client.GameStates.Playing:
-						if (_stateController.ActiveState != PlayingState.StateName)
-						{
-							_stateController.ChangeState(PlayingState.StateName);
-						}
-						else
-						{
-							_stateController.Tick(deltaTime);
-						}
-						break;
+				case Assets.Scripts.Network.Client.GameStates.Playing:
+					if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
+					{
+						_stateController.ChangeState(PlayingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
 
-					case Assets.Scripts.Network.Client.GameStates.Finalizing:
-
-
-						if (_stateController.ActiveState != FinalizingState.StateName)
-						{
-							_stateController.ChangeState(FinalizingState.StateName);
-						}
-						else
-						{
-							_stateController.Tick(deltaTime);
-						}
-						break;
-				}
-
+				case Assets.Scripts.Network.Client.GameStates.Finalizing:
+					if (_stateController.ActiveState != FinalizingState.StateName)
+					{
+						_stateController.ChangeState(FinalizingState.StateName);
+					}
+					else
+					{
+						_stateController.Tick(deltaTime);
+					}
+					break;
 			}
+
 			_interface.UpdateChatPanel();
 		}
 
 		public override void NextState()
 		{
-			ChangeState(LobbyState.StateName);
+			ChangeState(MainMenuState.StateName);
 		}
 
 		public override void PreviousState()

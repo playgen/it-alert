@@ -20,7 +20,7 @@ namespace PlayGen.ITAlert.PhotonPlugins
         public override string Name => PluginName;
 
         private readonly RoomStateController _stateController;
-        private readonly PlayerManager _playerManager = new PlayerManager();
+        private readonly Photon.Players.PlayerManager _playerManager = new Photon.Players.PlayerManager();
 
         public RoomControllerPlugin() : base()
         {
@@ -37,6 +37,13 @@ namespace PlayGen.ITAlert.PhotonPlugins
                 case (byte)PlayerEventCode.ListPlayers:
                     this.BroadcastSpecific(new List<int>() {info.ActorNr},  
                         ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                    break;
+
+                case (byte)PlayerEventCode.ChangeExternalId:
+                    if (_playerManager.ChangeExternalId(info.ActorNr, (int)info.Request.Data))
+                    {
+                        this.BroadcastAll(ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
+                    }
                     break;
 
                 case (byte)PlayerEventCode.ChangeName:
@@ -93,13 +100,13 @@ namespace PlayGen.ITAlert.PhotonPlugins
 
         private void AddPlayer(int playerId)
         {
-            var existingPlayerIds = _playerManager.Players.Select(p => p.Id).ToList();
+            var existingPlayerIds = _playerManager.Players.Select(p => p.PhotonId).ToList();
 
             var name = "player" + playerId;
-            var status = PlayerStatuses.NotReady;
+            var status = PlayerStatus.NotReady;
             var color = _playerManager.Players.GetUnusedColor();
 
-            _playerManager.Create(playerId, name, color, status);
+            _playerManager.Create(playerId, null, name, color, status);
 
             this.BroadcastSpecific(existingPlayerIds, ServerPlayerId, (byte)ServerEventCode.PlayerList, _playerManager.Players);
         }

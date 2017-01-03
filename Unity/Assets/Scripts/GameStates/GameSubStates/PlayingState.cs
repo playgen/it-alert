@@ -4,46 +4,66 @@ using PlayGen.ITAlert.Network.Client;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-    public class PlayingState : TickableSequenceState
-    {
-        public const string StateName = "Playing";
+	public class PlayingState : TickableSequenceState
+	{
+		private readonly PlayingStateInterface _interface;
+		public const string StateName = "Playing";
 
-        private readonly Client _networkClient;
+		private readonly Client _networkClient;
 
-        public override string Name
-        {
-            get { return StateName; }
-        }
+		public override string Name
+		{
+			get { return StateName; }
+		}
 
-        public PlayingState(Client networkClient)
-        {
-            _networkClient = networkClient;
-        }
+		public PlayingState(PlayingStateInterface @interface, Client networkClient)
+		{
+			_interface = @interface;
+			_networkClient = networkClient;
+		}
 
-        public override void Enter()
-        {
-        }
+		public override void Initialize()
+		{
+			_interface.Initialize();
+		}
 
-        public override void Exit()
-        {
-        }
+		public override void Enter()
+		{
+			_interface.Enter();
+		}
 
-        public override void NextState()
-        {
-            ChangeState(FinalizingState.StateName);
-        }
+		public override void Exit()
+		{
+			_interface.Exit();
+		}
 
-        public override void PreviousState()
-        {
-        }
+		public override void NextState()
+		{
+			ChangeState(FinalizingState.StateName);
+		}
 
-        public override void Tick(float deltaTime)
-        {
-            if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
-            {
-                Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
-                Director.Refresh();
-            }
-        }
-    }
+		public override void PreviousState()
+		{
+		}
+
+		public override void Tick(float deltaTime)
+		{
+			_interface.Tick(deltaTime);
+			if (_interface.HasCommands)
+			{
+				if (_interface.HasCommands)
+				{
+					var command = _interface.TakeFirstCommand();
+
+					var commandResolver = new StateCommandResolver();
+					commandResolver.HandleSequenceStates(command, this);
+				}
+			}
+			if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+			{
+				Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
+				Director.Refresh();
+			}
+		}
+	}
 }

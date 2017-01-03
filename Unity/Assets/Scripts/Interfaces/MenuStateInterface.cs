@@ -4,75 +4,84 @@ using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 
-public class MenuStateInterface : StateInterface
+public class MenuStateInterface : TickableStateInterface
 {
-    private GameObject _mainMenuPanel;
-    private GameObject _createGamePopup;
+	private GameObject _mainMenuPanel;
+	private GameObject _createGamePopup;
+	private ButtonList _buttons;
 
-    public override void Initialize()
-    {
-        // Main Menu
-        _mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
-        var menu = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer", true);
+	public override void Initialize()
+	{
+		// Main Menu
+		_mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
+		_buttons = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer");
 
-        var logoutButton = menu.GetButton("LogoutButtonContainer");
-        logoutButton.onClick.AddListener(OnLogoutClick);
+		var quitButton = _buttons.GetButton("QuitButtonContainer");
+		quitButton.onClick.AddListener(OnQuitClick);
 
-        var createGameButton = menu.GetButton("CreateGameButtonContainer");
-        createGameButton.onClick.AddListener(OnCreateGameClick);
+		var createGameButton = _buttons.GetButton("CreateGameButtonContainer");
+		createGameButton.onClick.AddListener(OnCreateGameClick);
 
-        var joinGameButton = menu.GetButton("JoinGameButtonContainer");
-        joinGameButton.onClick.AddListener(OnJoinGameClick);
+		var joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
+		joinGameButton.onClick.AddListener(OnJoinGameClick);
 
-        var quickMatchButton = menu.GetButton("QuickMatchButtonContainer");
-        quickMatchButton.onClick.AddListener(OnQuickMatchClick);
+		var quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
+		quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 
-        var settingsButton = menu.GetButton("SettingsButtonContainer");
-        settingsButton.onClick.AddListener(OnSettingsClick);
-    }
+		var settingsButton = _buttons.GetButton("SettingsButtonContainer");
+		settingsButton.onClick.AddListener(OnSettingsClick);
+	}
 
-    private void OnJoinGameClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
-    }
+	private void OnJoinGameClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
+	}
 
-    private void OnCreateGameClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
-    }
+	private void OnCreateGameClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
+	}
 
-    private void OnQuickMatchClick()
-    {
-        EnqueueCommand(new QuickGameCommand());
-    }
+	private void OnQuickMatchClick()
+	{
+		EnqueueCommand(new QuickGameCommand());
+	}
 
-    private void OnSettingsClick()
-    {
-        EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
-    }
+	private void OnSettingsClick()
+	{
+		EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
+	}
 
-    private void OnLogoutClick()
-    {
-        //EnqueueCommand(new LogoutCommand());
-        EnqueueCommand(new PreviousStateCommand());
-    }
+	private void OnQuitClick()
+	{
+		Application.Quit();
+	}
 
+	public override void Enter()
+	{
+		_mainMenuPanel.SetActive(true);
+		_buttons.BestFit();
+	}
 
-    public override void Enter()
-    {
-        _mainMenuPanel.SetActive(true);
-    }
+	public override void Exit()
+	{
+		_mainMenuPanel.SetActive(false);
+	}
 
-    public override void Exit()
-    {
-        _mainMenuPanel.SetActive(false);
-    }
+	public override void Tick(float deltaTime)
+	{
+		if (Input.GetKeyDown(KeyCode.Escape))
+		{
+			OnQuitClick();
+		}
+	}
 
-    public void OnJoinGameSuccess(ClientRoom clientRoom)
-    {
-        EnqueueCommand(new NextStateCommand());
-    }
+	public void OnJoinGameSuccess(ClientRoom clientRoom)
+	{
+		EnqueueCommand(new NextStateCommand());
+	}
 }
