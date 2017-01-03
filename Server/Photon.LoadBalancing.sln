@@ -53,10 +53,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SUGAR", "SUGAR", "{0921E0BF-7350-4334-BFB3-86CEEE267F6C}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PlayGen.SUGAR.Common.Shared", "..\SUGAR\src\PlayGen.SUGAR.Common.Shared\PlayGen.SUGAR.Common.Shared.shproj", "{A2DCBA7A-E50F-4CA3-B521-8B42E77C4E38}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "PlayGen.SUGAR.Contracts.Shared", "..\SUGAR\src\PlayGen.SUGAR.Contracts.Shared\PlayGen.SUGAR.Contracts.Shared.shproj", "{EBA79D21-610F-4A2E-B4C2-DB3F5786F057}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		..\SUGAR\src\PlayGen.SUGAR.Common.Shared\PlayGen.SUGAR.Common.Shared.projitems*{a2dcba7a-e50f-4ca3-b521-8b42e77c4e38}*SharedItemsImports = 13
 		..\SUGAR\src\PlayGen.SUGAR.Common.Shared\PlayGen.SUGAR.Common.Shared.projitems*{e7b6c8dc-262e-4b9d-85e3-2e6ae0467018}*SharedItemsImports = 4
 		..\SUGAR\src\PlayGen.SUGAR.Contracts.Shared\PlayGen.SUGAR.Contracts.Shared.projitems*{e7b6c8dc-262e-4b9d-85e3-2e6ae0467018}*SharedItemsImports = 4
+		..\SUGAR\src\PlayGen.SUGAR.Contracts.Shared\PlayGen.SUGAR.Contracts.Shared.projitems*{eba79d21-610f-4a2e-b4c2-db3f5786f057}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_Unity_Client|Any CPU = Debug_Unity_Client|Any CPU
@@ -326,5 +332,7 @@ Global
 		{DC88053B-F802-47E1-9BE4-A7E9F795858D} = {57634896-ACC7-4570-9B80-A1E7BB24E092}
 		{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00} = {57634896-ACC7-4570-9B80-A1E7BB24E092}
 		{320609A9-59D3-4DF2-9324-A44260C258F5} = {57634896-ACC7-4570-9B80-A1E7BB24E092}
+		{A2DCBA7A-E50F-4CA3-B521-8B42E77C4E38} = {0921E0BF-7350-4334-BFB3-86CEEE267F6C}
+		{EBA79D21-610F-4A2E-B4C2-DB3F5786F057} = {0921E0BF-7350-4334-BFB3-86CEEE267F6C}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-#must be executed from the Tools folder
+# Must be executed from the Tools folder
 
 $msbuild = "C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe"
 
@@ -14,8 +14,10 @@ function Build
 }
 
 
-Build "SUGAR" "PlayGen.SUGAR.sln" "Debug_Unity_Client"
+#Build "SUGAR" "PlayGen.SUGAR.sln" "Debug"
 
-Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
+#Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
 
-Build "Server" "Photon.Loadbalancing.sln" "Unity Debug"
+#Build "Server" "Photon.Loadbalancing.sln" "Unity Debug"
+
+#Build "GameWork.Unity" "GameWork.Unity.sln" "Unity Debug"
