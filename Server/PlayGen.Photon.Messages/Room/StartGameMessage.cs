@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Photon.Messages.Room
+﻿namespace PlayGen.Photon.Messages.Room
 {
     public class StartGameMessage : RoomMessage
     {

@@ -11,7 +11,8 @@ namespace PlayGen.ITAlert.Photon.Plugin
     {
         public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
         {
-            return new RoomStateController(new LobbyState(photonPlugin, messenger, playerManager, sugarController));
+            return new RoomStateController(new LobbyState(photonPlugin, messenger, playerManager, sugarController), 
+                new GameState(photonPlugin, messenger, playerManager, sugarController));
         }
     }
 }

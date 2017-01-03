@@ -6,8 +6,8 @@ using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Messaging;
 using PlayGen.Photon.Messaging;
 using System.Collections.Generic;
-using PlayGen.ITAlert.Photon.Messages.Room;
 using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messages.Players;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -21,7 +21,6 @@ namespace PlayGen.ITAlert.Network.Client
 
         private bool _isDisposed;
 
-        public event Action<ClientGame> GameEnteredEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
         public event Action<PhotonPlayer> OtherPlayerLeftEvent;
         public event Action<List<Player>> PlayerListUpdatedEvent;
@@ -99,15 +98,6 @@ namespace PlayGen.ITAlert.Network.Client
             });
         }
 
-        public void StartGame(bool forceStart, bool closeRoom = true)
-        {
-            Messenger.SendMessage(new StartGameMessage
-            {
-                Force = forceStart,
-                Close = closeRoom,
-            });
-        }
-
         public void OnRecievedEvent(byte eventCode, object content, int senderId)
         {
             if (eventCode == (byte) PlayGen.Photon.Messaging.EventCode.Message)
@@ -145,22 +135,6 @@ namespace PlayGen.ITAlert.Network.Client
                 }
                 return;
             }
-        }
-
-        // todo subscribe
-        private void ProcessRoomMessage(Message message)
-        {
-            //    case (byte)ServerEventCode.GameEntered:
-
-            //        CurrentGame = new ClientGame(_photonClient);
-
-            //        if (GameEnteredEvent != null)
-            //        {
-            //            GameEnteredEvent(CurrentGame);
-            //        }
-            //        break;
-            //}
-
         }
 
         internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)

@@ -1,6 +1,6 @@
 ﻿using PlayGen.Photon.Players;
 
-namespace PlayGen.Photon.Messages
+namespace PlayGen.Photon.Messages.Players
 {
     public class UpdatePlayerMessage : PlayersMessage
     {

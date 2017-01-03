@@ -1,5 +1,6 @@
 ﻿using GameWork.Core.States.Controllers;
 using Photon.Hive.Plugin;
+using PlayGen.Photon.Plugin.States;
 
 namespace PlayGen.Photon.Plugin
 {

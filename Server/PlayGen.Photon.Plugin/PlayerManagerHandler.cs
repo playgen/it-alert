@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Players.Extensions;
@@ -51,6 +52,8 @@ namespace PlayGen.Photon.Plugin
                 UpdatePlayer(updatePlayerMessage.Player);
                 return;
             }
+
+            throw new Exception($"Unhandled Players Message: ${message}");
         }
 
         public void AddAndBroadcastPlayer(int playerId)

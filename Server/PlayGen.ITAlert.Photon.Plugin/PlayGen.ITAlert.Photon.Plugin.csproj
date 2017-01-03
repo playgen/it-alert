@@ -55,9 +55,17 @@
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
+      <Project>{02999433-BC54-495B-89F2-9075BB5D0082}</Project>
+      <Name>PlayGen.ITAlert.Photon.Messages</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
+      <Project>{E5664C3B-0B84-46FF-84D2-3603B9202C6F}</Project>
+      <Name>PlayGen.Photon.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
       <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>

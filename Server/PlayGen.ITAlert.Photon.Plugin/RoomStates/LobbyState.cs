@@ -1,7 +1,14 @@
-﻿using Photon.Hive.Plugin;
+﻿using System;
+using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
+using PlayGen.Photon.Plugin.States;
+using PlayGen.Photon.Messaging;
+using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messages.Players;
+using PlayGen.Photon.Messages.Room;
+using PlayGen.Photon.Plugin.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -9,71 +16,57 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
     {
         public const string StateName = "Lobby";     
 
-        public override string Name
-        {
-            get { return StateName; }
-        }
+        public override string Name => StateName;
 
         public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
             : base(photonPlugin, messenger, playerManager, sugarController)
         {
-            // todo Listen for start game message
         }
-
-        #region Events
-        //public override void OnRaiseEvent(IRaiseEventCallInfo info)
-        //{
-        //    switch (info.Request.EvCode)
-        //    {
-        //        //case (byte)ClientEventCode.SetReady:
-        //        //    ChangePlayerStatus(info.ActorNr, PlayerStatus.Ready);
-        //        //    break;
-
-        //        //case (byte)ClientEventCode.SetNotReady:
-        //        //    ChangePlayerStatus(info.ActorNr, PlayerStatus.NotReady);
-        //        //    break;
-
-        //        //case (byte)ClientEventCode.StartGame:
-        //        //    var data = (bool[])info.Request.Data;
-        //        //    StartGame(data[0], data[1]);
-        //        //    break;
-        //    }
-        //}
-
-        #endregion
 
         public override void Enter()
         {
-            //PlayerManager.ChangeAllStatuses(PlayerStatus.NotReady);
-            //Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
-            //Messenger.Subscribe();
+            Messenger.Subscribe((int)Channels.Room, ProcessRoomMessage);
+
+            ResetAllPlayerStatuses();
         }
 
         public override void Exit()
         {
-            //Messenger.Unsubscribe();
+            Messenger.Unsubscribe((int)Channels.Room, ProcessRoomMessage);
+        }
+
+        private void ProcessRoomMessage(Message message)
+        {
+            var startGameMessage = message as StartGameMessage;
+            if (startGameMessage != null)
+            {
+                StartGame(startGameMessage.Force, startGameMessage.Close);
+                return;
+            }
+
+            throw new Exception($"Unhandled Room Message: ${message}");
+        }
+
+        private void ResetAllPlayerStatuses()
+        {
+            PlayerManager.ChangeAllStatuses(PlayerStatus.NotReady);
+            Messenger.SendAllMessage(RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
+            {
+                Players = PlayerManager.Players,
+            });
         }
 
         private void StartGame(bool force, bool close)
         {
-            //if (force || PlayerManager.CombinedPlayerStatus == PlayerStatus.Ready)
-            //{
-            //    if (close)
-            //    {
-            //        Plugin.SetRoomOpen(false);
-            //    }
+            if (force || PlayerManager.CombinedPlayerStatus == PlayerStatus.Ready)
+            {
+                if (close)
+                {
+                    PhotonPlugin.SetRoomOpen(false);
+                }
 
-            //    ChangeState(GameState.StateName);
-            //}
+                ChangeState(GameState.StateName);
+            }
         }
-
-        //private void ChangePlayerStatus(int playerId, PlayerStatus status)
-        //{
-        //    var didChange = PlayerManager.ChangeStatus(playerId, status);
-        //    if (didChange)
-        //    {
-        //        Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.PlayerList, PlayerManager.Players);
-        //    }
-        //}
     }
 }
