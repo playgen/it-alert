@@ -16,7 +16,7 @@ public class FeedbackState : TickableSequenceState
     private readonly Client _client;
     private readonly FeedbackStateInterface _interface;
 
-    public override string Name
+	public override string Name
     {
         get { return StateName; }
     }
@@ -25,7 +25,7 @@ public class FeedbackState : TickableSequenceState
     {
         _client = client;
         _interface = @interface;
-    }
+	}
 
     public override void Initialize()
     {
@@ -40,7 +40,7 @@ public class FeedbackState : TickableSequenceState
     public override void Enter()
     {
         _interface.Enter();
-        _interface.PopulateFeedback(_client.CurrentRoom.Players);
+        _interface.PopulateFeedback(_client.CurrentRoom.Players, _client.CurrentRoom.Player);
     }
 
     public override void Exit()
@@ -50,8 +50,14 @@ public class FeedbackState : TickableSequenceState
 
     public override void Tick(float deltaTime)
     {
-        
-    }
+		if (_interface.HasCommands)
+		{
+			var command = _interface.TakeFirstCommand();
+
+			var commandResolver = new StateCommandResolver();
+			commandResolver.HandleSequenceStates(command, this);
+		}
+	}
 
     public override void NextState()
     {
