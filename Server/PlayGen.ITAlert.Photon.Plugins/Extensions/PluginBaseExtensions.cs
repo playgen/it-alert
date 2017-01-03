@@ -3,7 +3,7 @@ using Photon.Hive.Operations;
 using Photon.Hive.Plugin;
 using System.Collections;
 
-namespace PlayGen.ITAlert.PhotonPlugins.Extensions
+namespace PlayGen.ITAlert.Photon.Plugins.Extensions
 {
     using ExitGames.Client.Photon.LoadBalancing;
 

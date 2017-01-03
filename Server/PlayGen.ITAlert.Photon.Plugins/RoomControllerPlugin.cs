@@ -1,31 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Photon.Serialization;
-using PlayGen.ITAlert.PhotonPlugins.Extensions;
-using PlayGen.ITAlert.PhotonPlugins.RoomStates;
+using PlayGen.ITAlert.Photon.Plugins.Extensions;
+using PlayGen.ITAlert.Photon.Plugins.RoomStates;
 using PlayGen.ITAlert.Photon.Events;
+using PlayGen.ITAlert.Photon.SUGAR;
 
-namespace PlayGen.ITAlert.PhotonPlugins
+namespace PlayGen.ITAlert.Photon.Plugins
 {
     public class RoomControllerPlugin : PluginBase
     {
         public const string PluginName = "RoomControllerPlugin";
         public const int ServerPlayerId = 0;
+        
+        private readonly PlayerManager _playerManager = new PlayerManager();
+        private readonly Controller _sugarController = new Controller();
+        private readonly RoomStateController _stateController;
 
         public override string Name => PluginName;
 
-        private readonly RoomStateController _stateController;
-        private readonly Photon.Players.PlayerManager _playerManager = new Photon.Players.PlayerManager();
-
-        public RoomControllerPlugin() : base()
+        public RoomControllerPlugin()
         {
-            var lobbyState = new LobbyState(this, _playerManager);
-            var simulationState = new GameState(this, _playerManager);
+            var lobbyState = new LobbyState(this, _playerManager, _sugarController);
+            var simulationState = new GameState(this, _playerManager, _sugarController);
             
             _stateController = new RoomStateController(lobbyState, simulationState);
         }
