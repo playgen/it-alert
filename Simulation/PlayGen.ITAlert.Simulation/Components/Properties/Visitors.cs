@@ -23,13 +23,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		public override void Initialize(Entity entity)
 		{
 			base.Initialize(entity);
-			AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
+			// TODO: reimplement without RX
+			// AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
 		}
 
-		private void VisitorDestroyed(EntityDestroyedMessage entityDestroyedMessage)
-		{
-			Value.Remove(entityDestroyedMessage.Entity.Id);
-		}
+		//private void VisitorDestroyed(EntityDestroyedMessage entityDestroyedMessage)
+		//{
+		//	Value.Remove(entityDestroyedMessage.Entity.Id);
+		//}
 
 		public IComponentState GetState()
 		{

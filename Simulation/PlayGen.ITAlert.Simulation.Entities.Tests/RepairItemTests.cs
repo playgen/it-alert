@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Entities.Visitors.Items;
 
 namespace PlayGen.ITAlert.Simulation.Entities.Tests
 {

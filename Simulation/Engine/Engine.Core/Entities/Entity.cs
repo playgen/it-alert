@@ -1,5 +1,5 @@
 ﻿using System;
-using Engine.Messaging;
+//using Engine.Messaging;
 using Engine.Serialization;
 using Engine.Util;
 
@@ -7,7 +7,8 @@ namespace Engine.Entities
 {
 	public delegate void EntityDelegate(Entity entity);
 
-	public class Entity : MessageHub, IEquatable<Entity>
+	public class Entity : //MessageHub
+		ComponentContainer, IEquatable<Entity>
 	{
 		public int Id { get; protected set; }
 
@@ -38,7 +39,7 @@ namespace Engine.Entities
 		{
 			// TODO: reconsider using the event for the entity container
 			EntityDestroyed?.Invoke(this);
-			OnNext(new EntityDestroyedMessage(MessageScope.External, this));
+			//OnNext(new EntityDestroyedMessage(MessageScope.External, this));
 			EntityDestroyed = null;
 		}
 

@@ -1,11 +1,12 @@
 ﻿using System;
 using Engine.Entities;
-using Engine.Messaging;
+//using Engine.Messaging;
 using Engine.Util;
 
 namespace Engine.Components
 {
-	public abstract class Component : DelegatingObserver, IComponent
+	public abstract class Component : //DelegatingObserver, 
+		IComponent
 	{
 		private bool _disposed;
 

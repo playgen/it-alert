@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Engine.Components.Behaviour;
 using Engine.Entities;
-using Engine.Messaging;
+//using Engine.Messaging;
 
 namespace Engine.Components.Property
 {
@@ -27,7 +27,7 @@ namespace Engine.Components.Property
 			{
 				_value = currentTick;
 			
-				OnNext(new TickMessage(currentTick));
+				//OnNext(new TickMessage(currentTick));
 			}
 		}
 

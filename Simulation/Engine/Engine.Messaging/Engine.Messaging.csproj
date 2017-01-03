@@ -41,7 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DelegatingObserver.cs" />
+    <Compile Include="EntityDestroyedMessage.cs" />
+    <Compile Include="Extensions\DelegatingObserverExtensions.cs" />
+    <Compile Include="Extensions\MessageExtensions.cs" />
+    <Compile Include="Extensions\MessageScopeExtensions.cs" />
+    <Compile Include="IMessage.cs" />
+    <Compile Include="IMessageComponent.cs" />
+    <Compile Include="IMessageHub.cs" />
+    <Compile Include="Message.cs" />
+    <Compile Include="MessageHub.cs" />
+    <Compile Include="MessageScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TickMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

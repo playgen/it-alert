@@ -50,14 +50,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
-      <Project>{9771ff48-fabe-4f97-a041-ea6f39057812}</Project>
-      <Name>Engine.Components</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
-      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>Engine.Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Serialization.Tests\Engine.Serialization.Tests.csproj">
       <Project>{14c24ea9-dd64-4739-910b-7e0a91a5e84f}</Project>
       <Name>Engine.Serialization.Tests</Name>

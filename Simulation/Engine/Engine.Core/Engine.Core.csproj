@@ -33,10 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -61,30 +57,22 @@
     <Compile Include="Components\IComponentState.cs" />
     <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
+    <Compile Include="Components\IPropertyComponent.cs" />
     <Compile Include="Components\ITickableComponent.cs" />
+    <Compile Include="Components\Property.cs" />
+    <Compile Include="Components\RangedNumericProperty.cs" />
     <Compile Include="Components\StateBucket.cs" />
     <Compile Include="ECS.cs" />
     <Compile Include="EcsState.cs" />
     <Compile Include="Entities\ComponentContainer.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\EntityDestroyedMessage.cs" />
     <Compile Include="Entities\EntityExtensions.cs" />
     <Compile Include="Entities\EntityRegistry.cs" />
     <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
     <Compile Include="Exceptions\EngineException.cs" />
     <Compile Include="IECS.cs" />
-    <Compile Include="Messaging\DelegatingObserver.cs" />
-    <Compile Include="Messaging\Extensions\DelegatingObserverExtensions.cs" />
-    <Compile Include="Messaging\Extensions\MessageExtensions.cs" />
-    <Compile Include="Messaging\Extensions\MessageScopeExtensions.cs" />
-    <Compile Include="Messaging\IMessage.cs" />
-    <Compile Include="Messaging\IMessageComponent.cs" />
-    <Compile Include="Messaging\IMessageHub.cs" />
-    <Compile Include="Messaging\Message.cs" />
-    <Compile Include="Messaging\MessageHub.cs" />
-    <Compile Include="Messaging\MessageScope.cs" />
-    <Compile Include="Messaging\TickMessage.cs" />
+    <Compile Include="Planning\IIntent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\ISerializable.cs" />
     <Compile Include="Serialization\StateLevel.cs" />
@@ -96,7 +84,7 @@
     <Compile Include="Util\NotNullHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <Folder Include="Messaging\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

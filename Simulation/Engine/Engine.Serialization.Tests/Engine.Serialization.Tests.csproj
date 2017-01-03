@@ -37,10 +37,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Rx-Main.1.0.11226\lib\Net35\System.Reactive.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -51,10 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine.Entities\Engine.Entities.csproj">
-      <Project>{984830D2-F939-4485-922F-D55D835C89F7}</Project>
-      <Name>Engine.Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
       <Name>Engine.Serialization</Name>
@@ -63,9 +55,6 @@
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

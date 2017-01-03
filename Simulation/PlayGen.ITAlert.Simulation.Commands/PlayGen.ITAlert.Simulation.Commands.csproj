@@ -55,10 +55,6 @@
     <Compile Include="SpawnVirusCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Entities\Engine.Entities.csproj">
-      <Project>{984830d2-f939-4485-922f-d55d835c89f7}</Project>
-      <Name>Engine.Entities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>

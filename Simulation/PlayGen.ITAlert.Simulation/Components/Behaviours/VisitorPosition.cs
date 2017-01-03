@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Reactive.Disposables;
+//using System.Reactive.Disposables;
 using Engine.Components;
 using Engine.Entities;
 
@@ -13,17 +13,17 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 		public Entity Host { get; private set; }
 
-		private IDisposable _visitorSubscription;
+		//private IDisposable _visitorSubscription;
 
 		public void SetHost(Entity host)
 		{
 			Host = host;
-			_visitorSubscription?.Dispose();
-			_visitorSubscription = new CompositeDisposable
-			{
-				Host.Subscribe(Entity),
-				Entity.Subscribe(Host),
-			};
+			//_visitorSubscription?.Dispose();
+			//_visitorSubscription = new CompositeDisposable
+			//{
+			//	Host.Subscribe(Entity),
+			//	Entity.Subscribe(Host),
+			//};
 		}
 
 		/// <summary>
@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 		protected override void OnDispose()
 		{
-			_visitorSubscription?.Dispose();
+			//_visitorSubscription?.Dispose();
 			base.OnDispose();
 		}
 	}

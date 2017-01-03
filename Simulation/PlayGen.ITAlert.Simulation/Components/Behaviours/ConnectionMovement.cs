@@ -5,7 +5,6 @@ using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Messages;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
