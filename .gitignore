@@ -60,9 +60,7 @@ Unity/Assets/Plugins/Simulation/*
 !Unity/Assets/Plugins/Simulation/*.dll.meta
 Unity/Assets/Plugins/GameWork/*
 !Unity/Assets/Plugins/GameWork/*.dll.meta
-Unity/Assets/Plugins/SUGAR/*
-!Unity/Assets/Plugins/SUGAR/*.dll.meta
-!Unity/Assets/Plugins/SUGAR/Scripts
+Unity/Assets/Plugins/SUGAR/Internal/*
 
 # we want photon server lib dlls
 !/Server/lib/*
@@ -81,3 +79,7 @@ Unity/Assets/GameWork.meta
 Unity/Build/
 Unity/Assets/Plugins/PlayGen.SUGAR.Unity/
 Unity/Unity.csproj.DotSettings
+Server/Photon.LoadBalancing/SUGARConfiguration.config
+Server/PlayGen.ITAlert.Photon.SUGAR/SUGARConfiguration.json
+Server/deploy/bin_Win32/PhotonServer.config
+Server/deploy/bin_Win64/PhotonServer.config

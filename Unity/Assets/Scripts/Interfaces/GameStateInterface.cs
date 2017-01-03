@@ -32,7 +32,7 @@ public class GameStateInterface : StateInterface
 		_chatPanel.SetActive(false);
 	}
 
-	public void PopulateChatPanel(PhotonPlayer[] players)
+	public void PopulateChatPanel(Player[] players)
 	{
 		foreach (Transform child in _chatPanel.transform)
 		{
@@ -46,7 +46,7 @@ public class GameStateInterface : StateInterface
 		var height = _chatPanel.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
 
 		//sort array into list
-		var playersList = players.OrderBy(player => player.ID).ToList();
+		var playersList = players.OrderBy(player => player.PhotonId).ToList();
 
 		_playerVoiceIcons = new Dictionary<int, Image>();
 
@@ -54,13 +54,16 @@ public class GameStateInterface : StateInterface
 		{
 			var playerItem = Object.Instantiate(_playerChatItemPrefab).transform;
 
-			var nameText = playerItem.FindChild("Name").GetComponent<Text>();
-			nameText.text = player.name;
-			nameText.color = GetColorForPlayerNumber(player.ID);
+            var color = new Color();
+            ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+
+            var nameText = playerItem.FindChild("Name").GetComponent<Text>();
+			nameText.text = player.Name;
+			nameText.color = color;
 
 			var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
 			soundIcon.color = nameText.color;
-			_playerVoiceIcons[player.ID] = soundIcon;
+			_playerVoiceIcons[player.PhotonId] = soundIcon;
 
 			playerItem.SetParent(_chatPanel.transform, false);
 
@@ -79,18 +82,6 @@ public class GameStateInterface : StateInterface
 			// increment the offset
 			offset -= height;
 		}
-	}
-
-
-	public Color GetColorForPlayerNumber(int playerNum)
-	{
-		//get the color of the player from the client
-		var playerColorString = _playerColors[playerNum];
-
-		var playerColor = new Color();
-		ColorUtility.TryParseHtmlString("#" + playerColorString, out playerColor);
-
-		return playerColor;
 	}
 
 	public void SetPlayerColors(Player[] players)
