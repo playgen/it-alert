@@ -50,7 +50,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
         private void ResetAllPlayerStatuses()
         {
             PlayerManager.ChangeAllStatuses(PlayerStatus.NotReady);
-            Messenger.SendAllMessage(RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
+            Messenger.SendAllMessage(new ListedPlayersMessage
             {
                 Players = PlayerManager.Players,
             });

@@ -74,7 +74,7 @@ namespace PlayGen.Photon.Plugin
         private void UpdatePlayer(Player player)
         {
             _playerManager.UpdatePlayer(player);
-            _messenger.SendAllMessage(RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
+            _messenger.SendAllMessage(new ListedPlayersMessage
             {
                 Players = _playerManager.Players,
             });

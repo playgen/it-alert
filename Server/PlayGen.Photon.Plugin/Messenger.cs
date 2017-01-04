@@ -32,13 +32,13 @@ namespace PlayGen.Photon.Plugin
         public void SendMessage(List<int> receiversPhotonIds, int senderPhotonId, Message message)
         {
             var serializedMessage = _serializationHandler.Serialize(message);
-            _photonPlugin.BroadcastSpecific(receiversPhotonIds, senderPhotonId, (byte)EventCode.Message, serializedMessage);
+            _photonPlugin.BroadcastSpecific(receiversPhotonIds, (byte)EventCode.Message, serializedMessage);
         }
      
-        public void SendAllMessage(int senderPhotonId, Message message)
+        public void SendAllMessage(Message message)
         {
             var serializedMessage = _serializationHandler.Serialize(message);
-            _photonPlugin.BroadcastAll(senderPhotonId, (byte)EventCode.Message, serializedMessage);
+            _photonPlugin.BroadcastAll((byte)EventCode.Message, serializedMessage);
         }
 
         public bool TryProcessMessage(byte[] content)

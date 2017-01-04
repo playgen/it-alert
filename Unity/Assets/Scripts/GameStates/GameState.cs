@@ -45,9 +45,9 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Enter()
 		{
-            _client.CurrentRoom.Messenger.Subscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
+			_client.CurrentRoom.Messenger.Subscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
 
-            _stateController.Initialize();
+			_stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
 			_interface.Initialize();
 			_interface.SetPlayerColors(_client.CurrentRoom.Players);
@@ -56,24 +56,24 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Exit()
 		{
-            _client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
+			_client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
 
-            _interface.Exit();
+			_interface.Exit();
 			_stateController.Terminate();
 		}
 
-        public override void Tick(float deltaTime)
+		public override void Tick(float deltaTime)
 		{
 			_voiceController.HandleVoiceInput();
 
-		    if (_stateController.ActiveState != null)
-		    {
-		        _stateController.Tick(deltaTime);
-		    }
+			if (_stateController.ActiveState != null)
+			{
+				_stateController.Tick(deltaTime);
+			}
 
-		    // todo have internal states controlled by messaging in here
+			// todo have internal states controlled by messaging in here
 
-            // todo remove commented out section
+			// todo remove commented out section
 			//{
 			//	case Assets.Scripts.Network.Client.GameStates.Initializing:
 			//		if (_stateController.ActiveState != InitializingState.StateName)
@@ -121,14 +121,14 @@ namespace PlayGen.ITAlert.GameStates
 		{
 			ChangeState(LobbyState.StateName);
 		}
-        
-        private void ProcessGameMessage(Message message)
-        {
-            var gameEndedMessage = message as GameEndedMessage;
-            if (gameEndedMessage != null)
-            {
-                ChangeState(MainMenuState.StateName);
-            }
-        }
-    }
+		
+		private void ProcessGameMessage(Message message)
+		{
+			var gameEndedMessage = message as GameEndedMessage;
+			if (gameEndedMessage != null)
+			{
+				ChangeState(MainMenuState.StateName);
+			}
+		}
+	}
 }
