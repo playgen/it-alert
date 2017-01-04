@@ -22,13 +22,13 @@ namespace PlayGen.Photon.Players
                 {
                     return PlayerStatus.Ready;
                 }
-                else if (_players.All(p => p.Value.Status == PlayerStatus.GameInitialized))
+                else if (_players.All(p => p.Value.Status == PlayerStatus.Initialized))
                 {
-                    return PlayerStatus.GameInitialized;
+                    return PlayerStatus.Initialized;
                 }
-                else if (_players.All(p => p.Value.Status == PlayerStatus.GameFinalized))
+                else if (_players.All(p => p.Value.Status == PlayerStatus.Finalized))
                 {
-                    return PlayerStatus.GameFinalized;
+                    return PlayerStatus.Finalized;
                 }
 
                 return PlayerStatus.Error;
