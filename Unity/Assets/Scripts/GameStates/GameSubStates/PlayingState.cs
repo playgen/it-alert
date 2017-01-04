@@ -59,11 +59,14 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 					commandResolver.HandleSequenceStates(command, this);
 				}
 			}
-			if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
-			{
-				Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
-				Director.Refresh();
-			}
+
+			// todo have reference to simulation state object
+
+			//         if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+			//{
+			//	Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
+			//	Director.Refresh();
+			//}
 		}
 	}
 }

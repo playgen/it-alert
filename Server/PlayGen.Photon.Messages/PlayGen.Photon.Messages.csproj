@@ -51,9 +51,6 @@
     <Compile Include="Players\ListedPlayersMessage.cs" />
     <Compile Include="Players\ListPlayersMessage.cs" />
     <Compile Include="Players\PlayersMessage.cs" />
-    <Compile Include="Room\GameStartedMessage.cs" />
-    <Compile Include="Room\RoomMessage.cs" />
-    <Compile Include="Room\StartGameMessage.cs" />
     <Compile Include="Players\UpdatePlayerMessage.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿using System;
 using Photon.Hive.Plugin;
+using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Messages;
 using PlayGen.Photon.Messages.Players;
-using PlayGen.Photon.Messages.Room;
+using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
@@ -25,17 +25,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override void Enter()
         {
-            Messenger.Subscribe((int)Channels.Room, ProcessRoomMessage);
+            Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
 
             ResetAllPlayerStatuses();
         }
 
         public override void Exit()
         {
-            Messenger.Unsubscribe((int)Channels.Room, ProcessRoomMessage);
+            Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
         }
 
-        private void ProcessRoomMessage(Message message)
+        private void ProcessGameMessage(Message message)
         {
             var startGameMessage = message as StartGameMessage;
             if (startGameMessage != null)

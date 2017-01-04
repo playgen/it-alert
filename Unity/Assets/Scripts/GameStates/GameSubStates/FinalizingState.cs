@@ -1,5 +1,4 @@
 ﻿using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
@@ -38,12 +37,14 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
 		public override void Tick(float deltaTime)
 		{
-			if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
-			{
-				Director.Finalise(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
-				Director.Refresh();
-				_networkClient.CurrentRoom.CurrentGame.SetGameFinalized();
-			}
+			// todo have reference to simulation state object
+
+			//if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+			//{
+			//	Director.Finalise(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
+			//	Director.Refresh();
+			//	_networkClient.CurrentRoom.CurrentGame.SetGameFinalized();
+			//}
 		}
 	}
 }

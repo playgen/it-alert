@@ -1,7 +1,7 @@
 ﻿using System;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.Photon.Messages.Room;
+using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
@@ -60,7 +60,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override void Enter()
         {
-            Messenger.Subscribe((int)Channels.Room, ProcessRoomMessage);
+            Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
 
             Messenger.SendAllMessage(RoomControllerPlugin.ServerPlayerId, new GameStartedMessage());
 
@@ -78,7 +78,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override void Exit()
         {
-            Messenger.Unsubscribe((int)Channels.Room, ProcessRoomMessage);
+            Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
 
             //SugarController.EndMatch();
 
@@ -87,7 +87,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
             //_simulation = null;
         }
 
-        private void ProcessRoomMessage(Message message)
+        private void ProcessGameMessage(Message message)
         {
             // todo player quit message
 

@@ -2,8 +2,6 @@
 {
     public enum Channels : byte
     {
-        Players = 0,
-
-        Room = 1,
+        Players = 0
     }
 }
