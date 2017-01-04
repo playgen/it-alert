@@ -33,8 +33,67 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Engine.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\Engine.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Components.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\Engine.Components.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\Engine.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\Engine.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.Controllers">
+      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.Controllers.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.States, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.States.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.0.6179.19522, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="PhotonLoadbalancingApi">
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Commands, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Configuration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.TestData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.TestData.dll</HintPath>
+    </Reference>
+    <Reference Include="Priority Queue, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\Simulation\Priority Queue.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -51,26 +110,6 @@
     <Compile Include="RoomStates\RoomState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
-      <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
-      <Name>GameWork.Core.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">
-      <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
-      <Name>GameWork.Core.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
-      <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
-      <Name>GameWork.Core.States</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
-      <Project>{2344c836-6b6f-4259-a5a3-e12eafdba643}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
@@ -83,20 +122,20 @@
       <Project>{918525f6-635e-4d56-a85c-7f4c5e95e822}</Project>
       <Name>Photon.LoadBalancing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
-      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
-      <Name>PlayGen.ITAlert.Photon.Players</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Events\PlayGen.ITAlert.Photon.Events.csproj">
       <Project>{b4eaa34f-88b2-43fe-85aa-cd66056ec75e}</Project>
       <Name>PlayGen.ITAlert.Photon.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
+      <Project>{7e9efe9a-58c7-45dc-ab5f-ef52cd721db5}</Project>
+      <Name>PlayGen.ITAlert.Photon.Players</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
-      <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
+      <Project>{32dc2199-5631-4682-92ce-9d1e6acd8f86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.SUGAR\PlayGen.ITAlert.Photon.SUGAR.csproj">
-      <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
+      <Project>{f62b5705-bf54-498a-b662-704c0b50c0b6}</Project>
       <Name>PlayGen.ITAlert.Photon.SUGAR</Name>
     </ProjectReference>
   </ItemGroup>

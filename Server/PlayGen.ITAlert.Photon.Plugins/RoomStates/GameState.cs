@@ -4,13 +4,13 @@ using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Events;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.Photon.Plugins.Extensions;
-using PlayGen.ITAlert.TestData;
-using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
 using PlayGen.ITAlert.Photon.SUGAR;
+using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 {
@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 		}
 
 		public GameState(PluginBase plugin, PlayerManager playerManager, Controller sugarController) 
-            : base(plugin, playerManager, sugarController)
+			: base(plugin, playerManager, sugarController)
 		{
 		}
 
@@ -79,7 +79,8 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 
 					if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
 					{
-						ChangeState(LobbyState.StateName);   
+						//TODO: upgrade implementation
+						//ChangeState(LobbyState.StateName);   
 					}
 					break;
 			}
@@ -91,18 +92,21 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 			Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId, (byte)ServerEventCode.GameEntered);
 
 			List<int> subsystemLogicalIds;
-			_simulation = InitializeSimulation(out subsystemLogicalIds);
-			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+			const int width = 2;
+			const int height = 2;
+
+			_simulation = InitializeSimulation(width, height);
+			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(Enumerable.Range(0, (width * height) - 1).ToList(), 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
 			_resolver = new CommandResolver(_simulation);
 			
 			ChangeInternalState(InternalGameState.Initializing);
 
-		    SugarController.StartMatch();
+			SugarController.StartMatch();
 		}
 
 		public override void Exit()
 		{
-            SugarController.EndMatch();
+			SugarController.EndMatch();
 
 			_resolver = null;
 			_simulation.Dispose();
@@ -123,18 +127,19 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 
 					_simulation.Tick();
 
-					if (_simulation.IsGameFailure)
-					{
-						ChangeInternalState(InternalGameState.Finalizing);
-					}
-					else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-					{
-						ChangeInternalState(InternalGameState.Finalizing);
-					}
-					else
-					{
+					// TODO: rimplement end game tests
+					//if (_simulation.IsGameFailure)
+					//{
+					//	ChangeInternalState(InternalGameState.Finalizing);
+					//}
+					//else if(!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+					//{
+					//	ChangeInternalState(InternalGameState.Finalizing);
+					//}
+					//else
+					//{
 						BroadcastSimulation(ServerEventCode.GameTick, _simulation);
-					}
+					//}
 					
 					break;
 
@@ -184,7 +189,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 			Plugin.PluginHost.StopTimer(timer);
 		}
 
-		private Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
+		private Simulation.Simulation InitializeSimulation(int width, int height)
 		{
 			var players = Plugin.PluginHost.GameActorsActive.Select(p =>
 			{
@@ -199,7 +204,7 @@ namespace PlayGen.ITAlert.Photon.Plugins.RoomStates
 			}).ToList();
 
 			// todo make config data driven
-			var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
+			var simulation = ConfigHelper.GenerateSimulation(width, height, players, 2, 4);
 			return simulation;
 		}
 	}
