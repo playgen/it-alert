@@ -1,15 +1,9 @@
 [submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
 	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
 	url = git@github.com:playgen/High-Speed-Priority-Queue-for-C-Sharp.git
-[submodule "GameWork.Unity"]
-	path = GameWork.Unity
-	url = git@github.com:Game-Work/GameWork.Unity.git
 [submodule "Simulation/SharpZipLib"]
 	path = Simulation/SharpZipLib
 	url = git@github.com:playgen/SharpZipLib.git
-[submodule "Zenject"]
-	path = Zenject
-	url = git@github.com:playgen/Zenject.git
 [submodule "Simulation/Newtonsoft.Json"]
 	path = Simulation/Newtonsoft.Json
 	url = git@github.com:playgen/Newtonsoft.Json.git
