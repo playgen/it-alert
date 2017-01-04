@@ -8,10 +8,8 @@
 
         NotReady,
 
-        GameInitialized,
+        Initialized,
 
-        GamePlaying,
-
-        GameFinalized,
+        Finalized,
     }
 }

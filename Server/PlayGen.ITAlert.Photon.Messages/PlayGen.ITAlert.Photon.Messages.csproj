@@ -60,6 +60,7 @@
     <Compile Include="Simulation\ServerState\PlayingMessage.cs" />
     <Compile Include="Simulation\ServerState\InitializingMessage.cs" />
     <Compile Include="Simulation\ServerState\ServerMessage.cs" />
+    <Compile Include="Simulation\ServerState\TickMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">

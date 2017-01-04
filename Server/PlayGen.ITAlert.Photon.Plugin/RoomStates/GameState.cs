@@ -11,7 +11,9 @@ using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.TestData;
 using System.Linq;
 using PlayGen.ITAlert.Configuration;
+using PlayGen.ITAlert.Photon.Messages.Simulation;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
+using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
@@ -22,8 +24,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
     {
         public const string StateName = "Game";
 
-        private HashSet<int> _initializingPlayerIds;
-        private HashSet<int> _finalizingPlayerIds;
         private Simulation.Simulation _simulation;
         private CommandSequence _commandSequence;
         private CommandResolver _resolver;
@@ -38,43 +38,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
         {
         }
 
-        
-        //public override void OnRaiseEvent(IRaiseEventCallInfo info)
-        //{
-        //    switch (info.Request.EvCode)
-        //    {
-        //        //case (byte)ClientEventCode.GameInitialized:
-        //        //	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameInitialized);
-
-        //        //	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameInitialized)
-        //        //	{
-        //        //		ChangeInternalState(InternalGameState.Playing);
-        //        //	}
-        //        //	break;
-
-        //        case (byte)ClientEventCode.GameCommand:
-        //            var command = Serializer.Deserialize<ICommand>((byte[])info.Request.Data);
-        //            _resolver.ProcessCommand(command);
-        //            break;
-
-        //            //case (byte)ClientEventCode.GameFinalized:
-        //            //	PlayerManager.ChangeStatus(info.ActorNr, PlayerStatus.GameFinalized);
-
-        //            //	if (PlayerManager.CombinedPlayerStatus == PlayerStatus.GameFinalized)
-        //            //	{
-        //            //		ChangeState(LobbyState.StateName);   
-        //            //	}
-        //            //	break;
-        //    }
-        //}
-
         public override void Enter()
         {
-            _initializingPlayerIds = new HashSet<int>();
-            _finalizingPlayerIds = new HashSet<int>();
-
             Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
             Messenger.Subscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
+            Messenger.Subscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
 
             Messenger.SendAllMessage(new GameStartedMessage());
 
@@ -90,6 +58,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override void Exit()
         {
+            Messenger.SendAllMessage(new GameEndedMessage());
+
+            Messenger.Unsubscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
             Messenger.Unsubscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
             Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
 
@@ -110,17 +81,46 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
             var initializedMessage = message as InitializedMessage;
             if (initializedMessage != null)
             {
-                _initializingPlayerIds.Add(initializedMessage.PlayerPhotonId);
+                var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
+                player.Status = PlayerStatus.Initialized;
+                PlayerManager.UpdatePlayer(player);
 
-                // All players have sent an initialized message
-                if (_initializingPlayerIds.SetEquals(new HashSet<int>(PlayerManager.PlayersPhotonIds)))
-                {
+                if (PlayerManager.CombinedPlayerStatus == PlayerStatus.Initialized)
+                { 
                     ChangeInternalState(InternalGameState.Playing);
                 }
                 return;
             }
 
+            var finalizedMessage = message as FinalizedMessage;
+            if (finalizedMessage != null)
+            {
+                var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
+                player.Status = PlayerStatus.Finalized;
+                PlayerManager.UpdatePlayer(player);
+
+                if (PlayerManager.CombinedPlayerStatus == PlayerStatus.Finalized)
+                {
+                    ChangeState(LobbyState.StateName);
+                }
+                return;
+            }
+
             throw new Exception($"Unhandled Simulation State Message: ${message}");
+        }
+
+
+        private void ProcessSimulationCommandMessage(Message message)
+        {
+            var commandMessage = message as CommandMessage;
+            if (commandMessage != null)
+            {
+                var command = commandMessage.Command;
+                _resolver.ProcessCommand(command);
+                return;
+            }
+
+            throw new Exception($"Unhandled Simulation Command Message: ${message}");
         }
 
         private void Tick()
@@ -130,30 +130,33 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
                 case InternalGameState.Initializing:
                     break;
 
-                    //    case InternalGameState.Playing:
+                case InternalGameState.Playing:
 
-                    //        var commands = _commandSequence.Tick();
-                    //        _resolver.ProcessCommands(commands);
+                    var commands = _commandSequence.Tick();
+                    _resolver.ProcessCommands(commands);
 
-                    //        _simulation.Tick();
+                    _simulation.Tick();
 
-                    //        if (_simulation.IsGameFailure)
-                    //        {
-                    //            ChangeInternalState(InternalGameState.Finalizing);
-                    //        }
-                    //        else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-                    //        {
-                    //            ChangeInternalState(InternalGameState.Finalizing);
-                    //        }
-                    //        else
-                    //        {
-                    //            BroadcastSimulation(ServerEventCode.GameTick, _simulation);
-                    //        }
+                    if (_simulation.IsGameFailure)
+                    {
+                        ChangeInternalState(InternalGameState.Finalizing);
+                    }
+                    else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+                    {
+                        ChangeInternalState(InternalGameState.Finalizing);
+                    }
+                    else
+                    {
+                        Messenger.SendAllMessage(new TickMessage
+                        {
+                            SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+                        });
+                    }
 
-                    //        break;
+                    break;
 
-                    //    case InternalGameState.Finalizing:
-                    //        break;
+                case InternalGameState.Finalizing:
+                    break;
             }
         }
 
@@ -162,36 +165,29 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
             switch (toState)
             {
                 case InternalGameState.Initializing:
-                    Messenger.SendAllMessage(new Messages.Simulation.ServerState.InitializingMessage()
+                    Messenger.SendAllMessage(new Messages.Simulation.ServerState.InitializingMessage
                     {
                         SerializedSimulation = Serializer.SerializeSimulation(_simulation)
                     });
                     break;
 
                 case InternalGameState.Playing:
-                    Messenger.SendAllMessage(new Messages.Simulation.ServerState.PlayingMessage()
-                    {
-                    });
-
+                    Messenger.SendAllMessage(new Messages.Simulation.ServerState.PlayingMessage());
                     _tickTimer = CreateTickTimer();
                     break;
 
-                    //case InternalGameState.Finalizing:
-                    //    DestroyTimer(_tickTimer);
-                    //    BroadcastSimulation(ServerEventCode.GameFinalized, _simulation);
-                    //    break;
+                case InternalGameState.Finalizing:
+                    DestroyTimer(_tickTimer);
+                    Messenger.SendAllMessage(new Messages.Simulation.ServerState.FinalizingMessage
+                    {
+                        SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+                    });
+                    break;
             }
 
             _internalState = toState;
         }
-
-        //private void BroadcastSimulation(ServerEventCode eventCode, ITAlert.Simulation.Simulation simulation)
-        //{
-        //    Plugin.BroadcastAll(RoomControllerPlugin.ServerPlayerId,
-        //        (byte)eventCode,
-        //        _simulation);
-        //}
-
+        
         private object CreateTickTimer()
         {
             return PhotonPlugin.PluginHost.CreateTimer(
