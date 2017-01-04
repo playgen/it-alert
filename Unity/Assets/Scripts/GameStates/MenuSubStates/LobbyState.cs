@@ -4,7 +4,7 @@ using System.Linq;
 using GameWork.Core.States;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.Photon.Messages.Room;
+using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.SUGAR.Unity;
@@ -38,7 +38,7 @@ public class LobbyState : TickableSequenceState
 
     public override void Enter()
     {
-        _client.CurrentRoom.Messenger.Subscribe((int)PlayGen.Photon.Messages.Channels.Room, ProcessRoomMessage);
+        _client.CurrentRoom.Messenger.Subscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessRoomMessage);
 
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
@@ -56,7 +56,7 @@ public class LobbyState : TickableSequenceState
 
     public override void Exit()
     {
-        _client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.Photon.Messages.Channels.Room, ProcessRoomMessage);
+        _client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessRoomMessage);
 
         _client.LeftRoomEvent -= _interface.OnLeaveSuccess;
         _client.JoinedRoomEvent -= _interface.OnJoinedRoom;

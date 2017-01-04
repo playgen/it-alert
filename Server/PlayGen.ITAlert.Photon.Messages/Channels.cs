@@ -4,10 +4,10 @@
     {
         Players = PlayGen.Photon.Messages.Channels.Players,
 
-        Room = PlayGen.Photon.Messages.Channels.Room,
+        Game = 11,
 
-        SimulationState = 11,
+        SimulationState = 12,
 
-        SimulationCommands = 12,
+        SimulationCommands = 13,
     }
 }

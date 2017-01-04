@@ -29,8 +29,6 @@ namespace PlayGen.ITAlert.Network.Client
 
         public List<Player> Players { get; private set; }
 
-        public ClientGame CurrentGame { get; private set; }
-
         public RoomInfo RoomInfo
         {
             get { return _photonClient.CurrentRoom; }
@@ -116,7 +114,6 @@ namespace PlayGen.ITAlert.Network.Client
                 Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
 
                 _voiceClient.OnLeftRoom();
-                CurrentGame = null;
                 _photonClient.EventRecievedEvent -= OnRecievedEvent;
 
                 _isDisposed = true;

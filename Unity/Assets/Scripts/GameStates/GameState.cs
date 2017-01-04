@@ -1,7 +1,10 @@
-﻿using GameWork.Core.States;
+﻿using System;
+using GameWork.Core.States;
 using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.GameStates
 {
@@ -42,7 +45,9 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Enter()
 		{
-			_stateController.Initialize();
+            _client.CurrentRoom.Messenger.Subscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
+
+            _stateController.Initialize();
 			_stateController.ChangeState(InitializingState.StateName);
 			_interface.Initialize();
 			_interface.SetPlayerColors(_client.CurrentRoom.Players);
@@ -51,49 +56,58 @@ namespace PlayGen.ITAlert.GameStates
 
 		public override void Exit()
 		{
-			_interface.Exit();
+            _client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessGameMessage);
+
+            _interface.Exit();
 			_stateController.Terminate();
 		}
 
-		public override void Tick(float deltaTime)
+        public override void Tick(float deltaTime)
 		{
 			_voiceController.HandleVoiceInput();
 
-			switch (_client.CurrentRoom.CurrentGame.State)
-			{
-				case Assets.Scripts.Network.Client.GameStates.Initializing:
-					if (_stateController.ActiveState != InitializingState.StateName)
-					{
-						_stateController.ChangeState(InitializingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+		    if (_stateController.ActiveState != null)
+		    {
+		        _stateController.Tick(deltaTime);
+		    }
 
-				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
-					{
-						_stateController.ChangeState(PlayingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+		    // todo have internal states controlled by messaging in here
 
-				case Assets.Scripts.Network.Client.GameStates.Finalizing:
-					if (_stateController.ActiveState != FinalizingState.StateName)
-					{
-						_stateController.ChangeState(FinalizingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
-			}
+            // todo remove commented out section
+			//{
+			//	case Assets.Scripts.Network.Client.GameStates.Initializing:
+			//		if (_stateController.ActiveState != InitializingState.StateName)
+			//		{
+			//			_stateController.ChangeState(InitializingState.StateName);
+			//		}
+			//		else
+			//		{
+			//			_stateController.Tick(deltaTime);
+			//		}
+			//		break;
+
+			//	case Assets.Scripts.Network.Client.GameStates.Playing:
+			//		if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
+			//		{
+			//			_stateController.ChangeState(PlayingState.StateName);
+			//		}
+			//		else
+			//		{
+			//			_stateController.Tick(deltaTime);
+			//		}
+			//		break;
+
+			//	case Assets.Scripts.Network.Client.GameStates.Finalizing:
+			//		if (_stateController.ActiveState != FinalizingState.StateName)
+			//		{
+			//			_stateController.ChangeState(FinalizingState.StateName);
+			//		}
+			//		else
+			//		{
+			//			_stateController.Tick(deltaTime);
+			//		}
+			//		break;
+			//}
 
 			_interface.UpdateChatPanel();
 		}
@@ -107,5 +121,14 @@ namespace PlayGen.ITAlert.GameStates
 		{
 			ChangeState(LobbyState.StateName);
 		}
-	}
+        
+        private void ProcessGameMessage(Message message)
+        {
+            var gameEndedMessage = message as GameEndedMessage;
+            if (gameEndedMessage != null)
+            {
+                ChangeState(MainMenuState.StateName);
+            }
+        }
+    }
 }

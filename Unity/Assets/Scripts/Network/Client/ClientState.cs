@@ -8,8 +8,6 @@
 
 		Connected,
 
-		Lobby,
-
-		Game,
+		Room
 	}
 }

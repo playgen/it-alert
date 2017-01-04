@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.Photon.Messages.Room;
+using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.Photon.Players;
 using UnityEngine;
 
@@ -99,6 +99,4 @@ public class LobbyController : ICommandAction
             Color = color;
         }
     }
-        
 }
-

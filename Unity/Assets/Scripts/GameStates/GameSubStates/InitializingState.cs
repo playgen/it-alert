@@ -41,14 +41,16 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
         public override void Tick(float deltaTime)
         {
-            if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
-            {
-                Director.Initialize(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState(),
-                    _networkClient.CurrentRoom.Player.PhotonId);
-                Director.Refresh();
+            // todo have reference to simulation state object
 
-                _networkClient.CurrentRoom.CurrentGame.SetGameInitialized();
-            }
+            //if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+            //{
+            //    Director.Initialize(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState(),
+            //        _networkClient.CurrentRoom.Player.PhotonId);
+            //    Director.Refresh();
+
+            //    _networkClient.CurrentRoom.CurrentGame.SetGameInitialized();
+            //}
         }
     }
 }
