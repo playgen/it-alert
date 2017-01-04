@@ -69,8 +69,8 @@ Server/**/log
 # ignore app config in plugins
 Unity/Assets/Plugins/Server/PhotonServer.config
 
-!/Server/deploy/bin*/*
-!/Server/deploy/Policy/
+# !/Server/deploy/bin*/*
+# !/Server/deploy/Policy/
 
 # GameWork
 Unity/Assets/GameWork/*
@@ -86,3 +86,9 @@ Server/PlayGen.ITAlert.Photon.SUGAR/SUGARConfiguration.json
 Server/deploy/bin_Win32/PhotonServer.config
 Server/deploy/bin_Win64/PhotonServer.config
 !Server/nuget/*
+
+**/*.dll
+**/*.pdb
+!lib/**/*.dll
+!lib/**/*.pdb
+lib/simulation/
