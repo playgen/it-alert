@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PlayGen.ITAlert.Photon.Serialization\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.SUGAR.Client">
+      <HintPath>..\..\lib\SUGAR\Client\PlayGen.SUGAR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -57,12 +60,6 @@
     <Compile Include="ConfigurationLoader.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Controller.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\SUGAR\src\PlayGen.SUGAR.Client\PlayGen.SUGAR.Client.csproj">
-      <Project>{E7B6C8DC-262E-4B9D-85E3-2E6AE0467018}</Project>
-      <Name>PlayGen.SUGAR.Client</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
