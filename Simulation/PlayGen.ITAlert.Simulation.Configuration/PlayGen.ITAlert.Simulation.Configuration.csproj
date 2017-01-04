@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\simulation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -49,14 +49,6 @@
     <Folder Include="Builder\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Archetypes\Engine.Archetypes.csproj">
-      <Project>{328F17C7-3F8C-4F0A-9BDE-76FD05522F7B}</Project>
-      <Name>Engine.Archetypes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Components\Engine.Components.csproj">
-      <Project>{9771FF48-FABE-4F97-A041-EA6F39057812}</Project>
-      <Name>Engine.Components</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>

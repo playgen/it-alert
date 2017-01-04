@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Properties;
 
-namespace PlayGen.ITAlert.Simulation.Components.Systems
+namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemActivation : Engine.Systems.System
 	{
@@ -22,7 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Systems
 
 		public override void Tick(int currentTick)
 		{
-			var activations = ComponentRegistry.GetComponentEntitesImplmenting<Activation.Activation>();
+			var activations = ComponentRegistry.GetComponentEntitesImplmenting<Components.Activation.Activation>();
 
 			foreach (var activation in activations)
 			{
