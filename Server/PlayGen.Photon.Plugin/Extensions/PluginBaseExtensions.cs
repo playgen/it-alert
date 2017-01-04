@@ -8,7 +8,7 @@ namespace PlayGen.Photon.Plugin.Extensions
 {
     public static class PluginBaseExtensions
     {
-        public static void BroadcastAll(this PluginBase plugin, int senderId, byte eventCode, object content = null)
+        public static void BroadcastAll(this PluginBase plugin, byte eventCode, object content = null)
         {
             plugin.PluginHost.BroadcastEvent(ReciverGroup.All,
                 0,
@@ -17,21 +17,21 @@ namespace PlayGen.Photon.Plugin.Extensions
                 new Dictionary<byte, object>()
                 {
                     {(byte)ParameterKey.Data, content},
-                    {(byte)ParameterKey.ActorNr, senderId},
+                    {(byte)ParameterKey.ActorNr, RoomControllerPlugin.ServerPlayerId},
                 },
                 0);
         }
 
-        public static void BroadcastSpecific(this PluginBase plugin, IList<int> recieverIds, int senderId, byte eventCode, object content = null)
+        public static void BroadcastSpecific(this PluginBase plugin, IList<int> recieverIds, byte eventCode, object content = null)
         {
             plugin.PluginHost.BroadcastEvent(
-                recieverIds, 
-                senderId, 
+                recieverIds,
+                RoomControllerPlugin.ServerPlayerId, 
                 eventCode, 
                 new Dictionary<byte, object>()
                 {
                     {(byte)ParameterKey.Data, content},
-                    {(byte)ParameterKey.ActorNr, senderId},
+                    {(byte)ParameterKey.ActorNr, RoomControllerPlugin.ServerPlayerId},
                 },
                 0);
         }

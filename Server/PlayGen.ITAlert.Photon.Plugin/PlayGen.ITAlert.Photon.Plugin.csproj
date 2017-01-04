@@ -51,6 +51,22 @@
       <Project>{D9ABF6B3-C495-4A39-B234-FCAB5EC9DB30}</Project>
       <Name>GameWork.Core.States</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ItAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
+      <Project>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</Project>
+      <Name>PlayGen.ITAlert.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
+      <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
+      <Project>{CB5C5A48-BBC4-4825-86CB-87E4037DB0C1}</Project>
+      <Name>PlayGen.ITAlert.TestData</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
