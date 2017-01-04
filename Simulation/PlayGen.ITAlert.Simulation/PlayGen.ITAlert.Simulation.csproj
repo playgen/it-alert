@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\simulation\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,7 +25,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\lib\simulation\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -46,15 +46,15 @@
   <ItemGroup>
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
-    <Compile Include="Components\Behaviours\ConsumeCPUMalwareEffect.cs" />
-    <Compile Include="Components\Behaviours\ConsumeMemoryMalwareEffect.cs" />
+    <Compile Include="Systems\Malware\ConsumeCPUMalwareEffect.cs" />
+    <Compile Include="Systems\Malware\ConsumeMemoryMalwareEffect.cs" />
     <Compile Include="Components\Behaviours\DatabaseEnhancement.cs" />
     <Compile Include="Components\Behaviours\AntivirusEnhancement.cs" />
     <Compile Include="Components\Behaviours\AnalyserEnhancement.cs" />
     <Compile Include="Components\Behaviours\IActivatable.cs" />
     <Compile Include="Components\Behaviours\IActivation.cs" />
     <Compile Include="Components\Activation\TimedActivation.cs" />
-    <Compile Include="Components\Behaviours\IMalwareEffect.cs" />
+    <Compile Include="Systems\Malware\IMalwareEffect.cs" />
     <Compile Include="Components\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateIntent.cs" />
     <Compile Include="Components\Properties\ConsumeCPU.cs" />
@@ -64,10 +64,13 @@
     <Compile Include="Components\Properties\Destination.cs" />
     <Compile Include="Components\Properties\CPUResource.cs" />
     <Compile Include="Components\Properties\MemoryResource.cs" />
-    <Compile Include="Components\Systems\ItemActivation.cs" />
-    <Compile Include="Components\Systems\ItemManagement.cs" />
-    <Compile Include="Components\Systems\MalwareEffects.cs" />
-    <Compile Include="Components\Systems\SubsystemResources.cs" />
+    <Compile Include="Systems\Items\ItemActivation.cs" />
+    <Compile Include="Systems\Items\ItemManagement.cs" />
+    <Compile Include="Systems\Malware\MalwareEffects.cs" />
+    <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
+    <Compile Include="Systems\Resources\SubsystemResources.cs" />
+    <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
+    <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
     <Compile Include="Components\Behaviours\IMovementComponent.cs" />
@@ -75,7 +78,7 @@
     <Compile Include="Components\Properties\GraphNode.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
     <Compile Include="Components\Properties\MovementSpeed.cs" />
-    <Compile Include="Components\Systems\VisitorMovement.cs" />
+    <Compile Include="Systems\Movement\VisitorMovement.cs" />
     <Compile Include="Components\Properties\Movement.cs" />
     <Compile Include="Components\Properties\ExitRoutes.cs" />
     <Compile Include="Components\Properties\MovementCost.cs" />
@@ -110,10 +113,6 @@
     <Compile Include="Exceptions\SimulationException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Archetypes\Engine.Archetypes.csproj">
-      <Project>{328F17C7-3F8C-4F0A-9BDE-76FD05522F7B}</Project>
-      <Name>Engine.Archetypes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
       <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
       <Name>Engine.Common</Name>
@@ -150,7 +149,6 @@
   <ItemGroup>
     <Folder Include="Components\Extensions\" />
     <Folder Include="Components\Flags\" />
-    <Folder Include="Components\NewFolder1\" />
     <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -5,8 +5,8 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Systems;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Systems.Movement;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {
@@ -183,28 +183,34 @@ namespace PlayGen.ITAlert.Simulation.TestData
 		public static Simulation GenerateSimulation(int width, int height, int players, int items, int weight)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
 			var playerConfigs = GeneratePlayerConfigs(nodeConfigs, players);
+			return GenerateSimulation(nodeConfigs, playerConfigs, items, weight);
+		}
+
+		public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight)
+		{
+			var nodeConfigs = GenerateGraphNodes(width, height);
+			return GenerateSimulation(nodeConfigs, playerConfigs, items, weight);
+		}
+
+		public static Simulation GenerateSimulation(List<NodeConfig> nodeConfigs, List<PlayerConfig> playerConfigs, int items, int weight)
+		{
+			var edgeConfigs = GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, weight);
+			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
 			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
+			return GenerateSimulation(configuration);
+		}
 
+		public static Simulation GenerateSimulation(SimulationConfiguration configuration)
+		{
 			configuration.NodeConfiguration.First().Enhancement = EnhancementType.Analysis;
 			configuration.NodeConfiguration.Last().Enhancement = EnhancementType.Antivirus;
 
 			return new Simulation(configuration);
+
 		}
-
-		//public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight)
-		//{
-		//	var nodeConfigs = GenerateGraphNodes(width, height);
-		//	var edgeConfigs = GenerateFullyConnectedConfiguration(width, height, weight);
-		//	SetPlayerConfigValues(nodeConfigs, playerConfigs);
-		//	var itemConfigs = GetRandomItems(nodeConfigs, items);
-
-		//	var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
-		//	return new Simulation(configuration);
-		//}
 
 		//public static Simulation GenerateSimulation(int width, int height, List<PlayerConfig> playerConfigs, int items, int weight, out List<int> subsystemLogicalIds)
 		//{

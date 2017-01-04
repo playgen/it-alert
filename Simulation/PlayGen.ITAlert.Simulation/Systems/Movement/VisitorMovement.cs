@@ -5,7 +5,7 @@ using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
 
-namespace PlayGen.ITAlert.Simulation.Components.Systems
+namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	[ComponentDependency(typeof(IMovementComponent))]
 	public class VisitorMovement : Engine.Systems.System
