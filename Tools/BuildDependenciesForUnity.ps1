@@ -14,10 +14,6 @@ function Build
 }
 
 
-#Build "SUGAR" "PlayGen.SUGAR.sln" "Debug"
+Build "Simulation" "PlayGen.ITAlert.sln" "Debug"
 
-#Build "Simulation" "PlayGen.ITAlert.sln" "UnityDebug"
-
-#Build "Server" "Photon.Loadbalancing.sln" "Unity Debug"
-
-#Build "GameWork.Unity" "GameWork.Unity.sln" "Unity Debug"
+Build "Server" "Photon.Loadbalancing.sln" "Debug"
