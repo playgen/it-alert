@@ -11,5 +11,7 @@
         Initialized,
 
         Finalized,
+
+		SentFeedback,
     }
 }

@@ -59,10 +59,6 @@
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
-      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.Photon.Messaging</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

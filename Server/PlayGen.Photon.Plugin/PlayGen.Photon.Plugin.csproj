@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
-      <Project>{7adf8cd4-cfcb-4e35-abf7-e761497eaa11}</Project>
+      <Project>{7ADF8CD4-CFCB-4E35-ABF7-E761497EAA11}</Project>
       <Name>GameWork.Core.Commands</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWork.Core.Commands.States;
 using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
@@ -8,9 +9,9 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class FinalizingState : TickableSequenceState
+	public class FeedbackState : TickableSequenceState
 	{
-		public const string StateName = "Finalizing";
+		public const string StateName = "Feedback";
 
 		private readonly Client _networkClient;
 
@@ -19,16 +20,17 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get { return StateName; }
 		}
 
-		public FinalizingState(Client networkClient)
+		public FeedbackState(Client networkClient)
 		{
 			_networkClient = networkClient;
 		}
 
 		public override void Enter()
 		{
-			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.Feedback, ProcessFeedbackMessage);
+			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.Game, ProcessGameMessage);
 
-			_networkClient.CurrentRoom.Messenger.SendMessage(new FinalizedMessage()
+			// todo gather feedback from user
+			_networkClient.CurrentRoom.Messenger.SendMessage(new PlayerFeedbackMessage()
 			{
 				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
 			});
@@ -36,20 +38,17 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
 		public override void Exit()
 		{
-			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.Feedback, ProcessFeedbackMessage);
+			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.Game, ProcessGameMessage);
 		}
 
-		//todo change these to be called game state messages as they're used for state synch
-		private void ProcessFeedbackMessage(Message message)
+		private void ProcessGameMessage(Message message)
 		{
-			var feedbackStartedMessage = message as FeedbackStartedMessage;
-			if (feedbackStartedMessage != null)
+			var gameEndedMessage = message as GameEndedMessage;
+			if (gameEndedMessage != null)
 			{
-				ChangeState(FeedbackState.StateName);
+				// todo change back to lobby state
 				return;
 			}
-
-			throw new Exception("Unhandled Feedback Message: " + message);
 		}
 
 		public override void NextState()

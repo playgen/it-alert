@@ -39,7 +39,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
             _stateController = new RoomStateController(new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController), 
                 new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController),
-                new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController));
+                new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController),
+				new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController));
             _stateController.ChangeParentStateEvent += ChangeState;
 
             SugarController.StartMatch();

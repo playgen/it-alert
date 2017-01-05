@@ -41,10 +41,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\PlayerExtensions.cs" />
@@ -52,16 +48,6 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="PlayerStatus.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
-      <Project>{7ADF8CD4-CFCB-4E35-ABF7-E761497EAA11}</Project>
-      <Name>GameWork.Core.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
-      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.Photon.Messaging</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

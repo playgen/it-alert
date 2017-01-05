@@ -38,6 +38,7 @@
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
     <Compile Include="RoomStates\GameState.cs" />
+    <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
     <Compile Include="RoomStates\GameStates\FinalizingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
