@@ -7,12 +7,12 @@ using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin
 {
-    public class ITAlertRoomStateControllerFactory : IRoomStateControllerFactory
-    {
-        public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
-        {
-            return new RoomStateController(new LobbyState(photonPlugin, messenger, playerManager, sugarController), 
-                new GameState(photonPlugin, messenger, playerManager, sugarController));
-        }
-    }
+	public class ITAlertRoomStateControllerFactory : IRoomStateControllerFactory
+	{
+		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+		{
+			return new RoomStateController(new LobbyState(photonPlugin, messenger, playerManager, sugarController), 
+				new GameState(photonPlugin, messenger, playerManager, sugarController));
+		}
+	}
 }

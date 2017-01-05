@@ -9,20 +9,20 @@
 
 namespace Photon.LoadBalancing.MasterServer.Lobby
 {
-    using System.Net;
+	using System.Net;
 
-    using Photon.SocketServer;
+	using Photon.SocketServer;
 
-    public interface ILobbyPeer
-    {
-        NetworkProtocolType NetworkProtocol { get; }
+	public interface ILobbyPeer
+	{
+		NetworkProtocolType NetworkProtocol { get; }
 
-        IPAddress LocalIPAddress { get; }
+		IPAddress LocalIPAddress { get; }
 
-        int LocalPort { get; }
+		int LocalPort { get; }
 
-        string UserId { get; }
+		string UserId { get; }
 
-        bool UseHostnames { get; }
-    }
+		bool UseHostnames { get; }
+	}
 }

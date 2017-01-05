@@ -29,9 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity_Debug_Client|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\Unity\Assets\Plugins\Server\</OutputPath>
+    <OutputPath>..\..\bin\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,20 +52,15 @@
     <Compile Include="Player.cs" />
     <Compile Include="PlayerManager.cs" />
     <Compile Include="PlayerStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
-      <Project>{7ADF8CD4-CFCB-4E35-ABF7-E761497EAA11}</Project>
-      <Name>GameWork.Core.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
       <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
       <Name>PlayGen.Photon.Messaging</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

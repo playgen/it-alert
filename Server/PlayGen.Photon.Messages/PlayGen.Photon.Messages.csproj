@@ -29,9 +29,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity_Debug_Client|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\..\Unity\Assets\Plugins\Server\</OutputPath>
+    <OutputPath>..\..\bin\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,6 +52,7 @@
     <Compile Include="Players\ListPlayersMessage.cs" />
     <Compile Include="Players\PlayersMessage.cs" />
     <Compile Include="Players\UpdatePlayerMessage.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
@@ -63,9 +64,7 @@
       <Name>PlayGen.Photon.Players</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir).\deploy\bin_Win32\"

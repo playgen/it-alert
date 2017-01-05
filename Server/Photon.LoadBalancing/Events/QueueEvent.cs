@@ -9,16 +9,16 @@
 
 namespace Photon.LoadBalancing.Events
 {
-    #region using directives
+	#region using directives
 
-    using Photon.LoadBalancing.Operations;
-    using Photon.SocketServer.Rpc;
+	using Photon.LoadBalancing.Operations;
+	using Photon.SocketServer.Rpc;
 
-    #endregion
+	#endregion
 
-    public class QueueEvent : DataContract
-    {
-        [DataMember(Code = (byte)ParameterCode.Position)]
-        public int Position { get; set; }
-    }
+	public class QueueEvent : DataContract
+	{
+		[DataMember(Code = (byte)ParameterCode.Position)]
+		public int Position { get; set; }
+	}
 }

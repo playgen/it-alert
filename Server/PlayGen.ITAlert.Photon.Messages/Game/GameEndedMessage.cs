@@ -1,6 +1,6 @@
 ﻿namespace PlayGen.ITAlert.Photon.Messages.Game
 {
-    public class GameEndedMessage : GameMessage
-    {
-    }
+	public class GameEndedMessage : GameMessage
+	{
+	}
 }

@@ -9,26 +9,26 @@
 
 namespace Photon.LoadBalancing.Operations
 {
-    #region
+	#region
 
-    using Photon.SocketServer.Rpc;
+	using Photon.SocketServer.Rpc;
 
-    #endregion
+	#endregion
 
-    public class JoinRandomGameResponse
-    {
-        #region Properties
+	public class JoinRandomGameResponse
+	{
+		#region Properties
 
-        [DataMember(Code = (byte)ParameterCode.Address)]
-        public string Address { get; set; }
+		[DataMember(Code = (byte)ParameterCode.Address)]
+		public string Address { get; set; }
 
-        [DataMember(Code = (byte)ParameterCode.GameId)]
-        public string GameId { get; set; }
+		[DataMember(Code = (byte)ParameterCode.GameId)]
+		public string GameId { get; set; }
 
-        [DataMember(Code = (byte)ParameterCode.NodeId)]
-        public byte NodeId { get; set; }
+		[DataMember(Code = (byte)ParameterCode.NodeId)]
+		public byte NodeId { get; set; }
 
 
-        #endregion
-    }
+		#endregion
+	}
 }
