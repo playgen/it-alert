@@ -1,7 +1,11 @@
-﻿using GameWork.Core.Interfacing;
+﻿using System;
+using GameWork.Core.Interfacing;
 using GameWork.Core.States;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
@@ -31,10 +35,12 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 		public override void Enter()
 		{
 			_interface.Enter();
+			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 		}
 
 		public override void Exit()
 		{
+			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 			_interface.Exit();
 		}
 
@@ -61,11 +67,20 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 					commandResolver.HandleSequenceStates(command, this);
 				}
 			}
-			if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+		}
+
+		private void ProcessSimulationStateMessage(Message message)
+		{
+			var tickMessage = message as TickMessage;
+			if (tickMessage != null)
 			{
-				Director.UpdateSimulation(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
+				var simulation = Serializer.DeserializeSimulation(tickMessage.SerializedSimulation);
+				Director.UpdateSimulation(simulation);
 				Director.Refresh();
+				return;
 			}
+
+			throw new Exception("Unhandled Simulation State Message: " + message);
 		}
 	}
 }

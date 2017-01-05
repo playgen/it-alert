@@ -2,11 +2,9 @@
 using GameWork.Core.States;
 using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates.GameSubStates;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.GameStates
 {
@@ -64,40 +62,9 @@ namespace PlayGen.ITAlert.GameStates
 		{
 			_voiceController.HandleVoiceInput();
 
-			switch (_client.CurrentRoom.CurrentGame.State)
+			if (_stateController.ActiveState != null)
 			{
-				case Assets.Scripts.Network.Client.GameStates.Initializing:
-					if (_stateController.ActiveState != InitializingState.StateName)
-					{
-						_stateController.ChangeState(InitializingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
-
-				case Assets.Scripts.Network.Client.GameStates.Playing:
-					if (_stateController.ActiveState == InitializingState.StateName || _stateController.ActiveState == FinalizingState.StateName)
-					{
-						_stateController.ChangeState(PlayingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
-
-				case Assets.Scripts.Network.Client.GameStates.Finalizing:
-					if (_stateController.ActiveState != FinalizingState.StateName)
-					{
-						_stateController.ChangeState(FinalizingState.StateName);
-					}
-					else
-					{
-						_stateController.Tick(deltaTime);
-					}
-					break;
+				_stateController.Tick(deltaTime);
 			}
 
 			_interface.UpdateChatPanel();

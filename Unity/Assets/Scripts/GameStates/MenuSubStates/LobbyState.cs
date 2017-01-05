@@ -1,13 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States;
 using PlayGen.ITAlert.GameStates;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.Photon.Messaging;
+using PlayGen.Photon.Players;
 using PlayGen.SUGAR.Unity;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using POpusCodec.Enums;
 
 public class LobbyState : TickableSequenceState
 {
@@ -37,16 +38,16 @@ public class LobbyState : TickableSequenceState
 
     public override void Enter()
     {
+        _client.CurrentRoom.Messenger.Subscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessRoomMessage);
+
         _controller.ReadySuccessEvent += _interface.OnReadySucceeded;
         _controller.RefreshSuccessEvent += _interface.UpdatePlayerList;
 
-        _client.CurrentRoom.SetPlayerExternalId(SUGARManager.CurrentUser.Id);
-        _client.CurrentRoom.SetPlayerName(SUGARManager.CurrentUser.Name);
+        _client.CurrentRoom.PlayerListUpdatedEvent += UpdateThisPlayerFromSUGAR;
 
         _client.CurrentRoom.PlayerListUpdatedEvent += _interface.OnPlayersChanged;
         _client.JoinedRoomEvent += _interface.OnJoinedRoom;
         _client.LeftRoomEvent += _interface.OnLeaveSuccess;
-        _client.CurrentRoom.GameEnteredEvent += OnGameEntered;
 
         _interface.SetRoomMax(Convert.ToInt32(_client.CurrentRoom.RoomInfo.maxPlayers));
         _interface.SetRoomName(_client.CurrentRoom.RoomInfo.name);
@@ -55,6 +56,8 @@ public class LobbyState : TickableSequenceState
 
     public override void Exit()
     {
+        _client.CurrentRoom.Messenger.Unsubscribe((int)PlayGen.ITAlert.Photon.Messages.Channels.Game, ProcessRoomMessage);
+
         _client.LeftRoomEvent -= _interface.OnLeaveSuccess;
         _client.JoinedRoomEvent -= _interface.OnJoinedRoom;
 
@@ -64,9 +67,16 @@ public class LobbyState : TickableSequenceState
         _interface.Exit();
     }
 
-    private void OnGameEntered(ClientGame game)
+    private void ProcessRoomMessage(Message message)
     {
-        NextState();
+        var gameStartedMessage = message as GameStartedMessage;
+        if (gameStartedMessage != null)
+        {
+            ChangeState(GameState.StateName);
+            return;
+        }
+
+        throw new Exception("Unhandled Room Message: " + message);
     }
 
     public override void NextState()
@@ -130,12 +140,20 @@ public class LobbyState : TickableSequenceState
         {
             if (_client.CurrentRoom.Players != null && _client.CurrentRoom.Players.All(p => p.Status == PlayerStatus.Ready))
             {
-                _client.CurrentRoom.StartGame(false);
+                _controller.StartGame(false);
             }
         }
 
         _interface.UpdateVoiceStatuses();
     }
+
+    private void UpdateThisPlayerFromSUGAR(List<Player> players)
+    {
+        _client.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;
+
+        var player = _client.CurrentRoom.Player;
+        player.ExternalId = SUGARManager.CurrentUser.Id;
+        player.Name = SUGARManager.CurrentUser.Name;
+        _client.CurrentRoom.UpdatePlayer(player);
+    }
 }
-
-

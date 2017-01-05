@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using GameWork.Core.Commands.Interfaces;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Photon.Players;
-
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.Photon.Players;
 using UnityEngine;
 
 public class LobbyController : ICommandAction
@@ -22,6 +20,7 @@ public class LobbyController : ICommandAction
 
     public void RefreshPlayerList()
     {
+        // todo get rid of this and use the actual PlayGen.Photon.Player representation
         var lobbyPlayers = new List<LobbyPlayer>();
 
         foreach (var player in _client.CurrentRoom.Players)
@@ -39,7 +38,7 @@ public class LobbyController : ICommandAction
             if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
                 Debug.Log("All Ready!");
-                _client.CurrentRoom.StartGame(true); // force start = true?
+                StartGame(true); // force start = true?
             }
         }
     }
@@ -51,20 +50,38 @@ public class LobbyController : ICommandAction
 
     public void ReadyPlayer()
     {
-        _client.CurrentRoom.SetReady(true);
+        var player = _client.CurrentRoom.Player;
+        player.Status = PlayerStatus.Ready;
+        _client.CurrentRoom.UpdatePlayer(player);
+
         ReadySuccessEvent();
     }
 
     public void UnreadyPlayer()
     {
-        _client.CurrentRoom.SetReady(false);
+        var player = _client.CurrentRoom.Player;
+        player.Status = PlayerStatus.NotReady;
+        _client.CurrentRoom.UpdatePlayer(player);
+
         ReadySuccessEvent();
     }
 
     public void SetColor(string colorHex)
     {
-        _client.CurrentRoom.SetColor(colorHex);
+        var player = _client.CurrentRoom.Player;
+        player.Color = colorHex;
+        _client.CurrentRoom.UpdatePlayer(player);
+
         RefreshPlayerList();
+    }
+
+    public void StartGame(bool forceStart, bool closeRoom = true)
+    {
+        _client.CurrentRoom.Messenger.SendMessage(new StartGameMessage
+        {
+            Force = forceStart,
+            Close = closeRoom,
+        });
     }
 
     public struct LobbyPlayer
@@ -82,6 +99,4 @@ public class LobbyController : ICommandAction
             Color = color;
         }
     }
-        
 }
-

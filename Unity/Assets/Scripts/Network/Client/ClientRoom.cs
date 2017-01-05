@@ -1,8 +1,13 @@
-﻿using PlayGen.ITAlert.Photon.Events;
-using PlayGen.ITAlert.Photon.Players;
-using System;
+﻿using System;
+using System.Linq;
 using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.Photon.Players;
+using PlayGen.Photon.Unity;
+using PlayGen.Photon.Unity.Messaging;
+using PlayGen.Photon.Messaging;
+using System.Collections.Generic;
+using PlayGen.Photon.Messages;
+using PlayGen.Photon.Messages.Players;
 
 namespace PlayGen.ITAlert.Network.Client
 {
@@ -16,14 +21,13 @@ namespace PlayGen.ITAlert.Network.Client
 
         private bool _isDisposed;
 
-        public event Action<ClientGame> GameEnteredEvent;
         public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
         public event Action<PhotonPlayer> OtherPlayerLeftEvent;
-        public event Action<Player[]> PlayerListUpdatedEvent;
+        public event Action<List<Player>> PlayerListUpdatedEvent;
 
-        public Player[] Players { get; private set; }
+        public Messenger Messenger { get; private set; }
 
-        public ClientGame CurrentGame { get; private set; }
+        public List<Player> Players { get; private set; }
 
         public RoomInfo RoomInfo
         {
@@ -45,20 +49,17 @@ namespace PlayGen.ITAlert.Network.Client
             get { return _photonClient.IsMasterClient; }
         }
 
-        // todod change to use our own player representation
-        public PhotonPlayer Player
+        public Player Player
         {
-            get { return _photonClient.Player; }
+            get { return Players.Single(p => p.PhotonId == _photonClient.Player.ID); }
         }
 
         public ClientRoom(PhotonClient photonClient)
         {
             _photonClient = photonClient;
 
-            _photonClient.RegisterSerializableType(typeof(Player),
-                SerializableTypes.Player,
-                Serializer.Serialize,
-                Serializer.Deserialize<Player>);
+            Messenger = new Messenger(new ITAlertMessageSerializationHandler(),  photonClient);
+            Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
 
             _voiceClient = new VoiceClient();
             _voiceClient.OnJoinedRoom();
@@ -70,12 +71,15 @@ namespace PlayGen.ITAlert.Network.Client
 
         ~ClientRoom()
         {
-            _photonClient.EventRecievedEvent -= OnRecievedEvent;
+            Dispose();
         }
-
+        
         public void RefreshPlayers()
         {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ListPlayers);
+            Messenger.SendMessage(new ListPlayersMessage
+            {
+                PhotonId = _photonClient.Player.ID
+            });
         }
 
         public void Leave()
@@ -84,61 +88,22 @@ namespace PlayGen.ITAlert.Network.Client
             _photonClient.LeaveRoom();
         }
 
-        public void SetReady(bool isReady)
+        public void UpdatePlayer(Player player)
         {
-            if (isReady)
+            Messenger.SendMessage(new UpdatePlayerMessage
             {
-                _photonClient.RaiseEvent((byte)PlayerEventCode.SetReady);
-            }
-            else
+                Player = player
+            });
+        }
+
+        public void OnRecievedEvent(byte eventCode, object content, int senderId)
+        {
+            if (eventCode == (byte) PlayGen.Photon.Messaging.EventCode.Message)
             {
-                _photonClient.RaiseEvent((byte)PlayerEventCode.SetNotReady);
-            }
-        }
-
-        public void SetPlayerExternalId(int id)
-        {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeExternalId, id);
-        }
-
-        public void SetPlayerName(string name)
-        {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeName, name);
-        }
-
-        public void SetColor(string color)
-        {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.ChangeColor, color);
-        }
-
-        public void StartGame(bool forceStart, bool closeRoom = true)
-        {
-            _photonClient.RaiseEvent((byte)PlayerEventCode.StartGame,
-                new bool[] { forceStart, closeRoom });
-        }
-        
-        private void OnRecievedEvent(byte eventCode, object content, int senderId)
-        {
-            switch (eventCode)
-            {
-                case (byte)ServerEventCode.PlayerList:
-                    Players = (Player[])content;
-
-                    if (PlayerListUpdatedEvent != null)
-                    {
-                        PlayerListUpdatedEvent(Players);
-                    }
-                    break;
-
-                case (byte)ServerEventCode.GameEntered:
-
-                    CurrentGame = new ClientGame(_photonClient);
-
-                    if (GameEnteredEvent != null)
-                    {
-                        GameEnteredEvent(CurrentGame);
-                    }
-                    break;
+                if (!Messenger.TryProcessMessage((byte[])content))
+                {
+                    throw new Exception("Couldn't process as message: " + content);
+                }
             }
         }
 
@@ -146,11 +111,26 @@ namespace PlayGen.ITAlert.Network.Client
         {
             if (!_isDisposed)
             {
+                Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
+
                 _voiceClient.OnLeftRoom();
-                CurrentGame = null;
                 _photonClient.EventRecievedEvent -= OnRecievedEvent;
 
                 _isDisposed = true;
+            }
+        }
+
+        private void ProcessPlayersMessage(Message message)
+        {
+            var listedPlayersMessage = message as ListedPlayersMessage;
+            if (listedPlayersMessage != null)
+            {
+                Players = listedPlayersMessage.Players;
+                if (PlayerListUpdatedEvent != null)
+                {
+                    PlayerListUpdatedEvent(Players);
+                }
+                return;
             }
         }
 

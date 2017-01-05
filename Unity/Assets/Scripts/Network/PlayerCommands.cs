@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Messages.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
 using UnityEngine;
 
@@ -34,7 +35,8 @@ public class PlayerCommands
 			LocationId = subsystemId
 		};
 
-        Client.CurrentRoom.CurrentGame.SendGameCommand(requestPickupItemCommand);
+		IssueCommand(requestPickupItemCommand);
+
 		// todo process locally too and resync later Director.RequestPickupItem(item.Id, subsystem.Id);
 	}
 
@@ -47,8 +49,9 @@ public class PlayerCommands
 			PlayerId = Director.Player.Id,
 			DestinationId = subsystemId
 		};
-        
-        Client.CurrentRoom.CurrentGame.SendGameCommand(requestMovePlayerCommand);
+
+		IssueCommand(requestMovePlayerCommand);
+
 		// todo process locally too and resync laterDirector.RequestMovePlayer(destination.Id);
 	}
 
@@ -61,8 +64,9 @@ public class PlayerCommands
 			PlayerId = Director.Player.Id,
 			ItemId = itemId
 		};
-        
-        Client.CurrentRoom.CurrentGame.SendGameCommand(requestDropItemCommand);
+
+		IssueCommand(requestDropItemCommand);
+
 		// todo process locally too and resync laterDirector.RequestDropItem(item.Id);
 	}
 
@@ -76,7 +80,8 @@ public class PlayerCommands
 			ItemId = itemId
 		};
 
-        Client.CurrentRoom.CurrentGame.SendGameCommand(requestActivateItemCommand);
+		IssueCommand(requestActivateItemCommand);
+
 		// todo process locally too and resync later Director.RequestActivateItem(item.Id);
 	}
 
@@ -85,4 +90,11 @@ public class PlayerCommands
 		throw new NotImplementedException("Send Command to Simulation");
 	}
 
+	private static void IssueCommand(PlayGen.ITAlert.Simulation.Commands.Interfaces.ICommand command)
+	{
+		Client.CurrentRoom.Messenger.SendMessage(new CommandMessage()
+		{
+			Command = command
+		});
+	}
 }

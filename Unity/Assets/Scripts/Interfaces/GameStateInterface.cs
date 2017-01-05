@@ -1,12 +1,9 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.Interfacing;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Photon.Players;
-
+using PlayGen.Photon.Players;
 using UnityEngine.UI;
 
 public class GameStateInterface : StateInterface
@@ -32,7 +29,7 @@ public class GameStateInterface : StateInterface
 		_chatPanel.SetActive(false);
 	}
 
-	public void PopulateChatPanel(Player[] players)
+	public void PopulateChatPanel(ICollection<Player> players)
 	{
 		foreach (Transform child in _chatPanel.transform)
 		{
@@ -84,7 +81,7 @@ public class GameStateInterface : StateInterface
 		}
 	}
 
-	public void SetPlayerColors(Player[] players)
+	public void SetPlayerColors(ICollection<Player> players)
 	{
 		_playerColors = new Dictionary<int, string>();
 

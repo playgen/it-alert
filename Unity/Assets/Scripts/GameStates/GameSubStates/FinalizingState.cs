@@ -1,6 +1,10 @@
-﻿using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using System;
+using GameWork.Core.Commands.States;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.Photon.Messaging;
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
@@ -22,10 +26,27 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
 		public override void Enter()
 		{
+			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.Game, ProcessGameMessage);
+
+			_networkClient.CurrentRoom.Messenger.SendMessage(new FinalizedMessage()
+			{
+				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
+			});
 		}
 
 		public override void Exit()
 		{
+			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.Game, ProcessGameMessage);
+		}
+
+		private void ProcessGameMessage(Message message)
+		{
+			var gameEndedMessage = message as GameEndedMessage;
+			if (gameEndedMessage != null)
+			{
+				// todo change back to lobby state
+				return;
+			}
 		}
 
 		public override void NextState()
@@ -38,12 +59,6 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
 		public override void Tick(float deltaTime)
 		{
-			if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
-			{
-				Director.Finalise(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState());
-				Director.Refresh();
-				_networkClient.CurrentRoom.CurrentGame.SetGameFinalized();
-			}
 		}
 	}
 }

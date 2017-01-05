@@ -69,8 +69,12 @@ Server/**/log
 # ignore app config in plugins
 Unity/Assets/Plugins/Server/PhotonServer.config
 
-# !/Server/deploy/bin*/*
-# !/Server/deploy/Policy/
+!/Server/deploy/Policy/
+!/Server/deploy/bin*/*
+Server/deploy/bin*/PlayGen.*
+Server/deploy/bin*/GameWork.*
+Server/deploy/bin*/Priority Queue*
+Server/deploy/bin*/Newtonsoft*
 
 # GameWork
 Unity/Assets/GameWork/*
@@ -81,12 +85,11 @@ Unity/Assets/Plugins/PlayGen.SUGAR.Unity/
 Unity/Unity.csproj.DotSettings
 
 # Photon
-Server/Photon.LoadBalancing/SUGARConfiguration.config
 #Server/PlayGen.ITAlert.Photon.SUGAR/SUGARConfiguration.json
 Server/deploy/bin_Win32/PhotonServer.config
 Server/deploy/bin_Win64/PhotonServer.config
 !Server/nuget/*
-
+Server/Plugins/lib/PhotonHivePlugin.dll
 **/*.dll
 **/*.pdb
 !lib/**/*.dll
@@ -109,3 +112,4 @@ Unity/Assets/Simulation/
 
 Unity/Assets/Server/
 !Unity/Assets/Server/**/*.dll.meta
+Server/deploy/*/SUGARConfiguration.json
