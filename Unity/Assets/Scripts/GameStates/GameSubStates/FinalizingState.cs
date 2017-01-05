@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
+using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
@@ -26,6 +27,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
 		public override void Enter()
 		{
+			Logger.LogDebug("Entered " + StateName);
+
 			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.Feedback, ProcessFeedbackMessage);
 
 			_networkClient.CurrentRoom.Messenger.SendMessage(new FinalizedMessage()

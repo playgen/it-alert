@@ -5,6 +5,7 @@ using System.Linq;
 using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Network.Client.Voice;
+using PlayGen.Photon.Unity;
 
 public class VoiceController
 {

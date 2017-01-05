@@ -5,7 +5,7 @@ using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
-
+using PlayGen.Photon.Unity;
 using UnityEngine.UI;
 
 public class GamesListStateInterface : StateInterface

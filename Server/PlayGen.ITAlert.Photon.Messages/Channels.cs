@@ -4,6 +4,8 @@
     {
         Players = PlayGen.Photon.Messages.Channels.Players,
 
+		Logging = PlayGen.Photon.Messages.Channels.Logging,
+
         Game = 11,
 
         SimulationState = 12,

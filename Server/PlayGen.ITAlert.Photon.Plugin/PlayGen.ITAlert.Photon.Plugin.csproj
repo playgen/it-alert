@@ -110,6 +110,9 @@
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.Photon.Plugin\bin\"</PostBuildEvent>

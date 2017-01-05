@@ -2,14 +2,13 @@
 using System.Linq;
 using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Messaging;
 using PlayGen.Photon.Messaging;
 using System.Collections.Generic;
 using PlayGen.Photon.Messages;
 using PlayGen.Photon.Messages.Players;
 
-namespace PlayGen.ITAlert.Network.Client
+namespace PlayGen.Photon.Unity
 {
     /// <summary>
     /// Can only exist within a Client
@@ -59,14 +58,18 @@ namespace PlayGen.ITAlert.Network.Client
             _photonClient = photonClient;
 
             Messenger = new Messenger(new ITAlertMessageSerializationHandler(),  photonClient);
-            Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
-
+			Logger.SetMessenger(Messenger);
+	        Logger.PlayerPhotonId = photonClient.Player.ID;
+			Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
+			
             _voiceClient = new VoiceClient();
             _voiceClient.OnJoinedRoom();
 
             _photonClient.EventRecievedEvent += OnRecievedEvent;
 
             RefreshPlayers();
+
+			Logger.LogDebug("Created ClientRoom");
         }
 
         ~ClientRoom()

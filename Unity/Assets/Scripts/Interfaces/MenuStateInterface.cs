@@ -4,6 +4,7 @@ using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.Photon.Unity;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
