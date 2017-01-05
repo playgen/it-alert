@@ -7,7 +7,8 @@ namespace Engine.Components
 {
 	public delegate IComponent ComponentFactoryDelegate();
 
-	public delegate void EntityComponentBinding(IComponent component, Entity entity);
+	public delegate void EntityComponentBinding(Entity entity, IComponent component);
+	public delegate void EntityArchetypeCreated(Entity entity);
 
 	public class ComponentFactory : IComponentFactory
 	{
@@ -16,6 +17,7 @@ namespace Engine.Components
 		private readonly Dictionary<string, List<ComponentFactoryDelegate>> _componentFactories;
 
 		public EntityComponentBinding EntityComponentBound;
+		public EntityArchetypeCreated EntityArchetypeCreated;
 
 		#region constructor
 
@@ -54,12 +56,13 @@ namespace Engine.Components
 			{
 				var component = factoryDelegate();
 				componentContainer.AddComponent(component);
-				EntityComponentBound?.Invoke(component, componentContainer);
+				EntityComponentBound?.Invoke(componentContainer, component);
 			}
 			foreach (var component in componentContainer.Components)
 			{
-				component.Initialize(componentContainer);
+				component.Value.Initialize(componentContainer);
 			}
+			EntityArchetypeCreated(componentContainer);
 		}
 
 		public void ValidateComponentDependencies(IComponentContainer componentContainer)

@@ -72,14 +72,14 @@
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="GameEntities.cs" />
-    <Compile Include="Components\Behaviours\SubsystemMovement.cs" />
+    <Compile Include="Systems\Movement\SubsystemMovement.cs" />
     <Compile Include="Components\Behaviours\IMovementComponent.cs" />
-    <Compile Include="Components\Behaviours\ConnectionMovement.cs" />
+    <Compile Include="Systems\Movement\ConnectionMovement.cs" />
     <Compile Include="Components\Properties\GraphNode.cs" />
     <Compile Include="Components\Properties\Intents.cs" />
     <Compile Include="Components\Properties\MovementSpeed.cs" />
     <Compile Include="Systems\Movement\VisitorMovement.cs" />
-    <Compile Include="Components\Properties\Movement.cs" />
+    <Compile Include="Systems\Movement\Movement.cs" />
     <Compile Include="Components\Properties\ExitRoutes.cs" />
     <Compile Include="Components\Properties\MovementCost.cs" />
     <Compile Include="Components\Properties\Name.cs" />
