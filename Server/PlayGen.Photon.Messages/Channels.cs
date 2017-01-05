@@ -1,7 +1,9 @@
 ﻿namespace PlayGen.Photon.Messages
 {
-    public enum Channels : byte
+    public enum Channels
     {
-        Players = 0
+        Players = 0,
+
+		Logging = 1,
     }
 }

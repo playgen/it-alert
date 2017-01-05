@@ -2,7 +2,7 @@
 using GameWork.Core.Interfacing;
 
 using PlayGen.ITAlert.Network.Client;
-
+using PlayGen.Photon.Unity;
 using UnityEngine;
 
 public class CreateGameStateInterface : StateInterface

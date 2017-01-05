@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Network.Client.Voice;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using PlayGen.Photon.Players;
+using PlayGen.Photon.Unity;
 
 public class LobbyStateInterface : StateInterface
 {
