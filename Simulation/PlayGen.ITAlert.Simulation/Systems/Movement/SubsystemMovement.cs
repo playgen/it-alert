@@ -11,9 +11,6 @@ using PlayGen.ITAlert.Simulation.Components.Properties;
 
 namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 {
-	[ComponentDependency(typeof(IntentsProperty))]
-	[ComponentDependency(typeof(MovementSpeed))]
-	[ComponentDependency(typeof(ExitRoutes))]
 	public class SubsystemMovement : Movement
 	{
 		private ExitRoutes _exitRoutes;

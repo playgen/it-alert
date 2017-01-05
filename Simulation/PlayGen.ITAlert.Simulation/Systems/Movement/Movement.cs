@@ -4,6 +4,7 @@ using System.Linq;
 using Engine.Components;
 using Engine.Components.Property;
 using Engine.Entities;
+using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Components.Behaviours;
 
 namespace PlayGen.ITAlert.Simulation.Components.Properties
@@ -11,21 +12,15 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 	[ComponentDependency(typeof(Visitors))]
 	[ComponentDependency(typeof(VisitorPosition))]
 	[ComponentDependency(typeof(GraphNode))]
-	public abstract class Movement : Component, IMovementComponent
+	public abstract class Movement , ISystemComponent
 	{
 		protected GraphNode GraphNode;
 		protected Visitors Visitors;
 
 		public int Positions { get; set; }
 
-		public override void Initialize(Entity entity)
-		{
-			base.Initialize(entity);
-			GraphNode = Entity.GetComponent<GraphNode>();
-			Visitors = Entity.GetComponent<Visitors>();
-		}
-
 		public abstract void MoveVisitors(int currentTick);
+
 		public void AddVisitor(Entity visitor)
 		{
 			AddVisitor(visitor, 0, 0);

@@ -10,6 +10,8 @@ namespace Engine.Components
 	{
 		private bool _disposed;
 
+
+
 		public Entity Entity { get; private set; }
 
 		#region disposal

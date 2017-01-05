@@ -20,7 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public override void Tick(int currentTick)
 		{
-			var activations = ComponentRegistry.GetComponentEntitesImplmenting<Components.Activation.Activation>();
+			var activations = ComponentRegistry.GetEntitesWithComponent<Components.Activation.Activation>();
 
 			foreach (var activation in activations)
 			{

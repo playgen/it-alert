@@ -8,31 +8,18 @@ namespace Engine.Entities
 {
 	public delegate void EntityDelegate(Entity entity);
 
-	public class Entity : //MessageHub
-		ComponentContainer, IEquatable<Entity>
+	public class Entity : ComponentContainer, IEquatable<Entity>
 	{
 		public int Id { get; protected set; }
 
-		protected bool _disposed;
-
-		protected EntityRegistry EntityRegistry { get; }
-
-		#region constructors
-
-		public Entity(EntityRegistry entityRegistry, ComponentRegistry componentRegistry)
-			: base(componentRegistry)
-		{
-			EntityRegistry = entityRegistry;
-		}
-
-		#endregion
+		protected bool Disposed;
 
 		public event EntityDelegate EntityDestroyed;
 
-		public void Initialize()
+		public void Initialize(int id)
 		{
-			Id = EntityRegistry.NextEntityId;
-			_disposed = false;
+			Id = id;
+			Disposed = false;
 
 			Components.Clear();
 		}
@@ -50,9 +37,9 @@ namespace Engine.Entities
 		public override void Dispose()
 		{
 			//TODO: interlock this perhaps, once we want to support multithreading
-			if (_disposed == false)
+			if (Disposed == false)
 			{
-				_disposed = true;
+				Disposed = true;
 				RaiseEntityDestroyed();
 				base.Dispose();
 			}

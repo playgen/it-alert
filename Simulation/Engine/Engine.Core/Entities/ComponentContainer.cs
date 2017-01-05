@@ -9,21 +9,15 @@ namespace Engine.Entities
 	{
 		protected ComponentRegistry ComponentRegistry { get; }
 
-		private readonly HashSet<IComponent> _components;
-
-		public IList<IComponent> Components => _components.ToList();
-
-		private Dictionary<Type, IEnumerable<IComponent>> _componentsByImplementation = new Dictionary<Type, IEnumerable<IComponent>>();
-		// ReSharper restore FieldCanBeMadeReadOnly.Local
+		public Dictionary<Type, IComponent> Components { get; }
 
 		private bool _disposed;
 		
 		#region constructors
 
-		public ComponentContainer(ComponentRegistry componentRegistry)
+		public ComponentContainer()
 		{
-			ComponentRegistry = componentRegistry;
-			_components = new HashSet<IComponent>();
+			Components = new Dictionary<Type, IComponent>();
 		}
 
 		#endregion
@@ -40,7 +34,7 @@ namespace Engine.Entities
 			if (_disposed == false)
 			{
 				_disposed = true;
-				foreach (var component in _components)
+				foreach (var component in Components.Values)
 				{
 					component.Dispose();
 				}
@@ -51,10 +45,13 @@ namespace Engine.Entities
 
 		#region components
 
+		//TODO: there has to be  better way of storing what type of component this entity has 
+
 		public void AddComponent(IComponent component)
 		{
-			_components.Add(component);
+			Components.Add(component.GetType(), component);
 		}
+
 		public bool HasComponent<TComponentInterface>()
 			where TComponentInterface : class, IComponent
 		{
@@ -66,6 +63,11 @@ namespace Engine.Entities
 		{
 			return GetComponentsInternal<TComponentInterface>().Single();
 		}
+
+		//public IComponent GetComponent(Type componentType)
+		//{
+		//	return GetComponentsInternal<com>().Single();
+		//}
 
 		public bool TryGetComponent<TComponentInterface>(out TComponentInterface component)
 			where TComponentInterface : class, IComponent
@@ -80,27 +82,36 @@ namespace Engine.Entities
 			return GetComponentsInternal<TComponentInterface>();
 		}
 
+		//private IEnumerable<IComponent> GetComponentsInternal(Type componentType)
+		//{
+		//	//TODO: this looks like a m * n problem
+		//	HashSet<Type> componentTypes;
+		//	if (ComponentRegistry.ComponentTypeImplementations.TryGetValue(componentType, out componentTypes))
+		//	{
+		//		return componentTypes.Where(ct => Components.ContainsKey(ct))
+		//			.Select(ct => Components[ct]);
+		//	}
+		//	return new IComponent[0];
+		//}
+
 		private IEnumerable<TComponentInterface> GetComponentsInternal<TComponentInterface>()
 			where TComponentInterface : class, IComponent
 		{
-			IEnumerable<IComponent> components;
-			if (_componentsByImplementation.TryGetValue(typeof(TComponentInterface), out components) == false)
-			{
-				components = GenerateComponentImplementorCache<TComponentInterface>();
-				_componentsByImplementation.Add(typeof(TComponentInterface), components);
+			//TODO: this looks like a m * n problem
+			HashSet<Type> componentTypes;
+			if (ComponentRegistry.ComponentTypeImplementations.TryGetValue(typeof(TComponentInterface), out componentTypes))
+			{ 
+				return componentTypes.Where(ct => Components.ContainsKey(ct))
+					.Select(ct => Components[ct])
+					.Cast<TComponentInterface>();
 			}
-			return components.Cast<TComponentInterface>();
+			return new TComponentInterface[0];
 		}
 
 		public bool HasComponentsImplmenting<TComponentInterface>()
 			where TComponentInterface : class, IComponent
 		{
 			return GetComponents<TComponentInterface>().Any();
-		}
-
-		private IEnumerable<IComponent> GenerateComponentImplementorCache<TComponentInterface>()
-		{
-			return _components.Where(t => t is TComponentInterface);
 		}
 
 		#endregion

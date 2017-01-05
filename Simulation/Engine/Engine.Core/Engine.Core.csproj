@@ -47,9 +47,11 @@
     <Compile Include="Components\ComponentEntityTuple.cs" />
     <Compile Include="Components\ComponentFactory.cs" />
     <Compile Include="Components\ComponentLookupException.cs" />
+    <Compile Include="Components\ComponentMatcherGroup.cs" />
     <Compile Include="Components\ComponentRegistry.cs" />
     <Compile Include="Components\ComponentUsageAttribute.cs" />
     <Compile Include="Components\ComponentUsageException.cs" />
+    <Compile Include="Components\EntityGroup.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentFactory.cs" />
