@@ -31,6 +31,7 @@ namespace PlayGen.ITAlert.GameStates
 				new PlayingState(new PlayingStateInterface(), _client),
 				new PausedState(new PausedStateInterface(), _client),
 				new FinalizingState(_client),
+				new FeedbackState(_client),
 				new SettingsState(new SettingsStateInterface()));
 
 			_stateController.ChangeParentStateEvent += ChangeState;

@@ -41,7 +41,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
         {
             Messenger.Subscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
 
-            _commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+	        _commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
             _resolver = new CommandResolver(_simulation);
 
             Messenger.SendAllMessage(new Messages.Simulation.ServerState.PlayingMessage());

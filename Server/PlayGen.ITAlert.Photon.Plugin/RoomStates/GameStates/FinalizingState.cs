@@ -51,7 +51,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
                 if (PlayerManager.CombinedPlayerStatus == PlayerStatus.Finalized)
                 {
-                    ChangeState(LobbyState.StateName);
+                    ChangeState(FeedbackState.StateName);
                 }
                 return;
             }

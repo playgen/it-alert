@@ -41,13 +41,12 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channels.cs" />
+    <Compile Include="Feedback\FeedbackMessage.cs" />
+    <Compile Include="Feedback\FeedbackStartedMessage.cs" />
+    <Compile Include="Feedback\PlayerFeedbackMessage.cs" />
     <Compile Include="Game\GameEndedMessage.cs" />
     <Compile Include="Simulation\PlayerState\FinalizedMessage.cs" />
     <Compile Include="Simulation\PlayerState\InitializedMessage.cs" />
@@ -74,10 +73,6 @@
     <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
       <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
       <Name>PlayGen.Photon.Messaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Players\PlayGen.Photon.Players.csproj">
-      <Project>{7e9efe9a-58c7-45dc-ab5f-ef52cd721db5}</Project>
-      <Name>PlayGen.Photon.Players</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
