@@ -4,6 +4,7 @@ using System.Linq;
 using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ public class LobbyController : ICommandAction
 
         foreach (var player in _client.CurrentRoom.Players)
         {
-            var lobbyPlayer = new LobbyPlayer(player.Name, player.Status == PlayerStatus.Ready, player.PhotonId, player.Color);
+            var lobbyPlayer = new LobbyPlayer(player.Name, player.State == (int)State.Ready, player.PhotonId, player.Color);
             lobbyPlayers.Add(lobbyPlayer);
         }
 
@@ -33,7 +34,7 @@ public class LobbyController : ICommandAction
 
         if (_client.CurrentRoom.IsMasterClient)
         {
-            var numReadyPlayers = this._client.CurrentRoom.Players.Count(p => p.Status == PlayerStatus.Ready);
+            var numReadyPlayers = this._client.CurrentRoom.Players.Count(p => p.State == (int)State.Ready);
             Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
             if (numReadyPlayers == _client.CurrentRoom.RoomInfo.maxPlayers)
             {
@@ -51,7 +52,7 @@ public class LobbyController : ICommandAction
     public void ReadyPlayer()
     {
         var player = _client.CurrentRoom.Player;
-        player.Status = PlayerStatus.Ready;
+        player.State = (int)State.Ready;
         _client.CurrentRoom.UpdatePlayer(player);
 
         ReadySuccessEvent();
@@ -60,7 +61,7 @@ public class LobbyController : ICommandAction
     public void UnreadyPlayer()
     {
         var player = _client.CurrentRoom.Player;
-        player.Status = PlayerStatus.NotReady;
+        player.State = (int)State.NotReady;
         _client.CurrentRoom.UpdatePlayer(player);
 
         ReadySuccessEvent();

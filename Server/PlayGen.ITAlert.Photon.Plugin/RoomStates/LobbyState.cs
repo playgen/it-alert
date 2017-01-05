@@ -9,6 +9,8 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -49,7 +51,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         private void ResetAllPlayerStatuses()
         {
-            PlayerManager.ChangeAllStatuses(PlayerStatus.NotReady);
+            PlayerManager.ChangeAllState((int)State.NotReady);
             Messenger.SendAllMessage(new ListedPlayersMessage
             {
                 Players = PlayerManager.Players,
@@ -58,7 +60,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         private void StartGame(bool force, bool close)
         {
-            if (force || PlayerManager.CombinedPlayerStatus == PlayerStatus.Ready)
+            if (force || PlayerManager.Players.GetCombinedStates() == State.Ready)
             {
                 if (close)
                 {

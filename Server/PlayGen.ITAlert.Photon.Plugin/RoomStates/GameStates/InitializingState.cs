@@ -8,6 +8,8 @@ using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -46,10 +48,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
             if (initializedMessage != null)
             {
                 var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
-                player.Status = PlayerStatus.Initialized;
+                player.State = (int)State.Initialized;
                 PlayerManager.UpdatePlayer(player);
 
-                if (PlayerManager.CombinedPlayerStatus == PlayerStatus.Initialized)
+                if (PlayerManager.Players.GetCombinedStates() == State.Initialized)
                 {
                     ChangeState(PlayingState.StateName);
                 }

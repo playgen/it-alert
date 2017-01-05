@@ -138,7 +138,7 @@ public class LobbyState : TickableSequenceState
         
         if (_client.CurrentRoom != null && _client.CurrentRoom.IsMasterClient)
         {
-            if (_client.CurrentRoom.Players != null && _client.CurrentRoom.Players.All(p => p.Status == PlayerStatus.Ready))
+            if (_client.CurrentRoom.Players != null && _client.CurrentRoom.Players.All(p => p.State == (int)PlayGen.ITAlert.Photon.Players.State.Ready))
             {
                 _controller.StartGame(false);
             }

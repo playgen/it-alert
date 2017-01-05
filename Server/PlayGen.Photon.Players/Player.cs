@@ -10,8 +10,6 @@
 
         public string Color { get; set; }
 
-		// todo set status as int and use same pattern as 
-		// channels to modiy by defining an enum in the consuming, game specific project.
-        public PlayerStatus Status { get; set; }
+		public int State { get; set; }
     }
 }

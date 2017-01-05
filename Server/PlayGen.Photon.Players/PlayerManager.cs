@@ -10,41 +10,16 @@ namespace PlayGen.Photon.Players
         public List<Player> Players => _players.Values.ToList();
         public List<int> PlayersPhotonIds => _players.Values.Select(p => p.PhotonId).ToList();
 
-        public PlayerStatus CombinedPlayerStatus
-        {
-            get
-            {
-                if (_players.Any(p => p.Value.Status == PlayerStatus.NotReady))
-                {
-                    return PlayerStatus.NotReady;
-                }
-                else if (_players.All(p => p.Value.Status == PlayerStatus.Ready))
-                {
-                    return PlayerStatus.Ready;
-                }
-                else if (_players.All(p => p.Value.Status == PlayerStatus.Initialized))
-                {
-                    return PlayerStatus.Initialized;
-                }
-                else if (_players.All(p => p.Value.Status == PlayerStatus.Finalized))
-                {
-                    return PlayerStatus.Finalized;
-                }
-
-                return PlayerStatus.Error;
-            }
-        }
-
         public void UpdatePlayer(Player player)
         {
             _players[player.PhotonId] = player;
         }
 
-        public void ChangeAllStatuses(PlayerStatus status)
+        public void ChangeAllState(int state)
         {
             foreach (var player in _players.Values)
             {
-                player.Status = status;
+                player.State = state;
             }
         }
 
@@ -53,7 +28,7 @@ namespace PlayGen.Photon.Players
             _players.Remove(photonId);
         }
 
-        public Player Create(int photonId, int? externalId, string name, string color, PlayerStatus status)
+        public Player Create(int photonId, int? externalId, string name, string color, int state)
         {
             var player = new Player
             {
@@ -61,7 +36,7 @@ namespace PlayGen.Photon.Players
                 ExternalId = externalId,
                 Name = name,
                 Color = color,
-                Status = status,
+                State = state,
             };
 
             _players[photonId] = player;
