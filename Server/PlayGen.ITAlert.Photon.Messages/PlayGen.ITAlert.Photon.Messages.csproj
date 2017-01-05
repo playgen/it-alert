@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{02999433-BC54-495B-89F2-9075BB5D0082}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.Photon.Messages</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Photon.Messages</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity_Debug_Client|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>..\..\Unity\Assets\Plugins\Server\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Channels.cs" />
+    <Compile Include="Game\GameEndedMessage.cs" />
+    <Compile Include="Simulation\PlayerState\FinalizedMessage.cs" />
+    <Compile Include="Simulation\PlayerState\InitializedMessage.cs" />
+    <Compile Include="Game\GameStartedMessage.cs" />
+    <Compile Include="Game\GameMessage.cs" />
+    <Compile Include="Game\StartGameMessage.cs" />
+    <Compile Include="Simulation\PlayerState\PlayerMessage.cs" />
+    <Compile Include="Simulation\CommandMessage.cs" />
+    <Compile Include="Simulation\ServerState\FinalizingMessage.cs" />
+    <Compile Include="Simulation\ServerState\PlayingMessage.cs" />
+    <Compile Include="Simulation\ServerState\InitializingMessage.cs" />
+    <Compile Include="Simulation\ServerState\ServerMessage.cs" />
+    <Compile Include="Simulation\ServerState\TickMessage.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
+      <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
+      <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
+      <Name>PlayGen.Photon.Messages</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
+      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
+      <Name>PlayGen.Photon.Messaging</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Players\PlayGen.Photon.Players.csproj">
+      <Project>{7e9efe9a-58c7-45dc-ab5f-ef52cd721db5}</Project>
+      <Name>PlayGen.Photon.Players</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir).\deploy\bin_Win32\"
+xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir).\deploy\bin_Win64\"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

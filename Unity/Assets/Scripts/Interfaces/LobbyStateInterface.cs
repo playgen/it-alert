@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using UnityEngine;
 using GameWork.Core.Commands.States;
 using GameWork.Core.Interfacing;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Photon.Players;
 
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using PlayGen.Photon.Players;
 
 public class LobbyStateInterface : StateInterface
 {
@@ -229,7 +226,7 @@ public class LobbyStateInterface : StateInterface
 		RefreshPlayerList();
 	}
 
-	public void OnPlayersChanged(Player[] players)
+	public void OnPlayersChanged(ICollection<Player> players)
 	{
 		RefreshPlayerList();
 		SetPlayerColors(players.ToDictionary(

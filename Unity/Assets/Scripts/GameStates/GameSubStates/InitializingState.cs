@@ -1,6 +1,10 @@
-﻿using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using System;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
+using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
@@ -22,17 +26,16 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
         public override void Enter()
         {
-            
+            _networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
         }
 
         public override void Exit()
         {
-            
+            _networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
         }
 
         public override void NextState()
         {
-            ChangeState(PlayingState.StateName);
         }
 
         public override void PreviousState()
@@ -41,14 +44,32 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 
         public override void Tick(float deltaTime)
         {
-            if (_networkClient.CurrentRoom.CurrentGame.HasSimulationState)
+        }
+
+        private void ProcessSimulationStateMessage(Message message)
+        {
+            var initializedMessage = message as InitializingMessage;
+            if (initializedMessage != null)
             {
-                Director.Initialize(_networkClient.CurrentRoom.CurrentGame.TakeSimulationState(),
-                    _networkClient.CurrentRoom.Player.ID);
+                var simulation = Serializer.DeserializeSimulation(initializedMessage.SerializedSimulation);
+                Director.Initialize(simulation, _networkClient.CurrentRoom.Player.PhotonId);
                 Director.Refresh();
 
-                _networkClient.CurrentRoom.CurrentGame.SetGameInitialized();
+                _networkClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
+                {
+                    PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
+                });
+                return;
             }
+
+            var playingMessage = message as PlayingMessage;
+            if (playingMessage != null)
+            {
+                ChangeState(PlayingState.StateName);
+                return;
+            }
+
+            throw new Exception("Unhandled Simulation State Message: " + message);
         }
     }
 }

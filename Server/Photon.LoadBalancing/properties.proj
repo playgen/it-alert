@@ -2,9 +2,9 @@
 <Project ToolsVersion="3.5" DefaultTargets="Error" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <PropertyGroup>
-    <PluginName>PlayGen.ITAlert.Photon.Plugins</PluginName>
-    <PluginAssemblyName>PlayGen.ITAlert.Photon.Plugins.dll</PluginAssemblyName>
-    <PluginType>PlayGen.ITAlert.Photon.Plugins.PluginFactory</PluginType>
+    <PluginName>PlayGen.Photon.Plugin</PluginName>
+    <PluginAssemblyName>PlayGen.ITAlert.Photon.Plugin.dll</PluginAssemblyName>
+    <PluginType>PlayGen.ITAlert.Photon.Plugin.ITAlertPluginFactory</PluginType>
 
     <PluginBaseUrl>http://photon-forward.webscript.io</PluginBaseUrl>
 

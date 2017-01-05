@@ -1,41 +1,24 @@
 ﻿using System;
+using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.Network.Client
 {
-	public class Client
+	public class Client : IDisposable
 	{
 		private readonly PhotonClient _photonClient;
-		private Assets.Scripts.Network.Client.ClientState _clientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
+
+	    private bool _isDisposed;
 
 		public event Action<ClientRoom> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
 
-		public ClientRoom CurrentRoom { get; private set; }
-
-		public Assets.Scripts.Network.Client.ClientState ClientState
-		{
-			get
-			{
-				if (CurrentRoom == null)
-				{
-					return _clientState;
-				}
-				else
-				{
-					if (CurrentRoom.CurrentGame == null)
-					{
-						return Assets.Scripts.Network.Client.ClientState.Lobby; 
-					}
-					else
-					{
-						return Assets.Scripts.Network.Client.ClientState.Game;
-					}
-				}
-			}
-		}
-		
+        public Assets.Scripts.Network.Client.ClientState ClientState { get; private set; }
+        public ClientRoom CurrentRoom { get; private set; }
+        
 		public Client(PhotonClient photonClient)
 		{
+            ClientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
+
 			if (photonClient == null)
 			{
 				throw new ArgumentNullException("photonClient");
@@ -45,28 +28,35 @@ namespace PlayGen.ITAlert.Network.Client
 			_photonClient.ConnectedEvent += OnConnected;
 			_photonClient.DisconnectedEvent += OnDisconnected;
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
-			_photonClient.LeftRoomEvent += OnLeftRoom;
-			
-			//_photonClient.Connect();
+			_photonClient.LeftRoomEvent += OnLeftRoom;		
 		}
 
 		public void Connect()
 		{
-			_clientState = Assets.Scripts.Network.Client.ClientState.Connecting;
+			ClientState = Assets.Scripts.Network.Client.ClientState.Connecting;
 
 			if (_photonClient.Connect() == false && _photonClient.IsConnected == false)
 			{
-				_clientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
+				ClientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
 			};
 		}
 
 		~Client()
 		{
-			_photonClient.ConnectedEvent -= OnConnected;
-			_photonClient.DisconnectedEvent -= OnDisconnected;
-			_photonClient.JoinedRoomEvent -= OnJoinedRoom;
-			_photonClient.LeftRoomEvent -= OnLeftRoom;
+			Dispose();
 		}
+
+	    public void Dispose()
+	    {
+	        if (_isDisposed) return;
+
+            _photonClient.ConnectedEvent -= OnConnected;
+            _photonClient.DisconnectedEvent -= OnDisconnected;
+            _photonClient.JoinedRoomEvent -= OnJoinedRoom;
+            _photonClient.LeftRoomEvent -= OnLeftRoom;
+
+            _isDisposed = true;
+	    }
 
 		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
 		{
@@ -91,12 +81,12 @@ namespace PlayGen.ITAlert.Network.Client
 		#region Callbacks
 		private void OnConnected()
 		{
-			_clientState = Assets.Scripts.Network.Client.ClientState.Connected;
+			ClientState = Assets.Scripts.Network.Client.ClientState.Connected;
 		}
 
 		private void OnDisconnected()
 		{
-			_clientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
+			ClientState = Assets.Scripts.Network.Client.ClientState.Disconnected;
 		}
 
 		private void OnJoinedRoom()
