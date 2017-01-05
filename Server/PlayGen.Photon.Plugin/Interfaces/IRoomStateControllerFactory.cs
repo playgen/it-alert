@@ -4,8 +4,8 @@ using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.Photon.Plugin.Interfaces
 {
-    public interface IRoomStateControllerFactory
-    {
-        RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController);
-    }
+	public interface IRoomStateControllerFactory
+	{
+		RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController);
+	}
 }

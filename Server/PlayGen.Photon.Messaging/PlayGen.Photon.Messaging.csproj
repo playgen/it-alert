@@ -29,7 +29,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Unity_Debug_Client|AnyCPU'">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'UnityDebug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>..\..\bin\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -51,10 +51,9 @@
     <Compile Include="Interfaces\IMessageSerializationHandler.cs" />
     <Compile Include="Message.cs" />
     <Compile Include="MessageSubscriptionHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.*" "$(SolutionDir).\deploy\bin_Win32\"

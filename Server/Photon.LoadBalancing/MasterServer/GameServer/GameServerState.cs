@@ -11,57 +11,57 @@ using Photon.Common.LoadBalancer.LoadShedding;
 
 namespace Photon.LoadBalancing.MasterServer.GameServer
 {
-    #region using directives
+	#region using directives
 
-    using System;
+	using System;
 
-    #endregion
+	#endregion
 
-    public class GameServerState : IComparable<GameServerState>
-    {
-        public GameServerState(FeedbackLevel loadLevel, int peerCount)
-        {
-            this.LoadLevel = loadLevel;
-            this.PeerCount = peerCount;
-        }
+	public class GameServerState : IComparable<GameServerState>
+	{
+		public GameServerState(FeedbackLevel loadLevel, int peerCount)
+		{
+			this.LoadLevel = loadLevel;
+			this.PeerCount = peerCount;
+		}
 
-        public FeedbackLevel LoadLevel { get; private set; }
+		public FeedbackLevel LoadLevel { get; private set; }
 
-        public int PeerCount { get; private set; }
+		public int PeerCount { get; private set; }
 
-        public static bool operator >(GameServerState a, GameServerState b)
-        {
-            if (a.LoadLevel > b.LoadLevel)
-            {
-                return true;
-            }
+		public static bool operator >(GameServerState a, GameServerState b)
+		{
+			if (a.LoadLevel > b.LoadLevel)
+			{
+				return true;
+			}
 
-            return a.PeerCount > b.PeerCount;
-        }
+			return a.PeerCount > b.PeerCount;
+		}
 
-        public static bool operator <(GameServerState a, GameServerState b)
-        {
-            if (a.LoadLevel < b.LoadLevel)
-            {
-                return true;
-            }
+		public static bool operator <(GameServerState a, GameServerState b)
+		{
+			if (a.LoadLevel < b.LoadLevel)
+			{
+				return true;
+			}
 
-            return a.PeerCount < b.PeerCount;
-        }
+			return a.PeerCount < b.PeerCount;
+		}
 
-        public int CompareTo(GameServerState other)
-        {
-            if (this < other)
-            {
-                return -1;
-            }
+		public int CompareTo(GameServerState other)
+		{
+			if (this < other)
+			{
+				return -1;
+			}
 
-            if (this > other)
-            {
-                return 1;
-            }
+			if (this > other)
+			{
+				return 1;
+			}
 
-            return 0;
-        }
-    }
+			return 0;
+		}
+	}
 }

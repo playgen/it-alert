@@ -1,15 +1,15 @@
 ﻿namespace PlayGen.Photon.Players
 {
-    public enum PlayerStatus
-    {
-        Error,
+	public enum PlayerStatus
+	{
+		Error,
 
-        Ready,
+		Ready,
 
-        NotReady,
+		NotReady,
 
-        Initialized,
+		Initialized,
 
-        Finalized,
-    }
+		Finalized,
+	}
 }
