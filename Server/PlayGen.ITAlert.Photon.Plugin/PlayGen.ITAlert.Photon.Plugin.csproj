@@ -78,6 +78,10 @@
       <Project>{02999433-BC54-495B-89F2-9075BB5D0082}</Project>
       <Name>PlayGen.ITAlert.Photon.Messages</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
+      <Project>{53A786BC-5080-460F-88E1-20B81A7DB298}</Project>
+      <Name>PlayGen.ITAlert.Photon.Players</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>

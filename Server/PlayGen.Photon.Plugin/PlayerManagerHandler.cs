@@ -5,6 +5,7 @@ using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Players.Extensions;
+using PlayGen.ITAlert.Photon.Players;
 
 namespace PlayGen.Photon.Plugin
 {
@@ -61,10 +62,10 @@ namespace PlayGen.Photon.Plugin
             var existingPlayers = _playerManager.PlayersPhotonIds;
 
             var name = "player" + playerId;
-            var status = PlayerStatus.NotReady;
+            var state = (int)State.NotReady;
             var color = _playerManager.Players.GetUnusedColor();
 
-            _playerManager.Create(playerId, null, name, color, status);
+            _playerManager.Create(playerId, null, name, color, state);
             _messenger.SendMessage(existingPlayers, RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
             {
                 Players = _playerManager.Players,

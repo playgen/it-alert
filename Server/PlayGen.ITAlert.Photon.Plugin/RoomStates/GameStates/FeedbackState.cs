@@ -7,6 +7,8 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -39,13 +41,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (feedbackMessage != null)
 			{
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				player.Status = PlayerStatus.SentFeedback;
+				player.State = (int)State.FeedbackSent;
 				PlayerManager.UpdatePlayer(player);
 
 				// todo write feedback fields to sugar using SugarController and adding it as match data
 				// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
 
-				if (PlayerManager.CombinedPlayerStatus == PlayerStatus.SentFeedback)
+				if (PlayerManager.Players.GetCombinedStates() == State.FeedbackSent)
 				{
 					ChangeState(LobbyState.StateName);
 				}
