@@ -103,7 +103,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var initializingToPlayingTransition = new InitializingToPlayingTransition();
 			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, initializingToPlayingTransition);
 
-			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var playingToFinalizingTransition = new PlayingToFinalizingTransition();
+			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, playingToFinalizingTransition);
 
 			var finalizingState = new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
 
@@ -111,7 +112,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var controller = new RoomStateController(ParentStateController, initializingState, playingState, finalizingState, feedbackState);
 
-			initializingToPlayingTransition.Setup(initializingState, controller);
+			initializingToPlayingTransition.Setup(initializingState);
+			playingToFinalizingTransition.Setup(playingState);
 
 			return controller;
 	    }

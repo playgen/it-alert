@@ -42,6 +42,8 @@
     <Compile Include="RoomStates\GameStates\FinalizingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
+    <Compile Include="RoomStates\GameStates\Transitions\FinalizingToFeedbackTransition.cs" />
+    <Compile Include="RoomStates\GameStates\Transitions\PlayingToFinalizingTransition.cs" />
     <Compile Include="RoomStates\GameStates\Transitions\InitializingToPlayingTransition.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />

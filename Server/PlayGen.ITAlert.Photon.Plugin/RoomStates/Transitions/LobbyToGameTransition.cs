@@ -1,13 +1,10 @@
 ﻿using System;
-using GameWork.Core.States.Commands.Interfaces;
-using GameWork.Core.States.Interfaces;
-
+using GameWork.Core.States;
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 {
-	public class LobbyToGameTransition : IStateTransition, IDisposable
+	public class LobbyToGameTransition : EventStateTransition, IDisposable
 	{
 		private LobbyState _lobbyState;
-		private IChangeStateAction _changeStateAction;
 		private bool _isDisposed;
 
 		~LobbyToGameTransition()
@@ -15,9 +12,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 			Dispose();
 		}
 
-		public void Setup(LobbyState lobbyState, IChangeStateAction changeStateAction)
+		public void Setup(LobbyState lobbyState)
 		{
-			_changeStateAction = changeStateAction;
 			_lobbyState = lobbyState;
 			_lobbyState.GameStartedEvent += OnGameStarted;
 		}
@@ -33,7 +29,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 
 		private void OnGameStarted()
 		{
-			_changeStateAction.ChangeState(GameState.StateName);
+			ChangeState(GameState.StateName);
 		}
 	}
 }

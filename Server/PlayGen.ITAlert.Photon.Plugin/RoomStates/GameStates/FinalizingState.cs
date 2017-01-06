@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 using PlayGen.ITAlert.Photon.Serialization;
@@ -20,6 +21,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		private readonly Simulation.Simulation _simulation;
 
 		public override string Name => StateName;
+
+		public event Action<List<Player>> PlayerFinalizedEvent;
 
 		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
 			: base(photonPlugin, messenger, playerManager, sugarController)
@@ -47,16 +50,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			var finalizedMessage = message as FinalizedMessage;
 			if (finalizedMessage != null)
 			{
-				// todo do in transition
-				//var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
-				//player.State = (int)State.Finalized;
-				//PlayerManager.UpdatePlayer(player);
-
-				//if (PlayerManager.Players.GetCombinedStates() == State.Finalized)
-				//{
-				//    ChangeState(FeedbackState.StateName);
-				//}
-				//return;
+				var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
+				player.State = (int)State.Finalized;
+				PlayerManager.UpdatePlayer(player);
+				
+				PlayerFinalizedEvent(PlayerManager.Players);
+				return;
 			}
 
 			throw new Exception($"Unhandled Simulation State Message: ${message}");

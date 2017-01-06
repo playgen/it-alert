@@ -12,6 +12,8 @@ using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
 using PlayGen.ITAlert.TestData;
 using System.Collections.Generic;
+using GameWork.Core.States;
+using GameWork.Core.States.Interfaces;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
@@ -27,11 +29,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		private CommandResolver _resolver;
 		private int _tickIntervalMS = 100;
 		private object _tickTimer;
-
+		
 		public override string Name => StateName;
 
-		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public event Action GameOverEvent;
+
+		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
+			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 			_subsystemLogicalIds = subsystemLogicalIds;
 			_simulation = simulation;
@@ -76,16 +80,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 			_simulation.Tick();
 
-			// todo do in transition
-			//if (_simulation.IsGameFailure)
-			//{
-			//    ChangeState(FinalizingState.StateName);
-			//}
-			//else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-			//{
-			//    ChangeState(FinalizingState.StateName);
-			//}
-			//else
+			if (_simulation.IsGameFailure 
+				|| (!_simulation.HasViruses && !_commandSequence.HasPendingCommands))
+			{
+				GameOverEvent();
+			}
+			else
 			{
 				Messenger.SendAllMessage(new TickMessage
 				{
