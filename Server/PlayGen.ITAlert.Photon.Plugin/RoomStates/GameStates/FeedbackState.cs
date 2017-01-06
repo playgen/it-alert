@@ -12,16 +12,16 @@ using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-    public class FeedbackState : RoomState
-    {
-        public const string StateName = "Feedback";
+	public class FeedbackState : RoomState
+	{
+		public const string StateName = "Feedback";
 
-        public override string Name => StateName;
+		public override string Name => StateName;
 
-        public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-            : base(photonPlugin, messenger, playerManager, sugarController)
-        {
-        }
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+			: base(photonPlugin, messenger, playerManager, sugarController)
+		{
+		}
 
 		public override void Enter()
 		{
