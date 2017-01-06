@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameWork.Core.States;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
@@ -7,8 +9,7 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
-using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Players.Extensions;
+using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -18,8 +19,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public override string Name => StateName;
 
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public event Action<List<Player>> PlayerFeedbackSentEvent;
+
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
+			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 		}
 
@@ -40,19 +43,15 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			var feedbackMessage = message as PlayerFeedbackMessage;
 			if (feedbackMessage != null)
 			{
-				// todo do in transition
-				//var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				//player.State = (int)State.FeedbackSent;
-				//PlayerManager.UpdatePlayer(player);
+				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
+				player.State = (int)State.FeedbackSent;
+				PlayerManager.UpdatePlayer(player);
 
-				//// todo write feedback fields to sugar using SugarController and adding it as match data
-				//// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
-
-				//if (PlayerManager.Players.GetCombinedStates() == State.FeedbackSent)
-				//{
-				//	ChangeState(LobbyState.StateName);
-				//}
-				//return;
+				// todo write feedback fields to sugar using SugarController and adding it as match data
+				// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
+				
+				PlayerFeedbackSentEvent(PlayerManager.Players);
+				return;
 			}
 
 			throw new Exception($"Unhandled Simulation State Message: ${message}");
