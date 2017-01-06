@@ -14,61 +14,62 @@ using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-    public class LobbyState : RoomState
-    {
-        public const string StateName = "Lobby";     
+	public class LobbyState : RoomState
+	{
+		public const string StateName = "Lobby";     
 
-        public override string Name => StateName;
+		public override string Name => StateName;
 
-        public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
-            : base(photonPlugin, messenger, playerManager, sugarController)
-        {
-        }
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+			: base(photonPlugin, messenger, playerManager, sugarController)
+		{
+		}
 
-        public override void Enter()
-        {
-            Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
+		public override void Enter()
+		{
+			Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
 
-            ResetAllPlayerStatuses();
-        }
+			ResetAllPlayerStatuses();
+		}
 
-        public override void Exit()
-        {
-            Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
-        }
+		public override void Exit()
+		{
+			Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
+		}
 
-        private void ProcessGameMessage(Message message)
-        {
-            var startGameMessage = message as StartGameMessage;
-            if (startGameMessage != null)
-            {
-                StartGame(startGameMessage.Force, startGameMessage.Close);
-                return;
-            }
+		private void ProcessGameMessage(Message message)
+		{
+			var startGameMessage = message as StartGameMessage;
+			if (startGameMessage != null)
+			{
+				StartGame(startGameMessage.Force, startGameMessage.Close);
+				return;
+			}
 
-            throw new Exception($"Unhandled Room Message: ${message}");
-        }
+			throw new Exception($"Unhandled Room Message: ${message}");
+		}
 
-        private void ResetAllPlayerStatuses()
-        {
-            PlayerManager.ChangeAllState((int)State.NotReady);
-            Messenger.SendAllMessage(new ListedPlayersMessage
-            {
-                Players = PlayerManager.Players,
-            });
-        }
+		private void ResetAllPlayerStatuses()
+		{
+			PlayerManager.ChangeAllState((int)State.NotReady);
+			Messenger.SendAllMessage(new ListedPlayersMessage
+			{
+				Players = PlayerManager.Players,
+			});
+		}
 
-        private void StartGame(bool force, bool close)
-        {
-            if (force || PlayerManager.Players.GetCombinedStates() == State.Ready)
-            {
-                if (close)
-                {
-                    PhotonPlugin.SetRoomOpen(false);
-                }
+		private void StartGame(bool force, bool close)
+		{
+			if (force || PlayerManager.Players.GetCombinedStates() == State.Ready)
+			{
+				if (close)
+				{
+					PhotonPlugin.SetRoomOpen(false);
+				}
 
-                ChangeState(GameState.StateName);
-            }
-        }
-    }
+				// todo do in transition
+				//ChangeState(GameState.StateName);
+			}
+		}
+	}
 }

@@ -47,15 +47,16 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
             var finalizedMessage = message as FinalizedMessage;
             if (finalizedMessage != null)
             {
-                var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
-                player.State = (int)State.Finalized;
-                PlayerManager.UpdatePlayer(player);
+				// todo do in transition
+                //var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
+                //player.State = (int)State.Finalized;
+                //PlayerManager.UpdatePlayer(player);
 
-                if (PlayerManager.Players.GetCombinedStates() == State.Finalized)
-                {
-                    ChangeState(FeedbackState.StateName);
-                }
-                return;
+                //if (PlayerManager.Players.GetCombinedStates() == State.Finalized)
+                //{
+                //    ChangeState(FeedbackState.StateName);
+                //}
+                //return;
             }
 
             throw new Exception($"Unhandled Simulation State Message: ${message}");

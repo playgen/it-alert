@@ -76,15 +76,16 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
             _simulation.Tick();
 
-            if (_simulation.IsGameFailure)
-            {
-                ChangeState(FinalizingState.StateName);
-            }
-            else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-            {
-                ChangeState(FinalizingState.StateName);
-            }
-            else
+			// todo do in transition
+            //if (_simulation.IsGameFailure)
+            //{
+            //    ChangeState(FinalizingState.StateName);
+            //}
+            //else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
+            //{
+            //    ChangeState(FinalizingState.StateName);
+            //}
+            //else
             {
                 Messenger.SendAllMessage(new TickMessage
                 {
