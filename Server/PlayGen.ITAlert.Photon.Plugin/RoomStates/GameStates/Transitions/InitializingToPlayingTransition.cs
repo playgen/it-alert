@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Core.States.Commands.Interfaces;
-using GameWork.Core.States.Interfaces;
+using GameWork.Core.States;
 using PlayGen.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using PlayGen.ITAlert.Photon.Players;
+using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 {
-	public class InitializingToPlayingTransition : IStateTransition, IDisposable
+	public class InitializingToPlayingTransition : EventStateTransition, IDisposable
 	{
 		private InitializingState _initializingState;
-		private IChangeStateAction _changeStateAction;
 		private bool _isDisposed;
 
 		~InitializingToPlayingTransition()
@@ -19,9 +17,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 			Dispose();
 		}
 
-		public void Setup(InitializingState initializingState, IChangeStateAction changeStateAction)
+		public void Setup(InitializingState initializingState)
 		{
-			_changeStateAction = changeStateAction;
 			_initializingState = initializingState;
 			_initializingState.PlayerInitializedEvent += OnPlayerInitialized;
 		}
@@ -39,7 +36,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 		{
 			if (players.GetCombinedStates() == State.Initialized)
 			{
-				_changeStateAction.ChangeState(PlayingState.StateName);
+				ChangeState(PlayingState.StateName);
 			}
 		}
 	}

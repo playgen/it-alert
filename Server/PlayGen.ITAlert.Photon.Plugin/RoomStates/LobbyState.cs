@@ -1,5 +1,5 @@
 ﻿using System;
-using GameWork.Core.States.Interfaces;
+using GameWork.Core.States;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game;
@@ -10,8 +10,8 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
-using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public event Action GameStartedEvent;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params IStateTransition[] stateTransitions)
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions)
 			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 		}
