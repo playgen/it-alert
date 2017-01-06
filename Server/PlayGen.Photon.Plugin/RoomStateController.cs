@@ -5,7 +5,7 @@ using PlayGen.Photon.Plugin.States;
 
 namespace PlayGen.Photon.Plugin
 {
-	public class RoomStateController : StateController<RoomState>
+	public class RoomStateController : EventStateController<RoomState>
 	{
 		private readonly string _startState;
 
