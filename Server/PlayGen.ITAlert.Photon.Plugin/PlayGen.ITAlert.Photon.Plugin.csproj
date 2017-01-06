@@ -44,6 +44,7 @@
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />
+    <Compile Include="RoomStates\Transitions\StartGameTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
