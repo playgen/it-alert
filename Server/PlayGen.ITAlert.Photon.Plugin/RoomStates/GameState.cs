@@ -9,6 +9,7 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.TestData;
 using System.Linq;
+using GameWork.Core.States;
 using PlayGen.ITAlert.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 
@@ -23,7 +24,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override string Name => StateName;
 
-        public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+		public StateController<RoomState> ParentStateController { get; set; }
+
+		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
             : base(photonPlugin, messenger, playerManager, sugarController)
         {
         }
@@ -37,11 +40,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
             List<int> subsystemLogicalIds;
             _simulation = InitializeSimulation(out subsystemLogicalIds);
 
-            _stateController = new RoomStateController(new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController), 
+            _stateController = new RoomStateController(ParentStateController,
+				new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController), 
                 new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController),
                 new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController),
 				new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController));
-            _stateController.ChangeParentStateEvent += ChangeState;
 
             SugarController.StartMatch();
 

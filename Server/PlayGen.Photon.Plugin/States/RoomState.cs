@@ -1,4 +1,5 @@
-﻿using Photon.Hive.Plugin;
+﻿using GameWork.Core.States.Interfaces;
+using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.SUGAR;
 
@@ -11,7 +12,7 @@ namespace PlayGen.Photon.Plugin.States
         protected readonly PlayerManager PlayerManager;
         protected readonly Controller SugarController;
 
-        protected RoomState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+        protected RoomState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params IStateTransition[] stateTransitions) : base(stateTransitions)
         {
             PhotonPlugin = photonPlugin;
             Messenger = messenger;

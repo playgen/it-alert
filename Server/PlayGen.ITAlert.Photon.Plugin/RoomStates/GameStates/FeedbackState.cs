@@ -40,18 +40,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			var feedbackMessage = message as PlayerFeedbackMessage;
 			if (feedbackMessage != null)
 			{
-				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				player.State = (int)State.FeedbackSent;
-				PlayerManager.UpdatePlayer(player);
+				// todo do in transition
+				//var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
+				//player.State = (int)State.FeedbackSent;
+				//PlayerManager.UpdatePlayer(player);
 
-				// todo write feedback fields to sugar using SugarController and adding it as match data
-				// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
+				//// todo write feedback fields to sugar using SugarController and adding it as match data
+				//// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
 
-				if (PlayerManager.Players.GetCombinedStates() == State.FeedbackSent)
-				{
-					ChangeState(LobbyState.StateName);
-				}
-				return;
+				//if (PlayerManager.Players.GetCombinedStates() == State.FeedbackSent)
+				//{
+				//	ChangeState(LobbyState.StateName);
+				//}
+				//return;
 			}
 
 			throw new Exception($"Unhandled Simulation State Message: ${message}");
