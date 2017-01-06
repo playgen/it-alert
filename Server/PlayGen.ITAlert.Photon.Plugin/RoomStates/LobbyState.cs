@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWork.Core.States.Interfaces;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game;
@@ -20,8 +21,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public override string Name => StateName;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public event Action GameStartedEvent;
+
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params IStateTransition[] stateTransitions)
+			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 		}
 
@@ -67,8 +70,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 					PhotonPlugin.SetRoomOpen(false);
 				}
 
-				// todo do in transition
-				//ChangeState(GameState.StateName);
+				GameStartedEvent?.Invoke();
 			}
 		}
 	}
