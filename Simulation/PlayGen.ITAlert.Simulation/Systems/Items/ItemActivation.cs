@@ -10,20 +10,21 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemActivation : Engine.Systems.System
 	{
+		private readonly ComponentMatcherGroup _activationMatcher;
+
 		public ItemActivation(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
 			: base(componentRegistry, entityRegistry)
 		{
-
-
-
+			_activationMatcher = new ComponentMatcherGroup(new [] { typeof(Activation)});
+			componentRegistry.RegisterMatcher(_activationMatcher);
 		}
 
 		public override void Tick(int currentTick)
 		{
-			var activations = ComponentRegistry.GetEntitesWithComponent<Components.Activation.Activation>();
 
-			foreach (var activation in activations)
+			foreach (var entity in _activationMatcher.MatchingEntities)
 			{
+				var activation = entity.GetComponent<Activation>();
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:

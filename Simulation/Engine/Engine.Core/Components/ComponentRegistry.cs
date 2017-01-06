@@ -96,11 +96,11 @@ namespace Engine.Components
 			}
 		}
 
-		public IEnumerable<Entity> GetEntitesWithComponent<TComponentInterface1>()
-			where TComponentInterface1 : class, TComponent
+		public IEnumerable<Entity> GetEntitesWithComponent<TComponentInterface>()
+			where TComponentInterface : class, IComponent
 		{
 			HashSet<Entity> componentEntities;
-			if (_componentEntities.TryGetValue(typeof(TComponentInterface1), out componentEntities) )
+			if (_componentEntities.TryGetValue(typeof(TComponentInterface), out componentEntities) )
 			{
 				return componentEntities;
 			}

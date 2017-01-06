@@ -1,29 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Behaviours;
 using PlayGen.ITAlert.Simulation.Components.Intents;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 
-namespace PlayGen.ITAlert.Simulation.Components.Behaviours
+namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class SubsystemMovement : Movement
+	public class SubsystemMovement : MovementSystemComponentBase
 	{
-		private ExitRoutes _exitRoutes;
+		public override EntityType EntityType => EntityType.Subsystem;
 
-		public override void Initialize(Entity entity)
+		public override void MoveVisitors(Entity node, int currentTick)
 		{
-			base.Initialize(entity);
-			_exitRoutes = Entity.GetComponent<ExitRoutes>();
-		}
+			var graphNode = node.GetComponent<GraphNode>();
+			var visitors = node.GetComponent<Visitors>();
+			var exitRoutes = node.GetComponent<ExitRoutes>();
 
-		public override void MoveVisitors(int currentTick)
-		{
-			foreach (var visitor in Visitors.Value.Values)
+			foreach (var visitor in visitors.Value.Values)
 			{
 				var visitorPosition = visitor.GetComponent<VisitorPosition>();
 				var visitorIntents = visitor.GetComponent<IntentsProperty>();
@@ -36,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 					var moveIntent = visitorIntent as MoveIntent;
 					if (moveIntent != null)
 					{
-						exitNode = _exitRoutes.Value[moveIntent.Destination];
+						exitNode = exitRoutes.Value[moveIntent.Destination];
 					}
 				}
 
@@ -45,7 +42,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 				if (exitNode != null)
 				{
-					var exitPosition = GraphNode.ExitPositions[exitNode];
+					var exitPosition = graphNode.ExitPositions[exitNode];
 					var exitAfterTop = exitPosition < visitorPosition.Position;
 					var nextPositionAfterTop = nextPosition < visitorPosition.Position;
 					var nextPositionAfterExit = nextPosition > exitPosition;
@@ -56,9 +53,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 					{
 						var overflow = Math.Max(nextPosition - exitPosition, 0);
 
-						RemoveVisitor(visitor);
+						RemoveVisitorFromNode(node, visitor);
 
-						exitNode.GetComponent<IMovementComponent>().AddVisitor(visitor, Entity, overflow, currentTick);
+						//exitNode.GetComponent<IMovementSystemComponent>().AddVisitor(visitor, Entity, overflow, currentTick);
+						OnVisitorTransition(exitNode, visitor, node, overflow, currentTick);
 					}
 				}
 				else
@@ -68,16 +66,18 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 			}
 		}
 
-		public override void AddVisitor(Entity visitor, Entity source, int initialPosition, int currentTick)
+		public override void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick)
 		{
+			var graphNode = node.GetComponent<GraphNode>();
+
 			// determine entrance position
-			var direction = GraphNode.EntrancePositions.ContainsKey(source) 
-				? GraphNode.EntrancePositions[source].FromPosition(SimulationConstants.SubsystemPositions) 
+			var direction = graphNode.EntrancePositions.ContainsKey(source) 
+				? graphNode.EntrancePositions[source].FromPosition(SimulationConstants.SubsystemPositions) 
 				: EdgeDirection.North;
 
 			var position = direction.ToPosition(SimulationConstants.SubsystemPositions) + initialPosition;
 
-			AddVisitor(visitor, position, currentTick);
+			AddVisitor(node, visitor, position, currentTick);
 
 		}
 	}

@@ -20,7 +20,7 @@ namespace Engine.Entities
 		{
 			Id = id;
 			Disposed = false;
-
+			EntityDestroyed = null;
 			Components.Clear();
 		}
 

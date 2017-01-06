@@ -6,24 +6,23 @@ using Engine.Entities;
 
 namespace Engine.Components
 {
-	public class ComponentEntityTuple : IEquatable<ComponentEntityTuple>
-	{
-		public Entity Entity { get; }
+	//public class ComponentEntityTuple : IEquatable<ComponentEntityTuple>
+	//{
+	//	public Entity Entity { get; }
 
-		public Dictionary<Type, IComponent> Components { get; }
 
-		public ComponentEntityTuple(Entity entity, Dictionary<Type, IComponent> components)
-		{
-			Entity = entity;
-			Components = components;
-		}
+	//	public ComponentEntityTuple(Entity entity, Dictionary<Type, IComponent> components)
+	//	{
+	//		Entity = entity;
+	//		Components = components;
+	//	}
 
-		public bool Equals(ComponentEntityTuple other)
-		{
-			return other?.Entity != null
-					&& Entity.Id == other.Entity.Id;
-		}
-	}
+	//	public bool Equals(ComponentEntityTuple other)
+	//	{
+	//		return other?.Entity != null
+	//				&& Entity.Id == other.Entity.Id;
+	//	}
+	//}
 
 	//public class ComponentEntityTuple<TComponent1> : IEquatable<ComponentEntityTuple<TComponent1>>
 	//	where TComponent1 : IComponent
@@ -44,13 +43,13 @@ namespace Engine.Components
 	//				&& Entity.Id == other.Entity.Id;
 	//	}
 	//}
-	
-	//public class ComponentEntityTuple<TComponent1, TComponent2> : ComponentEntityTuple<TComponent1>, 
-		//	IEquatable<ComponentEntityTuple<TComponent1, TComponent2>>
-		//	where TComponent1 : IComponent
-		//	where TComponent2 : IComponent
-		//{
-		//	public TComponent2 Component2 { get; }
+
+	//public class ComponentEntityTuple<TComponent1, TComponent2> : ComponentEntityTuple<TComponent1>,
+	//		IEquatable<ComponentEntityTuple<TComponent1, TComponent2>>
+	//		where TComponent1 : IComponent
+	//		where TComponent2 : IComponent
+	//{
+	//	public TComponent2 Component2 { get; }
 
 	//	public ComponentEntityTuple(Entity entity, TComponent1 component1, TComponent2 component2)
 	//		: base(entity, component1)
@@ -64,7 +63,7 @@ namespace Engine.Components
 	//	}
 	//}
 
-	//public class ComponentEntityTuple<TComponent1, TComponent2, TComponent3> : ComponentEntityTuple<TComponent1, TComponent2>, 
+	//public class ComponentEntityTuple<TComponent1, TComponent2, TComponent3> : ComponentEntityTuple<TComponent1, TComponent2>,
 	//	IEquatable<ComponentEntityTuple<TComponent1, TComponent2, TComponent3>>
 	//	where TComponent1 : IComponent
 	//	where TComponent2 : IComponent

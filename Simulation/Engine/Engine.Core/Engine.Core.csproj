@@ -55,7 +55,6 @@
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentFactory.cs" />
-    <Compile Include="Components\IComponentRegistry.cs" />
     <Compile Include="Components\IComponentState.cs" />
     <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
@@ -81,7 +80,6 @@
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="Systems\ISystem.cs" />
     <Compile Include="Systems\ISystemComponent.cs" />
-    <Compile Include="Systems\ISystemRegistry.cs" />
     <Compile Include="Systems\System.cs" />
     <Compile Include="Systems\SystemRegistry.cs" />
     <Compile Include="Util\ModuleLoader.cs" />
