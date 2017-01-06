@@ -4,13 +4,13 @@ using GameWork.Core.States.Interfaces;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 {
-	public class StartGameTransition : IStateTransition, IDisposable
+	public class LobbyToGameTransition : IStateTransition, IDisposable
 	{
 		private LobbyState _lobbyState;
 		private IChangeStateAction _changeStateAction;
 		private bool _isDisposed;
 
-		~StartGameTransition()
+		~LobbyToGameTransition()
 		{
 			Dispose();
 		}

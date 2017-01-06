@@ -13,53 +13,53 @@ using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-    public class FinalizingState : RoomState
-    {
-        public const string StateName = "Finalizing";
+	public class FinalizingState : RoomState
+	{
+		public const string StateName = "Finalizing";
 
-        private readonly Simulation.Simulation _simulation;
+		private readonly Simulation.Simulation _simulation;
 
-        public override string Name => StateName;
+		public override string Name => StateName;
 
-        public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-            : base(photonPlugin, messenger, playerManager, sugarController)
-        {
-            _simulation = simulation;
-        }
+		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+			: base(photonPlugin, messenger, playerManager, sugarController)
+		{
+			_simulation = simulation;
+		}
 
-        public override void Enter()
-        {
-            Messenger.Subscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
+		public override void Enter()
+		{
+			Messenger.Subscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
 
-            Messenger.SendAllMessage(new Messages.Simulation.ServerState.FinalizingMessage
-            {
-                SerializedSimulation = Serializer.SerializeSimulation(_simulation)
-            });
-        }
+			Messenger.SendAllMessage(new Messages.Simulation.ServerState.FinalizingMessage
+			{
+				SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+			});
+		}
 
-        public override void Exit()
-        {
-            Messenger.Unsubscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
-        }
+		public override void Exit()
+		{
+			Messenger.Unsubscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
+		}
 
-        private void ProcessSimulationStateMessage(Message message)
-        {
-            var finalizedMessage = message as FinalizedMessage;
-            if (finalizedMessage != null)
-            {
+		private void ProcessSimulationStateMessage(Message message)
+		{
+			var finalizedMessage = message as FinalizedMessage;
+			if (finalizedMessage != null)
+			{
 				// todo do in transition
-                //var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
-                //player.State = (int)State.Finalized;
-                //PlayerManager.UpdatePlayer(player);
+				//var player = PlayerManager.Get(finalizedMessage.PlayerPhotonId);
+				//player.State = (int)State.Finalized;
+				//PlayerManager.UpdatePlayer(player);
 
-                //if (PlayerManager.Players.GetCombinedStates() == State.Finalized)
-                //{
-                //    ChangeState(FeedbackState.StateName);
-                //}
-                //return;
-            }
+				//if (PlayerManager.Players.GetCombinedStates() == State.Finalized)
+				//{
+				//    ChangeState(FeedbackState.StateName);
+				//}
+				//return;
+			}
 
-            throw new Exception($"Unhandled Simulation State Message: ${message}");
-        }
-    }
+			throw new Exception($"Unhandled Simulation State Message: ${message}");
+		}
+	}
 }
