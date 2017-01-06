@@ -20,18 +20,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Properties
 		{
 		}
 
-		public override void Initialize(Entity entity)
-		{
-			base.Initialize(entity);
-			// TODO: reimplement without RX
-			// AddSubscription<EntityDestroyedMessage>(VisitorDestroyed);
-		}
-
-		//private void VisitorDestroyed(EntityDestroyedMessage entityDestroyedMessage)
-		//{
-		//	Value.Remove(entityDestroyedMessage.Entity.Id);
-		//}
-
 		public IComponentState GetState()
 		{
 			return Value.Aggregate(new VisitorPositionState(), (vps, kvp) =>

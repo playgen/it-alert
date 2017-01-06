@@ -84,7 +84,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			throw new NotImplementedException();
 			//originalSimulation.SpawnVirus(1);
 
-			//var subsystem = originalSimulation.GetEntityById<System>(originalSimulation.SystemsByLogicalId[1].Id);
+			//var subsystem = originalSimulation.GetEntityById<Subsystem>(originalSimulation.SystemsByLogicalId[1].Id);
 			//Assert.That(subsystem.IsInfected, Is.True);
 
 			//var infectionId = (subsystem.GetState() as SystemState).Infection;
@@ -98,7 +98,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			//	originalSimulation.Tick();
 			//}
 
-			//subsystem = originalSimulation.GetEntityById<System>(originalSimulation.SystemsByLogicalId[1].Id);
+			//subsystem = originalSimulation.GetEntityById<Subsystem>(originalSimulation.SystemsByLogicalId[1].Id);
 			//Assert.That(subsystem.IsInfected, Is.True);
 			//infectionId = (subsystem.GetState() as SystemState).Infection;
 			//Assert.That(infectionId.HasValue);

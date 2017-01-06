@@ -9,18 +9,28 @@ namespace Engine.Systems
 {
 	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry);
 
-	public class SystemRegistry : ISystemRegistry
+	public class SystemRegistry
 	{
-		private readonly List<ISystem> _systems;
+		private readonly Dictionary<Type, ISystem> _systems;
 
 		public SystemRegistry()
 		{
-			_systems = new List<ISystem>();
+			_systems = new Dictionary<Type, ISystem>();
 		}
 
 		public void RegisterSystem(ISystem system)
 		{
-			_systems.Add(system);
+			_systems.Add(system.GetType(), system);
+		}
+
+		/// <summary>
+		/// No TryGet here, you better know that a system exists when you request it!
+		/// </summary>
+		/// <typeparam name="TSystem"></typeparam>
+		/// <returns></returns>
+		public TSystem GetSystem<TSystem>() where TSystem : class, ISystem
+		{
+			return _systems[typeof(TSystem)] as TSystem;
 		}
 
 		// TODO: not all systems should be tickable - but we dont have a use case for anything else yet
@@ -28,7 +38,7 @@ namespace Engine.Systems
 		// TODO: implement system to system message bus
 		public void Tick(int currentTick)
 		{
-			foreach (var system in _systems)
+			foreach (var system in _systems.Values)
 			{
 				system.Tick(currentTick);
 			}

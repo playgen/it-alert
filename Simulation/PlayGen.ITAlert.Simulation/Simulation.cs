@@ -15,6 +15,7 @@ using PlayGen.ITAlert.Simulation.Components.Behaviours;
 using PlayGen.ITAlert.Simulation.Components.Properties;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Layout;
+using PlayGen.ITAlert.Simulation.Systems.Movement;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -162,8 +163,9 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				var player = CreatePlayer(playerConfig);
 				var startingLocationId = playerConfig.StartingLocation ?? 0;
-				// TODO: think about messagehub subscription on current node
-				subsystems[startingLocationId].GetComponent<IMovementComponent>().AddVisitor(player);
+
+				var movementSystem = SystemRegistry.GetSystem<MovementSystem>();
+				movementSystem.AddVisitor(subsystems[startingLocationId], player);
 			}
 		}
 		public Entity CreatePlayer(PlayerConfig playerConfig)
@@ -212,7 +214,7 @@ namespace PlayGen.ITAlert.Simulation
 		//	{
 		//		var player = _actors[playerId] as Player;
 		//		var item = _items[itemId];
-		//		var playerSystem = player.CurrentNode as System;
+		//		var playerSystem = player.CurrentNode as Subsystem;
 
 		//		// TODO: move validation into player
 		//		if (item.IsOwnedBy(player))
@@ -260,7 +262,7 @@ namespace PlayGen.ITAlert.Simulation
 		//{
 		//	var virus = CreateNpc(NpcActorType.Virus);
 		//	virus.SetIntents(new List<Intent>() { new InfectSystemIntent() });
-		//	SystemsByLogicalId[subsystemLogicalId].AddVisitor(virus, null, 0);
+		//	SystemsByLogicalId[subsystemLogicalId].AddVisitorToNode(virus, null, 0);
 		//}
 
 		#endregion

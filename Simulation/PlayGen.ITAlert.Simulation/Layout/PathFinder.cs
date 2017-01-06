@@ -91,12 +91,12 @@ namespace PlayGen.ITAlert.Simulation.Layout
 
 				//foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint, connections))
 				//{
-				//	if (currentPath.HasNode(neighbourNode.System) == false)
+				//	if (currentPath.HasNode(neighbourNode.Subsystem) == false)
 				//	{
 				//		var newPath = new Path(currentPath);
 				//		newPath.AddNode(neighbourNode);
 
-				//		if (neighbourNode.System == destination)
+				//		if (neighbourNode.Subsystem == destination)
 				//		{
 				//			if (newPath.IsCheaperThanOrEqualTo(bestPath))
 				//			{
@@ -125,7 +125,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		//	return source.GetComponent<GraphNode>().ExitPositions
 		//		.Select(connection => new NeighbourNode()
 		//		{
-		//			System = connection.Key,
+		//			Subsystem = connection.Key,
 		//			ConnectionCost = connections[connection.Key].GetComponent<MovementCost>().Value,
 		//			SystemCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
 		//		})

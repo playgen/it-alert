@@ -5,7 +5,7 @@
 	{
 		Undefined = 0,
 
-		System,
+		Subsystem,
 		Connection,
 
 		Enhancement,

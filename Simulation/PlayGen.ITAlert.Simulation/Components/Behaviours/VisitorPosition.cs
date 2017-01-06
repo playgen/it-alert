@@ -1,5 +1,5 @@
 ﻿using System;
-//using System.Reactive.Disposables;
+//using Subsystem.Reactive.Disposables;
 using Engine.Components;
 using Engine.Entities;
 
@@ -11,6 +11,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Behaviours
 
 		public int Position { get; private set; }
 
+		// TODO: dereference and store just id
 		public Entity Host { get; private set; }
 
 		//private IDisposable _visitorSubscription;

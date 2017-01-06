@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 				{
 					nodeConfigs.Add(new NodeConfig(i + (j * width))
 					{
-						Name = $"System {i + (j * width)}",
+						Name = $"Subsystem {i + (j * width)}",
 						X = i,
 						Y = j,
 					});
@@ -149,7 +149,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			};
 			var systems = new List<SystemFactoryDelegate>()
 			{
-				(c, e) => new VisitorMovement(c, e)
+				(c, e) => new MovementSystem(c, e)
 			};
 			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
 			
