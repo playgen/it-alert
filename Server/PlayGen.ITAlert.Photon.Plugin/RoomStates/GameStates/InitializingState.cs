@@ -9,7 +9,8 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Players.Extensions;
+using System.Collections.Generic;
+using GameWork.Core.States.Interfaces;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -21,8 +22,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public override string Name => StateName;
 
-		public InitializingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public event Action<List<Player>> PlayerInitializedEvent;
+
+		public InitializingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params IStateTransition[] stateTransitions) 
+			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 			_simulation = simulation;
 		}
@@ -47,16 +50,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			var initializedMessage = message as InitializedMessage;
 			if (initializedMessage != null)
 			{
-				// todo do in transition
-				//var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
-				//player.State = (int)State.Initialized;
-				//PlayerManager.UpdatePlayer(player);
+				var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
+				player.State = (int)State.Initialized;
+				PlayerManager.UpdatePlayer(player);
 
-				//if (PlayerManager.Players.GetCombinedStates() == State.Initialized)
-				//{
-				//    ChangeState(PlayingState.StateName);
-				//}
-				//return;
+				PlayerInitializedEvent?.Invoke(PlayerManager.Players);
+				return;
 			}
 
 			throw new Exception($"Unhandled Simulation State Message: ${message}");
