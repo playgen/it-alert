@@ -102,20 +102,21 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 	    {
 			var initializingToPlayingTransition = new InitializingToPlayingTransition();
 			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, initializingToPlayingTransition);
+			initializingToPlayingTransition.Setup(initializingState);
 
 			var playingToFinalizingTransition = new PlayingToFinalizingTransition();
 			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, playingToFinalizingTransition);
-
-			var finalizingState = new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
-
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController);
-
-			var controller = new RoomStateController(ParentStateController, initializingState, playingState, finalizingState, feedbackState);
-
-			initializingToPlayingTransition.Setup(initializingState);
 			playingToFinalizingTransition.Setup(playingState);
 
-			return controller;
+			var finalizingToFeedbackTransition = new FinalizingToFeedbackTransition();
+			var finalizingState = new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, finalizingToFeedbackTransition);
+			finalizingToFeedbackTransition.Setup(finalizingState);
+
+			var feedbackToLobbyTransition = new FeedbackToLobbyTransition();
+			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController, feedbackToLobbyTransition);
+			feedbackToLobbyTransition.Setup(feedbackState);
+
+			return new RoomStateController(ParentStateController, initializingState, playingState, finalizingState, feedbackState);
 	    }
     }
 }

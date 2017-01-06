@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameWork.Core.States;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 using PlayGen.ITAlert.Photon.Serialization;
@@ -9,8 +10,8 @@ using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -24,8 +25,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action<List<Player>> PlayerFinalizedEvent;
 
-		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
+			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
 		{
 			_simulation = simulation;
 		}
