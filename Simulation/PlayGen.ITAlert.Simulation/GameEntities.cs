@@ -6,8 +6,12 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Components.Common;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Enhacements;
+using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Malware;
+using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 
 namespace PlayGen.ITAlert.Simulation
@@ -92,6 +96,7 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
 				() => new EntityTypeProperty(EntityType.Item),
+				() => new CurrentLocationProperty(),
 				() => new Owner(),
 				() => new ConsumeMemory(),
 			});

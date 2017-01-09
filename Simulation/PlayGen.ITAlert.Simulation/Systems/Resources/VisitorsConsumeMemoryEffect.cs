@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {

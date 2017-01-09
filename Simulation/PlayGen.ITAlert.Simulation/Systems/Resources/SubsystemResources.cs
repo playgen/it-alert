@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using Engine.Entities;
+using Engine.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
@@ -11,8 +12,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		private readonly List<ISubsystemResourceEffect> _resourceEffects;
 
 
-		public SubsystemResources(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
-			: base(componentRegistry, entityRegistry)
+		public SubsystemResources(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry) 
+			: base(componentRegistry, entityRegistry, systemRegistry)
 		{
 		}
 	}

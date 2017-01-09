@@ -34,10 +34,6 @@ namespace Engine.Entities
 			if (_disposed == false)
 			{
 				_disposed = true;
-				foreach (var component in Components.Values)
-				{
-					component.Dispose();
-				}
 			}
 		}
 

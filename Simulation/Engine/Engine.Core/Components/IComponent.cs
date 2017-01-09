@@ -3,8 +3,7 @@ using Engine.Entities;
 
 namespace Engine.Components
 {
-	public interface IComponent : IDisposable
+	public interface IComponent
 	{
-		void Initialize(Entity entity);
 	}
 }

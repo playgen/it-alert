@@ -11,8 +11,9 @@ using Engine.Components.Common;
 using Engine.Planning;
 using Engine.Serialization;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -36,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation
 			// populate system registry 
 			configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
 			configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
-			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system(ComponentRegistry, EntityRegistry)));
+			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system(ComponentRegistry, EntityRegistry, SystemRegistry)));
 			// initialization
 			InitializeGraphEntities(configuration);
 		}
@@ -121,11 +122,11 @@ namespace PlayGen.ITAlert.Simulation
 
 			connection.GetComponent<MovementCost>().SetValue(edgeConfig.Weight);
 
-			connection.GetComponent<GraphNode>().EntrancePositions.Add(head, 0);
-			connection.GetComponent<GraphNode>().ExitPositions.Add(tail, SimulationConstants.ConnectionPositions * edgeConfig.Length);
+			connection.GetComponent<GraphNode>().EntrancePositions.Add(head.Id, 0);
+			connection.GetComponent<GraphNode>().ExitPositions.Add(tail.Id, SimulationConstants.ConnectionPositions * edgeConfig.Length);
 
-			head.GetComponent<GraphNode>().ExitPositions.Add(connection, edgeConfig.SourcePosition.ToPosition(SimulationConstants.SubsystemPositions));
-			tail.GetComponent<GraphNode>().EntrancePositions.Add(connection, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
+			head.GetComponent<GraphNode>().ExitPositions.Add(connection.Id, edgeConfig.SourcePosition.ToPosition(SimulationConstants.SubsystemPositions));
+			tail.GetComponent<GraphNode>().EntrancePositions.Add(connection.Id, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
 
 			edgeConfig.EntityId = connection.Id;
 			return connection;

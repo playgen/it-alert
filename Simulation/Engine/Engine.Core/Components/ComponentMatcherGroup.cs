@@ -6,25 +6,27 @@ using Engine.Entities;
 
 namespace Engine.Components
 {
-	public class ComponentMatcherGroup
+	public class ComponentMatcherGroup : ComponentMatcher
 	{
-		public HashSet<Type> RequiredTypes { get; } 
-
 		public HashSet<Entity> MatchingEntities { get; }
 
+		private Predicate<Entity> EntityFilter { get; }
+
 		public ComponentMatcherGroup(IEnumerable<Type> requiredTypes)
+			: base(requiredTypes)
 		{
-			RequiredTypes = new HashSet<Type>(requiredTypes);
+			EntityFilter = entity => true;
 		}
 
-		public bool EntityHasRequiredTypes(Entity entity)
+		public ComponentMatcherGroup(IEnumerable<Type> requiredTypes, Predicate<Entity> entityFilter)
+			: base(requiredTypes)
 		{
-			return RequiredTypes.All(rt => entity.Components.ContainsKey(rt));
+			EntityFilter = entityFilter;
 		}
 
 		public void TestEntity(Entity entity)
 		{
-			if (EntityHasRequiredTypes(entity))
+			if (IsMatch(entity) && EntityFilter(entity))
 			{
 				//var cet = new ComponentEntityTuple(entity, RequiredTypes.ToDictionary(k => k, v => entity.GetComponent<>()));
 				MatchingEntities.Add(entity);

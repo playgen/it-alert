@@ -7,7 +7,7 @@ using Engine.Entities;
 
 namespace Engine.Systems
 {
-	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry);
+	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry);
 
 	public class SystemRegistry
 	{
@@ -30,15 +30,30 @@ namespace Engine.Systems
 		/// <returns></returns>
 		public TSystem GetSystem<TSystem>() where TSystem : class, ISystem
 		{
-			return _systems[typeof(TSystem)] as TSystem;
+			ISystem system;
+			if (_systems.TryGetValue(typeof(TSystem), out system))
+			{
+				var returnSystem = system as TSystem;
+				if (returnSystem != null)
+				{
+					return returnSystem;
+				}
+			}
+			throw new InvalidOperationException($"System of type {typeof(TSystem)} not registered.");
 		}
 
-		// TODO: not all systems should be tickable - but we dont have a use case for anything else yet
-		// perhaps some systems are event driven and just exist to respond to messages on the...
+		public void Initialize()
+		{
+			foreach (var system in _systems.Values.OfType<IInitializingSystem>())
+			{
+				system.Initialize();
+			}
+		}
+
 		// TODO: implement system to system message bus
 		public void Tick(int currentTick)
 		{
-			foreach (var system in _systems.Values)
+			foreach (var system in _systems.Values.OfType<ITickableSystem>())
 			{
 				system.Tick(currentTick);
 			}

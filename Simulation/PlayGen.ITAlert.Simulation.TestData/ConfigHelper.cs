@@ -6,7 +6,10 @@ using Engine.Components;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Systems.Commands;
+using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
+using PlayGen.ITAlert.Simulation.Systems.Planning;
 
 namespace PlayGen.ITAlert.Simulation.TestData
 {
@@ -149,7 +152,12 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			};
 			var systems = new List<SystemFactoryDelegate>()
 			{
-				(c, e) => new MovementSystem(c, e)
+				(c, e, s) => new MovementSystem(c, e, s),
+				(c, e, s) => new PlayerCommandSystem(c, e, s),
+				(c, e, s) => new IntentSystem(c, e, s),
+				(c, e, s) => new ItemActivation(c, e, s),
+				(c, e, s) => new ItemManagement(c, e, s),
+
 			};
 			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
 			

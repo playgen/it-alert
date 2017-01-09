@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class ConnectionMovement : MovementSystemComponentBase
+	public class ConnectionMovement : MovementSystemExtensionBase
 	{
 		public override EntityType EntityType => EntityType.Connection;
 		
@@ -44,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		{
 			var graphNode = node.GetComponent<GraphNode>();
 
-			var position = graphNode.EntrancePositions[source] + initialPosition;
+			var position = graphNode.EntrancePositions[source.Id] + initialPosition;
 			AddVisitor(node, visitor, position, currentTick);
 		}
 	}

@@ -40,13 +40,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archetypes\Archetype.cs" />
-    <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentAttributeExtensions.cs" />
     <Compile Include="Components\ComponentDependencyAttribute.cs" />
     <Compile Include="Components\ComponentDependencyException.cs" />
     <Compile Include="Components\ComponentEntityTuple.cs" />
     <Compile Include="Components\ComponentFactory.cs" />
     <Compile Include="Components\ComponentLookupException.cs" />
+    <Compile Include="Components\ComponentMatcher.cs" />
     <Compile Include="Components\ComponentMatcherGroup.cs" />
     <Compile Include="Components\ComponentRegistry.cs" />
     <Compile Include="Components\ComponentUsageAttribute.cs" />
@@ -58,8 +58,7 @@
     <Compile Include="Components\IComponentState.cs" />
     <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
-    <Compile Include="Components\IPropertyComponent.cs" />
-    <Compile Include="Components\ITickableComponent.cs" />
+    <Compile Include="Components\MatchAll.cs" />
     <Compile Include="Components\Property.cs" />
     <Compile Include="Components\RangedNumericProperty.cs" />
     <Compile Include="Components\StateBucket.cs" />
@@ -79,7 +78,7 @@
     <Compile Include="Serialization\StateLevel.cs" />
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="Systems\ISystem.cs" />
-    <Compile Include="Systems\ISystemComponent.cs" />
+    <Compile Include="Systems\ISystemExtension.cs" />
     <Compile Include="Systems\System.cs" />
     <Compile Include="Systems\SystemRegistry.cs" />
     <Compile Include="Util\ModuleLoader.cs" />

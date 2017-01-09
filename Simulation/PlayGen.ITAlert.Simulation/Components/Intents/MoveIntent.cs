@@ -5,9 +5,9 @@ namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
 	public class MoveIntent : IIntent
 	{
-		public Entity Destination { get; }
+		public int Destination { get; }
 
-		public MoveIntent(Entity destination)
+		public MoveIntent(int destination)
 		{
 			Destination = destination;
 		}
