@@ -1,23 +1,26 @@
-﻿
-using GameWork.Core.States.Tick;
+﻿using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Interfaces;
 using PlayGen.SUGAR.Unity;
 
-public class LoginState : TickState
+public class LoginState : TickState, ICompletable
 {
 	public const string StateName = "LoginState";
 
+	public bool IsComplete { get; private set; }
+
 	protected override void OnEnter()
 	{
+		IsComplete = false;
+
 		SUGARManager.Account.DisplayPanel(success =>
 		{
 			if (success)
 			{
-				// todo refactor states
-				//NextState();
+				IsComplete = true;
 			}
 		});
 	}
-
+	
 	protected override void OnExit()
 	{
 		SUGARManager.Account.HidePanel();
@@ -27,10 +30,4 @@ public class LoginState : TickState
 	{
 		get { return StateName; }
 	}
-
-	//public override void NextState()
-	//{
-	// todo refactor states
-	//	ChangeState(MenuState.StateName);
-	//}
 }
