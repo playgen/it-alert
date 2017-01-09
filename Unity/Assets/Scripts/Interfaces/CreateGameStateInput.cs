@@ -1,13 +1,20 @@
-﻿using GameWork.Legacy.Core.Interfacing;
+﻿using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 using UnityEngine;
 
-public class CreateGameTickableStateInterface : TickableStateInterface
+public class CreateGameStateInput : TickStateInput
 {
+	private readonly Client _client;
 	private GameObject _createGamePanel;
 	private ButtonList _buttons;
 
-	public override void Initialize()
+	public CreateGameStateInput(Client client)
+	{
+		_client = client;
+	}
+
+	protected override void OnInitialize()
 	{
 		// Create Game Popup
 		_createGamePanel = GameObjectUtilities.FindGameObject("CreateGameContainer/CreatePanelContainer");
@@ -24,29 +31,32 @@ public class CreateGameTickableStateInterface : TickableStateInterface
 	private void OnCreateClick()
 	{
 		var details = _createGamePanel.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
-		EnqueueCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
+		CommandQueue.AddCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
 	}
 
 	private void OnBackClick()
 	{
-		//EnqueueCommand(new PreviousStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new PreviousStateCommand());
 	}
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
+		_client.JoinedRoomEvent += OnJoinedRoom;
 		_createGamePanel.SetActive(true);
 		_buttons.BestFit();
 		_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields();
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
+		_client.JoinedRoomEvent -= OnJoinedRoom;
 		_createGamePanel.SetActive(false);
 	}
 
-	public void OnJoinedRoom(ClientRoom room)
+	private void OnJoinedRoom(ClientRoom room)
 	{
-		// todo refactor states
-		//EnqueueCommand(new NextStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new NextStateCommand());
 	}
 }

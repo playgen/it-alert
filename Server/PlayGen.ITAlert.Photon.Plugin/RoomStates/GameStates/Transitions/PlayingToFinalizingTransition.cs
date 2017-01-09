@@ -1,22 +1,22 @@
 ﻿using System;
-using GameWork.Core.States;
+using GameWork.Core.States.Event;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 {
 	public class PlayingToFinalizingTransition : EventStateTransition, IDisposable
 	{
-		private PlayingState _playingState;
+		private readonly PlayingState _playingState;
 		private bool _isDisposed;
+
+		public PlayingToFinalizingTransition(PlayingState playingState)
+		{
+			_playingState = playingState;
+			_playingState.GameOverEvent += OnGameOver;
+		}
 
 		~PlayingToFinalizingTransition()
 		{
 			Dispose();
-		}
-
-		public void Setup(PlayingState playingState)
-		{
-			_playingState = playingState;
-			_playingState.GameOverEvent += OnGameOver;
 		}
 
 		public void Dispose()

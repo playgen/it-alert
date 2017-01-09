@@ -13,6 +13,7 @@ using PlayGen.ITAlert.Simulation.Commands.Sequence;
 using PlayGen.ITAlert.TestData;
 using System.Collections.Generic;
 using GameWork.Core.States;
+using GameWork.Core.States.Event;
 using GameWork.Core.States.Interfaces;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 
@@ -34,14 +35,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action GameOverEvent;
 
-		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
-			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
+		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+			: base(photonPlugin, messenger, playerManager, sugarController)
 		{
 			_subsystemLogicalIds = subsystemLogicalIds;
 			_simulation = simulation;
 		}
 
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
 
@@ -52,7 +53,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			_tickTimer = CreateTickTimer();
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			DestroyTimer(_tickTimer);
 			Messenger.Unsubscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);

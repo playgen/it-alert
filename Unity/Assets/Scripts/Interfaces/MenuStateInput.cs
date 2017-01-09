@@ -1,16 +1,16 @@
 ﻿using GameWork.Core.States.Commands;
-using GameWork.Legacy.Core.Interfacing;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.Photon.Unity;
 
 using UnityEngine;
 
-public class MenuStateInterface : TickableStateInterface
+public class MenuStateInput : TickStateInput
 {
 	private GameObject _mainMenuPanel;
 	private GameObject _createGamePopup;
 	private ButtonList _buttons;
 
-	public override void Initialize()
+	protected override void OnInitialize()
 	{
 		// Main Menu
 		_mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
@@ -34,22 +34,22 @@ public class MenuStateInterface : TickableStateInterface
 
 	private void OnJoinGameClick()
 	{
-		EnqueueCommand(new ChangeStateCommand(GamesListState.StateName));
+		CommandQueue.AddCommand(new ChangeStateCommand(GamesListState.StateName));
 	}
 
 	private void OnCreateGameClick()
 	{
-		EnqueueCommand(new ChangeStateCommand(CreateGameState.StateName));
+		CommandQueue.AddCommand(new ChangeStateCommand(CreateGameState.StateName));
 	}
 
 	private void OnQuickMatchClick()
 	{
-		EnqueueCommand(new QuickGameCommand());
+		CommandQueue.AddCommand(new QuickGameCommand());
 	}
 
 	private void OnSettingsClick()
 	{
-		EnqueueCommand(new ChangeStateCommand(SettingsState.StateName));
+		CommandQueue.AddCommand(new ChangeStateCommand(SettingsState.StateName));
 	}
 
 	private void OnQuitClick()
@@ -57,18 +57,18 @@ public class MenuStateInterface : TickableStateInterface
 		Application.Quit();
 	}
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
 		_mainMenuPanel.SetActive(true);
 		_buttons.BestFit();
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
 		_mainMenuPanel.SetActive(false);
 	}
 
-	public override void Tick(float deltaTime)
+	protected override void OnTick(float deltaTime)
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{
@@ -78,7 +78,7 @@ public class MenuStateInterface : TickableStateInterface
 
 	public void OnJoinGameSuccess(ClientRoom clientRoom)
 	{
-		// todo refactor states
-		//EnqueueCommand(new NextStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new NextStateCommand());
 	}
 }

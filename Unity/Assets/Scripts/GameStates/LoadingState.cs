@@ -1,42 +1,22 @@
-﻿using GameWork.Core.States;
+﻿using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick;
+using GameWork.Core.States.Tick.Input;
 
-public class LoadingState : TickState
+public class LoadingState : InputTickState
 {
-	private LoadingStateInterface _interface;
 	public const string StateName = "LoadingState";
 	private float _timer;
 	private float _splashDelay = 2;
 
-	public LoadingState(LoadingStateInterface @interface)
+	public LoadingState(LoadingStateInput input) : base(input)
 	{
-		_interface = @interface;
-	}
-
-	public override void Initialize()
-	{
-		_interface.Initialize();
-	}
-
-	public override void Terminate()
-	{
-		_interface.Terminate();
-	}
-
-	public override void Enter()
-	{
-		_interface.Enter();
-	}
-
-	public override void Exit()
-	{
-		_interface.Exit();
 	}
 	
-	public override void Tick(float deltaTime)
+	protected override void OnTick(float deltaTime)
 	{
-		if (_timer >= _splashDelay && _interface.HasCommands)
+		ICommand command;
+		if (_timer >= _splashDelay && CommandQueue.TryTakeFirstCommand(out command))
 		{
-			var command = _interface.TakeFirstCommand();
 			_timer = 0;
 			var commandResolver = new StateCommandResolver();
 			commandResolver.HandleSequenceStates(command, this);

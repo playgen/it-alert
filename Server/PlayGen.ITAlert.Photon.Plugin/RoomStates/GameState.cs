@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
         {
         }
 
-        public override void Enter()
+        protected override void OnEnter()
         {
             Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
 
@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			Messenger.SendAllMessage(new GameStartedMessage());
 		}
 
-        public override void Exit()
+        protected override void OnExit()
         {
             Messenger.SendAllMessage(new GameEndedMessage());
 
@@ -100,23 +100,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 	    private RoomStateController CreateStateController(List<int> subsystemLogicalIds)
 	    {
-			var initializingToPlayingTransition = new InitializingToPlayingTransition();
-			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, initializingToPlayingTransition);
-			initializingToPlayingTransition.Setup(initializingState);
+			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			initializingState.AddTransitions(new InitializingToPlayingTransition(initializingState));
+			
+			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			playingState.AddTransitions(new PlayingToFinalizingTransition(playingState));
+			
+			var finalizingState = new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			finalizingState.AddTransitions(new FinalizingToFeedbackTransition(finalizingState));
+			
+			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController);
+			feedbackState.AddTransitions(new FeedbackToLobbyTransition(feedbackState));
 
-			var playingToFinalizingTransition = new PlayingToFinalizingTransition();
-			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, playingToFinalizingTransition);
-			playingToFinalizingTransition.Setup(playingState);
+			var controller = new RoomStateController(initializingState, playingState, finalizingState, feedbackState);
+			controller.SetParent(ParentStateController);
 
-			var finalizingToFeedbackTransition = new FinalizingToFeedbackTransition();
-			var finalizingState = new FinalizingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController, finalizingToFeedbackTransition);
-			finalizingToFeedbackTransition.Setup(finalizingState);
-
-			var feedbackToLobbyTransition = new FeedbackToLobbyTransition();
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController, feedbackToLobbyTransition);
-			feedbackToLobbyTransition.Setup(feedbackState);
-
-			return new RoomStateController(ParentStateController, initializingState, playingState, finalizingState, feedbackState);
+		    return controller;
 	    }
     }
 }

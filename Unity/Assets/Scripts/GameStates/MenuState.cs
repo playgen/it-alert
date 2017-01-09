@@ -1,6 +1,5 @@
-﻿using GameWork.Core.States;
-using GameWork.Core.States.Interfaces;
-using PlayGen.ITAlert.GameStates;
+﻿using GameWork.Core.States.Interfaces;
+using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Network.Client;
 
 public class MenuState : TickState
@@ -25,32 +24,35 @@ public class MenuState : TickState
 		_voiceController = voiceController;
 	}
 
-	public override void Initialize()
+	protected override void OnInitialize()
 	{
 		var joinGameController = new JoinGameController(_client);
 		var createGameController = new CreateGameController(_client);
 		var quickGameController = new QuickGameController(_client, createGameController, 4);
+		var gamesListController = new GamesListController(_client);
+		var lobbyController = new LobbyController(_client);
 
-		_stateController = new TickStateController(ParentStateController,
-			new MainMenuState(new MenuStateInterface(), quickGameController, _client),
-			new LobbyState(new LobbyStateInterface(), new LobbyController(_client), _client, _voiceController),
-			new GamesListState(new GamesListStateInterface(), new GamesListController(_client), joinGameController, _client),
-			new CreateGameState(new CreateGameTickableStateInterface(), createGameController, _client),
-			new SettingsState(new SettingsStateInterface()));
+		_stateController = new TickStateController(new MainMenuState(new MenuStateInput(), quickGameController, _client),
+			new LobbyState(new LobbyStateInput(lobbyController, _client), lobbyController, _client, _voiceController),
+			new GamesListState(new GamesListStateInput(_client, gamesListController), gamesListController, joinGameController),
+			new CreateGameState(new CreateGameStateInput(_client), createGameController),
+			new SettingsState(new SettingsStateInput()));
+
+		_stateController.SetParent(ParentStateController);
 	}
 	
-	public override void Enter()
+	protected override void OnEnter()
 	{
 		_stateController.Initialize();
 		_stateController.ChangeState(MainMenuState.StateName);
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
 		_stateController.Terminate();
 	}
 
-	public override void Tick(float deltaTime)
+	protected override void OnTick(float deltaTime)
 	{
 		_stateController.Tick(deltaTime);
 	}

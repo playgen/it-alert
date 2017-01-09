@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using GameWork.Legacy.Core.Interfacing;
+using GameWork.Core.States.Tick.Input;
 using UnityEngine;
 using PlayGen.ITAlert.Network.Client.Voice;
-
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity;
+using PlayGen.ITAlert.Network.Client;
+using System;
 
-public class LobbyStateInterface : TickableStateInterface
+public class LobbyStateInput : TickStateInput
 {
+	private readonly LobbyController _controller;
+	private readonly Client _client;
+
 	private GameObject _lobbyPanel;
 	private ButtonList _buttons;
 	private Button _readyButton;
@@ -25,7 +29,13 @@ public class LobbyStateInterface : TickableStateInterface
 	private int _lobbyPlayerMax;
 	private List<Color> _playerColors;
 
-	public override void Initialize()
+	public LobbyStateInput(LobbyController controller, Client client)
+	{
+		_controller = controller;
+		_client = client;
+	}
+
+	protected override void OnInitialize()
 	{
 		_lobbyPanel = GameObject.Find("LobbyContainer").transform.GetChild(0).gameObject;
 		_buttons = new ButtonList("LobbyContainer/LobbyPanelContainer/ButtonPanel");
@@ -46,14 +56,47 @@ public class LobbyStateInterface : TickableStateInterface
 		_playerSpacePrefab = Resources.Load("PlayerSpace") as GameObject;
 	}
 
+	protected override void OnEnter()
+	{
+		_controller.ReadySuccessEvent += OnReadySucceeded;
+		_controller.RefreshSuccessEvent += UpdatePlayerList;
+
+		_client.JoinedRoomEvent += OnJoinedRoom;
+		_client.LeftRoomEvent += OnLeaveSuccess;
+		_client.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
+
+		SetRoomMax(Convert.ToInt32(_client.CurrentRoom.RoomInfo.maxPlayers));
+		SetRoomName(_client.CurrentRoom.RoomInfo.name);
+
+		_lobbyPanel.SetActive(true);
+		_buttons.BestFit();
+	}
+
+	protected override void OnExit()
+	{
+		_controller.ReadySuccessEvent -= OnReadySucceeded;
+		_controller.RefreshSuccessEvent -= UpdatePlayerList;
+
+		_client.JoinedRoomEvent -= OnJoinedRoom;
+		_client.LeftRoomEvent -= OnLeaveSuccess;
+		_client.CurrentRoom.PlayerListUpdatedEvent -= OnPlayersChanged;
+
+		_lobbyPanel.SetActive(false);
+	}
+
+	protected override void OnTick(float deltaTime)
+	{
+		UpdateVoiceStatuses();
+	}
+
 	private void OnReadyButtonClick()
 	{
-		EnqueueCommand(new ReadyPlayerCommand(!_ready));
+		CommandQueue.AddCommand(new ReadyPlayerCommand(!_ready));
 	}
 
 	private void OnBackButtonClick()
 	{
-		EnqueueCommand(new LeaveRoomCommand());
+		CommandQueue.AddCommand(new LeaveRoomCommand());
 	}
 
 	private void OnColorChangeButtonClick()
@@ -65,32 +108,21 @@ public class LobbyStateInterface : TickableStateInterface
 
 	private void ColorPicked(Color pickedColor)
 	{
-		EnqueueCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
+		CommandQueue.AddCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
 	}
 
 	public void OnLeaveSuccess()
 	{
-		// todo refactor states
-		//EnqueueCommand(new PreviousStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new PreviousStateCommand());
 	}
 
-	public override void Enter()
-	{
-		_lobbyPanel.SetActive(true);
-		_buttons.BestFit();
-	}
-
-	public override void Exit()
-	{
-		_lobbyPanel.SetActive(false);
-	}
-
-	public void SetRoomName(string name)
+	private void SetRoomName(string name)
 	{
 		_roomNameObject.GetComponent<Text>().text = name;
 	}
 
-	public void OnReadySucceeded()
+	private void OnReadySucceeded()
 	{
 		var text = "";
 		if (_ready)
@@ -107,12 +139,12 @@ public class LobbyStateInterface : TickableStateInterface
 		_readyButton.gameObject.GetComponentInChildren<Text>().text = text;
 	}
 
-	public void RefreshPlayerList()
+	private void RefreshPlayerList()
 	{
-		EnqueueCommand(new RefreshPlayerListCommand());
+		CommandQueue.AddCommand(new RefreshPlayerListCommand());
 	}
 
-	public void UpdatePlayerList(LobbyController.LobbyPlayer[] players)
+	private void UpdatePlayerList(LobbyController.LobbyPlayer[] players)
 	{
 		foreach (Transform child in _playerListObject.transform)
 		{
@@ -186,12 +218,12 @@ public class LobbyStateInterface : TickableStateInterface
 		}
 	}
 
-	public void SetRoomMax(int currentRoomMaxPlayers)
+	private void SetRoomMax(int currentRoomMaxPlayers)
 	{
 		_lobbyPlayerMax = currentRoomMaxPlayers;
 	}
 
-	public void SetPlayerColors(Dictionary<int, string> colors)
+	private void SetPlayerColors(Dictionary<int, string> colors)
 	{
 		// Convert Dictionary to string list
 		var colorStrings = colors.Select(item => item.Value).ToList();
@@ -204,10 +236,10 @@ public class LobbyStateInterface : TickableStateInterface
 		}
 		_playerColors = colorList;
 
-		EnqueueCommand(new RefreshPlayerListCommand());
+		CommandQueue.AddCommand(new RefreshPlayerListCommand());
 	}
 
-	public void UpdateVoiceStatuses()
+	private void UpdateVoiceStatuses()
 	{
 		foreach (var status in VoiceClient.TransmittingStatuses)
 		{
@@ -218,7 +250,7 @@ public class LobbyStateInterface : TickableStateInterface
 		}
 	}
 
-	public void OnJoinedRoom(ClientRoom room)
+	private void OnJoinedRoom(ClientRoom room)
 	{
 		room.OtherPlayerJoinedEvent += (otherPlayer) => RefreshPlayerList();
 		room.OtherPlayerLeftEvent += (otherPlayer) => RefreshPlayerList();
@@ -226,7 +258,7 @@ public class LobbyStateInterface : TickableStateInterface
 		RefreshPlayerList();
 	}
 
-	public void OnPlayersChanged(ICollection<Player> players)
+	private void OnPlayersChanged(ICollection<Player> players)
 	{
 		RefreshPlayerList();
 		SetPlayerColors(players.ToDictionary(

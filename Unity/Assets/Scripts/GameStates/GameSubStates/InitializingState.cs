@@ -1,5 +1,5 @@
 ﻿using System;
-using GameWork.Core.States;
+using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
@@ -9,7 +9,7 @@ using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-    public class InitializingState : TickState
+	public class InitializingState : TickState
     {
         public const string StateName = "Initializing";
 
@@ -25,14 +25,14 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             _networkClient = networkClient;
         }
 
-        public override void Enter()
+        protected override void OnEnter()
         {
 			Logger.LogDebug("Entered " + StateName);
 
 			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
         }
 
-        public override void Exit()
+        protected override void OnExit()
         {
             _networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
         }

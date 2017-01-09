@@ -1,5 +1,6 @@
 ﻿using System;
-using GameWork.Core.States;
+using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 using PlayGen.ITAlert.Photon.Serialization;
@@ -8,9 +9,8 @@ using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class PausedState : TickState
+	public class PausedState : InputTickState
 	{
-		private readonly PausedStateInterface _interface;
 		public const string StateName = "Paused";
 
 		private readonly Client _networkClient;
@@ -20,50 +20,37 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get { return StateName; }
 		}
 
-		public PausedState(PausedStateInterface @interface, Client networkClient)
+		public PausedState(PausedStateInput input, Client networkClient) : base(input)
 		{
-			_interface = @interface;
 			_networkClient = networkClient;
 		}
 
-		public override void Initialize()
-		{
-			_interface.Initialize();
-		}
-
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
 
-			_interface.Enter();
 			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
-			_interface.Exit();
+
 		}
 
 		//public override void PreviousState()
 		//{
-		// todo refactor states
 		//	ChangeState(PlayingState.StateName);
 		//}
 
-		public override void Tick(float deltaTime)
+		protected override void OnTick(float deltaTime)
 		{
-			_interface.Tick(deltaTime);
-			if (_interface.HasCommands)
+			ICommand command;
+			if (CommandQueue.TryTakeFirstCommand(out command))
 			{
-				if (_interface.HasCommands)
-				{
-					var command = _interface.TakeFirstCommand();
-
-					// todo this all needs to be in the transitions
-					var commandResolver = new StateCommandResolver();
-					commandResolver.HandleSequenceStates(command, this);
-				}
+				// todo this all needs to be in the transitions
+				var commandResolver = new StateCommandResolver();
+				commandResolver.HandleSequenceStates(command, this);
 			}
 		}
 

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Core.States;
+using GameWork.Core.States.Event;
 using PlayGen.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using State = PlayGen.ITAlert.Photon.Players.State;
@@ -9,18 +9,18 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 {
 	public class InitializingToPlayingTransition : EventStateTransition, IDisposable
 	{
-		private InitializingState _initializingState;
+		private readonly InitializingState _initializingState;
 		private bool _isDisposed;
+
+		public InitializingToPlayingTransition(InitializingState initializingState)
+		{
+			_initializingState = initializingState;
+			_initializingState.PlayerInitializedEvent += OnPlayerInitialized;
+		}
 
 		~InitializingToPlayingTransition()
 		{
 			Dispose();
-		}
-
-		public void Setup(InitializingState initializingState)
-		{
-			_initializingState = initializingState;
-			_initializingState.PlayerInitializedEvent += OnPlayerInitialized;
 		}
 
 		public void Dispose()
