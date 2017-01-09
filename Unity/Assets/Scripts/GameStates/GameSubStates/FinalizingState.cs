@@ -1,5 +1,5 @@
 ﻿using System;
-using GameWork.Core.States;
+using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.Photon.Messaging;
@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			_networkClient = networkClient;
 		}
 
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
 
@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			});
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.Feedback, ProcessFeedbackMessage);
 		}

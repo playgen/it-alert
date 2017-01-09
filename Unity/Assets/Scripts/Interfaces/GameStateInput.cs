@@ -1,35 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using GameWork.Legacy.Core.Interfacing;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.Photon.Players;
 using UnityEngine.UI;
+using PlayGen.ITAlert.Network.Client;
 
-public class GameStateInterface : TickableStateInterface
+public class GameStateInput : TickStateInput
 {
+	private readonly Client _client;
 	private GameObject _chatPanel;
 	private GameObject _playerChatItemPrefab;
 	private Dictionary<int, string> _playerColors;
 	private Dictionary<int, Image> _playerVoiceIcons;
 
-	public override void Initialize()
+	public GameStateInput(Client client)
+	{
+		_client = client;
+	}
+
+	protected override void OnInitialize()
 	{
 		_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
 		_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
 	}
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
-		
+		SetPlayerColors(_client.CurrentRoom.Players);
+		PopulateChatPanel(_client.CurrentRoom.Players);
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
 		_chatPanel.SetActive(false);
 	}
 
-	public void PopulateChatPanel(ICollection<Player> players)
+	protected override void OnTick(float deltaTime)
+	{
+		UpdateChatPanel();
+	}
+
+	private void PopulateChatPanel(ICollection<Player> players)
 	{
 		foreach (Transform child in _chatPanel.transform)
 		{
@@ -81,7 +94,7 @@ public class GameStateInterface : TickableStateInterface
 		}
 	}
 
-	public void SetPlayerColors(ICollection<Player> players)
+	private void SetPlayerColors(ICollection<Player> players)
 	{
 		_playerColors = new Dictionary<int, string>();
 
@@ -91,7 +104,7 @@ public class GameStateInterface : TickableStateInterface
 		}
 	}
 
-	public void UpdateChatPanel()
+	private void UpdateChatPanel()
 	{
 		foreach (var status in VoiceClient.TransmittingStatuses)
 		{

@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Core.States;
-using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using State = PlayGen.ITAlert.Photon.Players.State;
+using Photon.Hive.Plugin;
+using PlayGen.Photon.Plugin;
+using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -17,23 +16,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Feedback";
 
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) : base(photonPlugin, messenger, playerManager, sugarController)
+		{
+		}
+
 		public override string Name => StateName;
 
 		public event Action<List<Player>> PlayerFeedbackSentEvent;
 
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
-			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
-		{
-		}
-
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 
 			Messenger.SendAllMessage(new FeedbackStartedMessage());
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 		}

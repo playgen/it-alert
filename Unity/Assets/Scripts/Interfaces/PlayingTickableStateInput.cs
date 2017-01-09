@@ -1,16 +1,15 @@
-﻿
-using GameWork.Core.States.Commands;
-using GameWork.Legacy.Core.Interfacing;
+﻿using GameWork.Core.States.Commands;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.GameStates.GameSubStates;
 
 using UnityEngine;
 
-public class PlayingTickableStateInterface : TickableStateInterface
+public class PlayingTickableStateInput : TickStateInput
 {
 	private GameObject _gamePanel;
 	private GameObject _gameContainer;
 
-	public override void Initialize()
+	protected override void OnInitialize()
 	{
 		_gamePanel = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer");
 		_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
@@ -18,22 +17,22 @@ public class PlayingTickableStateInterface : TickableStateInterface
 
 	private void OnPauselick()
 	{
-		EnqueueCommand(new ChangeStateCommand(PausedState.StateName));
+		CommandQueue.AddCommand(new ChangeStateCommand(PausedState.StateName));
 	}
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
 		_gamePanel.SetActive(true);
 		_gameContainer.SetActive(true);
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
 		_gamePanel.SetActive(false);
 		_gameContainer.SetActive(false);
 	}
 
-	public override void Tick(float deltaTime)
+	protected override void OnTick(float deltaTime)
 	{
 		if (Input.GetKeyDown(KeyCode.Escape))
 		{

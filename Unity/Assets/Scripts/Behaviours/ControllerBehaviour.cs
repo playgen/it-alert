@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-
+using GameWork.Core.States.Tick;
 using UnityEngine;
-using GameWork.Core.States;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
@@ -39,12 +38,13 @@ public class ControllerBehaviour : MonoBehaviour
 
 		var voiceController = new VoiceController(_client);
 
-		var gameState = new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController);
+		var gameStateInput = new GameStateInput(_client);
+		var gameState = new GameState(gameStateInput, _client, new LobbyController(_client), voiceController);
 
 		var menuState = new MenuState(_client, voiceController);
 
 		_stateController = new TickStateController<TickState>(
-			new LoadingState(new LoadingStateInterface()),
+			new LoadingState(new LoadingStateInput()),
 			new LoginState(),
 			menuState,
 			gameState

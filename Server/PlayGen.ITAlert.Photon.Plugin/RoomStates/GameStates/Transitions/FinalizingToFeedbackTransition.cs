@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Core.States;
+using GameWork.Core.States.Event;
 using PlayGen.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using State = PlayGen.ITAlert.Photon.Players.State;
@@ -9,18 +9,18 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates.Transitions
 {
 	public class FinalizingToFeedbackTransition : EventStateTransition, IDisposable
 	{
-		private FinalizingState _finalizingState;
+		private readonly FinalizingState _finalizingState;
 		private bool _isDisposed;
+
+		public FinalizingToFeedbackTransition(FinalizingState finalizingState)
+		{
+			_finalizingState = finalizingState;
+			_finalizingState.PlayerFinalizedEvent += OnPlayerFinalized;
+		}
 
 		~FinalizingToFeedbackTransition()
 		{
 			Dispose();
-		}
-
-		public void Setup(FinalizingState finalizingState)
-		{
-			_finalizingState = finalizingState;
-			_finalizingState.PlayerFinalizedEvent += OnPlayerFinalized;
 		}
 
 		public void Dispose()

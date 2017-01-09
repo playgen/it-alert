@@ -25,13 +25,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action<List<Player>> PlayerFinalizedEvent;
 
-		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions) 
-			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
+		public FinalizingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+			: base(photonPlugin, messenger, playerManager, sugarController)
 		{
 			_simulation = simulation;
 		}
 
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
 
@@ -41,7 +41,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			});
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.SimulationState, ProcessSimulationStateMessage);
 		}

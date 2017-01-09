@@ -1,49 +1,24 @@
-﻿using GameWork.Core.States;
+﻿using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 
-public class CreateGameState : TickState
+public class CreateGameState : InputTickState
 {
     private readonly CreateGameController _controller;
-    private readonly CreateGameTickableStateInterface _interface;
     private readonly Client _client;
     public const string StateName = "CreateGameState";
 
 
-    public CreateGameState(CreateGameTickableStateInterface @interface, CreateGameController controller, Client client)
+    public CreateGameState(CreateGameStateInput input, CreateGameController controller) : base(input)
     {
-        _interface = @interface;
         _controller = controller;
-        _client = client;
     }
-
-    public override void Initialize()
+ 
+    protected override void OnTick(float deltaTime)
     {
-        _interface.Initialize();
-    }
-
-    public override void Terminate()
-    {
-        _interface.Terminate();
-    }
-
-    public override void Enter()
-    {
-        _client.JoinedRoomEvent += _interface.OnJoinedRoom;
-        _interface.Enter();
-    }
-
-    public override void Exit()
-    {
-        _client.JoinedRoomEvent -= _interface.OnJoinedRoom;
-        _interface.Exit();
-    }
-
-    public override void Tick(float deltaTime)
-    {
-        if (_interface.HasCommands)
+	    ICommand command;
+        if (CommandQueue.TryTakeFirstCommand(out command))
         {
-            var command = _interface.TakeFirstCommand();
-
             var createGameCommand = command as CreateGameCommand;
             if (createGameCommand != null)
             {

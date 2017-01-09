@@ -1,5 +1,4 @@
-﻿using GameWork.Core.States;
-using GameWork.Core.States.Interfaces;
+﻿using GameWork.Core.States.Event;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Plugin.States;
 
@@ -9,19 +8,13 @@ namespace PlayGen.Photon.Plugin
 	{
 		private readonly string _startState;
 
-		public RoomStateController(IStateController parentController, params RoomState[] states) : base(parentController, states)
-		{
-			_startState = states[0].Name;
-		}
-
 		public RoomStateController(params RoomState[] states) : base(states)
 		{
 			_startState = states[0].Name;
 		}
 
-		public override void Initialize()
+		protected override void OnInitialize()
 		{
-			base.Initialize();
 			ChangeState(_startState);
 		}
 

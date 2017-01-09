@@ -1,12 +1,12 @@
-﻿using GameWork.Core.States;
-
+﻿
+using GameWork.Core.States.Tick;
 using PlayGen.SUGAR.Unity;
 
 public class LoginState : TickState
 {
 	public const string StateName = "LoginState";
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
 		SUGARManager.Account.DisplayPanel(success =>
 		{
@@ -18,7 +18,7 @@ public class LoginState : TickState
 		});
 	}
 
-	public override void Exit()
+	protected override void OnExit()
 	{
 		SUGARManager.Account.HidePanel();
 	}

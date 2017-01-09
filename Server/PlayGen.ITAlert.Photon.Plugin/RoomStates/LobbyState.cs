@@ -23,19 +23,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public event Action GameStartedEvent;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController, params EventStateTransition[] stateTransitions)
-			: base(photonPlugin, messenger, playerManager, sugarController, stateTransitions)
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+			: base(photonPlugin, messenger, playerManager, sugarController)
 		{
 		}
 
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
 
 			ResetAllPlayerStatuses();
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
 		}

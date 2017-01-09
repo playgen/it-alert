@@ -1,16 +1,26 @@
-﻿using GameWork.Legacy.Core.Interfacing;
+﻿using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Network.Client;
 using UnityEngine;
 using PlayGen.Photon.Unity;
 using UnityEngine.UI;
 
-public class GamesListStateInterface : TickableStateInterface
+public class GamesListStateInput : TickStateInput
 {
+	private readonly GamesListController _gameListController;
+	private readonly Client _client;
+
 	private GameObject _joinGamePanel;
 	private GameObject _gameListObject;
 	private GameObject _gameItemPrefab;
 	private ButtonList _buttons;
 
-	public override void Initialize()
+	public GamesListStateInput(Client client, GamesListController gameListController)
+	{
+		_client = client;
+		_gameListController = gameListController;
+	}
+
+	protected override void OnInitialize()
 	{
 		// Join Game Popup
 		_joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
@@ -27,42 +37,46 @@ public class GamesListStateInterface : TickableStateInterface
 
 	}
 	
-	public void OnRefreshClick()
+	private void OnRefreshClick()
 	{
-		EnqueueCommand(new RefreshGamesListCommand());
+		CommandQueue.AddCommand(new RefreshGamesListCommand());
 	}
 
 	private void OnBackClick()
 	{
-		// todo refactor states
-		//EnqueueCommand(new PreviousStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new PreviousStateCommand());
 	}
 
-	public override void Enter()
+	protected override void OnEnter()
 	{
+		_client.JoinedRoomEvent += OnJoinGameSuccess;
+		_gameListController.GamesListSuccessEvent += OnGamesListSuccess;
+		
 		_joinGamePanel.SetActive(true);
 		_buttons.BestFit();
 		OnRefreshClick();
 	}
-	public override void Exit()
+	protected override void OnExit()
 	{
+		_client.JoinedRoomEvent -= OnJoinGameSuccess;
+		_gameListController.GamesListSuccessEvent -= OnGamesListSuccess;
 		_joinGamePanel.SetActive(false);
 	}
 
 	private void JoinGame(string name)
 	{
-		EnqueueCommand(new JoinGameCommand(name));
+		CommandQueue.AddCommand(new JoinGameCommand(name));
 	}
 
-	public void OnJoinGameSuccess(ClientRoom clientRoom)
+	private void OnJoinGameSuccess(ClientRoom clientRoom)
 	{
-		// todo refactor states
-		//EnqueueCommand(new NextStateCommand());
+		// todo refactor state switch
+		//CommandQueue.AddCommand(new NextStateCommand());
 	}
 
-	public void OnGamesListSuccess(RoomInfo[] rooms)
+	private void OnGamesListSuccess(RoomInfo[] rooms)
 	{
-
 		foreach (Transform child in _gameListObject.transform)
 		{
 			GameObject.Destroy(child.gameObject);
