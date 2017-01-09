@@ -5,8 +5,6 @@ public class LoadingStateInput : TickStateInput
 	{
 		GameObjectUtilities.FindGameObject("SplashContainer/SplashPanel").SetActive(true);
 		// Load stuff
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new NextStateCommand());
 	}
 
 	protected override void OnExit()

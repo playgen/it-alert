@@ -2,6 +2,7 @@
 using GameWork.Core.States.Tick;
 using UnityEngine;
 using PlayGen.ITAlert.GameStates;
+using PlayGen.ITAlert.GameStates.Transitions;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 using PlayGen.SUGAR.Client;
@@ -43,12 +44,17 @@ public class ControllerBehaviour : MonoBehaviour
 
 		var menuState = new MenuState(_client, voiceController);
 
+		var loadingState = new LoadingState(new LoadingStateInput());
+		loadingState.AddTransitions(new IsCompletedTransition(loadingState, LoginState.StateName));
+
+		var loginState = new LoginState();
+		loginState.AddTransitions(new IsCompletedTransition(loginState, MenuState.StateName));
+
 		_stateController = new TickStateController<TickState>(
-			new LoadingState(new LoadingStateInput()),
-			new LoginState(),
+			loadingState,
+			loginState,
 			menuState,
-			gameState
-			);
+			gameState);
 
 		gameState.ParentStateController = _stateController;
 		menuState.ParentStateController = _stateController;
