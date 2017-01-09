@@ -1,14 +1,9 @@
-﻿using System.Collections;
-using ExitGames.Client.Photon;
+﻿using GameWork.Legacy.Core.Interfacing;
 using UnityEngine;
-using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
-
-using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 using UnityEngine.UI;
 
-public class GamesListStateInterface : StateInterface
+public class GamesListStateInterface : TickableStateInterface
 {
 	private GameObject _joinGamePanel;
 	private GameObject _gameListObject;
@@ -39,7 +34,8 @@ public class GamesListStateInterface : StateInterface
 
 	private void OnBackClick()
 	{
-		EnqueueCommand(new PreviousStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new PreviousStateCommand());
 	}
 
 	public override void Enter()
@@ -60,7 +56,8 @@ public class GamesListStateInterface : StateInterface
 
 	public void OnJoinGameSuccess(ClientRoom clientRoom)
 	{
-		EnqueueCommand(new NextStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new NextStateCommand());
 	}
 
 	public void OnGamesListSuccess(RoomInfo[] rooms)

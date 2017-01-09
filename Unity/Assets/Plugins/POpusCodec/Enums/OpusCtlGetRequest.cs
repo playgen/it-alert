@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace POpusCodec.Enums
+﻿namespace POpusCodec.Enums
 {
-    internal enum OpusCtlGetRequest : int
+	internal enum OpusCtlGetRequest : int
     {
         Application = 4001,
         Bitrate = 4003,

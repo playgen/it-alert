@@ -1,7 +1,6 @@
-﻿using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
+﻿using GameWork.Legacy.Core.Interfacing;
 
-public class LoadingStateInterface : StateInterface {
+public class LoadingStateInterface : TickableStateInterface {
 
 	public override void Initialize()
 	{
@@ -12,7 +11,8 @@ public class LoadingStateInterface : StateInterface {
 	{
 		GameObjectUtilities.FindGameObject("SplashContainer/SplashPanel").SetActive(true);
 		// Load stuff
-		EnqueueCommand(new NextStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new NextStateCommand());
 	}
 
 	public override void Exit()

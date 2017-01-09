@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
-using System.Linq;
-using Assets.Scripts.Network.Client;
-using PlayGen.ITAlert.Network;
-using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Network.Client.Voice;
-using PlayGen.ITAlert.Simulation;
-using PlayGen.Photon.Unity;
+﻿using UnityEngine;
 
 public class ITAlertClientInterface : MonoBehaviour
 {

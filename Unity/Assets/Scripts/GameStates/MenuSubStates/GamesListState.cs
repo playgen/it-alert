@@ -1,9 +1,7 @@
-﻿using ExitGames.Client.Photon.Voice;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using GameWork.Core.States;
 using Client = PlayGen.ITAlert.Network.Client.Client;
 
-public class GamesListState : TickableSequenceState
+public class GamesListState : TickState
 {
 	private readonly GamesListController _gameListController;
 	private readonly GamesListStateInterface _interface;
@@ -92,13 +90,14 @@ public class GamesListState : TickableSequenceState
 		get { return StateName; }
 	}
 
-	public override void NextState()
-	{
-		ChangeState(LobbyState.StateName);
-	}
+	// todo refactor states
+	//public override void NextState()
+	//{
+	//	ChangeState(LobbyState.StateName);
+	//}
 
-	public override void PreviousState()
-	{
-		ChangeState(MainMenuState.StateName);
-	}
+	//public override void PreviousState()
+	//{
+	//	ChangeState(MainMenuState.StateName);
+	//}
 }

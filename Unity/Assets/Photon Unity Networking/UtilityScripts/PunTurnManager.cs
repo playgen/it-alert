@@ -9,12 +9,10 @@
 // ----------------------------------------------------------------------------
 
 
-using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using Photon;
 using UnityEngine;
-using ExitGames = ExitGames.Client.Photon.Hashtable;
 
 /// <summary>
 /// Pun turnBased Game manager. 

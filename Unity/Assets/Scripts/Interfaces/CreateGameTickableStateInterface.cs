@@ -1,11 +1,8 @@
-﻿using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
-
-using PlayGen.ITAlert.Network.Client;
+﻿using GameWork.Legacy.Core.Interfacing;
 using PlayGen.Photon.Unity;
 using UnityEngine;
 
-public class CreateGameStateInterface : StateInterface
+public class CreateGameTickableStateInterface : TickableStateInterface
 {
 	private GameObject _createGamePanel;
 	private ButtonList _buttons;
@@ -32,7 +29,7 @@ public class CreateGameStateInterface : StateInterface
 
 	private void OnBackClick()
 	{
-		EnqueueCommand(new PreviousStateCommand());
+		//EnqueueCommand(new PreviousStateCommand());
 	}
 
 	public override void Enter()
@@ -49,6 +46,7 @@ public class CreateGameStateInterface : StateInterface
 
 	public void OnJoinedRoom(ClientRoom room)
 	{
-		EnqueueCommand(new NextStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new NextStateCommand());
 	}
 }

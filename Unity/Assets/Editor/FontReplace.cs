@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEditor;
-using System.Collections;
 using System.Collections.Generic;
 
 public class FontReplace : EditorWindow {

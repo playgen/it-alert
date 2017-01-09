@@ -2,7 +2,6 @@
 
 using UnityEngine;
 using GameWork.Core.States;
-using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
@@ -12,7 +11,7 @@ public class ControllerBehaviour : MonoBehaviour
 {
 	private const string GamePlugin = "RoomControllerPlugin";
 
-	private TickableStateController<TickableSequenceState> _stateController;
+	private TickStateController<TickState> _stateController;
 	private string _gameVersion = "1";
 
 	private Client _client;
@@ -40,12 +39,20 @@ public class ControllerBehaviour : MonoBehaviour
 
 		var voiceController = new VoiceController(_client);
 
-		_stateController = new TickableStateController<TickableSequenceState>(
+		var gameState = new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController);
+
+		var menuState = new MenuState(_client, voiceController);
+
+		_stateController = new TickStateController<TickState>(
 			new LoadingState(new LoadingStateInterface()),
 			new LoginState(),
-			new MenuState(_client, voiceController),
-			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
+			menuState,
+			gameState
 			);
+
+		gameState.ParentStateController = _stateController;
+		menuState.ParentStateController = _stateController;
+
 		_stateController.Initialize();
 	}
 

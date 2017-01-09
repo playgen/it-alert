@@ -8,9 +8,8 @@ using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.SUGAR.Unity;
-using POpusCodec.Enums;
 
-public class LobbyState : TickableSequenceState
+public class LobbyState : TickState
 {
     private readonly LobbyStateInterface _interface;
     private readonly LobbyController _controller;
@@ -72,25 +71,27 @@ public class LobbyState : TickableSequenceState
         var gameStartedMessage = message as GameStartedMessage;
         if (gameStartedMessage != null)
         {
-            ChangeState(GameState.StateName);
-            return;
+			// todo refactor states
+			//ChangeState(GameState.StateName);
+			return;
         }
 
         throw new Exception("Unhandled Room Message: " + message);
     }
 
-    public override void NextState()
-    {
-        ChangeState(GameState.StateName);
-    }
+	// todo refactor states
+	//public override void NextState()
+	//{
+	//    ChangeState(GameState.StateName);
+	//}
 
-    public override void PreviousState()
-    {
-        
-       ChangeState(MainMenuState.StateName);
-    }
+	//public override void PreviousState()
+	//{
 
-    public override string Name
+	//   ChangeState(MainMenuState.StateName);
+	//}
+
+	public override string Name
     {
         get { return StateName; }
     }

@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameWork.Legacy.Core.Interfacing;
 using UnityEngine;
-using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
-using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Network.Client.Voice;
 
 using UnityEngine.UI;
@@ -11,7 +9,7 @@ using Object = UnityEngine.Object;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity;
 
-public class LobbyStateInterface : StateInterface
+public class LobbyStateInterface : TickableStateInterface
 {
 	private GameObject _lobbyPanel;
 	private ButtonList _buttons;
@@ -72,7 +70,8 @@ public class LobbyStateInterface : StateInterface
 
 	public void OnLeaveSuccess()
 	{
-		EnqueueCommand(new PreviousStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new PreviousStateCommand());
 	}
 
 	public override void Enter()

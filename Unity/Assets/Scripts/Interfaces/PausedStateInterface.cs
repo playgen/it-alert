@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
-
+﻿using GameWork.Core.States.Commands;
+using GameWork.Legacy.Core.Interfacing;
 using PlayGen.ITAlert.GameStates.GameSubStates;
-
 using UnityEngine;
 
 public class PausedStateInterface : TickableStateInterface

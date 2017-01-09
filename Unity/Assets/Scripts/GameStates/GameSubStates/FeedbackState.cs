@@ -1,16 +1,13 @@
-﻿using System;
-using GameWork.Core.Commands.States;
-using GameWork.Core.States;
+﻿using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Messages.Game;
-using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class FeedbackState : TickableSequenceState
+	public class FeedbackState : TickState
 	{
 		public const string StateName = "Feedback";
 
@@ -52,18 +49,6 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 				// todo change back to lobby state
 				return;
 			}
-		}
-
-		public override void NextState()
-		{
-		}
-
-		public override void PreviousState()
-		{
-		}
-
-		public override void Tick(float deltaTime)
-		{
 		}
 	}
 }

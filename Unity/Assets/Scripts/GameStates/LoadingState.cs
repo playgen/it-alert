@@ -1,6 +1,6 @@
 ﻿using GameWork.Core.States;
 
-public class LoadingState : TickableSequenceState
+public class LoadingState : TickState
 {
 	private LoadingStateInterface _interface;
 	public const string StateName = "LoadingState";
@@ -31,12 +31,7 @@ public class LoadingState : TickableSequenceState
 	{
 		_interface.Exit();
 	}
-
-	public override void PreviousState()
-	{
-		throw new System.NotImplementedException();
-	}
-
+	
 	public override void Tick(float deltaTime)
 	{
 		if (_timer >= _splashDelay && _interface.HasCommands)
@@ -55,8 +50,9 @@ public class LoadingState : TickableSequenceState
 		get { return StateName; }
 	}
 
-	public override void NextState()
-	{
-		ChangeState(LoginState.StateName);
-	}
+	//public override void NextState()
+	//{
+	// todo refactor states
+	//	ChangeState(LoginState.StateName);
+	//}
 }

@@ -1,4 +1,4 @@
-﻿    // -----------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
 // <copyright file="Client.cs" company="Exit Games GmbH">
 //   Photon Voice API Framework for Photon - Copyright (C) 2015 Exit Games GmbH
 // </copyright>
@@ -11,18 +11,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using ExitGames.Client.Photon;
 using POpusCodec;
 using POpusCodec.Enums;
 
 namespace ExitGames.Client.Photon.Voice
 {
-    /// <summary>
-    /// Single event code for all events to save codes for user.
-    /// Change if conflicts with other code.
-    /// </summary>
-    enum EventCode
+	/// <summary>
+	/// Single event code for all events to save codes for user.
+	/// Change if conflicts with other code.
+	/// </summary>
+	enum EventCode
     {
         VoiceEvent = 201
     }

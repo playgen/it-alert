@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
-
-using PlayGen.ITAlert.Network.Client;
+﻿using GameWork.Core.States.Commands;
+using GameWork.Legacy.Core.Interfacing;
 using PlayGen.Photon.Unity;
-using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 
@@ -83,6 +78,7 @@ public class MenuStateInterface : TickableStateInterface
 
 	public void OnJoinGameSuccess(ClientRoom clientRoom)
 	{
-		EnqueueCommand(new NextStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new NextStateCommand());
 	}
 }

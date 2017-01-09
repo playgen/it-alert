@@ -9,7 +9,7 @@ using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-    public class InitializingState : TickableSequenceState
+    public class InitializingState : TickState
     {
         public const string StateName = "Initializing";
 
@@ -36,19 +36,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
         {
             _networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
         }
-
-        public override void NextState()
-        {
-        }
-
-        public override void PreviousState()
-        {
-        }
-
-        public override void Tick(float deltaTime)
-        {
-        }
-
+        
         private void ProcessSimulationStateMessage(Message message)
         {
             var initializedMessage = message as InitializingMessage;
@@ -68,7 +56,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
             var playingMessage = message as PlayingMessage;
             if (playingMessage != null)
             {
-                ChangeState(PlayingState.StateName);
+				// todo refactor states
+				//ChangeState(PlayingState.StateName);
                 return;
             }
 

@@ -2,14 +2,9 @@
 
 using PlayGen.SUGAR.Unity;
 
-public class LoginState : TickableSequenceState
+public class LoginState : TickState
 {
 	public const string StateName = "LoginState";
-
-	public override void PreviousState()
-	{
-		throw new System.NotImplementedException();
-	}
 
 	public override void Enter()
 	{
@@ -17,7 +12,8 @@ public class LoginState : TickableSequenceState
 		{
 			if (success)
 			{
-				NextState();
+				// todo refactor states
+				//NextState();
 			}
 		});
 	}
@@ -26,19 +22,15 @@ public class LoginState : TickableSequenceState
 	{
 		SUGARManager.Account.HidePanel();
 	}
-
-	public override void Tick(float deltaTime)
-	{
-		
-	}
-
+	
 	public override string Name
 	{
 		get { return StateName; }
 	}
 
-	public override void NextState()
-	{
-		ChangeState(MenuState.StateName);
-	}
+	//public override void NextState()
+	//{
+	// todo refactor states
+	//	ChangeState(MenuState.StateName);
+	//}
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 // ReSharper disable once CheckNamespace
 public class GameOverBehaviour : MonoBehaviour

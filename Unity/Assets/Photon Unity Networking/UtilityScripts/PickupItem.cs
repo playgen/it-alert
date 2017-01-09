@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 
 /// <summary>
