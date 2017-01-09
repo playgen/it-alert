@@ -58,10 +58,6 @@ namespace Engine.Components
 				componentContainer.AddComponent(component);
 				EntityComponentBound?.Invoke(componentContainer, component);
 			}
-			foreach (var component in componentContainer.Components)
-			{
-				component.Value.Initialize(componentContainer);
-			}
 			EntityArchetypeCreated(componentContainer);
 		}
 

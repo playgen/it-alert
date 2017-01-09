@@ -6,7 +6,7 @@ using Engine.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
-	public interface ISubsystemResourceEffect : ISystemComponent
+	public interface ISubsystemResourceEffect : ISystemExtension
 	{
 		void Tick(Entity subsystem);
 	}

@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using Engine.Entities;
+using Engine.Systems;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Behaviours;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Intents;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	public class MovementSystem : Engine.Systems.System
 	{
-		private readonly Dictionary<EntityType, IMovementSystemComponent> _movementSystems;
+		private readonly Dictionary<EntityType, IMovementSystemExtension> _movementSystems;
 
 		private readonly ComponentMatcherGroup _movementNodesMatcher;
 
-		public MovementSystem(ComponentRegistry componentRegistry, EntityRegistry entityRegistry) 
-			: base(componentRegistry, entityRegistry)
+		public MovementSystem(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry)
+			: base(componentRegistry, entityRegistry, systemRegistry)
 		{
-			_movementSystems = ModuleLoader.InstantiateTypesImplementing<IMovementSystemComponent>().ToDictionary(k => k.EntityType, v => v);
+			_movementSystems = ModuleLoader.InstantiateTypesImplementing<IMovementSystemExtension>().ToDictionary(k => k.EntityType, v => v);
 
 			foreach (var entityMovementSystem in _movementSystems)
 			{
@@ -43,9 +45,17 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// <param name="source"></param>
 		/// <param name="initialPosition"></param>
 		/// <param name="currentTick"></param>
-		private void ValueOnVisitorTransition(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick)
+		private void ValueOnVisitorTransition(int nodeId, Entity visitor, Entity source, int initialPosition, int currentTick)
 		{
-			ExecuteMovementSystemAction(node, system => system.AddVisitorToNode(node, visitor, source, initialPosition, currentTick));
+			Entity node;
+			if (EntityRegistry.TryGetEntityById(nodeId, out node))
+			{
+				ExecuteMovementSystemAction(node, system => system.AddVisitorToNode(node, visitor, source, initialPosition, currentTick));
+			}
+			else
+			{
+				// something has gone wrong!
+			}
 		}
 
 		/// <summary>
@@ -68,14 +78,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// </summary>
 		/// <param name="node"></param>
 		/// <param name="action"></param>
-		private void ExecuteMovementSystemAction(Entity node, Action<IMovementSystemComponent> action)
+		private void ExecuteMovementSystemAction(Entity node, Action<IMovementSystemExtension> action)
 		{
 			var entityType = node.GetComponent<EntityTypeProperty>().Value;
 			
-			IMovementSystemComponent movementSystemComponent;
-			if (_movementSystems.TryGetValue(entityType, out movementSystemComponent))
+			IMovementSystemExtension movementSystemExtension;
+			if (_movementSystems.TryGetValue(entityType, out movementSystemExtension))
 			{
-				action(movementSystemComponent);
+				action(movementSystemExtension);
 			}
 			else
 			{
@@ -83,5 +93,22 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			}
 
 		}
+
+		#region command/movement logic
+
+		// TODO: decide if this is where these really belong
+
+		public static bool TrySetDestination(Entity actor, Entity destination)
+		{
+			IntentsProperty visitorIntents;
+			if (actor.TryGetComponent(out visitorIntents))
+			{
+				visitorIntents.Replace(new MoveIntent(destination.Id));
+				return true;
+			}
+			return false;
+		}
+
+		#endregion
 	}
 }

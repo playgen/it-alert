@@ -12,10 +12,13 @@ namespace Engine.Systems
 
 		protected EntityRegistry EntityRegistry { get; }
 
-		public System(ComponentRegistry componentRegistry, EntityRegistry entityRegistry)
+		protected SystemRegistry SystemRegistry { get; }
+
+		public System(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry)
 		{
 			ComponentRegistry = componentRegistry;
 			EntityRegistry = entityRegistry;
+			SystemRegistry = systemRegistry;
 		}
 
 		public virtual void Tick(int currentTick)

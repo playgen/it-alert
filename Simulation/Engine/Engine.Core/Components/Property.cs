@@ -3,7 +3,7 @@ using Engine.Entities;
 
 namespace Engine.Components.Property
 {
-	public class ReadOnlyProperty<TValue> : Component, IReadOnlyPropertyComponent<TValue>
+	public class ReadOnlyProperty<TValue> : IComponent
 	{
 		// ReSharper disable once InconsistentNaming
 		protected TValue _value;
@@ -38,7 +38,7 @@ namespace Engine.Components.Property
 		}
 	}
 
-	public abstract class Property<TValue> : ReadOnlyProperty<TValue>, IPropertyComponent<TValue>
+	public abstract class Property<TValue> : ReadOnlyProperty<TValue>
 	{
 		protected Property() 
 			: base()
