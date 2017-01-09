@@ -1,6 +1,5 @@
 ﻿using PlayGen.ITAlert.Simulation.Contracts;
 using UnityEngine;
-using UnityEngine.UI;
 
 
 // ReSharper disable once CheckNamespace

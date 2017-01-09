@@ -1,6 +1,5 @@
 ﻿using System;
 using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 using PlayGen.ITAlert.Photon.Serialization;
@@ -9,9 +8,9 @@ using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class PlayingState : TickableSequenceState
+	public class PlayingState : TickState
 	{
-		private readonly PlayingStateInterface _interface;
+		private readonly PlayingTickableStateInterface _interface;
 		public const string StateName = "Playing";
 
 		private readonly Client _networkClient;
@@ -21,7 +20,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get { return StateName; }
 		}
 
-		public PlayingState(PlayingStateInterface @interface, Client networkClient)
+		public PlayingState(PlayingTickableStateInterface @interface, Client networkClient)
 		{
 			_interface = @interface;
 			_networkClient = networkClient;
@@ -46,15 +45,12 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			_interface.Exit();
 		}
 
-		public override void NextState()
-		{
-			ChangeState(FinalizingState.StateName);
-		}
-
-		public override void PreviousState()
-		{
-		}
-
+		//public override void NextState()
+		//{
+		// todo refactor states
+		//	ChangeState(FinalizingState.StateName);
+		//}
+		
 		public override void Tick(float deltaTime)
 		{
 			_interface.Tick(deltaTime);
@@ -88,7 +84,8 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 				Director.UpdateSimulation(simulation);
 				Director.Refresh();
 
-				ChangeState(FinalizingState.StateName);
+				// todo refactor states
+				//ChangeState(FinalizingState.StateName);
 				return;
 			}
 

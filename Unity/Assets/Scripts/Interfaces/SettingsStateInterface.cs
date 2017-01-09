@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-
+﻿using GameWork.Legacy.Core.Interfacing;
 using UnityEngine;
-using GameWork.Core.Commands.States;
-using GameWork.Core.Interfacing;
 using UnityEngine.UI;
 
 public class SettingsStateInterface : TickableStateInterface
@@ -37,7 +34,8 @@ public class SettingsStateInterface : TickableStateInterface
 
 	private void OnBackClick()
 	{
-		EnqueueCommand(new PreviousStateCommand());
+		// todo refactor states
+		//EnqueueCommand(new PreviousStateCommand());
 	}
 
 	private void OnApplyClick(Dropdown resolution, Toggle fullScreen, Slider microphone, Slider receive, Slider music, Slider sfx)

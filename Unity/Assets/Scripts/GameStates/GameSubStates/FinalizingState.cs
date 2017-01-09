@@ -3,13 +3,12 @@ using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.Photon.Messaging;
-using PlayGen.ITAlert.Photon.Messages.Game;
 using PlayGen.ITAlert.Photon.Messages.Simulation.PlayerState;
 using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class FinalizingState : TickableSequenceState
+	public class FinalizingState : TickState
 	{
 		public const string StateName = "Finalizing";
 
@@ -48,23 +47,12 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			var feedbackStartedMessage = message as FeedbackStartedMessage;
 			if (feedbackStartedMessage != null)
 			{
-				ChangeState(FeedbackState.StateName);
+				// todo refactor states
+				//ChangeState(FeedbackState.StateName);
 				return;
 			}
 
 			throw new Exception("Unhandled Feedback Message: " + message);
-		}
-
-		public override void NextState()
-		{
-		}
-
-		public override void PreviousState()
-		{
-		}
-
-		public override void Tick(float deltaTime)
-		{
 		}
 	}
 }

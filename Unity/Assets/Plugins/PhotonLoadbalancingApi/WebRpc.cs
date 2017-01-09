@@ -1,10 +1,9 @@
-﻿using ExitGames.Client.Photon;
-using ExitGames.Client.Photon.LoadBalancing;
+﻿using ExitGames.Client.Photon.LoadBalancing;
 using System.Collections.Generic;
 
 namespace ExitGames.Client.Photon
 {
-    public class WebRpcResponse
+	public class WebRpcResponse
     {
         public string Name { get; private set; }
         /// <summary> 1 is "OK" for WebRPCs. -1 tells you: No ReturnCode by WebRpc service (check OperationResponse.ReturnCode).</summary>

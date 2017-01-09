@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using GameWork.Core.Interfacing;
+using GameWork.Legacy.Core.Interfacing;
 using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.Photon.Players;
 using UnityEngine.UI;
 
-public class GameStateInterface : StateInterface
+public class GameStateInterface : TickableStateInterface
 {
 	private GameObject _chatPanel;
 	private GameObject _playerChatItemPrefab;

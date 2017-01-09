@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using POpusCodec.Enums;
 using System.Runtime.InteropServices;
 
 namespace POpusCodec
 {
-    public class OpusDecoder : IDisposable
+	public class OpusDecoder : IDisposable
     {
         private IntPtr _handle = IntPtr.Zero;
         private string _version = string.Empty;

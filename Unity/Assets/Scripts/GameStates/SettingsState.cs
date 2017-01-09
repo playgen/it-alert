@@ -1,8 +1,7 @@
 ﻿using System;
 using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
 
-public class SettingsState : TickableSequenceState
+public class SettingsState : TickState
 {
 	private readonly SettingsStateInterface _interface;
 
@@ -50,14 +49,10 @@ public class SettingsState : TickableSequenceState
 	{
 		get { return StateName; }
 	}
-
-	public override void NextState()
-	{
-		throw new NotImplementedException();
-	}
-
-	public override void PreviousState()
-	{
-		BackState();
-	}
+	
+	// todo refactor states
+	//public override void PreviousState()
+	//{
+	//	BackState();
+	//}
 }

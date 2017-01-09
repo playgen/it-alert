@@ -1,8 +1,7 @@
 ﻿using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 
-public class MainMenuState : TickableSequenceState
+public class MainMenuState : TickState
 {
 	private readonly MenuStateInterface _interface;
 	private readonly QuickGameController _controller;
@@ -38,15 +37,16 @@ public class MainMenuState : TickableSequenceState
 		_interface.Exit();
 	}
 
-	public override void NextState()
-	{
-		ChangeState(LobbyState.StateName);
-	}
+	// todo refactor states
+	//public override void NextState()
+	//{
+	//	ChangeState(LobbyState.StateName);
+	//}
 
-	public override void PreviousState()
-	{
-		ChangeState(LoginState.StateName);
-	}
+	//public override void PreviousState()
+	//{
+	//	ChangeState(LoginState.StateName);
+	//}
 
 	public override string Name
 	{

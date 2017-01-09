@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
         public override string Name => StateName;
 
-		public StateController<RoomState> ParentStateController { get; set; }
+		public StateController<RoomState> ParentStateController { private get; set; }
 
 		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
             : base(photonPlugin, messenger, playerManager, sugarController)

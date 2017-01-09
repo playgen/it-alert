@@ -1,18 +1,15 @@
-﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.Commands.States;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using GameWork.Core.States;
 using PlayGen.ITAlert.Network.Client;
 
-public class CreateGameState : TickableSequenceState
+public class CreateGameState : TickState
 {
     private readonly CreateGameController _controller;
-    private readonly CreateGameStateInterface _interface;
+    private readonly CreateGameTickableStateInterface _interface;
     private readonly Client _client;
     public const string StateName = "CreateGameState";
 
 
-    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller, Client client)
+    public CreateGameState(CreateGameTickableStateInterface @interface, CreateGameController controller, Client client)
     {
         _interface = @interface;
         _controller = controller;
@@ -63,13 +60,14 @@ public class CreateGameState : TickableSequenceState
         get { return StateName; }
     }
 
-    public override void NextState()
-    {
-        ChangeState(LobbyState.StateName);
-    }
+	// todo refactor states
+    //public override void NextState()
+    //{
+    //    ChangeState(LobbyState.StateName);
+    //}
 
-    public override void PreviousState()
-    {
-        ChangeState(MainMenuState.StateName);
-    }
+    //public override void PreviousState()
+    //{
+    //    ChangeState(MainMenuState.StateName);
+    //}
 }

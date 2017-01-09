@@ -1,7 +1,5 @@
 ﻿using System;
-using GameWork.Core.Interfacing;
 using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
 using PlayGen.ITAlert.Photon.Serialization;
@@ -10,7 +8,7 @@ using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class PausedState : TickableSequenceState
+	public class PausedState : TickState
 	{
 		private readonly PausedStateInterface _interface;
 		public const string StateName = "Paused";
@@ -47,15 +45,11 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			_interface.Exit();
 		}
 
-		public override void NextState()
-		{
-			
-		}
-
-		public override void PreviousState()
-		{
-			ChangeState(PlayingState.StateName);
-		}
+		//public override void PreviousState()
+		//{
+		// todo refactor states
+		//	ChangeState(PlayingState.StateName);
+		//}
 
 		public override void Tick(float deltaTime)
 		{
@@ -66,6 +60,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 				{
 					var command = _interface.TakeFirstCommand();
 
+					// todo this all needs to be in the transitions
 					var commandResolver = new StateCommandResolver();
 					commandResolver.HandleSequenceStates(command, this);
 				}

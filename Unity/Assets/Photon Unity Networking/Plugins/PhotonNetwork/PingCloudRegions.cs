@@ -1,12 +1,10 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using ExitGames.Client.Photon;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
-using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 
 #if UNITY_EDITOR || (!UNITY_ANDROID && !UNITY_IPHONE && !UNITY_PS3 && !UNITY_WINRT)
