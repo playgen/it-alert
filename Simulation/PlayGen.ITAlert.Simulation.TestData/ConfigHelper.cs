@@ -150,13 +150,13 @@ namespace PlayGen.ITAlert.Simulation.TestData
 				GameEntities.Analysis,
 				GameEntities.Antivirus,
 			};
-			var systems = new List<SystemFactoryDelegate>()
+			var systems = new List<SimulationConfiguration.SystemType>()
 			{
-				(c, e, s) => new MovementSystem(c, e, s),
-				(c, e, s) => new PlayerCommandSystem(c, e, s),
-				(c, e, s) => new IntentSystem(c, e, s),
-				(c, e, s) => new ItemActivation(c, e, s),
-				(c, e, s) => new ItemManagement(c, e, s),
+				new SimulationConfiguration.SystemType<MovementSystem>(),
+				new SimulationConfiguration.SystemType<PlayerCommandSystem>(),
+				new SimulationConfiguration.SystemType<IntentSystem>(),
+				new SimulationConfiguration.SystemType<ItemActivationSystem>(),
+				new SimulationConfiguration.SystemType<ItemManagement>(),
 
 			};
 			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
@@ -216,7 +216,7 @@ namespace PlayGen.ITAlert.Simulation.TestData
 			configuration.NodeConfiguration.First().Enhancement = EnhancementType.Analysis;
 			configuration.NodeConfiguration.Last().Enhancement = EnhancementType.Antivirus;
 
-			return new Simulation(configuration);
+			return SimulationInstaller.CreateSimulation(configuration);
 
 		}
 

@@ -9,15 +9,20 @@ namespace Engine.Util
 	{
 		public static IEnumerable<Type> GetTypesImplementing<TInterface>()
 		{
-			return AppDomain.CurrentDomain.GetAssemblies()
-					.SelectMany(assembly => assembly.GetTypes().Where(t => typeof(TInterface).IsAssignableFrom(t)));
+			return GetTypesImplementing(typeof(TInterface));
 		}
 
-		public static IEnumerable<TInterface> InstantiateTypesImplementing<TInterface>(params object[] constructorArgs)
-			where TInterface : class
+		public static IEnumerable<Type> GetTypesImplementing(Type interfaceType)
 		{
-			return GetTypesImplementing<TInterface>().Select(t => Activator.CreateInstance(t, constructorArgs)).Cast<TInterface>();
+			return AppDomain.CurrentDomain.GetAssemblies()
+					.SelectMany(assembly => assembly.GetTypes().Where(interfaceType.IsAssignableFrom));
 		}
+
+		//public static IEnumerable<TInterface> InstantiateTypesImplementing<TInterface>(params object[] constructorArgs)
+		//	where TInterface : class
+		//{
+		//	return GetTypesImplementing<TInterface>().Select(t => Activator.CreateInstance(t, constructorArgs)).Cast<TInterface>();
+		//}
 
 		public static void LoadModuleAssemblies()
 		{

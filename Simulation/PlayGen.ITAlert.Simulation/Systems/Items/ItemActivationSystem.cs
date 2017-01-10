@@ -12,26 +12,30 @@ using PlayGen.ITAlert.Simulation.Systems.Planning;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public class ItemActivation : Engine.Systems.System, ITickableSystem
+	[SystemExtensionType(typeof(IItemActivationExtension))]
+	public class ItemActivationSystem : Engine.Systems.System, ITickableSystem
 	{
 		private IntentSystem _intentSystem;
 
-		private readonly List<IItemActivationExtension> _itemActivationSystemComponents;
+		private readonly List<IItemActivationExtension> _itemActivationExtensions;
 		
 		private readonly ComponentMatcherGroup _activationMatcher;
+		public ItemActivationSystem(IComponentRegistry componentRegistry, 
+			IEntityRegistry entityRegistry, 
+			ISystemRegistry systemRegistry,
+			List<IItemActivationExtension> itemActivationExtensions,
+			IntentSystem intentSystem) 
 
-		public ItemActivation(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry) 
 			: base(componentRegistry, entityRegistry, systemRegistry)
 		{
-			_intentSystem = systemRegistry.GetSystem<IntentSystem>();
-
-			_itemActivationSystemComponents = ModuleLoader.InstantiateTypesImplementing<IItemActivationExtension>().ToList();
-
+			_itemActivationExtensions = itemActivationExtensions;
+			_intentSystem = intentSystem;
+			
 			_activationMatcher = new ComponentMatcherGroup(new [] { typeof(Activation)});
 			componentRegistry.RegisterMatcher(_activationMatcher);
 		}
 
-		public override void Tick(int currentTick)
+		public void Tick(int currentTick)
 		{
 			foreach (var entity in _activationMatcher.MatchingEntities)
 			{
@@ -44,17 +48,20 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					case ActivationState.Activating:
 						activation.SetState(ActivationState.Active);
 						// TODO: confirm that this makes sense - process system extensions, then any components that are activatable
-						ExecuteActivationSystemAction(ias => ias.OnActivating(entity, activation));
-						ExecuteActivatableAction(entity, a => a.OnActivating(entity));
+						ExecuteActivationExtensionActions(entity, iax => iax.OnActivating(entity, activation));
+
+						//ExecuteActivatableAction(entity, a => a.OnActivating(entity));
 						break;
 					case ActivationState.Deactivating:
 						activation.SetState(ActivationState.NotActive);
-						ExecuteActivationSystemAction(ias => ias.OnDeactivating(entity, activation));
-						ExecuteActivatableAction(entity, a => a.OnDeactivating(entity));
+						ExecuteActivationExtensionActions(entity, iax => iax.OnDeactivating(entity, activation));
+
+						//ExecuteActivatableAction(entity, a => a.OnDeactivating(entity));
 						break;
 					case ActivationState.Active:
-						ExecuteActivationSystemAction(ias => ias.OnActive(entity, activation));
-						ExecuteActivatableAction(entity, a => a.OnActive(entity));
+						ExecuteActivationExtensionActions(entity, iax => iax.OnActive(entity, activation));
+
+						//ExecuteActivatableAction(entity, a => a.OnActive(entity));
 						break;
 				}
 			}
@@ -68,11 +75,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			}
 		}
 		
-		private void ExecuteActivationSystemAction(Action<IItemActivationExtension> action)
+		private void ExecuteActivationExtensionActions(Entity entity, Action<IItemActivationExtension> action)
 		{
-			foreach (var activationSystem in _itemActivationSystemComponents)
+			foreach (var activationExtension in _itemActivationExtensions)
 			{
-				action(activationSystem);
+				action(activationExtension);
 			}
 		}
 

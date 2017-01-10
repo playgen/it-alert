@@ -15,8 +15,7 @@ namespace Engine.Core.Tests
 		[Test]
 		public void TestSimpleEntityPooling()
 		{
-			var registry = new EntityRegistry();
-			var componentRegistry = new ComponentRegistry(registry);
+			var registry = new EntityRegistry(new Entity.Factory());
 
 			Assert.That(registry.NextEntityId, Is.EqualTo(0));
 
@@ -48,8 +47,7 @@ namespace Engine.Core.Tests
 		[Test]
 		public void TestEntityReset()
 		{
-			var registry = new EntityRegistry();
-			var componentRegistry = new ComponentRegistry(registry);
+			var registry = new EntityRegistry(new Entity.Factory());
 
 			Assert.That(registry.NextEntityId, Is.EqualTo(0));
 

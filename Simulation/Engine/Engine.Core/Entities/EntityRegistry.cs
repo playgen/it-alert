@@ -6,9 +6,11 @@ using Engine.Serialization;
 
 namespace Engine.Entities
 {
-	public class EntityRegistry
+	public class EntityRegistry : IEntityRegistry
 	{
 		private int _entitySeed;
+
+		private Entity.Factory _entityFactory;
 
 		public Dictionary<int, Entity> Entities { get; }
 
@@ -19,11 +21,10 @@ namespace Engine.Entities
 		private readonly object _entityPoolLock = new object();
 		private readonly object _entityLock = new object();
 
-
-
 		// TODO: need a DI solution
-		public EntityRegistry()
+		public EntityRegistry(Entity.Factory entityFactory)
 		{
+			_entityFactory = entityFactory;
 			Entities = new Dictionary<int, Entity>();
 			EntityPool = new Queue<Entity>();
 		}
@@ -32,7 +33,7 @@ namespace Engine.Entities
 		{
 			lock (_entityPoolLock)
 			{
-				var entity = EntityPool.Count > 0 ? EntityPool.Dequeue() : new Entity();
+				var entity = EntityPool.Count > 0 ? EntityPool.Dequeue() : _entityFactory.Create();
 				entity.Initialize(NextEntityId);
 				entity.EntityDestroyed += EntityOnEntityDestroyed;
 				AddEntity(entity);

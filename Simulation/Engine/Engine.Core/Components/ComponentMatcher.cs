@@ -8,20 +8,39 @@ namespace Engine.Components
 {
 	public class ComponentMatcher
 	{
-		public HashSet<Type> RequiredTypes { get; }
+		public HashSet<Type> ComponentTypes { get; }
 
-		public ComponentMatcher()
+		private Predicate<Entity> EntityFilter { get; }
+
+		protected ComponentMatcher()
 		{
+			
 		}
 
-		public ComponentMatcher(IEnumerable<Type> requiredTypes, Predicate<Entity> entityFilter)
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="componentTypes">Entities containing all component types will be matched</param>
+		public ComponentMatcher(IEnumerable<Type> componentTypes)
+			: this(componentTypes, entity => true)
 		{
-			RequiredTypes = new HashSet<Type>(requiredTypes);
+			
+		}
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="componentTypes">Entities containing all component types will be matched</param>
+		/// <param name="entityFilter">Additional predicate filter to reduce matching entities</param>
+		public ComponentMatcher(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
+		{
+			ComponentTypes = new HashSet<Type>(componentTypes);
+			EntityFilter = entityFilter;
 		}
 
 		public virtual bool IsMatch(Entity entity)
 		{
-			return RequiredTypes.All(rt => entity.Components.ContainsKey(rt));
+			return ComponentTypes.All(rt => entity.Components.ContainsKey(rt)) && EntityFilter(entity);
 		}
 	}
 }

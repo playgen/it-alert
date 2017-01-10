@@ -9,7 +9,7 @@ namespace Engine.Systems
 {
 	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry);
 
-	public class SystemRegistry
+	public class SystemRegistry : ISystemRegistry
 	{
 		private readonly Dictionary<Type, ISystem> _systems;
 

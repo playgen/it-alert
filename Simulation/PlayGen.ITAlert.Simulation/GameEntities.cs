@@ -65,7 +65,7 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Actor = new Archetype("Actor")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
-				() => new CurrentLocationProperty(),
+				() => new CurrentLocation(),
 				() => new IntentsProperty(),
 				() => new VisitorPosition(), 
 				() => new MovementSpeed(), 
@@ -96,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
 				() => new EntityTypeProperty(EntityType.Item),
-				() => new CurrentLocationProperty(),
+				() => new CurrentLocation(),
 				() => new Owner(),
 				() => new ConsumeMemory(),
 			});

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Engine.Archetypes;
 using Engine.Components;
 using Engine.Systems;
@@ -17,14 +18,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public List<Archetype> Archetypes { get; private set; }
 
-		public List<SystemFactoryDelegate> Systems { get; private set; }
+		public List<SystemType> Systems { get; private set; }
 
 		public SimulationConfiguration(List<NodeConfig> nodeConfiguration, 
 			List<EdgeConfig> edgeConfiguration, 
 			List<PlayerConfig> playerConfiguration, 
 			List<ItemConfig> itemConfiguration, 
 			List<Archetype> archetypes,
-			List<SystemFactoryDelegate> systems = null, 
+			List<SystemType> systems = null, 
 			SimulationRules rules = null) 
 		{
 			NotNullHelper.ArgumentNotNull(nodeConfiguration, nameof(nodeConfiguration));
@@ -37,8 +38,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			PlayerConfiguration = playerConfiguration;
 			ItemConfiguration = itemConfiguration;
 			Archetypes = archetypes;
-			Systems = systems ?? new List<SystemFactoryDelegate>();
+			Systems = systems ?? new List<SystemType>();
 			Rules = rules ?? new SimulationRules();
+		}
+
+		public abstract class SystemType
+		{
+			public abstract Type Type { get; }
+		}
+
+		public sealed class SystemType<TSystem> : SystemType
+			where TSystem : ISystem
+		{
+			public override Type Type => typeof(TSystem);
 		}
 	}
 }

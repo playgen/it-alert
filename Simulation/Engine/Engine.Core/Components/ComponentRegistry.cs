@@ -7,7 +7,7 @@ using Engine.Util;
 
 namespace Engine.Components
 { 
-	public class ComponentRegistry
+	public class ComponentRegistry : IComponentRegistry
 	{
 		public static Dictionary<Type, HashSet<Type>> ComponentTypeImplementations { get; }
 
@@ -62,7 +62,7 @@ namespace Engine.Components
 			_matcherGroups.Add(matcher);
 			foreach (var entity in _entityRegistry.Entities.Values)
 			{
-				matcher.TestEntity(entity);
+				matcher.TryAddEntity(entity);
 			}
 		}
 
@@ -70,7 +70,7 @@ namespace Engine.Components
 		{
 			foreach (var matcherGroup in _matcherGroups)
 			{
-				matcherGroup.TestEntity(entity);
+				matcherGroup.TryAddEntity(entity);
 			}
 		}
 
