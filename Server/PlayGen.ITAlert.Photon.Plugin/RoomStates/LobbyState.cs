@@ -2,7 +2,8 @@
 using GameWork.Core.States;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.ITAlert.Photon.Messages.Game.Commands;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
@@ -30,17 +31,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.Game, ProcessGameMessage);
+			Messenger.Subscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
 
 			ResetAllPlayerStatuses();
+
+			Messenger.SendAllMessage(new LobbyMessage
+			{
+				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
+			});
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channels.Game, ProcessGameMessage);
+			Messenger.Unsubscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
 		}
 
-		private void ProcessGameMessage(Message message)
+		private void ProcessGameCommandMessage(Message message)
 		{
 			var startGameMessage = message as StartGameMessage;
 			if (startGameMessage != null)
@@ -70,7 +76,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 					PhotonPlugin.SetRoomOpen(false);
 				}
 
-				GameStartedEvent?.Invoke();
+				GameStartedEvent();
 			}
 		}
 	}

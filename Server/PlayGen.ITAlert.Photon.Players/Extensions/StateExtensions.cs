@@ -16,13 +16,9 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 			{
 				return State.Ready;
 			}
-			else if (players.All(p => p.State == (int)State.Initialized))
+			else if (players.All(p => p.State == (int)State.Playing))
 			{
-				return State.Initialized;
-			}
-			else if (players.All(p => p.State == (int)State.Finalized))
-			{
-				return State.Finalized;
+				return State.Playing;
 			}
 			else if (players.All(p => p.State == (int)State.FeedbackSent))
 			{

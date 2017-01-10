@@ -32,34 +32,39 @@ public class ControllerBehaviour : MonoBehaviour
 		PlayerCommands.Client = _client;
 
 		var popupController = new PopupController();
-		PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
+		PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;
 		PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
 		PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
-		//PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
 
+		_stateController = CreateStates();
+		_stateController.Initialize();
+	}
+
+	private TickStateController<TickState> CreateStates()
+	{
 		var voiceController = new VoiceController(_client);
 
-		var gameStateInput = new GameStateInput(_client);
-		var gameState = new GameState(gameStateInput, _client, new LobbyController(_client), voiceController);
+		// Game
+		var gameStateInput = new RoomStateInput(_client);
+		var gameState = new RoomState(gameStateInput, _client, new LobbyController(_client), voiceController);
 
+		// Menu
 		var menuState = new MenuState(_client, voiceController);
 
+		// Loading
 		var loadingState = new LoadingState(new LoadingStateInput());
-		loadingState.AddTransitions(new IsCompletedTransition(loadingState, LoginState.StateName));
+		loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));
 
+		// Login
 		var loginState = new LoginState();
-		loginState.AddTransitions(new IsCompletedTransition(loginState, MenuState.StateName));
+		loginState.AddTransitions(new OnCompletedTransition(loginState, MenuState.StateName));
 
-		_stateController = new TickStateController<TickState>(
-			loadingState,
-			loginState,
-			menuState,
-			gameState);
+		var stateController = new TickStateController<TickState>(loadingState, loginState, menuState, gameState);
 
-		gameState.ParentStateController = _stateController;
-		menuState.ParentStateController = _stateController;
+		gameState.ParentStateController = stateController;
+		menuState.ParentStateController = stateController;
 
-		_stateController.Initialize();
+		return stateController;
 	}
 
 	private IEnumerator ClientLoop()

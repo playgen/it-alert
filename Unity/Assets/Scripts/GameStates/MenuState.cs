@@ -1,6 +1,12 @@
 ﻿using GameWork.Core.States.Interfaces;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.GameStates;
+using PlayGen.ITAlert.GameStates.Transitions;
 using PlayGen.ITAlert.Network.Client;
+using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Simulation.Contracts;
 
 public class MenuState : TickState
 {
@@ -30,17 +36,18 @@ public class MenuState : TickState
 		var createGameController = new CreateGameController(_client);
 		var quickGameController = new QuickGameController(_client, createGameController, 4);
 		var gamesListController = new GamesListController(_client);
-		var lobbyController = new LobbyController(_client);
 
-		_stateController = new TickStateController(new MainMenuState(new MenuStateInput(), quickGameController, _client),
-			new LobbyState(new LobbyStateInput(lobbyController, _client), lobbyController, _client, _voiceController),
+		var mainMenuState = CreateMainMenuState(quickGameController);
+	
+		_stateController = new TickStateController(
+			mainMenuState,
 			new GamesListState(new GamesListStateInput(_client, gamesListController), gamesListController, joinGameController),
 			new CreateGameState(new CreateGameStateInput(_client), createGameController),
 			new SettingsState(new SettingsStateInput()));
 
 		_stateController.SetParent(ParentStateController);
 	}
-	
+
 	protected override void OnEnter()
 	{
 		_stateController.Initialize();
@@ -57,9 +64,25 @@ public class MenuState : TickState
 		_stateController.Tick(deltaTime);
 	}
 
-	//public override void NextState()
-	//{
-	// todo refactor states
-	//	ChangeState(GameState.StateName);
-	//}
+	private MainMenuState CreateMainMenuState(QuickGameController quickGameController)
+	{
+		var menuInputState = new MenuStateInput(_client);
+		var mainMenuState = new MainMenuState(menuInputState, quickGameController, _client);
+
+		var joinGameTransition = new OnEventTransition(GamesListState.StateName);
+		menuInputState.JoinGameEvent += joinGameTransition.ChangeState;
+
+		var createGameTransition = new OnEventTransition(CreateGameState.StateName);
+		menuInputState.CreateGameClickedEvent += createGameTransition.ChangeState;
+
+		var settingsTransition = new OnEventTransition(SettingsState.StateName);
+		menuInputState.SettingsClickedEvent += settingsTransition.ChangeState;
+
+		var joinGameSuccessTransition = new OnEventTransition(RoomState.StateName);
+		menuInputState.JoinGameSuccessEvent += joinGameSuccessTransition.ChangeState;
+
+		mainMenuState.AddTransitions(joinGameTransition, createGameTransition, settingsTransition, joinGameSuccessTransition);
+
+		return mainMenuState;
+	}
 }

@@ -2,15 +2,13 @@
 {
 	public enum State
 	{
-		Error,
+		Error = 0,
 
 		NotReady,
 
 		Ready,
 
-		Initialized,
-
-		Finalized,
+		Playing,
 
 		FeedbackSent
 	}

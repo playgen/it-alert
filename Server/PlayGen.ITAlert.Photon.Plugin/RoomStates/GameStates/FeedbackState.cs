@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 			Messenger.Subscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 
-			Messenger.SendAllMessage(new FeedbackStartedMessage());
+			Messenger.SendAllMessage(new Messages.Game.States.FeedbackMessage());
 		}
 
 		protected override void OnExit()

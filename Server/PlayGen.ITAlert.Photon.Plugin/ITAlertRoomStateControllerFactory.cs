@@ -12,9 +12,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
     {
         public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
         {
-			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, sugarController);
-			var lobbyToGameTransition = new LobbyToGameTransition(lobbyState);
-			lobbyState.AddTransitions(lobbyToGameTransition);
+	        var lobbyState = CreateLobbyState(photonPlugin, messenger, playerManager, sugarController);
 			
 	        var gameState = new GameState(photonPlugin, messenger, playerManager, sugarController);
 
@@ -24,5 +22,16 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 			return controller;
         }
+
+	    private LobbyState CreateLobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+	    {
+			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, sugarController);
+
+			var gameStartedTransition = new EventTransition(GameState.StateName);
+			lobbyState.GameStartedEvent += gameStartedTransition.ChangeState;
+			lobbyState.AddTransitions(gameStartedTransition);
+
+		    return lobbyState;
+	    }
     }
 }

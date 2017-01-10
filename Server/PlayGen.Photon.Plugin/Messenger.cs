@@ -29,7 +29,12 @@ namespace PlayGen.Photon.Plugin
             _subscriptionHandler.Unsubscribe(channel, messageReceivedCallback);
         }
 
-        public void SendMessage(List<int> receiversPhotonIds, int senderPhotonId, Message message)
+		public void SendMessage(int receiversPhotonId, Message message)
+		{
+			SendMessage(new List<int> {receiversPhotonId}, message);
+		}
+
+		public void SendMessage(List<int> receiversPhotonIds, Message message)
         {
             var serializedMessage = _serializationHandler.Serialize(message);
             _photonPlugin.BroadcastSpecific(receiversPhotonIds, (byte)EventCode.Message, serializedMessage);

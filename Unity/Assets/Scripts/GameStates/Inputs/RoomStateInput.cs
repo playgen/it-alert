@@ -6,8 +6,9 @@ using PlayGen.ITAlert.Network.Client.Voice;
 using PlayGen.Photon.Players;
 using UnityEngine.UI;
 using PlayGen.ITAlert.Network.Client;
+using System;
 
-public class GameStateInput : TickStateInput
+public class RoomStateInput : TickStateInput
 {
 	private readonly Client _client;
 	private GameObject _chatPanel;
@@ -15,7 +16,7 @@ public class GameStateInput : TickStateInput
 	private Dictionary<int, string> _playerColors;
 	private Dictionary<int, Image> _playerVoiceIcons;
 
-	public GameStateInput(Client client)
+	public RoomStateInput(Client client)
 	{
 		_client = client;
 	}
@@ -28,8 +29,7 @@ public class GameStateInput : TickStateInput
 
 	protected override void OnEnter()
 	{
-		SetPlayerColors(_client.CurrentRoom.Players);
-		PopulateChatPanel(_client.CurrentRoom.Players);
+		_client.CurrentRoom.PlayerListUpdatedEvent += InitializePlayers;
 	}
 
 	protected override void OnExit()
@@ -40,6 +40,13 @@ public class GameStateInput : TickStateInput
 	protected override void OnTick(float deltaTime)
 	{
 		UpdateChatPanel();
+	}
+
+	private void InitializePlayers(List<Player> players)
+	{
+		_client.CurrentRoom.PlayerListUpdatedEvent -= InitializePlayers;
+		SetPlayerColors(players);
+		PopulateChatPanel(players);
 	}
 
 	private void PopulateChatPanel(ICollection<Player> players)
@@ -62,12 +69,12 @@ public class GameStateInput : TickStateInput
 
 		foreach (var player in playersList)
 		{
-			var playerItem = Object.Instantiate(_playerChatItemPrefab).transform;
+			var playerItem = UnityEngine.Object.Instantiate(_playerChatItemPrefab).transform;
 
-            var color = new Color();
-            ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+			var color = new Color();
+			ColorUtility.TryParseHtmlString("#" + player.Color, out color);
 
-            var nameText = playerItem.FindChild("Name").GetComponent<Text>();
+			var nameText = playerItem.FindChild("Name").GetComponent<Text>();
 			nameText.text = player.Name;
 			nameText.color = color;
 
