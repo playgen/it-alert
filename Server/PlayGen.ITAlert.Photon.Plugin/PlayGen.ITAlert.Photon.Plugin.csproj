@@ -39,16 +39,11 @@
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
-    <Compile Include="RoomStates\GameStates\FinalizingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
-    <Compile Include="RoomStates\GameStates\InitializingState.cs" />
-    <Compile Include="RoomStates\GameStates\Transitions\FeedbackToLobbyTransition.cs" />
-    <Compile Include="RoomStates\GameStates\Transitions\FinalizingToFeedbackTransition.cs" />
-    <Compile Include="RoomStates\GameStates\Transitions\PlayingToFinalizingTransition.cs" />
-    <Compile Include="RoomStates\GameStates\Transitions\InitializingToPlayingTransition.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />
-    <Compile Include="RoomStates\Transitions\LobbyToGameTransition.cs" />
+    <Compile Include="RoomStates\Transitions\EventTransition.cs" />
+    <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">

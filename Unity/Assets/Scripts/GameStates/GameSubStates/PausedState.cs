@@ -2,7 +2,7 @@
 using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
@@ -37,11 +37,6 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 
 		}
-
-		//public override void PreviousState()
-		//{
-		//	ChangeState(PlayingState.StateName);
-		//}
 
 		protected override void OnTick(float deltaTime)
 		{

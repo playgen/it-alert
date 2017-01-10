@@ -59,15 +59,4 @@ public class GamesListState : InputTickState
 	{
 		get { return StateName; }
 	}
-
-	// todo refactor states
-	//public override void NextState()
-	//{
-	//	ChangeState(LobbyState.StateName);
-	//}
-
-	//public override void PreviousState()
-	//{
-	//	ChangeState(MainMenuState.StateName);
-	//}
 }

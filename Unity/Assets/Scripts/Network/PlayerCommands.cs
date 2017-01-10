@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Simulation;
+using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
 using UnityEngine;
 

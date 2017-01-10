@@ -3,7 +3,7 @@ using PlayGen.ITAlert.Interfaces;
 
 namespace PlayGen.ITAlert.GameStates.Transitions
 {
-	public class IsCompletedTransition : ITickStateTransition
+	public class OnCompletedTransition : ITickStateTransition
 	{
 		private readonly ICompletable _completable;
 
@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.GameStates.Transitions
 			get { return _completable.IsComplete; }
 		}
 
-		public IsCompletedTransition(ICompletable completable, string toStateName)
+		public OnCompletedTransition(ICompletable completable, string toStateName)
 		{
 			_completable = completable;
 			ToStateName = toStateName;

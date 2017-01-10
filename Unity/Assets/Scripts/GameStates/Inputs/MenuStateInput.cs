@@ -1,14 +1,27 @@
-﻿using GameWork.Core.States.Commands;
+﻿using System;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 
 using UnityEngine;
 
 public class MenuStateInput : TickStateInput
 {
+	private readonly Client _client;
+
 	private GameObject _mainMenuPanel;
 	private GameObject _createGamePopup;
 	private ButtonList _buttons;
+	
+	public event Action JoinGameEvent;
+	public event Action CreateGameClickedEvent;
+	public event Action SettingsClickedEvent;
+	public event Action JoinGameSuccessEvent;
+
+	public MenuStateInput(Client client)
+	{
+		_client = client;
+	}
 
 	protected override void OnInitialize()
 	{
@@ -32,14 +45,19 @@ public class MenuStateInput : TickStateInput
 		settingsButton.onClick.AddListener(OnSettingsClick);
 	}
 
+	private void OnJoinGameSuccess(ClientRoom clientRoom)
+	{
+		JoinGameSuccessEvent();
+	}
+
 	private void OnJoinGameClick()
 	{
-		CommandQueue.AddCommand(new ChangeStateCommand(GamesListState.StateName));
+		JoinGameEvent();
 	}
 
 	private void OnCreateGameClick()
 	{
-		CommandQueue.AddCommand(new ChangeStateCommand(CreateGameState.StateName));
+		CreateGameClickedEvent();
 	}
 
 	private void OnQuickMatchClick()
@@ -49,22 +67,26 @@ public class MenuStateInput : TickStateInput
 
 	private void OnSettingsClick()
 	{
-		CommandQueue.AddCommand(new ChangeStateCommand(SettingsState.StateName));
+		SettingsClickedEvent();
 	}
 
 	private void OnQuitClick()
 	{
+		// todo this should trigger a Quit state that any save/cleanup can be done in before actually quitting the application
+		// note: Calll the top most StateController's Terminate OnApplicationQuit
 		Application.Quit();
 	}
-
+	
 	protected override void OnEnter()
 	{
+		_client.JoinedRoomEvent += OnJoinGameSuccess;
 		_mainMenuPanel.SetActive(true);
 		_buttons.BestFit();
 	}
 
 	protected override void OnExit()
 	{
+		_client.JoinedRoomEvent -= OnJoinGameSuccess;
 		_mainMenuPanel.SetActive(false);
 	}
 
@@ -74,11 +96,5 @@ public class MenuStateInput : TickStateInput
 		{
 			OnQuitClick();
 		}
-	}
-
-	public void OnJoinGameSuccess(ClientRoom clientRoom)
-	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new NextStateCommand());
 	}
 }

@@ -42,7 +42,7 @@ namespace Debugging
 			GameStateButton(GamesListState.StateName, MenuState.StateName);
 			GameStateButton(CreateGameState.StateName, MenuState.StateName);
 			GameStateButton(SettingsState.StateName, MenuState.StateName);
-			GameStateButton(GameState.StateName);
+			GameStateButton(RoomState.StateName);
 		}
 
 		private object GetField(Type type, object instance, string fieldName)
