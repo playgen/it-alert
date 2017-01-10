@@ -1,8 +1,10 @@
-﻿using GameWork.Core.States.Tick.Input;
+﻿using System;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 using UnityEngine;
 using PlayGen.Photon.Unity;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class GamesListStateInput : TickStateInput
 {
@@ -13,6 +15,9 @@ public class GamesListStateInput : TickStateInput
 	private GameObject _gameListObject;
 	private GameObject _gameItemPrefab;
 	private ButtonList _buttons;
+
+	public event Action JoinGameSuccessEvent;
+	public event Action BackClickedEvent;
 
 	public GamesListStateInput(Client client, GamesListController gameListController)
 	{
@@ -44,8 +49,7 @@ public class GamesListStateInput : TickStateInput
 
 	private void OnBackClick()
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new PreviousStateCommand());
+		BackClickedEvent();
 	}
 
 	protected override void OnEnter()
@@ -71,8 +75,7 @@ public class GamesListStateInput : TickStateInput
 
 	private void OnJoinGameSuccess(ClientRoom clientRoom)
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new NextStateCommand());
+		JoinGameSuccessEvent();
 	}
 
 	private void OnGamesListSuccess(RoomInfo[] rooms)

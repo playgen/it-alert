@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.GameStates
 {
 	public class RoomState : InputTickState
 	{
-		public const string StateName = "GameState";
+		public const string StateName = "RoomState";
 
 		private TickStateController _stateController;
 		private readonly Client _client;
@@ -94,9 +94,11 @@ namespace PlayGen.ITAlert.GameStates
 
 			var lobbyState = new LobbyState(lobbyStateInput, lobbyController, client, voiceController);
 
-			var startGameTransition = new OnMessageTransition(client, Channels.GameState, typeof(PlayingMessage),
-				PlayingState.StateName);
-			lobbyState.AddTransitions(startGameTransition);
+			var startGameTransition = new OnMessageTransition(client, Channels.GameState, typeof(PlayingMessage),PlayingState.StateName);
+			var previousStateTransition = new OnEventTransition(MenuState.StateName);
+			lobbyStateInput.LeaveLobbyEvent += previousStateTransition.ChangeState;
+
+			lobbyState.AddTransitions(startGameTransition, previousStateTransition);
 
 			return lobbyState;
 		}
