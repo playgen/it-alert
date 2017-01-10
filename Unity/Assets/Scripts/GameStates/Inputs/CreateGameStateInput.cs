@@ -1,10 +1,14 @@
-﻿using GameWork.Core.States.Tick.Input;
+﻿using System;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 using UnityEngine;
 
 public class CreateGameStateInput : TickStateInput
 {
+	public event Action BackClickedEvent;
+	public event Action JoinedRoomEvent;
+
 	private readonly Client _client;
 	private GameObject _createGamePanel;
 	private ButtonList _buttons;
@@ -36,8 +40,7 @@ public class CreateGameStateInput : TickStateInput
 
 	private void OnBackClick()
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new PreviousStateCommand());
+		BackClickedEvent();
 	}
 
 	protected override void OnEnter()
@@ -56,7 +59,6 @@ public class CreateGameStateInput : TickStateInput
 
 	private void OnJoinedRoom(ClientRoom room)
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new NextStateCommand());
+		JoinedRoomEvent();
 	}
 }

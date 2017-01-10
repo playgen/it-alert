@@ -29,6 +29,8 @@ public class LobbyStateInput : TickStateInput
 	private int _lobbyPlayerMax;
 	private List<Color> _playerColors;
 
+	public event Action LeaveLobbyEvent;
+
 	public LobbyStateInput(LobbyController controller, Client client)
 	{
 		_controller = controller;
@@ -96,13 +98,12 @@ public class LobbyStateInput : TickStateInput
 
 	private void OnBackButtonClick()
 	{
-		CommandQueue.AddCommand(new LeaveRoomCommand());
+		LeaveLobbyEvent();
 	}
 
 	private void OnColorChangeButtonClick()
 	{
 		// Get the selected colors list from the client
-
 		PopupUtility.ShowColorPicker(ColorPicked, _playerColors);
 	}
 
@@ -111,10 +112,9 @@ public class LobbyStateInput : TickStateInput
 		CommandQueue.AddCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
 	}
 
-	public void OnLeaveSuccess()
+	private void OnLeaveSuccess()
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new PreviousStateCommand());
+		LeaveLobbyEvent();
 	}
 
 	private void SetRoomName(string name)

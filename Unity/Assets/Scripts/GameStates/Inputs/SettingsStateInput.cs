@@ -1,4 +1,5 @@
-﻿using GameWork.Core.States.Tick.Input;
+﻿using System;
+using GameWork.Core.States.Tick.Input;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +7,8 @@ public class SettingsStateInput : TickStateInput
 {
 	private GameObject _settingsPanel;
 	private SettingCreation _creator;
+
+	public event Action BackClickedEvent;
 
 	protected override void OnInitialize()
 	{
@@ -34,8 +37,7 @@ public class SettingsStateInput : TickStateInput
 
 	private void OnBackClick()
 	{
-		// todo refactor state switch
-		//CommandQueue.AddCommand(new PreviousStateCommand());
+		BackClickedEvent();
 	}
 
 	private void OnApplyClick(Dropdown resolution, Toggle fullScreen, Slider microphone, Slider receive, Slider music, Slider sfx)

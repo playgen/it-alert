@@ -17,7 +17,7 @@ public class MenuStateInput : TickStateInput
 	public event Action CreateGameClickedEvent;
 	public event Action SettingsClickedEvent;
 	public event Action JoinGameSuccessEvent;
-
+	
 	public MenuStateInput(Client client)
 	{
 		_client = client;
