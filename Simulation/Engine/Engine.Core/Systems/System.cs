@@ -8,21 +8,19 @@ namespace Engine.Systems
 {
 	public class System : ISystem
 	{
-		protected ComponentRegistry ComponentRegistry { get; }
+		protected IComponentRegistry ComponentRegistry { get; }
 
-		protected EntityRegistry EntityRegistry { get; }
+		protected IEntityRegistry EntityRegistry { get; }
 
-		protected SystemRegistry SystemRegistry { get; }
+		protected ISystemRegistry SystemRegistry { get; }
 
-		public System(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry)
+		public System(IComponentRegistry componentRegistry, 
+			IEntityRegistry entityRegistry, 
+			ISystemRegistry systemRegistry)
 		{
 			ComponentRegistry = componentRegistry;
 			EntityRegistry = entityRegistry;
 			SystemRegistry = systemRegistry;
-		}
-
-		public virtual void Tick(int currentTick)
-		{
 		}
 	}
 }

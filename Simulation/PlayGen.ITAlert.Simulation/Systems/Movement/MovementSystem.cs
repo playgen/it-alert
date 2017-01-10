@@ -12,16 +12,20 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class MovementSystem : Engine.Systems.System
+	[SystemExtensionType(typeof(IMovementSystemExtension))]
+	public class MovementSystem : Engine.Systems.System, ITickableSystem
 	{
 		private readonly Dictionary<EntityType, IMovementSystemExtension> _movementSystems;
 
 		private readonly ComponentMatcherGroup _movementNodesMatcher;
 
-		public MovementSystem(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry)
+		public MovementSystem(IComponentRegistry componentRegistry, 
+			IEntityRegistry entityRegistry, 
+			ISystemRegistry systemRegistry,
+			List<IMovementSystemExtension> movementSystemExtensions)
 			: base(componentRegistry, entityRegistry, systemRegistry)
 		{
-			_movementSystems = ModuleLoader.InstantiateTypesImplementing<IMovementSystemExtension>().ToDictionary(k => k.EntityType, v => v);
+			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
 
 			foreach (var entityMovementSystem in _movementSystems)
 			{
@@ -40,7 +44,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// <summary>
 		/// Handle a vistitor leaving one node and entering another
 		/// </summary>
-		/// <param name="node"></param>
+		/// <param name="nodeId"></param>
 		/// <param name="visitor"></param>
 		/// <param name="source"></param>
 		/// <param name="initialPosition"></param>
@@ -63,7 +67,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// Perform the move visitors action on all supported node types
 		/// </summary>
 		/// <param name="currentTick"></param>
-		public override void Tick(int currentTick)
+		public void Tick(int currentTick)
 		{
 			var nodes = _movementNodesMatcher.MatchingEntities;
 

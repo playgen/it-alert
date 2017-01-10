@@ -37,6 +37,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Zenject">
+      <HintPath>..\..\..\lib\Zenject\Zenject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archetypes\Archetype.cs" />
@@ -55,6 +58,7 @@
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentFactory.cs" />
+    <Compile Include="Components\IComponentRegistry.cs" />
     <Compile Include="Components\IComponentState.cs" />
     <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
@@ -63,6 +67,7 @@
     <Compile Include="Components\RangedNumericProperty.cs" />
     <Compile Include="Components\StateBucket.cs" />
     <Compile Include="ECS.cs" />
+    <Compile Include="ECSInstaller.cs" />
     <Compile Include="EcsState.cs" />
     <Compile Include="Entities\ComponentContainer.cs" />
     <Compile Include="Entities\Entity.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="Entities\EntityRegistry.cs" />
     <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
+    <Compile Include="Entities\IEntityRegistry.cs" />
     <Compile Include="Exceptions\EngineException.cs" />
     <Compile Include="IECS.cs" />
     <Compile Include="Planning\IIntent.cs" />
@@ -79,8 +85,11 @@
     <Compile Include="Serialization\SyncStateAttribute.cs" />
     <Compile Include="Systems\ISystem.cs" />
     <Compile Include="Systems\ISystemExtension.cs" />
+    <Compile Include="Systems\ISystemRegistry.cs" />
     <Compile Include="Systems\System.cs" />
+    <Compile Include="Systems\SystemExtensionTypeAttribute.cs" />
     <Compile Include="Systems\SystemRegistry.cs" />
+    <Compile Include="Util\AttributeHelper.cs" />
     <Compile Include="Util\ModuleLoader.cs" />
     <Compile Include="Util\NotNullHelper.cs" />
   </ItemGroup>

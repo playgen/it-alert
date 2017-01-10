@@ -10,33 +10,39 @@ namespace Engine.Components
 	{
 		public HashSet<Entity> MatchingEntities { get; }
 
-		private Predicate<Entity> EntityFilter { get; }
 
-		public ComponentMatcherGroup(IEnumerable<Type> requiredTypes)
-			: base(requiredTypes)
+		public ComponentMatcherGroup(IEnumerable<Type> componentTypes)
+			: base(componentTypes)
 		{
-			EntityFilter = entity => true;
+			MatchingEntities = new HashSet<Entity>();
 		}
 
-		public ComponentMatcherGroup(IEnumerable<Type> requiredTypes, Predicate<Entity> entityFilter)
-			: base(requiredTypes)
+		public ComponentMatcherGroup(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
+			: base(componentTypes, entityFilter)
 		{
-			EntityFilter = entityFilter;
+			MatchingEntities = new HashSet<Entity>();
 		}
 
-		public void TestEntity(Entity entity)
+		public bool TryAddEntity(Entity entity)
 		{
-			if (IsMatch(entity) && EntityFilter(entity))
+			if (IsMatch(entity))
 			{
-				//var cet = new ComponentEntityTuple(entity, RequiredTypes.ToDictionary(k => k, v => entity.GetComponent<>()));
+				//var cet = new ComponentEntityTuple(entity, ComponentTypes.ToDictionary(k => k, v => entity.GetComponent<>()));
 				MatchingEntities.Add(entity);
 				entity.EntityDestroyed += EntityOnEntityDestroyed;
+				return true;
 			}
 			// TODO: lazy implementation - catch the entity destroyed event instead
 			else
 			{
 				MatchingEntities.Remove(entity);
 			}
+			return false;
+		}
+
+		public override bool IsMatch(Entity entity)
+		{
+			return MatchingEntities.Contains(entity) || base.IsMatch(entity);
 		}
 
 		private void EntityOnEntityDestroyed(Entity entity)

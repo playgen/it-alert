@@ -11,7 +11,6 @@ namespace Engine.Systems
 	/// </summary>
 	public interface ISystem
 	{
-
 	}
 
 	/// <summary>

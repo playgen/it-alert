@@ -42,6 +42,9 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="Zenject">
+      <HintPath>..\..\lib\Zenject\Zenject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Activation\ActivationState.cs" />
@@ -50,6 +53,7 @@
     <Compile Include="Components\Items\Item.cs" />
     <Compile Include="Components\Items\Scanner.cs" />
     <Compile Include="Components\Movement\SubsystemMovementFlag.cs" />
+    <Compile Include="SimulationInstaller.cs" />
     <Compile Include="Systems\Commands\PlayerCommandSystem.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
@@ -77,7 +81,7 @@
     <Compile Include="Components\Movement\Destination.cs" />
     <Compile Include="Components\Resources\CPUResource.cs" />
     <Compile Include="Components\Resources\MemoryResource.cs" />
-    <Compile Include="Systems\Items\ItemActivation.cs" />
+    <Compile Include="Systems\Items\ItemActivationSystem.cs" />
     <Compile Include="Systems\Items\ItemManagement.cs" />
     <Compile Include="Systems\Malware\MalwareEffects.cs" />
     <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
@@ -97,7 +101,7 @@
     <Compile Include="Components\Movement\MovementCost.cs" />
     <Compile Include="Components\Common\Name.cs" />
     <Compile Include="Components\Movement\RelativeWeight.cs" />
-    <Compile Include="Components\Common\CurrentLocationProperty.cs" />
+    <Compile Include="Components\Common\CurrentLocation.cs" />
     <Compile Include="Layout\EdgeDirection.cs" />
     <Compile Include="Components\Items\Owner.cs" />
     <Compile Include="Components\Movement\VisitorPosition.cs" />

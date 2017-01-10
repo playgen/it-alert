@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			
 			visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
 
-			var currentLocation = visitor.GetComponent<CurrentLocationProperty>();
+			var currentLocation = visitor.GetComponent<CurrentLocation>();
 			currentLocation.SetValue(node.Id);
 		}
 

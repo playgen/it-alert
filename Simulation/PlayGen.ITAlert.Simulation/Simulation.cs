@@ -10,6 +10,7 @@ using Engine.Common;
 using Engine.Components.Common;
 using Engine.Planning;
 using Engine.Serialization;
+using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -30,14 +31,16 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Vector GraphSize { get; private set; }
 
-
-		public Simulation(SimulationConfiguration configuration)
+		public Simulation(IEntityRegistry entityRegistry, 
+			IComponentRegistry componentRegistry, 
+			ISystemRegistry systemRegistry,
+			SimulationConfiguration configuration)
+			: base(entityRegistry, componentRegistry, systemRegistry)
 		{
-			// TODO: replace temporay copy from configuration
-			// populate system registry 
+			// TODO: initialize from DI, sub-container per archetype? factory per archetype?
 			configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
 			configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
-			configuration.Systems.ForEach(system => SystemRegistry.RegisterSystem(system(ComponentRegistry, EntityRegistry, SystemRegistry)));
+
 			// initialization
 			InitializeGraphEntities(configuration);
 		}

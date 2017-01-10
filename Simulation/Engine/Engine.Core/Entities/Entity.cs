@@ -3,6 +3,7 @@ using Engine.Components;
 //using Engine.Messaging;
 using Engine.Serialization;
 using Engine.Util;
+using Zenject;
 
 namespace Engine.Entities
 {
@@ -64,6 +65,11 @@ namespace Engine.Entities
 
 		public virtual void OnDeserialized()
 		{
+		}
+
+		public class Factory : Factory<Entity>
+		{
+			
 		}
 	}
 }

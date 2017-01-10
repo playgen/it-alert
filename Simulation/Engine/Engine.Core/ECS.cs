@@ -20,17 +20,17 @@ namespace Engine
 		/// <summary>
 		/// This is where the entity pool lives and new entities are created
 		/// </summary>
-		public EntityRegistry EntityRegistry { get; private set; }
+		public IEntityRegistry EntityRegistry { get; private set; }
 
 		/// <summary>
 		/// This is where the component pool lives and component to entity mappings take place
 		/// </summary>
-		public ComponentRegistry ComponentRegistry { get; private set; }
+		public IComponentRegistry ComponentRegistry { get; private set; }
 
 		/// <summary>
 		/// This is where the system pool lives and systems are activated 
 		/// </summary>
-		protected SystemRegistry SystemRegistry { get; private set; }
+		protected ISystemRegistry SystemRegistry { get; private set; }
 
 		/// <summary>
 		/// This factory creates components and popualtes an entity when an archetype is instantiated
@@ -47,12 +47,13 @@ namespace Engine
 		/// <summary>
 		/// 
 		/// </summary>
-		protected ECS()
+		protected ECS(IEntityRegistry entityRegistry,
+			IComponentRegistry componentRegistry,
+			ISystemRegistry systemRegistry)
 		{
-			//TODO: DI!
-			EntityRegistry = new EntityRegistry();
-			ComponentRegistry = new ComponentRegistry(EntityRegistry);
-			SystemRegistry = new SystemRegistry();
+			EntityRegistry = entityRegistry;
+			ComponentRegistry = componentRegistry;
+			SystemRegistry = systemRegistry;
 			ComponentFactory = new ComponentFactory();
 			// signal the component registry that a new entity has been populated
 			ComponentFactory.EntityArchetypeCreated += ComponentRegistry.UpdateMatcherGroups;

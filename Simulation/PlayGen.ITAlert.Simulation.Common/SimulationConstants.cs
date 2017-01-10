@@ -65,5 +65,7 @@
 		public const int PlayerSpeed = 1;
 
 		#endregion
+
+		public const string MalwareVisibilityGene = "Visibile";
 	}
 }
