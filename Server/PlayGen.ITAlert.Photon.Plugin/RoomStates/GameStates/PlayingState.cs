@@ -74,10 +74,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 				if (PlayerManager.Players.GetCombinedStates() == State.Playing)
 				{
-					Messenger.SendAllMessage(new InitializedMessage
-					{
-						SerializedSimulation = Serializer.SerializeSimulation(_simulation)
-					});
 					_tickTimer = CreateTickTimer();
 				}
 				return;

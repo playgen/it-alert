@@ -8,6 +8,10 @@
 
 		Ready,
 
+		Initializing, 
+
+		Initialized,
+
 		Playing,
 
 		FeedbackSent

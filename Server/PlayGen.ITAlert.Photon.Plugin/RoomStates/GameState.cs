@@ -87,6 +87,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private RoomStateController CreateStateController(List<int> subsystemLogicalIds)
 		{
+			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var initializedTransition = new CombinedPlayersStateTransition(State.Initialized, PlayingState.StateName);
+			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
+			initializingState.AddTransitions(initializedTransition);
+
 			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
@@ -97,7 +102,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);
 
-			var controller = new RoomStateController(playingState, feedbackState);
+			var controller = new RoomStateController(initializingState, playingState, feedbackState);
 			controller.SetParent(ParentStateController);
 
 			return controller;

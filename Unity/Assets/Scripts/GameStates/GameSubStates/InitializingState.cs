@@ -1,19 +1,20 @@
 ﻿using System;
 using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
-using PlayGen.ITAlert.Interfaces;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
+using InitializedMessage = PlayGen.ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class PlayingState : InputTickState , ICompletable
+	public class InitializingState : TickState
 	{
-		public const string StateName = "Playing";
+		public const string StateName = "Initializing";
 
 		private readonly Client _networkClient;
 
@@ -27,7 +28,7 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get; private set;
 		}
 
-		public PlayingState(PlayingTickableStateInput input, Client networkClient) : base(input)
+		public InitializingState(Client networkClient)
 		{
 			_networkClient = networkClient;
 		}
@@ -36,12 +37,11 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 		{
 			Logger.LogDebug("Entered " + StateName);
 
-			IsComplete = false;
 			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 
-			_networkClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage()
+			_networkClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
 			{
-				PlayerPhotonId	= _networkClient.CurrentRoom.Player.PhotonId,
+				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
 			});
 		}
 
@@ -50,24 +50,19 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
 		}
 		
-		protected override void OnTick(float deltaTime)
-		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
-			{
-				var commandResolver = new StateCommandResolver();
-				commandResolver.HandleSequenceStates(command, this);
-			}
-		}
-
 		private void ProcessSimulationStateMessage(Message message)
 		{
-			var tickMessage = message as TickMessage;
-			if (tickMessage != null)
+			var initializedMessage = message as InitializedMessage;
+			if (initializedMessage != null)
 			{
-				var simulation = Serializer.DeserializeSimulation(tickMessage.SerializedSimulation);
-				Director.UpdateSimulation(simulation);
+				var simulation = Serializer.DeserializeSimulation(initializedMessage.SerializedSimulation);
+				Director.Initialize(simulation, _networkClient.CurrentRoom.Player.PhotonId);
 				Director.Refresh();
+
+				_networkClient.CurrentRoom.Messenger.SendMessage(new Photon.Messages.Game.States.InitializedMessage()
+				{
+					PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
+				});
 				return;
 			}
 
