@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Photon.Hive.Plugin;
-using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
@@ -10,7 +8,6 @@ using PlayGen.ITAlert.TestData;
 using System.Linq;
 using GameWork.Core.States;
 using PlayGen.ITAlert.Configuration;
-using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using State = PlayGen.ITAlert.Photon.Players.State;
@@ -35,22 +32,23 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
+			SugarController.StartMatch();
+			SugarController.AddMatchData("PlayerCount", PlayerManager.Players.Count);
+
 			List<int> subsystemLogicalIds;
 			_simulation = InitializeSimulation(out subsystemLogicalIds);
 
 			_stateController = CreateStateController(subsystemLogicalIds);
 			_stateController.Initialize();
-
-			//SugarController.StartMatch();
 		}
 
 		protected override void OnExit()
 		{
-			//SugarController.EndMatch();
-
 			_stateController.Terminate();
 			_simulation.Dispose();
 			_simulation = null;
+
+			SugarController.EndMatch();
 		}
 
 		public override void OnCreate(ICreateGameCallInfo info)

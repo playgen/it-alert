@@ -1,11 +1,13 @@
-﻿using GameWork.Core.States.Tick;
+﻿using System.Collections.Generic;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class FeedbackState : TickState
+	public class FeedbackState : InputTickState
 	{
 		public const string StateName = "Feedback";
 
@@ -16,19 +18,23 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get { return StateName; }
 		}
 
-		public FeedbackState(Client networkClient)
+		public FeedbackState(FeedbackStateInput input, Client networkClient) : base(input)
 		{
+			input.PlayerRankingsCompleteEvent += OnPlayerRankingsComplete;
 			_networkClient = networkClient;
 		}
 
 		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
+		}
 
-			// todo gather feedback from user
+		private void OnPlayerRankingsComplete(Dictionary<string, int[]> rankedPlayerPhotonIdBySection)
+		{
 			_networkClient.CurrentRoom.Messenger.SendMessage(new PlayerFeedbackMessage()
 			{
-				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
+				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId,
+				RankedPlayerPhotonIdBySection = rankedPlayerPhotonIdBySection,
 			});
 		}
 	}
