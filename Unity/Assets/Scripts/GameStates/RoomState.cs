@@ -35,19 +35,20 @@ namespace PlayGen.ITAlert.GameStates
 		{
 			var lobbyState = CreateLobbyState(_client, _voiceController);
 
+			var initializingState = new InitializingState(_client);
+			var onPlayingStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(PlayingMessage), PlayingState.StateName);
+			initializingState.AddTransitions(onPlayingStateSync);
+
 			var playingState = new PlayingState(new PlayingTickableStateInput(), _client);
-			var onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage),
-				FeedbackState.StateName);
+			var onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			playingState.AddTransitions(onFeedbackStateSync);
 
 			var pausedState = new PausedState(new PausedStateInput(), _client);
-			onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage),
-				FeedbackState.StateName);
+			onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			playingState.AddTransitions(onFeedbackStateSync);
 
 			var settingsState = new SettingsState(new SettingsStateInput());
-			onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage),
-				FeedbackState.StateName);
+			onFeedbackStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			playingState.AddTransitions(onFeedbackStateSync);
 
 			var feedbackStateInput = new FeedbackStateInput(_client);
@@ -57,6 +58,7 @@ namespace PlayGen.ITAlert.GameStates
 
 			_stateController = new TickStateController(
 				lobbyState,
+				initializingState,
 				playingState,
 				pausedState,
 				feedbackState,
@@ -93,11 +95,11 @@ namespace PlayGen.ITAlert.GameStates
 
 			var lobbyState = new LobbyState(lobbyStateInput, lobbyController, client, voiceController);
 
-			var startGameTransition = new OnMessageTransition(client, Channels.GameState, typeof(PlayingMessage),PlayingState.StateName);
+			var initializingTransition = new OnMessageTransition(client, Channels.GameState, typeof(InitializingMessage), InitializingState.StateName);
 			var previousStateTransition = new OnEventTransition(MenuState.StateName);
 			lobbyStateInput.LeaveLobbyEvent += previousStateTransition.ChangeState;
 
-			lobbyState.AddTransitions(startGameTransition, previousStateTransition);
+			lobbyState.AddTransitions(initializingTransition, previousStateTransition);
 
 			return lobbyState;
 		}

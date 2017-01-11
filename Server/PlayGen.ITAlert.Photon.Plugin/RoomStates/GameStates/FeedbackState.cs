@@ -17,13 +17,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Feedback";
 
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) : base(photonPlugin, messenger, playerManager, sugarController)
-		{
-		}
-
 		public override string Name => StateName;
 
 		public event Action<List<Player>> PlayerFeedbackSentEvent;
+
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) : base(photonPlugin, messenger, playerManager, sugarController)
+		{
+		}
 
 		protected override void OnEnter()
 		{
