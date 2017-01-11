@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin.States;
@@ -44,15 +45,31 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
 				player.State = (int)State.FeedbackSent;
 				PlayerManager.UpdatePlayer(player);
-
-				// todo write feedback fields to sugar using SugarController and adding it as match data
-				// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
 				
+				WritePlayerFeedback(feedbackMessage.RankedPlayerPhotonIdBySection);
+			
 				PlayerFeedbackSentEvent(PlayerManager.Players);
 				return;
 			}
 
 			throw new Exception($"Unhandled Simulation State Message: ${message}");
+		}
+
+		private void WritePlayerFeedback(Dictionary<string, int[]> rankedPlayerPhotonIdBySection)
+		{
+			foreach (var feedbackKVP in rankedPlayerPhotonIdBySection)
+			{
+				var category = feedbackKVP.Key;
+
+				for (int i = 0; i < feedbackKVP.Value.Length; i++)
+				{
+					var rank = i + 1;
+					var playerPhotonId = feedbackKVP.Value[i];
+					var playerSugarId = PlayerManager.Players.Single(p => p.PhotonId == playerPhotonId).ExternalId.Value;
+
+					SugarController.AddMatchRankingData(category, rank, playerSugarId);
+				}
+			}
 		}
 	}
 }
