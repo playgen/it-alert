@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace POpusCodec.Enums
+﻿namespace POpusCodec.Enums
 {
-    public enum Channels : int
+	public enum Channels : int
     {
         /// <summary>
         /// 1 Channel

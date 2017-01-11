@@ -1,6 +1,4 @@
-﻿
-using System.Diagnostics;
-using GameWork.Core.Commands.Interfaces;
+﻿using GameWork.Core.Commands.Interfaces;
 
 public class RefreshPlayerListCommand : ICommand<LobbyController>
 {

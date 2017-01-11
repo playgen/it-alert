@@ -44,22 +44,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Channels.cs" />
-    <Compile Include="Feedback\FeedbackMessage.cs" />
-    <Compile Include="Feedback\FeedbackStartedMessage.cs" />
     <Compile Include="Feedback\PlayerFeedbackMessage.cs" />
-    <Compile Include="Game\GameEndedMessage.cs" />
-    <Compile Include="Simulation\PlayerState\FinalizedMessage.cs" />
-    <Compile Include="Simulation\PlayerState\InitializedMessage.cs" />
-    <Compile Include="Game\GameStartedMessage.cs" />
-    <Compile Include="Game\GameMessage.cs" />
-    <Compile Include="Game\StartGameMessage.cs" />
-    <Compile Include="Simulation\PlayerState\PlayerMessage.cs" />
-    <Compile Include="Simulation\CommandMessage.cs" />
-    <Compile Include="Simulation\ServerState\FinalizingMessage.cs" />
-    <Compile Include="Simulation\ServerState\PlayingMessage.cs" />
-    <Compile Include="Simulation\ServerState\InitializingMessage.cs" />
-    <Compile Include="Simulation\ServerState\ServerMessage.cs" />
-    <Compile Include="Simulation\ServerState\TickMessage.cs" />
+    <Compile Include="Game\Commands\StartGameMessage.cs" />
+    <Compile Include="Game\Commands\GameCommandMessage.cs" />
+    <Compile Include="Game\States\LobbyMessage.cs" />
+    <Compile Include="Game\States\FeedbackMessage.cs" />
+    <Compile Include="Game\States\StateMessage.cs" />
+    <Compile Include="Simulation\Commands\CommandMessage.cs" />
+    <Compile Include="Simulation\States\InitializedMessage.cs" />
+    <Compile Include="Simulation\States\StateMessage.cs" />
+    <Compile Include="Simulation\States\TickMessage.cs" />
+    <Compile Include="Game\States\PlayingMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(PhotonView))]
 public class InRoomChat : Photon.MonoBehaviour

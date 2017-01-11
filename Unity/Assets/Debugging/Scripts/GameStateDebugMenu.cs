@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using GameWork.Core.States;
-using GameWork.Core.States.Controllers;
+using GameWork.Core.States.Tick;
 using UnityEngine;
 using PlayGen.ITAlert.GameStates;
-using GameWork.Core.States.Interfaces;
 
 namespace Debugging
 {
 	public class GameStateDebugMenu : MonoBehaviour
 	{
 		private ControllerBehaviour _controllerBehaviour;
-		private TickableStateController<TickableSequenceState> _stateController;
+		private TickStateController<TickState> _stateController;
 
 		private bool _isVisible = false;
 
@@ -20,7 +18,7 @@ namespace Debugging
 		{
 			_controllerBehaviour = GameObject.FindObjectOfType<ControllerBehaviour>();
 
-			_stateController = (TickableStateController<TickableSequenceState>) GetField(_controllerBehaviour.GetType(),
+			_stateController = (TickStateController<TickState>) GetField(_controllerBehaviour.GetType(),
 				_controllerBehaviour,
 				"_stateController");
 		}
@@ -44,7 +42,7 @@ namespace Debugging
 			GameStateButton(GamesListState.StateName, MenuState.StateName);
 			GameStateButton(CreateGameState.StateName, MenuState.StateName);
 			GameStateButton(SettingsState.StateName, MenuState.StateName);
-			GameStateButton(GameState.StateName);
+			GameStateButton(RoomState.StateName);
 		}
 
 		private object GetField(Type type, object instance, string fieldName)
@@ -63,11 +61,11 @@ namespace Debugging
 				if (parentState != null)
 				{
 					_stateController.ChangeState(parentState);
-					var states = (Dictionary<string, TickableSequenceState>)GetField(_stateController.GetType(),
+					var states = (Dictionary<string, TickState>)GetField(_stateController.GetType(),
 					_stateController,
 					"States");
-					var currentState = states[_stateController.ActiveState];
-					var subStateController = (TickableStateController)GetField(currentState.GetType(),
+					var currentState = states[_stateController.ActiveStateName];
+					var subStateController = (TickStateController)GetField(currentState.GetType(),
 					currentState,
 					"_stateController");
 					subStateController.ChangeState(stateName);

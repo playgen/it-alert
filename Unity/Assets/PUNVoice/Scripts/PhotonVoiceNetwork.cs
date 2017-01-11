@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ExitGames.Client.Photon;
-using POpusCodec;
-using POpusCodec.Enums;
 using UnityEngine;
 using Voice = ExitGames.Client.Photon.Voice;
 using LoadBalancing = ExitGames.Client.Photon.LoadBalancing;

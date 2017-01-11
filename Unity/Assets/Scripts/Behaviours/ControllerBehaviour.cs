@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-
+using GameWork.Core.States.Tick;
 using UnityEngine;
-using GameWork.Core.States;
-using GameWork.Core.States.Controllers;
 using PlayGen.ITAlert.GameStates;
+using PlayGen.ITAlert.GameStates.Transitions;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.Photon.Unity;
 using PlayGen.SUGAR.Client;
@@ -12,7 +11,7 @@ public class ControllerBehaviour : MonoBehaviour
 {
 	private const string GamePlugin = "RoomControllerPlugin";
 
-	private TickableStateController<TickableSequenceState> _stateController;
+	private TickStateController<TickState> _stateController;
 	private string _gameVersion = "1";
 
 	private Client _client;
@@ -33,20 +32,39 @@ public class ControllerBehaviour : MonoBehaviour
 		PlayerCommands.Client = _client;
 
 		var popupController = new PopupController();
-		PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;//
+		PopupUtility.LogErrorEvent += popupController.ShowErrorPopup;
 		PopupUtility.StartLoadingEvent += popupController.ShowLoadingPopup;
 		PopupUtility.EndLoadingEvent += popupController.HideLoadingPopup;
-		//PopupUtility.ColorPickerEvent += popupController.ShowColorPickerPopup;
 
+		_stateController = CreateStates();
+		_stateController.Initialize();
+	}
+
+	private TickStateController<TickState> CreateStates()
+	{
 		var voiceController = new VoiceController(_client);
 
-		_stateController = new TickableStateController<TickableSequenceState>(
-			new LoadingState(new LoadingStateInterface()),
-			new LoginState(),
-			new MenuState(_client, voiceController),
-			new GameState(_client, new GameStateInterface(), new LobbyController(_client), voiceController)
-			);
-		_stateController.Initialize();
+		// Game
+		var gameStateInput = new RoomStateInput(_client);
+		var gameState = new RoomState(gameStateInput, _client, new LobbyController(_client), voiceController);
+
+		// Menu
+		var menuState = new MenuState(_client, voiceController);
+
+		// Loading
+		var loadingState = new LoadingState(new LoadingStateInput());
+		loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));
+
+		// Login
+		var loginState = new LoginState();
+		loginState.AddTransitions(new OnCompletedTransition(loginState, MenuState.StateName));
+
+		var stateController = new TickStateController<TickState>(loadingState, loginState, menuState, gameState);
+
+		gameState.ParentStateController = stateController;
+		menuState.ParentStateController = stateController;
+
+		return stateController;
 	}
 
 	private IEnumerator ClientLoop()

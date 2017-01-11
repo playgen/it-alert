@@ -1,62 +1,35 @@
-﻿using GameWork.Core.States;
+﻿using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Interfaces;
 
-public class LoadingState : TickableSequenceState
+public class LoadingState : InputTickState, ICompletable
 {
-	private LoadingStateInterface _interface;
 	public const string StateName = "LoadingState";
 	private float _timer;
 	private float _splashDelay = 2;
+	
+	public bool IsComplete { get; private set; }
 
-	public LoadingState(LoadingStateInterface @interface)
+	public LoadingState(LoadingStateInput input) : base(input)
 	{
-		_interface = @interface;
 	}
 
-	public override void Initialize()
+	protected override void OnEnter()
 	{
-		_interface.Initialize();
+		IsComplete = false;
+		_timer = 0;
 	}
 
-	public override void Terminate()
+	protected override void OnTick(float deltaTime)
 	{
-		_interface.Terminate();
-	}
-
-	public override void Enter()
-	{
-		_interface.Enter();
-	}
-
-	public override void Exit()
-	{
-		_interface.Exit();
-	}
-
-	public override void PreviousState()
-	{
-		throw new System.NotImplementedException();
-	}
-
-	public override void Tick(float deltaTime)
-	{
-		if (_timer >= _splashDelay && _interface.HasCommands)
+		if (_timer >= _splashDelay)
 		{
-			var command = _interface.TakeFirstCommand();
-			_timer = 0;
-			var commandResolver = new StateCommandResolver();
-			commandResolver.HandleSequenceStates(command, this);
+			IsComplete = true;
 		}
 		_timer += deltaTime;
-		   
 	}
 
 	public override string Name
 	{
 		get { return StateName; }
-	}
-
-	public override void NextState()
-	{
-		ChangeState(LoginState.StateName);
 	}
 }

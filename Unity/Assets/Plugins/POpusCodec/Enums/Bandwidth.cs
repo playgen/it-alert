@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace POpusCodec.Enums
+﻿namespace POpusCodec.Enums
 {
-    public enum Bandwidth : int
+	public enum Bandwidth : int
     {
         /// <summary>
         /// Up to 4Khz

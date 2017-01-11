@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// This script automatically connects to Photon (using the settings file),

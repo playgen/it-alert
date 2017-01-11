@@ -58,10 +58,6 @@
       <Project>{7ADF8CD4-CFCB-4E35-ABF7-E761497EAA11}</Project>
       <Name>GameWork.Core.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Interfaces\GameWork.Core.Interfaces.csproj">
-      <Project>{b5f3b28a-10bf-4193-920a-3f8aa6817799}</Project>
-      <Name>GameWork.Core.Interfaces</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
       <Project>{d9abf6b3-c495-4a39-b234-fcab5ec9db30}</Project>
       <Name>GameWork.Core.States</Name>

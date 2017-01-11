@@ -1,59 +1,27 @@
-﻿using ExitGames.Client.Photon.Voice;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
-using Client = PlayGen.ITAlert.Network.Client.Client;
+﻿using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick.Input;
 
-public class GamesListState : TickableSequenceState
+public class GamesListState : InputTickState
 {
 	private readonly GamesListController _gameListController;
-	private readonly GamesListStateInterface _interface;
 	private readonly JoinGameController _joinGameController;
-	private readonly Client _client;
 
 	public const string StateName = "GameListState";
 
 	private float _refreshInterval = 5.0f;
 	private float _lastRefresh = 0f;
 
-	public GamesListState(GamesListStateInterface @interface, GamesListController gameListController, JoinGameController joinGameController, Client client)
+	public GamesListState(GamesListStateInput input, GamesListController gameListController, JoinGameController joinGameController) : base(input)
 	{
-		_interface = @interface;
 		_gameListController = gameListController;
 		_joinGameController = joinGameController;
-		_client = client;
 	}
-
-	public override void Initialize()
+	
+	protected override void OnTick(float deltaTime)
 	{
-		_interface.Initialize();
-	}
-
-	public override void Terminate()
-	{
-		_interface.Terminate();
-	}
-
-	public override void Enter()
-	{
-		_client.JoinedRoomEvent += _interface.OnJoinGameSuccess;
-		_gameListController.GamesListSuccessEvent += _interface.OnGamesListSuccess;
-
-		_interface.Enter();
-	}
-
-	public override void Exit()
-	{
-		_client.JoinedRoomEvent -= _interface.OnJoinGameSuccess;
-		_gameListController.GamesListSuccessEvent -= _interface.OnGamesListSuccess;
-		_interface.Exit();
-	}
-
-	public override void Tick(float deltaTime)
-	{
-		if (_interface.HasCommands)
+		ICommand command;
+		if (CommandQueue.TryTakeFirstCommand(out command))
 		{
-			var command = _interface.TakeFirstCommand();
-
 			var refreshCommand = command as RefreshGamesListCommand;
 			if (refreshCommand != null)
 			{
@@ -90,15 +58,5 @@ public class GamesListState : TickableSequenceState
 	public override string Name
 	{
 		get { return StateName; }
-	}
-
-	public override void NextState()
-	{
-		ChangeState(LobbyState.StateName);
-	}
-
-	public override void PreviousState()
-	{
-		ChangeState(MainMenuState.StateName);
 	}
 }

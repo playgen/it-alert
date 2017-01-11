@@ -4,8 +4,8 @@ using System.Linq;
 using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Network.Client;
 using PlayGen.ITAlert.Photon.Messages.Game;
+using PlayGen.ITAlert.Photon.Messages.Game.Commands;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.Photon.Players;
 using UnityEngine;
 
 public class LobbyController : ICommandAction

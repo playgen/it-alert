@@ -1,52 +1,24 @@
 ﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.Commands.States;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Network.Client;
 
-public class CreateGameState : TickableSequenceState
+public class CreateGameState : InputTickState
 {
     private readonly CreateGameController _controller;
-    private readonly CreateGameStateInterface _interface;
     private readonly Client _client;
     public const string StateName = "CreateGameState";
 
 
-    public CreateGameState(CreateGameStateInterface @interface, CreateGameController controller, Client client)
+    public CreateGameState(CreateGameStateInput input, CreateGameController controller) : base(input)
     {
-        _interface = @interface;
         _controller = controller;
-        _client = client;
     }
-
-    public override void Initialize()
+ 
+    protected override void OnTick(float deltaTime)
     {
-        _interface.Initialize();
-    }
-
-    public override void Terminate()
-    {
-        _interface.Terminate();
-    }
-
-    public override void Enter()
-    {
-        _client.JoinedRoomEvent += _interface.OnJoinedRoom;
-        _interface.Enter();
-    }
-
-    public override void Exit()
-    {
-        _client.JoinedRoomEvent -= _interface.OnJoinedRoom;
-        _interface.Exit();
-    }
-
-    public override void Tick(float deltaTime)
-    {
-        if (_interface.HasCommands)
+	    ICommand command;
+        if (CommandQueue.TryTakeFirstCommand(out command))
         {
-            var command = _interface.TakeFirstCommand();
-
             var createGameCommand = command as CreateGameCommand;
             if (createGameCommand != null)
             {
@@ -61,15 +33,5 @@ public class CreateGameState : TickableSequenceState
     public override string Name
     {
         get { return StateName; }
-    }
-
-    public override void NextState()
-    {
-        ChangeState(LobbyState.StateName);
-    }
-
-    public override void PreviousState()
-    {
-        ChangeState(MainMenuState.StateName);
     }
 }
