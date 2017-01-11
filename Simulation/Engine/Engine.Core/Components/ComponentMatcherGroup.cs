@@ -40,6 +40,11 @@ namespace Engine.Components
 			return false;
 		}
 
+		public void Clear()
+		{
+			MatchingEntities.Clear();
+		}
+
 		public override bool IsMatch(Entity entity)
 		{
 			return MatchingEntities.Contains(entity) || base.IsMatch(entity);

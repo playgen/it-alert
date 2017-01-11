@@ -12,7 +12,6 @@ using PlayGen.ITAlert.Simulation.Systems.Planning;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	[SystemExtensionType(typeof(IItemActivationExtension))]
 	public class ItemActivationSystem : Engine.Systems.System, ITickableSystem
 	{
 		private IntentSystem _intentSystem;

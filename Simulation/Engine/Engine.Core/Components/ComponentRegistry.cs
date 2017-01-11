@@ -15,10 +15,11 @@ namespace Engine.Components
 
 		private readonly List<ComponentMatcherGroup> _matcherGroups;
 
-		private readonly EntityRegistry _entityRegistry;
+		private readonly IEntityRegistry _entityRegistry;
 
 		static ComponentRegistry()
 		{
+			
 			// build a dictionary of components by the interfaces they implement
 			// this can be static since new components aren't added to the app domain at runtime
 			ComponentTypeImplementations = ModuleLoader.GetTypesImplementing<IComponent>()
@@ -28,7 +29,7 @@ namespace Engine.Components
 				.ToDictionary(k => k.Key, v => new HashSet<Type>(v.Select(componentTuple => componentTuple.ComponentType)));
 		}
 
-		public ComponentRegistry(EntityRegistry entityRegistry)
+		public ComponentRegistry(IEntityRegistry entityRegistry)
 		{
 			_entityRegistry = entityRegistry;
 			_matcherGroups = new List<ComponentMatcherGroup>();
@@ -71,6 +72,21 @@ namespace Engine.Components
 			foreach (var matcherGroup in _matcherGroups)
 			{
 				matcherGroup.TryAddEntity(entity);
+			}
+		}
+
+		/// <summary>
+		/// This only exists as a post deserialize temporary measure
+		/// </summary>
+		public void UpdateMatcherGroups()
+		{
+			foreach (var matcherGroup in _matcherGroups)
+			{
+				matcherGroup.Clear();
+				foreach (var entity in _entityRegistry.Entities.Values)
+				{
+					matcherGroup.TryAddEntity(entity);
+				}
 			}
 		}
 

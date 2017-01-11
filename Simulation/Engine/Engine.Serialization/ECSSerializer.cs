@@ -10,6 +10,7 @@ using Newtonsoft.Json.Utilities;
 
 namespace Engine.Serialization
 {
+	// ReSharper disable once InconsistentNaming
 	public class ECSSerializer
 	{
 		private static JsonSerializerSettings GetDefaultSettings()

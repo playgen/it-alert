@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Common;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 
 #pragma warning disable 649
 
@@ -43,8 +44,15 @@ public class ConnectionBehaviour : EntityBehaviour
 	/// </summary>
 	protected override void OnInitialize()
 	{
-		var graphNode = EntityState.Get<GraphNode>();
-		DrawConnection(graphNode.EntrancePositions.Single().Key.Id, graphNode.ExitPositions.Single().Key.Id);
+		GraphNode graphNode;
+		if (Entity.TryGetComponent(out graphNode))
+		{
+			DrawConnection(graphNode.EntrancePositions.Single().Key, graphNode.ExitPositions.Single().Key);
+		}
+		else
+		{
+			throw new InvalidOperationException("Could not find graph node component for entity");
+		}
 	}
 
 	private void DrawConnection(int headId, int tailId)
@@ -128,22 +136,31 @@ public class ConnectionBehaviour : EntityBehaviour
 
 	private void MoveVisitors()
 	{
-		var visitorPositions = EntityState.Get<VisitorPositionState>();
-		foreach (var visitor in visitorPositions)
+		Visitors visitors;
+		if (Entity.TryGetComponent(out visitors))
 		{
-			UpdateVisitorMovement(Director.GetEntity(visitor.Key), visitor.Value);
+			foreach (var visitorId in visitors.Value)
+			{
+				var visitor = Director.GetEntity(visitorId);
+				UpdateVisitorMovement(visitor);
+			}
+			_currentVisitors.RemoveWhere(v => visitors.Value.Contains(v) == false);
 		}
-		_currentVisitors.RemoveWhere(v => visitorPositions.ContainsKey(v) == false);
 	}
 
-	private void UpdateVisitorMovement(UIEntity visitor, int pathPoint)
+	private void UpdateVisitorMovement(UIEntity visitor)
 	{
-		var position = GetPositionFromPathPoint(pathPoint);
-		visitor.GameObject.transform.position = position;
-		if (_currentVisitors.Contains(visitor.Id) == false)
+		VisitorPosition visitorPosition;
+		if (visitor.EntityBehaviour.Entity.TryGetComponent(out visitorPosition))
 		{
-			_currentVisitors.Add(visitor.Id);
-			visitor.GameObject.transform.eulerAngles = new Vector3(0, 0, _angle + 180);
+			var pathPoint = visitorPosition.Position;
+			var position = GetPositionFromPathPoint(pathPoint);
+			visitor.GameObject.transform.position = position;
+			if (_currentVisitors.Contains(visitor.Id) == false)
+			{
+				_currentVisitors.Add(visitor.Id);
+				visitor.GameObject.transform.eulerAngles = new Vector3(0, 0, _angle + 180);
+			}
 		}
 	}
 

@@ -12,7 +12,6 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	[SystemExtensionType(typeof(IMovementSystemExtension))]
 	public class MovementSystem : Engine.Systems.System, ITickableSystem
 	{
 		private readonly Dictionary<EntityType, IMovementSystemExtension> _movementSystems;

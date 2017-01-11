@@ -12,6 +12,7 @@ using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
 using Engine;
 using Engine.Components;
+using Engine.Entities;
 
 // ReSharper disable CheckNamespace
 
@@ -34,12 +35,6 @@ public class Director : MonoBehaviour
 	/// Simulation
 	/// </summary>
 	public static Simulation Simulation;
-
-	/// <summary>
-	/// Current State
-	/// </summary>
-	private static EcsState _state;
-	
 
 	//TODO: load this dynamically
 	/// <summary>
@@ -165,9 +160,9 @@ public class Director : MonoBehaviour
 	/// </summary>
 	private static void CreateInitialEntities()
 	{
-		foreach (var stateEntity in _state.EntityStates)
+		foreach (var entity in Simulation.GetEntities())
 		{
-			CreateEntity(stateEntity.Key, stateEntity.Value);
+			CreateEntity(entity);
 		}
 		// initialize after the entities have been created as some will need to reference each other
 		foreach (var stateEntity in _state.EntityStates)
@@ -186,42 +181,31 @@ public class Director : MonoBehaviour
 		LocaResolver = new CommandResolver(simulation);
 	}
 
-	private static void SetState()
+	private static void CreateEntity(Entity entity)
 	{
-		if (Simulation != null)
-		{
-			_state = Simulation.GetState();
-		}
-	}
-
-
-	private static void CreateEntity(int id, StateBucket state)
-	{
-		var entity = new UIEntity(state);
-		Entities.Add(id, entity);
+		var uiEntity = new UIEntity(entity);
+		Entities.Add(entity.Id, uiEntity);
 	}
 
 	private static void UpdateEntityStates()
 	{
-		if (_state != null)
+		var entitiesAdded = Simulation.GetEntities().Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
+		foreach (var newEntity in entitiesAdded)
 		{
-			foreach (var newEntity in _state.EntityStates.Where(ekvp => Entities.ContainsKey(ekvp.Key) == false))
-			{
-				CreateEntity(newEntity.Key, newEntity.Value);
-				GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
-			}
+			CreateEntity(newEntity.Value);
+			GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+		}
 
-			foreach (var stateEntity in _state.EntityStates)
-			{
-				GetEntity(stateEntity.Key).UpdateEntityState(stateEntity.Value);
-			}
-			// remove dead entities
-			// TODO: make sure nothing is still referencing these
-			foreach (var entityToRemove in Entities.Keys.Except(_state.EntityStates.Keys).ToArray())
-			{
-				Destroy(GetEntity(entityToRemove).GameObject);
-				Entities.Remove(entityToRemove);
-			}
+		foreach (var existingEntity in Simulation.GetEntities().Except(entitiesAdded))
+		{
+			GetEntity(existingEntity.Key).UpdateEntityState(existingEntity.Value);
+		}
+
+		var entitiesRemoved = Entities.Keys.Except(Simulation.GetEntities().Select(k => k.Key));
+		foreach (var entityToRemove in entitiesRemoved)
+		{
+			Destroy(GetEntity(entityToRemove).GameObject);
+			Entities.Remove(entityToRemove);
 		}
 	}
 
@@ -265,7 +249,6 @@ public class Director : MonoBehaviour
 
 	public static void Refresh()
 	{
-		SetState();
 		UpdateEntityStates();
 	}
 

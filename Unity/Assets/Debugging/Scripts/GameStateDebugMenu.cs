@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reflection;
 using GameWork.Core.States;
-using GameWork.Core.States.Controllers;
 using UnityEngine;
 using PlayGen.ITAlert.GameStates;
 using GameWork.Core.States.Interfaces;
@@ -12,7 +11,7 @@ namespace Debugging
 	public class GameStateDebugMenu : MonoBehaviour
 	{
 		private ControllerBehaviour _controllerBehaviour;
-		private TickableStateController<TickableSequenceState> _stateController;
+		//private TickableStateController<TickableSequenceState> _stateController;
 
 		private bool _isVisible = false;
 
@@ -20,9 +19,9 @@ namespace Debugging
 		{
 			_controllerBehaviour = GameObject.FindObjectOfType<ControllerBehaviour>();
 
-			_stateController = (TickableStateController<TickableSequenceState>) GetField(_controllerBehaviour.GetType(),
-				_controllerBehaviour,
-				"_stateController");
+			//_stateController = (TickableStateController<TickableSequenceState>) GetField(_controllerBehaviour.GetType(),
+				//_controllerBehaviour,
+				//"_stateController");
 		}
 
 		private void Update()
@@ -58,25 +57,25 @@ namespace Debugging
 
 		private void GameStateButton(string stateName, string parentState = null)
 		{
-			if (GUILayout.Button(stateName))
-			{
-				if (parentState != null)
-				{
-					_stateController.ChangeState(parentState);
-					var states = (Dictionary<string, TickableSequenceState>)GetField(_stateController.GetType(),
-					_stateController,
-					"States");
-					var currentState = states[_stateController.ActiveState];
-					var subStateController = (TickableStateController)GetField(currentState.GetType(),
-					currentState,
-					"_stateController");
-					subStateController.ChangeState(stateName);
-				}
-				else
-				{
-					_stateController.ChangeState(stateName);
-				}
-			}
+			//if (GUILayout.Button(stateName))
+			//{
+			//	if (parentState != null)
+			//	{
+			//		_stateController.ChangeState(parentState);
+			//		var states = (Dictionary<string, TickableSequenceState>)GetField(_stateController.GetType(),
+			//		_stateController,
+			//		"States");
+			//		var currentState = states[_stateController.ActiveState];
+			//		var subStateController = (TickableStateController)GetField(currentState.GetType(),
+			//		currentState,
+			//		"_stateController");
+			//		subStateController.ChangeState(stateName);
+			//	}
+			//	else
+			//	{
+			//		_stateController.ChangeState(stateName);
+			//	}
+			//}
 		}
 	}
 }

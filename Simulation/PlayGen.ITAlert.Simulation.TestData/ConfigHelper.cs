@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Archetypes;
 using Engine.Components;
+using Engine.Configuration;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
@@ -150,13 +151,13 @@ namespace PlayGen.ITAlert.Simulation.TestData
 				GameEntities.Analysis,
 				GameEntities.Antivirus,
 			};
-			var systems = new List<SimulationConfiguration.SystemType>()
+			var systems = new List<SystemConfiguration>()
 			{
-				new SimulationConfiguration.SystemType<MovementSystem>(),
-				new SimulationConfiguration.SystemType<PlayerCommandSystem>(),
-				new SimulationConfiguration.SystemType<IntentSystem>(),
-				new SimulationConfiguration.SystemType<ItemActivationSystem>(),
-				new SimulationConfiguration.SystemType<ItemManagement>(),
+				new SystemConfiguration<MovementSystem>(),
+				new SystemConfiguration<PlayerCommandSystem>(),
+				new SystemConfiguration<IntentSystem>(),
+				new SystemConfiguration<ItemActivationSystem>(),
+				new SystemConfiguration<ItemManagement>(),
 
 			};
 			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);

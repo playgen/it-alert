@@ -23,67 +23,66 @@ namespace PlayGen.ITAlert.Simulation
 		#region nodes
 
 		private static readonly Archetype Node = new Archetype("Node")
-			.HasComponents(new ComponentFactoryDelegate[]
+			.HasComponents(new ComponentBinding[]
 			{
-
-				() => new Visitors(),
-				() => new GraphNode(),
-				() => new ExitRoutes(), 
+				new ComponentBinding<Visitors>(), 
+				new ComponentBinding<GraphNode>(), 
+				new ComponentBinding<ExitRoutes>(), 
 			});
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
-			.HasComponent(() => new EntityTypeProperty(EntityType.Connection))
-			.HasComponent(() => new MovementCost(4));
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Connection
+			.HasComponent(new ComponentBinding<MovementCost>()); // 4 // TODO: read from simulation constants
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
-			.HasComponent(() => new EntityTypeProperty(EntityType.Subsystem))
-			.HasComponent(() => new Name())
-			.HasComponent(() => new Coordinate2DProperty())
-			.HasComponent(() => new ItemActivator())
-			.HasComponent(() => new ItemStorage(SimulationConstants.SubsystemMaxItems))
-			.HasComponent(() => new MemoryResource(0, 4))
-			.HasComponent(() => new CPUResource(0, 4));
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Subsystem
+			.HasComponent(new ComponentBinding<Name>())
+			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
+			.HasComponent(new ComponentBinding<ItemActivator>())
+			.HasComponent(new ComponentBinding<ItemStorage>()) // SimulationConstants.SubsystemMaxItems
+			.HasComponent(new ComponentBinding<MemoryResource>()) // 0, 4
+			.HasComponent(new ComponentBinding<CPUResource>()); // 0, 4
 
 		public static readonly Archetype Analysis = new Archetype("Analysis")
 			.Extends(Subsystem)
-			.HasComponent(() => new AnalyserEnhancement());
+			.HasComponent(new ComponentBinding<AnalyserEnhancement>());
 
 		public static readonly Archetype Antivirus = new Archetype("Antivirus")
 			.Extends(Subsystem)
-			.HasComponent(() => new AntivirusEnhancement());
+			.HasComponent(new ComponentBinding<AntivirusEnhancement>());
 
 		public static readonly Archetype Database = new Archetype("Database")
 			.Extends(Subsystem)
-			.HasComponent(() => new DatabaseEnhancement());
+			.HasComponent(new ComponentBinding<DatabaseEnhancement>());
 
 		#endregion
 
 		#region actors
 
 		private static readonly Archetype Actor = new Archetype("Actor")
-			.HasComponents(new ComponentFactoryDelegate[]
+			.HasComponents(new ComponentBinding[]
 			{
-				() => new CurrentLocation(),
-				() => new IntentsProperty(),
-				() => new VisitorPosition(), 
-				() => new MovementSpeed(), 
+				new ComponentBinding<CurrentLocation>(),
+				new ComponentBinding<IntentsProperty>(),
+				new ComponentBinding<VisitorPosition>(), 
+				new ComponentBinding<MovementSpeed>(), 
 			});
 
 		public static readonly Archetype Player = new Archetype("Player")
 			.Extends(Actor)
-			.HasComponent(() => new EntityTypeProperty(EntityType.Player))
-			.HasComponent(() => new Name());
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()) //EntityType.Player
+			.HasComponent(new ComponentBinding<Name>());	// TODO: name should problably be somewhere else - player system?
 
 		#region viruses
 
 		public static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
-			.HasComponent(() => new EntityTypeProperty(EntityType.Npc))
-			.HasComponent(() => new MalwareGenome())
-			.HasComponent(() => new ConsumeMemory(0))
-			.HasComponent(() => new ConsumeCPU(0));
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Npc
+			.HasComponent(new ComponentBinding<MalwareGenome>())
+			.HasComponent(new ComponentBinding<ConsumeMemory>()) // 0
+			.HasComponent(new ComponentBinding<ConsumeCPU>()); // 0
 
 
 		#endregion
@@ -93,12 +92,12 @@ namespace PlayGen.ITAlert.Simulation
 		#region items
 
 		private static readonly Archetype Item = new Archetype("Item")
-			.HasComponents(new ComponentFactoryDelegate[]
+			.HasComponents(new ComponentBinding[]
 			{
-				() => new EntityTypeProperty(EntityType.Item),
-				() => new CurrentLocation(),
-				() => new Owner(),
-				() => new ConsumeMemory(),
+				new ComponentBinding<EntityTypeProperty>(), //EntityType.Item,
+				new ComponentBinding<CurrentLocation>(),
+				new ComponentBinding<Owner>(),
+				new ComponentBinding<ConsumeMemory>(),
 			});
 
 		public static readonly Archetype Scanner = new Archetype("Scanner")
