@@ -1,9 +1,10 @@
 ﻿
 using System;
 using Engine.Components;
+using Engine.Entities;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Common;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -24,39 +25,42 @@ public class UIEntity
 
 	public IEntityBehaviour EntityBehaviour { get { return _entityBehaviour; } }
 
-	public UIEntity(StateBucket state)
+	public UIEntity(Entity entity)
 	{
-		var entityType = state.Get<EntityTypeProperty>().Value;
-		_gameObject = InstantiateEntity(entityType.ToString());
-		_gameObject.transform.SetParent(Graph.transform, false);
-
-		switch (entityType)
+		EntityTypeProperty entityType;
+		if (entity.TryGetComponent(out entityType))
 		{
-			case EntityType.System:
-				_entityBehaviour = GameObject.GetComponent<SubsystemBehaviour>();
-				break;
-			case EntityType.Enhancement:
-				_entityBehaviour = GameObject.GetComponent<EnhancementBehaviour>();
-				break;
-			case EntityType.Connection:
-				_entityBehaviour = GameObject.GetComponent<ConnectionBehaviour>();
-				break;
-			case EntityType.Player:
-				_entityBehaviour = GameObject.GetComponent<PlayerBehaviour>();
-				break;
-			case EntityType.Npc:
-				_entityBehaviour = GameObject.GetComponent<NpcBehaviour>();
-				break;
-			case EntityType.Item:
-				_entityBehaviour = GameObject.GetComponent<ItemBehaviour>();
-				break;
-			default:
-				// bad practice to throw an exception from a constructor, but this is serious!
-				throw new Exception("Unknow entity type");
-		}
+			_gameObject = InstantiateEntity(entityType.ToString());
+			_gameObject.transform.SetParent(Graph.transform, false);
 
-		// initialize will be called after all the entities have been created
-		//_entityBehaviour.Initialize(state);
+			switch (entityType.Value)
+			{
+				case EntityType.Subsystem:
+					_entityBehaviour = GameObject.GetComponent<SubsystemBehaviour>();
+					break;
+				case EntityType.Enhancement:
+					_entityBehaviour = GameObject.GetComponent<EnhancementBehaviour>();
+					break;
+				case EntityType.Connection:
+					_entityBehaviour = GameObject.GetComponent<ConnectionBehaviour>();
+					break;
+				case EntityType.Player:
+					_entityBehaviour = GameObject.GetComponent<PlayerBehaviour>();
+					break;
+				case EntityType.Npc:
+					_entityBehaviour = GameObject.GetComponent<NpcBehaviour>();
+					break;
+				case EntityType.Item:
+					_entityBehaviour = GameObject.GetComponent<ItemBehaviour>();
+					break;
+				default:
+					// bad practice to throw an exception from a constructor, but this is serious!
+					throw new Exception("Unknow entity type");
+			}
+
+			// initialize will be called after all the entities have been created
+			//_entityBehaviour.Initialize(entity);
+		}
 	}
 
 	private GameObject InstantiateEntity(string resourceString)
@@ -64,9 +68,9 @@ public class UIEntity
 		return Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 	}
 
-	public void UpdateEntityState(StateBucket state)
+	public void UpdateEntityState(Entity entity)
 	{
-		_entityBehaviour.UpdateState(state);
+		_entityBehaviour.UpdateState(entity);
 	}
 
 

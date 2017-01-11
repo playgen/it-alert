@@ -1,7 +1,8 @@
 ﻿using System;
 using Engine.Components;
+using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Properties;
+using PlayGen.ITAlert.Simulation.Components.Common;
 using UnityEngine;
 
 // ReSharper disable once CheckNamespace
@@ -19,7 +20,7 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	/// <summary>
 	/// state of this entity
 	/// </summary>
-	protected StateBucket EntityState { get; private set; }
+	public Entity Entity { get; private set; }
 
 	/// <summary>
 	/// Id of this entity
@@ -28,7 +29,7 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	{
 		get
 		{
-			return EntityState.EntityId;
+			return Entity.Id;
 		}
 	}
 
@@ -70,22 +71,12 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	#region State Update
 
 	/// <summary>
-	/// verify the type of the state received
-	/// </summary>
-	/// <param name="entityState">entity state</param>
-	protected void SetState(StateBucket entityState)
-	{
-		EntityState = entityState;
-		EntityType = entityState.Get<EntityTypeProperty>().Value;
-	}
-
-	/// <summary>
 	/// Set state from simulator
 	/// </summary>
-	/// <param name="state"></param>
-	public void UpdateState(StateBucket state)
+	/// <param name="entity"></param>
+	public void UpdateState(Entity entity)
 	{
-		SetState(state);
+		Entity = entity;
 		OnUpdatedState();
 	}
 
@@ -97,12 +88,22 @@ public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	/// <summary>
 	/// Initialize the object from simulation state
 	/// </summary>
-	/// <param name="state"></param>
-	public void Initialize(StateBucket state)
+	/// <param name="entity"></param>
+	public void Initialize(Entity entity)
 	{
-		SetState(state);
-		OnInitialize();
-		Initialized = true;
+		EntityTypeProperty entityType;
+		if (entity.TryGetComponent(out entityType))
+		{
+			EntityType = entityType.Value;
+			Entity = entity;
+			OnInitialize();
+			Initialized = true;
+		}
+		else
+		{
+			throw new InvalidOperationException("Could read entity type component!");
+		}
+
 	}
 
 	/// <summary>

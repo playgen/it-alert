@@ -44,9 +44,6 @@ namespace Engine
 		/// </summary>
 		protected Dictionary<string, Archetype> Archetypes { get; private set; }
 
-		/// <summary>
-		/// 
-		/// </summary>
 		protected ECS(IEntityRegistry entityRegistry,
 			IComponentRegistry componentRegistry,
 			ISystemRegistry systemRegistry)

@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archetypes\Archetype.cs" />
+    <Compile Include="Archetypes\ComponentBinding.cs" />
     <Compile Include="Components\ComponentAttributeExtensions.cs" />
     <Compile Include="Components\ComponentDependencyAttribute.cs" />
     <Compile Include="Components\ComponentDependencyException.cs" />
@@ -64,11 +65,14 @@
     <Compile Include="Components\MatchAll.cs" />
     <Compile Include="Components\Property.cs" />
     <Compile Include="Components\RangedNumericProperty.cs" />
+    <Compile Include="Configuration\ECSConfiguration.cs" />
+    <Compile Include="Configuration\SystemConfiguration.cs" />
     <Compile Include="ECS.cs" />
     <Compile Include="ECSInstaller.cs" />
     <Compile Include="Entities\ComponentContainer.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityExtensions.cs" />
+    <Compile Include="Entities\EntityFactory.cs" />
     <Compile Include="Entities\EntityRegistry.cs" />
     <Compile Include="Entities\EntityRegistryException.cs" />
     <Compile Include="Entities\EntityState.cs" />
@@ -84,7 +88,6 @@
     <Compile Include="Systems\ISystemExtension.cs" />
     <Compile Include="Systems\ISystemRegistry.cs" />
     <Compile Include="Systems\System.cs" />
-    <Compile Include="Systems\SystemExtensionTypeAttribute.cs" />
     <Compile Include="Systems\SystemRegistry.cs" />
     <Compile Include="Util\AttributeHelper.cs" />
     <Compile Include="Util\ModuleLoader.cs" />

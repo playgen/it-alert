@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System;
-using PlayGen.ITAlert.Simulation.Components.Properties;
-using PlayGen.ITAlert.Simulation.Configuration;
+using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Components.Activation;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using UnityEngine.UI;
 
 // ReSharper disable CheckNamespace
@@ -29,8 +30,12 @@ public class ItemBehaviour : EntityBehaviour
 	{
 		get
 		{
+			Activation activation;
+			if (Entity.TryGetComponent(out activation))
+			{
+				return activation.ActivationState == ActivationState.Active;
+			}
 			return false;
-			//EntityState != null && EntityState.Active;
 		}
 	}
 
@@ -38,7 +43,12 @@ public class ItemBehaviour : EntityBehaviour
 	{
 		get
 		{
-			return EntityState == null ? (int?) null : EntityState.Get<Owner>().Id;
+			Owner owner;
+			if (Entity.TryGetComponent(out owner))
+			{
+				return owner.Value;
+			}
+			return null;
 		}
 	}
 

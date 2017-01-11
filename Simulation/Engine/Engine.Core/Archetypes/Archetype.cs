@@ -10,26 +10,29 @@ namespace Engine.Archetypes
 	{
 		public string Name { get; }
 
-		public List<ComponentFactoryDelegate> Components { get; }
+		public List<ComponentBinding> Components { get; }
 
 		public Archetype(string name)
 		{
 			Name = name;
-			Components = new List<ComponentFactoryDelegate>();
+			Components = new List<ComponentBinding>();
 		}
 	}
 
+	/// <summary>
+	/// Fluent configuration extensions
+	/// </summary>
 	public static class ArchetypeExtensions
 	{
-		public static Archetype HasComponent(this Archetype archetype, ComponentFactoryDelegate componentFactoryDelegate)
+		public static Archetype HasComponent(this Archetype archetype, ComponentBinding componentBinding)
 		{
-			archetype.Components.Add(componentFactoryDelegate);
+			archetype.Components.Add(componentBinding);
 			return archetype;
 		}
 
-		public static Archetype HasComponents(this Archetype archetype, IEnumerable<ComponentFactoryDelegate> componentFactoryDelegates)
+		public static Archetype HasComponents(this Archetype archetype, IEnumerable<ComponentBinding> componentBindings)
 		{
-			archetype.Components.AddRange(componentFactoryDelegates);
+			archetype.Components.AddRange(componentBindings);
 			return archetype;
 		}
 

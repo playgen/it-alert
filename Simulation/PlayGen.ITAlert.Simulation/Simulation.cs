@@ -36,9 +36,9 @@ namespace PlayGen.ITAlert.Simulation
 			SimulationConfiguration configuration)
 			: base(entityRegistry, componentRegistry, systemRegistry)
 		{
-			// TODO: initialize from DI, sub-container per archetype? factory per archetype?
-			configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
-			configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
+			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
+			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
+			//configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
 
 			// initialization
 			InitializeGraphEntities(configuration);
