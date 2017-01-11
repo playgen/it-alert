@@ -11,46 +11,49 @@ using UnityEngine;
 
 namespace PlayGen.ITAlert.Editor.SUGAR
 {
+	/// <summary>
+	/// Note: Add an actor role for the game admin with ActorId: game admin, Entityid: game, roleId: game
+	/// </summary>
 	public static class SeedGame
 	{
-	    private static SUGARClient _sugarClient;
-        
+		private static SUGARClient _sugarClient;
+		
 		[MenuItem("Tools/Seed IT Alert")]
 		public static void Seed()
 		{
 			ShowWindow("Sign-in", LoginAndSeed);
 		}
 
-        private static void ShowWindow(string buttonLabel, Action<string, string> buttonAction)
-	    {
-            var window = ScriptableObject.CreateInstance<AdminLogIn>();
-            window.Setup(buttonLabel, buttonAction);
-            window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 90);
-            window.ShowPopup();
-        }
+		private static void ShowWindow(string buttonLabel, Action<string, string> buttonAction)
+		{
+			var window = ScriptableObject.CreateInstance<AdminLogIn>();
+			window.Setup(buttonLabel, buttonAction);
+			window.position = new Rect(Screen.width / 2, Screen.height / 2, 250, 90);
+			window.ShowPopup();
+		}
 
 		public static void LoginAndSeed(string username, string password)
 		{
-            EditorUtility.DisplayProgressBar("Seeding", "Do do dee dooo do", 0);
+			EditorUtility.DisplayProgressBar("Seeding", "Do do dee dooo do", 0);
 
 			var unityManager = GameObject.FindObjectsOfType(typeof(SUGARUnityManager)).FirstOrDefault() as SUGARUnityManager;
 			if (unityManager == null)
 			{
-                Debug.LogError("Can't find SUGARUnityManager in the scene.");
-                return;
+				Debug.LogError("Can't find SUGARUnityManager in the scene.");
+				return;
 			}
 
 			var baseAddress = (string)unityManager
-                .GetType()
-                .GetField("_baseAddress", BindingFlags.NonPublic | BindingFlags.Instance)
-                .GetValue(unityManager);
+				.GetType()
+				.GetField("_baseAddress", BindingFlags.NonPublic | BindingFlags.Instance)
+				.GetValue(unityManager);
 
 			if (string.IsNullOrEmpty(baseAddress))
 			{
 				baseAddress = LoadBaseAddress(unityManager);
 			}
 
-            _sugarClient = new SUGARClient(baseAddress);
+			_sugarClient = new SUGARClient(baseAddress);
 
 			var response = LoginUser(username, password);
 
@@ -58,63 +61,63 @@ namespace PlayGen.ITAlert.Editor.SUGAR
 			{
 				Debug.Log("Login SUCCESS");
 
-			    SetupGame(unityManager);
-                ShowWindow("Create Game Admin", CreateGameAdmin);
+				SetupGame(unityManager);
+				ShowWindow("Create Game Admin", CreateGameAdmin);
 
-                _sugarClient.Session.Logout();
+				_sugarClient.Session.Logout();
 			}
 
-            EditorUtility.ClearProgressBar();
+			EditorUtility.ClearProgressBar();
 		}
 
-	    private static void SetupGame(SUGARUnityManager unityManager)
-	    {
-	        var gameToken = (string) unityManager
-	            .GetType()
-	            .GetField("_gameToken", BindingFlags.NonPublic | BindingFlags.Instance)
-	            .GetValue(unityManager);
-
-	        var game = _sugarClient.Game.Get(gameToken).FirstOrDefault();
-	        if (game != null)
-	        {
-	            Debug.Log("Game Found");
-	        }
-	        else
-	        {
-	            Debug.Log("Creating Game");
-
-	            var gameResponse = _sugarClient.Game.Create(new GameRequest()
-	            {
-	                Name = gameToken
-	            });
-
-	            if (gameResponse == null)
-	            {
-	                Debug.LogError("Unable to create game");
-	                return;
-	            }
-
-	        }
-	    }
-        
-        private static void CreateGameAdmin(string username, string password)
-	    {
-	        var gameAdmin = _sugarClient.Account.Create(new AccountRequest
-	        {
-                Name = username,
-                Password = password,
-                SourceToken = "SUGAR",
-	        });
-	    }
-
-        private static string LoadBaseAddress(SUGARUnityManager unityManager)
+		private static void SetupGame(SUGARUnityManager unityManager)
 		{
-            var path = (string)unityManager
-              .GetType()
-              .GetProperty("ConfigPath", BindingFlags.NonPublic | BindingFlags.Instance)
-              .GetValue(unityManager, null);
+			var gameToken = (string) unityManager
+				.GetType()
+				.GetField("_gameToken", BindingFlags.NonPublic | BindingFlags.Instance)
+				.GetValue(unityManager);
 
-            var data = File.ReadAllText(path);
+			var game = _sugarClient.Game.Get(gameToken).FirstOrDefault();
+			if (game != null)
+			{
+				Debug.Log("Game Found");
+			}
+			else
+			{
+				Debug.Log("Creating Game");
+
+				var gameResponse = _sugarClient.Game.Create(new GameRequest()
+				{
+					Name = gameToken
+				});
+
+				if (gameResponse == null)
+				{
+					Debug.LogError("Unable to create game");
+					return;
+				}
+
+			}
+		}
+		
+		private static void CreateGameAdmin(string username, string password)
+		{
+			var gameAdmin = _sugarClient.Account.Create(new AccountRequest
+			{
+				Name = username,
+				Password = password,
+				SourceToken = "SUGAR",
+			});
+		}
+
+		private static string LoadBaseAddress(SUGARUnityManager unityManager)
+		{
+			var path = (string)unityManager
+			  .GetType()
+			  .GetProperty("ConfigPath", BindingFlags.NonPublic | BindingFlags.Instance)
+			  .GetValue(unityManager, null);
+
+			var data = File.ReadAllText(path);
 			var config = JsonConvert.DeserializeObject<Config>(data);
 
 			return config.BaseUri;
@@ -144,14 +147,14 @@ namespace PlayGen.ITAlert.Editor.SUGAR
 	{
 		private string _username;
 		private string _password;
-	    private string _buttonLabel;
-	    private Action<string, string> _buttonAction;
+		private string _buttonLabel;
+		private Action<string, string> _buttonAction;
 
-	    public void Setup(string buttonLabel, Action<string, string> buttonAction)
-	    {
-	        _buttonAction = buttonAction;
-	        _buttonLabel = buttonLabel;
-	    }
+		public void Setup(string buttonLabel, Action<string, string> buttonAction)
+		{
+			_buttonAction = buttonAction;
+			_buttonLabel = buttonLabel;
+		}
 
 		void OnGUI()
 		{
@@ -160,8 +163,8 @@ namespace PlayGen.ITAlert.Editor.SUGAR
 
 			if (GUILayout.Button(_buttonLabel))
 			{
-                _buttonAction(_username, _password);
-                Close();
+				_buttonAction(_username, _password);
+				Close();
 			}
 			if (GUILayout.Button("Close"))
 			{
