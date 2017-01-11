@@ -1,14 +1,14 @@
 ﻿using System;
-using Photon.Hive.Plugin;
+using System.Collections.Generic;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
-using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Players.Extensions;
+using State = PlayGen.ITAlert.Photon.Players.State;
+using Photon.Hive.Plugin;
+using PlayGen.Photon.Plugin;
+using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -16,21 +16,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Feedback";
 
-		public override string Name => StateName;
-
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) : base(photonPlugin, messenger, playerManager, sugarController)
 		{
 		}
 
-		public override void Enter()
+		public override string Name => StateName;
+
+		public event Action<List<Player>> PlayerFeedbackSentEvent;
+
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 
-			Messenger.SendAllMessage(new FeedbackStartedMessage());
+			Messenger.SendAllMessage(new Messages.Game.States.FeedbackMessage());
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 		}
@@ -46,11 +47,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 				// todo write feedback fields to sugar using SugarController and adding it as match data
 				// note: the player's sugar Id is stored in the PlayerManager's players as ExternalId
-
-				if (PlayerManager.Players.GetCombinedStates() == State.FeedbackSent)
-				{
-					ChangeState(LobbyState.StateName);
-				}
+				
+				PlayerFeedbackSentEvent(PlayerManager.Players);
 				return;
 			}
 

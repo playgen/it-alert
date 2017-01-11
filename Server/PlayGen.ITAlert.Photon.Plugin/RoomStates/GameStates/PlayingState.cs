@@ -7,103 +7,128 @@ using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.ITAlert.Photon.Messages.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
 using PlayGen.ITAlert.TestData;
 using System.Collections.Generic;
-using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Players.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-    public class PlayingState : RoomState
-    {
-        public const string StateName = "Playing";
+	public class PlayingState : RoomState
+	{
+		public const string StateName = "Playing";
 
-        private readonly Simulation.Simulation _simulation;
-        private readonly List<int> _subsystemLogicalIds;
+		private readonly Simulation.Simulation _simulation;
+		private readonly List<int> _subsystemLogicalIds;
 
-        private CommandSequence _commandSequence;
-        private CommandResolver _resolver;
-        private int _tickIntervalMS = 100;
-        private object _tickTimer;
+		private CommandSequence _commandSequence;
+		private CommandResolver _resolver;
+		private int _tickIntervalMS = 100;
+		private object _tickTimer;
+		
+		public override string Name => StateName;
 
-        public override string Name => StateName;
+		public event Action GameOverEvent;
 
-        public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
-            : base(photonPlugin, messenger, playerManager, sugarController)
-        {
-            _subsystemLogicalIds = subsystemLogicalIds;
-            _simulation = simulation;
-        }
+		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+			: base(photonPlugin, messenger, playerManager, sugarController)
+		{
+			_subsystemLogicalIds = subsystemLogicalIds;
+			_simulation = simulation;
+		}
 
-        public override void Enter()
-        {
-            Messenger.Subscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
+		protected override void OnEnter()
+		{
+			Messenger.Subscribe((int)Channels.GameState, ProcessGameStateMessage);
+			Messenger.Subscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
 
-	        _commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
-            _resolver = new CommandResolver(_simulation);
+			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+			_resolver = new CommandResolver(_simulation);
 
-            Messenger.SendAllMessage(new Messages.Simulation.ServerState.PlayingMessage());
-            _tickTimer = CreateTickTimer();
-        }
+			Messenger.SendAllMessage(new PlayingMessage());
+		}
 
-        public override void Exit()
-        {
-            DestroyTimer(_tickTimer);
-            Messenger.Unsubscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
-            _resolver = null;
-            _commandSequence = null;
-        }
+		protected override void OnExit()
+		{
+			Messenger.Unsubscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Unsubscribe((int)Channels.GameState, ProcessGameStateMessage);
 
-        private void ProcessSimulationCommandMessage(Message message)
-        {
-            var commandMessage = message as CommandMessage;
-            if (commandMessage != null)
-            {
-                var command = commandMessage.Command;
-                _resolver.ProcessCommand(command);
-                return;
-            }
+			DestroyTimer(_tickTimer);
+			_resolver = null;
+			_commandSequence = null;
+		}
 
-            throw new Exception($"Unhandled Simulation Command Message: ${message}");
-        }
+		private void ProcessGameStateMessage(Message message)
+		{
+			var playingMessage = message as PlayingMessage;
+			if (playingMessage != null)
+			{
+				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
+				player.State = (int)State.Playing;
+				PlayerManager.UpdatePlayer(player);
 
-        private void Tick()
-        {
-            var commands = _commandSequence.Tick();
-            _resolver.ProcessCommands(commands);
+				if (PlayerManager.Players.GetCombinedStates() == State.Playing)
+				{
+					Messenger.SendAllMessage(new InitializedMessage
+					{
+						SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+					});
+					_tickTimer = CreateTickTimer();
+				}
+				return;
+			}
+		}
 
-            _simulation.Tick();
+		private void ProcessSimulationCommandMessage(Message message)
+		{
+			var commandMessage = message as CommandMessage;
+			if (commandMessage != null)
+			{
+				var command = commandMessage.Command;
+				_resolver.ProcessCommand(command);
+				return;
+			}
 
-            if (_simulation.IsGameFailure)
-            {
-                ChangeState(FinalizingState.StateName);
-            }
-            else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-            {
-                ChangeState(FinalizingState.StateName);
-            }
-            else
-            {
-                Messenger.SendAllMessage(new TickMessage
-                {
-                    SerializedSimulation = Serializer.SerializeSimulation(_simulation)
-                });
-            }
-        }
+			throw new Exception($"Unhandled Simulation Command Message: ${message}");
+		}
 
-        private object CreateTickTimer()
-        {
-            return PhotonPlugin.PluginHost.CreateTimer(
-                Tick,
-                _tickIntervalMS,
-                _tickIntervalMS);
-        }
+		private void Tick()
+		{
+			var commands = _commandSequence.Tick();
+			_resolver.ProcessCommands(commands);
 
-        private void DestroyTimer(object timer)
-        {
-            PhotonPlugin.PluginHost.StopTimer(timer);
-        }
-    }
+			_simulation.Tick();
+
+			if (_simulation.IsGameFailure 
+				|| (!_simulation.HasViruses && !_commandSequence.HasPendingCommands))
+			{
+				GameOverEvent();
+			}
+			else
+			{
+				Messenger.SendAllMessage(new TickMessage
+				{
+					SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+				});
+			}
+		}
+
+		private object CreateTickTimer()
+		{
+			return PhotonPlugin.PluginHost.CreateTimer(
+				Tick,
+				_tickIntervalMS,
+				_tickIntervalMS);
+		}
+
+		private void DestroyTimer(object timer)
+		{
+			PhotonPlugin.PluginHost.StopTimer(timer);
+		}
+	}
 }

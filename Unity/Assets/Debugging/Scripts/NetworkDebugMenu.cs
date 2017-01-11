@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Simulation.World;
+﻿using PlayGen.ITAlert.Common;
 using UnityEngine;
 
 namespace Assets.Debugging.Scripts

@@ -1,6 +1,4 @@
 using UnityEngine;
-using System.Collections;
-using ExitGames.Client.Photon;
 /// <summary>
 /// Can be attached to a GameObject to show info about the owner of the PhotonView.
 /// </summary>

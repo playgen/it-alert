@@ -11,27 +11,25 @@
 
 namespace ExitGames.Client.Photon.LoadBalancing
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using ExitGames.Client.Photon;
+	using System.Collections.Generic;
+	using ExitGames.Client.Photon;
 
 #if UNITY_4_0 || UNITY_4_1 || UNITY_4_2 || UNITY_4_3 || UNITY_4_4 || UNITY_4_5 || UNITY_4_6 || UNITY_4_7 || UNITY_5 || UNITY_5_0 || UNITY_5_1 || UNITY_6
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
-    using SupportClass = ExitGames.Client.Photon.SupportClass;
+	using Hashtable = ExitGames.Client.Photon.Hashtable;
+	using SupportClass = ExitGames.Client.Photon.SupportClass;
 #endif
 
-    /// <summary>
-    /// This class represents a room a client joins/joined.
-    /// Mostly used through LoadBalancingClient.CurrentRoom, after joining any room.
-    /// Contains a list of current players, their properties and those of this room, too.
-    /// A room instance has a number of "well known" properties like IsOpen, MaxPlayers which can be changed.
-    /// Your own, custom properties can be set via SetCustomProperties() while being in the room.
-    /// </summary>
-    /// <remarks>
-    /// Typically, this class should be extended by a game-specific implementation with logic and extra features.
-    /// </remarks>
-    public class Room : RoomInfo
+	/// <summary>
+	/// This class represents a room a client joins/joined.
+	/// Mostly used through LoadBalancingClient.CurrentRoom, after joining any room.
+	/// Contains a list of current players, their properties and those of this room, too.
+	/// A room instance has a number of "well known" properties like IsOpen, MaxPlayers which can be changed.
+	/// Your own, custom properties can be set via SetCustomProperties() while being in the room.
+	/// </summary>
+	/// <remarks>
+	/// Typically, this class should be extended by a game-specific implementation with logic and extra features.
+	/// </remarks>
+	public class Room : RoomInfo
     {
         protected internal int PlayerTTL;
         protected internal int RoomTTL;

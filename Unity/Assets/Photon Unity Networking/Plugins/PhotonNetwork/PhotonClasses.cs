@@ -24,7 +24,6 @@
 #define UNITY_MIN_5_3
 #endif
 
-using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using UnityEngine;
@@ -434,12 +433,12 @@ public interface IPunPrefabPool
 
 namespace Photon
 {
-    using Hashtable = ExitGames.Client.Photon.Hashtable;
+	using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-    /// <summary>
-    /// This class adds the property photonView, while logging a warning when your game still uses the networkView.
-    /// </summary>
-    public class MonoBehaviour : UnityEngine.MonoBehaviour
+	/// <summary>
+	/// This class adds the property photonView, while logging a warning when your game still uses the networkView.
+	/// </summary>
+	public class MonoBehaviour : UnityEngine.MonoBehaviour
     {
         /// <summary>Cache field for the PhotonView on this GameObject.</summary>
         private PhotonView pvCache = null;

@@ -1,5 +1,4 @@
 ﻿using PlayGen.ITAlert.Simulation.Contracts;
-using UnityEngine;
 
 public class EnhancementBehaviour : EntityBehaviour<EnhancementState>
 {

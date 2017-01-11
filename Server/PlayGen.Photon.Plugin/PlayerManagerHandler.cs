@@ -66,7 +66,7 @@ namespace PlayGen.Photon.Plugin
             var color = _playerManager.Players.GetUnusedColor();
 
             _playerManager.Create(playerId, null, name, color, state);
-            _messenger.SendMessage(existingPlayers, RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
+            _messenger.SendMessage(existingPlayers, new ListedPlayersMessage
             {
                 Players = _playerManager.Players,
             });
@@ -83,7 +83,7 @@ namespace PlayGen.Photon.Plugin
 
         private void ListPlayers(int photonId)
         {
-            _messenger.SendMessage(new List<int>() { photonId }, RoomControllerPlugin.ServerPlayerId, new ListedPlayersMessage
+            _messenger.SendMessage(new List<int>() { photonId }, new ListedPlayersMessage
             {
                 Players = _playerManager.Players,
             });

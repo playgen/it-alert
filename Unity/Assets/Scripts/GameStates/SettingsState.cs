@@ -1,46 +1,19 @@
-﻿using System;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+﻿using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick.Input;
 
-public class SettingsState : TickableSequenceState
+public class SettingsState : InputTickState
 {
-	private readonly SettingsStateInterface _interface;
-
 	public const string StateName = "SettingsState";
-
-
-	public SettingsState(SettingsStateInterface @interface)
+	
+	public SettingsState(SettingsStateInput input) : base(input)
 	{
-		_interface = @interface;
 	}
-
-	public override void Initialize()
+	
+	protected override void OnTick(float deltaTime)
 	{
-		_interface.Initialize();
-	}
-
-	public override void Terminate()
-	{
-		_interface.Terminate();
-	}
-
-	public override void Enter()
-	{
-		_interface.Enter();
-	}
-
-	public override void Exit()
-	{
-		_interface.Exit();
-	}
-
-	public override void Tick(float deltaTime)
-	{
-		_interface.Tick(deltaTime);
-		if (_interface.HasCommands)
+		ICommand command;
+		if (CommandQueue.TryTakeFirstCommand(out command))
 		{
-			var command = _interface.TakeFirstCommand();
-
 			var commandResolver = new StateCommandResolver();
 			commandResolver.HandleSequenceStates(command, this);
 		}
@@ -50,14 +23,10 @@ public class SettingsState : TickableSequenceState
 	{
 		get { return StateName; }
 	}
-
-	public override void NextState()
-	{
-		throw new NotImplementedException();
-	}
-
-	public override void PreviousState()
-	{
-		BackState();
-	}
+	
+	// todo refactor states
+	//public override void PreviousState()
+	//{
+	//	BackState();
+	//}
 }

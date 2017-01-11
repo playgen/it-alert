@@ -1,6 +1,4 @@
-using ExitGames.Client.Photon;
 using UnityEngine;
-using System.Collections;
 
 
 [RequireComponent(typeof(PhotonView))]

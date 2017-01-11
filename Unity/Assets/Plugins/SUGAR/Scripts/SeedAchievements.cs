@@ -1,10 +1,8 @@
 #if UNITY_EDITOR
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 using PlayGen.SUGAR.Client;
-using PlayGen.SUGAR.Common.Shared;
 using PlayGen.SUGAR.Contracts.Shared;
 using UnityEditor;
 using UnityEngine;

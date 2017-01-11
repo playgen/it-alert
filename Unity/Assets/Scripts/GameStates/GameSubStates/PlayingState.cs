@@ -1,17 +1,18 @@
 ﻿using System;
-using GameWork.Core.States;
-using PlayGen.ITAlert.Network;
+using GameWork.Core.Commands.Interfaces;
+using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Interfaces;
 using PlayGen.ITAlert.Network.Client;
-using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 
 namespace PlayGen.ITAlert.GameStates.GameSubStates
 {
-	public class PlayingState : TickableSequenceState
+	public class PlayingState : InputTickState , ICompletable
 	{
-		private readonly PlayingStateInterface _interface;
 		public const string StateName = "Playing";
 
 		private readonly Client _networkClient;
@@ -21,74 +22,62 @@ namespace PlayGen.ITAlert.GameStates.GameSubStates
 			get { return StateName; }
 		}
 
-		public PlayingState(PlayingStateInterface @interface, Client networkClient)
+		public bool IsComplete
 		{
-			_interface = @interface;
+			get; private set;
+		}
+
+		public PlayingState(PlayingTickableStateInput input, Client networkClient) : base(input)
+		{
 			_networkClient = networkClient;
 		}
 
-		public override void Initialize()
-		{
-			_interface.Initialize();
-		}
-
-		public override void Enter()
+		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
 
-			_interface.Enter();
+			IsComplete = false;
 			_networkClient.CurrentRoom.Messenger.Subscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
+
+			_networkClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage()
+			{
+				PlayerPhotonId = _networkClient.CurrentRoom.Player.PhotonId
+			});
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
 			_networkClient.CurrentRoom.Messenger.Unsubscribe((int)Photon.Messages.Channels.SimulationState, ProcessSimulationStateMessage);
-			_interface.Exit();
 		}
-
-		public override void NextState()
+		
+		protected override void OnTick(float deltaTime)
 		{
-			ChangeState(FinalizingState.StateName);
-		}
-
-		public override void PreviousState()
-		{
-		}
-
-		public override void Tick(float deltaTime)
-		{
-			_interface.Tick(deltaTime);
-			if (_interface.HasCommands)
+			ICommand command;
+			if (CommandQueue.TryTakeFirstCommand(out command))
 			{
-				if (_interface.HasCommands)
-				{
-					var command = _interface.TakeFirstCommand();
-
-					var commandResolver = new StateCommandResolver();
-					commandResolver.HandleSequenceStates(command, this);
-				}
+				var commandResolver = new StateCommandResolver();
+				commandResolver.HandleSequenceStates(command, this);
 			}
 		}
 
 		private void ProcessSimulationStateMessage(Message message)
 		{
+			var initializedMessage = message as InitializedMessage;
+			if (initializedMessage != null)
+			{
+				var simulation = Serializer.DeserializeSimulation(initializedMessage.SerializedSimulation);
+				Director.Initialize(simulation, _networkClient.CurrentRoom.Player.PhotonId);
+				Director.Refresh();
+
+				return;
+			}
+
 			var tickMessage = message as TickMessage;
 			if (tickMessage != null)
 			{
 				var simulation = Serializer.DeserializeSimulation(tickMessage.SerializedSimulation);
 				Director.UpdateSimulation(simulation);
 				Director.Refresh();
-				return;
-			}
-
-			var finalizingMessage = message as FinalizingMessage;
-			if (finalizingMessage != null)
-			{
-				var simulation = Serializer.DeserializeSimulation(finalizingMessage.SerializedSimulation);
-				Director.UpdateSimulation(simulation);
-				Director.Refresh();
-
-				ChangeState(FinalizingState.StateName);
 				return;
 			}
 

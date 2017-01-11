@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
 using PlayGen.ITAlert.Common;
-using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Layout;
 
 #pragma warning disable 649
