@@ -10,7 +10,7 @@ public class FeedbackDragBehaviour : MonoBehaviour {
 	private string _currentList;
 	private Transform _parent;
 	private Vector2 _dragPosition;
-	private FeedbackStateInterface _interface;
+	private FeedbackStateInput _input;
 
 	private void Start()
 	{
@@ -25,9 +25,9 @@ public class FeedbackDragBehaviour : MonoBehaviour {
 		trigger.triggers.Add(drop);
 	}
 
-	public void SetInterface(FeedbackStateInterface inter)
+	public void SetInterface(FeedbackStateInput inter)
 	{
-		_interface = inter;
+		_input = inter;
 	}
 
 	private void BeginDrag()
@@ -63,7 +63,7 @@ public class FeedbackDragBehaviour : MonoBehaviour {
 				if (_currentList == null || _currentList == slot.CurrentList)
 				{
 					transform.SetParent(_parent, false);
-					if (_interface.RearrangeOrder(_currentList, slot.CurrentList, result.gameObject.transform.GetSiblingIndex() - 1, GetComponent<Text>().text, slot, this))
+					if (_input.RearrangeOrder(_currentList, slot.CurrentList, result.gameObject.transform.GetSiblingIndex() - 1, GetComponent<Text>().text, slot, this))
 					{
 						_currentList = slot.CurrentList;
 						_parent = transform.parent;
