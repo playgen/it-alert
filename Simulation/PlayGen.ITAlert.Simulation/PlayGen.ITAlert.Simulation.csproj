@@ -130,10 +130,6 @@
       <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
       <Name>Engine.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Components.Common\Engine.Components.Common.csproj">
-      <Project>{888032D2-38BB-4339-B4FA-744AAC836DB5}</Project>
-      <Name>Engine.Components.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\High-Speed-Priority-Queue-for-C-Sharp\Priority Queue\Priority Queue.csproj">
       <Project>{1531c1ea-bd53-41d1-a34b-cfcdf79d2651}</Project>
       <Name>Priority Queue</Name>
@@ -153,10 +149,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.UI.Common\PlayGen.ITAlert.UI.Common.csproj">
-      <Project>{3971b49f-c720-4057-b2e7-4757e9ce1872}</Project>
-      <Name>PlayGen.ITAlert.UI.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

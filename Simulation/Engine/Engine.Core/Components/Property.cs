@@ -1,7 +1,6 @@
 ﻿using System;
-using Engine.Entities;
 
-namespace Engine.Components.Property
+namespace Engine.Components
 {
 	public class ReadOnlyProperty<TValue> : IComponent
 	{

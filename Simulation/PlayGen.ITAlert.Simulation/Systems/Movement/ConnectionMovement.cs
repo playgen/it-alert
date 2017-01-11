@@ -10,7 +10,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 	public class ConnectionMovement : MovementSystemExtensionBase
 	{
 		public override EntityType EntityType => EntityType.Connection;
-		
+
+		public ConnectionMovement(IEntityRegistry entityRegistry)
+			: base(entityRegistry)
+		{
+		}
+
 		public override void MoveVisitors(Entity node, int currentTick)
 		{
 			var movementCost = node.GetComponent<MovementCost>()?.Value ?? 1;
@@ -20,21 +25,25 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 			var visitors = node.GetComponent<Visitors>();
 
-			foreach (var visitor in visitors.Value.Values)
+			foreach (var visitorId in visitors.Value)
 			{
-				//TODO handle failed lookups
-				var movementSpeed = visitor.GetComponent<MovementSpeed>().Value;
-				var visitorPosition = visitor.GetComponent<VisitorPosition>();
-
-				var nextPosition = visitorPosition.Position + (movementSpeed / movementCost);
-
-				if (nextPosition >= exitNode.Value)
+				Entity visitor;
+				if (EntityRegistry.TryGetEntityById(visitorId, out visitor))
 				{
-					var overflow = Math.Max(nextPosition - movementCost, currentTick);
+					//TODO handle failed lookups
+					var movementSpeed = visitor.GetComponent<MovementSpeed>().Value;
+					var visitorPosition = visitor.GetComponent<VisitorPosition>();
 
-					visitors.Value.Remove(visitor.Id);
+					var nextPosition = visitorPosition.Position + (movementSpeed / movementCost);
 
-					OnVisitorTransition(exitNode.Key, visitor, node, overflow, currentTick);
+					if (nextPosition >= exitNode.Value)
+					{
+						var overflow = Math.Max(nextPosition - movementCost, currentTick);
+
+						visitors.Value.Remove(visitor.Id);
+
+						OnVisitorTransition(exitNode.Key, visitor, node, overflow, currentTick);
+					}
 				}
 			}
 		}

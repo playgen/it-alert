@@ -21,8 +21,5 @@ namespace PlayGen.ITAlert.Simulation.Components
 		public virtual bool HasItem => Item != null;
 		public virtual bool CanDrop => Enabled && HasItem == false;
 		public virtual bool CanPickup => Enabled && HasItem && Locked == false;
-
-		public virtual string SpriteName => "Default";
-
 	}
 }

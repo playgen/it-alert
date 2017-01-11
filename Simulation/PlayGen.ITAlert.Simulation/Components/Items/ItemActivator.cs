@@ -5,17 +5,7 @@ using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Items
 {
-	public class ActiveItemState : IComponentState
-	{
-		private ItemContainer Item { get; }
-
-		public ActiveItemState(ItemContainer item)
-		{
-			Item = item;
-		}
-	}
-
-	public class ItemActivator : IComponent, IEmitState
+	public class ItemActivator : IComponent
 	{
 		public enum OverLimitBehaviour
 		{
@@ -124,10 +114,5 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 
 		#endregion
-
-		public IComponentState GetState()
-		{
-			return new ActiveItemState(Item);
-		}
 	}
 }

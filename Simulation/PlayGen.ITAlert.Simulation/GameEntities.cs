@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Components;
-using Engine.Components.Common;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
@@ -26,6 +25,7 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Node = new Archetype("Node")
 			.HasComponents(new ComponentFactoryDelegate[]
 			{
+
 				() => new Visitors(),
 				() => new GraphNode(),
 				() => new ExitRoutes(), 

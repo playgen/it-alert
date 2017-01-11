@@ -9,6 +9,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
 	public class VisitorsConsumeMemoryEffect : ISubsystemResourceEffect
 	{
+		private readonly IEntityRegistry _entityRegistry;
+
+		public VisitorsConsumeMemoryEffect(IEntityRegistry entityRegistry)
+		{
+			_entityRegistry = entityRegistry;
+		}
+
 		public void Tick(Entity subsystem)
 		{
 			MemoryResource memoryResource;
@@ -17,12 +24,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				&& subsystem.TryGetComponent(out visitors))
 			{
 				var sum = 0;
-				foreach (var visitor in visitors.Value.Values)
+				foreach (var visitorId in visitors.Value)
 				{
-					ConsumeMemory consumeMemory;
-					if (visitor.TryGetComponent(out consumeMemory))
+					Entity visitor;
+					if (_entityRegistry.TryGetEntityById(visitorId, out visitor))
 					{
-						sum += consumeMemory.Value;
+						ConsumeMemory consumeMemory;
+						if (visitor.TryGetComponent(out consumeMemory))
+						{
+							sum += consumeMemory.Value;
+						}
 					}
 				}
 				memoryResource.SetValue(sum);

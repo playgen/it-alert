@@ -54,21 +54,18 @@
     <Compile Include="Components\ComponentRegistry.cs" />
     <Compile Include="Components\ComponentUsageAttribute.cs" />
     <Compile Include="Components\ComponentUsageException.cs" />
+    <Compile Include="Components\Coordinate2DProperty.cs" />
     <Compile Include="Components\EntityGroup.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Components\IComponentContainer.cs" />
     <Compile Include="Components\IComponentFactory.cs" />
     <Compile Include="Components\IComponentRegistry.cs" />
-    <Compile Include="Components\IComponentState.cs" />
-    <Compile Include="Components\IEmitState.cs" />
     <Compile Include="Components\IFlagComponent.cs" />
     <Compile Include="Components\MatchAll.cs" />
     <Compile Include="Components\Property.cs" />
     <Compile Include="Components\RangedNumericProperty.cs" />
-    <Compile Include="Components\StateBucket.cs" />
     <Compile Include="ECS.cs" />
     <Compile Include="ECSInstaller.cs" />
-    <Compile Include="EcsState.cs" />
     <Compile Include="Entities\ComponentContainer.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityExtensions.cs" />
@@ -95,6 +92,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messaging\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.Common\Engine.Common.csproj">
+      <Project>{c3e9dd6e-3807-4290-a857-a4e9d47cf7e1}</Project>
+      <Name>Engine.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

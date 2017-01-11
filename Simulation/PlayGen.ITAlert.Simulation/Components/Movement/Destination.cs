@@ -1,4 +1,4 @@
-﻿using Engine.Components.Property;
+﻿using Engine.Components;
 using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement

@@ -7,7 +7,6 @@ using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Malware;
-using PlayGen.ITAlert.UI.Common;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
@@ -47,14 +46,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 	public class AnalysisiTargetItemContainer : ItemContainer
 	{
-		public override string SpriteName => SpriteConstants.ItemContainerAnalysisSample;
 
 		public override bool CanPickup { get; }
 	}
 
 	public class AnalysisiActivatorItemContainer : ItemContainer
 	{
-		public override string SpriteName => SpriteConstants.ItemContainerAnalysisSample;
 
 		public override bool CanPickup { get; }
 	}

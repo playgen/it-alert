@@ -10,6 +10,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 	// ReSharper disable once InconsistentNaming
 	public class VisitorsConsumeCPUEffect : ISubsystemResourceEffect
 	{
+		private readonly IEntityRegistry _entityRegistry;
+
+		public VisitorsConsumeCPUEffect(IEntityRegistry entityRegistry)
+		{
+			_entityRegistry = entityRegistry;
+		}
+
 		public void Tick(Entity subsystem)
 		{
 			CPUResource cpuResource;
@@ -18,12 +25,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				&& subsystem.TryGetComponent(out visitors))
 			{
 				var sum = 0;
-				foreach (var visitor in visitors.Value.Values)
+				foreach (var visitorId in visitors.Value)
 				{
-					ConsumeCPU consumeCpu;
-					if (visitor.TryGetComponent(out consumeCpu))
+					Entity visitor;
+					if (_entityRegistry.TryGetEntityById(visitorId, out visitor))
 					{
-						sum += consumeCpu.Value;
+						ConsumeCPU consumeCpu;
+						if (visitor.TryGetComponent(out consumeCpu))
+						{
+							sum += consumeCpu.Value;
+						}
 					}
 				}
 				cpuResource.SetValue(sum);

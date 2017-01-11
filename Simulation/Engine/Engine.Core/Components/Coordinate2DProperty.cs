@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Common;
 
 namespace Engine.Components
 {
-	public interface IEmitState : IComponent
+	public class Coordinate2DProperty : Property<Vector>
 	{
-		IComponentState GetState();
+
 	}
 }
