@@ -73,30 +73,17 @@ namespace Engine
 			throw new KeyNotFoundException($"No archetype found for key '{archetypeName}'");
 		}
 
+		public Dictionary<int, Entity> GetEntities()
+		{
+			return EntityRegistry.Entities;
+		}
+
 		public void Dispose()
 		{
 			if (_disposed == false)
 			{
 				
 			}
-		}
-
-		public EcsState GetState()
-		{
-			//TODO: object pool
-			var states = new Dictionary<int, StateBucket>();
-
-			foreach (var entity in EntityRegistry.Entities.Values)
-			{
-				var stateBucket = new StateBucket(entity.Id);
-				foreach (var statefulComponent in entity.GetComponents<IEmitState>())
-				{
-					stateBucket.Add(statefulComponent.GetState());
-				}
-				states.Add(entity.Id, stateBucket);
-			}
-
-			return new EcsState(states);
 		}
 
 		public void Tick()

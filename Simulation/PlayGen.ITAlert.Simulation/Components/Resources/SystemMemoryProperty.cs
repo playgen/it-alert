@@ -1,4 +1,4 @@
-﻿using Engine.Components.Property;
+﻿using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {

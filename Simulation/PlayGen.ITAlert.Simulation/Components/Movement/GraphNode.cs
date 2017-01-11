@@ -5,7 +5,7 @@ using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class GraphNode : IComponent, IEmitState, IComponentState
+	public class GraphNode : IComponent
 	{
 		public Dictionary<int, int> EntrancePositions { get; private set; }
 
@@ -16,11 +16,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 		{
 			EntrancePositions = new Dictionary<int, int>();
 			ExitPositions = new Dictionary<int, int>();
-		}
-
-		public IComponentState GetState()
-		{
-			return this;
 		}
 	}
 }

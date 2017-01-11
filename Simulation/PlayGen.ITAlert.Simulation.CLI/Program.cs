@@ -18,10 +18,6 @@ namespace PlayGen.ITAlert.Simulation.CLI
 		{
 			var simulation = ConfigHelper.GenerateSimulation(3, 3, 3, 3, 1);
 
-			var state = simulation.GetState();
-
-			VisitorPositionState visitorPositionState;
-			var playerLocations = state.EntityStates.Where(s => s.Value.TryGet(out visitorPositionState) && visitorPositionState.Any());
 
 			simulation.Tick();
 		}

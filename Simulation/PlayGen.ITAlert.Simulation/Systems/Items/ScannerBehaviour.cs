@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					&& currentLocationEntity.TryGetComponent(out currentLocationVisitors))
 				{
 					// join the current locations list of visitors with all malware entities
-					foreach (var malwareVisitor in currentLocationVisitors.Value.Keys
+					foreach (var malwareVisitor in currentLocationVisitors.Value
 						.Join(_malwareMatcherGroup.MatchingEntities,
 							k => k,
 							k => k.Id,

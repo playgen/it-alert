@@ -8,15 +8,7 @@ using Engine.Util;
 
 namespace PlayGen.ITAlert.Simulation.Components.Items
 {
-	public class ItemStorageState : List<ItemContainer>, IComponentState
-	{
-		public ItemStorageState(IEnumerable<ItemContainer> collection) 
-			: base(collection)
-		{
-		}
-	}
-
-	public class ItemStorage : IComponent, IEmitState
+	public class ItemStorage : IComponent
 	{
 		public enum OverLimitBehaviour
 		{
@@ -184,10 +176,5 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 
 		#endregion
-
-		public IComponentState GetState()
-		{
-			return new ItemStorageState(Items.ToList());
-		}
 	}
 }

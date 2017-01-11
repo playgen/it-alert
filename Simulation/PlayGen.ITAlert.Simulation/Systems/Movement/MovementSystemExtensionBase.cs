@@ -13,6 +13,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		public event AddVisitorToNode VisitorTransition;
 		public abstract EntityType EntityType { get; }
 
+		protected readonly IEntityRegistry EntityRegistry;
+
+		protected MovementSystemExtensionBase(IEntityRegistry entityRegistry)
+		{
+			EntityRegistry = entityRegistry;
+		}
+
 		public abstract void MoveVisitors(Entity node, int currentTick);
 
 		public abstract void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick);
@@ -29,7 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			visitorPosition.SetPosition(position, currentTick);
 
 			var visitors = node.GetComponent<Visitors>();
-			visitors.Value.Add(visitor.Id, visitor);
+			visitors.Value.Add(visitor.Id);
 			
 			visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
 
