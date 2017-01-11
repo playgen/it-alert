@@ -16,7 +16,6 @@ namespace PlayGen.ITAlert.GameStates
 		private TickStateController _stateController;
 		private readonly Client _client;
 		private readonly VoiceController _voiceController;
-		private readonly LobbyController _lobbyController;
 
 		public IStateController ParentStateController { private get; set; }
 
@@ -29,7 +28,6 @@ namespace PlayGen.ITAlert.GameStates
 			VoiceController voiceController) : base(tickStateInput)
 		{
 			_client = client;
-			_lobbyController = lobbyController;
 			_voiceController = voiceController;
 		}
 
@@ -52,7 +50,8 @@ namespace PlayGen.ITAlert.GameStates
 				FeedbackState.StateName);
 			playingState.AddTransitions(onFeedbackStateSync);
 
-			var feedbackState = new FeedbackState(_client);
+			var feedbackStateInput = new FeedbackStateInput(_client);
+			var feedbackState = new FeedbackState(feedbackStateInput, _client);
 			var onLobbyStateSync = new OnMessageTransition(_client, Channels.GameState, typeof(LobbyMessage), LobbyState.StateName);
 			feedbackState.AddTransitions(onLobbyStateSync);
 
