@@ -12,7 +12,7 @@ namespace Engine.Components
 
 		private Predicate<Entity> EntityFilter { get; }
 
-		protected ComponentMatcher()
+		protected internal ComponentMatcher()
 		{
 			
 		}
@@ -21,7 +21,7 @@ namespace Engine.Components
 		/// 
 		/// </summary>
 		/// <param name="componentTypes">Entities containing all component types will be matched</param>
-		public ComponentMatcher(IEnumerable<Type> componentTypes)
+		internal ComponentMatcher(IEnumerable<Type> componentTypes)
 			: this(componentTypes, entity => true)
 		{
 			
@@ -32,7 +32,7 @@ namespace Engine.Components
 		/// </summary>
 		/// <param name="componentTypes">Entities containing all component types will be matched</param>
 		/// <param name="entityFilter">Additional predicate filter to reduce matching entities</param>
-		public ComponentMatcher(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
+		internal ComponentMatcher(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
 		{
 			ComponentTypes = new HashSet<Type>(componentTypes);
 			EntityFilter = entityFilter;

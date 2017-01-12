@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using Engine.Entities;
 
 namespace Engine.Components
@@ -10,5 +12,8 @@ namespace Engine.Components
 		void RegisterMatcher(ComponentMatcherGroup matcher);
 		void RemoveComponentEntityMapping(Entity entity);
 		void UpdateMatcherGroups(Entity entity);
+
+		ComponentMatcher CreateMatcher(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter = null);
+		ComponentMatcherGroup CreateMatcherGroup(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter = null);
 	}
 }

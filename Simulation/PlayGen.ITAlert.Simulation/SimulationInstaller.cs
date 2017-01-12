@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Configuration;
 
 namespace PlayGen.ITAlert.Simulation
 {
-	public class SimulationInstaller : ECSInstaller<Simulation>
+	public class SimulationInstaller : ECSInstaller<Simulation, SimulationInstaller>
 	{
 		private readonly SimulationConfiguration _simulationConfiguration;
 
@@ -23,10 +23,6 @@ namespace PlayGen.ITAlert.Simulation
 		protected override void OnInstallBindings()
 		{
 
-		}
-		public static Simulation CreateSimulation(SimulationConfiguration simulationConfiguration)
-		{
-			return new SimulationInstaller(simulationConfiguration).Instantiate();
 		}
 	}
 }

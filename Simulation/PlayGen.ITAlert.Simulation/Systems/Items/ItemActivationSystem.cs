@@ -25,12 +25,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			List<IItemActivationExtension> itemActivationExtensions,
 			IntentSystem intentSystem) 
 
-			: base(componentRegistry, entityRegistry, systemRegistry)
+			: base(componentRegistry, entityRegistry)
 		{
 			_itemActivationExtensions = itemActivationExtensions;
 			_intentSystem = intentSystem;
 			
-			_activationMatcher = new ComponentMatcherGroup(new [] { typeof(Activation)});
+			_activationMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(Activation) });
 			componentRegistry.RegisterMatcher(_activationMatcher);
 		}
 
