@@ -31,6 +31,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GameWork.Core.Commands">
+      <HintPath>..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.States">
+      <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Configuration">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Commands">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Serialization">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.TestData">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.TestData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -47,30 +68,6 @@
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.Commands\GameWork.Core.Commands.csproj">
-      <Project>{7ADF8CD4-CFCB-4E35-ABF7-E761497EAA11}</Project>
-      <Name>GameWork.Core.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GameWork.Unity\GameWork.Core\GameWork.Core.States\GameWork.Core.States.csproj">
-      <Project>{D9ABF6B3-C495-4A39-B234-FCAB5EC9DB30}</Project>
-      <Name>GameWork.Core.States</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ItAlert.Configuration\PlayGen.ITAlert.Configuration.csproj">
-      <Project>{4DEF971E-0A4E-4880-AE2C-B2D187766FA4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
-      <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Simulation\PlayGen.ITAlert.TestData\PlayGen.ITAlert.TestData.csproj">
-      <Project>{CB5C5A48-BBC4-4825-86CB-87E4037DB0C1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
-    </ProjectReference>
     <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
       <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
       <Name>PhotonHivePlugin</Name>
