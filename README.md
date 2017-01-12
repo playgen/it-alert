@@ -1,0 +1,1 @@
+To setup this project, run ./Tools/RunAll.ps1

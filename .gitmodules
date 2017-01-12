@@ -1,9 +1,3 @@
 [submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
 	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
 	url = https://github.com/playgen/High-Speed-Priority-Queue-for-C-Sharp.git
-[submodule "SUGAR"]
-	path = SUGAR
-	url = git@codebasehq.com:playgen/rage/sugar.git
-[submodule "GameWork.Unity"]
-	path = GameWork.Unity
-url=https://github.com/Game-Work/GameWork.Unity.git

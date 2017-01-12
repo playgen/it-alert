@@ -9,13 +9,13 @@ using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
-using PlayGen.ITAlert.TestData;
 using System.Collections.Generic;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.ITAlert.TestData;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
