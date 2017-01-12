@@ -79,8 +79,6 @@ namespace PlayGen.Photon.Plugin
 
 		public override void OnCreateGame(ICreateGameCallInfo info)
 		{
-			_stateController.Initialize();
-
 			// First player is always 1 but the player ID isn't initialized by this point.
 			var playerId = info.Request.ActorNr > 0
 				? info.Request.ActorNr
