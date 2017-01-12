@@ -18,6 +18,8 @@ namespace Engine.Core.Tests
 	{
 		#region test classes
 
+		#region systems
+
 		#region A
 
 		public interface ISystemA : ISystem
@@ -113,8 +115,9 @@ namespace Engine.Core.Tests
 
 		#endregion
 
-		#region test installer
+		#region installer
 
+		// ReSharper disable once InconsistentNaming
 		public class TestECS : ECS
 		{
 			public TestECS(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry, ISystemRegistry systemRegistry)
@@ -134,6 +137,9 @@ namespace Engine.Core.Tests
 		}
 
 		#endregion
+
+		#endregion
+
 
 		[Test]
 		public void TestSystemConfigurationInstaller()
