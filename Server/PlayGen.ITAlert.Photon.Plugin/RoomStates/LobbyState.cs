@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 		}
 
-		protected override void OnEnter()
+		protected override void OnEnter(string fromStateName)
 		{
 			Messenger.Subscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
 
@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			});
 		}
 
-		protected override void OnExit()
+		protected override void OnExit(string toStateName)
 		{
 			Messenger.Unsubscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
 		}
