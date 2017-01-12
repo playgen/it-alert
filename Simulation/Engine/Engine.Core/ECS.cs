@@ -30,7 +30,7 @@ namespace Engine
 		/// <summary>
 		/// This is where the system pool lives and systems are activated 
 		/// </summary>
-		protected ISystemRegistry SystemRegistry { get; private set; }
+		public ISystemRegistry SystemRegistry { get; private set; }
 
 		/// <summary>
 		/// This factory creates components and popualtes an entity when an archetype is instantiated

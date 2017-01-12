@@ -23,11 +23,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		private readonly ComponentMatcherGroup _scannerMatcherGroup;
 		private readonly ComponentMatcherGroup _malwareMatcherGroup;
 
-		public ScannerBehaviour(IEntityRegistry entityRegistry)
+		public ScannerBehaviour(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry)
 		{
 			_entityRegistry = entityRegistry;
-			_scannerMatcherGroup = new ComponentMatcherGroup(new[] { typeof(Scanner), typeof(CurrentLocation) });
-			_malwareMatcherGroup = new ComponentMatcherGroup(new [] { typeof(MalwareGenome) });
+			_scannerMatcherGroup = componentRegistry.CreateMatcherGroup(new[] { typeof(Scanner), typeof(CurrentLocation) });
+			_malwareMatcherGroup = componentRegistry.CreateMatcherGroup(new [] { typeof(MalwareGenome) });
 		}
 
 		public void OnActivating(Entity item, Activation activation)

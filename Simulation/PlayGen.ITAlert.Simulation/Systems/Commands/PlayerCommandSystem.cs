@@ -13,10 +13,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Commands
 	{
 		private IntentSystem _intentSystem;
 
-		public PlayerCommandSystem(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry) 
-			: base(componentRegistry, entityRegistry, systemRegistry)
+		public PlayerCommandSystem(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry, IntentSystem intentSystem) 
+			: base(componentRegistry, entityRegistry)
 		{
-			_intentSystem = systemRegistry.GetSystem<IntentSystem>();
+			_intentSystem = intentSystem;
 		}
 	}
 }

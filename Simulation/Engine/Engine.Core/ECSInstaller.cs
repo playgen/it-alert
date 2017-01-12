@@ -12,7 +12,8 @@ using Zenject;
 namespace Engine
 {
 	// ReSharper disable once InconsistentNaming
-	public abstract class ECSInstaller : Installer<ECSInstaller>
+	public abstract class ECSInstaller<TInstaller> : Installer<TInstaller>
+		where TInstaller : ECSInstaller<TInstaller>
 	{
 		protected ECSConfiguration Configuration;
 
@@ -59,16 +60,17 @@ namespace Engine
 
 		public void InstallSystemBinding(SystemConfiguration systemConfiguration)
 		{
-			Container.Bind<ISystem>()
-				.FromSubContainerResolve().ByMethod(container => InstallSystem(container, systemConfiguration))
-				// TODO: perhaps decide if it should be a singleton in configuration
+			Container.Bind(systemConfiguration.Type).AsSingle();
+			Container.BindAllInterfaces(systemConfiguration.Type).To(systemConfiguration.Type)
+				//.FromSubContainerResolve().ByMethod(container => InstallSystem(container, systemConfiguration))
+				//// TODO: perhaps decide if it should be a singleton in configuration
 				.AsSingle();
+			InstallSystem(Container, systemConfiguration);
 		}
 
 		private static void InstallSystem(DiContainer container, SystemConfiguration systemConfiguration)
 		{
-			container.BindAllInterfaces(systemConfiguration.Type).To(systemConfiguration.Type).AsSingle();
-
+			//container.BindAllInterfaces(systemConfiguration.Type).To(systemConfiguration.Type).AsSingle();
 			foreach (var extensionConfiguration in systemConfiguration.ExtensionConfiguration)
 			{
 				if (extensionConfiguration.AllOfType)
@@ -82,6 +84,12 @@ namespace Engine
 						container.Bind(extensionConfiguration.Type).To(extensionImplementation);
 					}
 				}
+				// TODO: keep this for later reference - we are using [InjectOptional] instead
+				//var extensionListType = typeof(List<>).MakeGenericType(extensionConfiguration.Type);
+				//if (container.HasBinding(new InjectContext(container, extensionListType, null)) == false)
+				//{
+				//	container.Bind(extensionListType).AsSingle();
+				//}
 			}
 		}
 
@@ -113,8 +121,9 @@ namespace Engine
 	}
 
 	// ReSharper disable InconsistentNaming
-	public abstract class ECSInstaller<TECS> : ECSInstaller
+	public abstract class ECSInstaller<TECS, TInstaller> : ECSInstaller<TInstaller>
 		where TECS : ECS
+		where TInstaller : ECSInstaller<TInstaller>
 	// ReSharper restore InconsistentNaming
 	{
 		protected ECSInstaller(ECSConfiguration configuration)
@@ -122,9 +131,14 @@ namespace Engine
 		{
 		}
 
-		public TECS Instantiate()
+		public static TECS InstantiateECS<TConfiguration>(TConfiguration configuration)
+			where TConfiguration : ECSConfiguration
 		{
-			return Container.Instantiate<TECS>();
+			var container = new DiContainer();
+			container.BindInstance(configuration);
+			Install(container);
+
+			return container.Instantiate<TECS>();
 		}
 	}
 }

@@ -21,12 +21,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		public EnhancementSystem(IComponentRegistry componentRegistry, 
 			IEntityRegistry entityRegistry, 
-			ISystemRegistry systemRegistry,
 			List<IEnhancementSystemExtension> enhancementSystemExtensions)
-			: base(componentRegistry, entityRegistry, systemRegistry)
+			: base(componentRegistry, entityRegistry)
 		{
 			_enhancementSystemExtensions = enhancementSystemExtensions;
-			_enhancementMatcherGroup = new ComponentMatcherGroup(new[] { typeof(ISubsystemEnhancement) });
+			_enhancementMatcherGroup = componentRegistry.CreateMatcherGroup(new[] { typeof(ISubsystemEnhancement) });
 		}
 
 		#endregion

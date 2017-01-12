@@ -20,9 +20,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public MovementSystem(IComponentRegistry componentRegistry, 
 			IEntityRegistry entityRegistry, 
-			ISystemRegistry systemRegistry,
 			List<IMovementSystemExtension> movementSystemExtensions)
-			: base(componentRegistry, entityRegistry, systemRegistry)
+			: base(componentRegistry, entityRegistry)
 		{
 			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
 
@@ -31,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 				entityMovementSystem.Value.VisitorTransition += ValueOnVisitorTransition;
 			}
 
-			_movementNodesMatcher = new ComponentMatcherGroup(new[] { typeof(Visitors), typeof(GraphNode) });
+			_movementNodesMatcher = componentRegistry.CreateMatcherGroup(new[] { typeof(Visitors), typeof(GraphNode) });
 			componentRegistry.RegisterMatcher(_movementNodesMatcher);
 		}
 

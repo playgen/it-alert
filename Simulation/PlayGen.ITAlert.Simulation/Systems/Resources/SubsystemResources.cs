@@ -12,9 +12,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		private readonly List<ISubsystemResourceEffect> _resourceEffects;
 
 
-		public SubsystemResources(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry) 
-			: base(componentRegistry, entityRegistry, systemRegistry)
+		public SubsystemResources(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry, List<ISubsystemResourceEffect> resourceEffects) 
+			: base(componentRegistry, entityRegistry)
 		{
+			_resourceEffects = resourceEffects;
 		}
 	}
 }

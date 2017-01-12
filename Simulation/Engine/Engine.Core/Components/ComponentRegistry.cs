@@ -123,5 +123,19 @@ namespace Engine.Components
 
 			return new Entity[0];
 		}
+
+		public ComponentMatcher CreateMatcher(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter = null)
+		{
+			var matcher = new ComponentMatcher(componentTypes, entityFilter);
+			//RegisterMatcher(matcher);
+			return matcher;
+		}
+
+		public ComponentMatcherGroup CreateMatcherGroup(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter = null)
+		{
+			var matcher = new ComponentMatcherGroup(componentTypes, entityFilter);
+			RegisterMatcher(matcher);
+			return matcher;
+		}
 	}
 }

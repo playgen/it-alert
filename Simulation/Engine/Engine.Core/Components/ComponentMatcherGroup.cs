@@ -10,14 +10,13 @@ namespace Engine.Components
 	{
 		public HashSet<Entity> MatchingEntities { get; }
 
-
-		public ComponentMatcherGroup(IEnumerable<Type> componentTypes)
+		internal ComponentMatcherGroup(IEnumerable<Type> componentTypes)
 			: base(componentTypes)
 		{
 			MatchingEntities = new HashSet<Entity>();
 		}
 
-		public ComponentMatcherGroup(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
+		internal ComponentMatcherGroup(IEnumerable<Type> componentTypes, Predicate<Entity> entityFilter)
 			: base(componentTypes, entityFilter)
 		{
 			MatchingEntities = new HashSet<Entity>();

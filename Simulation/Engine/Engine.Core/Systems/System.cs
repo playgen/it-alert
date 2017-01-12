@@ -12,15 +12,12 @@ namespace Engine.Systems
 
 		protected IEntityRegistry EntityRegistry { get; }
 
-		protected ISystemRegistry SystemRegistry { get; }
 
 		public System(IComponentRegistry componentRegistry, 
-			IEntityRegistry entityRegistry, 
-			ISystemRegistry systemRegistry)
+			IEntityRegistry entityRegistry)
 		{
 			ComponentRegistry = componentRegistry;
 			EntityRegistry = entityRegistry;
-			SystemRegistry = systemRegistry;
 		}
 	}
 }

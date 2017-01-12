@@ -4,23 +4,20 @@ using System.Linq;
 using System.Text;
 using Engine.Components;
 using Engine.Entities;
+using Zenject;
 
 namespace Engine.Systems
 {
-	public delegate ISystem SystemFactoryDelegate(ComponentRegistry componentRegistry, EntityRegistry entityRegistry, SystemRegistry systemRegistry);
-
-	public class SystemRegistry : ISystemRegistry
+	public sealed class SystemRegistry : ISystemRegistry
 	{
-		private readonly Dictionary<Type, ISystem> _systems;
+		private readonly List<ISystem> _systems;
 
-		public SystemRegistry()
-		{
-			_systems = new Dictionary<Type, ISystem>();
-		}
+		private readonly DiContainer _container;
 
-		public void RegisterSystem(ISystem system)
+		public SystemRegistry(DiContainer container, List<ISystem> systems)
 		{
-			_systems.Add(system.GetType(), system);
+			_systems = systems;
+			_container = container;
 		}
 
 		/// <summary>
@@ -30,21 +27,33 @@ namespace Engine.Systems
 		/// <returns></returns>
 		public TSystem GetSystem<TSystem>() where TSystem : class, ISystem
 		{
-			ISystem system;
-			if (_systems.TryGetValue(typeof(TSystem), out system))
+			try
 			{
-				var returnSystem = system as TSystem;
-				if (returnSystem != null)
-				{
-					return returnSystem;
-				}
+				var system = _container.Resolve<TSystem>();
+				return system;
 			}
-			throw new InvalidOperationException($"System of type {typeof(TSystem)} not registered.");
+			catch (ZenjectException zex)
+			{
+				throw new InvalidOperationException($"System of type {typeof(TSystem)} not registered.");
+			}
+		}
+
+		public IList<TSystem> GetSystems<TSystem>() where TSystem : class, ISystem
+		{
+			try
+			{
+				var systems = _container.Resolve<List<TSystem>>();
+				return systems;
+			}
+			catch (ZenjectException zex)
+			{
+				throw new InvalidOperationException($"System of type {typeof(TSystem)} not registered.");
+			}
 		}
 
 		public void Initialize()
 		{
-			foreach (var system in _systems.Values.OfType<IInitializingSystem>())
+			foreach (var system in _systems.OfType<IInitializingSystem>())
 			{
 				system.Initialize();
 			}
@@ -53,7 +62,7 @@ namespace Engine.Systems
 		// TODO: implement system to system message bus
 		public void Tick(int currentTick)
 		{
-			foreach (var system in _systems.Values.OfType<ITickableSystem>())
+			foreach (var system in _systems.OfType<ITickableSystem>())
 			{
 				system.Tick(currentTick);
 			}
