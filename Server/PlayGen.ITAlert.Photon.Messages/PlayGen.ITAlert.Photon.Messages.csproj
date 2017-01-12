@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\..\bin\Server\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -39,6 +39,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PlayGen.ITAlert.Simulation.Commands">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -59,10 +63,6 @@
     <Compile Include="Game\States\PlayingMessage.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\simulation\PlayGen.ITAlert.Simulation.Commands\PlayGen.ITAlert.Simulation.Commands.csproj">
-      <Project>{2344C836-6B6F-4259-A5A3-E12EAFDBA643}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
       <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
       <Name>PlayGen.Photon.Messages</Name>
