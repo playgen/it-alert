@@ -38,7 +38,7 @@
       <HintPath>..\PlayGen.ITAlert.Photon.Serialization\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
-      <HintPath>..\..\lib\SUGAR\Client\PlayGen.SUGAR.Client.dll</HintPath>
+      <HintPath>..\..\lib\SUGAR\Internal\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
