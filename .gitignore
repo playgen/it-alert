@@ -90,3 +90,9 @@ Server/deploy/bin_Win32/PhotonServer.config
 Server/deploy/bin_Win64/PhotonServer.config
 !Server/nuget/*
 Server/Plugins/lib/PhotonHivePlugin.dll
+
+# Unity Symlinked
+Unity/Assets/SUGAR/*
+Unity/Assets/Server/*
+Unity/Assets/GameWork/*
+Unity/Assets/simulation/*
