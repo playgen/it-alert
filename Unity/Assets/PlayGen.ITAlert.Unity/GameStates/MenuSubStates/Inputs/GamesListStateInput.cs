@@ -19,6 +19,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 		private GameObject _gameListObject;
 		private GameObject _gameItemPrefab;
 		private ButtonList _buttons;
+		private Button _backButton;
+		private Button _refreshButton;
 
 		public event Action JoinGameSuccessEvent;
 		public event Action BackClickedEvent;
@@ -35,16 +37,20 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 			_joinGamePanel = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer");
 			_buttons = new ButtonList("JoinGameContainer/JoinPanelContainer/ButtonPanel");
 
-			var backButton = _buttons.GetButton("BackButtonContainer");
-			backButton.onClick.AddListener(OnBackClick);
+			_backButton = _buttons.GetButton("BackButtonContainer");
+			_refreshButton = _buttons.GetButton("RefreshButtonContainer");
 
-			var refreshButton = _buttons.GetButton("RefreshButtonContainer");
-			refreshButton.onClick.AddListener(OnRefreshClick);
-
-			_gameListObject =
-				GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
+			_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
 			_gameItemPrefab = Resources.Load("GameItem") as GameObject;
 
+			_backButton.onClick.AddListener(OnBackClick);
+			_refreshButton.onClick.AddListener(OnRefreshClick);
+		}
+
+		protected override void OnTerminate()
+		{
+			_backButton.onClick.RemoveListener(OnBackClick);
+			_refreshButton.onClick.RemoveListener(OnRefreshClick);
 		}
 
 		private void OnRefreshClick()

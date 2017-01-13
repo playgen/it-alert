@@ -4,6 +4,7 @@ using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.GameStates.Input
 {
@@ -14,8 +15,12 @@ namespace PlayGen.ITAlert.Unity.GameStates.Input
 		private readonly Client _photonClient;
 
 		private GameObject _mainMenuPanel;
-		private GameObject _createGamePopup;
 		private ButtonList _buttons;
+		private Button _quitButton;
+		private Button _settingsButton;
+		private Button _quickMatchButton;
+		private Button _joinGameButton;
+		private Button _createGameButton;
 
 		public event Action JoinGameEvent;
 		public event Action CreateGameClickedEvent;
@@ -33,20 +38,26 @@ namespace PlayGen.ITAlert.Unity.GameStates.Input
 			_mainMenuPanel = GameObject.Find("MainMenuContainer").transform.GetChild(0).gameObject;
 			_buttons = new ButtonList("MainMenuContainer/MenuPanelContainer/MenuContainer");
 
-			var quitButton = _buttons.GetButton("QuitButtonContainer");
-			quitButton.onClick.AddListener(OnQuitClick);
+			_quitButton = _buttons.GetButton("QuitButtonContainer");
+			_createGameButton = _buttons.GetButton("CreateGameButtonContainer");
+			_joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
+			_quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
+			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
 
-			var createGameButton = _buttons.GetButton("CreateGameButtonContainer");
-			createGameButton.onClick.AddListener(OnCreateGameClick);
+			_quitButton.onClick.AddListener(OnQuitClick);
+			_createGameButton.onClick.AddListener(OnCreateGameClick);
+			_joinGameButton.onClick.AddListener(OnJoinGameClick);
+			_quickMatchButton.onClick.AddListener(OnQuickMatchClick);
+			_settingsButton.onClick.AddListener(OnSettingsClick);
+		}
 
-			var joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
-			joinGameButton.onClick.AddListener(OnJoinGameClick);
-
-			var quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
-			quickMatchButton.onClick.AddListener(OnQuickMatchClick);
-
-			var settingsButton = _buttons.GetButton("SettingsButtonContainer");
-			settingsButton.onClick.AddListener(OnSettingsClick);
+		protected override void OnTerminate()
+		{
+			_quitButton.onClick.RemoveListener(OnQuitClick);
+			_createGameButton.onClick.RemoveListener(OnCreateGameClick);
+			_joinGameButton.onClick.RemoveListener(OnJoinGameClick);
+			_quickMatchButton.onClick.RemoveListener(OnQuickMatchClick);
+			_settingsButton.onClick.RemoveListener(OnSettingsClick);
 		}
 
 		private void OnJoinGameSuccess(ClientRoom clientRoom)

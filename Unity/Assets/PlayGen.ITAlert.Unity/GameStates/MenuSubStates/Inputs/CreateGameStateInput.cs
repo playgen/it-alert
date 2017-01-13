@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 {
@@ -16,6 +17,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 		private readonly Client _photonClient;
 		private GameObject _createGamePanel;
 		private ButtonList _buttons;
+		private Button _createGamePopupButton;
+		private Button _createGameCloseButton;
 
 		public CreateGameStateInput(Client photonClient)
 		{
@@ -28,12 +31,18 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 			_createGamePanel = GameObjectUtilities.FindGameObject("CreateGameContainer/CreatePanelContainer");
 			_buttons = new ButtonList("CreateGameContainer/CreatePanelContainer/ButtonPanel");
 
-			var createGameCloseButton = _buttons.GetButton("BackButtonContainer");
-			createGameCloseButton.onClick.AddListener(OnBackClick);
+			_createGameCloseButton = _buttons.GetButton("BackButtonContainer");
+			_createGamePopupButton = _buttons.GetButton("CreateButtonContainer");
 
-			var createGamePopupButton = _buttons.GetButton("CreateButtonContainer");
-			createGamePopupButton.onClick.AddListener(OnCreateClick);
+			_createGameCloseButton.onClick.AddListener(OnBackClick);
+			_createGamePopupButton.onClick.AddListener(OnCreateClick);
 			// Create Game Listener Goes Here
+		}
+
+		protected override void OnTerminate()
+		{
+			_createGameCloseButton.onClick.RemoveListener(OnBackClick);
+			_createGamePopupButton.onClick.RemoveListener(OnCreateClick);
 		}
 
 		private void OnCreateClick()

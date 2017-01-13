@@ -14,16 +14,23 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 {
 	public class LobbyState : InputTickState
 	{
-		private readonly LobbyController _controller;
-		public event Action GameStartedEvent;
+		public const string StateName = "LobbyState";
 
+		private readonly LobbyController _controller;
 		private readonly Client _photonClient;
 		private readonly VoiceController _voiceController;
-		public const string StateName = "LobbyState";
+
+		public event Action GameStartedEvent;
+
+		public override string Name
+		{
+			get { return StateName; }
+		}
 
 		public LobbyState(LobbyStateInput input, LobbyController controller, Client photonClient, VoiceController voiceController)
 			: base(input)
 		{
+			input.LeaveLobbyClickedEvent += LeaveLobby;
 			_controller = controller;
 			_voiceController = voiceController;
 			_photonClient = photonClient;
@@ -32,18 +39,14 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 		protected override void OnEnter()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += UpdateThisPlayerFromSUGAR;
-
-
 		}
 
 		protected override void OnExit()
 		{
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;
-		}
-
-		public override string Name
-		{
-			get { return StateName; }
+			if (_photonClient.CurrentRoom != null)
+			{
+				_photonClient.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;
+			}
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -90,6 +93,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 					_controller.StartGame(false);
 				}
 			}
+		}
+
+		private void LeaveLobby()
+		{
+			_photonClient.CurrentRoom.Leave();
 		}
 
 		private void UpdateThisPlayerFromSUGAR(List<Player> players)

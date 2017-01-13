@@ -28,7 +28,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Transitions
 
 		protected override void OnExit(string toStateName)
 		{
-			_photonClient.CurrentRoom.Messenger.Unsubscribe((int)_channel, OnMessageRecieved);
+			if (_photonClient.CurrentRoom != null)
+			{
+				_photonClient.CurrentRoom.Messenger.Unsubscribe((int) _channel, OnMessageRecieved);
+			}
 		}
 
 		private void OnMessageRecieved(Message message)
