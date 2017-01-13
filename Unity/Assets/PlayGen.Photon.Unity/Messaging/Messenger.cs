@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Messaging.Interfaces;
+using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.Photon.Unity
 {
@@ -8,12 +9,12 @@ namespace PlayGen.Photon.Unity
     {
         private readonly MessageSubscriptionHandler _subscriptionHandler = new MessageSubscriptionHandler();
         private readonly IMessageSerializationHandler _serializationHandler;
-        private readonly PhotonClient _photonClient;
+        private readonly PhotonClientWrapper _photonClientWrapper;
 
-        public Messenger(IMessageSerializationHandler serializationHandler, PhotonClient photonClient)
+        public Messenger(IMessageSerializationHandler serializationHandler, PhotonClientWrapper photonClientWrapper)
         {
             _serializationHandler = serializationHandler;
-            _photonClient = photonClient;
+            _photonClientWrapper = photonClientWrapper;
         }
 
         public void Subscribe(int channel, Action<Message> messageReceivedCallback)
@@ -29,7 +30,7 @@ namespace PlayGen.Photon.Unity
         public void SendMessage(Message message)
         {
             var serializedMessage = _serializationHandler.Serialize(message);
-            _photonClient.RaiseEvent((byte)Photon.Messaging.EventCode.Message, serializedMessage);
+            _photonClientWrapper.RaiseEvent((byte)Photon.Messaging.EventCode.Message, serializedMessage);
         }
         
         public bool TryProcessMessage(byte[] content)

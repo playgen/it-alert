@@ -25,14 +25,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 		}
 
-		protected override void OnEnter(string fromStateName)
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 
 			Messenger.SendAllMessage(new Messages.Game.States.FeedbackMessage());
 		}
 
-		protected override void OnExit(string toStateName)
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.Feedback, ProcessFeedbackMessage);
 		}
