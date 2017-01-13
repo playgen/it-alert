@@ -32,8 +32,9 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 		private bool _ready;
 		private int _lobbyPlayerMax;
 		private List<Color> _playerColors;
+		private Button _backButton;
 
-		public event Action LeaveLobbyEvent;
+		public event Action LeaveLobbyClickedEvent;
 
 		public LobbyStateInput(LobbyController controller, Client photonClient)
 		{
@@ -46,22 +47,26 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_lobbyPanel = GameObject.Find("LobbyContainer").transform.GetChild(0).gameObject;
 			_buttons = new ButtonList("LobbyContainer/LobbyPanelContainer/ButtonPanel");
 
-			var backButton = _buttons.GetButton("BackButtonContainer");
-			backButton.onClick.AddListener(OnBackButtonClick);
-
+			_backButton = _buttons.GetButton("BackButtonContainer");
 			_readyButton = _buttons.GetButton("ReadyButtonContainer");
-			_readyButton.onClick.AddListener(OnReadyButtonClick);
-
 			_changeColorButton = _buttons.GetButton("ChangeColourButtonContainer");
-			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
+			
+			_roomNameObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/RoomNameContainer/RoomName");
+			_playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
 
-			_roomNameObject =
-				GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/RoomNameContainer/RoomName");
-
-			_playerListObject =
-				GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
 			_playerItemPrefab = Resources.Load("PlayerItem") as GameObject;
 			_playerSpacePrefab = Resources.Load("PlayerSpace") as GameObject;
+
+			_backButton.onClick.AddListener(OnBackButtonClick);
+			_readyButton.onClick.AddListener(OnReadyButtonClick);
+			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
+		}
+
+		protected override void OnTerminate()
+		{
+			_backButton.onClick.RemoveListener(OnBackButtonClick);
+			_readyButton.onClick.RemoveListener(OnReadyButtonClick);
+			_changeColorButton.onClick.RemoveListener(OnColorChangeButtonClick);
 		}
 
 		protected override void OnEnter()
@@ -70,7 +75,6 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_controller.RefreshSuccessEvent += UpdatePlayerList;
 
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
-			_photonClient.LeftRoomEvent += OnLeaveSuccess;
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
 
 			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
@@ -86,8 +90,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_controller.RefreshSuccessEvent -= UpdatePlayerList;
 
 			_photonClient.JoinedRoomEvent -= OnJoinedRoom;
-			_photonClient.LeftRoomEvent -= OnLeaveSuccess;
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= OnPlayersChanged;
+
+			if (_photonClient.CurrentRoom != null)
+			{
+				_photonClient.CurrentRoom.PlayerListUpdatedEvent -= OnPlayersChanged;
+			}
 
 			_lobbyPanel.SetActive(false);
 		}
@@ -104,7 +111,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 
 		private void OnBackButtonClick()
 		{
-			LeaveLobbyEvent();
+			LeaveLobbyClickedEvent();
 		}
 
 		private void OnColorChangeButtonClick()
@@ -117,12 +124,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 		{
 			CommandQueue.AddCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
 		}
-
-		private void OnLeaveSuccess()
-		{
-			LeaveLobbyEvent();
-		}
-
+		
 		private void SetRoomName(string name)
 		{
 			_roomNameObject.GetComponent<Text>().text = name;

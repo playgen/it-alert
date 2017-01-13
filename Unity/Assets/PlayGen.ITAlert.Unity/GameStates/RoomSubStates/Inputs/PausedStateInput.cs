@@ -2,6 +2,7 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 {
@@ -13,6 +14,9 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 
 		private GameObject _menuPanel;
 		private ButtonList _buttons;
+		private Button _quitButton;
+		private Button _continueButton;
+		private Button _settingsButton;
 
 		protected override void OnInitialize()
 		{
@@ -20,14 +24,20 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_menuPanel = GameObject.Find("PauseContainer").transform.GetChild(0).gameObject;
 			_buttons = new ButtonList("PauseContainer/PausePanelContainer/PauseContainer");
 
-			var continueButton = _buttons.GetButton("ContinueButtonContainer");
-			continueButton.onClick.AddListener(OnContinueClick);
+			_continueButton = _buttons.GetButton("ContinueButtonContainer");
+			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
+			_quitButton = _buttons.GetButton("QuitButtonContainer");
 
-			var settingsButton = _buttons.GetButton("SettingsButtonContainer");
-			settingsButton.onClick.AddListener(OnSettingsClick);
+			_continueButton.onClick.AddListener(OnContinueClick);
+			_settingsButton.onClick.AddListener(OnSettingsClick);
+			_quitButton.onClick.AddListener(OnQuitClick);
+		}
 
-			var quitButton = _buttons.GetButton("QuitButtonContainer");
-			quitButton.onClick.AddListener(OnQuitClick);
+		protected override void OnTerminate()
+		{
+			_continueButton.onClick.RemoveListener(OnContinueClick);
+			_settingsButton.onClick.RemoveListener(OnSettingsClick);
+			_quitButton.onClick.RemoveListener(OnQuitClick);
 		}
 
 		private void OnContinueClick()

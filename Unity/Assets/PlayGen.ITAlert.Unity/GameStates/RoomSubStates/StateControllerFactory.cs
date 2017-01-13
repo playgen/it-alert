@@ -54,7 +54,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 			var initializingTransition = new OnMessageTransition(photonClient, Channels.GameState, typeof(InitializingMessage), InitializingState.StateName);
 			var toMenuStateTransition = new OnEventTransition(MenuState.StateName);
 
-			input.LeaveLobbyEvent += toMenuStateTransition.ChangeState;
+			photonClient.LeftRoomEvent += toMenuStateTransition.ChangeState;
 
 			state.AddTransitions(initializingTransition, toMenuStateTransition);
 

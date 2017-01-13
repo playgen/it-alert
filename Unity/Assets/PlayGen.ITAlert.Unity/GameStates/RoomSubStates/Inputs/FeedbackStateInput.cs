@@ -107,6 +107,12 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_sendButton.onClick.AddListener(OnSendClick);
 		}
 
+
+		protected override void OnTerminate()
+		{
+			_sendButton.onClick.RemoveListener(OnSendClick);
+		}
+
 		protected override void OnEnter()
 		{
 			PopulateFeedback(_photonClient.CurrentRoom.Players, _photonClient.CurrentRoom.Player);
