@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Engine.Newtonsoft.Json")]
+[assembly: AssemblyTitle("Engine.Newtonsoft.Json.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Engine.Newtonsoft.Json")]
+[assembly: AssemblyProduct("Engine.Newtonsoft.Json.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7f39c40c-9acd-42b1-ae6f-470a759e98ce")]
+[assembly: Guid("6116c853-caf1-4fc4-be27-f02661cd374e")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,8 +34,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
-
-// hacky!
-[assembly: InternalsVisibleTo("Engine.Newtonsoft.Json.Tests")]
-[assembly: InternalsVisibleTo("Engine.Serialization")]
-[assembly: InternalsVisibleTo("Engine.Serialization.Tests")]

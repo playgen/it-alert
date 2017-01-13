@@ -17,19 +17,25 @@ namespace Engine.Serialization
 		{
 			var settings = new JsonSerializerSettings();
 			settings.Converters.Add(new StringEnumConverter());
+
 			// ignore reference loops as these will be taken care of
-			settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+			// settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; // there should be no more reference loops!
+			
 			// minimize the size of the output
 			settings.DefaultValueHandling = DefaultValueHandling.Include;
 			settings.NullValueHandling = NullValueHandling.Ignore;
 			settings.Formatting = Formatting.None;
+			
 			// deal with references
-			settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor;
-			settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+			// settings.ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor; // this should not be necessary if we resolve from DI
+			// settings.PreserveReferencesHandling = PreserveReferencesHandling.None;
+			
 			// polymorphism
 			settings.TypeNameHandling = TypeNameHandling.Auto;
+			
 			// big graph
 			settings.MaxDepth = int.MaxValue;
+
 
 			return settings;
 		}
@@ -74,56 +80,27 @@ namespace Engine.Serialization
 
 		#endregion
 
-		public static byte[] Serialize(ECS obj)
+		public static byte[] Serialize(ECS ecs)
 		{
 			var serializerSettings = GetDefaultSettings();
-			serializerSettings.PreserveReferencesHandling = PreserveReferencesHandling.Objects;
 
 			var serializer = new ECSSerializer();
-			var serializedString = serializer.SerializeObject(obj, serializerSettings);
+			var serializedString = serializer.SerializeObject(ecs.EntityRegistry.Entities.Values, serializerSettings);
 
 			return Encoding.UTF8.GetBytes(serializedString);
 		}
 
-		public byte[] SerializeDifferential(ECS obj)
+		public static Entity[] DeserializeEntities(ECS ecs, byte[] entityCollectionBytes)
 		{
 			var serializerSettings = GetDefaultSettings();
-
-			var contractResolver = new ECSContractResolver(StateLevel.Differential, obj);
-			serializerSettings.ContractResolver = contractResolver;
-
-			//serializerSettings.ReferenceResolverProvider = () => new ECSReferenceResolver(obj);
-
-			var serializedString = SerializeObject(obj, serializerSettings);
-
-			return Encoding.UTF8.GetBytes(serializedString);
-		}
-
-		public static ECS Deserialize(byte[] simulationBytes)
-		{
-			var serializerSettings = GetDefaultSettings();
-
-			var objString = Encoding.UTF8.GetString(simulationBytes);
+			serializerSettings.ContractResolver = new ECSContractResolver(ecs);
+			
+			var objString = Encoding.UTF8.GetString(entityCollectionBytes);
 			var serializer = new ECSSerializer();
-			var obj = serializer.DeserializeObject<ECS>(objString, serializerSettings);
+			var obj = serializer.DeserializeObject<Entity[]>(objString, serializerSettings);
 
-			//obj.OnDeserialized();
+			//ecs.OnDeserialized();
 			return obj;
-		}
-
-		public void DeserializeDifferential(byte[] simulationBytes, ECS entityRegistry)
-		{
-			var serializerSettings = GetDefaultSettings();
-
-			var contractResolver = new ECSContractResolver(StateLevel.Full, entityRegistry);
-			serializerSettings.ContractResolver = contractResolver;
-
-			var objString = Encoding.UTF8.GetString(simulationBytes);
-			var obj = DeserializeObject<ECS>(objString, serializerSettings);
-
-			contractResolver.ResolveEntityReferences();
-			// onDeserialized call is not necessary when process has been done differntially
-			//obj.OnDeserialized();
 		}
 
 		#region compression
