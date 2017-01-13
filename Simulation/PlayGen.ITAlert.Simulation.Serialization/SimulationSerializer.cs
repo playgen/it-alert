@@ -25,17 +25,6 @@ namespace PlayGen.ITAlert.Simulation.Serialization
 	{
 		return null; // ECSSerializer.Deserialize(simulationBytes);
 	}
-
-	public byte[] SerializeDifferential(Simulation simulation)
-	{
-		return _serializer.SerializeDifferential(simulation);
-	}
-
-	public void DeserializeDifferential(byte[] simulationBytes, Simulation simulation)
-	{
-		_serializer.DeserializeDifferential(simulationBytes, simulation);
-	}
-
 }
 
 }

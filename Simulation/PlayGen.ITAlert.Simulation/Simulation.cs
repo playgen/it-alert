@@ -17,6 +17,7 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
+using Zenject;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -30,11 +31,12 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Vector GraphSize { get; private set; }
 
-		public Simulation(IEntityRegistry entityRegistry, 
+		public Simulation(DiContainer container,
+			IEntityRegistry entityRegistry, 
 			IComponentRegistry componentRegistry, 
 			ISystemRegistry systemRegistry,
 			SimulationConfiguration configuration)
-			: base(entityRegistry, componentRegistry, systemRegistry)
+			: base(container, entityRegistry, componentRegistry, systemRegistry)
 		{
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
 			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));

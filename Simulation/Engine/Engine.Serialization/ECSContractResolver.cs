@@ -8,149 +8,145 @@ using Newtonsoft.Json.Serialization;
 
 namespace Engine.Serialization
 {
+	// ReSharper disable once InconsistentNaming
 	internal class ECSContractResolver : DefaultContractResolver
 	{
 
 		private readonly Dictionary<Type, List<JsonProperty>> _propertyCache = new Dictionary<Type, List<JsonProperty>>();
 
-		private readonly ECS _entityRegistry;
+		private readonly ECS _ecs;
 
-		private StateLevel Level { get; }
-
-
-		private readonly List<Action> _entityReferenceResolverQueue = new List<Action>();
-
-		public ECSContractResolver(StateLevel level, ECS registry)
+		public ECSContractResolver(ECS registry)
 		{
-			_entityRegistry = registry;
-			Level = level;
+			_ecs = registry;
 		}
 
 		public override JsonContract ResolveContract(Type type)
 		{
 			var contract = base.ResolveContract(type);
 
-			if (type.IsEntity())
-			{
-				//contract.IsReference = type.IsEntity();
-
-			}
+			contract.DefaultCreator = () => DefaultCreator(type);
 
 			return contract;
 		}
 
-		protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+		private object DefaultCreator(Type type)
 		{
-			return base.CreateDictionaryContract(objectType);
+			return _ecs.Container.Instantiate(type);
 		}
 
-		protected override JsonArrayContract CreateArrayContract(Type objectType)
-		{
-			var contract =  base.CreateArrayContract(objectType);
+		//protected override JsonDictionaryContract CreateDictionaryContract(Type objectType)
+		//{
+		//	return base.CreateDictionaryContract(objectType);
+		//}
 
-			//if (objectType.IsEntityCollection())
-			//{
-			//	contract.It
-			//}
+		//protected override JsonArrayContract CreateArrayContract(Type objectType)
+		//{
+		//	var contract =  base.CreateArrayContract(objectType);
 
-			return contract;
-		}
+		//	//if (objectType.IsEntityCollection())
+		//	//{
+		//	//	contract.It
+		//	//}
 
-		private void AttachEntityValueProviderDeserializationCallback(ECSValueProvider valueProvider)
-		{
-			valueProvider.DeserializingEntityReference += ValueProviderOnDeserializingEntityReference;
-		}
+		//	return contract;
+		//}
 
-		private void ValueProviderOnDeserializingEntityReference(object sender, DeserializingEntityReferenceEventArgs deserializingEntityReferenceEventArgs)
-		{
-			_entityReferenceResolverQueue.Add(deserializingEntityReferenceEventArgs.Setter);
-		}
+		//private void AttachEntityValueProviderDeserializationCallback(ECSValueProvider valueProvider)
+		//{
+		//	valueProvider.DeserializingEntityReference += ValueProviderOnDeserializingEntityReference;
+		//}
 
-		public void ResolveEntityReferences()
-		{
-			foreach (var entityReferenceResolveAction in _entityReferenceResolverQueue)
-			{
-				entityReferenceResolveAction();
-			}
-			_entityReferenceResolverQueue.Clear();
-		}
+		//private void ValueProviderOnDeserializingEntityReference(object sender, DeserializingEntityReferenceEventArgs deserializingEntityReferenceEventArgs)
+		//{
+		//	_entityReferenceResolverQueue.Add(deserializingEntityReferenceEventArgs.Setter);
+		//}
+
+		//public void ResolveEntityReferences()
+		//{
+		//	foreach (var entityReferenceResolveAction in _entityReferenceResolverQueue)
+		//	{
+		//		entityReferenceResolveAction();
+		//	}
+		//	_entityReferenceResolverQueue.Clear();
+		//}
 
 
 		#region property resolver
 
-		protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
-		{
-			List<JsonProperty> properties;
-			if (_propertyCache.TryGetValue(type, out properties) == false)
-			{
-				var typeIsEntity = type.IsEntity();
-				var orderedProperties = new List<OrderedProperty>();
+		//protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
+		//{
+		//	List<JsonProperty> properties;
+		//	if (_propertyCache.TryGetValue(type, out properties) == false)
+		//	{
+		//		var typeIsEntity = type.IsEntity();
+		//		var orderedProperties = new List<OrderedProperty>();
 				
-				var currentType = type;
-				while (currentType != null && currentType != typeof(object))
-				{
-					var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+		//		var currentType = type;
+		//		while (currentType != null && currentType != typeof(object))
+		//		{
+		//			var props = currentType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 					
-					foreach (var propertyInfo in props)
-					{
-						var syncStateAttribute =
-							propertyInfo.GetCustomAttributes(true)
-								.OfType<SyncStateAttribute>()
-								.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
-						if (syncStateAttribute == null)
-						{
-							continue;
-						}
+		//			foreach (var propertyInfo in props)
+		//			{
+		//				var syncStateAttribute =
+		//					propertyInfo.GetCustomAttributes(true)
+		//						.OfType<SyncStateAttribute>()
+		//						.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
+		//				if (syncStateAttribute == null)
+		//				{
+		//					continue;
+		//				}
 
-						var jsonProperty = base.CreateProperty(propertyInfo, memberSerialization);
-						jsonProperty.Writable = true;
-						jsonProperty.Readable = true;
+		//				var jsonProperty = base.CreateProperty(propertyInfo, memberSerialization);
+		//				jsonProperty.Writable = true;
+		//				jsonProperty.Readable = true;
 
-						if ((propertyInfo.PropertyType.IsEntityCollection() || propertyInfo.PropertyType.IsEntity()) 
-							&& type.IsECS() == false)
-						{
-							jsonProperty.ValueProvider = new ECSValueProvider(_entityRegistry, propertyInfo);
-						}
+		//				if ((propertyInfo.PropertyType.IsEntityCollection() || propertyInfo.PropertyType.IsEntity()) 
+		//					&& type.IsECS() == false)
+		//				{
+		//					jsonProperty.ValueProvider = new ECSValueProvider(_ecs, propertyInfo);
+		//				}
 
-						orderedProperties.Add(new OrderedProperty()
-						{
-							Property = jsonProperty,
-							Order = syncStateAttribute.Order
-						});
-					}
+		//				orderedProperties.Add(new OrderedProperty()
+		//				{
+		//					Property = jsonProperty,
+		//					Order = syncStateAttribute.Order
+		//				});
+		//			}
 
-					foreach (var fieldInfo in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-					{
-						var syncStateAttribute = fieldInfo.GetCustomAttributes(true)
-								.OfType<SyncStateAttribute>()
-								.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
-						if (syncStateAttribute == null)
-						{
-							continue;
-						}
-						var jsonProperty = base.CreateProperty(fieldInfo, memberSerialization);
-						jsonProperty.Writable = true;
-						jsonProperty.Readable = true;
+		//			foreach (var fieldInfo in currentType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
+		//			{
+		//				var syncStateAttribute = fieldInfo.GetCustomAttributes(true)
+		//						.OfType<SyncStateAttribute>()
+		//						.SingleOrDefault(ssa => Level.IncludesFlag(ssa.Levels));
+		//				if (syncStateAttribute == null)
+		//				{
+		//					continue;
+		//				}
+		//				var jsonProperty = base.CreateProperty(fieldInfo, memberSerialization);
+		//				jsonProperty.Writable = true;
+		//				jsonProperty.Readable = true;
 
-						if (fieldInfo.FieldType.IsEntity() && type.IsECS() == false)
-						{
-							jsonProperty.ValueProvider = new ECSValueProvider(_entityRegistry, fieldInfo);
-						}
+		//				if (fieldInfo.FieldType.IsEntity() && type.IsECS() == false)
+		//				{
+		//					jsonProperty.ValueProvider = new ECSValueProvider(_ecs, fieldInfo);
+		//				}
 
-						orderedProperties.Add(new OrderedProperty()
-						{
-							Property = jsonProperty,
-							Order = syncStateAttribute.Order
-						});
-					}
-					currentType = currentType.BaseType;
-				}
-				orderedProperties.Sort();
-				properties = orderedProperties.Select(op => op.Property).ToList();
-				_propertyCache.Add(type, properties);
-			}
-			return properties;
-		}
+		//				orderedProperties.Add(new OrderedProperty()
+		//				{
+		//					Property = jsonProperty,
+		//					Order = syncStateAttribute.Order
+		//				});
+		//			}
+		//			currentType = currentType.BaseType;
+		//		}
+		//		orderedProperties.Sort();
+		//		properties = orderedProperties.Select(op => op.Property).ToList();
+		//		_propertyCache.Add(type, properties);
+		//	}
+		//	return properties;
+		//}
 
 		#endregion
 	}

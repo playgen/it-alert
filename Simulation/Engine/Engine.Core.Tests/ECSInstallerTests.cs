@@ -120,8 +120,8 @@ namespace Engine.Core.Tests
 		// ReSharper disable once InconsistentNaming
 		public class TestECS : ECS
 		{
-			public TestECS(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry, ISystemRegistry systemRegistry)
-				: base(entityRegistry, componentRegistry, systemRegistry)
+			public TestECS(DiContainer container, IEntityRegistry entityRegistry, IComponentRegistry componentRegistry, ISystemRegistry systemRegistry)
+				: base(container, entityRegistry, componentRegistry, systemRegistry)
 			{
 			}
 		}

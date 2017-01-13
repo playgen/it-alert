@@ -6,6 +6,8 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
+using Zenject;
+
 //using System.Reactive.Disposables;
 
 namespace Engine
@@ -16,6 +18,8 @@ namespace Engine
 		private bool _disposed;
 
 		private int _tick;
+
+		public DiContainer Container { get; }
 
 		/// <summary>
 		/// This is where the entity pool lives and new entities are created
@@ -44,7 +48,8 @@ namespace Engine
 		/// </summary>
 		protected Dictionary<string, Archetype> Archetypes { get; private set; }
 
-		protected ECS(IEntityRegistry entityRegistry,
+		protected ECS(DiContainer container,
+			IEntityRegistry entityRegistry,
 			IComponentRegistry componentRegistry,
 			ISystemRegistry systemRegistry)
 		{
