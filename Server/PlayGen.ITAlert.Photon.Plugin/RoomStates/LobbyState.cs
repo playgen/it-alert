@@ -7,7 +7,6 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
 using PlayGen.ITAlert.Photon.Players.Extensions;
@@ -28,19 +27,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 		}
 
-		protected override void OnEnter(string fromStateName)
+		protected override void OnEnter()
 		{
 			Messenger.Subscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
-
-			ResetAllPlayerStatuses();
-
+			
 			Messenger.SendAllMessage(new LobbyMessage
 			{
 				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
 			});
+
+			PlayerManager.ChangeAllState((int)State.NotReady);
 		}
 
-		protected override void OnExit(string toStateName)
+		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
 		}
@@ -56,16 +55,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			throw new Exception($"Unhandled Room Message: ${message}");
 		}
-
-		private void ResetAllPlayerStatuses()
-		{
-			PlayerManager.ChangeAllState((int)State.NotReady);
-			Messenger.SendAllMessage(new ListedPlayersMessage
-			{
-				Players = PlayerManager.Players,
-			});
-		}
-
+		
 		private void StartGame(bool force, bool close)
 		{
 			if (force || PlayerManager.Players.GetCombinedStates() == State.Ready)

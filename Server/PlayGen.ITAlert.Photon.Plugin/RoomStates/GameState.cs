@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 		}
 
-		protected override void OnEnter(string fromStateName)
+		protected override void OnEnter()
 		{
 			SugarController.StartMatch();
 			SugarController.AddMatchData("PlayerCount", PlayerManager.Players.Count);
@@ -42,7 +42,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			_stateController.Initialize(InitializingState.StateName);
 		}
 
-		protected override void OnExit(string toStateName)
+		protected override void OnExit()
 		{
 			_stateController.Terminate();
 			_simulation.Dispose();

@@ -19,8 +19,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			var controller = new RoomStateController(lobbyState, gameState);
 
 			gameState.ParentStateController = controller;
-			controller.Initialize(LobbyState.StateName);
-
+			
 			return controller;
 		}
 

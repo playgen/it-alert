@@ -6,14 +6,19 @@ namespace PlayGen.Photon.Plugin
 {
 	public class RoomStateController : EventStateController<RoomState>
 	{
-		private readonly string _startState;
+		private readonly string _startStateName;
 
 		public RoomStateController(params RoomState[] states) : base(states)
 		{
+			_startStateName = states[0].Name;
 		}
 
 		public void OnCreate(ICreateGameCallInfo info)
 		{
+			// Has to be called on create as photon plugin isn't fully initialized in constructor
+			// and will throw a null ref exception if plugin.Broadcast is called.
+			Initialize(_startStateName);	
+
 			States[ActiveStateName].OnCreate(info);
 		}
 
