@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.5.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.5.0\lib\net35\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.6.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.6.0\lib\net35\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,15 +53,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>PlayGen.Engine</Name>
+      <Name>Engine.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{be8e1e8b-3a04-4371-a9aa-4a0fb324addf}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
-      <Name>PlayGen.ITAlert.Configuration</Name>
+      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
       <Project>{D5D14E17-C9D5-4AB2-AB74-96F95B50614F}</Project>
@@ -72,8 +72,8 @@
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
-      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
-      <Name>PlayGen.ITAlert.TestData</Name>
+      <Project>{50651079-AC3A-447F-A710-E9049F3D1565}</Project>
+      <Name>PlayGen.ITAlert.Simulation.TestData</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
