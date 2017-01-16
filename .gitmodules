@@ -1,6 +1,3 @@
-[submodule "Simulation/High-Speed-Priority-Queue-for-C-Sharp"]
-	path = Simulation/High-Speed-Priority-Queue-for-C-Sharp
-	url = git@github.com:playgen/High-Speed-Priority-Queue-for-C-Sharp.git
 [submodule "Simulation/Engine"]
 	path = Simulation/Engine
 	url = git@gitlab.com:ephemeris/ecs-alpha.git
