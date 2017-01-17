@@ -4,7 +4,6 @@ using System.Linq;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Serialization;
 using PlayGen.ITAlert.Simulation.TestData;
 
 namespace PlayGen.ITAlert.Simulation.CLI
