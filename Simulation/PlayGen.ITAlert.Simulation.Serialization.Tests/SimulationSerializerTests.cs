@@ -18,7 +18,6 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 
 			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 2, 2, 1);
 
-			var serializer = new SimulationSerializer();
 
 			throw new NotImplementedException();
 			//var simBytes = serializer.SerializeSimulation(originalSimulation);
@@ -41,11 +40,11 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var randomBytes = new byte[9999];
 			random.NextBytes(randomBytes);
 
-			var compressedRandomBytes = ECSSerializer.Compress(randomBytes);
+			var compressedRandomBytes = ECSConverter.Compress(randomBytes);
 
 			Assert.False(compressedRandomBytes.SequenceEqual(randomBytes));
 
-			var decompressedRandomBytes = ECSSerializer.Decompress(compressedRandomBytes);
+			var decompressedRandomBytes = ECSConverter.Decompress(compressedRandomBytes);
 
 			Assert.True(decompressedRandomBytes.SequenceEqual(randomBytes));
 		}
