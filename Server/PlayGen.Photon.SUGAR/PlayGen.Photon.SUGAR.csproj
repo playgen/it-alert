@@ -33,24 +33,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\SUGAR\Client\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\PlayGen.ITAlert.Photon.Serialization\bin\Debug\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
-      <HintPath>..\..\lib\SUGAR\Client\PlayGen.SUGAR.Client.dll</HintPath>
+      <HintPath>..\..\lib\SUGAR\Internal\PlayGen.SUGAR.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="SUGARConfiguration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -58,7 +54,9 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Controller.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.json*" "$(SolutionDir)deploy\Plugins\PlayGen.ITAlert.Photon.Plugin\bin\"</PostBuildEvent>

@@ -7,12 +7,15 @@ using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.ITAlert.Photon.Messages.Simulation;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
-using PlayGen.ITAlert.TestData;
 using System.Collections.Generic;
-using PlayGen.ITAlert.Photon.Messages.Simulation.ServerState;
+using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.ITAlert.TestData;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -27,8 +30,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		private CommandResolver _resolver;
 		private int _tickIntervalMS = 100;
 		private object _tickTimer;
-
+		
 		public override string Name => StateName;
+
+		public event Action GameOverEvent;
 
 		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
 			: base(photonPlugin, messenger, playerManager, sugarController)
@@ -37,23 +42,42 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			_simulation = simulation;
 		}
 
-		public override void Enter()
+		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
+			Messenger.Subscribe((int)Channels.GameState, ProcessGameStateMessage);
+			Messenger.Subscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
 
-			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
 			_resolver = new CommandResolver(_simulation);
 
-			Messenger.SendAllMessage(new Messages.Simulation.ServerState.PlayingMessage());
-			_tickTimer = CreateTickTimer();
+			Messenger.SendAllMessage(new PlayingMessage());
 		}
 
-		public override void Exit()
+		protected override void OnExit()
 		{
+			Messenger.Unsubscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Unsubscribe((int)Channels.GameState, ProcessGameStateMessage);
+
 			DestroyTimer(_tickTimer);
-			Messenger.Unsubscribe((int)Channels.SimulationCommands, ProcessSimulationCommandMessage);
 			_resolver = null;
 			_commandSequence = null;
+		}
+
+		private void ProcessGameStateMessage(Message message)
+		{
+			var playingMessage = message as PlayingMessage;
+			if (playingMessage != null)
+			{
+				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
+				player.State = (int)State.Playing;
+				PlayerManager.UpdatePlayer(player);
+
+				if (PlayerManager.Players.GetCombinedStates() == State.Playing)
+				{
+					_tickTimer = CreateTickTimer();
+				}
+				return;
+			}
 		}
 
 		private void ProcessSimulationCommandMessage(Message message)
@@ -76,13 +100,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 			_simulation.Tick();
 
-			if (_simulation.IsGameFailure)
+			if (_simulation.IsGameFailure 
+				|| (!_simulation.HasViruses && !_commandSequence.HasPendingCommands))
 			{
-				ChangeState(FinalizingState.StateName);
-			}
-			else if (!_simulation.HasViruses && !_commandSequence.HasPendingCommands)
-			{
-				ChangeState(FinalizingState.StateName);
+				GameOverEvent();
 			}
 			else
 			{

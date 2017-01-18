@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using POpusCodec.Enums;
 using ExitGames.Client.Photon.Voice;
-using System;
 
 /// <summary>
 /// Collection of Photon Voice settings. Add single instance to the scene and set values in inspector.

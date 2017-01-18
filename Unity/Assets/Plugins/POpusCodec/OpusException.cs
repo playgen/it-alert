@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using POpusCodec.Enums;
 
 namespace POpusCodec
 {
-    public class OpusException : Exception
+	public class OpusException : Exception
     {
         private OpusStatusCode _statusCode = OpusStatusCode.OK;
 

@@ -9,10 +9,10 @@
 
 namespace Photon.LoadBalancing.MasterServer.Lobby
 {
-	using System.Collections;
+    using System.Collections;
 
-	public interface IGameListSubscription
-	{
-		Hashtable GetGameList();
-	}
+    public interface IGameListSubscription
+    {
+        Hashtable GetGameList();
+    }
 }
