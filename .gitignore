@@ -96,3 +96,12 @@ Unity/Assets/SUGAR/*
 Unity/Assets/Server/*
 Unity/Assets/GameWork/*
 Unity/Assets/simulation/*
+
+**/*.dll
+**/*.pdb
+!lib/**/*.dll
+!lib/**/*.pdb
+
+lib/**/*.mdb
+lib/**/*.meta
+!lib/**/*.dll.meta
