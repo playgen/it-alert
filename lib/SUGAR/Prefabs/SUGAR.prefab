@@ -172,8 +172,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _baseAddress: 
-  _gameToken: 
-  _gameId: 0
+  _gameToken: it-alert
+  _gameId: 1
   _useAchievements: 1
   _useLeaderboards: 1
 --- !u!114 &114000012266143498
@@ -248,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _loginUserInterface: {fileID: 114000014259607728, guid: bb12776c4b045cc45ab0ef3d57d1d79d,
     type: 2}
-  _allowAutoLogin: 0
+  _allowAutoLogin: 1
   _allowRegister: 0
   _defaultSourceToken: SUGAR
 --- !u!223 &223000012450321626
