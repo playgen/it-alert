@@ -9,13 +9,13 @@
 
 namespace Photon.LoadBalancing.Events
 {
-	public enum EventCode
-	{
-		GameList = 230,
-		GameListUpdate = 229,
-		QueueState = 228,
-		AppStats = 226,
-		GameServerOffline = 225,
-		LobbyStats = 224,
-	}
+    public enum EventCode
+    {
+        GameList = 230,
+        GameListUpdate = 229,
+        QueueState = 228,
+        AppStats = 226,
+        GameServerOffline = 225,
+        LobbyStats = 224,
+    }
 }

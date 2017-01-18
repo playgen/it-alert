@@ -48,36 +48,41 @@ namespace PlayGen.Photon.SUGAR
 			_match = _sugarClient.Match.End(_match.Id);
 		}
 
-		public void AddMatchData(string key, long value, int? playerExternalId = null)
+		public void AddMatchData(string key, long value, int? playerSugarId = null)
 		{
-			AddMatchData(key, value.ToString(), EvaluationDataType.Long, playerExternalId);
+			AddMatchData(key, value.ToString(), EvaluationDataType.Long, playerSugarId);
 		}
 
-		public void AddMatchData(string key, string value, int? playerExternalId = null)
+		public void AddMatchData(string key, string value, int? playerSugarId = null)
 		{
-			AddMatchData(key, value, EvaluationDataType.String, playerExternalId);
+			AddMatchData(key, value, EvaluationDataType.String, playerSugarId);
 		}
 
-		public void AddMatchData(string key, bool value, int? playerExternalId = null)
+		public void AddMatchData(string key, bool value, int? playerSugarId = null)
 		{
-			AddMatchData(key, value.ToString(), EvaluationDataType.Boolean, playerExternalId);
+			AddMatchData(key, value.ToString(), EvaluationDataType.Boolean, playerSugarId);
 		}
 
-		public void AddMatchData(string key, float value, int? playerExternalId = null)
+		public void AddMatchData(string key, float value, int? playerSugarId = null)
 		{
-			AddMatchData(key, value.ToString(), EvaluationDataType.Float, playerExternalId);
+			AddMatchData(key, value.ToString(), EvaluationDataType.Float, playerSugarId);
 		}
 
-		private void AddMatchData(string key, string value, EvaluationDataType dataType, int? playerExternalId = null)
+		public void AddMatchRankingData(string category, int rank, int playerSugarId)
 		{
-			if (playerExternalId == null)
+			AddMatchData($"RANKING_{category}", rank, playerSugarId);
+		}
+
+		private void AddMatchData(string key, string value, EvaluationDataType dataType, int? playerSugarId = null)
+		{
+			if (playerSugarId == null)
 			{
-				playerExternalId = _loggedInAccount.User.Id;
+				playerSugarId = _loggedInAccount.User.Id;
 			}
 
 			_sugarClient.Match.AddData(new EvaluationDataRequest
 			{
-				CreatingActorId = playerExternalId,
+				CreatingActorId = playerSugarId,
 				EvaluationDataType = dataType,
 				GameId = _sugarConfig.GameId,
 				Key = key,

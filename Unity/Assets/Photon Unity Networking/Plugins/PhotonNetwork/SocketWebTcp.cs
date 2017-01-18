@@ -1,17 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SocketTcp.cs" company="Exit Games GmbH">
-//   Copyright (c) Exit Games GmbH.  All rights reserved.
-// </copyright>
-// <summary>
-//   Internal class to encapsulate the network i/o functionality for the realtime libary.
-// </summary>
-// <author>developer@exitgames.com</author>
-// --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections;
-using UnityEngine;
-using SupportClassPun = ExitGames.Client.Photon.SupportClass;
 
 #if UNITY_WEBGL || UNITY_XBOXONE
 

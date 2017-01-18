@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace POpusCodec.Enums
+﻿namespace POpusCodec.Enums
 {
-    public enum Complexity : int
+	public enum Complexity : int
     {
         Complexity0 = 0,
         Complexity1 = 1,

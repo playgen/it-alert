@@ -9,18 +9,18 @@
 
 namespace Photon.LoadBalancing.Events
 {
-	#region using directives
+    #region using directives
 
-	using System.Collections;
+    using System.Collections;
 
-	using Photon.LoadBalancing.Operations;
-	using Photon.SocketServer.Rpc;
+    using Photon.LoadBalancing.Operations;
+    using Photon.SocketServer.Rpc;
 
-	#endregion
+    #endregion
 
-	public class GameListEvent : DataContract
-	{
-		[DataMember(Code = (byte)ParameterCode.GameList)]
-		public Hashtable Data { get; set; }
-	}
+    public class GameListEvent : DataContract
+    {
+        [DataMember(Code = (byte)ParameterCode.GameList)]
+        public Hashtable Data { get; set; }
+    }
 }

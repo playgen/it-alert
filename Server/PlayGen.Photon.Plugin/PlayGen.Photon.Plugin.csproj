@@ -33,14 +33,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GameWork.Core.Commands">
-      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.Commands.dll</HintPath>
+    <Reference Include="GameWork.Core.States, Version=1.0.6221.19378, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
-    <Reference Include="GameWork.Core.Interfaces">
-      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.Interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="GameWork.Core.States">
-      <HintPath>..\..\lib\GameWork.Core\GameWork.Core.States.dll</HintPath>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.1\lib\net40\NLog.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PhotonLoadbalancingApi">
       <HintPath>..\lib\PhotonLoadbalancingApi.dll</HintPath>
@@ -49,11 +48,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\LogMessageExtensions.cs" />
     <Compile Include="Extensions\PluginBaseExtensions.cs" />
     <Compile Include="Interfaces\IRoomStateControllerFactory.cs" />
     <Compile Include="Messenger.cs" />
     <Compile Include="PlayerManagerHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoomControllerPlugin.cs" />
     <Compile Include="RoomStateController.cs" />
     <Compile Include="States\RoomState.cs" />
@@ -66,6 +65,10 @@
     <ProjectReference Include="..\Hive\PhotonHive\PhotonHive.csproj">
       <Project>{E1F918F4-F581-4280-9D91-3CF77B24C290}</Project>
       <Name>PhotonHive</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">
+      <Project>{53A786BC-5080-460F-88E1-20B81A7DB298}</Project>
+      <Name>PlayGen.ITAlert.Photon.Players</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
       <Project>{E5664C3B-0B84-46FF-84D2-3603B9202C6F}</Project>
@@ -86,12 +89,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*NLog.config*" "$(SolutionDir)deploy\LoadBalancing\bin\"
+xcopy /Y /Q "$(TargetDir)*NLog.xsd*" "$(SolutionDir)deploy\LoadBalancing\bin\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

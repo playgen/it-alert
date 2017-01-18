@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Runtime.InteropServices;
 using POpusCodec.Enums;
 
 namespace POpusCodec
 {
-    internal class Wrapper
+	internal class Wrapper
     {
 #if UNITY_IPHONE && !UNITY_EDITOR
         [DllImport("__Internal", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]

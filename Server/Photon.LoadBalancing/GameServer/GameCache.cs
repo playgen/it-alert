@@ -9,30 +9,30 @@
 
 namespace Photon.LoadBalancing.GameServer
 {
-	#region using directives
+    #region using directives
 
-	using Photon.Hive;
-	using Photon.Hive.Caching;
-	using Photon.Hive.Plugin;
+    using Photon.Hive;
+    using Photon.Hive.Caching;
+    using Photon.Hive.Plugin;
 
-	#endregion
+    #endregion
 
-	public class GameCache : RoomCacheBase
-	{
-		private readonly PluginManager pluginManager;
+    public class GameCache : RoomCacheBase
+    {
+        private readonly PluginManager pluginManager;
 
-		public GameApplication Application { get; protected set; }
-		public PluginManager PluginManager { get { return this.pluginManager; } }
+        public GameApplication Application { get; protected set; }
+        public PluginManager PluginManager { get { return this.pluginManager; } }
 
-		public GameCache(GameApplication application)
-		{
-			this.Application = application;
-			this.pluginManager = new PluginManager(application.ApplicationRootPath);
-		}
+        public GameCache(GameApplication application)
+        {
+            this.Application = application;
+            this.pluginManager = new PluginManager(application.ApplicationRootPath);
+        }
 
-		protected override Room CreateRoom(string roomId, params object[] args)
-		{
-			return new Game(this.Application, roomId, this, this.pluginManager, (string)args[0]);
-		}
-	}
+        protected override Room CreateRoom(string roomId, params object[] args)
+        {
+            return new Game(this.Application, roomId, this, this.pluginManager, (string)args[0]);
+        }
+    }
 }

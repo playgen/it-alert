@@ -9,8 +9,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PlayGen.ITAlert.Photon.Plugin.Properties")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyProduct("PlayGen.ITAlert.Photon.Plugin")]
+[assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,14 +20,17 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("8ef657ec-1775-45d5-8eb6-3b719df16b49")]
+[assembly: Guid("c2c6f5fb-8cab-4e2b-b7a1-32cbd2f9f5ae")]
 
 // Version information for an assembly consists of the following four values:
 //
-//	  Major Version
-//	  Minor Version 
-//	  Build Number
-//	  Revision
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
 //
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

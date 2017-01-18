@@ -1,13 +1,19 @@
 ﻿namespace PlayGen.ITAlert.Photon.Messages
 {
-	public enum Channels : byte
+	public enum Channels
 	{
 		Players = PlayGen.Photon.Messages.Channels.Players,
 
-		Game = 11,
+		Logging = PlayGen.Photon.Messages.Channels.Logging,
 
-		SimulationState = 12,
+		GameState,
 
-		SimulationCommands = 13,
+		GameCommands,
+		
+		SimulationState,
+
+		SimulationCommand,
+
+		Feedback,
 	}
 }

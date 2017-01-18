@@ -2,10 +2,10 @@
 
 namespace PlayGen.Photon.Messages.Players
 {
-	public class UpdatePlayerMessage : PlayersMessage
-	{
-		public override int PhotonId => Player.PhotonId;
+    public class UpdatePlayerMessage : PlayersMessage
+    {
+        public override int PhotonId => Player.PhotonId;
 
-		public Player Player { get; set; }
-	}
+        public Player Player { get; set; }
+    }
 }

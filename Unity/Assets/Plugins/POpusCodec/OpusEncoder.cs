@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using POpusCodec.Enums;
 using System.Runtime.InteropServices;
 
 namespace POpusCodec
 {
-    public class OpusEncoder : IDisposable
+	public class OpusEncoder : IDisposable
     {
         public const int BitrateMax = -1;
 

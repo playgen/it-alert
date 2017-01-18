@@ -1,10 +1,11 @@
-﻿using Photon.Hive.Plugin;
+﻿using GameWork.Core.States.Event;
+using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.Photon.Plugin.States
 {
-	public abstract class RoomState : GameWork.Core.States.State
+	public abstract class RoomState : EventState
 	{
 		protected readonly PluginBase PhotonPlugin;
 		protected readonly Messenger Messenger;

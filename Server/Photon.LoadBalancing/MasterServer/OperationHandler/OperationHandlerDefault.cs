@@ -12,69 +12,69 @@ using Photon.LoadBalancing.Common;
 
 namespace Photon.LoadBalancing.Master.OperationHandler
 {
-	#region using directives
+    #region using directives
 
-	using ExitGames.Logging;
+    using ExitGames.Logging;
 
-	using Photon.LoadBalancing.MasterServer;
-	using Photon.SocketServer;
+    using Photon.LoadBalancing.MasterServer;
+    using Photon.SocketServer;
 
-	using OperationCode = Photon.LoadBalancing.Operations.OperationCode;
+    using OperationCode = Photon.LoadBalancing.Operations.OperationCode;
 
-	#endregion
+    #endregion
 
-	public class OperationHandlerDefault : OperationHandlerBase
-	{
-		#region Constants and Fields
+    public class OperationHandlerDefault : OperationHandlerBase
+    {
+        #region Constants and Fields
 
-		public static readonly OperationHandlerDefault Instance = new OperationHandlerDefault();
+        public static readonly OperationHandlerDefault Instance = new OperationHandlerDefault();
 
-		private static readonly ILogger log = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger log = LogManager.GetCurrentClassLogger();
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		public override OperationResponse OnOperationRequest(PeerBase peer, OperationRequest operationRequest, SendParameters sendParameters)
-		{
-			var clientPeer = (MasterClientPeer)peer;
+        public override OperationResponse OnOperationRequest(PeerBase peer, OperationRequest operationRequest, SendParameters sendParameters)
+        {
+            var clientPeer = (MasterClientPeer)peer;
 
-			switch (operationRequest.OperationCode)
-			{
-				default:
-					return HandleUnknownOperationCode(operationRequest, log);
+            switch (operationRequest.OperationCode)
+            {
+                default:
+                    return HandleUnknownOperationCode(operationRequest, log);
 
-				case (byte)OperationCode.Authenticate:
-					return new OperationResponse(operationRequest.OperationCode)
-					{
-						ReturnCode = (short)ErrorCode.OperationDenied, DebugMessage = LBErrorMessages.AlreadyAuthenticated,
-					};
+                case (byte)OperationCode.Authenticate:
+                    return new OperationResponse(operationRequest.OperationCode)
+                    {
+                        ReturnCode = (short)ErrorCode.OperationDenied, DebugMessage = LBErrorMessages.AlreadyAuthenticated,
+                    };
 
-				case (byte)OperationCode.JoinLobby:
-					return clientPeer.HandleJoinLobby(operationRequest, sendParameters);
+                case (byte)OperationCode.JoinLobby:
+                    return clientPeer.HandleJoinLobby(operationRequest, sendParameters);
 
-				case (byte)OperationCode.LeaveLobby:
-					return clientPeer.HandleLeaveLobby(operationRequest);
+                case (byte)OperationCode.LeaveLobby:
+                    return clientPeer.HandleLeaveLobby(operationRequest);
 
-				case (byte)OperationCode.CreateGame:
-					return clientPeer.HandleCreateGame(operationRequest, sendParameters);
+                case (byte)OperationCode.CreateGame:
+                    return clientPeer.HandleCreateGame(operationRequest, sendParameters);
 
-				case (byte)OperationCode.JoinGame:
-					return clientPeer.HandleJoinGame(operationRequest, sendParameters);
+                case (byte)OperationCode.JoinGame:
+                    return clientPeer.HandleJoinGame(operationRequest, sendParameters);
 
-				case (byte)OperationCode.JoinRandomGame:
-					return clientPeer.HandleJoinRandomGame(operationRequest, sendParameters);
+                case (byte)OperationCode.JoinRandomGame:
+                    return clientPeer.HandleJoinRandomGame(operationRequest, sendParameters);
 
-				case (byte)OperationCode.FindFriends:
-					return clientPeer.HandleFindFriends(operationRequest, sendParameters);
+                case (byte)OperationCode.FindFriends:
+                    return clientPeer.HandleFindFriends(operationRequest, sendParameters);
 
-				case (byte)OperationCode.LobbyStats:
-					return clientPeer.HandleLobbyStatsRequest(operationRequest, sendParameters);
+                case (byte)OperationCode.LobbyStats:
+                    return clientPeer.HandleLobbyStatsRequest(operationRequest, sendParameters);
 
-				case (byte)OperationCode.Rpc:
-					return clientPeer.HandleRpcRequest(operationRequest, sendParameters);
-			}
-		}
-		#endregion
-	}
+                case (byte)OperationCode.Rpc:
+                    return clientPeer.HandleRpcRequest(operationRequest, sendParameters);
+            }
+        }
+        #endregion
+    }
 }
