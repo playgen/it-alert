@@ -10,7 +10,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Tests", "PlayGen.ITAlert.Simulation.Tests\PlayGen.ITAlert.Simulation.Tests.csproj", "{1B0A8C03-8A9A-4A3B-9C36-D750CEDB9853}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.TestData", "PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj", "{50651079-AC3A-447F-A710-E9049F3D1565}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Startup", "PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.Startup.csproj", "{50651079-AC3A-447F-A710-E9049F3D1565}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.Configuration.Tests", "PlayGen.ITAlert.Simulation.Configuration.Tests\PlayGen.ITAlert.Simulation.Configuration.Tests.csproj", "{320609A9-59D3-4DF2-9324-A44260C258F5}"
 EndProject
@@ -32,8 +32,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{1ECFA4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Serialization", "Engine\Engine.Serialization\Engine.Serialization.csproj", "{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Debug", "Debug", "{5B8C1896-A295-4C48-992F-51D983EC1EA3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Serialization.Tests", "Engine\Engine.Serialization.Tests\Engine.Serialization.Tests.csproj", "{14C24EA9-DD64-4739-910B-7E0A91A5E84F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Simulation", "Simulation", "{44462B28-1544-4653-B506-C4D6D5F7D416}"
@@ -47,6 +45,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Newtonsoft.Json.Tests", "Engine\Engine.Newtonsoft.Json.Tests\Engine.Newtonsoft.Json.Tests.csproj", "{6116C853-CAF1-4FC4-BE27-F02661CD374E}"
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Newtonsoft.Json.Shared", "Engine\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Shared.shproj", "{1AC37270-0ADC-43F6-9FC8-6FEB96686356}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Startup", "Engine\Engine.Startup\Engine.Startup.csproj", "{92DAC07E-8A7A-466B-B778-DAF781A993F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Startup.Tests", "Engine\Engine.Startup.Tests\Engine.Startup.Tests.csproj", "{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -173,6 +175,18 @@ Global
 		{6116C853-CAF1-4FC4-BE27-F02661CD374E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6116C853-CAF1-4FC4-BE27-F02661CD374E}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6116C853-CAF1-4FC4-BE27-F02661CD374E}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -192,12 +206,13 @@ Global
 		{241C2A0B-AB53-40A9-8812-86FED7CCBFD4} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{DC88053B-F802-47E1-9BE4-A7E9F795858D} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
-		{5B8C1896-A295-4C48-992F-51D983EC1EA3} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{14C24EA9-DD64-4739-910B-7E0A91A5E84F} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{03C358F3-AF0A-4CBC-AD95-36BC4D4F2B8F} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{7F39C40C-9ACD-42B1-AE6F-470A759E98CE} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{6116C853-CAF1-4FC4-BE27-F02661CD374E} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{1AC37270-0ADC-43F6-9FC8-6FEB96686356} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
+		{92DAC07E-8A7A-466B-B778-DAF781A993F4} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
+		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 	EndGlobalSection
 EndGlobal

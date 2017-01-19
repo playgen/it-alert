@@ -31,26 +31,48 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Engine.Startup">
+      <HintPath>..\..\bin\Simulation\Engine.Startup.dll</HintPath>
+    </Reference>
     <Reference Include="GameWork.Core.Commands">
       <HintPath>..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
     </Reference>
     <Reference Include="GameWork.Core.States">
       <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.Configuration">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Configuration.dll</HintPath>
+    <Reference Include="PhotonHivePlugin">
+      <HintPath>..\..\lib\Photon\PhotonHivePlugin.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Commands">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.Simulation.Serialization">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Serialization.dll</HintPath>
+    <Reference Include="PlayGen.ITAlert.Simulation.Common">
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.TestData">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.TestData.dll</HintPath>
+    <Reference Include="PlayGen.ITAlert.Simulation.Configuration">
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Startup">
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messages">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messaging">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Players">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Players.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Plugin">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Plugin.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.SUGAR">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.SUGAR.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,10 +90,6 @@
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HivePlugin\PhotonHivePlugin.csproj">
-      <Project>{223D6705-337D-409F-8524-553ABC5EAABD}</Project>
-      <Name>PhotonHivePlugin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
       <Project>{02999433-BC54-495B-89F2-9075BB5D0082}</Project>
       <Name>PlayGen.ITAlert.Photon.Messages</Name>
@@ -83,26 +101,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
-      <Project>{E5664C3B-0B84-46FF-84D2-3603B9202C6F}</Project>
-      <Name>PlayGen.Photon.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
-      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.Photon.Messaging</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Players\PlayGen.Photon.Players.csproj">
-      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
-      <Name>PlayGen.Photon.Players</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Plugin\PlayGen.Photon.Plugin.csproj">
-      <Project>{ca3e391b-7eab-428e-b869-2c974e211067}</Project>
-      <Name>PlayGen.Photon.Plugin</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj">
-      <Project>{f62b5705-bf54-498a-b662-704c0b50c0b6}</Project>
-      <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

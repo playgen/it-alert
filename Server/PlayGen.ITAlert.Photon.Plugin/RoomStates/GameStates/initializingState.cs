@@ -11,6 +11,7 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.ITAlert.Simulation.Startup;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -18,28 +19,32 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Initializing";
 
-		private readonly Simulation.Simulation _simulation;
+		private readonly SimulationRoot _simulationRoot;
 	
 		public override string Name => StateName;
 
 		public event Action<List<Player>> PlayerInitializedEvent;
 
-		public InitializingState(Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+		public InitializingState(SimulationRoot simulationRoot, 
+			PluginBase photonPlugin, 
+			Messenger messenger, 
+			PlayerManager playerManager, 
+			Controller sugarController) 
 			: base(photonPlugin, messenger, playerManager, sugarController)
 		{
-			_simulation = simulation;
+			_simulationRoot = simulationRoot;
 		}
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.GameState, ProcessGameStateMessage);	
+			Messenger.Subscribe((int)Channel.GameState, ProcessGameStateMessage);	
 
 			Messenger.SendAllMessage(new InitializingMessage());
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channels.GameState, ProcessGameStateMessage);
+			Messenger.Unsubscribe((int)Channel.GameState, ProcessGameStateMessage);
 		}
 
 		private void ProcessGameStateMessage(Message message)
@@ -48,24 +53,25 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (initializingMessage != null)
 			{
 				var player = PlayerManager.Get(initializingMessage.PlayerPhotonId);
-				player.State = (int)State.Initializing;
+				player.State = State.Initializing.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
 				if (PlayerManager.Players.GetCombinedStates() == State.Initializing)
 				{
 					Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
 					{
-						SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+						SimulationConfiguration = _simulationRoot.GetConfiguration(),
+						SimulationState = _simulationRoot.GetEntityState(),
 					});
 				}
 				return;
 			}
 
-			var initializedMessage = message as Messages.Game.States.InitializedMessage;
+			var initializedMessage = message as InitializedMessage;
 			if (initializedMessage != null)
 			{
 				var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
-				player.State = (int)State.Initialized;
+				player.State = State.Initialized.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
 				PlayerInitializedEvent(PlayerManager.Players);

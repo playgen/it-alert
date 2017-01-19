@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Serialization;
 using NUnit.Framework;
-using PlayGen.ITAlert.Simulation.TestData;
+using PlayGen.ITAlert.Simulation.Startup;
 
 namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 {
@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		public void TestSerializationRountrip()
 		{
 
-			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 2, 2, 1);
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 2, 2, 1);
 
 
 			throw new NotImplementedException();
@@ -40,11 +40,11 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 			var randomBytes = new byte[9999];
 			random.NextBytes(randomBytes);
 
-			var compressedRandomBytes = ECSConverter.Compress(randomBytes);
+			var compressedRandomBytes = CompressionUtil.Compress(randomBytes);
 
 			Assert.False(compressedRandomBytes.SequenceEqual(randomBytes));
 
-			var decompressedRandomBytes = ECSConverter.Decompress(compressedRandomBytes);
+			var decompressedRandomBytes = CompressionUtil.Decompress(compressedRandomBytes);
 
 			Assert.True(decompressedRandomBytes.SequenceEqual(randomBytes));
 		}
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		public void TestMoveIntentSerialization()
 		{
 			
-			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 1, 0, 1);
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1);
 
 			throw new NotImplementedException();
 			//var player = originalSimulation.Players.Single();
@@ -79,7 +79,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		[Test]
 		public void TestInfectIntentSerialization()
 		{
-			var originalSimulation = ConfigHelper.GenerateSimulation(2, 2, 1, 0, 1);
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1);
 			throw new NotImplementedException();
 			//originalSimulation.SpawnVirus(1);
 

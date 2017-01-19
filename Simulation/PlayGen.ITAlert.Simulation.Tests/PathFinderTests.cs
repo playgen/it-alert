@@ -120,8 +120,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			// v    v
 //			// 2 <> 3
 //			// expected route 0 - 2 - 3
-//				ConfigHelper.GenerateGraphNodes(2, 2),
-//				ConfigHelper.GenerateFullyConnectedGrid(2, 2, 1),
+//				SimulationHelper.GenerateGraphNodes(2, 2),
+//				SimulationHelper.GenerateFullyConnectedGrid(2, 2, 1),
 //				0,
 //				3,
 //				new List<int[]>()
@@ -321,8 +321,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //		private static readonly TestCaseData[] RouteTestCases = new TestCaseData[]
 //		{
 //			new TestCaseData(
-//				ConfigHelper.GenerateGraphNodes(2, 2),
-//				ConfigHelper.GenerateFullyConnectedGrid(2, 2, 1)
+//				SimulationHelper.GenerateGraphNodes(2, 2),
+//				SimulationHelper.GenerateFullyConnectedGrid(2, 2, 1)
 //			).SetName("2x2, verify route count"),
 //		};
 //

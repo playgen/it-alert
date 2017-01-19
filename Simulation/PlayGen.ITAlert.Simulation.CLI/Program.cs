@@ -4,7 +4,7 @@ using System.Linq;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.TestData;
+using PlayGen.ITAlert.Simulation.Startup;
 
 namespace PlayGen.ITAlert.Simulation.CLI
 {
@@ -15,10 +15,10 @@ namespace PlayGen.ITAlert.Simulation.CLI
 
 		public static void Main(string[] args)
 		{
-			var simulation = ConfigHelper.GenerateSimulation(3, 3, 3, 3, 1);
+			var ecsRoot = SimulationHelper.GenerateSimulation(3, 3, 3, 3, 1);
 
 
-			simulation.Tick();
+			// simulation.Tick();
 		}
 	}
 }

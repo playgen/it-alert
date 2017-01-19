@@ -40,19 +40,18 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Engine.Core">
+      <HintPath>..\..\bin\Simulation\Engine.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Serialization">
+      <HintPath>..\..\bin\Simulation\Engine.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.Simulation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PlayGen.ITAlert.Simulation.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\PlayGen.ITAlert.Photon.Plugin\bin\Debug\PlayGen.ITAlert.Simulation.Serialization.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="PlayGen.ITAlert.Simulation">
+      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
   </ItemGroup>

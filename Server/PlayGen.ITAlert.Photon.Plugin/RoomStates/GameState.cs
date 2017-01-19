@@ -4,10 +4,10 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.SUGAR;
-using PlayGen.ITAlert.TestData;
+using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
 using GameWork.Core.States;
-using PlayGen.ITAlert.Configuration;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using State = PlayGen.ITAlert.Photon.Players.State;
@@ -18,7 +18,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 	{
 		public const string StateName = "Game";
 
-		private Simulation.Simulation _simulation;
 		private RoomStateController _stateController;
 
 		public override string Name => StateName;
@@ -32,21 +31,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
+			// TODO: extract sugar controller from RoomState to subclass or via variable DI?
 			SugarController.StartMatch();
 			SugarController.AddMatchData("PlayerCount", PlayerManager.Players.Count);
 
-			List<int> subsystemLogicalIds;
-			_simulation = InitializeSimulation(out subsystemLogicalIds);
-
-			_stateController = CreateStateController(subsystemLogicalIds);
+			InitializeSimulationRoot();
+			_stateController = CreateStateController();
 			_stateController.Initialize(InitializingState.StateName);
 		}
 
 		protected override void OnExit()
 		{
 			_stateController.Terminate();
-			_simulation.Dispose();
-			_simulation = null;
+			//_simulation.Dispose();
 
 			SugarController.EndMatch();
 		}
@@ -66,9 +63,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			_stateController.OnLeave(info);
 		}
 
-		private Simulation.Simulation InitializeSimulation(out List<int> subsystemLogicalIds)
+		private SimulationRoot InitializeSimulationRoot()
 		{
-			var players = PhotonPlugin.PluginHost.GameActorsActive.Select(p =>
+			var playerConfigs = PhotonPlugin.PluginHost.GameActorsActive.Select(p =>
 			{
 				var player = PlayerManager.Get(p.ActorNr);
 
@@ -81,18 +78,20 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			}).ToList();
 
 			// todo make config data driven
-			var simulation = ConfigHelper.GenerateSimulation(2, 2, players, 2, 4, out subsystemLogicalIds);
+			var simulation = SimulationHelper.GenerateSimulation(2, 2, playerConfigs, 2, 4);
 			return simulation;
 		}
 
-		private RoomStateController CreateStateController(List<int> subsystemLogicalIds)
+		private RoomStateController CreateStateController()
 		{
-			var initializingState = new InitializingState(_simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var simulationRoot = InitializeSimulationRoot();
+
+			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, SugarController);
 			var initializedTransition = new CombinedPlayersStateTransition(State.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
-			var playingState = new PlayingState(subsystemLogicalIds, _simulation, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, SugarController);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
 			playingState.AddTransitions(playingStateTransition);

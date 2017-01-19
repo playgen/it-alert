@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Photon.Messages.Feedback
 {
 	public class PlayerFeedbackMessage : Message
 	{
-		public override int Channel => (int)Channels.Feedback;
+		public override int Channel => Messages.Channel.Feedback.IntValue();
 
 		public int PlayerPhotonId { get; set; }
 
