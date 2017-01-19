@@ -57,7 +57,6 @@
     <Compile Include="Components\Items\Item.cs" />
     <Compile Include="Components\Items\Scanner.cs" />
     <Compile Include="Components\Movement\SubsystemMovementFlag.cs" />
-    <Compile Include="SimulationInstaller.cs" />
     <Compile Include="Systems\Commands\PlayerCommandSystem.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
@@ -141,6 +140,10 @@
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
+      <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
+      <Name>Engine.Startup</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>

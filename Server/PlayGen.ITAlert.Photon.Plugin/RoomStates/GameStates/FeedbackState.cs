@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using State = PlayGen.ITAlert.Photon.Players.State;
 using Photon.Hive.Plugin;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
 
@@ -27,14 +28,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.Feedback, ProcessFeedbackMessage);
+			Messenger.Subscribe((int)Channel.Feedback, ProcessFeedbackMessage);
 
 			Messenger.SendAllMessage(new Messages.Game.States.FeedbackMessage());
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channels.Feedback, ProcessFeedbackMessage);
+			Messenger.Unsubscribe((int)Channel.Feedback, ProcessFeedbackMessage);
 		}
 
 		private void ProcessFeedbackMessage(Message message)
@@ -43,7 +44,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (feedbackMessage != null)
 			{
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				player.State = (int)State.FeedbackSent;
+				player.State = State.FeedbackSent.IntValue();
 				PlayerManager.UpdatePlayer(player);
 				
 				WritePlayerFeedback(feedbackMessage.RankedPlayerPhotonIdBySection);

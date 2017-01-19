@@ -2,7 +2,9 @@
 {
 	public enum State
 	{
-		Error = 0,
+		Undefined = 0,
+
+		Error,
 
 		NotReady,
 
@@ -15,5 +17,13 @@
 		Playing,
 
 		FeedbackSent
+	}
+
+	public static class StateExtensions
+	{
+		public static int IntValue(this State state)
+		{
+			return (int) state;
+		}
 	}
 }

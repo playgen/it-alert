@@ -25,18 +25,17 @@ namespace PlayGen.ITAlert.Simulation
 	/// Simulation class
 	/// Handles all autonomous functionality of the game
 	/// </summary>
-	public class Simulation : ECS
+	public class Simulation : ECS<SimulationConfiguration>
 	{
 		//TODO: replace with some sort of global components - or make the simulation or rather 'graph' or something an entity with the layout components on it
 
 		public Vector GraphSize { get; private set; }
 
-		public Simulation(DiContainer container,
+		public Simulation(SimulationConfiguration configuration,
 			IEntityRegistry entityRegistry, 
 			IComponentRegistry componentRegistry, 
-			ISystemRegistry systemRegistry,
-			SimulationConfiguration configuration)
-			: base(container, entityRegistry, componentRegistry, systemRegistry)
+			ISystemRegistry systemRegistry)
+			: base(configuration, entityRegistry, componentRegistry, systemRegistry)
 		{
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
 			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));

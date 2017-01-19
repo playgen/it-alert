@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Serialization", "PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj", "{32DC2199-5631-4682-92CE-9D1E6ACD8F86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Plugin", "PlayGen.ITAlert.Photon.Plugin\PlayGen.ITAlert.Photon.Plugin.csproj", "{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Messages", "PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj", "{02999433-BC54-495B-89F2-9075BB5D0082}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Players", "PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj", "{53A786BC-5080-460F-88E1-20B81A7DB298}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release 2.0|Any CPU = Release 2.0|Any CPU
+		Release 4.5|Any CPU = Release 4.5|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32DC2199-5631-4682-92CE-9D1E6ACD8F86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C6F5FB-8CAB-4E2B-B7A1-32CBD2F9F5AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02999433-BC54-495B-89F2-9075BB5D0082}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release 2.0|Any CPU.ActiveCfg = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release 2.0|Any CPU.Build.0 = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release 4.5|Any CPU.ActiveCfg = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release 4.5|Any CPU.Build.0 = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53A786BC-5080-460F-88E1-20B81A7DB298}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

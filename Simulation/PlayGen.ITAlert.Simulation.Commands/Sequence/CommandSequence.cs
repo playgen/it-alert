@@ -3,31 +3,31 @@ using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Sequence
 {
-    public class CommandSequence
-    {
-        private readonly CommandSequenceEntry[] _sequence;
-        private int _currentIndex;
-        private int _currentTick;
+	public class CommandSequence
+	{
+		private readonly CommandSequenceEntry[] _sequence;
+		private int _currentIndex;
+		private int _currentTick;
 
-        public bool HasPendingCommands => _currentIndex < _sequence.Length;
-        
-        public CommandSequence(CommandSequenceEntry[] sequence)
-        {
-            _sequence = sequence.OrderBy(e => e.Tick).ToArray();
-        }
+		public bool HasPendingCommands => _currentIndex < _sequence.Length;
 
-        public ICommand[] Tick()
-        {
-            ICommand[] commands = null;
-            _currentTick++;
+		public CommandSequence(CommandSequenceEntry[] sequence)
+		{
+			_sequence = sequence.OrderBy(e => e.Tick).ToArray();
+		}
 
-            if (_currentIndex < _sequence.Length && _sequence[_currentIndex].Tick == _currentTick)
-            {
-                commands = _sequence[_currentIndex].Commands;
-                _currentIndex++;
-            }
+		public ICommand[] Tick()
+		{
+			ICommand[] commands = null;
+			_currentTick++;
 
-            return commands;
-        }
-    }
+			if (_currentIndex < _sequence.Length && _sequence[_currentIndex].Tick == _currentTick)
+			{
+				commands = _sequence[_currentIndex].Commands;
+				_currentIndex++;
+			}
+
+			return commands;
+		}
+	}
 }

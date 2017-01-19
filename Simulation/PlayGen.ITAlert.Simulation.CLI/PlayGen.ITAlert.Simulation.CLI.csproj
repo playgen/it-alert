@@ -62,6 +62,10 @@
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
+      <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
+      <Name>Engine.Startup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
@@ -78,9 +82,9 @@
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
-      <Project>{cb5c5a48-bbc4-4825-86cb-87e4037db0c1}</Project>
-      <Name>PlayGen.ITAlert.Simulation.TestData</Name>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.Startup.csproj">
+      <Project>{50651079-AC3A-447F-A710-E9049F3D1565}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Startup</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

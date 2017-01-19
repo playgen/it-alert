@@ -39,6 +39,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PlayGen.Photon.Players, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Players.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,12 +54,6 @@
     <Compile Include="Extensions\StateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="State.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Photon.Players\PlayGen.Photon.Players.csproj">
-      <Project>{7E9EFE9A-58C7-45DC-AB5F-EF52CD721DB5}</Project>
-      <Name>PlayGen.Photon.Players</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

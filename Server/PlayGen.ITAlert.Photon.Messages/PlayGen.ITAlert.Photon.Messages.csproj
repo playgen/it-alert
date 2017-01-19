@@ -43,11 +43,19 @@
       <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PlayGen.Photon.Messages, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messaging, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.Messaging.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channels.cs" />
+    <Compile Include="Channel.cs" />
     <Compile Include="Feedback\PlayerFeedbackMessage.cs" />
     <Compile Include="Game\Commands\StartGameMessage.cs" />
     <Compile Include="Game\Commands\GameCommandMessage.cs" />
@@ -61,16 +69,6 @@
     <Compile Include="Simulation\States\StateMessage.cs" />
     <Compile Include="Simulation\States\TickMessage.cs" />
     <Compile Include="Game\States\PlayingMessage.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
-      <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
-      <Name>PlayGen.Photon.Messages</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.Photon.Messaging\PlayGen.Photon.Messaging.csproj">
-      <Project>{E3EBDB5B-8879-45F3-B10F-EAC2CA313F42}</Project>
-      <Name>PlayGen.Photon.Messaging</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />

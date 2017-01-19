@@ -3,6 +3,7 @@ using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.Commands;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.SUGAR;
@@ -29,19 +30,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
+			Messenger.Subscribe((int)Channel.GameCommands, ProcessGameCommandMessage);
 			
 			Messenger.SendAllMessage(new LobbyMessage
 			{
 				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
 			});
 
-			PlayerManager.ChangeAllState((int)State.NotReady);
+			PlayerManager.ChangeAllState(State.NotReady.IntValue());
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channels.GameCommands, ProcessGameCommandMessage);
+			Messenger.Unsubscribe((int)Channel.GameCommands, ProcessGameCommandMessage);
 		}
 
 		private void ProcessGameCommandMessage(Message message)

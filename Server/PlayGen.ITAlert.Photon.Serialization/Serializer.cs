@@ -1,52 +1,45 @@
 ﻿using System.Text;
+using Engine.Serialization;
 using Newtonsoft.Json;
-using PlayGen.ITAlert.Simulation.Serialization;
 
 namespace PlayGen.ITAlert.Photon.Serialization
 {
-    public static class Serializer
-    {
-        public static byte[] Serialize(object content)
-        {
-            var serialziedString = JsonConvert.SerializeObject(content,
-                Formatting.None,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.All
-                });
+	public static class Serializer
+	{
+		#region extract 
+		// TODO: candidate for move to playgen.photon
+		// extend messsage deserialization to support configurable serializeration handlers per message type?
 
-            var bytes = Encoding.UTF8.GetBytes(serialziedString);
-            var compressedBytes = SimulationSerializer.Compress(bytes);
-            return compressedBytes;
-        }
+		public static byte[] Serialize(object content)
+		{
+			var serialziedString = JsonConvert.SerializeObject(content,
+				Formatting.None,
+				new JsonSerializerSettings
+				{
+					TypeNameHandling = TypeNameHandling.All
+				});
+			 
+			var bytes = Encoding.UTF8.GetBytes(serialziedString);
+			var compressedBytes = CompressionUtil.Compress(bytes);
+			return compressedBytes;
+		}
 
-        public static T Deserialize<T>(byte[] compressedBytes)
-        {
-            var decompressedBytes = SimulationSerializer.Decompress(compressedBytes);
-            var serializedString = Encoding.UTF8.GetString(decompressedBytes);
-            var deserializedObject = JsonConvert.DeserializeObject<T>(serializedString,
-                new JsonSerializerSettings
-                {
-                    TypeNameHandling = TypeNameHandling.Auto
-                });
+		public static T Deserialize<T>(byte[] compressedBytes)
+		{
+			// TODO: should not use ecs specific compressor when extracted
+			var decompressedBytes = CompressionUtil.Decompress(compressedBytes); 
+			var serializedString = Encoding.UTF8.GetString(decompressedBytes);
+			var deserializedObject = JsonConvert.DeserializeObject<T>(serializedString,
+				new JsonSerializerSettings
+				{
+					TypeNameHandling = TypeNameHandling.Auto
+				});
 
-            return deserializedObject;
-        }
+			return deserializedObject;
+		}
 
-        public static byte[] SerializeSimulation(object simulationObject)
-        {
-            var simulation = (Simulation.Simulation) simulationObject;
+		#endregion
 
-            var bytes = SimulationSerializer.SerializeSimulation(simulation);
-            var compressedBytes = SimulationSerializer.Compress(bytes);
-            return compressedBytes;
-        }
 
-        public static Simulation.Simulation DeserializeSimulation(byte[] compressedBytes)
-        {
-            var decompressedBytes = SimulationSerializer.Decompress(compressedBytes);
-            var simulation = SimulationSerializer.DeserializeSimulation(decompressedBytes);
-            return simulation;
-        }
-    }
+	}
 }

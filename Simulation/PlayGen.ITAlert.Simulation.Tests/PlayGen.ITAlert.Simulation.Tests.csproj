@@ -71,9 +71,9 @@
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.TestData.csproj">
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.TestData\PlayGen.ITAlert.Simulation.Startup.csproj">
       <Project>{50651079-AC3A-447F-A710-E9049F3D1565}</Project>
-      <Name>PlayGen.ITAlert.Simulation.TestData</Name>
+      <Name>PlayGen.ITAlert.Simulation.Startup</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

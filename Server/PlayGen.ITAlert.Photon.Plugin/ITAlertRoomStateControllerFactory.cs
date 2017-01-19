@@ -8,8 +8,17 @@ using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin
 {
+	// ReSharper disable once InconsistentNaming
 	public class ITAlertRoomStateControllerFactory : IRoomStateControllerFactory
 	{
+		/// <summary>
+		/// This is where it all begins!
+		/// </summary>
+		/// <param name="photonPlugin"></param>
+		/// <param name="messenger"></param>
+		/// <param name="playerManager"></param>
+		/// <param name="sugarController"></param>
+		/// <returns></returns>
 		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
 		{
 			var lobbyState = CreateLobbyState(photonPlugin, messenger, playerManager, sugarController);
@@ -18,6 +27,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 			var controller = new RoomStateController(lobbyState, gameState);
 
+			// 
 			gameState.ParentStateController = controller;
 			
 			return controller;

@@ -15,7 +15,7 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using PlayGen.ITAlert.TestData;
+using PlayGen.ITAlert.Simulation.Startup;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -23,10 +23,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Playing";
 
-		private readonly Simulation.Simulation _simulation;
-		private readonly List<int> _subsystemLogicalIds;
+		private readonly SimulationRoot _simulationRoot;
 
-		private CommandSequence _commandSequence;
+		//private CommandSequence _commandSequence;
 		private CommandResolver _resolver;
 		private int _tickIntervalMS = 100;
 		private object _tickTimer;
@@ -35,32 +34,35 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action GameOverEvent;
 
-		public PlayingState(List<int> subsystemLogicalIds, Simulation.Simulation simulation, PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) 
+		public PlayingState(SimulationRoot simulationRoot, 
+			PluginBase photonPlugin, 
+			Messenger messenger, 
+			PlayerManager playerManager, 
+			Controller sugarController) 
 			: base(photonPlugin, messenger, playerManager, sugarController)
 		{
-			_subsystemLogicalIds = subsystemLogicalIds;
-			_simulation = simulation;
+			_simulationRoot = simulationRoot;
 		}
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channels.GameState, ProcessGameStateMessage);
-			Messenger.Subscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Subscribe((int)Channel.GameState, ProcessGameStateMessage);
+			Messenger.Subscribe((int)Channel.SimulationCommand, ProcessSimulationCommandMessage);
 
-			_commandSequence = CommandSequenceHelper.GenerateCommandSequence(_subsystemLogicalIds, 20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
-			_resolver = new CommandResolver(_simulation);
+			//_commandSequence = CommandSequenceHelper.GenerateCommandSequence(20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
+			_resolver = new CommandResolver(_simulationRoot.ECS);
 
 			Messenger.SendAllMessage(new PlayingMessage());
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channels.SimulationCommand, ProcessSimulationCommandMessage);
-			Messenger.Unsubscribe((int)Channels.GameState, ProcessGameStateMessage);
+			Messenger.Unsubscribe((int)Channel.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Unsubscribe((int)Channel.GameState, ProcessGameStateMessage);
 
 			DestroyTimer(_tickTimer);
 			_resolver = null;
-			_commandSequence = null;
+			//_commandSequence = null;
 		}
 
 		private void ProcessGameStateMessage(Message message)
@@ -69,7 +71,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (playingMessage != null)
 			{
 				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
-				player.State = (int)State.Playing;
+				player.State = State.Playing.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
 				if (PlayerManager.Players.GetCombinedStates() == State.Playing)
@@ -95,23 +97,24 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void Tick()
 		{
-			var commands = _commandSequence.Tick();
-			_resolver.ProcessCommands(commands);
+			//var commands = _commandSequence.Tick();
+			//_resolver.ProcessCommands(commands);
 
-			_simulation.Tick();
+			// TODO: reimplement tick!
+			//_simulationRoot.Tick();
 
-			if (_simulation.IsGameFailure 
-				|| (!_simulation.HasViruses && !_commandSequence.HasPendingCommands))
-			{
-				GameOverEvent();
-			}
-			else
-			{
+			//if (_simulationRoot.IsGameFailure 
+			//	|| (!_simulationRoot.HasViruses && !_commandSequence.HasPendingCommands))
+			//{
+			//	GameOverEvent();
+			//}
+			//else
+			//{
 				Messenger.SendAllMessage(new TickMessage
 				{
-					SerializedSimulation = Serializer.SerializeSimulation(_simulation)
+					EntityState = _simulationRoot.GetEntityState()
 				});
-			}
+			//}
 		}
 
 		private object CreateTickTimer()

@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
-using PlayGen.ITAlert.Simulation.TestData;
+using PlayGen.ITAlert.Simulation.Startup;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Tests
 {
@@ -13,9 +13,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Tests
         [TestCase(1, 5, 345)]
         public void CreateCommandSequence(int startTick, int tickInterval, int endTick)
         {
-            var subsystemLogicalIds = Enumerable.Range(1, 5).ToList();
-
-            var commandSequence = CommandSequenceHelper.GenerateCommandSequence(subsystemLogicalIds, startTick, tickInterval, endTick);
+            var commandSequence = CommandSequenceHelper.GenerateCommandSequence(startTick, tickInterval, endTick);
 
             var currentTick = 0;
             while (commandSequence.HasPendingCommands)
