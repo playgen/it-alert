@@ -55,5 +55,4 @@
  REM Run shell as admin (example) - put here code as you like
  mklink /j "..\Unity\Assets\GameWork" "..\lib\GameWork"
  mklink /j "..\Unity\Assets\SUGAR" "..\lib\SUGAR"
- mklink /j "..\Unity\Assets\Simulation" "..\bin\Simulation"
  mklink /j "..\Unity\Assets\Server" "..\bin\Server"

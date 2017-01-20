@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{007D85AF-805F-4BED-ABFA-679B8359FF8E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.Unity</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Unity</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Assets\PlayGen.ITAlert.Unity\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Engine.Common">
+      <HintPath>..\..\..\bin\Simulation\Engine.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Core">
+      <HintPath>..\..\..\bin\Simulation\Engine.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Newtonsoft.Json">
+      <HintPath>..\..\..\bin\Simulation\Engine.Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Serialization">
+      <HintPath>..\..\..\bin\Simulation\Engine.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.Commands">
+      <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
+    </Reference>
+    <Reference Include="GameWork.Core.States">
+      <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\..\bin\Simulation\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Messages">
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Players">
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Players.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Serialization">
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation">
+      <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Common">
+      <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Configuration">
+      <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Startup">
+      <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messages">
+      <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messaging">
+      <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Players">
+      <HintPath>..\..\..\bin\Server\PlayGen.Photon.Players.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.SUGAR.Client">
+      <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.SUGAR.Unity">
+      <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Priority Queue">
+      <HintPath>..\..\..\bin\Simulation\Priority Queue.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Zenject">
+      <HintPath>..\..\..\bin\Server\Zenject.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviours\ColorPickerBehaviour.cs" />
+    <Compile Include="Behaviours\ControllerBehaviour.cs" />
+    <Compile Include="Behaviours\CreateGamePopupBehaviour.cs" />
+    <Compile Include="Behaviours\FeedbackDragBehaviour.cs" />
+    <Compile Include="Behaviours\FeedbackSlotBehaviour.cs" />
+    <Compile Include="Behaviours\PopupBehaviour.cs" />
+    <Compile Include="Commands\ChangePlayerColorCommand.cs" />
+    <Compile Include="Commands\CreateGameCommand.cs" />
+    <Compile Include="Commands\JoinGameCommand.cs" />
+    <Compile Include="Commands\LeaveRoomCommand.cs" />
+    <Compile Include="Commands\QuickGameCommand.cs" />
+    <Compile Include="Commands\ReadyPlayerCommand.cs" />
+    <Compile Include="Commands\RefreshGamesListCommand.cs" />
+    <Compile Include="Commands\RefreshPlayerListCommand.cs" />
+    <Compile Include="Controllers\CreateGameController.cs" />
+    <Compile Include="Controllers\GamesListController.cs" />
+    <Compile Include="Controllers\JoinGameController.cs" />
+    <Compile Include="Controllers\LobbyController.cs" />
+    <Compile Include="Controllers\PopupController.cs" />
+    <Compile Include="Controllers\QuickGameController.cs" />
+    <Compile Include="Controllers\VoiceController.cs" />
+    <Compile Include="GameStates\Inputs\LoadingStateInput.cs" />
+    <Compile Include="GameStates\Inputs\MenuStateInput.cs" />
+    <Compile Include="GameStates\Inputs\RoomStateInput.cs" />
+    <Compile Include="GameStates\Inputs\SettingsStateInput.cs" />
+    <Compile Include="GameStates\LoadingState.cs" />
+    <Compile Include="GameStates\LoginState.cs" />
+    <Compile Include="GameStates\MenuState.cs" />
+    <Compile Include="GameStates\MenuSubStates\CreateGameState.cs" />
+    <Compile Include="GameStates\MenuSubStates\GamesListState.cs" />
+    <Compile Include="GameStates\MenuSubStates\Inputs\CreateGameStateInput.cs" />
+    <Compile Include="GameStates\MenuSubStates\Inputs\GamesListStateInput.cs" />
+    <Compile Include="GameStates\MenuSubStates\MainMenuState.cs" />
+    <Compile Include="GameStates\MenuSubStates\StateControllerFactory.cs" />
+    <Compile Include="GameStates\RoomState.cs" />
+    <Compile Include="GameStates\RoomSubStates\FeedbackState.cs" />
+    <Compile Include="GameStates\RoomSubStates\InitializingState.cs" />
+    <Compile Include="GameStates\RoomSubStates\Inputs\FeedbackStateInput.cs" />
+    <Compile Include="GameStates\RoomSubStates\Inputs\LobbyStateInput.cs" />
+    <Compile Include="GameStates\RoomSubStates\Inputs\PausedStateInput.cs" />
+    <Compile Include="GameStates\RoomSubStates\Inputs\PlayingStateInput.cs" />
+    <Compile Include="GameStates\RoomSubStates\LobbyState.cs" />
+    <Compile Include="GameStates\RoomSubStates\PausedState.cs" />
+    <Compile Include="GameStates\RoomSubStates\PlayingState.cs" />
+    <Compile Include="GameStates\RoomSubStates\StateControllerFactory.cs" />
+    <Compile Include="GameStates\SettingsState.cs" />
+    <Compile Include="GameStates\StateControllerFactory.cs" />
+    <Compile Include="GameStates\Transitions\OnCompletedTransition.cs" />
+    <Compile Include="GameStates\Transitions\OnEventTransition.cs" />
+    <Compile Include="GameStates\Transitions\OnMessageTransition.cs" />
+    <Compile Include="GameStates\Transitions\QuitTransition.cs" />
+    <Compile Include="GameStates\Transitions\ToFromStateTranstition.cs" />
+    <Compile Include="Interfaces\ICompletable.cs" />
+    <Compile Include="Network\Behaviours\ConnectionBehaviour.cs" />
+    <Compile Include="Network\Behaviours\EnhancementBehaviour.cs" />
+    <Compile Include="Network\Behaviours\EntityBehaviour.cs" />
+    <Compile Include="Network\Behaviours\GameOverBehaviour.cs" />
+    <Compile Include="Network\Behaviours\IEntityBehaviour.cs" />
+    <Compile Include="Network\Behaviours\ItemBehaviour.cs" />
+    <Compile Include="Network\Behaviours\NpcBehaviour.cs" />
+    <Compile Include="Network\Behaviours\PlayerBehaviour.cs" />
+    <Compile Include="Network\Behaviours\SubsystemBehaviour.cs" />
+    <Compile Include="Network\DebugCommands.cs" />
+    <Compile Include="Network\Director.cs" />
+    <Compile Include="Network\InputHandler.cs" />
+    <Compile Include="Network\PlayerCommands.cs" />
+    <Compile Include="Network\Tags.cs" />
+    <Compile Include="Network\UIConstants.cs" />
+    <Compile Include="Network\UIEntity.cs" />
+    <Compile Include="Network\UIManager.cs" />
+    <Compile Include="Photon\Messaging\ITAlertMessageSerializationHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings\MobilePlatform.cs" />
+    <Compile Include="Settings\SettingCreation.cs" />
+    <Compile Include="Settings\SettingObjectType.cs" />
+    <Compile Include="Settings\SettingType.cs" />
+    <Compile Include="Settings\SliderHandleSizeSetter.cs" />
+    <Compile Include="Utilities\ButtonList.cs" />
+    <Compile Include="Utilities\GameObjectUtilities.cs" />
+    <Compile Include="Utilities\PopupUtility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">
+      <Project>{5252e94a-df1c-4ceb-a3fb-e8d6ed4fa9da}</Project>
+      <Name>PhotonDependencies</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Unity\PlayGen.Photon.Unity.csproj">
+      <Project>{ea15d7ac-fa66-44ad-a8bc-01f8dcfcf4b6}</Project>
+      <Name>PlayGen.Photon.Unity</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
