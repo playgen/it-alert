@@ -17,7 +17,7 @@
 		Feedback,
 	}
 
-	public static class ChannelsExtensions
+	public static class ChannelExtensions
 	{
 		public static int IntValue(this Channel channel)
 		{

@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5252E94A-DF1C-4CEB-A3FB-E8D6ED4FA9DA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PhotonDependencies</RootNamespace>
+    <AssemblyName>PhotonDependencies</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;UNITY_5</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>..\..\Assets\Plugins\Photon3Unity3D.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\CustomTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Enums.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\FriendInfo.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\FriendInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\GizmoType.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\GizmoType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\LoadbalancingPeer.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\LoadbalancingPeer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\NetworkingPeer.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\NetworkingPeer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonClasses.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonClasses.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonHandler.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonHandler.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonLagSimulationGui.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonLagSimulationGui.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonNetwork.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonNetwork.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonPlayer.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonStatsGui.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonStatsGui.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonStreamQueue.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonStreamQueue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PhotonView.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PhotonView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\PingCloudRegions.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\PingCloudRegions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Room.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Room.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\RoomInfo.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\RoomInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\RPC.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\RPC.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\RpcIndexComponent.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\RpcIndexComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\ServerSettings.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\ServerSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\SocketUdp.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\SocketUdp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\SocketWebTcp.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\SocketWebTcp.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonAnimatorView.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonAnimatorView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonRigidbody2DView.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonRigidbody2DView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonRigidbodyView.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonRigidbodyView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformView.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewPositionControl.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewPositionControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewPositionModel.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewPositionModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewRotationControl.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewRotationControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewRotationModel.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewRotationModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewScaleControl.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewScaleControl.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewScaleModel.cs">
+      <Link>Photon Unity Networking\Plugins\PhotonNetwork\Views\PhotonTransformViewScaleModel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\ConnectAndJoinRandom.cs">
+      <Link>Photon Unity Networking\UtilityScripts\ConnectAndJoinRandom.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\HighlightOwnedGameObj.cs">
+      <Link>Photon Unity Networking\UtilityScripts\HighlightOwnedGameObj.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\InputToEvent.cs">
+      <Link>Photon Unity Networking\UtilityScripts\InputToEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\InRoomChat.cs">
+      <Link>Photon Unity Networking\UtilityScripts\InRoomChat.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\InRoomRoundTimer.cs">
+      <Link>Photon Unity Networking\UtilityScripts\InRoomRoundTimer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\InRoomTime.cs">
+      <Link>Photon Unity Networking\UtilityScripts\InRoomTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\ManualPhotonViewAllocator.cs">
+      <Link>Photon Unity Networking\UtilityScripts\ManualPhotonViewAllocator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\MoveByKeys.cs">
+      <Link>Photon Unity Networking\UtilityScripts\MoveByKeys.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnAwakeUsePhotonView.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnAwakeUsePhotonView.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnClickDestroy.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnClickDestroy.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnClickInstantiate.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnClickInstantiate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnClickLoadSomething.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnClickLoadSomething.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnJoinedInstantiate.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnJoinedInstantiate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\OnStartDelete.cs">
+      <Link>Photon Unity Networking\UtilityScripts\OnStartDelete.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PickupItem.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PickupItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PickupItemSimple.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PickupItemSimple.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PickupItemSyncer.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PickupItemSyncer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PointedAtGameObjectInfo.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PointedAtGameObjectInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PunPlayerScores.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PunPlayerScores.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PunTeams.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PunTeams.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\PunTurnManager.cs">
+      <Link>Photon Unity Networking\UtilityScripts\PunTurnManager.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\QuitOnEscapeOrBack.cs">
+      <Link>Photon Unity Networking\UtilityScripts\QuitOnEscapeOrBack.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\ServerTime.cs">
+      <Link>Photon Unity Networking\UtilityScripts\ServerTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\ShowInfoOfPlayer.cs">
+      <Link>Photon Unity Networking\UtilityScripts\ShowInfoOfPlayer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\ShowStatusWhenConnecting.cs">
+      <Link>Photon Unity Networking\UtilityScripts\ShowStatusWhenConnecting.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\SmoothSyncMovement.cs">
+      <Link>Photon Unity Networking\UtilityScripts\SmoothSyncMovement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\SupportLogger.cs">
+      <Link>Photon Unity Networking\UtilityScripts\SupportLogger.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Photon Unity Networking\UtilityScripts\TimeKeeper.cs">
+      <Link>Photon Unity Networking\UtilityScripts\TimeKeeper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\Extensions.cs">
+      <Link>PhotonLoadbalancingApi\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\FriendInfo.cs">
+      <Link>PhotonLoadbalancingApi\FriendInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\LoadBalancingClient.cs">
+      <Link>PhotonLoadbalancingApi\LoadBalancingClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\LoadBalancingPeer.cs">
+      <Link>PhotonLoadbalancingApi\LoadBalancingPeer.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\Player.cs">
+      <Link>PhotonLoadbalancingApi\Player.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\Room.cs">
+      <Link>PhotonLoadbalancingApi\Room.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\RoomInfo.cs">
+      <Link>PhotonLoadbalancingApi\RoomInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonLoadbalancingApi\WebRpc.cs">
+      <Link>PhotonLoadbalancingApi\WebRpc.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\PhotonVoiceApi\Client.cs">
+      <Link>PhotonVoiceApi\Client.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\Bandwidth.cs">
+      <Link>POpusCodec\Enums\Bandwidth.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\Channels.cs">
+      <Link>POpusCodec\Enums\Channels.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\Complexity.cs">
+      <Link>POpusCodec\Enums\Complexity.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\Delay.cs">
+      <Link>POpusCodec\Enums\Delay.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\ForceChannels.cs">
+      <Link>POpusCodec\Enums\ForceChannels.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\OpusApplicationType.cs">
+      <Link>POpusCodec\Enums\OpusApplicationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\OpusCtlGetRequest.cs">
+      <Link>POpusCodec\Enums\OpusCtlGetRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\OpusCtlSetRequest.cs">
+      <Link>POpusCodec\Enums\OpusCtlSetRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\OpusStatusCode.cs">
+      <Link>POpusCodec\Enums\OpusStatusCode.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\SamplingRate.cs">
+      <Link>POpusCodec\Enums\SamplingRate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\Enums\SignalHint.cs">
+      <Link>POpusCodec\Enums\SignalHint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\OpusDecoder.cs">
+      <Link>POpusCodec\OpusDecoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\OpusEncoder.cs">
+      <Link>POpusCodec\OpusEncoder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\OpusException.cs">
+      <Link>POpusCodec\OpusException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\Plugins\POpusCodec\OpusWrapper.cs">
+      <Link>POpusCodec\OpusWrapper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\PUNVoice\Scripts\PhotonVoiceNetwork.cs">
+      <Link>PUNVoice\PhotonVoiceNetwork.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\PUNVoice\Scripts\PhotonVoiceRecorder.cs">
+      <Link>PUNVoice\PhotonVoiceRecorder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\PUNVoice\Scripts\PhotonVoiceSettings.cs">
+      <Link>PUNVoice\PhotonVoiceSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Assets\PUNVoice\Scripts\PhotonVoiceSpeaker.cs">
+      <Link>PUNVoice\PhotonVoiceSpeaker.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -24,6 +24,7 @@
 #define UNITY_MIN_5_3
 #endif
 
+using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
 using UnityEngine;
