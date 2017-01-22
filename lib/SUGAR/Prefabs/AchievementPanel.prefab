@@ -1320,27 +1320,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000013654163452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c58b6f4c12f42374e928ea21cbf47b5b, type: 3}
+  m_Script: {fileID: 106238491, guid: cc2c1f71adfd1b24cb1910e8dd8cb1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _achievementItems:
-  - {fileID: 114000014157671362}
-  - {fileID: 114000013656032612}
-  - {fileID: 114000010862861876}
-  - {fileID: 114000011204351648}
-  - {fileID: 114000013996804614}
-  - {fileID: 114000013615498544}
-  - {fileID: 114000013974412892}
-  - {fileID: 114000013416716980}
-  - {fileID: 114000011234656618}
-  - {fileID: 114000010710828308}
-  - {fileID: 114000010647446154}
-  - {fileID: 114000013628984144}
-  _previousButton: {fileID: 114000012685419610}
-  _nextButton: {fileID: 114000013483008938}
-  _pageNumberText: {fileID: 114000012108202730}
-  _errorText: {fileID: 114000012128800644}
-  _closeButton: {fileID: 114000010590860348}
+  _achievementListInterface: {fileID: 0}
+  _achievementPopup: {fileID: 0}
+  _notificationCheckRate: 2.5
 --- !u!114 &114000011382515084
 MonoBehaviour:
   m_ObjectHideFlags: 1
