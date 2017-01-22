@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114139360418297826}
   - component: {fileID: 114153170345276350}
   m_Layer: 5
-  m_Name: Horizontal Layout
+  m_Name: Settings_HorizontalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
