@@ -99,6 +99,7 @@ lib/simulation/
 lib/**/*.mdb
 lib/**/*.meta
 !lib/**/*.dll.meta
+!lib/**/[Bb]in
 
 
 Unity/Assets/SUGAR/
