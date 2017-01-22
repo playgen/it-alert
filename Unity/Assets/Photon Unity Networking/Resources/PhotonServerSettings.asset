@@ -11,15 +11,15 @@ MonoBehaviour:
   m_Script: {fileID: 1880604398, guid: d56b1f6d5a764874fac7a8ec170215dc, type: 3}
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
-  HostType: 0
+  HostType: 2
   Protocol: 0
-  ServerAddress: 
+  ServerAddress: localhost
   ServerPort: 5055
   AppID: 
   VoiceAppID: 
   PreferredRegion: 0
   EnabledRegions: -1
-  JoinLobby: 0
+  JoinLobby: 1
   EnableLobbyStatistics: 0
   RpcList: []
-  DisableAutoOpenWizard: 0
+  DisableAutoOpenWizard: 1
