@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 				DontDestroyOnLoad(transform.gameObject);
 
 				_photonClient = CreateClient();
-				_sugarClient = new SUGARClient("http://localhost:62312/");
+				_sugarClient = new SUGARClient("http://api.sugarengine.org/");
 				PlayerCommands.PhotonClient = _photonClient;
 
 				CreatePopupController();

@@ -31,8 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Photon3Unity3D">
-      <HintPath>..\..\Assets\Plugins\Photon3Unity3D.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
@@ -70,7 +69,7 @@
     <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">
       <Project>{5252e94a-df1c-4ceb-a3fb-e8d6ed4fa9da}</Project>
       <Name>PhotonDependencies</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
