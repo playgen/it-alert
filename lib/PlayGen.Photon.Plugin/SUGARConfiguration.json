@@ -1,0 +1,7 @@
+﻿{
+	"BaseAddress": "http://localhost:62312",
+	"GameId": 1,
+	"AccountName": "ITAlert",
+	"AccountPassword": "t0pSECr3t",
+	"AccountSource": "SUGAR"
+}

@@ -2,7 +2,7 @@
 {
 	public enum ClientState
 	{
-		Disconnected,
+		Disconnected = 0,
 
 		Connecting,
 

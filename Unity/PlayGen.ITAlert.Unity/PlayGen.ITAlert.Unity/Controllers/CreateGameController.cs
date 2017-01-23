@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 {
 	public class CreateGameController : ICommandAction
 	{
-		private Client _photonClient;
+		private readonly Client _photonClient;
 
 		public CreateGameController(Client photonClient)
 		{

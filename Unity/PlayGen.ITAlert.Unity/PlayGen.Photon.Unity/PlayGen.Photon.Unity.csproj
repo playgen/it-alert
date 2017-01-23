@@ -61,6 +61,7 @@
     <Compile Include="Client\PhotonClientWrapper.cs" />
     <Compile Include="Client\Voice\PhotonVoicePlayer.cs" />
     <Compile Include="Client\Voice\VoiceClient.cs" />
+    <Compile Include="Exceptions\PhotonClientException.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Messaging\Messenger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,14 +8,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates
 {
 	public class MainMenuState : InputTickState
 	{
-		private readonly QuickGameController _controller;
 		public const string StateName = "MainMenuState";
+		public override string Name => StateName;
 
-		public override string Name
-		{
-			get { return StateName; }
-		}
-
+		private readonly QuickGameController _controller;
+		
 		public MainMenuState(MenuStateInput input, QuickGameController controller) : base(input)
 		{
 			_controller = controller;

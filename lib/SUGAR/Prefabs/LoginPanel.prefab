@@ -862,12 +862,12 @@ MonoBehaviour:
   m_Script: {fileID: 1353079924, guid: cc2c1f71adfd1b24cb1910e8dd8cb1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: {fileID: 0}
-  _password: {fileID: 0}
-  _loginButton: {fileID: 0}
-  _registerButton: {fileID: 0}
+  _name: {fileID: 114912710006140970}
+  _password: {fileID: 114510191990272080}
+  _loginButton: {fileID: 114160599180798258}
+  _registerButton: {fileID: 114209511950391748}
   _closeButton: {fileID: 114656016398482644}
-  _statusText: {fileID: 0}
+  _statusText: {fileID: 114555738082021300}
 --- !u!114 &114866887145935846
 MonoBehaviour:
   m_ObjectHideFlags: 1
