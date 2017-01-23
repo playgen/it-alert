@@ -67,14 +67,6 @@ Server/**/log
 # ignore app config in plugins
 Unity/Assets/Plugins/Server/PhotonServer.config
 
-!/Server/deploy/Policy/
-!/Server/deploy/bin*/*
-!/Server/deploy/Loadbalancing/*
-Server/deploy/**/PlayGen.*
-Server/deploy/**/GameWork.*
-Server/deploy/**/Priority Queue*
-Server/deploy/**/Newtonsoft*
-
 # GameWork
 Unity/Assets/GameWork/*
 Unity/Assets/GameWork
@@ -93,6 +85,8 @@ Server/deploy/LoadBalancing/bin/Cache/
 **/*.pdb
 bin/*.xml
 
+!lib/*.dll
+!lib/*.pdb
 !lib/**/*.dll
 !lib/**/*.pdb
 
@@ -107,3 +101,12 @@ Unity/Assets/GameWork.Unity/
 Unity/Assets/PlayGen.ITAlert.Unity/
 Unity/Assets/PlayGen.Photon.Unity/
 
+!Server/deploy/Policy/
+!Server/deploy/bin*/*
+Server/deploy/**/PlayGen.*
+Server/deploy/**/GameWork.*
+Server/deploy/**/Priority Queue*
+Server/deploy/**/Newtonsoft*
+!Server/deploy/LoadBalancing/bin
+!Server/deploy/LoadBalancing/bin/*.dll
+!Server/deploy/LoadBalancing/bin/*.pdb
