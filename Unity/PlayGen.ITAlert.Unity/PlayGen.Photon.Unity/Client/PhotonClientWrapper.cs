@@ -21,15 +21,9 @@ namespace PlayGen.Photon.Unity.Client
 		public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
 		public event Action<PhotonPlayer> OtherPlayerLeftRoomEvent;
 
-		public PhotonPlayer Player
-		{
-			get { return PhotonNetwork.player; }
-		}
+		public PhotonPlayer Player => PhotonNetwork.player;
 
-		public bool IsConnected
-		{
-			get { return PhotonNetwork.connected; }
-		}
+		public bool IsConnected => PhotonNetwork.connected;
 
 		public bool IsMasterClient
 		{
@@ -78,10 +72,7 @@ namespace PlayGen.Photon.Unity.Client
 			}
 		}
 		
-		public PhotonPlayer[] ListCurrentRoomPlayers
-		{
-			get { return PhotonNetwork.playerList; }
-		}
+		public PhotonPlayer[] ListCurrentRoomPlayers => PhotonNetwork.playerList;
 
 		~PhotonClientWrapper()
 		{
@@ -99,7 +90,10 @@ namespace PlayGen.Photon.Unity.Client
 
 		public void Dispose()
 		{
-			if (_isDisposed) return;
+			if (_isDisposed)
+			{
+				return;
+			}
 
 			PhotonNetwork.OnEventCall -= OnPhotonEvent;
 

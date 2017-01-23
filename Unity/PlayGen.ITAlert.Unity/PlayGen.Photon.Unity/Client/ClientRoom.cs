@@ -7,6 +7,7 @@ using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Unity.Client.Voice;
 using PlayGen.Photon.Messaging.Interfaces;
 using PlayGen.Photon.Players;
+using PlayGen.Photon.Unity.Exceptions;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -28,29 +29,27 @@ namespace PlayGen.Photon.Unity.Client
 
 		public List<Player> Players { get; private set; }
 
-		public RoomInfo RoomInfo
-		{
-			get { return _photonClientWrapper.CurrentRoom; }
-		}
+		public RoomInfo RoomInfo => _photonClientWrapper.CurrentRoom;
 
-		public VoiceClient VoiceClient
-		{
-			get { return _voiceClient; }
-		}
+		public VoiceClient VoiceClient => _voiceClient;
 
-		public PhotonPlayer[] ListCurrentRoomPlayers
-		{
-			get { return _photonClientWrapper.ListCurrentRoomPlayers; }
-		}
+		public PhotonPlayer[] ListCurrentRoomPlayers => _photonClientWrapper.ListCurrentRoomPlayers;
 
-		public bool IsMasterClient
-		{
-			get { return _photonClientWrapper.IsMasterClient; }
-		}
+		public bool IsMasterClient => _photonClientWrapper.IsMasterClient;
 
 		public Player Player
 		{
-			get { return Players.Single(p => p.PhotonId == _photonClientWrapper.Player.ID); }
+			get
+			{
+				try
+				{
+					return Players.Single(p => p.PhotonId == _photonClientWrapper.Player.ID);
+				}
+				catch (InvalidOperationException ioex)
+				{
+					throw new PhotonClientException($"No player with photon id {_photonClientWrapper.Player.ID}", ioex);
+				}
+			}
 		}
 
 		public ClientRoom(PhotonClientWrapper photonClientWrapper, IMessageSerializationHandler messageSerializationHandler)

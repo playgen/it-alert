@@ -40,6 +40,12 @@
     <Reference Include="GameWork.Core.States">
       <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="PhotonHivePlugin">
       <HintPath>..\..\lib\Photon\PhotonHivePlugin.dll</HintPath>
       <Private>False</Private>
@@ -74,6 +80,9 @@
     <Reference Include="PlayGen.Photon.SUGAR">
       <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.Photon.SUGAR.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.SUGAR.Client">
+      <HintPath>..\..\lib\PlayGen.Photon.Plugin\PlayGen.SUGAR.Client.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
@@ -107,6 +116,14 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\lib\PlayGen.Photon.Plugin\NLog.config">
+      <Link>NLog.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\lib\PlayGen.Photon.Plugin\SUGARConfiguration.json">
+      <Link>SUGARConfiguration.json</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

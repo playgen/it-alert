@@ -42,6 +42,10 @@
     <Reference Include="Engine.Serialization">
       <HintPath>..\..\..\bin\Simulation\Engine.Serialization.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Startup, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\simulation\Engine.Startup.dll</HintPath>
+    </Reference>
     <Reference Include="GameWork.Core.Commands">
       <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
     </Reference>

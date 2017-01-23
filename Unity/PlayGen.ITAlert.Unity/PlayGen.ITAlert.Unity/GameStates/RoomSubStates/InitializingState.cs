@@ -3,6 +3,8 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Serialization;
+using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Network;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
@@ -36,7 +38,6 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 			Logger.LogDebug("Entered " + StateName);
 
 			_networkPhotonClient.CurrentRoom.Messenger.Subscribe(Channel.SimulationState.IntValue(), ProcessSimulationStateMessage);
-
 			_networkPhotonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
 			{
 				PlayerPhotonId = _networkPhotonClient.CurrentRoom.Player.PhotonId
@@ -53,16 +54,32 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 			var initializedMessage = message as ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
 			if (initializedMessage != null)
 			{
-				// TODO: reimplement
-				//var simulation = Serializer.DeserializeSimulation(initializedMessage.SerializedSimulation);
-				//Director.Initialize(simulation, _networkPhotonClient.CurrentRoom.Player.PhotonId);
-				//Director.Refresh();
-
-				_networkPhotonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
+				if (Director.Initialized == false)
 				{
-					PlayerPhotonId = _networkPhotonClient.CurrentRoom.Player.PhotonId
-				});
-				return;
+					if (string.IsNullOrEmpty(initializedMessage.SimulationConfiguration))
+					{
+						throw new InvalidOperationException("Received InitializedMessage without configuration.");
+					}
+
+					try
+					{
+						// TODO: extract simulation initialization to somewhere else
+						var simulationRoot = SimulationInstaller.CreateSimulationRoot(initializedMessage.SimulationConfiguration);
+						Director.Initialize(simulationRoot, _networkPhotonClient.CurrentRoom.Player.PhotonId);
+
+						_networkPhotonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
+						{
+							PlayerPhotonId = _networkPhotonClient.CurrentRoom.Player.PhotonId
+						});
+					}
+					catch (Exception ex)
+					{
+						//TODO: transition back to lobby, or show error message
+
+						throw new SimulationException("Error creating simulation root", ex);
+					}
+				}
+
 			}
 
 			throw new Exception("Unhandled Simulation State Message: " + message);

@@ -1,0 +1,151 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SUGAR",
+		"_postman_id": "8b463e9c-f083-8f60-56e6-0a7183c355be",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login: Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"postman.setEnvironmentVariable(\"AdminToken\", postman.getResponseHeader(\"Authorization\"));"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:62312/api/login",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{AdminUser}}\",\r\n  \"password\": \"{{AdminPassword}}\",\r\n  \"sourceToken\": \"SUGAR\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Game Create",
+			"request": {
+				"url": "http://localhost:62312/api/game",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"{{GameName}}\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Find Game",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"GameId\", jsonData.response[0].id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:62312/api/game/find/IT Alert",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account (Game)",
+			"request": {
+				"url": "http://localhost:62312/api/account/{{GameId}}/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{GameName}}\",\r\n  \"password\": \"t0pSECr3t\",\r\n  \"sourceToken\": \"SUGAR\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create Account (User)",
+			"request": {
+				"url": "http://localhost:62312/api/account/{{GameId}}/create",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"{{GameName}}_User1\",\r\n  \"password\": \"t0pSECr3t\",\r\n  \"sourceToken\": \"SUGAR\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

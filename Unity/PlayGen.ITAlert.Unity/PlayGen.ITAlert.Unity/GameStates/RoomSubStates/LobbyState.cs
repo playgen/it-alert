@@ -15,18 +15,14 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 	public class LobbyState : InputTickState
 	{
 		public const string StateName = "LobbyState";
+		public override string Name => StateName;
 
 		private readonly LobbyController _controller;
 		private readonly Client _photonClient;
 		private readonly VoiceController _voiceController;
 
 		public event Action GameStartedEvent;
-
-		public override string Name
-		{
-			get { return StateName; }
-		}
-
+		
 		public LobbyState(LobbyStateInput input, LobbyController controller, Client photonClient, VoiceController voiceController)
 			: base(input)
 		{
@@ -100,6 +96,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 			_photonClient.CurrentRoom.Leave();
 		}
 
+		// ReSharper disable once InconsistentNaming
 		private void UpdateThisPlayerFromSUGAR(List<Player> players)
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;

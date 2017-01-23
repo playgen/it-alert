@@ -15,6 +15,9 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates
 
 		private float _refreshInterval = 5.0f;
 		private float _lastRefresh;
+		public override string Name => StateName;
+
+		#region constructor
 
 		public GamesListState(GamesListStateInput input, GamesListController gameListController,
 			JoinGameController joinGameController) : base(input)
@@ -23,10 +26,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates
 			_joinGameController = joinGameController;
 		}
 
-		public override string Name
-		{
-			get { return StateName; }
-		}
+		#endregion
 
 		protected override void OnTick(float deltaTime)
 		{

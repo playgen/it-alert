@@ -4,6 +4,7 @@ using System.Linq;
 using Engine.Serialization;
 using Engine.Startup;
 using PlayGen.ITAlert.Simulation.Configuration;
+using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Startup
 {
@@ -24,6 +25,17 @@ namespace PlayGen.ITAlert.Simulation.Startup
 		protected override void OnInstallBindings()
 		{
 
+		}
+
+		public static SimulationRoot CreateSimulationRoot(SimulationConfiguration simulationConfiguration, DiContainer container = null)
+		{
+			return CreateECSRoot(simulationConfiguration, container);
+		}
+
+		public static SimulationRoot CreateSimulationRoot(string simulationConfigurationJson, DiContainer container = null)
+		{
+			var simulationConfiguration = ConfigurationSerializer.DeserializeConfiguration<SimulationConfiguration>(simulationConfigurationJson);
+			return CreateECSRoot(simulationConfiguration, container);
 		}
 	}
 }

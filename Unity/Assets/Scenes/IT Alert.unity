@@ -711,6 +711,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22442072, guid: 0da3161ace13796439b93cf9e89ca0e0,
     type: 2}
   m_PrefabInternal: {fileID: 157282622}
+--- !u!114 &194395772 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114987691712083668, guid: 0da3161ace13796439b93cf9e89ca0e0,
+    type: 2}
+  m_PrefabInternal: {fileID: 465532670}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1 &204918792
 GameObject:
   m_ObjectHideFlags: 0
@@ -3075,6 +3081,21 @@ Prefab:
       value: 
       objectReference: {fileID: 114738811325417664, guid: 564eb2fccf04b1b4ba38147a1fbab4c6,
         type: 2}
+    - target: {fileID: 114000011669735270, guid: af1e562e30a769d46b7d1ee30a147648,
+        type: 2}
+      propertyPath: _baseAddress
+      value: localhost:6231
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011669735270, guid: af1e562e30a769d46b7d1ee30a147648,
+        type: 2}
+      propertyPath: _gameId
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011669735270, guid: af1e562e30a769d46b7d1ee30a147648,
+        type: 2}
+      propertyPath: _gameToken
+      value: ITAlert
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: af1e562e30a769d46b7d1ee30a147648, type: 2}
   m_IsPrefabParent: 0
@@ -3843,9 +3864,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1044199779}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ea8b2acf4cb1cd48a2c01c3ed9be60f, type: 3}
+  m_Script: {fileID: -1596306794, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameNameInputField: {fileID: 1027031208}
+  PlayerNumberInputField: {fileID: 1165331771}
+  IncrementPlayersButton: {fileID: 194395772}
+  DecrementPlayersButton: {fileID: 1387196401}
 --- !u!1 &1057938571
 GameObject:
   m_ObjectHideFlags: 0
@@ -5355,6 +5380,12 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
+--- !u!114 &1387196401 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114987691712083668, guid: 0da3161ace13796439b93cf9e89ca0e0,
+    type: 2}
+  m_PrefabInternal: {fileID: 1718705105}
+  m_Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
 --- !u!1001 &1387878402
 Prefab:
   m_ObjectHideFlags: 0

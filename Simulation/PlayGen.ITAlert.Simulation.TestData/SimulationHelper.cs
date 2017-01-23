@@ -206,7 +206,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			configuration.NodeConfiguration.First().Enhancement = EnhancementType.Analysis;
 			configuration.NodeConfiguration.Last().Enhancement = EnhancementType.Antivirus;
 
-			return SimulationInstaller.CreateECSRoot(configuration);
+			return SimulationInstaller.CreateSimulationRoot(configuration);
 
 		}
 

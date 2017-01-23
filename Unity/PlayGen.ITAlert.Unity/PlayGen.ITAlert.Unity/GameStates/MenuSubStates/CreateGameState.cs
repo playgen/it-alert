@@ -10,14 +10,20 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates
 	public class CreateGameState : InputTickState
 	{
 		private readonly CreateGameController _controller;
-		private readonly Client _photonClient;
+		//private readonly Client _photonClient;
+
 		public const string StateName = "CreateGameState";
+		public override string Name => StateName;
 
+		#region constructor
 
-		public CreateGameState(CreateGameStateInput input, CreateGameController controller) : base(input)
+		public CreateGameState(CreateGameStateInput input, CreateGameController controller) 
+			: base(input)
 		{
 			_controller = controller;
 		}
+
+		#endregion
 
 		protected override void OnTick(float deltaTime)
 		{
@@ -33,9 +39,5 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates
 			}
 		}
 
-		public override string Name
-		{
-			get { return StateName; }
-		}
 	}
 }
