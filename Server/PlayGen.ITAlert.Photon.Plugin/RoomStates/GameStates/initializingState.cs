@@ -53,10 +53,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (initializingMessage != null)
 			{
 				var player = PlayerManager.Get(initializingMessage.PlayerPhotonId);
-				player.State = State.Initializing.IntValue();
+				player.State = ClientState.Initializing.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
-				if (PlayerManager.Players.GetCombinedStates() == State.Initializing)
+				if (PlayerManager.Players.GetCombinedStates() == ClientState.Initializing)
 				{
 					Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
 					{
@@ -71,7 +71,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (initializedMessage != null)
 			{
 				var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
-				player.State = State.Initialized.IntValue();
+				player.State = ClientState.Initialized.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
 				PlayerInitializedEvent(PlayerManager.Players);

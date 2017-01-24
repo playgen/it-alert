@@ -6,34 +6,34 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 {
 	public static class StateExtensions
 	{
-		public static State GetCombinedStates(this IEnumerable<Player> players)
+		public static ClientState GetCombinedStates(this IEnumerable<Player> players)
 		{
-			if (players.Any(p => p.State == (int)State.NotReady))
+			if (players.Any(p => p.State == (int)ClientState.NotReady))
 			{
-				return State.NotReady;
+				return ClientState.NotReady;
 			}
-			else if (players.All(p => p.State == (int)State.Ready))
+			else if (players.All(p => p.State == (int)ClientState.Ready))
 			{
-				return State.Ready;
+				return ClientState.Ready;
 			}
-			else if (players.All(p => p.State == (int)State.Initializing))
+			else if (players.All(p => p.State == (int)ClientState.Initializing))
 			{
-				return State.Initializing;
+				return ClientState.Initializing;
 			}
-			else if (players.All(p => p.State == (int)State.Initialized))
+			else if (players.All(p => p.State == (int)ClientState.Initialized))
 			{
-				return State.Initialized;
+				return ClientState.Initialized;
 			}
-			else if (players.All(p => p.State == (int)State.Playing))
+			else if (players.All(p => p.State == (int)ClientState.Playing))
 			{
-				return State.Playing;
+				return ClientState.Playing;
 			}
-			else if (players.All(p => p.State == (int)State.FeedbackSent))
+			else if (players.All(p => p.State == (int)ClientState.FeedbackSent))
 			{
-				return State.FeedbackSent;
+				return ClientState.FeedbackSent;
 			}
 
-			return State.Error;
+			return ClientState.Error;
 		}
 	}
 }

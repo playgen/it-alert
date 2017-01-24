@@ -1,12 +1,10 @@
 ﻿namespace PlayGen.ITAlert.Photon.Players
 {
-	public enum State
+	public enum ClientState
 	{
-		Undefined = 0,
+		NotReady = 0,
 
 		Error,
-
-		NotReady,
 
 		Ready,
 
@@ -21,9 +19,9 @@
 
 	public static class StateExtensions
 	{
-		public static int IntValue(this State state)
+		public static int IntValue(this ClientState clientState)
 		{
-			return (int) state;
+			return (int) clientState;
 		}
 	}
 }

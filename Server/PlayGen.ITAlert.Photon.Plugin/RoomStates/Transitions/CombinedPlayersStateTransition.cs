@@ -8,18 +8,18 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 {
 	public class CombinedPlayersStateTransition : EventStateTransition
 	{
-		private readonly State _combinedState;
+		private readonly ClientState _combinedClientState;
 		private readonly string _toStateName;
 
-		public CombinedPlayersStateTransition(State combinedPlayerState, string toStateName)
+		public CombinedPlayersStateTransition(ClientState combinedPlayerClientState, string toStateName)
 		{
-			_combinedState = combinedPlayerState;
+			_combinedClientState = combinedPlayerClientState;
 			_toStateName = toStateName;
 		}
 
 		public void OnPlayersStateChange(List<Player> players)
 		{
-			if (players.GetCombinedStates() == _combinedState)
+			if (players.GetCombinedStates() == _combinedClientState)
 			{
 				ChangeState(_toStateName);
 			}

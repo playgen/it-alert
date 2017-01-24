@@ -71,10 +71,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (playingMessage != null)
 			{
 				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
-				player.State = State.Playing.IntValue();
+				player.State = ClientState.Playing.IntValue();
 				PlayerManager.UpdatePlayer(player);
 
-				if (PlayerManager.Players.GetCombinedStates() == State.Playing)
+				if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing)
 				{
 					_tickTimer = CreateTickTimer();
 				}

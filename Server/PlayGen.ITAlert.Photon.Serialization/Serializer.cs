@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Photon.Serialization
 			var deserializedObject = JsonConvert.DeserializeObject<T>(serializedString,
 				new JsonSerializerSettings
 				{
-					TypeNameHandling = TypeNameHandling.Auto
+					TypeNameHandling = TypeNameHandling.All
 				});
 
 			return deserializedObject;

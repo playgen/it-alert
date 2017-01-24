@@ -6,7 +6,6 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
-using State = PlayGen.ITAlert.Photon.Players.State;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Plugin;
@@ -44,7 +43,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (feedbackMessage != null)
 			{
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				player.State = State.FeedbackSent.IntValue();
+				player.State = ClientState.FeedbackSent.IntValue();
 				PlayerManager.UpdatePlayer(player);
 				
 				WritePlayerFeedback(feedbackMessage.RankedPlayerPhotonIdBySection);
@@ -53,7 +52,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				return;
 			}
 
-			throw new Exception($"Unhandled Simulation State Message: ${message}");
+			throw new Exception($"Unhandled Simulation ClientState Message: ${message}");
 		}
 
 		private void WritePlayerFeedback(Dictionary<string, int[]> rankedPlayerPhotonIdBySection)

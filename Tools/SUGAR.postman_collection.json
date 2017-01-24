@@ -21,7 +21,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:62312/api/login",
+				"url": "{{ApiUrl}}/api/login",
 				"method": "POST",
 				"header": [
 					{
@@ -41,7 +41,7 @@
 		{
 			"name": "Game Create",
 			"request": {
-				"url": "http://localhost:62312/api/game",
+				"url": "{{ApiUrl}}/api/game",
 				"method": "POST",
 				"header": [
 					{
@@ -57,7 +57,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"name\": \"{{GameName}}\"\n}"
+					"raw": "{\n  \"name\": \"{{GameName}}\"\n}"
 				},
 				"description": ""
 			},
@@ -78,7 +78,7 @@
 				}
 			],
 			"request": {
-				"url": "http://localhost:62312/api/game/find/IT Alert",
+				"url": "{{ApiUrl}}/api/game/find/{{GameName}}",
 				"method": "GET",
 				"header": [
 					{
@@ -99,8 +99,20 @@
 		},
 		{
 			"name": "Create Account (Game)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"GameAccountId\", jsonData.response.user.id);"
+						]
+					}
+				}
+			],
 			"request": {
-				"url": "http://localhost:62312/api/account/{{GameId}}/create",
+				"url": "{{ApiUrl}}/api/account/{{GameId}}/create",
 				"method": "POST",
 				"header": [
 					{
@@ -123,9 +135,63 @@
 			"response": []
 		},
 		{
+			"name": "GetRoles",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"postman.setEnvironmentVariable(\"GameRoleId\", jsonData.response.find(function(role) { return role.name == \"Game\"; }).id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{ApiUrl}}/api/Role/list",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreateGameActorRole",
+			"request": {
+				"url": "{{ApiUrl}}/api/ActorRole",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AdminToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"actorId\": {{GameAccountId}},\r\n  \"roleId\": {{GameRoleId}},\r\n  \"entityId\": {{GameId}}\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
 			"name": "Create Account (User)",
 			"request": {
-				"url": "http://localhost:62312/api/account/{{GameId}}/create",
+				"url": "{{ApiUrl}}/api/account/{{GameId}}/create",
 				"method": "POST",
 				"header": [
 					{
