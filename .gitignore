@@ -96,6 +96,7 @@ lib/**/*.meta
 !lib/**/*.dll.meta
 !lib/**/[Bb]in
 
+# ignore unity assets
 Unity/Assets/SUGAR/
 Unity/Assets/GameWork.Unity/
 Unity/Assets/PlayGen.ITAlert.Unity/
@@ -103,10 +104,22 @@ Unity/Assets/PlayGen.Photon.Unity/
 
 !Server/deploy/Policy/
 !Server/deploy/bin*/*
-Server/deploy/**/PlayGen.*
-Server/deploy/**/GameWork.*
-Server/deploy/**/Priority Queue*
-Server/deploy/**/Newtonsoft*
+
+# exclude plugin - this gets built by plugin project
+Server/deploy/Plugins
+
+# exclude post build copy
+Server/deploy/bin_Win64/ICSharpCode.*
+Server/deploy/bin_Win64/Zenject.*
+Server/deploy/bin_Win64/Engine.*
+Server/deploy/bin_Win64/PlayGen.*
+Server/deploy/bin_Win64/GameWork.*
+Server/deploy/bin_Win64/Priority Queue*
+Server/deploy/bin_Win64/Newtonsoft*
+Server/deploy/bin_Win64/NLog*
+Server/deploy/bin_Win64/SUGARConfiguration.json
+
+# keep loadbalancing dependencies
 !Server/deploy/LoadBalancing/bin
 !Server/deploy/LoadBalancing/bin/*.dll
 !Server/deploy/LoadBalancing/bin/*.pdb

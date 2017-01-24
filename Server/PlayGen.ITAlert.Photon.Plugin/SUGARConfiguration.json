@@ -1,7 +1,7 @@
 ﻿{
-  "BaseAddress": "http://SUGAR/",
+  "BaseAddress": "http://sugar.playgen.internal/",
   "GameId": 1,
-  "AccountName": "xxx",
-  "AccountPassword": "xxx",
+  "AccountName": "ITAlert",
+  "AccountPassword": "t0pSECr3t",
   "AccountSource": "SUGAR"
 }

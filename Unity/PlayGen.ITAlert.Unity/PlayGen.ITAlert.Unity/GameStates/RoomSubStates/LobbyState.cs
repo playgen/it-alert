@@ -84,7 +84,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates
 			if (_photonClient.CurrentRoom != null && _photonClient.CurrentRoom.IsMasterClient)
 			{
 				if (_photonClient.CurrentRoom.Players != null &&
-					_photonClient.CurrentRoom.Players.All(p => p.State == (int) PlayGen.ITAlert.Photon.Players.State.Ready))
+					_photonClient.CurrentRoom.Players.All(p => p.State == (int) ITAlert.Photon.Players.ClientState.Ready))
 				{
 					_controller.StartGame(false);
 				}

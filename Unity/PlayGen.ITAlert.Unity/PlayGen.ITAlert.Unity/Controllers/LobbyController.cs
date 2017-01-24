@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 			foreach (var player in _photonClient.CurrentRoom.Players)
 			{
-				var lobbyPlayer = new LobbyPlayer(player.Name, player.State == (int) State.Ready, player.PhotonId, player.Color);
+				var lobbyPlayer = new LobbyPlayer(player.Name, player.State == (int) ITAlert.Photon.Players.ClientState.Ready, player.PhotonId, player.Color);
 				lobbyPlayers.Add(lobbyPlayer);
 			}
 
@@ -35,7 +35,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 			if (_photonClient.CurrentRoom.IsMasterClient)
 			{
-				var numReadyPlayers = this._photonClient.CurrentRoom.Players.Count(p => p.State == (int) State.Ready);
+				var numReadyPlayers = this._photonClient.CurrentRoom.Players.Count(p => p.State == (int)ITAlert.Photon.Players.ClientState.Ready);
 				Debug.Log("NUMreadyPlayers: " + numReadyPlayers);
 				if (numReadyPlayers == _photonClient.CurrentRoom.RoomInfo.maxPlayers)
 				{
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		public void ReadyPlayer()
 		{
 			var player = _photonClient.CurrentRoom.Player;
-			player.State = (int) State.Ready;
+			player.State = (int)ITAlert.Photon.Players.ClientState.Ready;
 			_photonClient.CurrentRoom.UpdatePlayer(player);
 
 			ReadySuccessEvent();
@@ -62,7 +62,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		public void UnreadyPlayer()
 		{
 			var player = _photonClient.CurrentRoom.Player;
-			player.State = (int) State.NotReady;
+			player.State = (int)ITAlert.Photon.Players.ClientState.NotReady;
 			_photonClient.CurrentRoom.UpdatePlayer(player);
 
 			ReadySuccessEvent();

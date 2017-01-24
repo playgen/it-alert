@@ -56,6 +56,9 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			_photonClientWrapper = photonClientWrapper;
 
+			_photonClientWrapper.OtherPlayerJoinedRoomEvent += OnOtherPlayerJoined;
+			_photonClientWrapper.OtherPlayerLeftRoomEvent += OnOtherPlayerLeft;
+			
 			Messenger = new Messenger(messageSerializationHandler,  photonClientWrapper);
 			Logger.SetMessenger(Messenger);
 			Logger.PlayerPhotonId = photonClientWrapper.Player.ID;
@@ -113,6 +116,9 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!_isDisposed)
 			{
+				_photonClientWrapper.OtherPlayerJoinedRoomEvent -= OnOtherPlayerJoined;
+				_photonClientWrapper.OtherPlayerLeftRoomEvent -= OnOtherPlayerLeft;
+
 				Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
 
 				_voiceClient.OnLeftRoom();

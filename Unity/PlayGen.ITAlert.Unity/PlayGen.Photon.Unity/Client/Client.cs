@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayGen.Photon.Messaging.Interfaces;
+using UnityEngine;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -89,24 +90,18 @@ namespace PlayGen.Photon.Unity.Client
 
 		private void OnJoinedRoom()
 		{
+			Debug.Log($"PlayGen.Photon.Unity::Client::JoinedRoom");
+
+			CurrentRoom?.Dispose();
 			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler);
 
-			_photonClientWrapper.OtherPlayerJoinedRoomEvent += CurrentRoom.OnOtherPlayerJoined;
-			_photonClientWrapper.OtherPlayerLeftRoomEvent += CurrentRoom.OnOtherPlayerLeft;
-
-			if (JoinedRoomEvent != null)
-			{
-				JoinedRoomEvent(CurrentRoom);
-			}
+			JoinedRoomEvent?.Invoke(CurrentRoom);
 		}
 
 		private void OnLeftRoom()
 		{
 			if (!_photonClientWrapper.IsInRoom)
 			{
-				_photonClientWrapper.OtherPlayerJoinedRoomEvent -= CurrentRoom.OnOtherPlayerJoined;
-				_photonClientWrapper.OtherPlayerLeftRoomEvent -= CurrentRoom.OnOtherPlayerLeft;
-
 				CurrentRoom = null;
 
 				if (LeftRoomEvent != null)

@@ -7,10 +7,10 @@ using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
 using GameWork.Core.States;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
-using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -87,7 +87,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var simulationRoot = InitializeSimulationRoot();
 
 			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, SugarController);
-			var initializedTransition = new CombinedPlayersStateTransition(State.Initialized, PlayingState.StateName);
+			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
@@ -97,7 +97,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			playingState.AddTransitions(playingStateTransition);
 			
 			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController);
-			var feedbackStateTransition = new CombinedPlayersStateTransition(State.FeedbackSent, LobbyState.StateName);
+			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);
 

@@ -11,7 +11,6 @@ using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using State = PlayGen.ITAlert.Photon.Players.State;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -37,7 +36,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
 			});
 
-			PlayerManager.ChangeAllState(State.NotReady.IntValue());
+			PlayerManager.ChangeAllState(ClientState.NotReady.IntValue());
 		}
 
 		protected override void OnExit()
@@ -59,7 +58,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		
 		private void StartGame(bool force, bool close)
 		{
-			if (force || PlayerManager.Players.GetCombinedStates() == State.Ready)
+			if (force || PlayerManager.Players.GetCombinedStates() == ClientState.Ready)
 			{
 				if (close)
 				{
