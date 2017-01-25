@@ -13,7 +13,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Commands
 	{
 		private IntentSystem _intentSystem;
 
-		public PlayerCommandSystem(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry, IntentSystem intentSystem) 
+		public PlayerCommandSystem(IComponentRegistry componentRegistry, 
+			IEntityRegistry entityRegistry, 
+			IntentSystem intentSystem) 
 			: base(componentRegistry, entityRegistry)
 		{
 			_intentSystem = intentSystem;

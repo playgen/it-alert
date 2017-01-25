@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Intents;
 using PlayGen.ITAlert.Simulation.Components.Movement;
+using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
@@ -19,8 +20,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		private readonly ComponentMatcherGroup _movementNodesMatcher;
 
 		public MovementSystem(IComponentRegistry componentRegistry, 
-			IEntityRegistry entityRegistry, 
-			List<IMovementSystemExtension> movementSystemExtensions)
+			IEntityRegistry entityRegistry,
+			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
+			[InjectOptional] List<IMovementSystemExtension> movementSystemExtensions)
 			: base(componentRegistry, entityRegistry)
 		{
 			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
