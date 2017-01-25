@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 using PlayGen.ITAlert.Simulation.Systems.Planning;
+using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
@@ -21,8 +22,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		private readonly ComponentMatcherGroup _activationMatcher;
 		public ItemActivationSystem(IComponentRegistry componentRegistry, 
 			IEntityRegistry entityRegistry, 
-			ISystemRegistry systemRegistry,
-			List<IItemActivationExtension> itemActivationExtensions,
+			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
+			[InjectOptional] List<IItemActivationExtension> itemActivationExtensions,
 			IntentSystem intentSystem) 
 
 			: base(componentRegistry, entityRegistry)
