@@ -13,7 +13,6 @@
 
 # visual studio auto generated
 project.lock.json
-.vs/
 artifacts/
 *.suo
 *.user
@@ -27,7 +26,7 @@ artifacts/
 !*.[Cc]ache/
 
 # ReSharper is a .NET coding add-in
-_ReSharper*/
+_ReSharper*/	
 *.[Rr]e[Ss]harper
 *.DotSettings.user
 
@@ -79,6 +78,7 @@ Server/Plugins/lib/PhotonHivePlugin.dll
 Server/deploy/*/SUGARConfiguration.json
 Server/deploy/LoadBalancing/bin/Cache/
 !Server/nuget/*
+!Server/.vs/PlayGen.ITAlert.Photon/v14/*.suo
 
 # Exclude dlls, debug symbols and documentation unless otherwise specified
 **/*.dll
@@ -125,3 +125,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 !Server/deploy/LoadBalancing/bin/*.pdb
 
 !Unity/lib/*.dll
+
