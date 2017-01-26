@@ -93,6 +93,7 @@ bin/*.xml
 lib/**/*.mdb
 lib/**/*.meta
 
+!lib/SUGAR/**/*.prefab.meta
 !lib/**/*.dll.meta
 !lib/**/[Bb]in
 
