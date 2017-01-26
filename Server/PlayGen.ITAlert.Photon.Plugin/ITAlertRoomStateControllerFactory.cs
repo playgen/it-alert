@@ -3,8 +3,8 @@ using PlayGen.ITAlert.Photon.Plugin.RoomStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
+using PlayGen.Photon.Plugin.Analytics;
 using PlayGen.Photon.Plugin.Interfaces;
-using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin
 {
@@ -17,13 +17,13 @@ namespace PlayGen.ITAlert.Photon.Plugin
 		/// <param name="photonPlugin"></param>
 		/// <param name="messenger"></param>
 		/// <param name="playerManager"></param>
-		/// <param name="sugarController"></param>
+		/// <param name="analytics"></param>
 		/// <returns></returns>
-		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
 		{
-			var lobbyState = CreateLobbyState(photonPlugin, messenger, playerManager, sugarController);
+			var lobbyState = CreateLobbyState(photonPlugin, messenger, playerManager, analytics);
 			
-			var gameState = new GameState(photonPlugin, messenger, playerManager, sugarController);
+			var gameState = new GameState(photonPlugin, messenger, playerManager, analytics);
 
 			var controller = new RoomStateController(lobbyState, gameState);
 
@@ -33,9 +33,9 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			return controller;
 		}
 
-		private LobbyState CreateLobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
+		private LobbyState CreateLobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
 		{
-			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, sugarController);
+			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, analytics);
 
 			var gameStartedTransition = new EventTransition(GameState.StateName);
 			lobbyState.GameStartedEvent += gameStartedTransition.ChangeState;
