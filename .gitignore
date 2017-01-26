@@ -125,3 +125,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 
 !Unity/lib/*.dll
 
+Server/.vs/
