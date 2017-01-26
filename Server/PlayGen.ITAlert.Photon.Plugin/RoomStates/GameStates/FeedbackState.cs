@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Photon.Messages.Feedback;
 using Photon.Hive.Plugin;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.SUGAR;
+using PlayGen.Photon.Plugin.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -21,7 +21,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action<List<Player>> PlayerFeedbackSentEvent;
 
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController) : base(photonPlugin, messenger, playerManager, sugarController)
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics) : base(photonPlugin, messenger, playerManager, analytics)
 		{
 		}
 
@@ -67,7 +67,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 					var playerPhotonId = feedbackKVP.Value[i];
 					var playerSugarId = PlayerManager.Players.Single(p => p.PhotonId == playerPhotonId).ExternalId.Value;
 
-					SugarController.AddMatchRankingData(category, rank, playerSugarId);
+					Analytics.AddMatchRankingData(category, rank, playerSugarId);
 				}
 			}
 		}
