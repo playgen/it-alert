@@ -8,8 +8,8 @@ function Restore
 {
 	param( [string]$relativeDir, [string]$solution )
 
-	# dotnet restore "..\$relativeDir" &
-	$nuget restore "..\$relativeDir\$solution"
+	# dotnet restore "..\$relativeDir"
+	& $nuget restore "..\$relativeDir\$solution"
 }
 
 function Build
@@ -18,7 +18,7 @@ function Build
 	
 	Restore $relativeDir $solution
 
-	$msbuild "..\$relativeDir\$solution" "/p:Configuration=$configuration"
+	& $msbuild "..\$relativeDir\$solution" "/p:Configuration=$configuration"
 }
 
 Restore "Simulation\Engine" "Ephemeris.ECS-Alpha.sln"
