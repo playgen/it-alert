@@ -34,8 +34,10 @@ namespace PlayGen.ITAlert.Simulation
 		public Simulation(SimulationConfiguration configuration,
 			IEntityRegistry entityRegistry, 
 			IComponentRegistry componentRegistry, 
-			ISystemRegistry systemRegistry)
-			: base(configuration, entityRegistry, componentRegistry, systemRegistry)
+			ISystemRegistry systemRegistry,
+			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
+			[InjectOptional] List<IEntityFactory> entityFactories)
+			: base(configuration, entityRegistry, componentRegistry, systemRegistry, entityFactories)
 		{
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
 			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
