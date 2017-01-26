@@ -6,11 +6,11 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.SUGAR;
 using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin.Extensions;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.Photon.Plugin.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -22,8 +22,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public event Action GameStartedEvent;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, analytics)
 		{
 		}
 

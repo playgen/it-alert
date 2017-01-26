@@ -3,7 +3,6 @@ using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
 using GameWork.Core.States;
@@ -11,6 +10,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
+using PlayGen.Photon.Plugin.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -24,16 +24,16 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public StateController<RoomState> ParentStateController { private get; set; }
 
-		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, Controller sugarController)
-			: base(photonPlugin, messenger, playerManager, sugarController)
+		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, analytics)
 		{
 		}
 
 		protected override void OnEnter()
 		{
 			// TODO: extract sugar controller from RoomState to subclass or via variable DI?
-			SugarController.StartMatch();
-			SugarController.AddMatchData("PlayerCount", PlayerManager.Players.Count);
+			Analytics.StartMatch();
+			Analytics.AddMatchData("PlayerCount", PlayerManager.Players.Count);
 
 			InitializeSimulationRoot();
 			_stateController = CreateStateController();
@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			_stateController.Terminate();
 			//_simulation.Dispose();
 
-			SugarController.EndMatch();
+			Analytics.EndMatch();
 		}
 
 		public override void OnCreate(ICreateGameCallInfo info)
@@ -86,17 +86,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 			var simulationRoot = InitializeSimulationRoot();
 
-			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
-			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, Analytics);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
 			playingState.AddTransitions(playingStateTransition);
 			
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, SugarController);
+			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);
