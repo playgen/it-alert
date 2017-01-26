@@ -243,7 +243,8 @@ MonoBehaviour:
   m_Script: {fileID: -89677467, guid: cc2c1f71adfd1b24cb1910e8dd8cb1f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _loginUserInterface: {fileID: 0}
+  _loginUserInterface: {fileID: 114738811325417664, guid: f1bda90a488a3da45af7a12e81927e1e,
+    type: 2}
   _allowAutoLogin: 0
   _allowRegister: 0
   _defaultSourceToken: SUGAR
