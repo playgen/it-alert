@@ -32,8 +32,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\projects\it-alert\Server\deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
-    <StartWorkingDirectory>D:\projects\it-alert\Server\deploy\bin_Win64\</StartWorkingDirectory>
+    <StartProgram>$(SolutionDir)deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
+    <StartWorkingDirectory>$(SolutionDir)deploy\bin_Win64\</StartWorkingDirectory>
     <StartArguments>/debug LoadBalancing</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
