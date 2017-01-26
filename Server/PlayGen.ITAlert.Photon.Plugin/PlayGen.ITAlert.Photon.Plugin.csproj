@@ -32,8 +32,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>D:\projects\it-alert\Server\deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
-    <StartWorkingDirectory>D:\projects\it-alert\Server\deploy\bin_Win64\</StartWorkingDirectory>
+    <StartProgram>$(SolutionDir)deploy\bin_Win64\PhotonSocketServer.exe</StartProgram>
+    <StartWorkingDirectory>$(SolutionDir)deploy\bin_Win64\</StartWorkingDirectory>
     <StartArguments>/debug LoadBalancing</StartArguments>
   </PropertyGroup>
   <PropertyGroup>
@@ -51,9 +51,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\PlayGen.Photon.Plugin\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\..\lib\PlayGen.Photon.Plugin\NLog.dll</HintPath>
     </Reference>
     <Reference Include="PhotonHivePlugin">
       <HintPath>..\..\lib\Photon\PhotonHivePlugin.dll</HintPath>
@@ -107,7 +104,7 @@
       <Name>PlayGen.Photon.Plugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj">
-      <Project>{f62b5705-bf54-498a-b662-704c0b50c0b6}</Project>
+      <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
       <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
@@ -122,15 +119,16 @@
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.Photon.Plugin.Analytics\PlayGen.Photon.Plugin.Analytics.csproj">
+      <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
+      <Name>PlayGen.Photon.Plugin.Analytics</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Content Include="NLog.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SUGARConfiguration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

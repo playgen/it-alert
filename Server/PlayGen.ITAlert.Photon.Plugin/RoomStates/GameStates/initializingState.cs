@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Photon.Hive.Plugin;
-using PlayGen.ITAlert.Photon.Serialization;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.States;
-using PlayGen.Photon.SUGAR;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Startup;
+using PlayGen.Photon.Plugin.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -29,8 +28,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			PluginBase photonPlugin, 
 			Messenger messenger, 
 			PlayerManager playerManager, 
-			Controller sugarController) 
-			: base(photonPlugin, messenger, playerManager, sugarController)
+			AnalyticsServiceManager analytics) 
+			: base(photonPlugin, messenger, playerManager, analytics)
 		{
 			_simulationRoot = simulationRoot;
 		}
