@@ -123,3 +123,5 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 !Server/deploy/LoadBalancing/bin
 !Server/deploy/LoadBalancing/bin/*.dll
 !Server/deploy/LoadBalancing/bin/*.pdb
+
+!Unity/lib/*.dll
