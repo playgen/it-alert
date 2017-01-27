@@ -32,18 +32,33 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Connection
-			.HasComponent(new ComponentBinding<MovementCost>()); // 4 // TODO: read from simulation constants
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()
+			{
+				ComponentTemplate = new EntityTypeProperty(EntityType.Connection)
+			})
+			.HasComponent(new ComponentBinding<MovementCost>());
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Subsystem
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()
+			{
+				ComponentTemplate = new EntityTypeProperty(EntityType.Subsystem)
+			})
 			.HasComponent(new ComponentBinding<Name>())
 			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
 			.HasComponent(new ComponentBinding<ItemActivator>())
-			.HasComponent(new ComponentBinding<ItemStorage>()) // SimulationConstants.SubsystemMaxItems
-			.HasComponent(new ComponentBinding<MemoryResource>()) // 0, 4
-			.HasComponent(new ComponentBinding<CPUResource>()); // 0, 4
+			.HasComponent(new ComponentBinding<ItemStorage>()
+			{
+				ComponentTemplate = new ItemStorage(SimulationConstants.SubsystemMaxItems)
+			})
+			.HasComponent(new ComponentBinding<MemoryResource>()
+			{
+				ComponentTemplate = new MemoryResource(0, 4)
+			})
+			.HasComponent(new ComponentBinding<CPUResource>()
+			{
+				ComponentTemplate = new CPUResource(0, 4)
+			});
 
 		public static readonly Archetype Analysis = new Archetype("Analysis")
 			.Extends(Subsystem)
@@ -72,17 +87,28 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Player = new Archetype("Player")
 			.Extends(Actor)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()) //EntityType.Player
-			.HasComponent(new ComponentBinding<Name>());	// TODO: name should problably be somewhere else - player system?
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()
+			{
+				ComponentTemplate = new EntityTypeProperty(EntityType.Player)
+			});
 
 		#region viruses
 
 		public static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()) // EntityType.Npc
+			.HasComponent(new ComponentBinding<EntityTypeProperty>()
+			{
+				ComponentTemplate = new EntityTypeProperty(EntityType.Npc)
+			})
 			.HasComponent(new ComponentBinding<MalwareGenome>())
-			.HasComponent(new ComponentBinding<ConsumeMemory>()) // 0
-			.HasComponent(new ComponentBinding<ConsumeCPU>()); // 0
+			.HasComponent(new ComponentBinding<ConsumeMemory>()
+			{
+				ComponentTemplate = new ConsumeMemory(0)
+			})
+			.HasComponent(new ComponentBinding<ConsumeCPU>()
+			{
+				ComponentTemplate = new ConsumeCPU(0)
+			});
 
 
 		#endregion
@@ -94,7 +120,10 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Item = new Archetype("Item")
 			.HasComponents(new ComponentBinding[]
 			{
-				new ComponentBinding<EntityTypeProperty>(), //EntityType.Item,
+				new ComponentBinding<EntityTypeProperty>()
+				{
+					ComponentTemplate = new EntityTypeProperty(EntityType.Item)
+				},
 				new ComponentBinding<CurrentLocation>(),
 				new ComponentBinding<Owner>(),
 				new ComponentBinding<ConsumeMemory>(),
