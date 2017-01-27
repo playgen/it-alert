@@ -102,6 +102,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 		protected override void OnTick(float deltaTime)
 		{
 			UpdateVoiceStatuses();
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            {
+                OnBackButtonClick();
+            }
 		}
 
 		private void OnReadyButtonClick()

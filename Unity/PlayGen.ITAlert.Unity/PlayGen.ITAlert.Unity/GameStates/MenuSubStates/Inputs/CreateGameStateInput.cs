@@ -70,7 +70,15 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 			_createGamePanel.SetActive(false);
 		}
 
-		private void OnJoinedRoom(ClientRoom room)
+        protected override void OnTick(float deltaTime)
+        {
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            {
+                OnBackClick();
+            }
+        }
+
+        private void OnJoinedRoom(ClientRoom room)
 		{
 			JoinedRoomEvent();
 		}
