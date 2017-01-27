@@ -10,17 +10,23 @@ namespace PlayGen.ITAlert.Unity.GameStates
 
 		public bool IsComplete { get; private set; }
 
+	    private bool _repeatBlock;
+
 		protected override void OnEnter()
 		{
-			IsComplete = false;
+		    if (!_repeatBlock)
+		    {
+		        _repeatBlock = true;
+		        IsComplete = false;
 
-			SUGARManager.Account.DisplayPanel(success =>
-			{
-				if (success)
-				{
-					IsComplete = true;
-				}
-			});
+		        SUGARManager.Account.DisplayPanel(success =>
+		        {
+		            if (success)
+		            {
+		                IsComplete = true;
+		            }
+		        });
+		    }
 		}
 
 		protected override void OnExit()
