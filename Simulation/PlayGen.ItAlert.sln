@@ -50,6 +50,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Startup", "Engine\En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Startup.Tests", "Engine\Engine.Startup.Tests\Engine.Startup.Tests.csproj", "{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Testing", "Engine\Engine.Testing\Engine.Testing.csproj", "{27721DC6-0DFD-42E7-86BA-33FB9632AD19}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Engine\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Shared.projitems*{1ac37270-0adc-43f6-9fc8-6feb96686356}*SharedItemsImports = 13
@@ -187,6 +189,12 @@ Global
 		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -214,5 +222,6 @@ Global
 		{1AC37270-0ADC-43F6-9FC8-6FEB96686356} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{92DAC07E-8A7A-466B-B778-DAF781A993F4} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{652691D5-AFCF-4A11-8E30-7F901CCB6A6A} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
+		{27721DC6-0DFD-42E7-86BA-33FB9632AD19} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 	EndGlobalSection
 EndGlobal
