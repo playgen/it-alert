@@ -109,6 +109,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Input
 			{
 				OnQuitClick();
 			}
-		}
+            _quickMatchButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+            _joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+            _createGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+
+        }
 	}
 }
