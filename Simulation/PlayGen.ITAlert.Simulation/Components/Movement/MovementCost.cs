@@ -2,19 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
+using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
 	public class MovementCost : RangedIntegerProperty
 	{
-		public MovementCost(int maxValue)
-			: base(1, 0, maxValue)
+		public MovementCost()
+			: base(0, 1, SimulationConstants.ConnectionMaxMovementCost)
 		{
 		}
 
-		public MovementCost(int value, int maxValue) 
-			: base(value, 0, maxValue)
-		{
-		}
 	}
 }

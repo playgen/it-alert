@@ -32,6 +32,8 @@
 		//TODO: max weight only really exists because of the prioirty generation in the pathfinding algorithm
 		public const int ConnectionMaxWeight = 4;
 
+		public const int ConnectionMaxMovementCost = 4;
+
 		#endregion
 
 		#region items
