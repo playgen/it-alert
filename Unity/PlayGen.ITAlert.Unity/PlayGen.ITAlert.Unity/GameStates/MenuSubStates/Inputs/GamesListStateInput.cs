@@ -80,7 +80,15 @@ namespace PlayGen.ITAlert.Unity.GameStates.MenuSubStates.Input
 			_joinGamePanel.SetActive(false);
 		}
 
-		private void JoinGame(string name)
+        protected override void OnTick(float deltaTime)
+        {
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            {
+                OnBackClick();
+            }
+        }
+
+        private void JoinGame(string name)
 		{
 			CommandQueue.AddCommand(new JoinGameCommand(name));
 		}

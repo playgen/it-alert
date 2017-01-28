@@ -77,7 +77,13 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
 
-			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
+            if (_photonClient.CurrentRoom.RoomInfo.maxPlayers == 1)
+            {
+                OnReadyButtonClick();
+                return;
+            }
+
+            SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
 			SetRoomName(_photonClient.CurrentRoom.RoomInfo.name);
 
 			_lobbyPanel.SetActive(true);
@@ -102,6 +108,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.RoomSubStates.Input
 		protected override void OnTick(float deltaTime)
 		{
 			UpdateVoiceStatuses();
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            {
+                OnBackButtonClick();
+            }
 		}
 
 		private void OnReadyButtonClick()
