@@ -41,7 +41,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Input
 
 		protected override void OnTick(float deltaTime)
 		{
-			UpdateChatPanel();
+		    if (_chatPanel.activeSelf)
+		    {
+		        UpdateChatPanel();
+		    }
 		}
 
 		private void InitializePlayers(List<Player> players)
@@ -55,9 +58,17 @@ namespace PlayGen.ITAlert.Unity.GameStates.Input
 		{
 			foreach (Transform child in _chatPanel.transform)
 			{
-				GameObject.Destroy(child.gameObject);
+			    if (child.name != "Background Image")
+			    {
+			        GameObject.Destroy(child.gameObject);
+			    }
 			}
 
+		    if (players.Count == 1)
+		    {
+		        _chatPanel.SetActive(false);
+		        return;
+		    }
 			_chatPanel.SetActive(true);
 
 			var offset = 0f;

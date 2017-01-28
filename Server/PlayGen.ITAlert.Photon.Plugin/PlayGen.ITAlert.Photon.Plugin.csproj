@@ -38,7 +38,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
-  </PropertyGroup> 
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Engine.Startup">
       <HintPath>..\..\bin\Simulation\Engine.Startup.dll</HintPath>
@@ -108,7 +108,7 @@
       <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
-      <Project>{02999433-BC54-495B-89F2-9075BB5D0082}</Project>
+      <Project>{02999433-bc54-495b-89f2-9075bb5d0082}</Project>
       <Name>PlayGen.ITAlert.Photon.Messages</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Players\PlayGen.ITAlert.Photon.Players.csproj">

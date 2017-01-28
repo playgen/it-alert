@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using PlayGen.ITAlert.Simulation.Common;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -229,20 +230,24 @@ namespace PlayGen.ITAlert.Unity.Settings
 					AddToLayout(layout, toggle.GetComponent<Toggle>() ?? toggle.GetComponentInChildren<Toggle>());
 					toggle.name = setting.Title;
 					break;
-			}
+                case SettingObjectType.Label:
+			        layout.GetComponent<LayoutElement>().preferredHeight *= 1.5f;
+                    layout.GetComponent<AspectRatioFitter>().aspectRatio /= 1.5f;
+                    break;
+            }
 
 			return layout.gameObject;
 		}
 
 		public void RebuildLayout()
 		{
-			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) transform);
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) transform);
 
 			foreach (LayoutGroup layout in GetComponentsInChildren<LayoutGroup>())
 			{
 				if (layout.gameObject != gameObject)
 				{
-					foreach (Transform trans in layout.transform)
+                    foreach (Transform trans in layout.transform)
 					{
 						var aspect = trans.GetComponent<AspectRatioFitter>() ?? trans.gameObject.AddComponent<AspectRatioFitter>();
 						var layoutElement = trans.GetComponent<LayoutElement>() ?? trans.gameObject.AddComponent<LayoutElement>();
@@ -250,8 +255,7 @@ namespace PlayGen.ITAlert.Unity.Settings
 						var canvasSize = ((RectTransform) GetComponentInParent<Canvas>().transform).rect.size;
 						if (layout.GetComponent<RectTransform>().sizeDelta.x > canvasSize.x)
 						{
-							layout.GetComponent<LayoutElement>().preferredHeight = canvasSize.x /
-																					layout.GetComponent<AspectRatioFitter>().aspectRatio;
+							layout.GetComponent<LayoutElement>().preferredHeight = canvasSize.x / layout.GetComponent<AspectRatioFitter>().aspectRatio;
 						}
 						if (layout.GetType() == typeof(HorizontalLayoutGroup))
 						{
@@ -260,8 +264,7 @@ namespace PlayGen.ITAlert.Unity.Settings
 						}
 						else
 						{
-							layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight /
-															layout.transform.childCount;
+							layoutElement.preferredHeight = layout.GetComponent<LayoutElement>().preferredHeight / layout.transform.childCount;
 							aspect.aspectRatio = layout.GetComponent<AspectRatioFitter>().aspectRatio * layout.transform.childCount;
 						}
 					}
@@ -296,7 +299,17 @@ namespace PlayGen.ITAlert.Unity.Settings
 			{
 				text.fontSize = smallestFontSize;
 			}
-		}
+            foreach (LayoutGroup layout in GetComponentsInChildren<LayoutGroup>())
+            {
+                if (layout.gameObject != gameObject)
+                {
+                    if (layout.transform.childCount == 1 && layout.transform.GetChild(0).GetComponent<Text>())
+                    {
+                        layout.transform.GetChild(0).GetComponent<Text>().fontSize = (int)(layout.transform.GetChild(0).GetComponent<Text>().fontSize * 1.5f);
+                    }
+                }
+            }
+        }
 
 		public void Wipe()
 		{
