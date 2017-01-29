@@ -28,7 +28,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 		{
 			_enhancementSystemExtensions = enhancementSystemExtensions;
 			_enhancementMatcherGroup = componentRegistry.CreateMatcherGroup(new[] { typeof(ISubsystemEnhancement) });
+			//_enhancementMatcherGroup.MatchingEntityAdded += EnhancementMatcherGroupOnMatchingEntityAdded;
 		}
+
+		//private void EnhancementMatcherGroupOnMatchingEntityAdded(Entity entity)
+		//{
+
+		//}
 
 		#endregion
 
@@ -36,10 +42,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		public void Initialize()
 		{
-			foreach (var enhancedSystem in _enhancementMatcherGroup.MatchingEntities)
-			{
-				ExecuteExtensionAction(ese => ese.Initialize(enhancedSystem));
-			}
 		}
 
 		#endregion

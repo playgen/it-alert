@@ -27,16 +27,10 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		/// <summary>
 		/// Id of this entity
 		/// </summary>
-		public int Id
-		{
-			get
-			{
-				return Entity.Id;
-			}
-		}
+		public int Id => Entity.Id;
+
 		public EntityType EntityType { get; private set; }
-
-
+		
 		#region Unity Update
 
 		/// <summary>

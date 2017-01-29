@@ -57,11 +57,13 @@
     <Compile Include="Components\Items\Item.cs" />
     <Compile Include="Components\Items\Scanner.cs" />
     <Compile Include="Components\Movement\SubsystemMovementFlag.cs" />
+    <Compile Include="GameSystems.cs" />
     <Compile Include="Systems\Commands\PlayerCommandSystem.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
+    <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
