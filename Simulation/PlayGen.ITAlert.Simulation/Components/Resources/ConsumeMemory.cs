@@ -2,17 +2,8 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
-	public class ConsumeMemory : Property<int>
+	public class ConsumeMemory : IComponent
 	{
-		public ConsumeMemory() 
-			: base(1)
-		{
-
-		}
-
-		public ConsumeMemory(int value) 
-			: base(value)
-		{
-		}
+		public int Value { get; set; }
 	}
 }

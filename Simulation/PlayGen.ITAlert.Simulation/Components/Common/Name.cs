@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Common
 {
-	public class Name : Property<string>
+	public class Name : IComponent
 	{
-		public Name() : base()
-		{
-		}
-
-		public Name(string value) 
-			: base(value)
-		{
-		}
+		public string Value { get; set; }
 	}
 }

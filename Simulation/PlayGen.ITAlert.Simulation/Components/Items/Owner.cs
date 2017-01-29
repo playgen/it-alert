@@ -2,7 +2,8 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Items
 {
-	public class Owner : Property<int?>
+	public class Owner : IComponent
 	{
+		public int? Value { get; set; }
 	}
 }

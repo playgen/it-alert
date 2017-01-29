@@ -2,7 +2,7 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Intents
 {
-    public class InfectSystemIntent : IIntent
-    {
-    }
+	public class InfectSystemIntent : IIntent
+	{
+	}
 }

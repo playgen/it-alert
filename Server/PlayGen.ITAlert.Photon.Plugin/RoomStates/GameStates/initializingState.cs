@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (initializingMessage != null)
 			{
 				var player = PlayerManager.Get(initializingMessage.PlayerPhotonId);
-				player.State = ClientState.Initializing.IntValue();
+				player.State = (int) ClientState.Initializing;
 				PlayerManager.UpdatePlayer(player);
 
 				if (PlayerManager.Players.GetCombinedStates() == ClientState.Initializing)
@@ -70,7 +70,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (initializedMessage != null)
 			{
 				var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
-				player.State = ClientState.Initialized.IntValue();
+				player.State = (int) ClientState.Initialized;
 				PlayerManager.UpdatePlayer(player);
 
 				PlayerInitializedEvent(PlayerManager.Players);

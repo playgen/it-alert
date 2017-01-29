@@ -5,6 +5,7 @@ using Engine.Common;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Util;
+using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Items
 {
@@ -16,28 +17,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 			Lock,
 		}
 
-		public ItemContainer[] Items { get; private set; }
+		public ItemContainer[] Items { get; private set; } = new ItemContainer[SimulationConstants.SubsystemMaxItems];
 
 		public int ItemLimit { get; set; }
 
-		private int _maxItemLimit;
+		public int MaxItems { get; set; }
 
 		private OverLimitBehaviour _overLimitBehaviour;
-
-		public ItemStorage(int maxItems) 
-		{
-			_maxItemLimit = maxItems;
-
-			Items = new ItemContainer[maxItems];
-
-			for (var i = 0; i < _maxItemLimit; i++)
-			{
-				if (Items[i] == null)
-				{
-					Items[i] = new ItemContainer();
-				}
-			}
-		}
 
 		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
 		{
@@ -52,12 +38,12 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 				throw new InvalidOperationException($"Custom item container positions {position} exceeds storage capacity {Items.Length}");
 			}
 			Items[position] = container;
-			_maxItemLimit -= 1;
+			MaxItems -= 1;
 		}
 
 		public void SetItemLimit(int limit)
 		{
-			if (limit < _maxItemLimit)
+			if (limit < MaxItems)
 			{
 				if (limit < ItemLimit)
 				{

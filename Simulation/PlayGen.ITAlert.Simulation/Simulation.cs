@@ -104,8 +104,9 @@ namespace PlayGen.ITAlert.Simulation
 			
 			config.EntityId = subsystem.Id;
 
-			subsystem.GetComponent<Coordinate2DProperty>().SetValue(new Vector(config.X, config.Y));
-			subsystem.GetComponent<Name>().SetValue(config.Name);
+			subsystem.GetComponent<Coordinate2DProperty>().X = config.X;
+			subsystem.GetComponent<Coordinate2DProperty>().Y = config.Y;
+			subsystem.GetComponent<Name>().Value = config.Name;
 
 			subsystem.GetComponent<ItemStorage>().SetItemLimit(4);
 			subsystem.GetComponent<ItemStorage>().SetOverLimitBehaviour(ItemStorage.OverLimitBehaviour.Dispose);
@@ -125,7 +126,7 @@ namespace PlayGen.ITAlert.Simulation
 			var head = subsystems[edgeConfig.Source];
 			var tail = subsystems[edgeConfig.Destination];
 
-			connection.GetComponent<MovementCost>().SetValue(edgeConfig.Weight);
+			connection.GetComponent<MovementCost>().Value = edgeConfig.Weight;
 
 			connection.GetComponent<GraphNode>().EntrancePositions.Add(head.Id, 0);
 			connection.GetComponent<GraphNode>().ExitPositions.Add(tail.Id, SimulationConstants.ConnectionPositions * edgeConfig.Length);

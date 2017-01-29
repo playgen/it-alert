@@ -5,7 +5,7 @@ using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class ExitRoutes : ReadOnlyProperty<Dictionary<int, int>>
+	public class ExitRoutes : Dictionary<int, int>, IComponent
 	{
 		public ExitRoutes() 
 			: base(new Dictionary<int, int>())

@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					&& currentLocationEntity.TryGetComponent(out currentLocationVisitors))
 				{
 					// join the current locations list of visitors with all malware entities
-					foreach (var malwareVisitor in currentLocationVisitors.Value
+					foreach (var malwareVisitor in currentLocationVisitors.Values
 						.Join(_malwareMatcherGroup.MatchingEntities,
 							k => k,
 							k => k.Id,
@@ -62,7 +62,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 						if (malwareVisitor.TryGetComponent(out malwareGenome))
 						{
 							// add the visible gene
-							malwareGenome.Value.Add(SimulationConstants.MalwareVisibilityGene);
+							malwareGenome.Values.Add(SimulationConstants.MalwareVisibilityGene);
 						}
 					}
 				}

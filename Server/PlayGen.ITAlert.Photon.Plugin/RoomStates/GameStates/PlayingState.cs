@@ -68,7 +68,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (playingMessage != null)
 			{
 				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
-				player.State = ClientState.Playing.IntValue();
+				player.State = (int) ClientState.Playing;
 				PlayerManager.UpdatePlayer(player);
 
 				if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing)

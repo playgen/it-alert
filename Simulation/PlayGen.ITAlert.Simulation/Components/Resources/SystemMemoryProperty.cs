@@ -2,20 +2,9 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
-	public class SystemMemoryProperty : RangedIntegerProperty
+	public class SystemMemoryProperty : IComponent
 	{
-		#region Constructors
+		public int Value { get; set; }
 
-		public SystemMemoryProperty(int initialValue, int maxValue)
-			: base(initialValue, 0, maxValue)
-		{
-		}
-
-		#endregion
-
-		public void ApplyDelta(int delta)
-		{
-			SetValue(Value + delta);
-		}
 	}
 }

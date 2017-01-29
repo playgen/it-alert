@@ -142,12 +142,12 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		Visitors visitors;
 		if (Entity.TryGetComponent(out visitors))
 		{
-			foreach (var visitorId in visitors.Value)
+			foreach (var visitorId in visitors.Values)
 			{
 				var visitor = Director.GetEntity(visitorId);
 				UpdateVisitorMovement(visitor);
 			}
-			_currentVisitors.RemoveWhere(v => visitors.Value.Contains(v) == false);
+			_currentVisitors.RemoveWhere(v => visitors.Values.Contains(v) == false);
 		}
 		}
 

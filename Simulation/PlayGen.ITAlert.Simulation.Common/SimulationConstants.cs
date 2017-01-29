@@ -44,7 +44,7 @@
 
 		#region viruses
 
-		public const int VirusMemoryConsumedInitialValue = 0;
+		public const int VirusMemoryConsumedInitialValue = 1;
 		public const int VirusCPUConsumedInitialValue = 0;
 
 		public const int VirusMemoryConsumedIncrementPerTick = 1;

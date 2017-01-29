@@ -17,17 +17,17 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		public void HandleVoiceInput()
 		{
-		    if (_photonClient.CurrentRoom.Players.Count > 1)
-		    {
-		        if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
-		        {
-		            _voiceClient.StartTransmission();
-		        }
-		        else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
-		        {
-		            _voiceClient.StopTransmission();
-		        }
-		    }
+			if (_photonClient.CurrentRoom.Players.Count > 1)
+			{
+				if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
+				{
+					_voiceClient.StartTransmission();
+				}
+				else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
+				{
+					_voiceClient.StopTransmission();
+				}
+			}
 		}
 
 		private void OnJoinedRoom(ClientRoom room)

@@ -34,7 +34,10 @@ namespace PlayGen.ITAlert.Simulation
 			.Extends(Node)
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
-				ComponentTemplate = new EntityTypeProperty(EntityType.Connection)
+				ComponentTemplate = new EntityTypeProperty()
+				{
+					Value = EntityType.Connection
+				}
 			})
 			.HasComponent(new ComponentBinding<MovementCost>());
 
@@ -42,22 +45,28 @@ namespace PlayGen.ITAlert.Simulation
 			.Extends(Node)
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
-				ComponentTemplate = new EntityTypeProperty(EntityType.Subsystem)
+				ComponentTemplate = new EntityTypeProperty()
+				{
+					Value = EntityType.Subsystem
+				}
 			})
 			.HasComponent(new ComponentBinding<Name>())
 			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
 			.HasComponent(new ComponentBinding<ItemActivator>())
-			.HasComponent(new ComponentBinding<ItemStorage>()
-			{
-				ComponentTemplate = new ItemStorage(SimulationConstants.SubsystemMaxItems)
-			})
+			.HasComponent(new ComponentBinding<ItemStorage>())
 			.HasComponent(new ComponentBinding<MemoryResource>()
 			{
-				ComponentTemplate = new MemoryResource(0, 4)
+				ComponentTemplate = new MemoryResource()
+				{
+					Value = 4,
+				}
 			})
 			.HasComponent(new ComponentBinding<CPUResource>()
 			{
-				ComponentTemplate = new CPUResource(0, 4)
+				ComponentTemplate = new CPUResource()
+				{
+					Value = 4,
+				}
 			});
 
 		public static readonly Archetype Analysis = new Archetype("Analysis")
@@ -89,7 +98,10 @@ namespace PlayGen.ITAlert.Simulation
 			.Extends(Actor)
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
-				ComponentTemplate = new EntityTypeProperty(EntityType.Player)
+				ComponentTemplate = new EntityTypeProperty()
+				{
+					Value = EntityType.Player
+				}
 			});
 
 		#region viruses
@@ -98,16 +110,25 @@ namespace PlayGen.ITAlert.Simulation
 			.Extends(Actor)
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
-				ComponentTemplate = new EntityTypeProperty(EntityType.Npc)
+				ComponentTemplate = new EntityTypeProperty()
+				{
+					Value = EntityType.Npc
+				}
 			})
 			.HasComponent(new ComponentBinding<MalwareGenome>())
 			.HasComponent(new ComponentBinding<ConsumeMemory>()
 			{
-				ComponentTemplate = new ConsumeMemory(0)
+				ComponentTemplate = new ConsumeMemory()
+				{
+					Value = SimulationConstants.VirusMemoryConsumedInitialValue,
+				}
 			})
 			.HasComponent(new ComponentBinding<ConsumeCPU>()
 			{
-				ComponentTemplate = new ConsumeCPU(0)
+				ComponentTemplate = new ConsumeCPU()
+				{
+					Value = SimulationConstants.VirusCPUConsumedInitialValue,
+				}
 			});
 
 
@@ -122,7 +143,10 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				new ComponentBinding<EntityTypeProperty>()
 				{
-					ComponentTemplate = new EntityTypeProperty(EntityType.Item)
+					ComponentTemplate = new EntityTypeProperty()
+				{
+					Value = EntityType.Item
+					}
 				},
 				new ComponentBinding<CurrentLocation>(),
 				new ComponentBinding<Owner>(),

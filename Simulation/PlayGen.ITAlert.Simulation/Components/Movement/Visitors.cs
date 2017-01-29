@@ -6,12 +6,13 @@ using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class Visitors : ReadOnlyProperty<HashSet<int>>
+	public class Visitors : IComponent
 	{
-		public Visitors() 
-			: base(new HashSet<int>())
-		{
-		}
+		public List<int> Values { get; set; }
 
+		public Visitors()
+		{
+			Values = new List<int>();
+		}
 	}
 }

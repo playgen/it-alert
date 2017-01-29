@@ -2,7 +2,8 @@
 
 namespace PlayGen.ITAlert.Simulation.Components.Common
 {
-	public class CurrentLocation : Property<int>
+	public class CurrentLocation : IComponent
 	{
+		public int Value { get; set; }
 	}
 }

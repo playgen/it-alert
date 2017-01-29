@@ -3,7 +3,8 @@ using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class Destination : Property<Entity>
+	public class Destination : IComponent
 	{
+		public int Value { get; set; }
 	}
 }

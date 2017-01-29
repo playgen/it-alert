@@ -25,8 +25,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		}
 
-
-
 		#region command/ownership logic
 
 		// TODO: decide if this is where these really belong
@@ -50,7 +48,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			if (CanChangeOwnership(actor, item))
 			{
 				var owner = item.GetComponent<Owner>();
-				owner.SetValue(actor?.Id ?? null);
+				owner.Value = actor?.Id;
 				return true;
 			}
 			return false;
