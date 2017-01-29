@@ -22,10 +22,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		public override void MoveVisitors(Entity node, int currentTick)
 		{
 			var graphNode = node.GetComponent<GraphNode>();
-			var visitors = node.GetComponent<Visitors>();
+			var visitors = node.GetComponent<Visitors>().Values;
 			var exitRoutes = node.GetComponent<ExitRoutes>();
 
-			foreach (var visitorId in visitors.Value)
+			foreach (var visitorId in visitors)
 			{
 				Entity visitor;
 				if (EntityRegistry.TryGetEntityById(visitorId, out visitor))
@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 						var moveIntent = visitorIntent as MoveIntent;
 						if (moveIntent != null)
 						{
-							exitNode = exitRoutes.Value[moveIntent.Destination];
+							exitNode = exitRoutes[moveIntent.Destination];
 						}
 					}
 

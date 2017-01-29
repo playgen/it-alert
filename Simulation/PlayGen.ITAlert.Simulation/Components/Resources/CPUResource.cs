@@ -6,11 +6,8 @@ using Engine.Components;
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
 	// ReSharper disable once InconsistentNaming
-	public class CPUResource : RangedIntegerProperty
+	public class CPUResource : IComponent
 	{
-		public CPUResource(int value, int maxValue) 
-			: base(value, 0, maxValue)
-		{
-		}
+		public int Value { get; set; }
 	}
 }

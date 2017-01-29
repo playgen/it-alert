@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
 			});
 
-			PlayerManager.ChangeAllState(ClientState.NotReady.IntValue());
+			PlayerManager.ChangeAllState((int)ClientState.NotReady);
 		}
 
 		protected override void OnExit()

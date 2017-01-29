@@ -49,8 +49,10 @@
     <Reference Include="GameWork.Core.States">
       <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\lib\PlayGen.Photon.Plugin\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PhotonHivePlugin">
       <HintPath>..\..\lib\Photon\PhotonHivePlugin.dll</HintPath>
@@ -132,11 +134,13 @@
     <Content Include="SUGARConfiguration.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /Y /Q "$(TargetDir)*.dll" "$(SolutionDir)deploy\bin_Win64\"
+xcopy /Y /Q "$(TargetDir)*.pdb" "$(SolutionDir)deploy\bin_Win64\"
+xcopy /Y /Q "$(TargetDir)SUGARConfiguration.json" "$(SolutionDir)deploy\Loadbalancing\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

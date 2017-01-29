@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 {
 	public class ItemContainer : IItemContainer
 	{
-		public virtual string ContainerGlyph => null;
+		//public virtual string ContainerGlyph => null;
 
 		public Entity Item { get; set; }
 

@@ -6,11 +6,8 @@ using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
-	public class MemoryResource : RangedIntegerProperty
+	public class MemoryResource : IComponent
 	{
-		public MemoryResource(int value, int maxValue) 
-			: base(value, 0, maxValue)
-		{
-		}
+		public int Value { get; set; }
 	}
 }

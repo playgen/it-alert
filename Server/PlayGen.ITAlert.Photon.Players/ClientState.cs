@@ -16,12 +16,4 @@
 
 		FeedbackSent
 	}
-
-	public static class StateExtensions
-	{
-		public static int IntValue(this ClientState clientState)
-		{
-			return (int) clientState;
-		}
-	}
 }

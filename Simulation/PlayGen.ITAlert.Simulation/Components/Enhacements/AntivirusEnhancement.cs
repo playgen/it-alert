@@ -7,8 +7,7 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Components.Enhacements
 {
-	[ComponentDependency(typeof(ItemStorage))]
-	public sealed class AntivirusEnhancement : IComponent, IFlagComponent
+	public sealed class AntivirusEnhancement : IFlagComponent
 	{
 	}
 }

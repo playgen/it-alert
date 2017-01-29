@@ -6,12 +6,8 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class MovementCost : RangedIntegerProperty
+	public class MovementCost : IComponent
 	{
-		public MovementCost()
-			: base(0, 1, SimulationConstants.ConnectionMaxMovementCost)
-		{
-		}
-
+		public int Value { get; set; }
 	}
 }

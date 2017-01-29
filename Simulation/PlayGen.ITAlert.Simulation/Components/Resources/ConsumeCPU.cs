@@ -3,17 +3,8 @@
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
 	// ReSharper disable once InconsistentNaming
-	public class ConsumeCPU : Property<int>
+	public class ConsumeCPU : IComponent
 	{
-		public ConsumeCPU() 
-			: base(1)
-		{
-
-		}
-
-		public ConsumeCPU(int value) 
-			: base(value)
-		{
-		}
+		public int Value { get; set; }
 	}
 }

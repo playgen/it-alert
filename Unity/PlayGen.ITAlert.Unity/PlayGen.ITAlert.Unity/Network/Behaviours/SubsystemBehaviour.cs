@@ -118,7 +118,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		private void SetPosition()
 		{
-			var coordinate = Entity.GetComponent<Coordinate2DProperty>().Value;
+			var coordinate = Entity.GetComponent<Coordinate2DProperty>();
 			transform.position = new Vector3(UIConstants.NetworkOffset.x + (UIConstants.SubsystemSpacing.x * coordinate.X), UIConstants.NetworkOffset.y + (UIConstants.SubsystemSpacing.y * coordinate.Y));
 			_itemPositions = CornerItemOffsets.Select(c => c + (Vector2) _connectionSquare.transform.position).ToArray();
 		}

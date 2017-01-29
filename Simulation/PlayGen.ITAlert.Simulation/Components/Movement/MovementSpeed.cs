@@ -6,16 +6,8 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
-	public class MovementSpeed : RangedIntegerProperty
+	public class MovementSpeed : IComponent
 	{
-		public MovementSpeed() 
-			: this(1, SimulationConstants.PlayerMaxSpeed)
-		{
-		}
-
-		public MovementSpeed(int value, int maxValue) 
-			: base(value, 0, maxValue)
-		{
-		}
+		public int Value { get; set; }
 	}
 }

@@ -1,6 +1,6 @@
 ﻿{
-  "BaseAddress": "http://sugar.playgen.internal/",
-  "GameId": 1,
+  "BaseAddress": "http://api.sugarengine.org/",
+  "GameId": 2,
   "AccountName": "ITAlert",
   "AccountPassword": "t0pSECr3t",
   "AccountSource": "SUGAR"

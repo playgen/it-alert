@@ -35,20 +35,20 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			visitorPosition.SetHost(node);
 			visitorPosition.SetPosition(position, currentTick);
 
-			var visitors = node.GetComponent<Visitors>();
-			visitors.Value.Add(visitor.Id);
+			var visitors = node.GetComponent<Visitors>().Values;
+			visitors.Add(visitor.Id);
 			
 			visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
 
 			var currentLocation = visitor.GetComponent<CurrentLocation>();
-			currentLocation.SetValue(node.Id);
+			currentLocation.Value = node.Id;
 		}
 
 		public void RemoveVisitorFromNode(Entity node, Entity visitor)
 		{
-			var visitors = node.GetComponent<Visitors>();
+			var visitors = node.GetComponent<Visitors>().Values;
 			//visitor.EntityDestroyed -= RemoveVisitor;
-			visitors.Value.Remove(visitor.Id);
+			visitors.Remove(visitor.Id);
 		}
 
 		protected void OnVisitorTransition(int nodeId, Entity visitor, Entity source, int initialposition, int currenttick)

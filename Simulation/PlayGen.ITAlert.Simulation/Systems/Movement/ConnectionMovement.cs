@@ -23,9 +23,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			var graphNode = node.GetComponent<GraphNode>();
 			var exitNode = graphNode.ExitPositions.Single();
 
-			var visitors = node.GetComponent<Visitors>();
+			var visitors = node.GetComponent<Visitors>().Values;
 
-			foreach (var visitorId in visitors.Value)
+			foreach (var visitorId in visitors)
 			{
 				Entity visitor;
 				if (EntityRegistry.TryGetEntityById(visitorId, out visitor))
@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 					{
 						var overflow = Math.Max(nextPosition - movementCost, currentTick);
 
-						visitors.Value.Remove(visitor.Id);
+						visitors.Remove(visitor.Id);
 
 						OnVisitorTransition(exitNode.Key, visitor, node, overflow, currentTick);
 					}

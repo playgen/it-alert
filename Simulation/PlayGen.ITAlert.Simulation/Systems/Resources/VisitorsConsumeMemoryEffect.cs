@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				&& subsystem.TryGetComponent(out visitors))
 			{
 				var sum = 0;
-				foreach (var visitorId in visitors.Value)
+				foreach (var visitorId in visitors.Values)
 				{
 					Entity visitor;
 					if (_entityRegistry.TryGetEntityById(visitorId, out visitor))
@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 						}
 					}
 				}
-				memoryResource.SetValue(sum);
+				memoryResource.Value = sum;
 			}
 		}
 

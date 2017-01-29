@@ -8,7 +8,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 {
 	public interface IItemContainer
 	{
-		string ContainerGlyph { get; }
+		//string ContainerGlyph { get; }
 
 		Entity Item { get; }
 

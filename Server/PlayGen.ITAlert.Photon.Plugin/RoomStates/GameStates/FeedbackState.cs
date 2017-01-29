@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (feedbackMessage != null)
 			{
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
-				player.State = ClientState.FeedbackSent.IntValue();
+				player.State = (int) ClientState.FeedbackSent;
 				PlayerManager.UpdatePlayer(player);
 				
 				WritePlayerFeedback(feedbackMessage.RankedPlayerPhotonIdBySection);
