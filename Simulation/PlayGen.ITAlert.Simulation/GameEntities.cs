@@ -16,7 +16,7 @@ using PlayGen.ITAlert.Simulation.Systems.Movement;
 namespace PlayGen.ITAlert.Simulation
 {
 	/// <summary>
-	/// TEMPORARY archetype defintion format, the lambdas with no intiial parameters wont do in the long term!
+	/// The default game entities for IT Alert
 	/// </summary>
 	public static class GameEntities
 	{
@@ -53,7 +53,10 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponent(new ComponentBinding<Name>())
 			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
 			.HasComponent(new ComponentBinding<ItemActivator>())
-			.HasComponent(new ComponentBinding<ItemStorage>())
+			.HasComponent(new ComponentBinding<ItemStorage>()
+			{
+				ComponentTemplate = new ItemStorage()
+			})
 			.HasComponent(new ComponentBinding<MemoryResource>()
 			{
 				ComponentTemplate = new MemoryResource()

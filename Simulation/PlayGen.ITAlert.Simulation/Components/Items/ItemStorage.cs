@@ -8,14 +8,15 @@ using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Components.Items
-{
+{ 
+	public enum OverLimitBehaviour
+	{
+		Dispose,
+		Lock,
+	}
+
 	public class ItemStorage : IComponent
 	{
-		public enum OverLimitBehaviour
-		{
-			Dispose,
-			Lock,
-		}
 
 		public ItemContainer[] Items { get; private set; } = new ItemContainer[SimulationConstants.SubsystemMaxItems];
 
@@ -23,15 +24,13 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 		public int MaxItems { get; set; }
 
-		private OverLimitBehaviour _overLimitBehaviour;
+		public OverLimitBehaviour OverLimitBehaviour { get; set; }
 
-		public void SetOverLimitBehaviour(OverLimitBehaviour overLimitBehaviour)
-		{
-			_overLimitBehaviour = overLimitBehaviour;
-		}
+
 
 		public void SetCustomContainer(int position, ItemContainer container)
 		{
+			// TODO: reimplement via directly accessed item
 			NotNullHelper.ArgumentNotNull(container, nameof(container));
 			if (position >= Items.Length)
 			{
@@ -50,7 +49,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 					for (var i = Items.Length - 1; i >= ItemLimit; i--)
 					{
 						var itemContainer = Items[i];
-						if (_overLimitBehaviour == OverLimitBehaviour.Dispose)
+						if (OverLimitBehaviour == OverLimitBehaviour.Dispose)
 						{
 							if (itemContainer.Item != null)
 							{

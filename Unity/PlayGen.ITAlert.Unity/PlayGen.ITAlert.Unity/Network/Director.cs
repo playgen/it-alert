@@ -134,11 +134,11 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private static void SetPlayer(int playerServerId)
 		{
-		var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+			var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
 
-		//var playerState = Simulation.ExternalPlayers[playerServerId];
-		// TODO: reimplement
-		_player = players.First();
+			//var playerState = Simulation.ExternalPlayers[playerServerId];
+			// TODO: reimplement
+			_player = players.First();
 			_player.SetActive();
 		}
 
@@ -147,15 +147,15 @@ namespace PlayGen.ITAlert.Unity.Network
 		/// </summary>
 		private static void CreateInitialEntities()
 		{
-			//foreach (var entity in Simulation.GetEntities())
-			//{
-			//	CreateEntity(entity);
-			//}
-			//// initialize after the entities have been created as some will need to reference each other
-			//foreach (var stateEntity in _state.EntityStates)
-			//{
-			//	GetEntity(stateEntity.Key).EntityBehaviour.Initialize(stateEntity.Value);
-			//}
+			foreach (var entityKvp in SimulationRoot.ECS.GetEntities())
+			{
+				CreateEntity(entityKvp.Value);
+			}
+			// initialize after the entities have been created as some will need to reference each other
+			foreach (var entityKvp in SimulationRoot.ECS.GetEntities())
+			{
+				GetEntity(entityKvp.Key).EntityBehaviour.Initialize(entityKvp.Value);
+			}
 		}
 
 		#endregion

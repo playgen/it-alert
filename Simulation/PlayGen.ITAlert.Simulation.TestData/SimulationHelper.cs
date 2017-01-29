@@ -7,6 +7,7 @@ using Engine.Startup;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Systems.Commands;
+using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Systems.Planning;
@@ -132,35 +133,15 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			List<PlayerConfig> playerConfiguration,
 			List<ItemConfig> itemConfiguration)
 		{
-			var archetypes = new List<Archetype>()
-			{
-				GameEntities.Subsystem,
-				GameEntities.Connection,
+			// the helper is fine here since archetype ordering doesnt matter
+			var archetypes = ArchetypeHelper.GetPublicStaticArchetypes(typeof(GameEntities));
 
-				GameEntities.Player,
-				GameEntities.Virus,
-
-				GameEntities.Repair,
-				GameEntities.Analyser,
-				GameEntities.Capture,
-				GameEntities.Cleaner,
-				GameEntities.Scanner,
-				GameEntities.Tracer,
-
-				GameEntities.Analysis,
-				GameEntities.Antivirus,
-			};
-			var systems = new List<SystemConfiguration>()
-			{
-				new SystemConfiguration<MovementSystem>(),
-				new SystemConfiguration<PlayerCommandSystem>(),
-				new SystemConfiguration<IntentSystem>(),
-				new SystemConfiguration<ItemActivationSystem>(),
-				new SystemConfiguration<ItemManagement>(),
-
-			};
+			// TODO: the order of these is really important
+			// TODO: so we need a smarter helper than we can use on archetypes
+			var systems = GameSystems.Systems;
 			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
-			
+			// TODO: implement ComponentDependency/SystemDependency attribute validation of configuration
+
 			return configuration;
 		}
 

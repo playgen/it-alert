@@ -108,9 +108,6 @@ namespace PlayGen.ITAlert.Simulation
 			subsystem.GetComponent<Coordinate2DProperty>().Y = config.Y;
 			subsystem.GetComponent<Name>().Value = config.Name;
 
-			subsystem.GetComponent<ItemStorage>().SetItemLimit(4);
-			subsystem.GetComponent<ItemStorage>().SetOverLimitBehaviour(ItemStorage.OverLimitBehaviour.Dispose);
-
 			return subsystem;
 		}
 
