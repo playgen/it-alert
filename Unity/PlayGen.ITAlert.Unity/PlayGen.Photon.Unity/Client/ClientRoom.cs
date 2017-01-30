@@ -143,24 +143,17 @@ namespace PlayGen.Photon.Unity.Client
 				Players = listedPlayersMessage.Players;
 				GetPlayersWait.Set();
 				PlayerListUpdatedEvent?.Invoke(Players);
-				return;
 			}
 		}
 
 		internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)
 		{
-			if (OtherPlayerJoinedEvent != null)
-			{
-				OtherPlayerJoinedEvent(otherPlayer);
-			}
+			OtherPlayerJoinedEvent?.Invoke(otherPlayer);
 		}
 
 		internal void OnOtherPlayerJoined(PhotonPlayer otherPlayer)
 		{
-			if (OtherPlayerLeftEvent != null)
-			{
-				OtherPlayerLeftEvent(otherPlayer);
-			}
+			OtherPlayerLeftEvent?.Invoke(otherPlayer);
 		}
 	}
 }

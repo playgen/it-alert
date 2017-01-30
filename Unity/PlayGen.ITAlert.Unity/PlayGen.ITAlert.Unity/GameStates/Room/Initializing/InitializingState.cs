@@ -15,29 +15,29 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Initializing
 	{
 		public const string StateName = "Initializing";
 
-		private readonly Client _networkPhotonClient;
+		private readonly Client _photonClient;
 
 		public override string Name => StateName;
 
-		public InitializingState(Client networkPhotonClient)
+		public InitializingState(Client photonClient)
 		{
-			_networkPhotonClient = networkPhotonClient;
+			_photonClient = photonClient;
 		}
 
 		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
 
-			_networkPhotonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
-			_networkPhotonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
+			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+			_photonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
 			{
-				PlayerPhotonId = _networkPhotonClient.CurrentRoom.Player.PhotonId
+				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 			});
 		}
 
 		protected override void OnExit()
 		{
-			_networkPhotonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+			_photonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 		}
 		
 		private void ProcessSimulationStateMessage(Message message)
@@ -56,11 +56,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Initializing
 					{
 						// TODO: extract simulation initialization to somewhere else
 						var simulationRoot = SimulationInstaller.CreateSimulationRoot(initializedMessage.SimulationConfiguration);
-						if (Director.Initialize(simulationRoot, _networkPhotonClient.CurrentRoom.Player.PhotonId))
+						if (Director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 						{
-							_networkPhotonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
+							_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
 							{
-								PlayerPhotonId = _networkPhotonClient.CurrentRoom.Player.PhotonId
+								PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 							});
 						}
 					}

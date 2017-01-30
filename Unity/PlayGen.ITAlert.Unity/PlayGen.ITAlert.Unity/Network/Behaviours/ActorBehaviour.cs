@@ -32,5 +32,11 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			}
 			Debug.LogError($"Failed to load actor component(s) for UpdatePosition on entity {Entity.Id}");
 		}
+
+		protected override void OnInitialize()
+		{
+			UpdatePosition();
+		}
+
 	}
 }

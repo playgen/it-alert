@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -13,12 +14,6 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		private const int PositionHistory = 15;
 
 		private const int InventoryPositionHistory = 5;
-
-
-		/// <summary>
-		/// store the players most recent positions to enable the current inventory item to follow
-		/// </summary>
-		private readonly Queue<Vector2> _historicPositions = new Queue<Vector2>(PositionHistory);
 
 		public bool IsTalking = false;
 
@@ -42,23 +37,25 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public void Awake()
 		{
-			UpdatePosition();
 		}
 
 		protected override void OnInitialize()
 		{
-			SetColor();
+			base.OnInitialize();
 			//GetComponent<TrailRenderer>().sortingOrder = 10;
 		}
 
 
-		private void SetColor()
+		public void SetColor(string colour)
 		{
-			//if (ColorUtility.TryParseHtmlString(EntityState.Colour, out _playerColor))
-			//{
-			//	GetComponent<SpriteRenderer>().color = _playerColor;
-
-			//}
+			if (colour.IndexOf("#", StringComparison.Ordinal) == -1)
+			{
+				colour = $"#{colour}";
+			}
+			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
+			{
+				GetComponent<SpriteRenderer>().color = _playerColor;
+			}
 		}
 
 		#endregion
@@ -94,16 +91,16 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		#endregion
 
-		private void DrawTrail()
-		{
-			for (var i = 0; i < _historicPositions.Count; i++)
-			{
-				if (_trail[i] != null)
-				{
-					_trail[i].transform.position = _historicPositions.Reverse().ToArray()[i];
-				}
-			}
-		}
+		//private void DrawTrail()
+		//{
+		//	for (var i = 0; i < _historicPositions.Count; i++)
+		//	{
+		//		if (_trail[i] != null)
+		//		{
+		//			_trail[i].transform.position = _historicPositions.Reverse().ToArray()[i];
+		//		}
+		//	}
+		//}
 
 		private void ManageInventory(Vector2 itemPosition)
 		{
