@@ -1,5 +1,6 @@
 ﻿using System;
 using PlayGen.Photon.Messages.Logging;
+using PlayGen.Photon.Unity.Messaging;
 
 namespace PlayGen.Photon.Unity
 {

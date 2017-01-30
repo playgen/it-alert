@@ -1,5 +1,6 @@
 ﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame;
 
 namespace PlayGen.ITAlert.Unity.Commands
 {

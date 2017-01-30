@@ -1,7 +1,9 @@
 ﻿using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.GameStates.Input;
-using PlayGen.ITAlert.Unity.GameStates.Transitions;
+using PlayGen.ITAlert.Unity.GameStates.Loading;
+using PlayGen.ITAlert.Unity.GameStates.Menu;
+using PlayGen.ITAlert.Unity.GameStates.Room;
+using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.GameStates

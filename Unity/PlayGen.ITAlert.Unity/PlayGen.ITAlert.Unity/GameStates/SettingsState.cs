@@ -1,5 +1,5 @@
 ﻿using GameWork.Core.States.Tick.Input;
-using PlayGen.ITAlert.Unity.GameStates.Input;
+using PlayGen.ITAlert.Unity.GameStates.Menu.Settings;
 
 namespace PlayGen.ITAlert.Unity.GameStates
 {

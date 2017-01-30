@@ -1,4 +1,6 @@
-﻿using PlayGen.Photon.Unity.Client;
+﻿using System;
+using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 
@@ -17,16 +19,23 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		public void HandleVoiceInput()
 		{
-			if (_photonClient.CurrentRoom.Players.Count > 1)
+			try
 			{
-				if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
+				if ((_photonClient.CurrentRoom?.Players?.Count ?? 0) > 1)
 				{
-					_voiceClient.StartTransmission();
+					if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
+					{
+						_voiceClient.StartTransmission();
+					}
+					else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
+					{
+						_voiceClient.StopTransmission();
+					}
 				}
-				else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
-				{
-					_voiceClient.StopTransmission();
-				}
+			}
+			catch (Exception ex)
+			{
+				throw new PhotonVoiceException("Error processing voice communciation", ex);
 			}
 		}
 

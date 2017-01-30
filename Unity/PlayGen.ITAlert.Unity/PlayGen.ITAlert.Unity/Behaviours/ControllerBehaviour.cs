@@ -3,6 +3,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
 using UnityEngine;
 using PlayGen.ITAlert.Unity.GameStates;
+using PlayGen.ITAlert.Unity.GameStates.Loading;
 using PlayGen.ITAlert.Unity.Network;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Utilities;

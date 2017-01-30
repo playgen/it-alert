@@ -36,14 +36,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channel.GameState, ProcessGameStateMessage);	
+			Messenger.Subscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);	
 
 			Messenger.SendAllMessage(new InitializingMessage());
 		}
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channel.GameState, ProcessGameStateMessage);
+			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 		}
 
 		private void ProcessGameStateMessage(Message message)

@@ -43,8 +43,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channel.GameState, ProcessGameStateMessage);
-			Messenger.Subscribe((int)Channel.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Subscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
+			Messenger.Subscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
 
 			//_commandSequence = CommandSequenceHelper.GenerateCommandSequence(20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
 			_resolver = new CommandResolver(_simulationRoot.ECS);
@@ -54,8 +54,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channel.SimulationCommand, ProcessSimulationCommandMessage);
-			Messenger.Unsubscribe((int)Channel.GameState, ProcessGameStateMessage);
+			Messenger.Unsubscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 
 			DestroyTimer(_tickTimer);
 			_resolver = null;
@@ -98,7 +98,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			//_resolver.ProcessCommands(commands);
 
 			// TODO: reimplement tick!
-			//_simulationRoot.Tick();
+			_simulationRoot.ECS.Tick();
 
 			//if (_simulationRoot.IsGameFailure 
 			//	|| (!_simulationRoot.HasViruses && !_commandSequence.HasPendingCommands))
