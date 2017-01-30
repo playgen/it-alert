@@ -54,9 +54,11 @@
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
+    <Compile Include="Components\Items\Flags\IItem.cs" />
+    <Compile Include="Components\Items\Flags\ItemTypes.cs" />
     <Compile Include="Components\Items\Item.cs" />
-    <Compile Include="Components\Items\Scanner.cs" />
     <Compile Include="Components\Movement\SubsystemMovementFlag.cs" />
+    <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="Systems\Commands\PlayerCommandSystem.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
@@ -113,7 +115,6 @@
     <Compile Include="Components\Movement\Visitors.cs" />
     <Compile Include="Components\Resources\ConsumeMemory.cs" />
     <Compile Include="Components\Items\ItemStorage.cs" />
-    <Compile Include="Components\Resources\SystemMemoryProperty.cs" />
     <Compile Include="Components\Intents\DisownItemIntent.cs" />
     <Compile Include="Components\Intents\InfectSystemIntent.cs" />
     <Compile Include="Components\Intents\MoveIntent.cs" />

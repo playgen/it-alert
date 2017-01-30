@@ -6,6 +6,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public int StartingLocation { get; set; }
 
-		public ItemType Type { get; set; }
+		public string TypeName { get; set; }
 	}
 }

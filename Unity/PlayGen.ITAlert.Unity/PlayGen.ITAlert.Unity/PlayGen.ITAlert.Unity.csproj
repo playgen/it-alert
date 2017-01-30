@@ -76,6 +76,9 @@
     <Reference Include="PlayGen.ITAlert.Simulation.Startup">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.UI">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.UI.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
     </Reference>
@@ -129,6 +132,7 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\RefreshPlayerListCommand.cs" />
+    <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="GameStates\Menu\CreateGame\CreateGameController.cs" />
     <Compile Include="GameStates\Menu\GamesList\GamesListController.cs" />
     <Compile Include="Controllers\JoinGameController.cs" />
@@ -167,6 +171,7 @@
     <Compile Include="GameStates\SettingsState.cs" />
     <Compile Include="GameStates\StateControllerFactory.cs" />
     <Compile Include="Network\Behaviours\ActorBehaviour.cs" />
+    <Compile Include="Network\Behaviours\ItemContainerBehaviour.cs" />
     <Compile Include="Network\Behaviours\NodeBehaviour.cs" />
     <Compile Include="Transitions\OnCompletedTransition.cs" />
     <Compile Include="Transitions\OnEventTransition.cs" />

@@ -35,7 +35,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EntityType.cs" />
-    <Compile Include="ItemType.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="NpcActorType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

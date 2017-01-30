@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Engine.Components;
-using Engine.Entities;
 
 namespace PlayGen.ITAlert.Simulation.Components.Resources
 {
-	public class MemoryResource : IResource
+	public interface IResource : IComponent
 	{
-		public int Value { get; set; }
+		int Value { get; set; }
 
-		public int Maximum { get; set; }
+		int Maximum { get; }
 	}
 }

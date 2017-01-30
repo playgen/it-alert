@@ -90,18 +90,11 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateSystem(NodeConfig config)
 		{
-			Entity subsystem;
-			switch (config.Enhancement)
-			{
-				case EnhancementType.Analysis:
-				case EnhancementType.Antivirus:
-					subsystem = CreateEntityFromArchetype(config.Enhancement.ToString());
-					break;
-				default:
-					subsystem = CreateEntityFromArchetype(config.Type.ToString());
-					break;
-			}
-			
+			var archetype = string.IsNullOrEmpty(config.EnhancementName)
+				? GameEntities.Subsystem.Name
+				: config.EnhancementName;
+
+			var subsystem = CreateEntityFromArchetype(archetype);
 			config.EntityId = subsystem.Id;
 
 			subsystem.GetComponent<Coordinate2DProperty>().X = config.X;
@@ -139,14 +132,14 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
-				var item = CreateItem(itemConfig.Type);
+				var item = CreateItem(itemConfig.TypeName);
 				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().TryAddItem(item);
 			}
 		}
 
-		public Entity CreateItem(ItemType type)
+		public Entity CreateItem(string typeName)
 		{
-			var item = CreateEntityFromArchetype(type.ToString());
+			var item = CreateEntityFromArchetype(typeName);
 			return item;
 		}
 
