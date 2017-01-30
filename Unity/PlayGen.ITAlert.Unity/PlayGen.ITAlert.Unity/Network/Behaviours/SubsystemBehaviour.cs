@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
@@ -54,6 +55,8 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2);
 
+		private List<GameObject> _itemContainers;
+
 		#endregion
 
 		private Vector2[] _itemPositions;
@@ -107,6 +110,9 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			DropCollider = GetComponent<BoxCollider2D>();
+
+			// TODO: these should probably be UIEntities
+			_itemContainers = new List<GameObject>();
 		}
 
 		protected override void OnInitialize()
@@ -155,7 +161,21 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		{
 			if (_itemStorage != null)
 			{
-				
+				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				{
+					var itemContainer = _itemStorage.Items[i];
+					if (itemContainer != null)
+					{
+						var itemContainerObject = Director.InstantiateEntity(ItemContainerBehaviour.Prefab);
+						itemContainerObject.transform.SetParent(Director.Graph.transform, false);
+						_itemContainers.Add(itemContainerObject);
+
+						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
+						itemContainerBehaviour.Initialize(itemContainer);
+
+						itemContainerObject.transform.position = GetItemPosition(i);
+					}
+				}
 			}
 		}
 
