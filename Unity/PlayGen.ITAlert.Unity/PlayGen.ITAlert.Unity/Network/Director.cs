@@ -12,6 +12,7 @@ using GameWork.Core.Commands;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Network.Behaviours;
+using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.Network
@@ -52,9 +53,9 @@ namespace PlayGen.ITAlert.Unity.Network
 		/// <summary>
 		/// the active player
 		/// </summary>
-		private static PlayerBehaviour _player;
+		private static PlayerBehaviour _activePlayer;
 
-		public static PlayerBehaviour Player => _player;
+		public static PlayerBehaviour Player => _activePlayer;
 
 		public static Client Client { get; set; }
 
@@ -70,6 +71,8 @@ namespace PlayGen.ITAlert.Unity.Network
 		public static SimulationRules Rules => new SimulationRules();
 
 		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
+
+		private static Dictionary<int, Player> _players;
 
 		[Obsolete("Use TryGetEntity instead")]
 		public static UIEntity GetEntity(int id)
@@ -89,16 +92,16 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		#region Initialization
 
-		public static void DebugInitialize()
-		{
-			Initialize(InitializeTestSimulation(), 1);
-			//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _player.PlayerColor;
-			//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _player.PlayerColor;
-			_player.EnableDecorator();
+		//public static void DebugInitialize()
+		//{
+		//	Initialize(InitializeTestSimulation(), 1);
+		//	//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _activePlayer.PlayerColor;
+		//	//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _activePlayer.PlayerColor;
+		//	_activePlayer.EnableDecorator();
 
-			// todo fixup for refactor
-			//PlayerCommands.Client =	new DebugClientProxy();
-		}
+		//	// todo fixup for refactor
+		//	//PlayerCommands.Client =	new DebugClientProxy();
+		//}
 
 		private static SimulationRoot InitializeTestSimulation()
 		{
@@ -107,7 +110,7 @@ namespace PlayGen.ITAlert.Unity.Network
 			return SimulationHelper.GenerateSimulation(width, height, 2, width * height, 4);
 		}
 
-		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId)
+		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
 		{
 			try
 			{
@@ -123,7 +126,7 @@ namespace PlayGen.ITAlert.Unity.Network
 				CreateInitialEntities();
 				// todo uncomment SelectPlayer();
 
-				SetPlayer(playerServerId);
+				SetupPlayers(players, playerServerId);
 
 				Initialized = true;
 
@@ -147,22 +150,30 @@ namespace PlayGen.ITAlert.Unity.Network
 		}
 
 
-		private static void SetPlayer(int playerServerId)
+		private static void SetupPlayers(List<Player> players, int playerServerId)
 		{
-			try
+			foreach (var player in players)
 			{
-				var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == playerServerId);
-
-				UIEntity player;
-				if (Entities.TryGetValue(internalPlayer.Id, out player))
+				try
 				{
-					_player = (PlayerBehaviour) player.EntityBehaviour;
-					_player.SetActive();
+					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == playerServerId);
+
+					UIEntity playerUiEntity;
+					if (Entities.TryGetValue(internalPlayer.Id, out playerUiEntity))
+					{
+						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
+						if (player.PhotonId == playerServerId)
+						{
+							_activePlayer = playerBehaviour;
+							_activePlayer.SetActive();
+						}
+						playerBehaviour.SetColor(player.Color);
+					}
 				}
-			}
-			catch (Exception ex)
-			{
-				throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
+				catch (Exception ex)
+				{
+					throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
+				}
 			}
 		}
 
@@ -221,7 +232,15 @@ namespace PlayGen.ITAlert.Unity.Network
 				foreach (var newEntity in entitiesAdded)
 				{
 					CreateEntity(newEntity.Value);
-					GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+					UIEntity newUiEntity;
+					if (TryGetEntity(newEntity.Key, out newUiEntity))
+					{
+						newUiEntity.EntityBehaviour.Initialize(newEntity.Value);
+					}
+					else
+					{
+						throw new SimulationIntegrationException("New entity not present in dictionary");
+					}
 				}
 
 				foreach (var existingEntity in entities.Except(entitiesAdded))
@@ -291,22 +310,22 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static void RequestMovePlayer(int destinationId)
 		{
-			//Simulation.RequestMovePlayer(_player.Id, destinationId);
+			//Simulation.RequestMovePlayer(_activePlayer.Id, destinationId);
 		}
 
 		public static void RequestActivateItem(int itemId)
 		{
-			//Simulation.RequestActivateItem(_player.Id, itemId);
+			//Simulation.RequestActivateItem(_activePlayer.Id, itemId);
 		}
 
 		public static void RequestDropItem(int itemId)
 		{
-			//Simulation.RequestDropItem(_player.Id, itemId);
+			//Simulation.RequestDropItem(_activePlayer.Id, itemId);
 		}
 
 		public static void RequestPickupItem(int itemId, int subsystemId)
 		{
-			//Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
+			//Simulation.RequestPickupItem(_activePlayer.Id, itemId, subsystemId);
 		}
 
 		public static void SpawnVirus()

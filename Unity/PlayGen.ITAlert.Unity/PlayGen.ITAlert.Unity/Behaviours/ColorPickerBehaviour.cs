@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using PlayGen.Photon.Players;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,13 +32,19 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private Color _selectedColor;
 
-		public void GenerateColorPicker(List<Color> selectedColors, Color[] allColors = null)
+		public void GenerateColorPicker(List<Color> selectedColors)
 		{
-			if (allColors != null)
-				colors = allColors;
+			var colours = new List<Color>();
+			foreach (var colourString in PlayerColors.Colors)
+			{
+				Color color;
+				if (ColorUtility.TryParseHtmlString(colourString, out color))
+				{
+					colours.Add(color);
+				}
+			}
+			colors = colours.ToArray();
 			SetColorPickerObjects();
-
-
 
 			// Get the length of the colors array
 			var totalColors = colors.Length;

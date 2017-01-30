@@ -114,7 +114,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Lobby
 
 		private void OnBackButtonClick()
 		{
-			LeaveLobbyClickedEvent();
+			LeaveLobbyClickedEvent?.Invoke();
 		}
 
 		private void OnColorChangeButtonClick()
