@@ -16,26 +16,17 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 		public static void LogError(string message)
 		{
-			if (LogErrorEvent != null)
-			{
-				LogErrorEvent(message);
-			}
+			LogErrorEvent?.Invoke(message);
 		}
 
 		public static void ShowLoadingPopup()
 		{
-			if (StartLoadingEvent != null)
-			{
-				StartLoadingEvent();
-			}
+			StartLoadingEvent?.Invoke();
 		}
 
 		public static void HideLoadingPopup()
 		{
-			if (EndLoadingEvent != null)
-			{
-				EndLoadingEvent();
-			}
+			EndLoadingEvent?.Invoke();
 		}
 
 		public static void ShowColorPicker(Action<Color> callbackAction, List<Color> selectedColors)
