@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostType: 2
   Protocol: 0
-  ServerAddress: 127.0.0.1
+  ServerAddress: 10.0.0.11
   ServerPort: 5055
   AppID: 
   VoiceAppID: 

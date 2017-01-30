@@ -25,7 +25,6 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private readonly IEntityBehaviour _entityBehaviour;
 
-		private static readonly GameObject Graph = GameObjectUtilities.FindGameObject("Game/Graph");
 
 		public IEntityBehaviour EntityBehaviour => _entityBehaviour;
 
@@ -34,8 +33,8 @@ namespace PlayGen.ITAlert.Unity.Network
 			EntityTypeProperty entityType;
 			if (entity.TryGetComponent(out entityType))
 			{
-				_gameObject = InstantiateEntity(entityType.Value.ToString());
-				_gameObject.transform.SetParent(Graph.transform, false);
+				_gameObject = Director.InstantiateEntity(entityType.Value.ToString());
+				_gameObject.transform.SetParent(Director.Graph.transform, false);
 
 				switch (entityType.Value)
 				{
@@ -65,11 +64,6 @@ namespace PlayGen.ITAlert.Unity.Network
 				// initialize will be called after all the entities have been created
 				//_entityBehaviour.Initialize(entity);
 			}
-		}
-
-		private GameObject InstantiateEntity(string resourceString)
-		{
-			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 		}
 
 		public void UpdateEntityState()

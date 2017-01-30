@@ -12,6 +12,7 @@ using GameWork.Core.Commands;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Network.Behaviours;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 
@@ -103,6 +104,15 @@ namespace PlayGen.ITAlert.Unity.Network
 		//	//PlayerCommands.Client =	new DebugClientProxy();
 		//}
 
+		private static GameObject _graph;
+
+		public static GameObject Graph => _graph ?? (_graph = GameObjectUtilities.FindGameObject("Game/Graph"));
+
+		public static GameObject InstantiateEntity(string resourceString)
+		{
+			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
+		}
+
 		private static SimulationRoot InitializeTestSimulation()
 		{
 			var width = 6;
@@ -146,11 +156,9 @@ namespace PlayGen.ITAlert.Unity.Network
 			return false;
 		}
 
-		private void Awake()
+		public void Awake()
 		{
-
 		}
-
 
 		private static void SetupPlayers(List<Player> players, int playerServerId)
 		{
