@@ -1,17 +1,19 @@
-using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 
 // ReSharper disable once CheckNamespace
-public interface IEntityBehaviour
+namespace PlayGen.ITAlert.Unity.Network.Behaviours
 {
-	int Id { get; }
+	public interface IEntityBehaviour
+	{
+		int Id { get; }
 
-	EntityType EntityType { get; }
+		EntityType EntityType { get; }
 
-	Entity Entity { get; }
+		Entity Entity { get; }
 
-	void UpdateState(Entity entity);
+		void UpdateState(Entity entity);
 
-	void Initialize(Entity entity);
+		void Initialize(Entity entity);
+	}
 }

@@ -29,7 +29,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
-			Messenger.Subscribe((int)Channel.GameCommands, ProcessGameCommandMessage);
+			Messenger.Subscribe((int)ITAlertChannel.GameCommands, ProcessGameCommandMessage);
 			
 			Messenger.SendAllMessage(new LobbyMessage
 			{
@@ -41,7 +41,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnExit()
 		{
-			Messenger.Unsubscribe((int)Channel.GameCommands, ProcessGameCommandMessage);
+			Messenger.Unsubscribe((int)ITAlertChannel.GameCommands, ProcessGameCommandMessage);
 		}
 
 		private void ProcessGameCommandMessage(Message message)
@@ -65,7 +65,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 					PhotonPlugin.SetRoomOpen(false);
 				}
 
-				GameStartedEvent();
+				GameStartedEvent?.Invoke();
 			}
 		}
 	}

@@ -2,7 +2,7 @@
 
 namespace PlayGen.ITAlert.Photon.Messages.Simulation.States
 {
-	public class InitializedMessage : StateMessage
+	public class InitializedMessage : SimulationMessage
 	{
 		public string SimulationState { get; set; }
 

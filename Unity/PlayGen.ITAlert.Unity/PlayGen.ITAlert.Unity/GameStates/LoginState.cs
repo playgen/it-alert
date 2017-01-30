@@ -1,5 +1,5 @@
 ﻿using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Interfaces;
+using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.SUGAR.Unity;
 
 namespace PlayGen.ITAlert.Unity.GameStates

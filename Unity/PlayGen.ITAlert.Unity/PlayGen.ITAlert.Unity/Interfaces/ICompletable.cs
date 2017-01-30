@@ -1,4 +1,4 @@
-﻿namespace PlayGen.ITAlert.Interfaces
+﻿namespace PlayGen.ITAlert.Unity.Interfaces
 {
 	public interface ICompletable
 	{

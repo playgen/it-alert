@@ -47,7 +47,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Channel.cs" />
+    <Compile Include="Game\Commands\PlayStateCommandMessage.cs" />
+    <Compile Include="ITAlertChannel.cs" />
     <Compile Include="Feedback\PlayerFeedbackMessage.cs" />
     <Compile Include="Game\Commands\StartGameMessage.cs" />
     <Compile Include="Game\Commands\GameCommandMessage.cs" />
@@ -58,7 +59,7 @@
     <Compile Include="Game\States\StateMessage.cs" />
     <Compile Include="Simulation\Commands\CommandMessage.cs" />
     <Compile Include="Simulation\States\InitializedMessage.cs" />
-    <Compile Include="Simulation\States\StateMessage.cs" />
+    <Compile Include="Simulation\States\SimulationMessage.cs" />
     <Compile Include="Simulation\States\TickMessage.cs" />
     <Compile Include="Game\States\PlayingMessage.cs" />
   </ItemGroup>

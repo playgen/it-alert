@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013167173420}
   - component: {fileID: 61000014181957784}
-  - component: {fileID: 114000013143237420}
   - component: {fileID: 212000011269916218}
+  - component: {fileID: 114970073672821820}
   m_Layer: 0
   m_Name: Item
   m_TagString: Item
@@ -102,7 +102,7 @@ MonoBehaviour:
   m_FillAmount: 0.89
   m_FillClockwise: 1
   m_FillOrigin: 2
---- !u!114 &114000013143237420
+--- !u!114 &114970073672821820
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -110,11 +110,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000012343891894}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38e862c5cb88b964580fc98d0f25551d, type: 3}
+  m_Script: {fileID: -1510722166, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activationTimerImage: {fileID: 114000010972897720}
-  _iconRenderer: {fileID: 212000011269916218}
+  _activationTimerImage: {fileID: 0}
+  _iconRenderer: {fileID: 0}
 --- !u!212 &212000011269916218
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -2,12 +2,14 @@
 using System.Linq;
 using PlayGen.Photon.Messaging;
 using System.Collections.Generic;
+using System.Threading;
 using PlayGen.Photon.Messages;
 using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Unity.Client.Voice;
 using PlayGen.Photon.Messaging.Interfaces;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Exceptions;
+using PlayGen.Photon.Unity.Messaging;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -37,12 +39,15 @@ namespace PlayGen.Photon.Unity.Client
 
 		public bool IsMasterClient => _photonClientWrapper.IsMasterClient;
 
+		public ManualResetEvent GetPlayersWait { get; } = new ManualResetEvent(false);
+
 		public Player Player
 		{
 			get
 			{
 				try
 				{
+					GetPlayersWait.WaitOne();
 					return Players.Single(p => p.PhotonId == _photonClientWrapper.Player.ID);
 				}
 				catch (InvalidOperationException ioex)
@@ -81,6 +86,8 @@ namespace PlayGen.Photon.Unity.Client
 		
 		public void RefreshPlayers()
 		{
+			GetPlayersWait.Reset();
+
 			Messenger.SendMessage(new ListPlayersMessage
 			{
 				PhotonId = _photonClientWrapper.Player.ID
@@ -103,7 +110,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		public void OnRecievedEvent(byte eventCode, object content, int senderId)
 		{
-			if (eventCode == (byte) PlayGen.Photon.Messaging.EventCode.Message)
+			if (eventCode == (byte) Photon.Messaging.EventCode.Message)
 			{
 				if (!Messenger.TryProcessMessage((byte[])content))
 				{
@@ -134,10 +141,8 @@ namespace PlayGen.Photon.Unity.Client
 			if (listedPlayersMessage != null)
 			{
 				Players = listedPlayersMessage.Players;
-				if (PlayerListUpdatedEvent != null)
-				{
-					PlayerListUpdatedEvent(Players);
-				}
+				GetPlayersWait.Set();
+				PlayerListUpdatedEvent?.Invoke(Players);
 				return;
 			}
 		}

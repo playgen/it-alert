@@ -6,8 +6,12 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
 using PlayGen.ITAlert.Unity.GameStates;
-using PlayGen.ITAlert.Unity.GameStates.MenuSubStates;
-using PlayGen.ITAlert.Unity.GameStates.RoomSubStates;
+using PlayGen.ITAlert.Unity.GameStates.Loading;
+using PlayGen.ITAlert.Unity.GameStates.Menu;
+using PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.GameStates.Menu.GamesList;
+using PlayGen.ITAlert.Unity.GameStates.Room;
+using PlayGen.ITAlert.Unity.GameStates.Room.Lobby;
 
 namespace Debugging
 {

@@ -166,6 +166,7 @@ namespace PlayGen.ITAlert.Simulation
 			foreach (var playerConfig in playerConfigs)
 			{
 				var player = CreatePlayer(playerConfig);
+				playerConfig.Id = player.Id;
 				var startingLocationId = playerConfig.StartingLocation ?? 0;
 
 				var movementSystem = SystemRegistry.GetSystem<MovementSystem>();

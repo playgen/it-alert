@@ -10,6 +10,7 @@ using Engine.Components;
 using Engine.Entities;
 using GameWork.Core.Commands;
 using PlayGen.ITAlert.Simulation.Startup;
+using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Network.Behaviours;
 using PlayGen.Photon.Unity.Client;
 
@@ -20,8 +21,11 @@ namespace PlayGen.ITAlert.Unity.Network
 	/// <summary>
 	/// There should only ever be one instance of this
 	/// </summary>
+	// TODO: use zenject singleton container rather than statics
 	public class Director : MonoBehaviour
 	{
+		public static event Action SimulationError;
+
 		/// <summary>
 		/// Entity to GameObject map
 		/// </summary>
@@ -102,28 +106,38 @@ namespace PlayGen.ITAlert.Unity.Network
 			return SimulationHelper.GenerateSimulation(width, height, 2, width * height, 4);
 		}
 
-		public static void Initialize(SimulationRoot simulationRoot, int playerServerId)
+		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId)
 		{
-			SimulationRoot = simulationRoot;
-
-			SimulationAnimationRatio = Time.deltaTime / SimulationTick;
-
-			// center graph
-			//
-			//UIConstants.NetworkOffset -= new Vector2((float) Simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) Simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
-
-			//SetState();
-			CreateInitialEntities();
-			// todo uncomment SelectPlayer();
-
-			SetPlayer(playerServerId);
-
-			Initialized = true;
-
-			foreach (var behaviour in GameOverBehaviours)
+			try
 			{
-				behaviour.Value.SetActive(false);
+				SimulationRoot = simulationRoot;
+
+				SimulationAnimationRatio = Time.deltaTime / SimulationTick;
+
+				// center graph
+				//
+				//UIConstants.NetworkOffset -= new Vector2((float) Simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) Simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
+
+				//SetState();
+				CreateInitialEntities();
+				// todo uncomment SelectPlayer();
+
+				SetPlayer(playerServerId);
+
+				Initialized = true;
+
+				foreach (var behaviour in GameOverBehaviours)
+				{
+					behaviour.Value.SetActive(false);
+				}
+				return true;
 			}
+			catch (Exception ex)
+			{
+				Debug.LogError($"Error initializing Director: {ex}");
+				OnSimulationError();
+			}
+			return false;
 		}
 
 		private void Awake()
@@ -134,12 +148,21 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private static void SetPlayer(int playerServerId)
 		{
-			var players = Entities.Values.Where(e => e.Type == EntityType.Player).Select(e => e.EntityBehaviour as PlayerBehaviour).ToArray();
+			try
+			{
+				var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == playerServerId);
 
-			//var playerState = Simulation.ExternalPlayers[playerServerId];
-			// TODO: reimplement
-			_player = players.First();
-			_player.SetActive();
+				UIEntity player;
+				if (Entities.TryGetValue(internalPlayer.Id, out player))
+				{
+					_player = (PlayerBehaviour) player.EntityBehaviour;
+					_player.SetActive();
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
+			}
 		}
 
 		/// <summary>
@@ -154,7 +177,14 @@ namespace PlayGen.ITAlert.Unity.Network
 			// initialize after the entities have been created as some will need to reference each other
 			foreach (var entityKvp in SimulationRoot.ECS.GetEntities())
 			{
-				GetEntity(entityKvp.Key).EntityBehaviour.Initialize(entityKvp.Value);
+				try
+				{
+					GetEntity(entityKvp.Key).EntityBehaviour.Initialize(entityKvp.Value);
+				}
+				catch (Exception e)
+				{
+					throw;
+				}
 			}
 		}
 
@@ -162,12 +192,17 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		#region State Update
 
-		public static void UpdateSimulation()
+		public static void UpdateSimulation(string stateJson)
 		{
-			// LocaResolver = new CommandResolver(simulation);
+			var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(stateJson);
+			UpdateEntityStates();
 		}
 
-
+		public static void Tick(bool enableSerializer)
+		{
+			SimulationRoot.ECS.Tick();
+			UpdateEntityStates();
+		}
 
 		private static void CreateEntity(Entity entity)
 		{
@@ -177,26 +212,34 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private static void UpdateEntityStates()
 		{
-			//var entities = SimulationRoot.ECS.
+			try
+			{
+				var entities = SimulationRoot.ECS.GetEntities();
 
-			//var entitiesAdded = Simulation.GetEntities().Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
-			//foreach (var newEntity in entitiesAdded)
-			//{
-			//	CreateEntity(newEntity.Value);
-			//	GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
-			//}
+				var entitiesAdded = entities.Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
+				foreach (var newEntity in entitiesAdded)
+				{
+					CreateEntity(newEntity.Value);
+					GetEntity(newEntity.Key).EntityBehaviour.Initialize(newEntity.Value);
+				}
 
-			//foreach (var existingEntity in Simulation.GetEntities().Except(entitiesAdded))
-			//{
-			//	GetEntity(existingEntity.Key).UpdateEntityState(existingEntity.Value);
-			//}
+				foreach (var existingEntity in entities.Except(entitiesAdded))
+				{
+					GetEntity(existingEntity.Key).UpdateEntityState(existingEntity.Value);
+				}
 
-			//var entitiesRemoved = Entities.Keys.Except(Simulation.GetEntities().Select(k => k.Key));
-			//foreach (var entityToRemove in entitiesRemoved)
-			//{
-			//	Destroy(GetEntity(entityToRemove).GameObject);
-			//	Entities.Remove(entityToRemove);
-			//}
+				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key));
+				foreach (var entityToRemove in entitiesRemoved)
+				{
+					Destroy(GetEntity(entityToRemove).GameObject);
+					Entities.Remove(entityToRemove);
+				}
+			}
+			catch (Exception ex)
+			{
+				Debug.LogError($"Error updating Director state: {ex}");
+				OnSimulationError();
+			}
 		}
 
 		private static void OnGameOver(bool didWin)
@@ -206,33 +249,6 @@ namespace PlayGen.ITAlert.Unity.Network
 		}
 	
 		#endregion
-
-		/// <summary>
-		/// manually advance the simulation tick and propogate changes
-		/// </summary>
-		public static void Tick(bool serialize)
-		{
-			////TODO: replace super lazy way of stopping the game
-			if (Initialized) // && _state.IsGameFailure == false)
-			{
-				//Simulation.Tick();
-
-			//	if (serialize)
-			//	{
-			//		var state = _serializer.SerializeSimulation(Simulation);
-			//		Simulation.Dispose();
-
-			//		UpdateSimulation(_serializer.DeserializeSimulation(state));
-			//	}
-
-				Refresh();
-			}
-		}
-
-		public static void Refresh()
-		{
-			UpdateEntityStates();
-		}
 
 		#region UI accessors
 
@@ -255,16 +271,15 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static string GetScore()
 		{
-		return "0";
-		//return GetInitialized(() => _state.Score.ToString());
+			return "0";
+			//return GetInitialized(() => _state.Score.ToString());
 		}
 
 		public static string GetTimer()
 		{
 			//TODO: returning the tick is only temporary
-		return "0";
-
-		//return GetInitialized(() => _state.CurrentTick.ToString());
+			return "0";
+			//return GetInitialized(() => _state.CurrentTick.ToString());
 		}
 
 		#endregion
@@ -275,30 +290,35 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static void RequestMovePlayer(int destinationId)
 		{
-		//Simulation.RequestMovePlayer(_player.Id, destinationId);
+			//Simulation.RequestMovePlayer(_player.Id, destinationId);
 		}
 
 		public static void RequestActivateItem(int itemId)
 		{
-		//Simulation.RequestActivateItem(_player.Id, itemId);
+			//Simulation.RequestActivateItem(_player.Id, itemId);
 		}
 
 		public static void RequestDropItem(int itemId)
 		{
-		//Simulation.RequestDropItem(_player.Id, itemId);
+			//Simulation.RequestDropItem(_player.Id, itemId);
 		}
 
 		public static void RequestPickupItem(int itemId, int subsystemId)
 		{
-		//Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
+			//Simulation.RequestPickupItem(_player.Id, itemId, subsystemId);
 		}
 
 		public static void SpawnVirus()
 		{
-		//var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
-		//Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
+			//var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
+			//Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
 		}
 
 		#endregion
+
+		protected static void OnSimulationError()
+		{
+			SimulationError?.Invoke();
+		}
 	}
 }
