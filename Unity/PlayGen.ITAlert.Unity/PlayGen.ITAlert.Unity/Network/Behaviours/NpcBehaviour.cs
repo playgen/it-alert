@@ -25,11 +25,11 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		private void Awake()
 		{
 			_spriteRenderer = GetComponent<SpriteRenderer>();
-			UpdatePosition();
 		}
 
 		protected override void OnInitialize()
 		{
+			base.OnInitialize();
 			//UIManager.DisplayWarning(_warningText);
 		}
 

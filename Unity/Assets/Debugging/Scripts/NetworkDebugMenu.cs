@@ -32,14 +32,14 @@ namespace Assets.Debugging.Scripts
 		{
 			if (!_isVisible) return;
 
-			if (GUILayout.Button("Debug Initialize"))
-			{
-				if (!_initialized)
-				{
-					Director.DebugInitialize();
-					_initialized = true;
-				}
-			}
+			//if (GUILayout.Button("Debug Initialize"))
+			//{
+			//	if (!_initialized)
+			//	{
+			//		//Director.DebugInitialize();
+			//		_initialized = true;
+			//	}
+			//}
 			EnableSerializer = GUILayout.Toggle(EnableSerializer, "Enable Serializer");
 			AutoTickOn = GUILayout.Toggle(AutoTickOn, "Auto Tick ON");
 			if (GUILayout.Button("TICK"))
