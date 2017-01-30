@@ -71,13 +71,13 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		/// </summary>
 		public void UpdateState()
 		{
-			OnUpdatedState();
+			OnStateUpdated();
 		}
 
 		/// <summary>
 		/// actions to perform when state has been updated
 		/// </summary>
-		protected abstract void OnUpdatedState();
+		protected abstract void OnStateUpdated();
 
 		/// <summary>
 		/// Initialize the object from simulation state

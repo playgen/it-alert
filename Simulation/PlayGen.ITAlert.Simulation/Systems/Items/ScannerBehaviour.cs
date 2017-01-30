@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 

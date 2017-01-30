@@ -120,7 +120,9 @@ namespace PlayGen.ITAlert.Unity.Network
 
 				// center graph
 				//
-				//UIConstants.NetworkOffset -= new Vector2((float) Simulation.GraphSize.X/2*UIConstants.SubsystemSpacing.x, (float) Simulation.GraphSize.Y/2*UIConstants.SubsystemSpacing.y);
+				UIConstants.NetworkOffset -= new Vector2(
+					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X)/2*UIConstants.SubsystemSpacing.x, 
+					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y)/2*UIConstants.SubsystemSpacing.y);
 
 				//SetState();
 				CreateInitialEntities();

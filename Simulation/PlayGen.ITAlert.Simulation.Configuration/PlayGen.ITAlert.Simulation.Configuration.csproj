@@ -37,7 +37,6 @@
     <Compile Include="GameConfiguration.cs" />
     <Compile Include="PlayerColours.cs" />
     <Compile Include="EdgeConfig.cs" />
-    <Compile Include="EnhancementType.cs" />
     <Compile Include="ItemConfig.cs" />
     <Compile Include="NodeConfig.cs" />
     <Compile Include="PlayerConfig.cs" />

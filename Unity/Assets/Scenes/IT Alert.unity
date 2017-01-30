@@ -318,7 +318,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &73573800
 RectTransform:
   m_ObjectHideFlags: 0
@@ -383,7 +383,7 @@ Canvas:
   m_GameObject: {fileID: 73573799}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
   m_PlaneDistance: 0.5
   m_PixelPerfect: 0
@@ -2303,6 +2303,16 @@ Prefab:
       propertyPath: _gameId
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 223000012450321626, guid: 991ef3e1f70851f458b55f5f7eae55a2,
+        type: 2}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 223000012450321626, guid: 991ef3e1f70851f458b55f5f7eae55a2,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1408231525}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 991ef3e1f70851f458b55f5f7eae55a2, type: 2}
   m_IsPrefabParent: 0
@@ -2456,7 +2466,7 @@ Canvas:
   m_GameObject: {fileID: 638677827}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -3489,7 +3499,7 @@ Canvas:
   m_GameObject: {fileID: 928128078}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -4918,7 +4928,7 @@ Canvas:
   m_GameObject: {fileID: 1228136354}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
@@ -8092,7 +8102,7 @@ Canvas:
   m_GameObject: {fileID: 1996417012}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
   m_PlaneDistance: 1
   m_PixelPerfect: 0
