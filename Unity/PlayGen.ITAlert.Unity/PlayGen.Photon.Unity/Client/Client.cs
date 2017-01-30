@@ -103,11 +103,7 @@ namespace PlayGen.Photon.Unity.Client
 			if (!_photonClientWrapper.IsInRoom)
 			{
 				CurrentRoom = null;
-
-				if (LeftRoomEvent != null)
-				{
-					LeftRoomEvent();
-				}
+				LeftRoomEvent?.Invoke();
 			}
 		}
 		#endregion

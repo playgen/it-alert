@@ -94,7 +94,13 @@ namespace PlayGen.ITAlert.Simulation
 				new ComponentBinding<CurrentLocation>(),
 				new ComponentBinding<IntentsProperty>(),
 				new ComponentBinding<VisitorPosition>(), 
-				new ComponentBinding<MovementSpeed>(), 
+				new ComponentBinding<MovementSpeed>()
+				{
+					ComponentTemplate = new MovementSpeed()
+					{
+						Value = 1,
+					}
+				}, 
 			});
 
 		public static readonly Archetype Player = new Archetype("Player")

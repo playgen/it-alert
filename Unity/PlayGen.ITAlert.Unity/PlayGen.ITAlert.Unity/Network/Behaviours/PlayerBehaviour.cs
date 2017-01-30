@@ -5,7 +5,7 @@ using UnityEngine;
 namespace PlayGen.ITAlert.Unity.Network.Behaviours
 {
 	// ReSharper disable once CheckNamespace
-	public class PlayerBehaviour : EntityBehaviour
+	public class PlayerBehaviour : ActorBehaviour
 	{
 		/// <summary>
 		/// number of positions to store
@@ -22,13 +22,11 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public bool IsTalking = false;
 
-		public int? InventoryItem
-		{
-		get { return null; }
-		} // EntityState.InventoryItem; } }
+		public int? InventoryItem => null;
+		// EntityState.InventoryItem; } }
 
-			private Color _playerColor;
-		public Color PlayerColor { get { return _playerColor;;} }
+		private Color _playerColor;
+		public Color PlayerColor => _playerColor;
 
 		[SerializeField]
 		private GameObject _decorator;
@@ -44,7 +42,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public void Awake()
 		{
-
+			UpdatePosition();
 		}
 
 		protected override void OnInitialize()
@@ -82,14 +80,16 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override void OnUpdatedState()
 		{
-			//TODO: if inventory has changed
-			_historicPositions.Enqueue(transform.position);
-			if (_historicPositions.Count == PositionHistory)
-			{
-				_historicPositions.Dequeue();
-				ManageInventory(_historicPositions.Count < InventoryPositionHistory ? _historicPositions.Last() : _historicPositions.ToArray()[InventoryPositionHistory - 1]);
-			}
-			DrawTrail();
+			UpdatePosition();
+
+			////TODO: if inventory has changed
+			//_historicPositions.Enqueue(transform.position);
+			//if (_historicPositions.Count == PositionHistory)
+			//{
+			//	_historicPositions.Dequeue();
+			//	ManageInventory(_historicPositions.Count < InventoryPositionHistory ? _historicPositions.Last() : _historicPositions.ToArray()[InventoryPositionHistory - 1]);
+			//}
+			//DrawTrail();
 		}
 
 		#endregion
