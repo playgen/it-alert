@@ -71,11 +71,7 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
 
-		/// <summary>
-		/// Get entity wrapper by id
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
+		[Obsolete("Use TryGetEntity instead")]
 		public static UIEntity GetEntity(int id)
 		{
 			UIEntity entity;
@@ -84,6 +80,11 @@ namespace PlayGen.ITAlert.Unity.Network
 				return entity;
 			}
 			throw new Exception($"Entity id:{id} not found");
+		}
+
+		public static bool TryGetEntity(int id, out UIEntity uiEntity)
+		{
+			return Entities.TryGetValue(id, out uiEntity);
 		}
 
 		#region Initialization
@@ -225,7 +226,7 @@ namespace PlayGen.ITAlert.Unity.Network
 
 				foreach (var existingEntity in entities.Except(entitiesAdded))
 				{
-					GetEntity(existingEntity.Key).UpdateEntityState(existingEntity.Value);
+					GetEntity(existingEntity.Key).UpdateEntityState();
 				}
 
 				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key));

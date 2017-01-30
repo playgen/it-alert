@@ -72,9 +72,9 @@ namespace PlayGen.ITAlert.Unity.Network
 			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 		}
 
-		public void UpdateEntityState(Entity entity)
+		public void UpdateEntityState()
 		{
-		_entityBehaviour.UpdateState(entity);
+			_entityBehaviour.UpdateState();
 		}
 
 

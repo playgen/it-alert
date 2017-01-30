@@ -11,7 +11,7 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 namespace PlayGen.ITAlert.Unity.Network.Behaviours
 {
 	// ReSharper disable CheckNamespace
-	public class ConnectionBehaviour : EntityBehaviour
+	public class ConnectionBehaviour : NodeBehaviour
 	{
 		[SerializeField]
 		private Color[] _weightColors = new Color[]
@@ -132,46 +132,14 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override void OnUpdatedState()
 		{
-			MoveVisitors();
 		}
 
 		#region Visitor movement
 
-		private void MoveVisitors()
-		{
-		Visitors visitors;
-		if (Entity.TryGetComponent(out visitors))
-		{
-			foreach (var visitorId in visitors.Values)
-			{
-				var visitor = Director.GetEntity(visitorId);
-				UpdateVisitorMovement(visitor);
-			}
-			_currentVisitors.RemoveWhere(v => visitors.Values.Contains(v) == false);
-		}
-		}
-
-		private void UpdateVisitorMovement(UIEntity visitor)
-		{
-			VisitorPosition visitorPosition;
-			if (visitor.EntityBehaviour.Entity.TryGetComponent(out visitorPosition))
-			{
-				var pathPoint = visitorPosition.Position;
-				var position = GetPositionFromPathPoint(pathPoint);
-				visitor.GameObject.transform.position = position;
-				if (_currentVisitors.Contains(visitor.Id) == false)
-				{
-					_currentVisitors.Add(visitor.Id);
-					visitor.GameObject.transform.eulerAngles = new Vector3(0, 0, _angle + 180);
-				}
-			}
-		}
-
-		private Vector3 GetPositionFromPathPoint(int pathPoint)
+		protected override Vector3 GetPositionFromPathPoint(int pathPoint)
 		{
 			return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/1); //EntityState.Weight);
 		}
-
 
 		#endregion
 

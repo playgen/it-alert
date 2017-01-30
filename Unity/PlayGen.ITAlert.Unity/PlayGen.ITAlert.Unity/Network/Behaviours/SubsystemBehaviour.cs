@@ -9,7 +9,7 @@ using UnityEngine.UI;
 namespace PlayGen.ITAlert.Unity.Network.Behaviours
 {
 	// ReSharper disable once CheckNamespace
-	public class SubsystemBehaviour : EntityBehaviour
+	public class SubsystemBehaviour : NodeBehaviour
 	{
 		//01
 		//23
@@ -37,23 +37,13 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		// everything is centered around this
 		private GameObject _connectionSquare;
 
-		public GameObject ConnectionSquare
-		{
-			get { return _connectionSquare; }
-		}
+		public GameObject ConnectionSquare => _connectionSquare;
 
 		private BoxCollider2D _connectionSquareCollider;
 
-		public BoxCollider2D ConnectionSquareCollider
-		{
-			get { return _connectionSquareCollider; }
-		}
+		public BoxCollider2D ConnectionSquareCollider => _connectionSquareCollider;
 
-		public float ConnectionSquareRadius
-		{
-			get { return _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2); }
-		}
-
+		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2);
 
 		#endregion
 
@@ -63,10 +53,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		//public int LogicalId { get { return EntityState.LogicalId; } }
 
-		public bool HasActiveItem
-		{
-			get { return false; }
-		}
+		public bool HasActiveItem => false;
 
 		#endregion
 
@@ -133,7 +120,6 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override void OnUpdate()
 		{
-			//	MoveVisitors(_pathPositionsPerSecond * Time.deltaTime);
 		}
 
 		#endregion
@@ -144,8 +130,6 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		{
 			SetHealth();
 			SetShield();
-
-			MoveVisitors();
 
 			SetSystemProperties();
 			SetItems();
@@ -225,28 +209,29 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			//	}
 			//}
 		}
+		public void FadeInUpdate()
+		{
+			if (_filled.color.a < 1)
+			{
+				_filled.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+				_iconRenderer.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+			}
+		}
+
+		public void FadeOutUpdate()
+		{
+			if (_filled.color.a > 0)
+			{
+				_filled.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+				_iconRenderer.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+			}
+		}
 
 		#endregion
 
 		#region Visitor Movement
 
-		private void MoveVisitors()
-		{
-			// TODO: reimplement
-			//var visitorPositions = EntityState.Get<VisitorPositionState>();
-			//foreach (var visitor in visitorPositions)
-			//{
-			//	UpdateVisitorMovement(Director.GetEntity(visitor.Key).GameObject, visitor.Value);
-			//}
-		}
-
-		private void UpdateVisitorMovement(GameObject visitor, int pathPoint)
-		{
-			var position = GetPositionFromPathPoint(pathPoint);
-			visitor.transform.position = position;
-		}
-
-		private Vector3 GetPositionFromPathPoint(int pathPoint)
+		protected override Vector3 GetPositionFromPathPoint(int pathPoint)
 		{
 			var localPosition = GetPositionOnSquare(pathPoint);
 			localPosition.y *= -1; // Flip Y so displays correctly relative to the view
@@ -313,23 +298,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		#endregion
 
-		public void FadeInUpdate()
-		{
-			if (_filled.color.a < 1)
-			{
-				_filled.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-				_iconRenderer.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-			}
-		}
 
-		public void FadeOutUpdate()
-		{
-			if (_filled.color.a > 0)
-			{
-				_filled.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-				_iconRenderer.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-			}
-		}
 
 	}
 }

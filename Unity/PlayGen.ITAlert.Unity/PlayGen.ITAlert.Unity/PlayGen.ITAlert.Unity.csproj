@@ -166,6 +166,8 @@
     <Compile Include="GameStates\Room\StateControllerFactory.cs" />
     <Compile Include="GameStates\SettingsState.cs" />
     <Compile Include="GameStates\StateControllerFactory.cs" />
+    <Compile Include="Network\Behaviours\ActorBehaviour.cs" />
+    <Compile Include="Network\Behaviours\NodeBehaviour.cs" />
     <Compile Include="Transitions\OnCompletedTransition.cs" />
     <Compile Include="Transitions\OnEventTransition.cs" />
     <Compile Include="Transitions\OnMessageTransition.cs" />

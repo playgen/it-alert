@@ -113,8 +113,8 @@ MonoBehaviour:
   m_Script: {fileID: -1510722166, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _activationTimerImage: {fileID: 0}
-  _iconRenderer: {fileID: 0}
+  _activationTimerImage: {fileID: 114000010972897720}
+  _iconRenderer: {fileID: 212000011269916218}
 --- !u!212 &212000011269916218
 SpriteRenderer:
   m_ObjectHideFlags: 1

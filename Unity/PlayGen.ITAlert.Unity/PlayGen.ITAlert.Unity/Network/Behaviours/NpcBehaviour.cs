@@ -4,7 +4,7 @@ using UnityEngine;
 namespace PlayGen.ITAlert.Unity.Network.Behaviours
 { 
 	// ReSharper disable once CheckNamespace
-	public class NpcBehaviour : EntityBehaviour
+	public class NpcBehaviour : ActorBehaviour
 	{
 		//private Image _timerImage;
 
@@ -25,6 +25,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		private void Awake()
 		{
 			_spriteRenderer = GetComponent<SpriteRenderer>();
+			UpdatePosition();
 		}
 
 		protected override void OnInitialize()
@@ -52,6 +53,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		protected override void OnUpdatedState()
 		{
 			HandlePulse();
+			UpdatePosition();
 		}
 
 		private void HandlePulse()

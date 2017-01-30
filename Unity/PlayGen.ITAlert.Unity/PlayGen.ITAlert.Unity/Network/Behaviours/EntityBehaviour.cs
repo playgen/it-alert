@@ -69,10 +69,8 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		/// Set state from simulator
 		/// </summary>
-	/// <param name="entity"></param>
-		public void UpdateState(Entity entity)
+		public void UpdateState()
 		{
-			Entity = entity;
 			OnUpdatedState();
 		}
 
