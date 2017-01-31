@@ -1,7 +1,13 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Resources;
+using PlayGen.ITAlert.Simulation.UI.Components.Items;
+using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
 #pragma warning disable 649
@@ -11,21 +17,25 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 	// ReSharper disable once CheckNamespace
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		//01
-		//23
+		private const float ItemContainerOffset = 0.3f;
+
 		private static readonly Vector2[] CornerItemOffsets = new[]
 		{
-			new Vector2(-0.34f, 0.18f),
-			new Vector2(0.34f, 0.18f),
-			new Vector2(-0.34f, -0.18f),
-			new Vector2(0.34f, -0.18f),
+			new Vector2(-2 * ItemContainerOffset, ItemContainerOffset),
+			new Vector2(2 * ItemContainerOffset, ItemContainerOffset),
+			new Vector2(-2 * ItemContainerOffset, -1 * ItemContainerOffset),
+			new Vector2(2 * ItemContainerOffset, -1 * ItemContainerOffset),
 		};
 
 		#region game elements
 
 		private Text _nameText;
-		private GameObject _health;
-		private GameObject _shield;
+
+
+		private Image _cpuImage;
+
+		private Image _memoryImage;
+
 		private SpriteRenderer _iconRenderer;
 		private SpriteRenderer _filled;
 
@@ -43,19 +53,13 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public BoxCollider2D ConnectionSquareCollider => _connectionSquareCollider;
 
-		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2);
+		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2) * transform.localScale.x;
+
+		private List<GameObject> _itemContainers;
 
 		#endregion
 
 		private Vector2[] _itemPositions;
-
-		#region public state 
-
-		//public int LogicalId { get { return EntityState.LogicalId; } }
-
-		public bool HasActiveItem => false;
-
-		#endregion
 
 		#region movement constants
 
@@ -64,6 +68,18 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		private static readonly int PathPointsInSubsystem = 24;
 		private const int SquareSideCount = 4;
 		private static readonly float PointsPerSide = (float) PathPointsInSubsystem / SquareSideCount;
+
+		#endregion
+
+		#region Components
+
+		// required
+		private CPUResource _cpuResource;
+		private MemoryResource _memoryResource;
+		private Name _name;
+
+		//optional
+		private ItemStorage _itemStorage;
 
 		#endregion
 
@@ -85,22 +101,38 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 			_nameText = transform.Find("Canvas/Name").GetComponent<Text>();
 
-			_health = transform.Find("Canvas/Health/Amount").gameObject;
-			_shield = transform.Find("Canvas/Shield/Amount").gameObject;
+
+			_cpuImage = transform.Find("Canvas/CPU/Amount").gameObject.GetComponent<Image>();
+			_memoryImage = transform.Find("Canvas/Memory/Amount").gameObject.GetComponent<Image>();
 
 			_connectionSquare = transform.Find("Connections").gameObject;
 			_connectionSquareCollider = _connectionSquare.GetComponent<BoxCollider2D>();
 			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			DropCollider = GetComponent<BoxCollider2D>();
+
+			// TODO: these should probably be UIEntities
+			_itemContainers = new List<GameObject>();
 		}
 
 		protected override void OnInitialize()
 		{
-			SetPosition();
-			SetName();
+			if (Entity.TryGetComponent(out _cpuResource)
+				&& Entity.TryGetComponent(out _memoryResource)
+				&& Entity.TryGetComponent(out _name))
+			{
+				Entity.TryGetComponent(out _itemStorage);
 
-			OnUpdatedState();
+				SetPosition();
+				CreateItemContainers();
+
+				OnStateUpdated();
+			}
+			else
+			{
+				throw new EntityInitializationException($"Could not load all required components for Entity Id {Entity.Id}");
+			}
+
 		}
 
 		private void SetPosition()
@@ -125,44 +157,13 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		#endregion
 
 		#region State Update
-
-		protected override void OnUpdatedState()
+		protected override void OnStateUpdated()
 		{
-			SetHealth();
-			SetShield();
+			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
+			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation();
 
-			SetSystemProperties();
-			SetItems();
+			_nameText.text = _name.Value;
 
-			//if (EntityState.VisitorPositions.Count > 0)
-			//{
-			//	FadeInUpdate();
-			//}
-			//else
-			//{
-			//	FadeOutUpdate();
-			//}
-		}
-
-		#region static properties
-
-		private void SetName()
-		{
-		//_nameText.text = EntityState.Name;
-		}
-
-		private void SetHealth()
-		{
-		//_health.transform.localScale = new Vector3(EntityState.Health, 1);
-		}
-
-		private void SetShield()
-		{
-		//_shield.transform.localScale = new Vector3(EntityState.Shield, 1);
-		}
-
-		private void SetSystemProperties()
-		{
 			//TODO: reimplement
 			//if (EntityState.Disabled)
 			//{
@@ -181,34 +182,68 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			//}
 			//else
 			//{
-				_iconRenderer.color = Color.white;
-				//_nameText.text = Name.ToUpper();
+			_iconRenderer.color = Color.white;
+			//_nameText.text = Name.ToUpper();
 			//}
+
+
+			//if (EntityState.VisitorPositions.Count > 0)
+			//{
+			//	FadeInUpdate();
+			//}
+			//else
+			//{
+			//	FadeOutUpdate();
+			//}
+			UpdateItemContainers();
 		}
 
-		public void SetItems()
+		private void CreateItemContainers()
 		{
-			//TODO: reimplement
-			//for (var i = 0; i < EntityState.ItemPositions.Length; i++)
-			//{
-			//	if (EntityState.ItemPositions[i].HasValue)
-			//	{
-			//		var item = Director.GetEntity(EntityState.ItemPositions[i].Value);
-			//		var itemBehaviour = item.GameObject.GetComponent<ItemBehaviour>();
-			//		if (itemBehaviour.Dragging == false)
-			//		{
-			//			if (itemBehaviour.IsActive)
-			//			{
-			//				item.GameObject.transform.position = _connectionSquare.transform.position;
-			//			}
-			//			else
-			//			{
-			//				item.GameObject.transform.position = _itemPositions[i];
-			//			}
-			//		}
-			//	}
-			//}
+			if (_itemStorage != null)
+			{
+				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				{
+					var itemContainer = _itemStorage.Items[i];
+					if (itemContainer != null)
+					{
+						var itemContainerObject = Director.InstantiateEntity(ItemContainerBehaviour.Prefab);
+						itemContainerObject.transform.SetParent(this.transform, false);
+						_itemContainers.Add(itemContainerObject);
+
+						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
+						itemContainerBehaviour.Initialize(itemContainer);
+
+						itemContainerObject.transform.position = GetItemPosition(i);
+					}
+				}
+			}
 		}
+
+		private void UpdateItemContainers()
+		{
+			if (_itemStorage != null)
+			{
+				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				{
+					var itemContainer = _itemStorage.Items[i];
+					UIEntity item;
+					if (itemContainer?.Item != null
+						&& Director.TryGetEntity(itemContainer.Item.Value, out item))
+					{
+						item.GameObject.transform.position = _itemPositions[i];
+					}
+				}
+			}
+		}
+
+		#region static properties
+
+		public Vector2 GetItemPosition(int itemContainerIndex)
+		{
+			return _itemPositions[itemContainerIndex];
+		}
+
 		public void FadeInUpdate()
 		{
 			if (_filled.color.a < 1)

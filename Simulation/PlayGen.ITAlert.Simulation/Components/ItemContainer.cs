@@ -7,7 +7,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 	{
 		//public virtual string ContainerGlyph => null;
 
-		public Entity Item { get; set; }
+		public int? Item { get; set; }
 
 		/// <summary>
 		/// Indicate that the item is currently being used by something and cannot be moved
@@ -18,8 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 		/// </summary>
 		public virtual bool Enabled { get; set; }
 
-		public virtual bool HasItem => Item != null;
-		public virtual bool CanDrop => Enabled && HasItem == false;
-		public virtual bool CanPickup => Enabled && HasItem && Locked == false;
+		public virtual bool CanDrop => Enabled && Item.HasValue == false;
+		public virtual bool CanPickup => Enabled && Item.HasValue && Locked == false;
 	}
 }

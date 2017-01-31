@@ -56,8 +56,6 @@ namespace PlayGen.ITAlert.Simulation
 			var subsystems = CreateSystems(configuration.NodeConfiguration);
 			var connections = CreateConnections(subsystems, configuration.EdgeConfiguration);
 
-			CalculatePaths(subsystems, connections);
-
 			CreatePlayers(subsystems, configuration.PlayerConfiguration);
 			CreateItems(subsystems, configuration.ItemConfiguration);
 
@@ -90,18 +88,11 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateSystem(NodeConfig config)
 		{
-			Entity subsystem;
-			switch (config.Enhancement)
-			{
-				case EnhancementType.Analysis:
-				case EnhancementType.Antivirus:
-					subsystem = CreateEntityFromArchetype(config.Enhancement.ToString());
-					break;
-				default:
-					subsystem = CreateEntityFromArchetype(config.Type.ToString());
-					break;
-			}
-			
+			var archetype = string.IsNullOrEmpty(config.EnhancementName)
+				? GameEntities.Subsystem.Name
+				: config.EnhancementName;
+
+			var subsystem = CreateEntityFromArchetype(archetype);
 			config.EntityId = subsystem.Id;
 
 			subsystem.GetComponent<Coordinate2DProperty>().X = config.X;
@@ -139,26 +130,15 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
-				var item = CreateItem(itemConfig.Type);
-				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().TryAddItem(item);
+				var item = CreateItem(itemConfig.TypeName);
+				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
 			}
 		}
 
-		public Entity CreateItem(ItemType type)
+		public Entity CreateItem(string typeName)
 		{
-			var item = CreateEntityFromArchetype(type.ToString());
+			var item = CreateEntityFromArchetype(typeName);
 			return item;
-		}
-
-
-		private void CalculatePaths(Dictionary<int, Entity> subsystems, IList<Entity> connections)
-		{
-			var routes = PathFinder.GenerateRoutes(subsystems.Values.ToList(), connections);
-
-			foreach (var routeDictionary in routes)
-			{
-				//subsystem.SetRoutes(routeDictionary.Value);
-			}
 		}
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)

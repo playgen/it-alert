@@ -17,12 +17,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 		//public const int AnalysisActivatorStorageLocation = 0;
 		public const int AnalysisTargetStorageLocation = 2;
 
-		private ComponentMatcherGroup _analyserMatcherGroup;
+		private readonly ComponentMatcherGroup<AnalyserEnhancement, ItemStorage> _analyserMatcherGroup;
 
-		public AnalyserEnhancementExtension(IComponentRegistry componentRegistry)
+		private readonly IEntityRegistry _entityRegistry;
+
+		public AnalyserEnhancementExtension(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry)
 		{
+			_entityRegistry = entityRegistry;
+
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
-			_analyserMatcherGroup = componentRegistry.CreateMatcherGroup(new[] {typeof(AnalyserEnhancement)});
+			_analyserMatcherGroup = componentRegistry.CreateMatcherGroup<AnalyserEnhancement, ItemStorage>();
 			_analyserMatcherGroup.MatchingEntityAdded += OnNewEntity;
 		}
 
@@ -31,25 +35,23 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 		{
 		}
 
-		public void OnNewEntity(Entity entity)
+		public void OnNewEntity(ComponentEntityTuple<AnalyserEnhancement, ItemStorage> tuple)
 		{
-			ItemStorage itemStorage;
-			if (entity.TryGetComponent(out itemStorage))
-			{
-				itemStorage.Items[AnalysisTargetStorageLocation] = new AnalysisTargetItemContainer();
-			}
+			var itemStorage = tuple.Component2;
+			itemStorage.Items[AnalysisTargetStorageLocation] = new AnalysisTargetItemContainer();
 			//TODO: implement the item activator
 		}
 
-		public static bool CanActivate(Entity entity)
+		public bool CanActivate(Entity entity)
 		{
 			ItemStorage itemStorage;
 			if (entity.TryGetComponent(out itemStorage))
 			{
 				var itemContainer = itemStorage.Items[AnalysisTargetStorageLocation] as AnalysisTargetItemContainer;
-				if (itemContainer != null)
+				Entity item;
+				if (itemContainer != null && itemContainer.Item.HasValue && _entityRegistry.TryGetEntityById(itemContainer.Item.Value, out item))
 				{
-					return itemContainer.HasItem && itemContainer.Item.TestComponent<EntityTypeProperty>(et => et.Value == EntityType.Npc) && itemContainer.Item.HasComponent<MalwareGenome>();
+					return item.TestComponent<EntityTypeProperty>(et => et.Value == EntityType.Npc) && item.HasComponent<MalwareGenome>();
 				}
 			}
 			return false;

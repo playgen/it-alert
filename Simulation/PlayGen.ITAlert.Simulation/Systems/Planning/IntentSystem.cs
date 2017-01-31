@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using Engine.Entities;
+using Engine.Planning;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Components.Common;
 
@@ -15,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Planning
 		public IntentSystem(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
 			: base(componentRegistry, entityRegistry)
 		{
-			_visitorIntentsMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(IntentsProperty)});
+			_visitorIntentsMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(Intents) });
 
 		}
 

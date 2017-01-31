@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 
@@ -20,14 +21,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		private readonly IEntityRegistry _entityRegistry;
 
-		private readonly ComponentMatcherGroup _scannerMatcherGroup;
-		private readonly ComponentMatcherGroup _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<Scanner, CurrentLocation> _scannerMatcherGroup;
+		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
 
 		public ScannerBehaviour(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry)
 		{
 			_entityRegistry = entityRegistry;
-			_scannerMatcherGroup = componentRegistry.CreateMatcherGroup(new[] { typeof(Scanner), typeof(CurrentLocation) });
-			_malwareMatcherGroup = componentRegistry.CreateMatcherGroup(new [] { typeof(MalwareGenome) });
+			_scannerMatcherGroup = componentRegistry.CreateMatcherGroup<Scanner, CurrentLocation>();
+			_malwareMatcherGroup = componentRegistry.CreateMatcherGroup<MalwareGenome>();
 		}
 
 		public void OnActivating(Entity item, Activation activation)
@@ -55,15 +56,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					foreach (var malwareVisitor in currentLocationVisitors.Values
 						.Join(_malwareMatcherGroup.MatchingEntities,
 							k => k,
-							k => k.Id,
+							k => k.Entity.Id,
 							(o, i) => i))
 					{
-						MalwareGenome malwareGenome;
-						if (malwareVisitor.TryGetComponent(out malwareGenome))
-						{
-							// add the visible gene
-							malwareGenome.Values.Add(SimulationConstants.MalwareVisibilityGene);
-						}
+						// add the visible gene
+						malwareVisitor.Component1.Values.Add(SimulationConstants.MalwareVisibilityGene);
 					}
 				}
 

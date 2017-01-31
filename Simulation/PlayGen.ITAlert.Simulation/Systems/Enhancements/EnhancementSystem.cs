@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 	{
 		private readonly List<IEnhancementSystemExtension> _enhancementSystemExtensions;
 
-		private readonly ComponentMatcherGroup _enhancementMatcherGroup;
+		private readonly ComponentMatcherGroup<ISubsystemEnhancement> _enhancementMatcherGroup;
 
 		#region constructor
 
@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			: base(componentRegistry, entityRegistry)
 		{
 			_enhancementSystemExtensions = enhancementSystemExtensions;
-			_enhancementMatcherGroup = componentRegistry.CreateMatcherGroup(new[] { typeof(ISubsystemEnhancement) });
+			_enhancementMatcherGroup = componentRegistry.CreateMatcherGroup<ISubsystemEnhancement>();
 			//_enhancementMatcherGroup.MatchingEntityAdded += EnhancementMatcherGroupOnMatchingEntityAdded;
 		}
 

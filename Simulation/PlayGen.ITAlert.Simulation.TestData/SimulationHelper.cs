@@ -4,9 +4,10 @@ using System.Linq;
 using Engine.Archetypes;
 using Engine.Configuration;
 using Engine.Startup;
+using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Systems.Commands;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -25,9 +26,8 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			{
 				for (var i = 0; i < width; i++)
 				{
-					nodeConfigs.Add(new NodeConfig(i + (j * width))
+					nodeConfigs.Add(new NodeConfig(i + (j * width), $"Subsystem {i + (j * width)}")
 					{
-						Name = $"Subsystem {i + (j * width)}",
 						X = i,
 						Y = j,
 					});
@@ -94,18 +94,17 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			return playerConfigs;
 		}
 
-		public static List<ItemConfig> GenerateItemConfig(List<NodeConfig> nodeConfigs, Dictionary<ItemType, int> items)
+		public static List<ItemConfig> GenerateItemConfig(List<NodeConfig> nodeConfigs, Dictionary<string, int> items)
 		{
 			var itemConfigs = new List<ItemConfig>();
-			var itemTypes = new[] {ItemType.Scanner, ItemType.Repair};
-			foreach (var itemType in items)
+			foreach (var item in items)
 			{
-				for (var i = 0; i < itemType.Value; i++)
+				for (var i = 0; i < item.Value; i++)
 				{
 					itemConfigs.Add(new ItemConfig()
 					{
 						StartingLocation = Random.Next(0, nodeConfigs.Count),
-						Type = itemType.Key,
+						TypeName = item.Key,
 					});
 				}
 			}
@@ -114,7 +113,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 
 		private static List<ItemConfig> GetRandomItems(List<NodeConfig> nodeConfigs, int total)
 		{
-			var enumMembers = Enum.GetValues(typeof(ItemType)) as ItemType[];
+			var enumMembers = ModuleLoader.GetTypesImplementing(typeof(IItem)).Select(t => t.Name).ToArray();
 			var enumCounts = enumMembers.ToDictionary(k => k, v => 1);
 			var count = enumMembers.Length;
 
@@ -184,8 +183,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 		public static SimulationRoot GenerateSimulation(SimulationConfiguration configuration)
 		{
 			// TODO: this should all come from config
-			configuration.NodeConfiguration.First().Enhancement = EnhancementType.Analysis;
-			configuration.NodeConfiguration.Last().Enhancement = EnhancementType.Antivirus;
+			configuration.NodeConfiguration.First().EnhancementName = GameEntities.AnalysisEnhancement.Name;
 
 			return SimulationInstaller.CreateSimulationRoot(configuration);
 

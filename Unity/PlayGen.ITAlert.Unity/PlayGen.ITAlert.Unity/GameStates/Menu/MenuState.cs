@@ -7,15 +7,12 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 	public class MenuState : TickState
 	{
 		public const string StateName = "MenuState";
+		public override string Name => StateName;
 
 		private readonly StateControllerFactory _controllerFactory;
 
 		private TickStateController _stateController;
 		
-		public override string Name
-		{
-			get { return StateName; }
-		}
 
 		public MenuState(Client photonClient)
 		{

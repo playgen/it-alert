@@ -16,11 +16,11 @@ namespace PlayGen.ITAlert.Simulation.Tests.Archetypes
 		[Test]
 		public void TestComponentCreationViaArchetype()
 		{
-			var configuration = new ECSConfiguration(new List<Archetype>(){ GameEntities.Analysis }, null);
+			var configuration = new ECSConfiguration(new List<Archetype>(){ GameEntities.AnalysisEnhancement }, null);
 
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
 
-			ecs.CreateEntityFromArchetype(GameEntities.Analysis.Name);
+			ecs.CreateEntityFromArchetype(GameEntities.AnalysisEnhancement.Name);
 
 		}
 

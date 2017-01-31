@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using Engine.Entities;
+using Engine.Planning;
 using Engine.Systems;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
@@ -104,7 +105,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public static bool TrySetDestination(Entity actor, Entity destination)
 		{
-			IntentsProperty visitorIntents;
+			Intents visitorIntents;
 			if (actor.TryGetComponent(out visitorIntents))
 			{
 				visitorIntents.Replace(new MoveIntent(destination.Id));

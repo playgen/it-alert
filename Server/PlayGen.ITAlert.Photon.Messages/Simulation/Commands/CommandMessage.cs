@@ -1,4 +1,4 @@
-﻿using PlayGen.ITAlert.Simulation.Commands.Interfaces;
+﻿using Engine.Commands;
 using PlayGen.Photon.Messaging;
 
 namespace PlayGen.ITAlert.Photon.Messages.Simulation.Commands

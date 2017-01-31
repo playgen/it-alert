@@ -6,7 +6,7 @@ using Engine.Serialization;
 namespace PlayGen.ITAlert.Simulation.Components.Activation
 {
 	[ComponentDependency(typeof(Activation))]
-	public abstract class TimedActivation : IComponent
+	public class TimedActivation : IComponent
 	{
 		public int ActivationTicksRemaining { get; set; }
 

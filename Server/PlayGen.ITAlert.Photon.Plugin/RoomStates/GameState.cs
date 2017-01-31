@@ -78,7 +78,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			}).ToList();
 
 			// todo make config data driven
-			var simulation = SimulationHelper.GenerateSimulation(2, 2, playerConfigs, 2, 4);
+			var simulation = SimulationHelper.GenerateSimulation(5, 3, playerConfigs, 2, 4);
 			return simulation;
 		}
 
