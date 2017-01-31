@@ -186,7 +186,6 @@
     <Compile Include="Transitions\OnEventTransition.cs" />
     <Compile Include="Transitions\OnMessageTransition.cs" />
     <Compile Include="Transitions\QuitTransition.cs" />
-    <Compile Include="Transitions\ToFromStateTranstition.cs" />
     <Compile Include="Interfaces\ICompletable.cs" />
     <Compile Include="Network\Behaviours\ConnectionBehaviour.cs" />
     <Compile Include="Network\Behaviours\EnhancementBehaviour.cs" />

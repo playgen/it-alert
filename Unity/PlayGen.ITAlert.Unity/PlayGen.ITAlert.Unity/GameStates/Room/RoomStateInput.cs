@@ -71,13 +71,17 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room
 		    }
 			_chatPanel.SetActive(true);
 
+			var playersList = players.OrderBy(player => player.PhotonId).ToList();
+
 			var offset = 0f;
 			var maximumPlayersPossible = 6f;
-				// the maximum number of players the game currently supports - Not the max for the room
+			_chatPanel.GetComponent<RectTransform>().anchorMax = new Vector2(0.1f, 0.1f + (players.Count * 0.025f));
+			_chatPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			// the maximum number of players the game currently supports - Not the max for the room
 			var height = _chatPanel.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
 
 			//sort array into list
-			var playersList = players.OrderBy(player => player.PhotonId).ToList();
+			
 
 			_playerVoiceIcons = new Dictionary<int, Image>();
 
