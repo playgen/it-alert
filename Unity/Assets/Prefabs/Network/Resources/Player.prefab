@@ -144,7 +144,7 @@ TrailRenderer:
     numCapVertices: 3
     alignment: 0
     textureMode: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.04
   m_Autodestruct: 0
 --- !u!114 &114024316166060910
 MonoBehaviour:
