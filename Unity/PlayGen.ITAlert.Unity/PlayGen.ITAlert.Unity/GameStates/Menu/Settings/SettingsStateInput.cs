@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.Settings
 			_music = _creator.Volume("Music Volume");
 			_sfx = _creator.Volume("SFX Volume");
 			var buttonLayout = _creator.HorizontalLayout("Buttons");
-			_cancel = _creator.Custom<Button>("Cancel", SettingObjectType.Button, true);
+			_cancel = _creator.Custom<Button>("Close", SettingObjectType.Button, true);
 			_creator.AddToLayout(buttonLayout, _cancel);
 			_apply = _creator.Custom<Button>("Apply", SettingObjectType.Button, true);
 			_creator.AddToLayout(buttonLayout, _apply);
@@ -90,7 +90,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.Settings
 
 		private void OnBackClick()
 		{
-			BackClickedEvent();
+			BackClickedEvent?.Invoke();
 		}
 
 		private void OnApplyClick()
@@ -126,7 +126,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.Settings
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnBackClick();
 			}

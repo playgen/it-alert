@@ -55,6 +55,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.GamesList
 		private void OnRefreshClick()
 		{
 			CommandQueue.AddCommand(new RefreshGamesListCommand());
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnBackClick()
@@ -70,6 +71,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.GamesList
 			_joinGamePanel.SetActive(true);
 			_buttons.BestFit();
 			OnRefreshClick();
+			LoadingUtility.ShowSpinner();
 		}
 
 		protected override void OnExit()
@@ -90,6 +92,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.GamesList
         private void JoinGame(string name)
 		{
 			CommandQueue.AddCommand(new JoinGameCommand(name));
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnJoinGameSuccess(ClientRoom clientRoom)
@@ -99,6 +102,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.GamesList
 
 		private void OnGamesListSuccess(RoomInfo[] rooms)
 		{
+			LoadingUtility.HideSpinner();
 			foreach (Transform child in _gameListObject.transform)
 			{
 				GameObject.Destroy(child.gameObject);

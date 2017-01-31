@@ -11,6 +11,7 @@ TagManager:
   - Virus
   - Player
   - PhotonVoicePlayer
+  - Loading
   layers:
   - Default
   - TransparentFX

@@ -55,6 +55,10 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
 			{
 				GetComponent<SpriteRenderer>().color = _playerColor;
+				GetComponent<TrailRenderer>().startColor = _playerColor;
+				GetComponent<TrailRenderer>().endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.25f);
+				GetComponent<TrailRenderer>().sortingLayerID = GetComponent<SpriteRenderer>().sortingLayerID;
+				GetComponent<TrailRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 			}
 		}
 
@@ -90,17 +94,6 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		}
 
 		#endregion
-
-		//private void DrawTrail()
-		//{
-		//	for (var i = 0; i < _historicPositions.Count; i++)
-		//	{
-		//		if (_trail[i] != null)
-		//		{
-		//			_trail[i].transform.position = _historicPositions.Reverse().ToArray()[i];
-		//		}
-		//	}
-		//}
 
 		private void ManageInventory(Vector2 itemPosition)
 		{

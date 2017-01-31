@@ -167,7 +167,7 @@ namespace PlayGen.ITAlert.Unity.Network
 			{
 				try
 				{
-					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == playerServerId);
+					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
 
 					UIEntity playerUiEntity;
 					if (Entities.TryGetValue(internalPlayer.Id, out playerUiEntity))
