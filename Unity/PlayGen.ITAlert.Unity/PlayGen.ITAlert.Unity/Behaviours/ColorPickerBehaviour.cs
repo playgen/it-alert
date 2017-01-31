@@ -38,7 +38,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			foreach (var colourString in PlayerColors.Colors)
 			{
 				Color color;
-				if (ColorUtility.TryParseHtmlString(colourString, out color))
+				if (ColorUtility.TryParseHtmlString("#" + colourString, out color))
 				{
 					colours.Add(color);
 				}

@@ -3,6 +3,8 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
+using PlayGen.SUGAR.Unity;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +23,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 		private Button _quickMatchButton;
 		private Button _joinGameButton;
 		private Button _createGameButton;
+		private Text _serverConnectionText;
+		private Text _sugarConnectionText;
 
 		public event Action JoinGameEvent;
 		public event Action CreateGameClickedEvent;
@@ -43,6 +47,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 			_joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
 			_quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
 			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
+			_serverConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/ServerConnection").GetComponent<Text>();
+			_sugarConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/SUGARConnection").GetComponent<Text>();
 
 			_quitButton.onClick.AddListener(OnQuitClick);
 			_createGameButton.onClick.AddListener(OnCreateGameClick);
@@ -78,6 +84,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 		private void OnQuickMatchClick()
 		{
 			CommandQueue.AddCommand(new QuickGameCommand());
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnSettingsClick()
@@ -105,14 +112,25 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnQuitClick();
 			}
-            _quickMatchButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
-            _joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
-            _createGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
-
-        }
+			_quickMatchButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+			_joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+			_createGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
+			_serverConnectionText.text = "Game Server: " + (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? "Connected" : "Not Connected");
+			_serverConnectionText.color = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? Color.green : Color.red;
+			if (SUGARManager.CurrentUser != null)
+			{
+				_sugarConnectionText.text = "SUGAR User: " + SUGARManager.CurrentUser.Name;
+				_sugarConnectionText.color = Color.green;
+			}
+			else
+			{
+				_sugarConnectionText.text = "SUGAR: Not Signed In";
+				_sugarConnectionText.color = Color.red;
+			}
+		}
 	}
 }

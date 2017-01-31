@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   colors: []
-  ColourPickerPanel: {fileID: 1000013146396448}
+  ColourPickerPanel: {fileID: 1000011444463416}
   Avatar: {fileID: 114000010193036940}
 --- !u!114 &114000011770999662
 MonoBehaviour:
