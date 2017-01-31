@@ -26,6 +26,7 @@ namespace PlayGen.Photon.Unity.Client
 		public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
 		public event Action<PhotonPlayer> OtherPlayerLeftEvent;
 		public event Action<List<Player>> PlayerListUpdatedEvent;
+		public event Action<Exception> ExceptionEvent;
 
 		public Messenger Messenger { get; private set; }
 
@@ -63,12 +64,12 @@ namespace PlayGen.Photon.Unity.Client
 
 			_photonClientWrapper.OtherPlayerJoinedRoomEvent += OnOtherPlayerJoined;
 			_photonClientWrapper.OtherPlayerLeftRoomEvent += OnOtherPlayerLeft;
-			
-			Messenger = new Messenger(messageSerializationHandler,  photonClientWrapper);
+
+			Messenger = new Messenger(messageSerializationHandler, photonClientWrapper);
 			Logger.SetMessenger(Messenger);
 			Logger.PlayerPhotonId = photonClientWrapper.Player.ID;
 			Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
-			
+
 			_voiceClient = new VoiceClient();
 			_voiceClient.OnJoinedRoom();
 
@@ -83,7 +84,7 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			Dispose();
 		}
-		
+
 		public void RefreshPlayers()
 		{
 			GetPlayersWait.Reset();
@@ -110,11 +111,19 @@ namespace PlayGen.Photon.Unity.Client
 
 		public void OnRecievedEvent(byte eventCode, object content, int senderId)
 		{
-			if (eventCode == (byte) Photon.Messaging.EventCode.Message)
+			if (eventCode == (byte)Photon.Messaging.EventCode.Message)
 			{
-				if (!Messenger.TryProcessMessage((byte[])content))
+				try
 				{
-					throw new Exception("Couldn't process as message: " + content);
+					if (!Messenger.TryProcessMessage((byte[])content))
+					{
+						throw new Exception("Couldn't process as message: " + content);
+					}
+				}
+				catch(Exception exception)
+				{
+					UnityEngine.Debug.Log($"{exception}");
+					ExceptionEvent(exception);
 				}
 			}
 		}

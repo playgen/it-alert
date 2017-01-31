@@ -6578,7 +6578,7 @@ GameObject:
   - component: {fileID: 1628713451}
   - component: {fileID: 1628713450}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: State
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6592,7 +6592,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1628713449}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 242453428, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
+  m_Script: {fileID: -703776088, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1628713451
