@@ -162,7 +162,10 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
 			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation();
 
-			_nameText.text = _name.Value;
+			if (_nameText.text != _name.Value)
+			{
+				_nameText.text = _name.Value;
+			}
 
 			//TODO: reimplement
 			//if (EntityState.Disabled)

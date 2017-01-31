@@ -156,15 +156,10 @@ namespace PlayGen.ITAlert.Unity.Network
 
 			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
-			var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
 
 			if (subsystemHits.Any() && itemHits.Any())
 			{
 				OnClickItem(subsystemHits.Single(), itemHits.Single());
-			}
-			else if (subsystemHits.Any() && enhancementHits.Any())
-			{
-				//OnClickEnhancement(subsystemHits.Single(), enhancementHits.Single());
 			}
 			else if (subsystemHits.Any())
 			{
@@ -192,100 +187,100 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		#endregion
 
-		#region Drag
+		//#region Drag
 
-		private void OnDrag()
-		{
-			if (_selectedSubsystem == null && _selectedItem != null)
-			{
-				_selectedItem.OnClick(true);
-				var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+		//private void OnDrag()
+		//{
+		//	if (_selectedSubsystem == null && _selectedItem != null)
+		//	{
+		//		_selectedItem.OnClick(true);
+		//		var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-				var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
-				//var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
-				////var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
+		//		var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
+		//		//var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+		//		////var enhancementHits = hits.Where(d => d.collider.tag.Equals(Tags.Enhancement)).ToArray();
 
-				Log("InputHandler::OnDrag [" + subsystemHits.Length + ", ]");
+		//		Log("InputHandler::OnDrag [" + subsystemHits.Length + ", ]");
 
-				if (subsystemHits.Length == 1)
-				{
-					_selectedSubsystem = subsystemHits.Single().collider.GetComponent<SubsystemBehaviour>();
-					//_selectedItemHit = itemHits.Single();
-					//_selectedItem = _selectedItemHit.Value.collider.GetComponent<ItemBehaviour>();
-					//_selectedItem.OnClick(true);
-				}
-			}
-			// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
-			DragItem();
-		}
+		//		if (subsystemHits.Length == 1)
+		//		{
+		//			_selectedSubsystem = subsystemHits.Single().collider.GetComponent<SubsystemBehaviour>();
+		//			//_selectedItemHit = itemHits.Single();
+		//			//_selectedItem = _selectedItemHit.Value.collider.GetComponent<ItemBehaviour>();
+		//			//_selectedItem.OnClick(true);
+		//		}
+		//	}
+		//	// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
+		//	DragItem();
+		//}
 
-		private void DragItem()
-		{
-			//if (_selectedItemHit.HasValue
-			//	&& _selectedItem != null
-			//	&& _selectedSubsystem != null
-			//	&& _selectedSubsystem.HasActiveItem == false)
-			//{
-			//	var item = _selectedItem;
+		//private void DragItem()
+		//{
+		//	//if (_selectedItemHit.HasValue
+		//	//	&& _selectedItem != null
+		//	//	&& _selectedSubsystem != null
+		//	//	&& _selectedSubsystem.HasActiveItem == false)
+		//	//{
+		//	//	var item = _selectedItem;
 
-			//	item.DragStart();
-			//	item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-			//	// - (Vector3)_selectedItemClickOffset;
+		//	//	item.DragStart();
+		//	//	item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+		//	//	// - (Vector3)_selectedItemClickOffset;
 
-			//	Log("Item::Drag [" + item.transform.position + "]");
+		//	//	Log("Item::Drag [" + item.transform.position + "]");
 
-			//	Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
-			//	if (!locationBounds.Contains(item.transform.position))
-			//	{
-			//		Log("Item::Drag [Clamping]");
+		//	//	Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
+		//	//	if (!locationBounds.Contains(item.transform.position))
+		//	//	{
+		//	//		Log("Item::Drag [Clamping]");
 
-			//		float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
-			//		float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
-			//		item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
-			//	}
-			//}
-			//else
-			//{
-			//	DragStop();
-			//}
-		}
+		//	//		float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
+		//	//		float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
+		//	//		item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
+		//	//	}
+		//	//}
+		//	//else
+		//	//{
+		//	//	DragStop();
+		//	//}
+		//}
 
-		private void OnDrop()
-		{
-			if (_selectedItemHit.HasValue && _selectedItem != null && _selectedSubsystem != null)
-			{
-				var item = _selectedItem;
-				item.DragStop();
-				if (PlayerOwnsItem(item))
-				{
-					var releaseHit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).SingleOrDefault(d => d.collider.tag.Equals(Tags.Subsystem));
+		//private void OnDrop()
+		//{
+		//	if (_selectedItemHit.HasValue && _selectedItem != null && _selectedSubsystem != null)
+		//	{
+		//		var item = _selectedItem;
+		//		item.DragStop();
+		//		if (PlayerOwnsItem(item))
+		//		{
+		//			var releaseHit = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).SingleOrDefault(d => d.collider.tag.Equals(Tags.Subsystem));
 
-					if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releaseHit.point))
-					{
-						PlayerCommands.ActivateItem(item.Id);
-					}
-					PlayerCommands.DisownItem(item.Id);
-				}
-				DragStop();
-			}
+		//			if (_selectedSubsystem.ConnectionSquareCollider.bounds.Contains(releaseHit.point))
+		//			{
+		//				PlayerCommands.ActivateItem(item.Id);
+		//			}
+		//			PlayerCommands.DisownItem(item.Id);
+		//		}
+		//		DragStop();
+		//	}
 
-		}
+		//}
 
-		private void DragStop()
-		{
-			_selectedItemHit = null;
-			_selectedItem = null;
-			_selectedSubsystem = null;
-			_dragging = false;
-			//ResetBoundValues();
-		}
+		//private void DragStop()
+		//{
+		//	_selectedItemHit = null;
+		//	_selectedItem = null;
+		//	_selectedSubsystem = null;
+		//	_dragging = false;
+		//	//ResetBoundValues();
+		//}
 
-		private void ResetBoundValues()
-		{
-			_maxDragBounds = _defaultDragBounds;
-			_minDragBounds = _defaultDragBounds;
-		}
+		//private void ResetBoundValues()
+		//{
+		//	_maxDragBounds = _defaultDragBounds;
+		//	_minDragBounds = _defaultDragBounds;
+		//}
 
-		#endregion
+		//#endregion
 	}
 }

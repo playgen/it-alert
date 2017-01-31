@@ -1,7 +1,8 @@
 ﻿using System;
-using Engine.Components;
+using System.ComponentModel;
 using Engine.Entities;
 using Newtonsoft.Json;
+using IComponent = Engine.Components.IComponent;
 
 //using Subsystem.Reactive.Disposables;
 
@@ -11,6 +12,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 	{
 		public int CurrentTick { get; private set; }
 
+		[DefaultValue(-1f)]
 		public float PositionFloat { get; set; }
 
 		[JsonIgnore]
