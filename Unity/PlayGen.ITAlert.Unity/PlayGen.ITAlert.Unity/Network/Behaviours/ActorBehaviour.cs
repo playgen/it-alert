@@ -21,16 +21,20 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 				&& Entity.TryGetComponent(out visitorPosition)
 				&& Director.TryGetEntity(currentLocation.Value, out currentLocationEntity))
 			{
-				var nodeBehaviour = currentLocationEntity.EntityBehaviour as NodeBehaviour;
-				if (nodeBehaviour != null)
-				{
-					var position = nodeBehaviour.GetVisitorPosition(visitorPosition.Position);
-					transform.position = position;
+				//Debug.Log($"Actor {Entity.Id} curentLocation: {currentLocation.Value}, visitorPosition: {visitorPosition.Position}");
 
-					return;
+				var nodeBehaviour = currentLocationEntity.EntityBehaviour as NodeBehaviour;
+				if (nodeBehaviour == null)
+				{
+					Debug.LogError($"EntityBehaviour for entity {Entity.Id} is not NodeBehaviour");
 				}
+				var position = nodeBehaviour.GetVisitorPosition(visitorPosition.Position);
+				transform.position = position;
 			}
-			Debug.LogError($"Failed to load actor component(s) for UpdatePosition on entity {Entity.Id}");
+			else
+			{
+				Debug.LogError($"Failed to load actor component(s) for UpdatePosition on entity {Entity.Id}");
+			}
 		}
 
 		protected override void OnInitialize()

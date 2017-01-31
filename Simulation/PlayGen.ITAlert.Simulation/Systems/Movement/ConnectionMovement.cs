@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			var graphNode = node.GetComponent<GraphNode>();
 			var exitNode = graphNode.ExitPositions.Single();
 
-			var visitors = node.GetComponent<Visitors>().Values;
+			var visitors = node.GetComponent<Visitors>().Values.ToArray();
 
 			foreach (var visitorId in visitors)
 			{
@@ -34,15 +34,19 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 					var movementSpeed = visitor.GetComponent<MovementSpeed>().Value;
 					var visitorPosition = visitor.GetComponent<VisitorPosition>();
 
-					var nextPosition = visitorPosition.Position + (movementSpeed / movementCost);
+					var nextPosition = visitorPosition.PositionFloat + ((float)movementSpeed / movementCost);
 
 					if (nextPosition >= exitNode.Value)
 					{
-						var overflow = Math.Max(nextPosition - movementCost, currentTick);
+						var overflow = Math.Max((int)nextPosition - exitNode.Value, 0);
 
-						visitors.Remove(visitor.Id);
+						RemoveVisitorFromNode(node, visitor);
 
 						OnVisitorTransition(exitNode.Key, visitor, node, overflow, currentTick);
+					}
+					else
+					{
+						visitorPosition.SetPosition(nextPosition, currentTick);
 					}
 				}
 			}

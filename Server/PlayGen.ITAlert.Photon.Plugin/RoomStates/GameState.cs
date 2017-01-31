@@ -35,7 +35,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			Analytics.StartMatch();
 			Analytics.AddMatchData("PlayerCount", PlayerManager.Players.Count);
 
-			InitializeSimulationRoot();
 			_stateController = CreateStateController();
 			_stateController.Initialize(InitializingState.StateName);
 		}

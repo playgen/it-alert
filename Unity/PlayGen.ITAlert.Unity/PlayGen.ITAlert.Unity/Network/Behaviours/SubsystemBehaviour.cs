@@ -65,7 +65,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		private static float _connectionScaleCoefficient;
 		// TODO: read from sim constants
-		private static readonly int PathPointsInSubsystem = 24;
+		private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
 		private const int SquareSideCount = 4;
 		private static readonly float PointsPerSide = (float) PathPointsInSubsystem / SquareSideCount;
 

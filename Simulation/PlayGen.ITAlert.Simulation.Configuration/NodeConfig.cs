@@ -18,17 +18,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public string Name { get; set; }
 
-		public NodeConfig(int id, 
-			string name,
-			string enhancementName = null,
-			NodeType type = NodeType.Subsystem)
+		public NodeConfig(int id)
 		{
-			//TODO: allow setting initial health
 			Id = id;
-			Name = name;
-			EnhancementName = enhancementName;
-			EnhancementName = enhancementName;
-			Type = type;
 		}
 
 		public bool Equals(NodeConfig other)

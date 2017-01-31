@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Common
 
 		public static EdgeDirection FromPosition(this int position, int positions)
 		{
-			if (positions == 0)
+			if (position == 0)
 			{
 				return EdgeDirection.North;
 			}

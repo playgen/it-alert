@@ -37,8 +37,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 			var visitors = node.GetComponent<Visitors>().Values;
 			visitors.Add(visitor.Id);
-			
-			visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
+
+			// TODO: reimplement - we can use the current location property of the visitor to remove them from the appropriate node
+			// visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
 
 			var currentLocation = visitor.GetComponent<CurrentLocation>();
 			currentLocation.Value = node.Id;

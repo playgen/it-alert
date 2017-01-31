@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Commands;
 using Engine.Configuration;
 using Engine.Systems;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -29,7 +31,20 @@ namespace PlayGen.ITAlert.Simulation
 					}
 				}
 			},
-			new SystemConfiguration<CommandSystem>(),
+			new SystemConfiguration<CommandSystem>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<ICommandHandler>()
+					{
+						Implementations = new []
+						{
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<RequestMovePlayerCommandHandler>(), 
+						}
+						
+					}
+				}
+			},
 			new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemActivationSystem>(),
 			new SystemConfiguration<ItemManagement>(),
@@ -67,7 +82,8 @@ namespace PlayGen.ITAlert.Simulation
 						}
 					}
 				}
-			}
+			},
+			new SystemConfiguration<PathFindingSystem>()
 		};
 	}
 }

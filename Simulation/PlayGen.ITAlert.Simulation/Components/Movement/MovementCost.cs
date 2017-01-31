@@ -8,6 +8,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
 	public class MovementCost : IComponent
 	{
-		public int Value { get; set; }
+		public int Value { get; set; } = 1;
 	}
 }

@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		public void AddNode(NeighbourNode node)
 		{
 			ConnectionCost += node.ConnectionCost;
-			SystemCost += node.SystemCost;
+			SystemCost += node.TraversalCost;
 			Nodes.Add(node.NodeId);
 		}
 

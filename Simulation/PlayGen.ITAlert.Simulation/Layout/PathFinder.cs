@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		/// <param name="subsystems"></param>
 		/// <param name="connections"></param>
 		/// <returns>Dictionary keyed by id of subsystem of (dictionary keyed by destination of exit id)</returns>
-		public static void GenerateRoutes(Dictionary<int, ComponentEntityTuple<GraphNode, Subsystem, ExitRoutes>> subsystems, Dictionary<int, ComponentEntityTuple<GraphNode, Connection>> connections)
+		public static void GenerateRoutes(Dictionary<int, ComponentEntityTuple<GraphNode, Subsystem, ExitRoutes>> subsystems, Dictionary<int, ComponentEntityTuple<GraphNode, Connection, MovementCost>> connections)
 		{
 			foreach (var subsystemKvp in subsystems)
 			{
@@ -75,7 +75,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		/// <param name="destination"></param>
 		/// <returns></returns>
 		public static List<Path> FindPaths(Dictionary<int, ComponentEntityTuple<GraphNode, Subsystem, ExitRoutes>> subsystems, 
-			Dictionary<int, ComponentEntityTuple<GraphNode, Connection>> connections, 
+			Dictionary<int, ComponentEntityTuple<GraphNode, Connection, MovementCost>> connections, 
 			int source, 
 			int destination)
 		{
@@ -98,16 +98,18 @@ namespace PlayGen.ITAlert.Simulation.Layout
 					break;
 				}
 
-				var entryPoint = currentPath.Nodes.Count > 1
-					// get the entry position from the last but one node into the current node
-					? subsystems[currentPath.Nodes[currentPath.Nodes.Count - 1]]
-						.Component1.EntrancePositions[currentPath.Nodes[currentPath.Nodes.Count - 2]]
-						.FromPosition(SimulationConstants.SubsystemPositions)
-					: (EdgeDirection?)null;
+				var currentNode = subsystems[currentPath.Nodes[currentPath.Nodes.Count - 1]].Component1;
 
-				var currentNode = subsystems[currentPath.Nodes.Last()].Component1;
+				EdgeDirection? entryPoint = null;
+				if (currentPath.Nodes.Count > 1)
+				{
+					var previousNode = subsystems[currentPath.Nodes[currentPath.Nodes.Count - 2]].Component1;
 
-				foreach (var neighbourNode in GetAdjacentNodes(currentNode, entryPoint))//, connections))
+					var commonEdge = currentNode.EntrancePositions.Keys.Intersect(previousNode.ExitPositions.Keys).Single();
+					entryPoint = currentNode.EntrancePositions[commonEdge].FromPosition(SimulationConstants.SubsystemPositions);
+				}
+
+				foreach (var neighbourNode in GetAdjacentNodes(currentNode, entryPoint, connections))
 				{
 					if (currentPath.HasNode(neighbourNode.NodeId) == false)
 					{
@@ -139,15 +141,15 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		}
 
 		private static List<NeighbourNode> GetAdjacentNodes(GraphNode source, 
-			EdgeDirection? entryPoint)//, 
-			//Dictionary<int, int> connections)
+			EdgeDirection? entryPoint,
+			Dictionary<int, ComponentEntityTuple<GraphNode, Connection, MovementCost>> connections)
 		{
 			return source.ExitPositions
 				.Select(connection => new NeighbourNode()
 				{
-					NodeId = connection.Key,
-					ConnectionCost = 1, //connections[connection.Key].GetComponent<MovementCost>().Value,
-					SystemCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
+					NodeId = connections[connection.Key].Component1.ExitPositions.Keys.Single(),
+					ConnectionCost = connections[connection.Key].Component3.Value,
+					TraversalCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
 				})
 				.ToList();
 		}
