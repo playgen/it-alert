@@ -1,5 +1,7 @@
 ﻿using System;
+using Engine.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Unity.Network.Behaviours;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -44,12 +46,12 @@ namespace PlayGen.ITAlert.Unity.Network
 		{
 			Log($"Request Move to subsystem: {subsystemId}");
 
-			//var requestMovePlayerCommand = new RequestMovePlayerCommand()
-			//{
-			//	PlayerId = Director.Player.Id,
-			//	DestinationId = subsystemId
-			//};
-			//IssueCommand(requestMovePlayerCommand);
+			var requestMovePlayerCommand = new RequestMovePlayerCommand()
+			{
+				PlayerId = Director.Player.Id,
+				DestinationId = subsystemId
+			};
+			IssueCommand(requestMovePlayerCommand);
 
 			// todo process locally too and resync laterDirector.RequestMovePlayer(destination.Id);
 		}
@@ -87,12 +89,12 @@ namespace PlayGen.ITAlert.Unity.Network
 			throw new NotImplementedException("Send Command to Simulation");
 		}
 
-		//private static void IssueCommand(PlayGen.ITAlert.Simulation.Commands.Interfaces.ICommand command)
-		//{
-		//	PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage()
-		//	{
-		//		Command = command
-		//	});
-		//}
+		private static void IssueCommand(ICommand command)
+		{
+			PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage()
+			{
+				Command = command
+			});
+		}
 	}
 }

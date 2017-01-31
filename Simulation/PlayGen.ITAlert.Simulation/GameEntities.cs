@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Components;
+using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
+using PlayGen.ITAlert.Simulation.Components.Flags;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Malware;
@@ -33,6 +36,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
+			.HasComponent(new ComponentBinding<Connection>())
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
 				ComponentTemplate = new EntityTypeProperty()
@@ -44,6 +48,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
+			.HasComponent(new ComponentBinding<Subsystem>())
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
 				ComponentTemplate = new EntityTypeProperty()
@@ -95,7 +100,7 @@ namespace PlayGen.ITAlert.Simulation
 			.HasComponents(new ComponentBinding[]
 			{
 				new ComponentBinding<CurrentLocation>(),
-				new ComponentBinding<IntentsProperty>(),
+				new ComponentBinding<Intents>(),
 				new ComponentBinding<VisitorPosition>(), 
 				new ComponentBinding<MovementSpeed>()
 				{
@@ -114,7 +119,8 @@ namespace PlayGen.ITAlert.Simulation
 				{
 					Value = EntityType.Player
 				}
-			});
+			})
+			.HasComponent(new ComponentBinding<Player>());
 
 		#region viruses
 
@@ -168,31 +174,80 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Scanner = new Archetype("Scanner")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Scanner>());
+			.HasComponent(new ComponentBinding<Scanner>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Repair = new Archetype("Repair")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Repair>());
+			.HasComponent(new ComponentBinding<Repair>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Cleaner = new Archetype("Cleaner")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Cleaner>());
+			.HasComponent(new ComponentBinding<Cleaner>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Analyser = new Archetype("Analyser")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Analyser>());
+			.HasComponent(new ComponentBinding<Analyser>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Tracer = new Archetype("Tracer")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Tracer>());
+			.HasComponent(new ComponentBinding<Tracer>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Antivirus = new Archetype("Antivirus")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Antivirus>());
+			.HasComponent(new ComponentBinding<Antivirus>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Capture = new Archetype("Capture")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Capture>());
+			.HasComponent(new ComponentBinding<Capture>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = 20,
+				}
+			});
 
 		public static readonly Archetype Data = new Archetype("Data")
 			.Extends(Item)

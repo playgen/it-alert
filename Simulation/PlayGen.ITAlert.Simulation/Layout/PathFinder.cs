@@ -1,6 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using Priority_Queue;
 
 namespace PlayGen.ITAlert.Simulation.Layout
@@ -11,62 +16,72 @@ namespace PlayGen.ITAlert.Simulation.Layout
 		/// Generate exit connection lookups for the graph
 		/// </summary>
 		/// <param name="subsystems"></param>
+		/// <param name="connections"></param>
 		/// <returns>Dictionary keyed by id of subsystem of (dictionary keyed by destination of exit id)</returns>
-		public static Dictionary<int, Dictionary<int, int>> GenerateRoutes(IList<Entity> subsystems, IList<Entity> connections)
+		public static void GenerateRoutes(Dictionary<int, ComponentEntityTuple<GraphNode, Subsystem, ExitRoutes>> subsystems, Dictionary<int, ComponentEntityTuple<GraphNode, Connection>> connections)
 		{
-			var subsystemsById = subsystems.ToDictionary(k => k.Id, v => v);
-			var connectionsById = connections.ToDictionary(k => k.Id, v => v);
-
-			var routesBySource = new Dictionary<int, Dictionary<int, int>>(subsystems.Count);
-
-			foreach (var subsystemKvp in subsystemsById)
+			foreach (var subsystemKvp in subsystems)
 			{
-				var otherSystems = subsystemsById.Values.Except(new[] {subsystemKvp.Value}).ToList();
-				//var routesThisSystem = new Dictionary<ISystem, IConnection[]>(otherSystems.Count);
-
-				foreach (var otherSystem in otherSystems)
+				try
 				{
-					//var directNeightbourConnection = subsystemKvp.Value.ExitNodePositions.Keys
-					//	.OfType<Connection>()
-					//	.SingleOrDefault(c => c.Tail.Equals(otherSystem));
-					//if (directNeightbourConnection != null)
-					//{
-					//	routesThisSystem.Add(otherSystem, new [] {directNeightbourConnection});
-					//}
-					//else
-					//{
-					var paths = FindPaths(subsystemsById, connectionsById, subsystemKvp.Value, otherSystem);
+					var otherSystems = subsystems.Values.Except(new[] {subsystemKvp.Value}).ToList();
+					// destination: exit node
+					var routesThisSystem = subsystemKvp.Value.Component3;
 
-					//TODO: reimplement
-					//var exitConnections = paths
-					//	.Where(p => p.Nodes.Count > 1) // there is more than just the start node
-					//	.Select(p => subsystemsById[p.Nodes.First()]
-					//		.GetComponent<ExitPositions>().Value
-					//		.Select(en => en.Value.Node)
-					//		.Single(c => c.Tail == p.Nodes[1])
-					//	);
-					//routesThisSystem.Add(otherSystem, exitConnections.ToArray());
-					//}
+					foreach (var otherSystem in otherSystems)
+					{
+						try
+						{
+							// find all of the adjacent systems - this will cause IOEX if there are multiple exits on a connection node
+							var directNeightbourConnection = subsystemKvp.Value.Component1.ExitPositions.Keys
+								.Where(x => connections.Keys.Contains(x))
+								.SingleOrDefault(c => connections[c].Component1.ExitPositions.Single().Key == otherSystem.Entity.Id);
+
+							if (directNeightbourConnection != 0)
+							{
+								routesThisSystem.Add(otherSystem.Entity.Id, directNeightbourConnection);
+							}
+							else
+							{
+								var paths = FindPaths(subsystems, connections, subsystemKvp.Key, otherSystem.Entity.Id);
+
+								var exitConnection = paths
+									.Where(p => p.Nodes.Count > 1) // there is more than just the start node
+									.Select(p => subsystems[p.Nodes.First()].Component1.ExitPositions.Keys
+										.Single(ep => connections[ep].Component1.ExitPositions.Keys.Single() == p.Nodes[1]))
+									.First();
+								routesThisSystem.Add(otherSystem.Entity.Id, exitConnection);
+							}
+						}
+						catch (Exception ex)
+						{
+							throw new PathFindingException($"Error attempting to find route from {subsystemKvp.Key} to {otherSystem.Entity.Id}", ex);
+						}
+					}
 				}
-
-				//routesBySource.Add(subsystemKvp.Key, routesThisSystem);
+				catch (Exception ex)
+				{
+					throw new PathFindingException($"Error attempting to find routes from {subsystemKvp}", ex);
+				}
 			}
-
-			return routesBySource;
 		}
 
 		/// <summary>
 		/// Find the set of optimal paths from one subsystem to another
 		/// </summary>
 		/// <param name="subsystems"></param>
+		/// <param name="connections"></param>
 		/// <param name="source"></param>
 		/// <param name="destination"></param>
 		/// <returns></returns>
-		public static List<Path> FindPaths(Dictionary<int, Entity> subsystems, Dictionary<int, Entity> connections, Entity source, Entity destination)
+		public static List<Path> FindPaths(Dictionary<int, ComponentEntityTuple<GraphNode, Subsystem, ExitRoutes>> subsystems, 
+			Dictionary<int, ComponentEntityTuple<GraphNode, Connection>> connections, 
+			int source, 
+			int destination)
 		{
 			var paths = new SimplePriorityQueue<Path>();
 
-			var currentPath = new Path(source.Id);
+			var currentPath = new Path(source);
 			paths.Enqueue(currentPath, currentPath.Priority);
 
 			var bestPaths = new List<Path>();
@@ -76,60 +91,65 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			{
 				currentPath = paths.Dequeue();
 
-				// current path is more expensive, so we dont care about it
+				// current path is more expensive, and so must all others be since the queue is ordered
 				if (currentPath.IsCheaperThanOrEqualTo(bestPath) == false)
 				{
+					// exit the loop
 					break;
 				}
-				
-				//var entryPoint = currentPath.Nodes.Count > 1
-				//		// get hte entry position from the last but one node into the current node
-				//	? subsystems[currentPath.Nodes[currentPath.Nodes.Count - 1]]
-				//		.GetComponent<GraphNode>().EntrancePositions[currentPath.Nodes[currentPath.Nodes.Count - 2]]
-				//		.FromPosition(SimulationConstants.SubsystemPositions)
-				//	: (EdgeDirection?) null;
 
-				//foreach (var neighbourNode in GetAdjacentNodes(currentPath.Nodes.Last(), entryPoint, connections))
-				//{
-				//	if (currentPath.HasNode(neighbourNode.Subsystem) == false)
-				//	{
-				//		var newPath = new Path(currentPath);
-				//		newPath.AddNode(neighbourNode);
+				var entryPoint = currentPath.Nodes.Count > 1
+					// get the entry position from the last but one node into the current node
+					? subsystems[currentPath.Nodes[currentPath.Nodes.Count - 1]]
+						.Component1.EntrancePositions[currentPath.Nodes[currentPath.Nodes.Count - 2]]
+						.FromPosition(SimulationConstants.SubsystemPositions)
+					: (EdgeDirection?)null;
 
-				//		if (neighbourNode.Subsystem == destination)
-				//		{
-				//			if (newPath.IsCheaperThanOrEqualTo(bestPath))
-				//			{
-				//				if (newPath.IsCheaperThan(bestPath))
-				//				{
+				var currentNode = subsystems[currentPath.Nodes.Last()].Component1;
 
-				//					bestPaths.Clear();
-				//				}
-				//				bestPath = newPath.Priority;
-				//				bestPaths.Add(newPath);
-				//			}
-				//		}
-				//		else if (newPath.IsCheaperThanOrEqualTo(bestPath))
-				//		{
-				//			paths.Enqueue(newPath, newPath.Priority);
-				//		}
-				//	}
-				//}
+				foreach (var neighbourNode in GetAdjacentNodes(currentNode, entryPoint))//, connections))
+				{
+					if (currentPath.HasNode(neighbourNode.NodeId) == false)
+					{
+						var newPath = new Path(currentPath);
+						newPath.AddNode(neighbourNode);
+
+						if (neighbourNode.NodeId == destination)
+						{
+							if (newPath.IsCheaperThanOrEqualTo(bestPath))
+							{
+								if (newPath.IsCheaperThan(bestPath))
+								{
+
+									bestPaths.Clear();
+								}
+								bestPath = newPath.Priority;
+								bestPaths.Add(newPath);
+							}
+						}
+						else if (newPath.IsCheaperThanOrEqualTo(bestPath))
+						{
+							paths.Enqueue(newPath, newPath.Priority);
+						}
+					}
+				}
 			}
 
 			return bestPaths;
 		}
 
-		//private static List<NeighbourNode> GetAdjacentNodes(Entity source, EdgeDirection? entryPoint, Dictionary<int, Entity> connections)
-		//{
-		//	return source.GetComponent<GraphNode>().ExitPositions
-		//		.Select(connection => new NeighbourNode()
-		//		{
-		//			Subsystem = connection.Key,
-		//			ConnectionCost = connections[connection.Key].GetComponent<MovementCost>().Value,
-		//			SystemCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
-		//		})
-		//		.ToList();
-		//}
+		private static List<NeighbourNode> GetAdjacentNodes(GraphNode source, 
+			EdgeDirection? entryPoint)//, 
+			//Dictionary<int, int> connections)
+		{
+			return source.ExitPositions
+				.Select(connection => new NeighbourNode()
+				{
+					NodeId = connection.Key,
+					ConnectionCost = 1, //connections[connection.Key].GetComponent<MovementCost>().Value,
+					SystemCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
+				})
+				.ToList();
+		}
 	}
 }

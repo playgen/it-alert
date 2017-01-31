@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 		protected override void TestComponentCreationViaArchetype_PostCreate(ItemActivator component)
 		{
 			Assert.That(component.Item, Is.Not.Null);
-			Assert.That(component.Item.HasItem, Is.False);
+			Assert.That(component.Item.Item.HasValue, Is.False);
 		}
 
 	}

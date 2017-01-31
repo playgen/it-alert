@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		private Vector2 _minDragBounds;
 		private Vector2 _maxDragBounds;
 
-	private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
+		private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
 
 		private bool _dragging;
 
@@ -89,35 +89,35 @@ namespace PlayGen.ITAlert.Unity.Network
 				GetDragBounds();
 			}
 
-			if (Input.GetMouseButton(0))
-			{
-				if (IsMouseOutsideBounds())
-				{
-					Log("InputHandler::Dragging");
+			//if (Input.GetMouseButton(0))
+			//{
+			//	if (IsMouseOutsideBounds())
+			//	{
+			//		Log("InputHandler::Dragging");
 
-					_dragging = true;
-					OnDrag();
-					//DragItem();
-				}
-			}
+			//		_dragging = true;
+			//		OnDrag();
+			//		//DragItem();
+			//	}
+			//}
 
 			if (Input.GetMouseButtonUp(0))
 			{
-				if (!_dragging)
-				{
+				//if (!_dragging)
+				//{
 					Log("InputHandler::Click");
 
 					OnClick();
-				}
-				else
-				{
-					Log("InputHandler::Drop");
+				//}
+				//else
+				//{
+				//	Log("InputHandler::Drop");
 
-					_dragging = false;
-					OnDrop();
-				}
-				DragStop();
-				ResetBoundValues();
+				//	_dragging = false;
+				//	OnDrop();
+				//}
+				//DragStop();
+				//ResetBoundValues();
 
 			}
 		}

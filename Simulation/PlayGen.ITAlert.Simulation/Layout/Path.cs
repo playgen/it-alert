@@ -22,12 +22,11 @@ namespace PlayGen.ITAlert.Simulation.Layout
 			SystemCost = path.SystemCost;
 		}
 
-
 		public void AddNode(NeighbourNode node)
 		{
 			ConnectionCost += node.ConnectionCost;
 			SystemCost += node.SystemCost;
-			Nodes.Add(node.System);
+			Nodes.Add(node.NodeId);
 		}
 
 		public bool HasNode(int node)

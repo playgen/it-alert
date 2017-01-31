@@ -11,12 +11,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemManagement : Engine.Systems.System, ITickableSystem
 	{
-		private ComponentMatcherGroup _itemTypeMatcher;
+		private ComponentMatcherGroup<Owner> _itemTypeMatcher;
 
 		public ItemManagement(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
 			: base(componentRegistry, entityRegistry)
 		{
-			_itemTypeMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(Owner) });
+			_itemTypeMatcher = componentRegistry.CreateMatcherGroup<Owner>();
 		}
 
 		public void Tick(int currentTick)

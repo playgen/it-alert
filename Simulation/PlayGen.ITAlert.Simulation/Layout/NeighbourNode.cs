@@ -4,6 +4,6 @@
 	{
 		public int ConnectionCost { get; set; }
 		public int SystemCost { get; set; }
-		public int System { get; set; }
+		public int NodeId { get; set; }
 	}
 }
