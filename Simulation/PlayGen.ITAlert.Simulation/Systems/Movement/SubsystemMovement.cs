@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 					// TODO: extract this into the intent system?
 
 					IIntent visitorIntent;
-					IntentsProperty visitorIntents;
+					Intents visitorIntents;
 					if (visitor.TryGetComponent(out visitorIntents) && visitorIntents.TryPeek(out visitorIntent))
 					{
 						var moveIntent = visitorIntent as MoveIntent;
@@ -95,7 +95,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			AddVisitor(node, visitor, position, currentTick);
 
 			IIntent visitorIntent;
-			var visitorIntents = visitor.GetComponent<IntentsProperty>();
+			var visitorIntents = visitor.GetComponent<Intents>();
 			if (visitorIntents != null && visitorIntents.TryPeek(out visitorIntent))
 			{
 				var moveIntent = visitorIntent as MoveIntent;

@@ -25,53 +25,39 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		public int MaxItems { get; set; }
 
 		public OverLimitBehaviour OverLimitBehaviour { get; set; }
-
-
-
-		public void SetCustomContainer(int position, ItemContainer container)
-		{
-			// TODO: reimplement via directly accessed item
-			NotNullHelper.ArgumentNotNull(container, nameof(container));
-			if (position >= Items.Length)
-			{
-				throw new InvalidOperationException($"Custom item container positions {position} exceeds storage capacity {Items.Length}");
-			}
-			Items[position] = container;
-			MaxItems -= 1;
-		}
-
-		public void SetItemLimit(int limit)
-		{
-			if (limit < MaxItems)
-			{
-				if (limit < ItemLimit)
-				{
-					for (var i = Items.Length - 1; i >= ItemLimit; i--)
-					{
-						var itemContainer = Items[i];
-						if (OverLimitBehaviour == OverLimitBehaviour.Dispose)
-						{
-							if (itemContainer.Item != null)
-							{
-								itemContainer.Item.Dispose();
-								itemContainer.Item = null;
-							}
-							itemContainer.Enabled = false;
-						}
-					}
-				}
-				else if (limit > ItemLimit)
-				{
-					for (var i = Items.Length - 1; i >= ItemLimit; i--)
-					{
-						//TODO: test if item container is of regular sort
-						var itemContainer = Items[i];
-						itemContainer.Enabled = true;
-					}
-				}
-				ItemLimit = limit;
-			}
-		}
+		
+		//public void SetItemLimit(int limit)
+		//{
+		//	if (limit < MaxItems)
+		//	{
+		//		if (limit < ItemLimit)
+		//		{
+		//			for (var i = Items.Length - 1; i >= ItemLimit; i--)
+		//			{
+		//				var itemContainer = Items[i];
+		//				if (OverLimitBehaviour == OverLimitBehaviour.Dispose)
+		//				{
+		//					if (itemContainer.Item != null)
+		//					{
+		//						itemContainer.Item.Dispose();
+		//						itemContainer.Item = null;
+		//					}
+		//					itemContainer.Enabled = false;
+		//				}
+		//			}
+		//		}
+		//		else if (limit > ItemLimit)
+		//		{
+		//			for (var i = Items.Length - 1; i >= ItemLimit; i--)
+		//			{
+		//				//TODO: test if item container is of regular sort
+		//				var itemContainer = Items[i];
+		//				itemContainer.Enabled = true;
+		//			}
+		//		}
+		//		ItemLimit = limit;
+		//	}
+		//}
 
 		#region items 
 
@@ -143,22 +129,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		//{
 		//	return Items.Any(ic => ic.Item == item);
 		//}
-
-		public bool TryAddItem(Entity item)
-		{
-			if (item != null)
-			{
-				var itemContainer = Items.OfTypeExact<ItemContainer>().FirstOrDefault(ic => ic.CanDrop);
-				if (itemContainer == null)
-				{
-					return false;
-				}
-				itemContainer.Item = item;
-				return true;
-			}
-			return false;
-		}
-
 
 		#endregion
 	}

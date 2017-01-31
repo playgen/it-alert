@@ -49,9 +49,9 @@ public class PhotonViewHandler : EditorWindow
         //Debug.Log("HierarchyChange. PV Count: " + pvObjects.Length);
 
         string levelName = SceneManagerHelper.ActiveSceneName;
-        #if UNITY_EDITOR
-        levelName = SceneManagerHelper.EditorActiveSceneName;
-        #endif
+        //#if UNITY_EDITOR
+        //levelName = SceneManagerHelper.EditorActiveSceneName;
+        //#endif
         int minViewIdInThisScene = PunSceneSettings.MinViewIdForScene(levelName);
         //Debug.Log("Level '" + Application.loadedLevelName + "' has a minimum ViewId of: " + minViewIdInThisScene);
 

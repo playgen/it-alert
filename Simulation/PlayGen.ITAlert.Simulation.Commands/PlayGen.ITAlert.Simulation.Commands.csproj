@@ -45,12 +45,10 @@
   <ItemGroup>
     <Compile Include="Sequence\CommandSequenceEntry.cs" />
     <Compile Include="Sequence\CommandSequence.cs" />
-    <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="RequestActivateItemCommand.cs" />
     <Compile Include="RequestDropItemCommand.cs" />
     <Compile Include="RequestMovePlayerCommand.cs" />
     <Compile Include="RequestPickupItemCommand.cs" />
-    <Compile Include="CommandResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnVirusCommand.cs" />
   </ItemGroup>

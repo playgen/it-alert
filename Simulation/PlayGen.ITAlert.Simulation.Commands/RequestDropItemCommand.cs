@@ -1,4 +1,4 @@
-﻿using PlayGen.ITAlert.Simulation.Commands.Interfaces;
+﻿using Engine.Commands;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Interfaces;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
 
 namespace PlayGen.ITAlert.Simulation.Startup

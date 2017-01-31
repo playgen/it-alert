@@ -56,8 +56,6 @@ namespace PlayGen.ITAlert.Simulation
 			var subsystems = CreateSystems(configuration.NodeConfiguration);
 			var connections = CreateConnections(subsystems, configuration.EdgeConfiguration);
 
-			CalculatePaths(subsystems, connections);
-
 			CreatePlayers(subsystems, configuration.PlayerConfiguration);
 			CreateItems(subsystems, configuration.ItemConfiguration);
 
@@ -133,7 +131,7 @@ namespace PlayGen.ITAlert.Simulation
 			foreach (var itemConfig in itemConfigs)
 			{
 				var item = CreateItem(itemConfig.TypeName);
-				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().TryAddItem(item);
+				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
 			}
 		}
 
@@ -141,17 +139,6 @@ namespace PlayGen.ITAlert.Simulation
 		{
 			var item = CreateEntityFromArchetype(typeName);
 			return item;
-		}
-
-
-		private void CalculatePaths(Dictionary<int, Entity> subsystems, IList<Entity> connections)
-		{
-			var routes = PathFinder.GenerateRoutes(subsystems.Values.ToList(), connections);
-
-			foreach (var routeDictionary in routes)
-			{
-				//subsystem.SetRoutes(routeDictionary.Value);
-			}
 		}
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)

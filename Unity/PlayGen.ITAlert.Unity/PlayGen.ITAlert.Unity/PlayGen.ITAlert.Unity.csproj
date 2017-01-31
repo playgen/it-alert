@@ -48,9 +48,11 @@
     </Reference>
     <Reference Include="GameWork.Core.Commands">
       <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="GameWork.Core.States">
       <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\bin\Simulation\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -67,6 +69,10 @@
     <Reference Include="PlayGen.ITAlert.Simulation">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Commands, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Common">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
     </Reference>
@@ -81,12 +87,15 @@
     </Reference>
     <Reference Include="PlayGen.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.Photon.Messaging">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messaging.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.Photon.Players">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Players.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>

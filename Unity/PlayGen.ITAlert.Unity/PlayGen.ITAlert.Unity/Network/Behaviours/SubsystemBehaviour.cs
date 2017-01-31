@@ -17,14 +17,14 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 	// ReSharper disable once CheckNamespace
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		//01
-		//23
+		private const float ItemContainerOffset = 0.3f;
+
 		private static readonly Vector2[] CornerItemOffsets = new[]
 		{
-			new Vector2(-0.34f, 0.18f),
-			new Vector2(0.34f, 0.18f),
-			new Vector2(-0.34f, -0.18f),
-			new Vector2(0.34f, -0.18f),
+			new Vector2(-2 * ItemContainerOffset, ItemContainerOffset),
+			new Vector2(2 * ItemContainerOffset, ItemContainerOffset),
+			new Vector2(-2 * ItemContainerOffset, -1 * ItemContainerOffset),
+			new Vector2(2 * ItemContainerOffset, -1 * ItemContainerOffset),
 		};
 
 		#region game elements
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		public BoxCollider2D ConnectionSquareCollider => _connectionSquareCollider;
 
-		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2);
+		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2) * transform.localScale.x;
 
 		private List<GameObject> _itemContainers;
 
@@ -124,6 +124,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 				Entity.TryGetComponent(out _itemStorage);
 
 				SetPosition();
+				CreateItemContainers();
 
 				OnStateUpdated();
 			}
@@ -156,33 +157,10 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		#endregion
 
 		#region State Update
-
-		private void UpdateItemContainers()
-		{
-			if (_itemStorage != null)
-			{
-				for (var i = 0; i < _itemStorage.Items.Length; i++)
-				{
-					var itemContainer = _itemStorage.Items[i];
-					if (itemContainer != null)
-					{
-						var itemContainerObject = Director.InstantiateEntity(ItemContainerBehaviour.Prefab);
-						itemContainerObject.transform.SetParent(Director.Graph.transform, false);
-						_itemContainers.Add(itemContainerObject);
-
-						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
-						itemContainerBehaviour.Initialize(itemContainer);
-
-						itemContainerObject.transform.position = GetItemPosition(i);
-					}
-				}
-			}
-		}
-
 		protected override void OnStateUpdated()
 		{
-			_cpuImage.fillAmount = _cpuResource.GetUtilisation();
-			_memoryImage.fillAmount = _memoryResource.GetUtilisation();
+			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
+			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation();
 
 			_nameText.text = _name.Value;
 
@@ -217,6 +195,46 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 			//{
 			//	FadeOutUpdate();
 			//}
+			UpdateItemContainers();
+		}
+
+		private void CreateItemContainers()
+		{
+			if (_itemStorage != null)
+			{
+				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				{
+					var itemContainer = _itemStorage.Items[i];
+					if (itemContainer != null)
+					{
+						var itemContainerObject = Director.InstantiateEntity(ItemContainerBehaviour.Prefab);
+						itemContainerObject.transform.SetParent(this.transform, false);
+						_itemContainers.Add(itemContainerObject);
+
+						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
+						itemContainerBehaviour.Initialize(itemContainer);
+
+						itemContainerObject.transform.position = GetItemPosition(i);
+					}
+				}
+			}
+		}
+
+		private void UpdateItemContainers()
+		{
+			if (_itemStorage != null)
+			{
+				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				{
+					var itemContainer = _itemStorage.Items[i];
+					UIEntity item;
+					if (itemContainer?.Item != null
+						&& Director.TryGetEntity(itemContainer.Item.Value, out item))
+					{
+						item.GameObject.transform.position = _itemPositions[i];
+					}
+				}
+			}
 		}
 
 		#region static properties

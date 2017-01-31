@@ -9,7 +9,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		/// <summary>
 		/// Graph spacing
 		/// </summary>
-		public static Vector2 SubsystemSpacing = new Vector2(1.5f, -1.5f);
+		public static Vector2 SubsystemSpacing = new Vector2(2.5f, -2.5f);
 
 		/// <summary>
 		/// Graph centering
@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		public static Vector2 LocationColliderSize = new Vector2(7.5f, 5f);
 		public static Vector2 LocationUIOffset = new Vector2(0f, -0.8f);
 
-		public const float ConnectionWidth = 0.02f;
+		public const float ConnectionWidth = 0.05f;
 
 		public const int PlayerTrailRendererMaterials = 5;
 	}
