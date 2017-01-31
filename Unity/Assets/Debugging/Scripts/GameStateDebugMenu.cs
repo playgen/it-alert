@@ -5,28 +5,26 @@ using System.Reflection;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
-using PlayGen.ITAlert.Unity.GameStates;
-using PlayGen.ITAlert.Unity.GameStates.Loading;
-using PlayGen.ITAlert.Unity.GameStates.Menu;
-using PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame;
-using PlayGen.ITAlert.Unity.GameStates.Menu.GamesList;
-using PlayGen.ITAlert.Unity.GameStates.Room;
-using PlayGen.ITAlert.Unity.GameStates.Room.Lobby;
+using PlayGen.ITAlert.Unity.GameStates.Game;
+using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
+using PlayGen.ITAlert.Unity.GameStates.Game.Menu;
+using PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.GameStates.Game.Menu.GamesList;
+using PlayGen.ITAlert.Unity.GameStates.Game.Room;
+using PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.GameStates.Game.Settings;
 
 namespace Debugging
 {
 	public class GameStateDebugMenu : MonoBehaviour
 	{
-		private ControllerBehaviour _controllerBehaviour;
-		private TickStateController<TickState> _stateController;
-
+		private TickStateController _gameStateController;
+		
 		private bool _isVisible = false;
 
-		void Start()
+		private TickStateController GameStateController
 		{
-			_controllerBehaviour = GameObject.FindObjectOfType<ControllerBehaviour>();
-
-			_stateController = (TickStateController<TickState>)GetField(_controllerBehaviour.GetType(), _controllerBehaviour, "_stateController");
+			get { return _gameStateController ?? (_gameStateController = GetGameStateController()); }
 		}
 
 		private void Update()
@@ -77,11 +75,11 @@ namespace Debugging
 			{
 				if (parentState != null)
 				{
-					CallChangeStateInternal(_stateController, parentState);
-					var states = (Dictionary<string, TickState>)GetField(_stateController.GetType(),
-					_stateController,
+					CallChangeStateInternal(GameStateController, parentState);
+					var states = (Dictionary<string, TickState>)GetField(GameStateController.GetType(),
+					GameStateController,
 					"States");
-					var currentState = states[_stateController.ActiveStateName];
+					var currentState = states[GameStateController.ActiveStateName];
 					var subStateController = (TickStateController)GetField(currentState.GetType(),
 					currentState,
 					"_stateController");
@@ -89,9 +87,28 @@ namespace Debugging
 				}
 				else
 				{
-					CallChangeStateInternal(_stateController, stateName);
+					CallChangeStateInternal(GameStateController, stateName);
 				}
 			}
+		}
+
+		private TickStateController GetGameStateController()
+		{
+			var stateBehaviour = FindObjectOfType<StateBehaviour>();
+
+			var stateController = (TickStateController)GetField(stateBehaviour.GetType(), stateBehaviour, "_stateController");
+
+			var states = (Dictionary<string, TickState>)GetField(stateController.GetType(),
+				   stateController,
+				   "States");
+
+			var gameState = states[GameState.StateName];
+
+			var gameStateController = (TickStateController)GetField(gameState.GetType(),
+				gameState,
+				"_stateController");
+
+			return gameStateController;
 		}
 	}
 }

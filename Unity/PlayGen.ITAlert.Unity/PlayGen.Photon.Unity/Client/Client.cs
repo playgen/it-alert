@@ -13,6 +13,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		public event Action<ClientRoom> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
+		public event Action<Exception> ExceptionEvent;
 
 		public ClientState ClientState { get; private set; }
 		public ClientRoom CurrentRoom { get; private set; }
@@ -94,8 +95,14 @@ namespace PlayGen.Photon.Unity.Client
 
 			CurrentRoom?.Dispose();
 			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler);
-
+			CurrentRoom.ExceptionEvent += OnRoomException;
+			
 			JoinedRoomEvent?.Invoke(CurrentRoom);
+		}
+
+		private void OnRoomException(Exception exception)
+		{
+			ExceptionEvent(exception);
 		}
 
 		private void OnLeftRoom()

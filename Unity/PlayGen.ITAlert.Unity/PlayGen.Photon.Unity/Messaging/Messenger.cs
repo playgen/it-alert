@@ -40,13 +40,12 @@ namespace PlayGen.Photon.Unity.Messaging
 			var message = _serializationHandler.Deserialize<Message>(content);
 			if (message == null)
 			{
-				Debug.Log($"Photon Messenger Received: null message.");
+				//Debug.Log($"Photon Messenger Received: null message.");
 				return false;
 			}
 
-			Debug.Log($"Photon Messenger Received: '{message.GetType().Name}' on channel {message.Channel}");
-
-
+			//Debug.Log($"Photon Messenger Received: '{message.GetType().Name}' on channel {message.Channel}");
+			
 			_subscriptionHandler.SendToSubscribers(message);
 
 			return true;

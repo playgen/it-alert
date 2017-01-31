@@ -26,8 +26,6 @@ namespace PlayGen.ITAlert.Unity.Network
 	// TODO: use zenject singleton container rather than statics
 	public class Director : MonoBehaviour
 	{
-		public static event Action SimulationError;
-
 		/// <summary>
 		/// Entity to GameObject map
 		/// </summary>
@@ -151,7 +149,7 @@ namespace PlayGen.ITAlert.Unity.Network
 			catch (Exception ex)
 			{
 				Debug.LogError($"Error initializing Director: {ex}");
-				OnSimulationError();
+				throw ex;
 			}
 			return false;
 		}
@@ -222,6 +220,7 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static void Tick(bool enableSerializer)
 		{
+			
 			SimulationRoot.ECS.Tick();
 			UpdateEntityStates();
 		}
@@ -265,10 +264,10 @@ namespace PlayGen.ITAlert.Unity.Network
 					Entities.Remove(entityToRemove);
 				}
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
-				Debug.LogError($"Error updating Director state: {ex}");
-				OnSimulationError();
+				Debug.LogError($"Error updating Director state: {exception}");
+				throw new SimulationIntegrationException("Error updating Director state", exception);
 			}
 		}
 
@@ -345,10 +344,5 @@ namespace PlayGen.ITAlert.Unity.Network
 		}
 
 		#endregion
-
-		protected static void OnSimulationError()
-		{
-			SimulationError?.Invoke();
-		}
 	}
 }
