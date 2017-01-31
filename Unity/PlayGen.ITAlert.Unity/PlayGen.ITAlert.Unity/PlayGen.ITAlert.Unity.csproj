@@ -132,6 +132,7 @@
     <Compile Include="Behaviours\CreateGamePopupBehaviour.cs" />
     <Compile Include="Behaviours\FeedbackDragBehaviour.cs" />
     <Compile Include="Behaviours\FeedbackSlotBehaviour.cs" />
+    <Compile Include="Behaviours\LoadingSpinnerBehaviour.cs" />
     <Compile Include="Behaviours\PopupBehaviour.cs" />
     <Compile Include="Commands\ChangePlayerColorCommand.cs" />
     <Compile Include="Commands\CreateGameCommand.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Settings\SliderHandleSizeSetter.cs" />
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
+    <Compile Include="Utilities\LoadingUtility.cs" />
     <Compile Include="Utilities\PopupUtility.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -81,6 +81,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Lobby
 
 			_lobbyPanel.SetActive(true);
 			_buttons.BestFit();
+			LoadingUtility.HideSpinner();
 		}
 
 		protected override void OnExit()
@@ -110,6 +111,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Lobby
 		private void OnReadyButtonClick()
 		{
 			CommandQueue.AddCommand(new ReadyPlayerCommand(!_ready));
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnBackButtonClick()
@@ -147,6 +149,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Lobby
 				_ready = true;
 
 			}
+			LoadingUtility.HideSpinner();
 			_readyButton.gameObject.GetComponentInChildren<Text>().text = text;
 		}
 
