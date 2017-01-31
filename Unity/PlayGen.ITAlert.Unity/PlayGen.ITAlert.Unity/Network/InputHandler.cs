@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		private Vector2 _minDragBounds;
 		private Vector2 _maxDragBounds;
 
-	private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
+		private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
 
 		private bool _dragging;
 
@@ -72,9 +72,9 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private bool PlayerOwnsItem(ItemBehaviour item)
 		{
-			return Director.Player != null
-					&& item.Owner.HasValue
-					&& item.Owner.Value == Director.Player.Id;
+			return Director.Player != null && false;
+					//&& item._owner.Value.HasValue
+					//&& item._owner.Value.Value == Director.Player.Id;
 		}
 
 		#endregion
@@ -89,35 +89,35 @@ namespace PlayGen.ITAlert.Unity.Network
 				GetDragBounds();
 			}
 
-			if (Input.GetMouseButton(0))
-			{
-				if (IsMouseOutsideBounds())
-				{
-					Log("InputHandler::Dragging");
+			//if (Input.GetMouseButton(0))
+			//{
+			//	if (IsMouseOutsideBounds())
+			//	{
+			//		Log("InputHandler::Dragging");
 
-					_dragging = true;
-					OnDrag();
-					//DragItem();
-				}
-			}
+			//		_dragging = true;
+			//		OnDrag();
+			//		//DragItem();
+			//	}
+			//}
 
 			if (Input.GetMouseButtonUp(0))
 			{
-				if (!_dragging)
-				{
+				//if (!_dragging)
+				//{
 					Log("InputHandler::Click");
 
 					OnClick();
-				}
-				else
-				{
-					Log("InputHandler::Drop");
+				//}
+				//else
+				//{
+				//	Log("InputHandler::Drop");
 
-					_dragging = false;
-					OnDrop();
-				}
-				DragStop();
-				ResetBoundValues();
+				//	_dragging = false;
+				//	OnDrop();
+				//}
+				//DragStop();
+				//ResetBoundValues();
 
 			}
 		}
@@ -221,33 +221,33 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private void DragItem()
 		{
-			if (_selectedItemHit.HasValue
-				&& _selectedItem != null
-				&& _selectedSubsystem != null
-				&& _selectedSubsystem.HasActiveItem == false)
-			{
-				var item = _selectedItem;
+			//if (_selectedItemHit.HasValue
+			//	&& _selectedItem != null
+			//	&& _selectedSubsystem != null
+			//	&& _selectedSubsystem.HasActiveItem == false)
+			//{
+			//	var item = _selectedItem;
 
-				item.DragStart();
-				item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
-				// - (Vector3)_selectedItemClickOffset;
+			//	item.DragStart();
+			//	item.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position;
+			//	// - (Vector3)_selectedItemClickOffset;
 
-				Log("Item::Drag [" + item.transform.position + "]");
+			//	Log("Item::Drag [" + item.transform.position + "]");
 
-				Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
-				if (!locationBounds.Contains(item.transform.position))
-				{
-					Log("Item::Drag [Clamping]");
+			//	Bounds locationBounds = _selectedSubsystem.DropCollider.bounds;
+			//	if (!locationBounds.Contains(item.transform.position))
+			//	{
+			//		Log("Item::Drag [Clamping]");
 
-					float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
-					float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
-					item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
-				}
-			}
-			else
-			{
-				DragStop();
-			}
+			//		float clampedX = Mathf.Clamp(item.transform.position.x, locationBounds.min.x, locationBounds.max.x);
+			//		float clampedY = Mathf.Clamp(item.transform.position.y, locationBounds.min.y, locationBounds.max.y);
+			//		item.transform.position = new Vector3(clampedX, clampedY, item.transform.position.z);
+			//	}
+			//}
+			//else
+			//{
+			//	DragStop();
+			//}
 		}
 
 		private void OnDrop()

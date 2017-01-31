@@ -50,7 +50,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		#region State Update
 
-		protected override void OnUpdatedState()
+		protected override void OnStateUpdated()
 		{
 			HandlePulse();
 			UpdatePosition();

@@ -1,8 +1,13 @@
 ﻿using UnityEngine;
 using System;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Activation;
+using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Items.Flags;
+using PlayGen.ITAlert.Simulation.UI.Components.Items;
+using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Network.Behaviours
@@ -20,47 +25,18 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		private int _dragCount;
 
-		public bool Dragging
-		{
-			get { return _dragging || _dragCount > 0; }
-		}
+		public bool Dragging => _dragging || _dragCount > 0;
 
+		#region components
 
-		#region public state
+		// required
+		private CurrentLocation _currentLocation;
+		private Owner _owner;
+		private IItem _itemType;
+		private Activation _activation;
 
-		public bool IsActive
-		{
-			get
-			{
-				Activation activation;
-				if (Entity.TryGetComponent(out activation))
-				{
-					return activation.ActivationState == ActivationState.Active;
-				}
-				return false;
-			}
-		}
-
-		public int? Owner
-		{
-			get
-			{
-				Owner owner;
-				if (Entity.TryGetComponent(out owner))
-				{
-					return owner.Value;
-				}
-			return null;
-		}
-		}
-
-		public bool IsOnSubsystem
-		{
-			get
-			{
-				return false; //EntityState.CurrentNode.HasValue;
-			}
-		}
+		// optional components
+		private TimedActivation _timedActivation;
 
 		#endregion
 
@@ -78,38 +54,21 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override void OnInitialize()
 		{
-			SetSprite();
-			//_activeDuration = EntityState.ActiveDuration;
 
-		}
+			if (Entity.TryGetComponent(out _itemType)
+				&& Entity.TryGetComponent(out _currentLocation)
+				&& Entity.TryGetComponent(out _owner)
+				&& Entity.TryGetComponent(out _activation))
+			{
+				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
+				GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spriteName);
 
-		private void SetSprite()
-		{
-			string spriteName;
-
-			//switch (Type)
-			//{
-			//	case ItemType.Repair:
-			//		spriteName = "tool_repair";
-			//		break;
-
-			//	case ItemType.Scanner:
-			//		spriteName = "tool_scanner";
-			//		break;
-
-			//	//case ItemType.Tracer:
-			//	//	spriteName = "tool_tracer";
-			//	//	break;
-
-			//	case ItemType.Cleaner:
-						spriteName = "tool_cleaner";
-			//		break;
-
-			//	default:
-			//		return;
-			//}
-			//TODO: this can probably be optimised by precaching a dictionary of assets to item type
-			GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spriteName);
+				Entity.TryGetComponent(out _timedActivation);
+			}
+			else
+			{
+				throw new EntityInitializationException($"Could not load all required components for Entity Id {Entity.Id}");
+			}
 		}
 
 		#endregion
@@ -122,50 +81,72 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override void OnUpdate()
 		{
-			_dragCount = Math.Max(0, --_dragCount);
+//			_dragCount = Math.Max(0, --_dragCount);
 		}
 
 		#endregion
 
 		#region State Update
 
-		protected override void OnUpdatedState()
+		protected override void OnStateUpdated()
 		{
 			//TODO: if owner has changed
+			UpdatePosition();
 			UpdateItemColor();
 			UpdateActivationTimer();
+		}
+
+		private void UpdatePosition()
+		{
+			UIEntity currentLocationEntity;
+			if (Director.TryGetEntity(_currentLocation.Value, out currentLocationEntity))
+			{
+				if (currentLocationEntity.Type == EntityType.Subsystem)
+				{
+					//Item
+				}
+				else
+				{
+					
+				}
+			}
 		}
 
 		private void UpdateItemColor()
 		{
 			bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
-			if (Owner.HasValue && isWhite)
+			if (_owner.Value.HasValue && isWhite)
 			{
-				var playerColour = Director.GetEntity(Owner.Value).GameObject.GetComponent<SpriteRenderer>().color;
-				_iconRenderer.color = playerColour;
-				_activationTimerImage.color = playerColour;
-
+				UIEntity owner;
+				if (Director.TryGetEntity(_owner.Value.Value, out owner))
+				{
+					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+					_iconRenderer.color = playerColour;
+					_activationTimerImage.color = playerColour;
+				}
 				//TriggerHint();
 			}
-			else if (!Owner.HasValue && !isWhite)
+			else if (!_owner.Value.HasValue && !isWhite)
 			{
 				_iconRenderer.color = Color.white;
 				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
-
 			}
 		}
 
 		private void UpdateActivationTimer()
 		{
-			// TODO: reimplement active test
-			//if (EntityState.Active)
-			//{
-			//	_activationTimerImage.fillAmount = 1f - (float) EntityState.ActiveTicksRemaining/EntityState.ActiveDuration;
-			//}
-			//else
-			//{
+			if (_timedActivation != null)
+			{
+				if (_activation.ActivationState == ActivationState.Active)
+				{
+					_activationTimerImage.fillAmount = 1f - _timedActivation.GetActivationProportion();
+				}
+				else
+				{
 					_activationTimerImage.fillAmount = 0f;
-			//}
+				}
+
+			}
 		}
 
 		#endregion
@@ -182,8 +163,8 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		private bool PlayerOwnsItem()
 		{
 			return Director.Player != null
-					&& Owner.HasValue
-					&& Owner.Value == Director.Player.Id;
+					&& _owner.Value.HasValue
+					&& _owner.Value.Value == Director.Player.Id;
 		}
 
 		public void OnClick(bool dragging)

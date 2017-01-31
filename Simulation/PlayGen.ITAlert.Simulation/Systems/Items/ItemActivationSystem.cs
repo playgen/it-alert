@@ -19,7 +19,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		private readonly List<IItemActivationExtension> _itemActivationExtensions;
 		
-		private readonly ComponentMatcherGroup _activationMatcher;
+		private readonly ComponentMatcherGroup<Activation> _activationMatcher;
+
 		public ItemActivationSystem(IComponentRegistry componentRegistry, 
 			IEntityRegistry entityRegistry, 
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
@@ -31,15 +32,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_itemActivationExtensions = itemActivationExtensions;
 			_intentSystem = intentSystem;
 			
-			_activationMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(Activation) });
+			_activationMatcher = componentRegistry.CreateMatcherGroup<Activation>();
 			componentRegistry.RegisterMatcher(_activationMatcher);
 		}
 
 		public void Tick(int currentTick)
 		{
-			foreach (var entity in _activationMatcher.MatchingEntities)
+			foreach (var match in _activationMatcher.MatchingEntities)
 			{
-				var activation = entity.GetComponent<Activation>();
+				var activation = match.Component1;
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
@@ -48,18 +49,18 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					case ActivationState.Activating:
 						activation.SetState(ActivationState.Active);
 						// TODO: confirm that this makes sense - process system extensions, then any components that are activatable
-						ExecuteActivationExtensionActions(entity, iax => iax.OnActivating(entity, activation));
+						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnActivating(match.Entity, activation));
 
 						//ExecuteActivatableAction(entity, a => a.OnActivating(entity));
 						break;
 					case ActivationState.Deactivating:
 						activation.SetState(ActivationState.NotActive);
-						ExecuteActivationExtensionActions(entity, iax => iax.OnDeactivating(entity, activation));
+						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnDeactivating(match.Entity, activation));
 
 						//ExecuteActivatableAction(entity, a => a.OnDeactivating(entity));
 						break;
 					case ActivationState.Active:
-						ExecuteActivationExtensionActions(entity, iax => iax.OnActive(entity, activation));
+						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnActive(match.Entity, activation));
 
 						//ExecuteActivatableAction(entity, a => a.OnActive(entity));
 						break;

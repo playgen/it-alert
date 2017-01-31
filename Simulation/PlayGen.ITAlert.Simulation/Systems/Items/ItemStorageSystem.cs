@@ -11,22 +11,18 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemStorageSystem : Engine.Systems.System
 	{
-		private ComponentMatcherGroup _itemStorageMatcherGroup;
+		private readonly ComponentMatcherGroup<ItemStorage> _itemStorageMatcherGroup;
 
 		public ItemStorageSystem(IComponentRegistry componentRegistry, 
 			IEntityRegistry entityRegistry) : base(componentRegistry, entityRegistry)
 		{
-			_itemStorageMatcherGroup = componentRegistry.CreateMatcherGroup(new[] {typeof(ItemStorage)});
+			_itemStorageMatcherGroup = componentRegistry.CreateMatcherGroup<ItemStorage>();
 			_itemStorageMatcherGroup.MatchingEntityAdded += ItemStorageMatcherGroupOnMatchingEntityAdded;
 		}
 
-		private void ItemStorageMatcherGroupOnMatchingEntityAdded(Entity entity)
+		private void ItemStorageMatcherGroupOnMatchingEntityAdded(ComponentEntityTuple<ItemStorage> tuple)
 		{
-			ItemStorage itemStorage;
-			if (entity.TryGetComponent(out itemStorage))
-			{
-				InitializeItemContainers(itemStorage);
-			}
+			InitializeItemContainers(tuple.Component1);
 		}
 
 		private void InitializeItemContainers(ItemStorage itemStorage)

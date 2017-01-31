@@ -10,9 +10,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 	{
 		//string ContainerGlyph { get; }
 
-		Entity Item { get; }
-
-		bool HasItem { get; }
+		int? Item { get; }
 
 		bool Enabled { get; }
 
