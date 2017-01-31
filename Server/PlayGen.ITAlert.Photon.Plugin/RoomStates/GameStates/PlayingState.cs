@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Systems;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
@@ -11,6 +12,8 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.ITAlert.Simulation.Commands.Sequence;
+using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.Photon.Plugin.Analytics;
 
@@ -22,7 +25,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private readonly SimulationRoot _simulationRoot;
 
-		//private CommandSequence _commandSequence;
 		private int _tickIntervalMS = 100;
 		private object _tickTimer;
 		
@@ -45,8 +47,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.Subscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 			Messenger.Subscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
 
-			//_commandSequence = CommandSequenceHelper.GenerateCommandSequence(20, 20, 40);// todo uncomment: 100, 500, 2100);  // todo make values data driven - possibly via difficulty value set by players
-
 			Messenger.SendAllMessage(new PlayingMessage());
 		}
 
@@ -56,8 +56,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 
 			DestroyTimer(_tickTimer);
-			//_resolver = null;
-			//_commandSequence = null;
 		}
 
 		private void ProcessGameStateMessage(Message message)
@@ -80,14 +78,21 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		private void ProcessSimulationCommandMessage(Message message)
 		{
 			var commandMessage = message as CommandMessage;
-			if (commandMessage != null)
+			if (commandMessage == null)
 			{
-				var command = commandMessage.Command;
-				//_resolver.ProcessCommand(command);
-				return;
+				throw new SimulationException($"Unhandled Simulation Command: ${message}");
 			}
-
-			throw new Exception($"Unhandled Simulation Command Message: ${message}");
+			var command = commandMessage.Command;
+			CommandSystem commandSystem;
+			if (_simulationRoot.ECS.TryGetSystem(out commandSystem) == false)
+			{
+				throw new SimulationException($"Could not locate command processing system");
+			}
+			if (commandSystem.TryHandleCommand(command) == false)
+			{
+				throw new SimulationException($"Unhandled Simulation Command: ${message}");
+			}
+			
 		}
 
 		private void Tick()

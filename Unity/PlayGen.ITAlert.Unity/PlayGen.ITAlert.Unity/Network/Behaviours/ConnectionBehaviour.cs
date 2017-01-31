@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Common;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Unity.Exceptions;
 
 #pragma warning disable 649
 
@@ -25,9 +27,15 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		private SpriteRenderer _spriteRenderer;
 
-		//private float _pointsPerSecond = 24;
+		#region Components
 
-		private readonly HashSet<int> _currentVisitors = new HashSet<int>();
+		// required
+		private MovementCost _movementCost;
+		private int _length;
+
+		//optional
+
+		#endregion
 
 		private float _angle;
 
@@ -48,13 +56,15 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		protected override void OnInitialize()
 		{
 			GraphNode graphNode;
-			if (Entity.TryGetComponent(out graphNode))
+			if (Entity.TryGetComponent(out graphNode)
+				&& Entity.TryGetComponent(out _movementCost))
 			{
 				DrawConnection(graphNode.EntrancePositions.Single().Key, graphNode.ExitPositions.Single().Key);
+				_length = graphNode.ExitPositions.Single().Value;
 			}
 			else
 			{
-				throw new InvalidOperationException("Could not find graph node component for entity");
+				throw new EntityInitializationException($"Could not load all required components for Entity Id {Entity.Id}");
 			}
 		}
 
@@ -138,7 +148,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 
 		protected override Vector3 GetPositionFromPathPoint(int pathPoint)
 		{
-			return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/1); //EntityState.Weight);
+			return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/_length);
 		}
 
 		#endregion

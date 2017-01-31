@@ -16,19 +16,19 @@
 	{
 		#region susbsytems
 
-		public const int SubsystemPositions = 24;
+		public const int SubsystemPositions = 48;
 		public const int SubsystemMaxItems = 4;
 
-		public const int SubsystemInitialMemory = 512;
-		public const int SubsystemInitialCPU = 512;
+		public const int SubsystemInitialMemory = 5;
+		public const int SubsystemInitialCPU = 4;
 
 
 		#endregion
 
 		#region connections
 
-		public const int ConnectionPositions = 24;
-		public const int ConnectionMinWeight = 1;
+		public const int ConnectionPositions = 48;
+		public const int ConnectionMinWeight = 2;
 		//TODO: max weight only really exists because of the prioirty generation in the pathfinding algorithm
 		public const int ConnectionMaxWeight = 4;
 

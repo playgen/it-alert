@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="ActorTests.cs" />
     <Compile Include="Archetypes\AnalysisTests.cs" />
+    <Compile Include="Commands\CommandSequenceTests.cs" />
     <Compile Include="Components\ItemStorageTests.cs" />
     <Compile Include="Components\ItemActivatorTests.cs" />
     <Compile Include="Components\AnalyserEnhancementTests.cs" />

@@ -7,6 +7,7 @@ using Engine.Components;
 using Engine.Entities;
 using Engine;
 using Engine.Common;
+using Engine.Exceptions;
 using Engine.Planning;
 using Engine.Serialization;
 using Engine.Systems;
@@ -143,13 +144,17 @@ namespace PlayGen.ITAlert.Simulation
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)
 		{
+			MovementSystem movementSystem;
+			if (SystemRegistry.TryGetSystem<MovementSystem>(out movementSystem) == false)
+			{
+				throw new ConfigurationException($"Unable to resolve {typeof(MovementSystem).Name} while processing player configuration.");
+			}
 			foreach (var playerConfig in playerConfigs)
 			{
 				var player = CreatePlayer(playerConfig);
 				playerConfig.Id = player.Id;
 				var startingLocationId = playerConfig.StartingLocation ?? 0;
 
-				var movementSystem = SystemRegistry.GetSystem<MovementSystem>();
 				movementSystem.AddVisitor(subsystems[startingLocationId], player);
 			}
 		}

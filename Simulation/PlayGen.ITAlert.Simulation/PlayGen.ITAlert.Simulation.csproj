@@ -51,6 +51,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\RequestActivateItemCommand.cs" />
+    <Compile Include="Commands\RequestDropItemCommand.cs" />
+    <Compile Include="Commands\RequestMovePlayerCommand.cs" />
+    <Compile Include="Commands\RequestPickupItemCommand.cs" />
+    <Compile Include="Commands\Sequence\CommandSequence.cs" />
+    <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
+    <Compile Include="Commands\SpawnVirusCommand.cs" />
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
@@ -71,7 +78,7 @@
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
-    <Compile Include="Systems\Movement\RouteFindingSystem.cs" />
+    <Compile Include="Systems\Movement\PathFindingSystem.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
     <Compile Include="Systems\Planning\IntentSystem.cs" />
     <Compile Include="Systems\Malware\ConsumeCPUMalwareEffect.cs" />
@@ -137,6 +144,10 @@
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
       <Project>{C3E9DD6E-3807-4290-A857-A4E9D47CF7E1}</Project>
       <Name>Engine.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Newtonsoft.Json\Engine.Newtonsoft.Json.csproj">
+      <Project>{7F39C40C-9ACD-42B1-AE6F-470A759E98CE}</Project>
+      <Name>Engine.Newtonsoft.Json</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>

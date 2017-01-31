@@ -26,8 +26,9 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			{
 				for (var i = 0; i < width; i++)
 				{
-					nodeConfigs.Add(new NodeConfig(i + (j * width), $"Subsystem {i + (j * width)}")
+					nodeConfigs.Add(new NodeConfig(i + (j * width))
 					{
+						Name = $"Subsystem {i + (j * width)}",
 						X = i,
 						Y = j,
 					});

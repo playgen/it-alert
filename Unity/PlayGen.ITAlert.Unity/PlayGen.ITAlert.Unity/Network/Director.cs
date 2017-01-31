@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using PlayGen.ITAlert.Simulation;
 using PlayGen.ITAlert.Simulation.Common;
@@ -192,12 +193,12 @@ namespace PlayGen.ITAlert.Unity.Network
 		/// </summary>
 		private static void CreateInitialEntities()
 		{
-			foreach (var entityKvp in SimulationRoot.ECS.GetEntities())
+			foreach (var entityKvp in SimulationRoot.ECS.Entities)
 			{
 				CreateEntity(entityKvp.Value);
 			}
 			// initialize after the entities have been created as some will need to reference each other
-			foreach (var entityKvp in SimulationRoot.ECS.GetEntities())
+			foreach (var entityKvp in SimulationRoot.ECS.Entities)
 			{
 				try
 				{
@@ -214,8 +215,12 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		#region State Update
 
+		private static int _i = 0;
+
 		public static void UpdateSimulation(string stateJson)
 		{
+			File.WriteAllText($"d:\\temp\\{_i++}.json", stateJson);
+
 			var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(stateJson);
 			UpdateEntityStates();
 		}
@@ -236,7 +241,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		{
 			try
 			{
-				var entities = SimulationRoot.ECS.GetEntities();
+				var entities = SimulationRoot.ECS.Entities;
 
 				var entitiesAdded = entities.Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
 				foreach (var newEntity in entitiesAdded)
