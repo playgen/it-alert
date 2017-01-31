@@ -28,9 +28,9 @@
 		#region connections
 
 		public const int ConnectionPositions = 48;
-		public const int ConnectionMinWeight = 2;
+		public const int ConnectionMinWeight = 1;
 		//TODO: max weight only really exists because of the prioirty generation in the pathfinding algorithm
-		public const int ConnectionMaxWeight = 4;
+		public const int ConnectionMaxWeight = 1;
 
 		public const int ConnectionMaxMovementCost = 4;
 
