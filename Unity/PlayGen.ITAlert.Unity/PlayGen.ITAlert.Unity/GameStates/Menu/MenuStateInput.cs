@@ -84,6 +84,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 		private void OnQuickMatchClick()
 		{
 			CommandQueue.AddCommand(new QuickGameCommand());
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnSettingsClick()

@@ -49,6 +49,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame
 		{
 			var details = _createGamePanel.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
 			CommandQueue.AddCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnBackClick()

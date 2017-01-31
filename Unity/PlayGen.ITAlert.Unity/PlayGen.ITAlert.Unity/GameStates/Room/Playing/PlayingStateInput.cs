@@ -27,6 +27,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room.Playing
 		{
 			_gamePanel.SetActive(true);
 			_gameContainer.SetActive(true);
+			LoadingUtility.HideSpinner();
 		}
 
 		protected override void OnExit()
