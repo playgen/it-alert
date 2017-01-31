@@ -75,10 +75,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Room
 
 			var offset = 0f;
 			var maximumPlayersPossible = 6f;
-			_chatPanel.GetComponent<RectTransform>().anchorMax = new Vector2(0.1f, 0.1f + (players.Count * 0.025f));
+			_chatPanel.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0.92f - (players.Count * 0.0166f));
 			_chatPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 			// the maximum number of players the game currently supports - Not the max for the room
-			var height = _chatPanel.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
+			var height = _chatPanel.GetComponent<RectTransform>().rect.height / players.Count;
 
 			//sort array into list
 			
