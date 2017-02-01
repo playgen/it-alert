@@ -1,4 +1,5 @@
 ﻿using System;
+using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.Photon.Messaging.Interfaces;
 using UnityEngine;
 
@@ -8,26 +9,33 @@ namespace PlayGen.Photon.Unity.Client
 	{
 		private readonly PhotonClientWrapper _photonClientWrapper;
 		private readonly IMessageSerializationHandler _messageSerializationHandler;
+		private readonly GameObject _clientGameObject;
 
 		private bool _isDisposed;
+		private ClientState _lastState;
 
 		public event Action<ClientRoom> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
+		public event Action<Exception> ExceptionEvent;
 
 		public ClientState ClientState { get; private set; }
 		public ClientRoom CurrentRoom { get; private set; }
 		
-		public Client(PhotonClientWrapper photonClientWrapper, IMessageSerializationHandler messageSerializationHandler)
+		public Client(string gamePlugin, string gameVersion, IMessageSerializationHandler messageSerializationHandler)
 		{
 			ClientState = ClientState.Disconnected;
 
-			_photonClientWrapper = photonClientWrapper;
+			_clientGameObject = new GameObject("Playgen.PhotonClient", typeof(DontDestroyOnLoad));
+			_photonClientWrapper = _clientGameObject.AddComponent<PhotonClientWrapper>();
+			_photonClientWrapper.Initialize(gameVersion, gamePlugin);
+
 			_messageSerializationHandler = messageSerializationHandler;
 
 			_photonClientWrapper.ConnectedEvent += OnConnected;
 			_photonClientWrapper.DisconnectedEvent += OnDisconnected;
 			_photonClientWrapper.JoinedRoomEvent += OnJoinedRoom;
-			_photonClientWrapper.LeftRoomEvent += OnLeftRoom;		
+			_photonClientWrapper.LeftRoomEvent += OnLeftRoom;
+			_photonClientWrapper.ExceptionEvent += OnException;
 		}
 
 		public void Connect()
@@ -48,11 +56,9 @@ namespace PlayGen.Photon.Unity.Client
 		public void Dispose()
 		{
 			if (_isDisposed) return;
-
-			_photonClientWrapper.ConnectedEvent -= OnConnected;
-			_photonClientWrapper.DisconnectedEvent -= OnDisconnected;
-			_photonClientWrapper.JoinedRoomEvent -= OnJoinedRoom;
-			_photonClientWrapper.LeftRoomEvent -= OnLeftRoom;
+			
+			_photonClientWrapper.Dispose();
+			UnityEngine.Object.Destroy(_clientGameObject);
 
 			_isDisposed = true;
 		}
@@ -94,8 +100,14 @@ namespace PlayGen.Photon.Unity.Client
 
 			CurrentRoom?.Dispose();
 			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler);
-
+			CurrentRoom.ExceptionEvent += OnException;
+			
 			JoinedRoomEvent?.Invoke(CurrentRoom);
+		}
+
+		private void OnException(Exception exception)
+		{
+			ExceptionEvent(exception);
 		}
 
 		private void OnLeftRoom()

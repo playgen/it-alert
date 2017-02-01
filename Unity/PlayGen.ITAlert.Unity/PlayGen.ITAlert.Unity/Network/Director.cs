@@ -26,16 +26,12 @@ namespace PlayGen.ITAlert.Unity.Network
 	{
 		private static Thread _updatethread;
 
-		private static readonly AutoResetEvent ReadyToProcessSignal = new AutoResetEvent(true);
 		private static readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
-
-		public static event Action SimulationError;
+		private static readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
 
 		private static float _tps;
-		private static DateTime _lastUpdate;
 		private static int _tick;
-
 		/// <summary>
 		/// Entity to GameObject map
 		/// </summary>
@@ -169,7 +165,7 @@ namespace PlayGen.ITAlert.Unity.Network
 			catch (Exception ex)
 			{
 				Debug.LogError($"Error initializing Director: {ex}");
-				OnSimulationError();
+				throw ex;
 			}
 			return false;
 		}
@@ -237,15 +233,28 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private static void ThreadWorker()
 		{
+			DateTime start;
+			var deserialize = 0.0;
+			var update = 0.0;
+			var wait = 0.0;
 			while (true)
 			{
+				start = DateTime.Now;
 				var handle = WaitHandle.WaitAny(new WaitHandle[] { MessageSignal });
-
+				wait = DateTime.Now.Subtract(start).TotalMilliseconds;
 				if (handle == 0)
 				{
-					var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
+					_tick++;
+					start = DateTime.Now;
+					SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
+					deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
+					start = DateTime.Now;
 					UpdateSignal.Set();
+					UpdateCompleteSignal.WaitOne();
+					update = DateTime.Now.Subtract(start).TotalMilliseconds;
 				}
+				Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
+				_tps = (float) (1.0f / (deserialize + update));
 			}
 		}
 
@@ -278,7 +287,6 @@ namespace PlayGen.ITAlert.Unity.Network
 		{
 			try
 			{
-
 				var entities = SimulationRoot.ECS.Entities;
 
 				var entitiesAdded = entities.Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
@@ -298,20 +306,29 @@ namespace PlayGen.ITAlert.Unity.Network
 
 				foreach (var existingEntity in entities.Except(entitiesAdded))
 				{
-					GetEntity(existingEntity.Key).UpdateEntityState();
+					UIEntity uiEntity;
+					if (TryGetEntity(existingEntity.Key, out uiEntity))
+					{
+						uiEntity.UpdateEntityState();
+					}
 				}
 
 				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key));
 				foreach (var entityToRemove in entitiesRemoved)
 				{
-					Destroy(GetEntity(entityToRemove).GameObject);
+					UIEntity uiEntity;
+					if (TryGetEntity(entityToRemove, out uiEntity))
+					{
+						Destroy(uiEntity.GameObject);
+					}
 					Entities.Remove(entityToRemove);
 				}
+				UpdateCompleteSignal.Set();
 			}
-			catch (Exception ex)
+			catch (Exception exception)
 			{
-				Debug.LogError($"Error updating Director state: {ex}");
-				OnSimulationError();
+				Debug.LogError($"Error updating Director state: {exception}");
+				throw new SimulationIntegrationException("Error updating Director state", exception);
 			}
 		}
 
@@ -380,10 +397,5 @@ namespace PlayGen.ITAlert.Unity.Network
 		}
 
 		#endregion
-
-		protected static void OnSimulationError()
-		{
-			SimulationError?.Invoke();
-		}
 	}
 }

@@ -3,10 +3,11 @@ using System.Linq;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
-using ExitGames.Client.Photon.LoadBalancing;
+using PlayGen.ITAlert.Unity.Behaviours;
 
 namespace PlayGen.Photon.Unity.Client
 {
+	[RequireComponent(typeof(DontDestroyOnLoad))]
 	public class PhotonClientWrapper : PunBehaviour, IDisposable
 	{
 		private string _gameVersion;
@@ -20,6 +21,7 @@ namespace PlayGen.Photon.Unity.Client
 		public event Action LeftRoomEvent;
 		public event Action<PhotonPlayer> OtherPlayerJoinedRoomEvent;
 		public event Action<PhotonPlayer> OtherPlayerLeftRoomEvent;
+		public event Action<Exception> ExceptionEvent;
 
 		public PhotonPlayer Player => PhotonNetwork.player;
 
@@ -93,6 +95,11 @@ namespace PlayGen.Photon.Unity.Client
 			if (_isDisposed)
 			{
 				return;
+			}
+
+			if (PhotonNetwork.connected || PhotonNetwork.connecting)
+			{
+				PhotonNetwork.Disconnect();
 			}
 
 			PhotonNetwork.OnEventCall -= OnPhotonEvent;
@@ -180,7 +187,7 @@ namespace PlayGen.Photon.Unity.Client
 				Log("Already in a room.");
 				return;
 			}
-			else if (!ListRooms().Any(r => r.name == roomName))
+			else if (ListRooms().All(r => r.name != roomName))
 			{
 				Log("No room with the name: \"" + roomName + "\" was found.");
 				return;
@@ -362,7 +369,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		public override void OnFailedToConnectToPhoton(DisconnectCause cause)
 		{
-			Log("Failed to Connect to Photon: " + cause);
+			ExceptionEvent(new Exception("Failed to Connect to Photon: " + cause));
 		}
 
 		public override void OnJoinedLobby()

@@ -1,20 +1,26 @@
-﻿using GameWork.Core.States.Tick.Interfaces;
+﻿using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Interfaces;
 
 namespace PlayGen.ITAlert.Unity.Transitions
 {
-	public class OnCompletedTransition : ITickStateTransition
+	public class OnCompletedTransition : TickStateTransition
 	{
 		private readonly ICompletable _completable;
-
-		public string ToStateName { get; private set; }
-
-		public bool IsConditionMet => _completable.IsComplete;
+		private readonly string _toStateName;
 
 		public OnCompletedTransition(ICompletable completable, string toStateName)
 		{
 			_completable = completable;
-			ToStateName = toStateName;
+			_toStateName = toStateName;
+		}
+
+		protected override void OnTick(float deltaTime)
+		{
+			if (_completable.IsComplete)
+			{
+				ExitState(_toStateName);
+				EnterState(_toStateName);
+			}
 		}
 	}
 }
