@@ -35,6 +35,7 @@ namespace PlayGen.Photon.Unity.Client
 			_photonClientWrapper.DisconnectedEvent += OnDisconnected;
 			_photonClientWrapper.JoinedRoomEvent += OnJoinedRoom;
 			_photonClientWrapper.LeftRoomEvent += OnLeftRoom;
+			_photonClientWrapper.ExceptionEvent += OnException;
 		}
 
 		public void Connect()
@@ -99,12 +100,12 @@ namespace PlayGen.Photon.Unity.Client
 
 			CurrentRoom?.Dispose();
 			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler);
-			CurrentRoom.ExceptionEvent += OnRoomException;
+			CurrentRoom.ExceptionEvent += OnException;
 			
 			JoinedRoomEvent?.Invoke(CurrentRoom);
 		}
 
-		private void OnRoomException(Exception exception)
+		private void OnException(Exception exception)
 		{
 			ExceptionEvent(exception);
 		}

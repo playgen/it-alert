@@ -9,17 +9,19 @@ namespace PlayGen.ITAlert.Unity.States
 	{
 		public TickStateController Create()
 		{
-			var errorState = CreateErrorState();
-			var ganeState = CreateGameState();
+			var errorMessage = new GameErrorContainer();
 
-			var stateController = new TickStateController(errorState, ganeState);
+			var errorState = CreateErrorState(errorMessage);
+			var gameState = CreateGameState(errorMessage);
+
+			var stateController = new TickStateController(errorState, gameState);
 			
 			return stateController;
 		}
 
-		private GameState CreateGameState()
+		private GameState CreateGameState(GameErrorContainer gameErrorContainer)
 		{
-			var state = new GameState();
+			var state = new GameState(gameErrorContainer);
 
 			var exceptionCaughtTransition = new OnExceptionEventTransition(ErrorState.StateName);
 			state.ExceptionEvent += exceptionCaughtTransition.ChangeState;
@@ -29,9 +31,9 @@ namespace PlayGen.ITAlert.Unity.States
 			return state;
 		}
 
-		private ErrorState CreateErrorState()
+		private ErrorState CreateErrorState(GameErrorContainer gameErrorContainer)
 		{
-			var input = new ErrorStateInput();
+			var input = new ErrorStateInput(gameErrorContainer);
 			var state = new ErrorState(input);
 
 			var backClickedTransition = new OnEventTransition(GameState.StateName);

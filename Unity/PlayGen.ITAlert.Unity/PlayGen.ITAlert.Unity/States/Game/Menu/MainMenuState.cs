@@ -27,6 +27,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
 				if (quickGameCommand != null)
 				{
 					quickGameCommand.Execute(_controller);
+					return;
 				}
 			}
 		}
