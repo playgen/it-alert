@@ -24,12 +24,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action<List<Player>> PlayerInitializedEvent;
 
-		public InitializingState(SimulationRoot simulationRoot, 
-			PluginBase photonPlugin, 
-			Messenger messenger, 
-			PlayerManager playerManager, 
-			AnalyticsServiceManager analytics) 
-			: base(photonPlugin, messenger, playerManager, analytics)
+		public InitializingState(SimulationRoot simulationRoot, PluginBase photonPlugin, Messenger messenger,
+			PlayerManager playerManager, RoomController roomController, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomController, analytics)
 		{
 			_simulationRoot = simulationRoot;
 		}

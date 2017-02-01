@@ -21,7 +21,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action<List<Player>> PlayerFeedbackSentEvent;
 
-		public FeedbackState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics) : base(photonPlugin, messenger, playerManager, analytics)
+		public FeedbackState(PluginBase photonPlugin, Messenger messenger, 
+			PlayerManager playerManager, RoomController roomController, AnalyticsServiceManager analytics) 
+			: base(photonPlugin, messenger, playerManager, roomController, analytics)
 		{
 		}
 
