@@ -6,7 +6,7 @@ using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Paused
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 {
 	public class PausedState : InputTickState
 	{

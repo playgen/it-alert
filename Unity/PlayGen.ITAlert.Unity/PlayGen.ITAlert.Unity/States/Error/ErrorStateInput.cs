@@ -2,12 +2,11 @@
 using GameWork.Core.States.Tick.Input;
 using GameWork.Unity.Engine.Components.Utilities;
 using GameWork.Unity.Engine.Transform.Utilities;
-using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Error
+namespace PlayGen.ITAlert.Unity.States.Error
 {
 	public class ErrorStateInput : TickStateInput
 	{

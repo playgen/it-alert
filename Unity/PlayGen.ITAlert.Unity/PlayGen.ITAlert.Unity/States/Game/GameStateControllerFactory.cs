@@ -1,13 +1,13 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room;
+using PlayGen.ITAlert.Unity.States.Game.Loading;
+using PlayGen.ITAlert.Unity.States.Game.Menu;
+using PlayGen.ITAlert.Unity.States.Game.Room;
 using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game
+namespace PlayGen.ITAlert.Unity.States.Game
 {
 	public class GameStateControllerFactory
 	{

@@ -1,7 +1,7 @@
 ﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {
 	public class CreateGameController : ICommandAction
 	{

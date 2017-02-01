@@ -1,15 +1,14 @@
 ﻿using System;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
 using PlayGen.ITAlert.Unity.Network;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
-using PlayGen.ITAlert.Unity.States;
+using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Client;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game
+namespace PlayGen.ITAlert.Unity.States.Game
 {
 	public class GameState : TickState
 	{

@@ -9,7 +9,7 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Feedback
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
 	public class FeedbackStateInput : TickStateInput
 	{

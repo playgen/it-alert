@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Feedback;
+using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

@@ -2,7 +2,7 @@
 using GameWork.Core.Commands.Interfaces;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu.GamesList
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 {
 	public class GamesListController : ICommandAction
 	{

@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu.GamesList
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 {
 	public class GamesListStateInput : TickStateInput
 	{

@@ -6,7 +6,7 @@ using PlayGen.ITAlert.Photon.Messages.Game.Commands;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyController : ICommandAction
 	{

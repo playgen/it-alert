@@ -1,6 +1,6 @@
 ﻿using GameWork.Core.States.Tick.Input;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Error
+namespace PlayGen.ITAlert.Unity.States.Error
 {
 	public class ErrorState : InputTickState
 	{

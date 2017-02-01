@@ -2,7 +2,7 @@
 using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.SUGAR.Unity;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game
+namespace PlayGen.ITAlert.Unity.States.Game
 {
 	public class LoginState : TickState, ICompletable
 	{

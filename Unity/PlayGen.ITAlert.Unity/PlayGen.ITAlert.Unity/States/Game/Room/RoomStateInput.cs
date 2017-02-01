@@ -8,7 +8,7 @@ using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room
+namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomStateInput : TickStateInput
 	{

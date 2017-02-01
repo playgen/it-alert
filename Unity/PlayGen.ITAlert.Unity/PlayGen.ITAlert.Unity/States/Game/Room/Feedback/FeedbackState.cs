@@ -4,7 +4,7 @@ using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Feedback
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
 	public class FeedbackState : InputTickState
 	{

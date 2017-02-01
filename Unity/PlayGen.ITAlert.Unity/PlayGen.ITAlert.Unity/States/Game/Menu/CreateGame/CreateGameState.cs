@@ -2,7 +2,7 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {
 	public class CreateGameState : InputTickState
 	{

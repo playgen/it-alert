@@ -5,7 +5,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Settings
+namespace PlayGen.ITAlert.Unity.States.Game.Settings
 {
 	public class SettingsStateInput : TickStateInput
 	{
