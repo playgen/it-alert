@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
 using PlayGen.ITAlert.Unity.Network;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
@@ -23,15 +21,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game
 		private Client _photonClient;
 		private SUGARClient _sugarClient;
 		private TickStateController _stateController;
-		private PlayGen.Photon.Unity.Client.ClientState _lastState;
-		private GameObject _gameStateGameObject;
-
+		
 		public override string Name => StateName;
 
 		public event Action<Exception> ExceptionEvent;
-
-		private GameObject GameStateGameObject => _gameStateGameObject ?? (_gameStateGameObject = new GameObject("GameState", typeof(DontDestroyOnLoad)));
-	
+		
 		public GameState()
 		{
 			_stateControllerFactory = new GameStateControllerFactory();
@@ -44,12 +38,17 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game
 
 		protected override void OnEnter()
 		{
-			_photonClient = CreateClient();
+			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());;
+			_photonClient.ExceptionEvent += OnClientException;
+
 			_sugarClient = new SUGARClient("http://api.sugarengine.org/");
 			PlayerCommands.PhotonClient = _photonClient;
 
 			_stateController = _stateControllerFactory.Create(_photonClient);
-			_stateController.Initialize(LoadingState.StateName);
+			_stateController.Initialize();
+			_stateController.EnterState(LoadingState.StateName);
+
+			_photonClient.Connect();
 		}
 
 		protected override void OnExit()
@@ -70,53 +69,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game
 				ExceptionEvent(exception);
 			}
 		}
-
-		private Client CreateClient()
-		{
-			var clientBase = GameStateGameObject.AddComponent<PhotonClientWrapper>();
-			clientBase.Initialize(GameVersion, GamePlugin);
-
-			var client = new Client(clientBase, new ITAlertMessageSerializationHandler());
-			client.ExceptionEvent += OnClientException;
-
-			clientBase.StartCoroutine(ClientLoop(client));
-
-			return client;
-		}
-
+		
 		private void OnClientException(Exception exception)
 		{
 			ExceptionEvent(exception);
-		}
-
-		private IEnumerator ClientLoop(Client photonClient)
-		{
-			while (true)
-			{
-				if (photonClient.ClientState != _lastState)
-				{
-					Debug.Log("Photon State Changed to: " + photonClient.ClientState);
-					_lastState = photonClient.ClientState;
-				}
-
-				switch (photonClient.ClientState)
-				{
-					case PlayGen.Photon.Unity.Client.ClientState.Disconnected:
-						photonClient.Connect();
-						yield return new WaitForSeconds(0.1f);
-						break;
-
-					case PlayGen.Photon.Unity.Client.ClientState.Connecting:
-						yield return new WaitForSeconds(0.5f);
-						break;
-
-					case PlayGen.Photon.Unity.Client.ClientState.Connected:
-						yield return new WaitForSeconds(1.0f);
-						break;
-				}
-
-				yield return new WaitForSeconds(1.0f);
-			}
 		}
 	}
 }

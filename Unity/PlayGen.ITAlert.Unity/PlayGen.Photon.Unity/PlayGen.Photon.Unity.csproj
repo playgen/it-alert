@@ -54,6 +54,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviours\DontDestroyOnLoad.cs" />
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientRoom.cs" />
     <Compile Include="Client\ClientState.cs" />

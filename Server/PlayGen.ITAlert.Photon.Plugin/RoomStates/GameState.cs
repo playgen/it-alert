@@ -37,7 +37,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			InitializeSimulationRoot();
 			_stateController = CreateStateController();
-			_stateController.Initialize(InitializingState.StateName);
+			_stateController.Initialize();
+			_stateController.EnterState(InitializingState.StateName);
 		}
 
 		protected override void OnExit()

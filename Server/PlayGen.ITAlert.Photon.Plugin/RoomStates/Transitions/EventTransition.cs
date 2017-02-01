@@ -13,7 +13,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 
 		public void ChangeState()
 		{
-			ChangeState(_toStateName);
+			ExitState(_toStateName);
+			EnterState(_toStateName);
 		}
 	}
 }

@@ -18,7 +18,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void Start()
 		{
-			_stateController.Initialize(GameState.StateName);
+			_stateController.Initialize();
+			_stateController.EnterState(GameState.StateName);
 		}
 
 		private void Update()
