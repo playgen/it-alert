@@ -42,7 +42,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		public void StartSpinner()
 		{
-			Debug.Log("Show spinner");
+			//Debug.Log("Show spinner");
 			_panel.SetActive(true);
 			_spinner.transform.localEulerAngles = Vector2.zero;
 			_spin = true;
@@ -50,7 +50,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		public void StopSpinner()
 		{
-			Debug.Log("Stop spinner");
+			//Debug.Log("Stop spinner");
 			_panel.SetActive(false);
 			_spin = false;
 		}

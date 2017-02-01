@@ -58,8 +58,8 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 		public Button GetButton(string containerName)
 		{
-			return _buttons.First(o => o.name.Equals(containerName)).transform.GetChild(0).GetComponent<Button>() ??
-					_buttons.First(o => o.name.Equals(containerName)).GetComponent<Button>();
+			var button = _buttons.First(o => o.name.Equals(containerName));
+			return button.GetComponentInChildren<Button>();
 		}
 	}
 }

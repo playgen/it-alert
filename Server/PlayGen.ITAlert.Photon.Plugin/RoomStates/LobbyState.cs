@@ -22,8 +22,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public event Action GameStartedEvent;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
-			: base(photonPlugin, messenger, playerManager, analytics)
+		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
+			RoomController roomController, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomController, analytics)
 		{
 		}
 
@@ -37,10 +38,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			});
 
 			PlayerManager.ChangeAllState((int)ClientState.NotReady);
+			PlayerManager.PlayersUpdated += TryStartGame;
+			RoomController.MinPlayersChangedEvent += TryStartGame;
 		}
 
 		protected override void OnExit()
 		{
+			RoomController.MinPlayersChangedEvent -= TryStartGame;
+			PlayerManager.PlayersUpdated -= TryStartGame;
 			Messenger.Unsubscribe((int)ITAlertChannel.GameCommands, ProcessGameCommandMessage);
 		}
 
@@ -49,24 +54,35 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var startGameMessage = message as StartGameMessage;
 			if (startGameMessage != null)
 			{
-				StartGame(startGameMessage.Force, startGameMessage.Close);
+				TryStartGame(startGameMessage.Force, startGameMessage.Close);
 				return;
 			}
 
 			throw new Exception($"Unhandled Room Message: ${message}");
 		}
-		
-		private void StartGame(bool force, bool close)
+
+		private void TryStartGame()
 		{
-			if (force || PlayerManager.Players.GetCombinedStates() == ClientState.Ready)
+			TryStartGame(false, true);
+		}
+
+		private void TryStartGame(bool force, bool close)
+		{
+			if (AreStartGameConditionsMet() || force)
 			{
 				if (close)
 				{
-					PhotonPlugin.SetRoomOpen(false);
+					RoomController.TrySetOpen(!close);
 				}
 
 				GameStartedEvent?.Invoke();
 			}
+		}
+
+		private bool AreStartGameConditionsMet()
+		{
+			return PlayerManager.Players.Count >= RoomController.MinPlayers &&
+					PlayerManager.Players.GetCombinedStates() == ClientState.Ready;
 		}
 	}
 }

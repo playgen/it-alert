@@ -1,6 +1,6 @@
 ﻿using System;
 using GameWork.Core.Commands.Interfaces;
-using PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -11,10 +11,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		private readonly CreateGameController _createGameController;
 		private readonly int _defaultMaxPlayers;
 
-		private string UniqueGameName
-		{
-			get { return Guid.NewGuid().ToString().Substring(0, 7); }
-		}
+		private string UniqueGameName => Guid.NewGuid().ToString().Substring(0, 7);
 
 		public QuickGameController(Client photonClient, CreateGameController createGameController, int defaultMaxPlayers)
 		{

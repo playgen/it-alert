@@ -21,7 +21,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 		{
 			if (players.GetCombinedStates() == _combinedClientState)
 			{
-				ChangeState(_toStateName);
+				ExitState(_toStateName);
+				EnterState(_toStateName);
 			}
 		}
 	}
