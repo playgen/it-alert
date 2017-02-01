@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Unity.GameStates
 
 		        SUGARManager.Account.DisplayPanel(success =>
 		        {
-					var autoLogIn = SUGARManager.Account.IsActive;
+					var autoLogIn = !SUGARManager.Account.IsActive;
 
 					if (success)
 		            {
@@ -30,8 +30,9 @@ namespace PlayGen.ITAlert.Unity.GameStates
 		            }
 					else if (autoLogIn)
 		            {
-						//PopupUtility.LogError("Failed to log into the game. ");
-		            }
+						_repeatBlock = false;
+						OnEnter();
+					}
 		        });
 		    }
 		}
