@@ -1,5 +1,8 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+using GameWork.Unity.Engine.Components.Utilities;
+using GameWork.Unity.Engine.Transform.Utilities;
+using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,38 +11,43 @@ namespace PlayGen.ITAlert.Unity.GameStates.Error
 {
 	public class ErrorStateInput : TickStateInput
 	{
+		private readonly GameErrorContainer _gameErrorContainer;
+
 		public event Action BackClickedEvent;
 
-		private GameObject _menuPanel;
 		private ButtonList _buttons;
 		private Button _backButton;
+		private Transform _panelVisibility;
+		private Text _messageText;
+
+		public ErrorStateInput(GameErrorContainer gameGameErrorContainer)
+		{
+			_gameErrorContainer = gameGameErrorContainer;
+		}
 
 		protected override void OnInitialize()
 		{
-			// Main Menu
-			_menuPanel = GameObject.Find("ErrorContainer").transform.GetChild(0).gameObject;
+			var panel = TransformFinder.Find("Menu/ErrorContainer");
+			_panelVisibility = panel.GetChild(0);
+
 			_buttons = new ButtonList("ErrorContainer/ErrorPanelContainer/ButtonPanel");
+
+			_messageText = ComponentFinder.Find<Text>("ErrorPanel/Message", _panelVisibility);
 
 			_backButton = _buttons.GetButton("BackButtonContainer");
 			_backButton.onClick.AddListener(OnBackButtonClick);
-
 		}
-
-		private void OnBackButtonClick()
-		{
-			BackClickedEvent?.Invoke();
-		}
-
 		
 		protected override void OnEnter()
 		{
-			_menuPanel.SetActive(true);
+			_messageText.text = _gameErrorContainer?.Exception.Message;
+			_panelVisibility.gameObject.SetActive(true);
 			_buttons.BestFit();
 		}
 
 		protected override void OnExit()
 		{
-			_menuPanel.SetActive(false);
+			_panelVisibility.gameObject.SetActive(false);
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -48,6 +56,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.Error
 			{
 				OnBackButtonClick();
 			}
+		}
+
+		private void OnBackButtonClick()
+		{
+			BackClickedEvent?.Invoke();
 		}
 	}
 }

@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
 using PlayGen.ITAlert.Unity.Network;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
+using PlayGen.ITAlert.Unity.States;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Client;
 using UnityEngine;
@@ -17,17 +18,19 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game
 		private const string GameVersion = "1";
 		
 		private readonly GameStateControllerFactory _stateControllerFactory;
+		private readonly GameErrorContainer _gameErrorContainer;
 
 		private Client _photonClient;
 		private SUGARClient _sugarClient;
 		private TickStateController _stateController;
-		
+
 		public override string Name => StateName;
 
 		public event Action<Exception> ExceptionEvent;
 		
-		public GameState()
+		public GameState(GameErrorContainer gameErrorContainer)
 		{
+			_gameErrorContainer = gameErrorContainer;
 			_stateControllerFactory = new GameStateControllerFactory();
 		}
 
@@ -65,14 +68,21 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game
 			}
 			catch (Exception exception)
 			{
-				Debug.LogError($"Caught Exception: {exception}");
-				ExceptionEvent(exception);
+				Debug.LogError(exception);
+				OnException(exception);
 			}
 		}
-		
+
 		private void OnClientException(Exception exception)
 		{
+			OnException(exception);
+		}
+
+		private void OnException(Exception exception)
+		{
+			_gameErrorContainer.Exception = exception;
 			ExceptionEvent(exception);
 		}
+
 	}
 }

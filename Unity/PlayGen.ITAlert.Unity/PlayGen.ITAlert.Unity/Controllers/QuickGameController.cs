@@ -11,10 +11,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		private readonly CreateGameController _createGameController;
 		private readonly int _defaultMaxPlayers;
 
-		private string UniqueGameName
-		{
-			get { return Guid.NewGuid().ToString().Substring(0, 7); }
-		}
+		private string UniqueGameName => Guid.NewGuid().ToString().Substring(0, 7);
 
 		public QuickGameController(Client photonClient, CreateGameController createGameController, int defaultMaxPlayers)
 		{

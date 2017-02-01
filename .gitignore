@@ -115,3 +115,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 Server/.vs/
 ~*.docx
 Unity/Build/
+Unity/Unity.userprefs
