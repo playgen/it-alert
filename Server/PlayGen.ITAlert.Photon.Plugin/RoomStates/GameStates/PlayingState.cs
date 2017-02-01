@@ -13,6 +13,7 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Commands.Sequence;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.Photon.Plugin.Analytics;
@@ -121,8 +122,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 			return PhotonPlugin.PluginHost.CreateTimer(
 				Tick,
-				_tickIntervalMS,
-				_tickIntervalMS);
+				SimulationConstants.TickInterval,
+				SimulationConstants.TickInterval);
 		}
 
 		private void DestroyTimer(object timer)

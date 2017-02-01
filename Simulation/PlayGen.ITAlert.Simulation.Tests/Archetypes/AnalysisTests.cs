@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Configuration;
+using Engine.Entities;
 using Engine.Testing;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -20,7 +21,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Archetypes
 
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
 
-			ecs.CreateEntityFromArchetype(GameEntities.AnalysisEnhancement.Name);
+			Entity entity;
+			ecs.TryCreateEntityFromArchetype(GameEntities.AnalysisEnhancement.Name, out entity);
 
 		}
 

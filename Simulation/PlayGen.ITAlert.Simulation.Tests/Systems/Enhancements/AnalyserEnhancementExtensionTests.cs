@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Configuration;
+using Engine.Entities;
 using Engine.Testing;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -53,7 +54,9 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 
 			var configuration = new ECSConfiguration(archetypes, systems);
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
-			var entity = ecs.CreateEntityFromArchetype("Test");
+
+			Entity entity;
+			Assert.That(ecs.TryCreateEntityFromArchetype("Test", out entity));
 
 			var component = entity.GetComponent<ItemStorage>();
 			Assert.That(component, Is.Not.Null);

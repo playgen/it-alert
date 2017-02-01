@@ -16,6 +16,7 @@ using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Layout;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 using Zenject;
@@ -37,8 +38,8 @@ namespace PlayGen.ITAlert.Simulation
 			IComponentRegistry componentRegistry, 
 			ISystemRegistry systemRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			[InjectOptional] List<IEntityFactory> entityFactories)
-			: base(configuration, entityRegistry, componentRegistry, systemRegistry, entityFactories)
+			EntityFactoryProvider entityFactoryProvider)
+			: base(configuration, entityRegistry, componentRegistry, systemRegistry, entityFactoryProvider)
 		{
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
 			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
@@ -93,14 +94,18 @@ namespace PlayGen.ITAlert.Simulation
 				? GameEntities.Subsystem.Name
 				: config.EnhancementName;
 
-			var subsystem = CreateEntityFromArchetype(archetype);
-			config.EntityId = subsystem.Id;
+			Entity subsystem;
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(archetype, out subsystem))
+			{
+				config.EntityId = subsystem.Id;
 
-			subsystem.GetComponent<Coordinate2DProperty>().X = config.X;
-			subsystem.GetComponent<Coordinate2DProperty>().Y = config.Y;
-			subsystem.GetComponent<Name>().Value = config.Name;
+				subsystem.GetComponent<Coordinate2DProperty>().X = config.X;
+				subsystem.GetComponent<Coordinate2DProperty>().Y = config.Y;
+				subsystem.GetComponent<Name>().Value = config.Name;
 
-			return subsystem;
+				return subsystem;
+			}
+			throw new SimulationException($"Could not create system for archetype '{archetype}'");
 		}
 
 		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, List<EdgeConfig> edgeConfigs)
@@ -110,37 +115,42 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateConnection(Dictionary<int, Entity> subsystems, EdgeConfig edgeConfig)
 		{
-			var connection = CreateEntityFromArchetype(GameEntities.Connection.Name);
-			
-			var head = subsystems[edgeConfig.Source];
-			var tail = subsystems[edgeConfig.Destination];
+			var archetype = GameEntities.Connection.Name;
+			Entity connection;
 
-			connection.GetComponent<MovementCost>().Value = edgeConfig.Weight;
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(archetype, out connection))
+			{ 
+				var head = subsystems[edgeConfig.Source];
+				var tail = subsystems[edgeConfig.Destination];
 
-			connection.GetComponent<GraphNode>().EntrancePositions.Add(head.Id, 0);
-			connection.GetComponent<GraphNode>().ExitPositions.Add(tail.Id, SimulationConstants.ConnectionPositions * edgeConfig.Length);
+				connection.GetComponent<MovementCost>().Value = edgeConfig.Weight;
 
-			head.GetComponent<GraphNode>().ExitPositions.Add(connection.Id, edgeConfig.SourcePosition.ToPosition(SimulationConstants.SubsystemPositions));
-			tail.GetComponent<GraphNode>().EntrancePositions.Add(connection.Id, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
+				connection.GetComponent<GraphNode>().EntrancePositions.Add(head.Id, 0);
+				connection.GetComponent<GraphNode>().ExitPositions.Add(tail.Id, SimulationConstants.ConnectionPositions * edgeConfig.Length);
 
-			edgeConfig.EntityId = connection.Id;
-			return connection;
+				head.GetComponent<GraphNode>().ExitPositions.Add(connection.Id, edgeConfig.SourcePosition.ToPosition(SimulationConstants.SubsystemPositions));
+				tail.GetComponent<GraphNode>().EntrancePositions.Add(connection.Id, edgeConfig.SourcePosition.OppositePosition().ToPosition(SimulationConstants.SubsystemPositions));
+
+				edgeConfig.EntityId = connection.Id;
+				return connection;
+			}
+			throw new SimulationException($"Could not create connection from archetype '{archetype}'");
 		}
 
 		private void CreateItems(Dictionary<int, Entity> subsystems, List<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
-				var item = CreateItem(itemConfig.TypeName);
-				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
+				Entity item;
+				if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.TypeName, out item))
+				{
+					subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
+					continue;
+				}
+				throw new SimulationException($"Could not craete item for archtype '{itemConfig.TypeName}'");
 			}
 		}
 
-		public Entity CreateItem(string typeName)
-		{
-			var item = CreateEntityFromArchetype(typeName);
-			return item;
-		}
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)
 		{
@@ -151,17 +161,16 @@ namespace PlayGen.ITAlert.Simulation
 			}
 			foreach (var playerConfig in playerConfigs)
 			{
-				var player = CreatePlayer(playerConfig);
-				playerConfig.Id = player.Id;
-				var startingLocationId = playerConfig.StartingLocation ?? 0;
-
-				movementSystem.AddVisitor(subsystems[startingLocationId], player);
+				Entity player;
+				if (EntityFactoryProvider.TryCreateEntityFromArchetype(GameEntities.Player.Name, out player))
+				{
+					playerConfig.Id = player.Id;
+					var startingLocationId = playerConfig.StartingLocation ?? 0;
+					movementSystem.AddVisitor(subsystems[startingLocationId], player);
+					continue;
+				}
+				throw new SimulationException($"Could not craete player for id '{playerConfig.Id}'");
 			}
-		}
-		public Entity CreatePlayer(PlayerConfig playerConfig)
-		{
-			var player = CreateEntityFromArchetype(GameEntities.Player.Name);
-			return player;
 		}
 		#endregion
 
@@ -169,16 +178,20 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateNpc(NpcActorType type)
 		{
-			Entity actor = CreateEntityFromArchetype(type.ToString());
-			switch (type)
+			Entity actor;
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(type.ToString(), out actor))
 			{
-				case NpcActorType.Virus:
-					// set some initial values here	
-					break;
-				default:
-					throw new Exception("Unkown npc type");
+				switch (type)
+				{
+					case NpcActorType.Virus:
+						// set some initial values here	
+						break;
+					default:
+						throw new Exception("Unkown npc type");
+				}
+				return actor;
 			}
-			return actor;
+			throw new Exception("Unkown npc type");
 		}
 
 		#endregion
