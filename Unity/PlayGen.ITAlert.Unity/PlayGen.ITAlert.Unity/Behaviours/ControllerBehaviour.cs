@@ -18,7 +18,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private TickStateController<TickState> _stateController;
 		private string _gameVersion = "1";
 		private Client _photonClient;
-		private SUGARClient _sugarClient;
 
 		private PlayGen.Photon.Unity.Client.ClientState _lastState;
 
@@ -27,7 +26,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			DontDestroyOnLoad(transform.gameObject);
 
 			_photonClient = CreateClient();
-			_sugarClient = new SUGARClient("http://api.sugarengine.org/");
 			PlayerCommands.PhotonClient = _photonClient;
 
 			CreatePopupController();
