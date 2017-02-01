@@ -1,5 +1,6 @@
 ﻿using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Interfaces;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.SUGAR.Unity;
 
 namespace PlayGen.ITAlert.Unity.GameStates
@@ -21,9 +22,15 @@ namespace PlayGen.ITAlert.Unity.GameStates
 
 		        SUGARManager.Account.DisplayPanel(success =>
 		        {
-		            if (success)
+					var autoLogIn = SUGARManager.Account.IsActive;
+
+					if (success)
 		            {
 		                IsComplete = true;
+		            }
+					else if (autoLogIn)
+		            {
+						//PopupUtility.LogError("Failed to log into the game. ");
 		            }
 		        });
 		    }

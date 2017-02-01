@@ -74,6 +74,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 		private void OnJoinGameClick()
 		{
 			JoinGameEvent();
+			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnCreateGameClick()

@@ -3,6 +3,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.GameStates.Menu.CreateGame;
 using PlayGen.ITAlert.Unity.GameStates.Menu.GamesList;
+using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.GameStates.Menu.Settings;
 using PlayGen.ITAlert.Unity.GameStates.Room;
 using PlayGen.ITAlert.Unity.Transitions;
@@ -23,14 +24,17 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 		public TickStateController Create()
 		{
 			var createGameController = new CreateGameController(_client);
+			var scenarioController = new ScenarioController(_client);
 
 			var mainMenuState = CreateMainMenuState(_client, createGameController);
+			var scenarioListState = CreateScenarioListState(_client, scenarioController);
 			var gameListState = CreateGameListState(_client);
-			var createGameState = CreateCreateGameState(_client, createGameController);
+			var createGameState = CreateCreateGameState(_client, createGameController, scenarioController);
 			var settingsState = CreateSettingsState();
 
 			var stateController = new TickStateController(
 				mainMenuState,
+				scenarioListState,
 				gameListState,
 				createGameState,
 				settingsState);
@@ -48,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 			var state = new MainMenuState(input, quickGameController);
 
 			var joinGameTransition = new OnEventTransition(GamesListState.StateName);
-			var createGameTransition = new OnEventTransition(CreateGameState.StateName);
+			var createGameTransition = new OnEventTransition(ScenarioListState.StateName);
 			var settingsTransition = new OnEventTransition(SettingsState.StateName);
 			var joinGameSuccessTransition = new OnEventTransition(RoomState.StateName);
 			var quitTransition = new QuitTransition();
@@ -61,6 +65,22 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 
 			state.AddTransitions(joinGameTransition, createGameTransition, settingsTransition, joinGameSuccessTransition,
 				quitTransition);
+
+			return state;
+		}
+
+		private ScenarioListState CreateScenarioListState(Client client, ScenarioController scenarioController)
+		{
+			var input = new ScenarioListStateInput(client, scenarioController);
+			var state = new ScenarioListState(input, scenarioController);
+
+			var scenarioSelectedTransition = new OnEventTransition(CreateGameState.StateName);
+			var previousStateTransition = new OnEventTransition(MainMenuState.StateName);
+
+			scenarioController.ScenarioSelectedSuccessEvent += scenarioSelectedTransition.ChangeState;
+			input.BackClickedEvent += previousStateTransition.ChangeState;
+
+			state.AddTransitions(scenarioSelectedTransition, previousStateTransition);
 
 			return state;
 		}
@@ -84,13 +104,13 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu
 			return state;
 		}
 
-		private static CreateGameState CreateCreateGameState(Client client, CreateGameController createGameController)
+		private static CreateGameState CreateCreateGameState(Client client, CreateGameController createGameController, ScenarioController scenarioController)
 		{
-			var input = new CreateGameStateInput(client);
+			var input = new CreateGameStateInput(client, scenarioController);
 			var state = new CreateGameState(input, createGameController);
 
 			var joinedRoomTransition = new OnEventTransition(RoomState.StateName);
-			var previousStateTransition = new OnEventTransition(MainMenuState.StateName);
+			var previousStateTransition = new OnEventTransition(ScenarioListState.StateName);
 
 			input.JoinedRoomEvent += joinedRoomTransition.ChangeState;
 			input.BackClickedEvent += previousStateTransition.ChangeState;

@@ -1,4 +1,7 @@
 ﻿using System;
+
+using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,6 +16,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		public Button IncrementPlayersButton;
 		public Button DecrementPlayersButton;
 
+		private int _minPlayers = 1;
 		private int _maxPlayers = 6;
 
 		private int _playerCount = 2;
@@ -28,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void OnChangePlayerCount(int increment)
 		{
-			_playerCount = Math.Max(1, Math.Min(_playerCount + increment, _maxPlayers));
+			_playerCount = Math.Max(_minPlayers, Math.Min(_playerCount + increment, _maxPlayers));
 			PlayerNumberInputField.text = _playerCount.ToString();
 		}
 
@@ -38,7 +42,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 			if (Int32.TryParse(value, out playerCount))
 			{
-				_playerCount = Math.Max(1, Math.Min(playerCount, _maxPlayers));
+				_playerCount = Math.Max(_minPlayers, Math.Min(playerCount, _maxPlayers));
 			}
 
 			PlayerNumberInputField.text = _playerCount.ToString();
@@ -49,10 +53,13 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			return new GameDetails(GameNameInputField.text, PlayerNumberInputField.text);
 		}
 
-		public void ResetFields()
+		public void ResetFields(ScenarioInfo scenario)
 		{
 			GameNameInputField.text = Guid.NewGuid().ToString().Substring(0, 8);
 			PlayerNumberInputField.text = "";
+			_minPlayers = scenario.MinPlayerCount;
+			_maxPlayers = scenario.MaxPlayerCount;
+			OnChangePlayerCount("2");
 		}
 
 		public struct GameDetails

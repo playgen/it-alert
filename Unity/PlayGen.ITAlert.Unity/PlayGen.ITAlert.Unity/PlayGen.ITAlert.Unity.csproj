@@ -142,8 +142,13 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\RefreshPlayerListCommand.cs" />
+    <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="GameStates\Menu\CreateGame\CreateGameController.cs" />
+    <Compile Include="GameStates\Menu\ScenarioList\ScenarioInfo.cs" />
+    <Compile Include="GameStates\Menu\ScenarioList\ScenarioController.cs" />
+    <Compile Include="GameStates\Menu\ScenarioList\ScenarioListState.cs" />
+    <Compile Include="GameStates\Menu\ScenarioList\ScenarioListStateInput.cs" />
     <Compile Include="GameStates\Menu\GamesList\GamesListController.cs" />
     <Compile Include="Controllers\JoinGameController.cs" />
     <Compile Include="GameStates\Room\Lobby\LobbyController.cs" />
@@ -183,6 +188,7 @@
     <Compile Include="Network\Behaviours\ActorBehaviour.cs" />
     <Compile Include="Network\Behaviours\ItemContainerBehaviour.cs" />
     <Compile Include="Network\Behaviours\NodeBehaviour.cs" />
+    <Compile Include="Network\Behaviours\TextBehaviour.cs" />
     <Compile Include="Transitions\OnCompletedTransition.cs" />
     <Compile Include="Transitions\OnEventTransition.cs" />
     <Compile Include="Transitions\OnMessageTransition.cs" />
