@@ -9,7 +9,7 @@ using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Initializing
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 {
 	public class InitializingState : TickState
 	{

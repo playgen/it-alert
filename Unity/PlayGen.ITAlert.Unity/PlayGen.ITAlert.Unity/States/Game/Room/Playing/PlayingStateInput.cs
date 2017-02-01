@@ -3,7 +3,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Playing
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 {
 	public class PlayingStateInput : TickStateInput
 	{

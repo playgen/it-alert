@@ -138,7 +138,6 @@
     <Compile Include="Behaviours\ColorPickerBehaviour.cs" />
     <Compile Include="Behaviours\StateBehaviour.cs" />
     <Compile Include="Behaviours\CreateGamePopupBehaviour.cs" />
-    <Compile Include="Behaviours\DontDestroyOnLoad.cs" />
     <Compile Include="Behaviours\FeedbackDragBehaviour.cs" />
     <Compile Include="Behaviours\FeedbackSlotBehaviour.cs" />
     <Compile Include="Behaviours\PopupBehaviour.cs" />

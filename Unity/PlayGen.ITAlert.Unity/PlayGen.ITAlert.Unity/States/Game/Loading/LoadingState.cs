@@ -1,7 +1,7 @@
 ﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Interfaces;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Loading
+namespace PlayGen.ITAlert.Unity.States.Game.Loading
 {
 	public class LoadingState : InputTickState, ICompletable
 	{

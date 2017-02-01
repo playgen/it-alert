@@ -7,7 +7,7 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {
 	public class CreateGameStateInput : TickStateInput
 	{

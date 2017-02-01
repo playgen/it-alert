@@ -2,10 +2,10 @@
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room
+namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomState : InputTickState
 	{

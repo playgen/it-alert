@@ -1,6 +1,6 @@
 ﻿using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.GameStates.Error;
-using PlayGen.ITAlert.Unity.GameStates.Game;
+using PlayGen.ITAlert.Unity.States.Error;
+using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
 
 namespace PlayGen.ITAlert.Unity.States

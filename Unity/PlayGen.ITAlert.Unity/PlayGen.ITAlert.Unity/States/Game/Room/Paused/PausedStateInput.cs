@@ -4,7 +4,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Paused
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 {
 	public class PausedStateInput : TickStateInput
 	{

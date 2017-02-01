@@ -1,6 +1,6 @@
 ﻿using System;
 using GameWork.Core.Commands.Interfaces;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.Controllers

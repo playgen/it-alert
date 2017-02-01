@@ -1,7 +1,7 @@
 ﻿using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.GameStates.Game;
 using UnityEngine;
 using PlayGen.ITAlert.Unity.States;
+using PlayGen.ITAlert.Unity.States.Game;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {

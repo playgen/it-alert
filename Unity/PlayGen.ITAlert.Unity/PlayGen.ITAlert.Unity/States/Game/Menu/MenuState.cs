@@ -2,7 +2,7 @@
 using GameWork.Core.States.Tick;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
+namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
 	public class MenuState : TickState
 	{

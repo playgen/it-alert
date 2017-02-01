@@ -4,11 +4,10 @@ using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
-
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Menu
+namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
 	public class MenuStateInput : TickStateInput
 	{

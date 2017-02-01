@@ -1,14 +1,14 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu.GamesList;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room;
-using PlayGen.ITAlert.Unity.GameStates.Game.Settings;
+using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.States.Game.Menu.GamesList;
+using PlayGen.ITAlert.Unity.States.Game.Room;
+using PlayGen.ITAlert.Unity.States.Game.Settings;
 using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
+namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
 	public class MenuStateControllerFactory
 	{

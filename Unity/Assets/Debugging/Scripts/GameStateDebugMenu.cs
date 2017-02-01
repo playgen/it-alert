@@ -5,14 +5,14 @@ using System.Reflection;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
-using PlayGen.ITAlert.Unity.GameStates.Game;
-using PlayGen.ITAlert.Unity.GameStates.Game.Loading;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu.CreateGame;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu.GamesList;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby;
-using PlayGen.ITAlert.Unity.GameStates.Game.Settings;
+using PlayGen.ITAlert.Unity.States.Game;
+using PlayGen.ITAlert.Unity.States.Game.Loading;
+using PlayGen.ITAlert.Unity.States.Game.Menu;
+using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
+using PlayGen.ITAlert.Unity.States.Game.Menu.GamesList;
+using PlayGen.ITAlert.Unity.States.Game.Room;
+using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.States.Game.Settings;
 
 namespace Debugging
 {

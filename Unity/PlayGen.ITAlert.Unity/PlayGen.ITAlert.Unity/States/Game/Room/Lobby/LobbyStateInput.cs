@@ -11,7 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyStateInput : TickStateInput
 	{

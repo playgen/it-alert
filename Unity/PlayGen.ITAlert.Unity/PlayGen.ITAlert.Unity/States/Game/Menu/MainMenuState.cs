@@ -3,7 +3,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
+namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
 	public class MainMenuState : InputTickState
 	{

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
@@ -9,7 +8,7 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby
+namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyState : InputTickState
 	{

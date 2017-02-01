@@ -3,17 +3,17 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.GameStates.Game.Menu;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Feedback;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Initializing;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Paused;
-using PlayGen.ITAlert.Unity.GameStates.Game.Room.Playing;
-using PlayGen.ITAlert.Unity.GameStates.Game.Settings;
+using PlayGen.ITAlert.Unity.States.Game.Menu;
+using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
+using PlayGen.ITAlert.Unity.States.Game.Room.Initializing;
+using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
+using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
+using PlayGen.ITAlert.Unity.States.Game.Settings;
 using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Game.Room
+namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomStateControllerFactory
 	{
