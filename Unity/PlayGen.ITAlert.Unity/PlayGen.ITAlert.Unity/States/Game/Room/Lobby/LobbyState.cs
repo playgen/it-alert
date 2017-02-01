@@ -79,17 +79,6 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Room.Lobby
 					return;
 				}
 			}
-
-			// TODO: test if the start message has been sent (and received) - this shouldnt keep sending messages in a loop until the state transition happens
-			if (_photonClient.CurrentRoom != null && _photonClient.CurrentRoom.IsMasterClient)
-			{
-				if (_photonClient.CurrentRoom.Players != null &&
-					_photonClient.CurrentRoom.Players.All(p => p.State == (int) ITAlert.Photon.Players.ClientState.Ready))
-				{
-
-					_controller.StartGame(false);
-				}
-			}
 		}
 
 		private void LeaveLobby()

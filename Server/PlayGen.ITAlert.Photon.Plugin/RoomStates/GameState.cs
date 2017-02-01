@@ -24,8 +24,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public StateController<RoomState> ParentStateController { private get; set; }
 
-		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
-			: base(photonPlugin, messenger, playerManager, analytics)
+		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
+			RoomController roomController, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomController, analytics)
 		{
 		}
 
@@ -87,17 +88,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 			var simulationRoot = InitializeSimulationRoot();
 
-			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, Analytics);
+			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
-			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, Analytics);
+			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
 			playingState.AddTransitions(playingStateTransition);
 			
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, Analytics);
+			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);

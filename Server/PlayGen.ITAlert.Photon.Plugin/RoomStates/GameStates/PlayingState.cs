@@ -30,12 +30,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public event Action GameOverEvent;
 
-		public PlayingState(SimulationRoot simulationRoot, 
-			PluginBase photonPlugin, 
-			Messenger messenger, 
-			PlayerManager playerManager,
-			AnalyticsServiceManager analytics) 
-			: base(photonPlugin, messenger, playerManager, analytics)
+		public PlayingState(SimulationRoot simulationRoot, PluginBase photonPlugin, Messenger messenger,
+			PlayerManager playerManager, RoomController roomController, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomController, analytics)
 		{
 			_simulationRoot = simulationRoot;
 		}

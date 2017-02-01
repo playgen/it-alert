@@ -19,14 +19,14 @@ namespace PlayGen.ITAlert.Photon.Plugin
 		/// <param name="playerManager"></param>
 		/// <param name="analytics"></param>
 		/// <returns></returns>
-		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, AnalyticsServiceManager analytics)
+		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, RoomController roomController, AnalyticsServiceManager analytics)
 		{
-			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, analytics);
+			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, roomController, analytics);
 			var gameStartedTransition = new EventTransition(GameState.StateName);
 			lobbyState.GameStartedEvent += gameStartedTransition.ChangeState;
 			lobbyState.AddTransitions(gameStartedTransition);
 
-			var gameState = new GameState(photonPlugin, messenger, playerManager, analytics);
+			var gameState = new GameState(photonPlugin, messenger, playerManager, roomController, analytics);
 			var controller = new RoomStateController(lobbyState, gameState);
 
 			gameState.ParentStateController = controller;
