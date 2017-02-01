@@ -72,12 +72,12 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Time: 1.5
+  m_SortingLayerID: 2134443475
+  m_SortingOrder: 3
+  m_Time: 0.8
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.1
+    widthMultiplier: 0.18
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -88,10 +88,16 @@ TrailRenderer:
         outSlope: 0
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.99999994
-        value: 0.49253732
-        inSlope: -0.40830633
-        outSlope: -0.40830633
+        time: 0.49129725
+        value: 0.69239235
+        inSlope: -1.0550022
+        outSlope: -1.0550022
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0.35964015
+        inSlope: -0.18593009
+        outSlope: -0.18593009
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -102,7 +108,7 @@ TrailRenderer:
         rgba: 4294967295
       key1:
         serializedVersion: 2
-        rgba: 16777215
+        rgba: 1090519039
       key2:
         serializedVersion: 2
         rgba: 0
