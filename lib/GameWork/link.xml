@@ -1,0 +1,3 @@
+<linker>
+	<assembly fullname="GameWork.Core.States" preserve="all"/>
+</linker>

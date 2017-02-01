@@ -35,7 +35,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Room
 		protected override void OnEnter()
 		{
 			_stateController = _controllerFactory.Create();
-			_stateController.Initialize(LobbyState.StateName);
+			_stateController.Initialize();
+			_stateController.EnterState(LobbyState.StateName);
 		}
 
 		protected override void OnExit()

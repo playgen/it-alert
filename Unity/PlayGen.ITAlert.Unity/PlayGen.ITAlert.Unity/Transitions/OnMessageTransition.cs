@@ -35,7 +35,8 @@ namespace PlayGen.ITAlert.Unity.Transitions
 		{
 			if (message.GetType() == _requiredMessageType)
 			{
-				ChangeState(_toStateName);
+				ExitState(_toStateName);
+				EnterState(_toStateName);
 			}
 		}
 	}

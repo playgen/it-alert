@@ -12,21 +12,21 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
 {
 	public class MenuStateControllerFactory
 	{
-		private readonly Client _client;
+		private readonly Client _photonClient;
 		public StateControllerBase ParentStateController { private get; set; }
 
-		public MenuStateControllerFactory(Client client)
+		public MenuStateControllerFactory(Client photonClient)
 		{
-			_client = client;
+			_photonClient = photonClient;
 		}
 
 		public TickStateController Create()
 		{
-			var createGameController = new CreateGameController(_client);
+			var createGameController = new CreateGameController(_photonClient);
 
-			var mainMenuState = CreateMainMenuState(_client, createGameController);
-			var gameListState = CreateGameListState(_client);
-			var createGameState = CreateCreateGameState(_client, createGameController);
+			var mainMenuState = CreateMainMenuState(_photonClient, createGameController);
+			var gameListState = CreateGameListState(_photonClient);
+			var createGameState = CreateCreateGameState(_photonClient, createGameController);
 			var settingsState = CreateSettingsState();
 
 			var stateController = new TickStateController(
@@ -40,11 +40,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
 			return stateController;
 		}
 
-		private MainMenuState CreateMainMenuState(Client client, CreateGameController createGameController)
+		private MainMenuState CreateMainMenuState(Client photonClient, CreateGameController createGameController)
 		{
-			var quickGameController = new QuickGameController(_client, createGameController, 4);
+			var quickGameController = new QuickGameController(_photonClient, createGameController, 4);
 
-			var input = new MenuStateInput(client);
+			var input = new MenuStateInput(photonClient);
 			var state = new MainMenuState(input, quickGameController);
 
 			var joinGameTransition = new OnEventTransition(GamesListState.StateName);
@@ -68,9 +68,9 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
 		private GamesListState CreateGameListState(Client client)
 		{
 			var gamesListController = new GamesListController(client);
-			var joinGameController = new JoinGameController(_client);
+			var joinGameController = new JoinGameController(_photonClient);
 
-			var input = new GamesListStateInput(_client, gamesListController);
+			var input = new GamesListStateInput(_photonClient, gamesListController);
 			var state = new GamesListState(input, gamesListController, joinGameController);
 
 			var joinedRoomTransition = new OnEventTransition(RoomState.StateName);

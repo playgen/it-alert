@@ -28,7 +28,8 @@ namespace PlayGen.ITAlert.Unity.GameStates.Game.Menu
 		protected override void OnEnter()
 		{
 			_stateController = _controllerFactory.Create();
-			_stateController.Initialize(MainMenuState.StateName);
+			_stateController.Initialize();
+			_stateController.EnterState(MainMenuState.StateName);
 		}
 
 		protected override void OnExit()

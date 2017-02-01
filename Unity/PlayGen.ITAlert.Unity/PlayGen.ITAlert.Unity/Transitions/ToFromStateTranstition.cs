@@ -13,7 +13,8 @@ namespace PlayGen.ITAlert.Unity.Transitions
 
 		public void ChangeState()
 		{
-			ChangeState(_fromStateName);
+			ExitState(_fromStateName);
+			EnterState(_fromStateName);
 		}
 	}
 }

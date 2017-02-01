@@ -24,7 +24,8 @@ namespace PlayGen.ITAlert.Unity.Transitions
 		{
 			if (exception is TException)
 			{
-				ChangeState(_toStateName);
+				ExitState(_toStateName);
+				EnterState(_toStateName);
 			}
 		}
 	}

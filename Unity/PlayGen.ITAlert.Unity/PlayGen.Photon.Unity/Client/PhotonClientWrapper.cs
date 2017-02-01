@@ -3,10 +3,11 @@ using System.Linq;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
-using ExitGames.Client.Photon.LoadBalancing;
+using PlayGen.ITAlert.Unity.Behaviours;
 
 namespace PlayGen.Photon.Unity.Client
 {
+	[RequireComponent(typeof(DontDestroyOnLoad))]
 	public class PhotonClientWrapper : PunBehaviour, IDisposable
 	{
 		private string _gameVersion;
@@ -93,6 +94,11 @@ namespace PlayGen.Photon.Unity.Client
 			if (_isDisposed)
 			{
 				return;
+			}
+
+			if (PhotonNetwork.connected || PhotonNetwork.connecting)
+			{
+				PhotonNetwork.Disconnect();
 			}
 
 			PhotonNetwork.OnEventCall -= OnPhotonEvent;

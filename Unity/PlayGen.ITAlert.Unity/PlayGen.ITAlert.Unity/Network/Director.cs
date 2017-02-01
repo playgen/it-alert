@@ -214,6 +214,7 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		public static void UpdateSimulation(string stateJson)
 		{
+			throw new Exception("TEST - REMOVE ME!!!!!");
 			var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(stateJson);
 			UpdateEntityStates();
 		}
@@ -233,6 +234,7 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		private static void UpdateEntityStates()
 		{
+			throw new Exception("TEST - REMOVE ME!!!!!");
 			try
 			{
 				var entities = SimulationRoot.ECS.GetEntities();
