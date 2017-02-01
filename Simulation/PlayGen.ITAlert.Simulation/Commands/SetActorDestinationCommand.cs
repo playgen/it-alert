@@ -8,31 +8,29 @@ using PlayGen.ITAlert.Simulation.Components.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
-	public class RequestMovePlayerCommand : ICommand
+	public class SetActorDestinationCommand : ICommand
 	{
 		public int PlayerId { get; set; }
 
 		public int DestinationId { get; set; }
 	}
 
-	public class RequestMovePlayerCommandHandler : CommandHandler<RequestMovePlayerCommand>
+	public class SetActorDestinationCommandHandler : CommandHandler<SetActorDestinationCommand>
 	{
-		private readonly IComponentRegistry _componentRegistry;
 		private readonly IEntityRegistry _entityRegistry;
 
 		private readonly ComponentMatcher _playerComponentMatcher;
 		private readonly ComponentMatcher _subsystemMatcher;
 
-		public RequestMovePlayerCommandHandler(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
+		public SetActorDestinationCommandHandler(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
 		{
-			_componentRegistry = componentRegistry;
 			_entityRegistry = entityRegistry;
 
 			_playerComponentMatcher = componentRegistry.CreateMatcher(new[] {typeof(Player), typeof(Intents)});
 			_subsystemMatcher = componentRegistry.CreateMatcher(new[] {typeof(Subsystem)});
 		}
 
-		protected override bool TryProcessCommand(RequestMovePlayerCommand command)
+		protected override bool TryProcessCommand(SetActorDestinationCommand command)
 		{
 			Entity playerEntity;
 			Entity destinationEntity;
@@ -43,7 +41,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& _subsystemMatcher.IsMatch(destinationEntity)
 				&& playerEntity.TryGetComponent(out playerIntents))
 			{
-				playerIntents.Enqueue(new MoveIntent(destinationEntity.Id));
+				playerIntents.Replace(new MoveIntent(destinationEntity.Id));
 				return true;
 			}
 			return false;

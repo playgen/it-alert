@@ -44,7 +44,7 @@ namespace Assets.Debugging.Scripts
 			AutoTickOn = GUILayout.Toggle(AutoTickOn, "Auto Tick ON");
 			if (GUILayout.Button("TICK"))
 			{
-				DebugTick();
+				//DebugTick();
 			}
 			if (GUILayout.Button("Spawn Virus"))
 			{
@@ -77,7 +77,7 @@ namespace Assets.Debugging.Scripts
 
 			if (_isVisible && AutoTickOn)
 			{
-				DebugAutoTick();
+				//DebugAutoTick();
 			}
 		}
 
@@ -85,30 +85,30 @@ namespace Assets.Debugging.Scripts
 		{
 		}
 
-		private void OnAutoTickToggled(bool isOn)
-		{
-			if (isOn == false)
-			{
-				_elapsedInterval = 0;
-			}
-		}
+		//private void OnAutoTickToggled(bool isOn)
+		//{
+		//	if (isOn == false)
+		//	{
+		//		_elapsedInterval = 0;
+		//	}
+		//}
 
-		public void DebugAutoTick()
-		{
-			_elapsedInterval += Time.deltaTime;
-			if (_elapsedInterval > _autoTickInterval)
-			{
-				DebugTick();
-			}
-		}
+		//public void DebugAutoTick()
+		//{
+		//	_elapsedInterval += Time.deltaTime;
+		//	if (_elapsedInterval > _autoTickInterval)
+		//	{
+		//		DebugTick();
+		//	}
+		//}
 
-		public void DebugTick()
-		{
-			_elapsedInterval = 0;
-			Director.Tick(EnableSerializer);
-			_tpsText = (1 / (Time.time - _lastTickTime)).ToString("N1") + "TPS";
-			_lastTickTime = Time.time;
-		}
+		//public void DebugTick()
+		//{
+		//	_elapsedInterval = 0;
+		//	Director.Tick(EnableSerializer);
+		//	_tpsText = (1 / (Time.time - _lastTickTime)).ToString("N1") + "TPS";
+		//	_lastTickTime = Time.time;
+		//}
 
 		private void SpawnVirus()
 		{

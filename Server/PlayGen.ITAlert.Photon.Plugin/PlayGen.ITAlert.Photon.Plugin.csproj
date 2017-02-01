@@ -62,8 +62,9 @@
       <HintPath>..\..\lib\Photon\PhotonHivePlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.Simulation">
-      <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
+    <Reference Include="PlayGen.ITAlert.Simulation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Commands">
       <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>

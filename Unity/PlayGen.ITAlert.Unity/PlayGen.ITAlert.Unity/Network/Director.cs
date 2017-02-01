@@ -3,11 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using PlayGen.ITAlert.Simulation;
-using PlayGen.ITAlert.Simulation.Common;
+using System.Threading;
 using PlayGen.ITAlert.Simulation.Configuration;
-using Engine;
-using Engine.Components;
 using Engine.Entities;
 using GameWork.Core.Commands;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -27,7 +24,17 @@ namespace PlayGen.ITAlert.Unity.Network
 	// TODO: use zenject singleton container rather than statics
 	public class Director : MonoBehaviour
 	{
+		private static Thread _updatethread;
+
+		private static readonly AutoResetEvent ReadyToProcessSignal = new AutoResetEvent(true);
+		private static readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
+		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
+
 		public static event Action SimulationError;
+
+		private static float _tps;
+		private static DateTime _lastUpdate;
+		private static int _tick;
 
 		/// <summary>
 		/// Entity to GameObject map
@@ -125,6 +132,16 @@ namespace PlayGen.ITAlert.Unity.Network
 		{
 			try
 			{
+				if (_updatethread == null)
+				{
+					_updatethread = new Thread(ThreadWorker)
+					{
+						IsBackground = true,
+					};
+					_updatethread.Start();
+				}
+
+				_tick = 0;
 				SimulationRoot = simulationRoot;
 
 				SimulationAnimationRatio = Time.deltaTime / SimulationTick;
@@ -156,6 +173,7 @@ namespace PlayGen.ITAlert.Unity.Network
 			}
 			return false;
 		}
+
 
 		public void Awake()
 		{
@@ -215,20 +233,26 @@ namespace PlayGen.ITAlert.Unity.Network
 
 		#region State Update
 
-		private static int _i = 0;
+		private static string _stateJson;
+
+		private static void ThreadWorker()
+		{
+			while (true)
+			{
+				var handle = WaitHandle.WaitAny(new WaitHandle[] { MessageSignal });
+
+				if (handle == 0)
+				{
+					var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
+					UpdateSignal.Set();
+				}
+			}
+		}
 
 		public static void UpdateSimulation(string stateJson)
 		{
-			File.WriteAllText($"d:\\temp\\{_i++}.json", stateJson);
-
-			var entities = SimulationRoot.EntityStateSerializer.DeserializeEntities(stateJson);
-			UpdateEntityStates();
-		}
-
-		public static void Tick(bool enableSerializer)
-		{
-			SimulationRoot.ECS.Tick();
-			UpdateEntityStates();
+			_stateJson = stateJson;
+			MessageSignal.Set();
 		}
 
 		private static void CreateEntity(Entity entity)
@@ -237,10 +261,24 @@ namespace PlayGen.ITAlert.Unity.Network
 			Entities.Add(entity.Id, uiEntity);
 		}
 
+		public static float GetTps()
+		{
+			return _tps;
+		}
+
+		public void Update()
+		{
+			if (UpdateSignal.WaitOne(0))
+			{
+				UpdateEntityStates();
+			}
+		}
+
 		private static void UpdateEntityStates()
 		{
 			try
 			{
+
 				var entities = SimulationRoot.ECS.Entities;
 
 				var entitiesAdded = entities.Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
@@ -304,17 +342,9 @@ namespace PlayGen.ITAlert.Unity.Network
 			return default(T);
 		}
 
-		public static string GetScore()
+		public static int GetTick()
 		{
-			return "0";
-			//return GetInitialized(() => _state.Score.ToString());
-		}
-
-		public static string GetTimer()
-		{
-			//TODO: returning the tick is only temporary
-			return "0";
-			//return GetInitialized(() => _state.CurrentTick.ToString());
+			return _tick;
 		}
 
 		#endregion

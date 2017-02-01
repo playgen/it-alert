@@ -14,6 +14,8 @@
 	// TODO: read these constants from configuration - combine with component initialization
 	public static class SimulationConstants
 	{
+		public const int TickInterval = 100;
+
 		#region susbsytems
 
 		public const int SubsystemPositions = 48;
@@ -50,11 +52,11 @@
 		public const int VirusMemoryConsumedIncrementPerTick = 1;
 		public const int VirusCPUConsumedIncrementPerTick = 1;
 
+		public const string DefaultVirusArchetype = "Virus";
+
 		#endregion
 
 		#region players
-
-
 
 		/// <summary>
 		/// number of units to mvoe every tick
@@ -69,5 +71,6 @@
 		#endregion
 
 		public const string MalwareVisibilityGene = "Visibile";
+
 	}
 }

@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 					Tick = tick,
 					Commands = new ICommand[]
 					{
-						//new SpawnVirusCommand
+						//new SpawnNpcCommand
 						//{
 						//	SystemLogicalId = subsystemLogicalIds[Random.Next(subsystemLogicalIds.Count)]
 						//}

@@ -53,11 +53,11 @@
   <ItemGroup>
     <Compile Include="Commands\RequestActivateItemCommand.cs" />
     <Compile Include="Commands\RequestDropItemCommand.cs" />
-    <Compile Include="Commands\RequestMovePlayerCommand.cs" />
+    <Compile Include="Commands\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\RequestPickupItemCommand.cs" />
     <Compile Include="Commands\Sequence\CommandSequence.cs" />
     <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
-    <Compile Include="Commands\SpawnVirusCommand.cs" />
+    <Compile Include="Commands\SpawnNpcCommand.cs" />
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />

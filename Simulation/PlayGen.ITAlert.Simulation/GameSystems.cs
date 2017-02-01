@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Simulation
 					{
 						Implementations = new []
 						{
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<RequestMovePlayerCommandHandler>(), 
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(), 
 						}
 						
 					}

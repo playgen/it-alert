@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Unity.Network
 		{
 			Log($"Request Move to subsystem: {subsystemId}");
 
-			var requestMovePlayerCommand = new RequestMovePlayerCommand()
+			var requestMovePlayerCommand = new SetActorDestinationCommand()
 			{
 				PlayerId = Director.Player.Id,
 				DestinationId = subsystemId

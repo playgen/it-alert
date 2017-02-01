@@ -13,10 +13,11 @@ namespace PlayGen.ITAlert.Unity.Network
 		/// <summary>
 		/// timer text component
 		/// </summary>
-		[SerializeField] private Text _timerText;
-
-		//[SerializeField]
-		//private SVGImage _hintObjectIcon;
+		[SerializeField]
+		private Text _timerText;
+		
+		[SerializeField]
+		private Text _tpsText;
 
 		#endregion
 
@@ -41,20 +42,20 @@ namespace PlayGen.ITAlert.Unity.Network
 			//	//_repairText.text = _repairGen.Amount.ToString();
 			//}
 
-			SetScore();
+			SetTps();
 			SetTimer();
 		}
 
 		#region read game params
 
-		private void SetScore()
+		private void SetTps()
 		{
-			//_scoreText.text = Director.GetScore();
+			_tpsText.text = Director.GetTps().ToString("n1");
 		}
 
 		private void SetTimer()
 		{
-			_timerText.text = Director.GetTimer();
+			_timerText.text = Director.GetTick().ToString("d4");
 		}
 
 		#endregion
