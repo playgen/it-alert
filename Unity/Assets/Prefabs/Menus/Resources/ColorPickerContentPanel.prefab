@@ -148,8 +148,17 @@ MonoBehaviour:
   m_Script: {fileID: -2067387211, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colors: []
-  ColourPickerPanel: {fileID: 1000013146396448}
+  colors:
+  - {r: 0.53333336, g: 0.8, b: 0.93333334, a: 1}
+  - {r: 0.26666668, g: 0.6666667, b: 0.6, a: 1}
+  - {r: 0.06666667, g: 0.46666667, b: 0.2, a: 1}
+  - {r: 0.6, g: 0.6, b: 0.2, a: 1}
+  - {r: 0.8666667, g: 0.8, b: 0.46666667, a: 1}
+  - {r: 0.8, g: 0.4, b: 0.46666667, a: 1}
+  - {r: 0.53333336, g: 0.13333334, b: 0.33333334, a: 1}
+  - {r: 0.6666667, g: 0.26666668, b: 0.6, a: 1}
+  - {r: 0.2, g: 0.13333334, b: 0.53333336, a: 1}
+  ColourPickerPanel: {fileID: 1000011444463416}
   Avatar: {fileID: 114000010193036940}
 --- !u!114 &114000011770999662
 MonoBehaviour:
