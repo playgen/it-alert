@@ -111,6 +111,7 @@
     <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
     <Compile Include="Systems\Resources\SubsystemResources.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
+    <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />
