@@ -13,10 +13,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Planning
 	{
 		private ComponentMatcherGroup _visitorIntentsMatcher;
 
-		public IntentSystem(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
-			: base(componentRegistry, entityRegistry)
+		public IntentSystem(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
-			_visitorIntentsMatcher = componentRegistry.CreateMatcherGroup(new [] { typeof(Intents) });
+			_visitorIntentsMatcher = matcherProvider.CreateMatcherGroup(new [] { typeof(Intents) });
 
 		}
 
