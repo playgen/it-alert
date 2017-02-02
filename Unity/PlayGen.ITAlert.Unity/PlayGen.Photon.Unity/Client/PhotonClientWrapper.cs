@@ -171,7 +171,7 @@ namespace PlayGen.Photon.Unity.Client
 				{
 					Plugins = new string[] {_gamePlugin},
 					MaxPlayers = (byte) maxPlayers,
-                    CustomRoomProperties = customRoomProperties
+					CustomRoomProperties = customRoomProperties
 				},
 				PhotonNetwork.lobby);
 		}
