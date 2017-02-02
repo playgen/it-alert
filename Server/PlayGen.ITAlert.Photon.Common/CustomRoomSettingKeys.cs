@@ -4,7 +4,7 @@
     {
         public const string MinPlayers = PlayGen.Photon.Common.CustomRoomSettingKeys.MinPlayers;
 
-        public const string CloseOnStarted = "OpenOnEnded";
+        public const string CloseOnStarted = "CloseOnStarted";
 
         public const string OpenOnEnded = "OpenOnEnded";
     }
