@@ -118,6 +118,9 @@
     <Reference Include="Priority Queue">
       <HintPath>..\..\..\bin\Simulation\Priority Queue.dll</HintPath>
     </Reference>
+    <Reference Include="RAGE.Analytics">
+      <HintPath>..\..\lib\RAGE.Analytics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -238,6 +241,7 @@
     <Compile Include="Utilities\GameObjectUtilities.cs" />
     <Compile Include="Utilities\LoadingUtility.cs" />
     <Compile Include="Utilities\PopupUtility.cs" />
+    <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">
