@@ -84,12 +84,14 @@
   <ItemGroup>
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
+    <Compile Include="RoomSettings.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />
+    <Compile Include="RoomStates\RoomState.cs" />
     <Compile Include="RoomStates\Transitions\EventTransition.cs" />
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
@@ -97,6 +99,10 @@
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj">
       <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
       <Name>PlayGen.Photon.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Common\PlayGen.Photon.Common.csproj">
+      <Project>{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}</Project>
+      <Name>PlayGen.Photon.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
       <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
@@ -117,6 +123,10 @@
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj">
       <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
       <Name>PlayGen.Photon.SUGAR</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj">
+      <Project>{CF267DA2-C78B-4C7D-956F-4D199257517B}</Project>
+      <Name>PlayGen.ITAlert.Photon.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
       <Project>{02999433-bc54-495b-89f2-9075bb5d0082}</Project>

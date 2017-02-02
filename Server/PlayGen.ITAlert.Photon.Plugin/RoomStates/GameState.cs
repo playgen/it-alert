@@ -21,7 +21,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public override string Name => StateName;
 
-		public StateController<RoomState> ParentStateController { private get; set; }
+		public RoomStateController ParentStateController { private get; set; }
 
 		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
 			RoomSettings roomSettings, AnalyticsServiceManager analytics)
@@ -46,6 +46,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			//_simulation.Dispose();
 
 			Analytics.EndMatch();
+
+			if (RoomSettings.OpenOnEnded)
+			{
+				RoomSettings.IsOpen = true;
+			    RoomSettings.IsVisible = true;
+			}
 		}
 
 		public override void OnCreate(ICreateGameCallInfo info)
