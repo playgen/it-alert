@@ -70,7 +70,13 @@
 
 		#endregion
 
-		public const string MalwareVisibilityGene = "Visibile";
+		public const string MalwareVisibilityGene = "Visible";
+
+		#region tutorial
+
+		public const string TutorialTextArchetype = "TutorialText";
+
+		#endregion
 
 	}
 }

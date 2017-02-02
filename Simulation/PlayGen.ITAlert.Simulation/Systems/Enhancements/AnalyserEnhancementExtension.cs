@@ -21,12 +21,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		private readonly IEntityRegistry _entityRegistry;
 
-		public AnalyserEnhancementExtension(IEntityRegistry entityRegistry, IComponentRegistry componentRegistry)
+		public AnalyserEnhancementExtension(IEntityRegistry entityRegistry, IMatcherProvider matcherProvider)
 		{
 			_entityRegistry = entityRegistry;
 
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
-			_analyserMatcherGroup = componentRegistry.CreateMatcherGroup<AnalyserEnhancement, ItemStorage>();
+			_analyserMatcherGroup = matcherProvider.CreateMatcherGroup<AnalyserEnhancement, ItemStorage>();
 			_analyserMatcherGroup.MatchingEntityAdded += OnNewEntity;
 		}
 

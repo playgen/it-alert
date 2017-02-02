@@ -21,19 +21,19 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		
 		private readonly ComponentMatcherGroup<Activation> _activationMatcher;
 
-		public ItemActivationSystem(IComponentRegistry componentRegistry, 
+		public ItemActivationSystem(IMatcherProvider matcherProvider, 
 			IEntityRegistry entityRegistry, 
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<IItemActivationExtension> itemActivationExtensions,
 			IntentSystem intentSystem) 
 
-			: base(componentRegistry, entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
 			_itemActivationExtensions = itemActivationExtensions;
 			_intentSystem = intentSystem;
 			
-			_activationMatcher = componentRegistry.CreateMatcherGroup<Activation>();
-			componentRegistry.RegisterMatcher(_activationMatcher);
+			_activationMatcher = matcherProvider.CreateMatcherGroup<Activation>();
+			matcherProvider.RegisterMatcher(_activationMatcher);
 		}
 
 		public void Tick(int currentTick)

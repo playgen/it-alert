@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -14,5 +15,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public int MaxPlayers { get; set; }
 
 		public SimulationConfiguration Configuration { get; set; }
+
+		public SequenceFrame<Simulation>[] Sequence { get; set; }
 	}
 }

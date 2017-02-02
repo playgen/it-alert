@@ -22,12 +22,12 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		private readonly ComponentMatcher _playerComponentMatcher;
 		private readonly ComponentMatcher _subsystemMatcher;
 
-		public SetActorDestinationCommandHandler(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
+		public SetActorDestinationCommandHandler(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
 			_entityRegistry = entityRegistry;
 
-			_playerComponentMatcher = componentRegistry.CreateMatcher(new[] {typeof(Player), typeof(Intents)});
-			_subsystemMatcher = componentRegistry.CreateMatcher(new[] {typeof(Subsystem)});
+			_playerComponentMatcher = matcherProvider.CreateMatcher(new[] {typeof(Player), typeof(Intents)});
+			_subsystemMatcher = matcherProvider.CreateMatcher(new[] {typeof(Subsystem)});
 		}
 
 		protected override bool TryProcessCommand(SetActorDestinationCommand command)

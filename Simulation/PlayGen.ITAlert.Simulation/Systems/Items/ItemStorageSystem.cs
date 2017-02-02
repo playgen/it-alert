@@ -13,10 +13,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	{
 		private readonly ComponentMatcherGroup<ItemStorage> _itemStorageMatcherGroup;
 
-		public ItemStorageSystem(IComponentRegistry componentRegistry, 
-			IEntityRegistry entityRegistry) : base(componentRegistry, entityRegistry)
+		public ItemStorageSystem(IMatcherProvider matcherProvider, 
+			IEntityRegistry entityRegistry) : base(matcherProvider, entityRegistry)
 		{
-			_itemStorageMatcherGroup = componentRegistry.CreateMatcherGroup<ItemStorage>();
+			_itemStorageMatcherGroup = matcherProvider.CreateMatcherGroup<ItemStorage>();
 			_itemStorageMatcherGroup.MatchingEntityAdded += ItemStorageMatcherGroupOnMatchingEntityAdded;
 		}
 

@@ -21,13 +21,13 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 	public class SpawnNpcCommandHandler : CommandHandler<SpawnNpcCommand>
 	{
-		private readonly EntityFactoryProvider _entityFactoryProvider;
+		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
 		private readonly IEntityRegistry _entityRegistry;
 
 		private readonly Dictionary<int, int> _logicalIdMap;
 
-		public SpawnNpcCommandHandler(EntityFactoryProvider entityFactoryProvider, 
+		public SpawnNpcCommandHandler(IEntityFactoryProvider entityFactoryProvider, 
 			IEntityRegistry entityRegistry,
 			SimulationConfiguration configuration)
 		{
@@ -71,6 +71,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					visitorPosition.SetPosition(0, 0);
 					return true;
 				}
+				npc?.Dispose();
 			}
 			return false;
 

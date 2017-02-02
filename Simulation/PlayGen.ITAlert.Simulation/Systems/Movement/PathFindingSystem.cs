@@ -16,11 +16,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		private readonly ComponentMatcherGroup<GraphNode, Subsystem, ExitRoutes> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<GraphNode, Connection, MovementCost> _connectionMatcherGroup;
 
-		public PathFindingSystem(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry) 
-			: base(componentRegistry, entityRegistry)
+		public PathFindingSystem(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry) 
+			: base(matcherProvider, entityRegistry)
 		{
-			_subsystemMatcherGroup = componentRegistry.CreateMatcherGroup<GraphNode, Subsystem, ExitRoutes>();
-			_connectionMatcherGroup = componentRegistry.CreateMatcherGroup<GraphNode, Connection, MovementCost>();
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<GraphNode, Subsystem, ExitRoutes>();
+			_connectionMatcherGroup = matcherProvider.CreateMatcherGroup<GraphNode, Connection, MovementCost>();
 
 			// TODO: handle new match route recalculation
 			// TODO: handle graph node events that might affect routing
