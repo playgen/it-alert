@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 222365114244995096}
   - component: {fileID: 114920581766149812}
   - component: {fileID: 114233177532289718}
-  - component: {fileID: 114060383426037488}
   - component: {fileID: 114597715133989324}
+  - component: {fileID: 114236150634059142}
   m_Layer: 5
   m_Name: FeedbackEntry
   m_TagString: Untagged
@@ -31,17 +31,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114060383426037488
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1174586087432598}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1344480567, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114233177532289718
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -75,6 +64,17 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: PLAYER 1
+--- !u!114 &114236150634059142
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1174586087432598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1344480567, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114597715133989324
 MonoBehaviour:
   m_ObjectHideFlags: 1

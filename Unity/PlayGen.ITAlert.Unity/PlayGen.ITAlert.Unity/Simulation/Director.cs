@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Engine.Entities;
@@ -12,6 +13,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
@@ -76,8 +78,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
 
-		private static Dictionary<int, Player> _players;
-
 		[Obsolete("Use TryGetEntity instead")]
 		public static UIEntity GetEntity(int id)
 		{
@@ -136,7 +136,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					_updatethread.Start();
 				}
 
-				_tick = 0;
+				Reset();
 				SimulationRoot = simulationRoot;
 
 				SimulationAnimationRatio = Time.deltaTime / SimulationTick;
@@ -144,8 +144,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				// center graph
 				//
 				UIConstants.NetworkOffset -= new Vector2(
-					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X)/2*UIConstants.SubsystemSpacing.x, 
-					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y)/2*UIConstants.SubsystemSpacing.y);
+					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
+					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
 
 				//SetState();
 				CreateInitialEntities();
@@ -166,9 +166,25 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Debug.LogError($"Error initializing Director: {ex}");
 				throw ex;
 			}
-			return false;
 		}
 
+		private static void Reset()
+		{
+			_tick = 0;
+			_tps = 0;
+
+			MessageSignal.Reset();
+			UpdateSignal.Reset();
+			UpdateCompleteSignal.Reset();
+			_stateJson = null;
+
+			_activePlayer = null;
+			foreach (var entity in Entities)
+			{
+				Destroy(entity.Value.GameObject);
+			}
+			Entities.Clear();
+		}
 
 		public void Awake()
 		{
@@ -215,11 +231,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
-					GetEntity(entityKvp.Key).EntityBehaviour.Initialize(entityKvp.Value);
+					UIEntity uiEntity;
+					if (TryGetEntity(entityKvp.Key, out uiEntity))
+					{
+						uiEntity.EntityBehaviour.Initialize(entityKvp.Value);
+					}
+					else
+					{
+						Debugger.Break();
+					}
 				}
-				catch (Exception e)
+				catch (Exception ex)
 				{
-					throw;
+					throw new SimulationIntegrationException($"Error initializing UiEntity with id {entityKvp.Key}", ex);
 				}
 			}
 		}

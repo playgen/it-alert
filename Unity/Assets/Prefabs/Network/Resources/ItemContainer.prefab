@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224459824028817946}
   - component: {fileID: 222178140086631602}
   - component: {fileID: 212454237664252792}
-  - component: {fileID: 114039402300994244}
+  - component: {fileID: 114575736751371360}
   m_Layer: 5
   m_Name: ItemContainer
   m_TagString: Untagged
@@ -29,7 +29,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114039402300994244
+--- !u!114 &114575736751371360
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -37,7 +37,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1552276304146820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 183406907, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
+  m_Script: {fileID: 205780349, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!212 &212454237664252792

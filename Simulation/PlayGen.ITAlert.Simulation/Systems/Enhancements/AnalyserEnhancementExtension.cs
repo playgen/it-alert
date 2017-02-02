@@ -26,8 +26,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			_entityRegistry = entityRegistry;
 
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
-			//_analyserMatcherGroup = matcherProvider.CreateMatcherGroup<AnalyserEnhancement, ItemStorage>();
-			//_analyserMatcherGroup.MatchingEntityAdded += OnNewEntity;
+			_analyserMatcherGroup = matcherProvider.CreateMatcherGroup<AnalyserEnhancement, ItemStorage>();
+			_analyserMatcherGroup.MatchingEntityAdded += OnNewEntity;
 		}
 
 		// TODO: this should be run on every new entity created matching the Analyser flag
