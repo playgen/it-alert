@@ -43,10 +43,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Simulation\Engine.Core.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.ITAlert.Simulation.Commands">
-      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Commands.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>

@@ -20,8 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4000013527297224}
   - component: {fileID: 212000011909136302}
-  - component: {fileID: 114024316166060910}
   - component: {fileID: 96668158742469704}
+  - component: {fileID: 114283422024362940}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -72,12 +72,12 @@ TrailRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Time: 1.5
+  m_SortingLayerID: 2134443475
+  m_SortingOrder: 3
+  m_Time: 0.8
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 0.1
+    widthMultiplier: 0.18
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -88,10 +88,16 @@ TrailRenderer:
         outSlope: 0
         tangentMode: 0
       - serializedVersion: 2
-        time: 0.99999994
-        value: 0.49253732
-        inSlope: -0.40830633
-        outSlope: -0.40830633
+        time: 0.49129725
+        value: 0.69239235
+        inSlope: -1.0550022
+        outSlope: -1.0550022
+        tangentMode: 0
+      - serializedVersion: 2
+        time: 1
+        value: 0.35964015
+        inSlope: -0.18593009
+        outSlope: -0.18593009
         tangentMode: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -102,7 +108,7 @@ TrailRenderer:
         rgba: 4294967295
       key1:
         serializedVersion: 2
-        rgba: 16777215
+        rgba: 1090519039
       key2:
         serializedVersion: 2
         rgba: 0
@@ -146,7 +152,7 @@ TrailRenderer:
     textureMode: 0
   m_MinVertexDistance: 0.04
   m_Autodestruct: 0
---- !u!114 &114024316166060910
+--- !u!114 &114283422024362940
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -154,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000014000263050}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -585335590, guid: 93f69da7deda46e4fa85b79e7d66d6a0, type: 3}
+  m_Script: {fileID: 299254994, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   IsTalking: 0
