@@ -113,23 +113,23 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateItemColor()
 		{
-			bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
-			if (_owner.Value.HasValue && isWhite)
-			{
-				UIEntity owner;
-				if (Director.TryGetEntity(_owner.Value.Value, out owner))
-				{
-					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
-					_iconRenderer.color = playerColour;
-					_activationTimerImage.color = playerColour;
-				}
-				//TriggerHint();
-			}
-			else if (!_owner.Value.HasValue && !isWhite)
-			{
-				_iconRenderer.color = Color.white;
-				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
-			}
+			//bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
+			//if (_owner.Value.HasValue && isWhite)
+			//{
+			//	UIEntity owner;
+			//	if (Director.TryGetEntity(_owner.Value.Value, out owner))
+			//	{
+			//		var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+			//		_iconRenderer.color = playerColour;
+			//		_activationTimerImage.color = playerColour;
+			//	}
+			//	//TriggerHint();
+			//}
+			//else if (!_owner.Value.HasValue && !isWhite)
+			//{
+			//	_iconRenderer.color = Color.white;
+			//	_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+			//}
 		}
 
 		private void UpdateActivationTimer()
