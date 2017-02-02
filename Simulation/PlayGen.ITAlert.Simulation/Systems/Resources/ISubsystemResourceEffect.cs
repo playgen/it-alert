@@ -8,6 +8,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
 	public interface ISubsystemResourceEffect : ISystemExtension
 	{
-		void Tick(Entity subsystem);
+		void Tick();
+
+		bool IsMatch(Entity entity);
 	}
 }

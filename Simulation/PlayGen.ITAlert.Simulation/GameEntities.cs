@@ -68,7 +68,7 @@ namespace PlayGen.ITAlert.Simulation
 				ComponentTemplate = new MemoryResource()
 				{
 					Value = 0,
-					Maximum = SimulationConstants.SubsystemInitialMemory,
+					Maximum = SimulationConstants.SubsystemMaxMemory,
 				}
 			})
 			.HasComponent(new ComponentBinding<CPUResource>()
@@ -76,7 +76,7 @@ namespace PlayGen.ITAlert.Simulation
 				ComponentTemplate = new CPUResource()
 				{
 					Value = 4,
-					Maximum = SimulationConstants.SubsystemInitialCPU,
+					Maximum = SimulationConstants.SubsystemMaxCPU,
 				}
 			});
 

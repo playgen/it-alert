@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Commands;
 using Engine.Sequencing;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
