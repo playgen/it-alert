@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Photon.Hive.Plugin;
+using PlayGen.Photon.Analytics;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.Plugin.Analytics;
 using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin

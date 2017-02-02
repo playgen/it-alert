@@ -10,7 +10,7 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Startup;
-using PlayGen.Photon.Plugin.Analytics;
+using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -25,8 +25,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		public event Action<List<Player>> PlayerInitializedEvent;
 
 		public InitializingState(SimulationRoot simulationRoot, PluginBase photonPlugin, Messenger messenger,
-			PlayerManager playerManager, RoomController roomController, AnalyticsServiceManager analytics)
-			: base(photonPlugin, messenger, playerManager, roomController, analytics)
+			PlayerManager playerManager,RoomSettings roomSettings, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 			_simulationRoot = simulationRoot;
 		}
