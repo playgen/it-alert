@@ -36,7 +36,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Analytics", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Common", "photon-plugin\PlayGen.Photon.Common\PlayGen.Photon.Common.csproj", "{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Common", "PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj", "{CF267DA2-C78B-4C7D-956F-4D199257517B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Common", "PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj", "{61105235-93D2-4793-BDAD-C7EF42B198FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,12 +111,12 @@ Global
 		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
 		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF267DA2-C78B-4C7D-956F-4D199257517B}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +133,6 @@ Global
 		{F62B5705-BF54-498A-B662-704C0B50C0B6} = {B7CD0185-B07B-4422-A262-A37577775171}
 		{A0A648DC-B80D-4E19-B3BF-B47C697EDC29} = {B7CD0185-B07B-4422-A262-A37577775171}
 		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961} = {D93A8B7A-0B81-4D93-A490-BC09044FF0A1}
-		{CF267DA2-C78B-4C7D-956F-4D199257517B} = {D93A8B7A-0B81-4D93-A490-BC09044FF0A1}
+		{61105235-93D2-4793-BDAD-C7EF42B198FE} = {D93A8B7A-0B81-4D93-A490-BC09044FF0A1}
 	EndGlobalSection
 EndGlobal

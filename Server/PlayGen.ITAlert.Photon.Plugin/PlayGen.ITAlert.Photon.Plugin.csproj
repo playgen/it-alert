@@ -52,7 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GameWork.Core.States">
-      <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
+      <HintPath>..\photon-plugin\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
@@ -123,7 +123,7 @@
       <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj">
-      <Project>{CF267DA2-C78B-4C7D-956F-4D199257517B}</Project>
+      <Project>{61105235-93d2-4793-bdad-c7ef42b198fe}</Project>
       <Name>PlayGen.ITAlert.Photon.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
