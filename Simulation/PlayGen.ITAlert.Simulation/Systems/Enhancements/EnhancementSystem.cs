@@ -20,14 +20,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		#region constructor
 
-		public EnhancementSystem(IComponentRegistry componentRegistry, 
+		public EnhancementSystem(IMatcherProvider matcherProvider, 
 			IEntityRegistry entityRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<IEnhancementSystemExtension> enhancementSystemExtensions)
-			: base(componentRegistry, entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
 			_enhancementSystemExtensions = enhancementSystemExtensions;
-			//_enhancementMatcherGroup = componentRegistry.CreateMatcherGroup<ISubsystemEnhancement>();
+			//_enhancementMatcherGroup = matcherProvider.CreateMatcherGroup<ISubsystemEnhancement>();
 			//_enhancementMatcherGroup.MatchingEntityAdded += EnhancementMatcherGroupOnMatchingEntityAdded;
 		}
 

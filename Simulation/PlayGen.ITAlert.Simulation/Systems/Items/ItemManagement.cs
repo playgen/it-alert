@@ -13,10 +13,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	{
 		private ComponentMatcherGroup<Owner> _itemTypeMatcher;
 
-		public ItemManagement(IComponentRegistry componentRegistry, IEntityRegistry entityRegistry)
-			: base(componentRegistry, entityRegistry)
+		public ItemManagement(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
-			_itemTypeMatcher = componentRegistry.CreateMatcherGroup<Owner>();
+			_itemTypeMatcher = matcherProvider.CreateMatcherGroup<Owner>();
 		}
 
 		public void Tick(int currentTick)

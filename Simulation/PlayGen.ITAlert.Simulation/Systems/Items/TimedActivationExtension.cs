@@ -9,9 +9,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	{
 		public ComponentMatcher Matcher { get; }
 		
-		protected TimedActivationExtension(IComponentRegistry componentRegistry)
+		protected TimedActivationExtension(IMatcherProvider matcherProvider)
 		{
-			Matcher = componentRegistry.CreateMatcher(new [] { typeof(TimedActivation) });
+			Matcher = matcherProvider.CreateMatcher(new [] { typeof(TimedActivation) });
 		}
 
 		public void OnActivating(Entity item, Activation activation)

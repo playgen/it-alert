@@ -13,11 +13,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		private readonly List<ISubsystemResourceEffect> _resourceEffects;
 
 
-		public SubsystemResources(IComponentRegistry componentRegistry, 
+		public SubsystemResources(IMatcherProvider matcherProvider, 
 			IEntityRegistry entityRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<ISubsystemResourceEffect> resourceEffects) 
-			: base(componentRegistry, entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
 			_resourceEffects = resourceEffects;
 		}

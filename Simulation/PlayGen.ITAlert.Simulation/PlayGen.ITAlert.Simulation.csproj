@@ -53,11 +53,13 @@
   <ItemGroup>
     <Compile Include="Commands\RequestActivateItemCommand.cs" />
     <Compile Include="Commands\RequestDropItemCommand.cs" />
-    <Compile Include="Commands\SetActorDestinationCommand.cs" />
+    <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\RequestPickupItemCommand.cs" />
     <Compile Include="Commands\Sequence\CommandSequence.cs" />
     <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
     <Compile Include="Commands\SpawnNpcCommand.cs" />
+    <Compile Include="Commands\Tutorial\HideTextCommand.cs" />
+    <Compile Include="Commands\Tutorial\DisplayTextCommand.cs" />
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
@@ -69,6 +71,10 @@
     <Compile Include="Components\Movement\SubsystemMovementFlag.cs" />
     <Compile Include="Components\Flags\Player.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
+    <Compile Include="Components\Tutorial\Highlight.cs" />
+    <Compile Include="Components\Tutorial\Text.cs" />
+    <Compile Include="Configuration\Scenario.cs" />
+    <Compile Include="GameScenarios.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />

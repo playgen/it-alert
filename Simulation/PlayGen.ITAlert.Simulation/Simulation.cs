@@ -29,24 +29,25 @@ namespace PlayGen.ITAlert.Simulation
 	/// </summary>
 	public class Simulation : ECS<SimulationConfiguration>
 	{
-		//TODO: replace with some sort of global components - or make the simulation or rather 'graph' or something an entity with the layout components on it
+		private SimulationConfiguration _configuration;
 
-		public Vector GraphSize { get; private set; }
+		//TODO: replace with some sort of global components - or make the simulation or rather 'graph' or something an entity with the layout components on it
 
 		public Simulation(SimulationConfiguration configuration,
 			IEntityRegistry entityRegistry, 
-			IComponentRegistry componentRegistry, 
+			IMatcherProvider matcherProvider, 
 			ISystemRegistry systemRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			EntityFactoryProvider entityFactoryProvider)
-			: base(configuration, entityRegistry, componentRegistry, systemRegistry, entityFactoryProvider)
+			IEntityFactoryProvider entityFactoryProvider)
+			: base(configuration, entityRegistry, matcherProvider, systemRegistry, entityFactoryProvider)
 		{
+			_configuration = configuration;
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?
 			//configuration.Archetypes.ForEach(archetype => Archetypes.Add(archetype.Name, archetype));
 			//configuration.Archetypes.ForEach(archetype => ComponentFactory.AddFactoryMethods(archetype.Name, archetype.Components));
 
 			// initialization
-			InitializeGraphEntities(configuration);
+			InitializeGraphEntities(_configuration);
 		}
 	
 		#region initialization
@@ -76,10 +77,6 @@ namespace PlayGen.ITAlert.Simulation
 			//	nodeDict[nodePosition.Key].X = nodePosition.Value.X;
 			//	nodeDict[nodePosition.Key].Y = nodePosition.Value.Y;
 			//}
-
-			var width = nodeConfigs.Max(v => v.X) - nodeConfigs.Min(v => v.X);
-			var height = nodeConfigs.Max(v => v.Y) - nodeConfigs.Min(v => v.Y);
-			GraphSize = new Vector(width, height);
 		}
 
 		public Dictionary<int, Entity> CreateSystems(List<NodeConfig> nodeConfigs)
@@ -105,6 +102,8 @@ namespace PlayGen.ITAlert.Simulation
 
 				return subsystem;
 			}
+			subsystem?.Dispose();
+
 			throw new SimulationException($"Could not create system for archetype '{archetype}'");
 		}
 
@@ -116,8 +115,8 @@ namespace PlayGen.ITAlert.Simulation
 		public Entity CreateConnection(Dictionary<int, Entity> subsystems, EdgeConfig edgeConfig)
 		{
 			var archetype = GameEntities.Connection.Name;
-			Entity connection;
 
+			Entity connection;
 			if (EntityFactoryProvider.TryCreateEntityFromArchetype(archetype, out connection))
 			{ 
 				var head = subsystems[edgeConfig.Source];
@@ -134,6 +133,7 @@ namespace PlayGen.ITAlert.Simulation
 				edgeConfig.EntityId = connection.Id;
 				return connection;
 			}
+			connection?.Dispose();
 			throw new SimulationException($"Could not create connection from archetype '{archetype}'");
 		}
 
@@ -147,6 +147,7 @@ namespace PlayGen.ITAlert.Simulation
 					subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
 					continue;
 				}
+				item?.Dispose();
 				throw new SimulationException($"Could not craete item for archtype '{itemConfig.TypeName}'");
 			}
 		}
@@ -155,10 +156,11 @@ namespace PlayGen.ITAlert.Simulation
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)
 		{
 			MovementSystem movementSystem;
-			if (SystemRegistry.TryGetSystem<MovementSystem>(out movementSystem) == false)
+			if (SystemRegistry.TryGetSystem(out movementSystem) == false)
 			{
 				throw new ConfigurationException($"Unable to resolve {typeof(MovementSystem).Name} while processing player configuration.");
 			}
+
 			foreach (var playerConfig in playerConfigs)
 			{
 				Entity player;
@@ -169,6 +171,7 @@ namespace PlayGen.ITAlert.Simulation
 					movementSystem.AddVisitor(subsystems[startingLocationId], player);
 					continue;
 				}
+				player?.Dispose();
 				throw new SimulationException($"Could not craete player for id '{playerConfig.Id}'");
 			}
 		}
@@ -191,6 +194,7 @@ namespace PlayGen.ITAlert.Simulation
 				}
 				return actor;
 			}
+			actor?.Dispose();
 			throw new Exception("Unkown npc type");
 		}
 
