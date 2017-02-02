@@ -94,6 +94,10 @@
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj">
+      <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
+      <Name>PlayGen.Photon.Analytics</Name>
+    </ProjectReference>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
       <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
       <Name>PlayGen.Photon.Messages</Name>
@@ -125,10 +129,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Plugin.Analytics\PlayGen.Photon.Plugin.Analytics.csproj">
-      <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
-      <Name>PlayGen.Photon.Plugin.Analytics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
