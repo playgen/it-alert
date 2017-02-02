@@ -262,21 +262,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var wait = 0.0;
 			while (true)
 			{
-				start = DateTime.Now;
+				//start = DateTime.Now;
 				var handle = WaitHandle.WaitAny(new WaitHandle[] { MessageSignal });
-				wait = DateTime.Now.Subtract(start).TotalMilliseconds;
+				//wait = DateTime.Now.Subtract(start).TotalMilliseconds;
 				if (handle == 0)
 				{
 					_tick++;
-					start = DateTime.Now;
+					//start = DateTime.Now;
 					SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
-					deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
-					start = DateTime.Now;
+					//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
+					//start = DateTime.Now;
 					UpdateSignal.Set();
 					UpdateCompleteSignal.WaitOne();
-					update = DateTime.Now.Subtract(start).TotalMilliseconds;
+					//update = DateTime.Now.Subtract(start).TotalMilliseconds;
 				}
-				Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
+				//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
 				_tps = (float) (1.0f / (deserialize + update));
 			}
 		}
