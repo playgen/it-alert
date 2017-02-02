@@ -234,6 +234,7 @@
     <Compile Include="Utilities\GameObjectUtilities.cs" />
     <Compile Include="Utilities\LoadingUtility.cs" />
     <Compile Include="Utilities\PopupUtility.cs" />
+    <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">
