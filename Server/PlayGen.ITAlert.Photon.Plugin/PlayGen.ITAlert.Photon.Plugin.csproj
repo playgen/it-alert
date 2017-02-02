@@ -52,7 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GameWork.Core.States">
-      <HintPath>..\..\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
+      <HintPath>..\photon-plugin\lib\GameWork\Core\GameWork.Core.States.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Json.Net.Unity3D.9.0.1\lib\net35\Newtonsoft.Json.dll</HintPath>
@@ -82,16 +82,26 @@
   <ItemGroup>
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
+    <Compile Include="RoomSettings.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />
+    <Compile Include="RoomStates\RoomState.cs" />
     <Compile Include="RoomStates\Transitions\EventTransition.cs" />
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj">
+      <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
+      <Name>PlayGen.Photon.Analytics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Common\PlayGen.Photon.Common.csproj">
+      <Project>{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}</Project>
+      <Name>PlayGen.Photon.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Messages\PlayGen.Photon.Messages.csproj">
       <Project>{e5664c3b-0b84-46ff-84d2-3603b9202c6f}</Project>
       <Name>PlayGen.Photon.Messages</Name>
@@ -112,6 +122,10 @@
       <Project>{F62B5705-BF54-498A-B662-704C0B50C0B6}</Project>
       <Name>PlayGen.Photon.SUGAR</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj">
+      <Project>{61105235-93d2-4793-bdad-c7ef42b198fe}</Project>
+      <Name>PlayGen.ITAlert.Photon.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Messages\PlayGen.ITAlert.Photon.Messages.csproj">
       <Project>{02999433-bc54-495b-89f2-9075bb5d0082}</Project>
       <Name>PlayGen.ITAlert.Photon.Messages</Name>
@@ -123,10 +137,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Photon.Serialization\PlayGen.ITAlert.Photon.Serialization.csproj">
       <Project>{32DC2199-5631-4682-92CE-9D1E6ACD8F86}</Project>
       <Name>PlayGen.ITAlert.Photon.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Plugin.Analytics\PlayGen.Photon.Plugin.Analytics.csproj">
-      <Project>{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}</Project>
-      <Name>PlayGen.Photon.Plugin.Analytics</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

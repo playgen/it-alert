@@ -86,8 +86,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		{
 			_photonClient.CurrentRoom.Messenger.SendMessage(new StartGameMessage
 			{
-				Force = forceStart,
-				Close = closeRoom,
+				Force = forceStart
 			});
 		}
 

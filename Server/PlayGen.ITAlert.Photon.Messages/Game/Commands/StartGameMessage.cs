@@ -4,9 +4,6 @@
 	{
 		public bool Force { get; set; }
 
-		public bool Close { get; set; }
-
 		public string ScenarioId { get; set; }
-
 	}
 }
