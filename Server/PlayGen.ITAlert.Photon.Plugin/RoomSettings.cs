@@ -10,14 +10,14 @@ namespace PlayGen.ITAlert.Photon.Plugin
         {
             get
             {
-                return PhotonPlugin.PluginHost.CustomGameProperties
+                return PhotonPlugin.PluginHost.GameProperties
                   .ValueOrDefault<string, bool>(CustomRoomSettingKeys.CloseOnStarted);
             }
             set
             {
                 if (OpenOnEnded != value)
                 {
-                    PhotonPlugin.PluginHost.CustomGameProperties[CustomRoomSettingKeys.CloseOnStarted] = value;
+                    PhotonPlugin.PluginHost.GameProperties[CustomRoomSettingKeys.CloseOnStarted] = value;
                 }
             }
         }
@@ -26,14 +26,14 @@ namespace PlayGen.ITAlert.Photon.Plugin
         {
             get
             {
-                return PhotonPlugin.PluginHost.CustomGameProperties
+                return PhotonPlugin.PluginHost.GameProperties
                   .ValueOrDefault<string, bool>(CustomRoomSettingKeys.OpenOnEnded);
             }
             set
             {
                 if (OpenOnEnded != value)
                 {
-                    PhotonPlugin.PluginHost.CustomGameProperties[CustomRoomSettingKeys.OpenOnEnded] = value;
+                    PhotonPlugin.PluginHost.GameProperties[CustomRoomSettingKeys.OpenOnEnded] = value;
                 }
             }
         }
