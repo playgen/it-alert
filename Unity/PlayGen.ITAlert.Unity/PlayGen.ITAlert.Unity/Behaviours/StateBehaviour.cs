@@ -1,4 +1,5 @@
 ﻿using GameWork.Core.States.Tick;
+using GameWork.Unity.Engine.Components;
 using UnityEngine;
 using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.States.Game;
