@@ -20,11 +20,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		private readonly ComponentMatcherGroup _movementNodesMatcher;
 
-		public MovementSystem(IComponentRegistry componentRegistry, 
+		public MovementSystem(IMatcherProvider matcherProvider, 
 			IEntityRegistry entityRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<IMovementSystemExtension> movementSystemExtensions)
-			: base(componentRegistry, entityRegistry)
+			: base(matcherProvider, entityRegistry)
 		{
 			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
 
@@ -33,8 +33,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 				entityMovementSystem.Value.VisitorTransition += ValueOnVisitorTransition;
 			}
 
-			_movementNodesMatcher = componentRegistry.CreateMatcherGroup(new[] { typeof(Visitors), typeof(GraphNode) });
-			componentRegistry.RegisterMatcher(_movementNodesMatcher);
+			_movementNodesMatcher = matcherProvider.CreateMatcherGroup(new[] { typeof(Visitors), typeof(GraphNode) });
+			matcherProvider.RegisterMatcher(_movementNodesMatcher);
 		}
 
 		public void AddVisitor(Entity node, Entity visitor)
