@@ -706,11 +706,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 632463440}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 2090218939, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
+  m_Script: {fileID: 1644387203, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: {fileID: 0}
-  _animation: {fileID: 0}
 --- !u!1 &638677827
 GameObject:
   m_ObjectHideFlags: 0
@@ -2126,7 +2124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.2509804}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2391,7 +2389,7 @@ Prefab:
     - target: {fileID: 224285432201621632, guid: 7b6cf604dbced7348a34d082e2403d18,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 76.69998
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224285432201621632, guid: 7b6cf604dbced7348a34d082e2403d18,
         type: 2}
@@ -2401,7 +2399,7 @@ Prefab:
     - target: {fileID: 224285432201621632, guid: 7b6cf604dbced7348a34d082e2403d18,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 153.40002
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224285432201621632, guid: 7b6cf604dbced7348a34d082e2403d18,
         type: 2}

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4082749825476738}
   - component: {fileID: 114076094412560600}
+  - component: {fileID: 114354962514626870}
   m_Layer: 0
   m_Name: Tracker
   m_TagString: Untagged
@@ -59,3 +60,14 @@ MonoBehaviour:
   host: http://tracker.playgen.com/api/proxy/gleaner/collector/
   trackingCode: 58935a97e6806a006e3ae7bdmxu025wsdu7919k9
   debug: 1
+--- !u!114 &114354962514626870
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1610953669819490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1999435168, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
