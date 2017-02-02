@@ -2,6 +2,7 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -15,14 +16,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		public event Action JoinedRoomEvent;
 
 		private readonly Client _photonClient;
+		private readonly ScenarioController _scenarioController;
+
 		private GameObject _createGamePanel;
 		private ButtonList _buttons;
 		private Button _createGamePopupButton;
 		private Button _createGameCloseButton;
 
-		public CreateGameStateInput(Client photonClient)
+		public CreateGameStateInput(Client photonClient, ScenarioController scenarioController)
 		{
 			_photonClient = photonClient;
+			_scenarioController = scenarioController;
 		}
 
 		protected override void OnInitialize()
@@ -59,10 +63,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnEnter()
 		{
+			LoadingUtility.HideSpinner();
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_createGamePanel.SetActive(true);
 			_buttons.BestFit();
-			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields();
+			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields(_scenarioController.Selected);
 		}
 
 		protected override void OnExit()

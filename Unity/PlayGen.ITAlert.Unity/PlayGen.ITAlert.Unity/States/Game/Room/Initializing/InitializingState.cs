@@ -4,7 +4,7 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
-using PlayGen.ITAlert.Unity.Network;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;

@@ -10,21 +10,28 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public override string Name => StateName;
 
-		public bool IsComplete => SUGARManager.CurrentUser != null;
+
+		public bool IsComplete { get; private set; }
+
+		private bool _repeatBlock;
 
 		protected override void OnEnter()
 		{
-			if (SUGARManager.CurrentUser == null)
+			if (!_repeatBlock)
 			{
+				_repeatBlock = true;
+				IsComplete = false;
 				SUGARManager.Account.DisplayPanel(success =>
 				{
+					var autoLogIn = !SUGARManager.Account.IsActive;
 					if (success)
 					{
-						UnityEngine.Debug.Log("Sugar login successful.");
+						IsComplete = true;
 					}
-					else
+					else if (autoLogIn)
 					{
-						UnityEngine.Debug.LogError("Sugar login failed to login.");
+						_repeatBlock = false;
+						OnEnter();
 					}
 				});
 			}
@@ -34,5 +41,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		{
 			SUGARManager.Account.Hide();
 		}
+
 	}
 }

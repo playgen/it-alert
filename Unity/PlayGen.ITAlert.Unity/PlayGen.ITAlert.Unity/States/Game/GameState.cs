@@ -1,8 +1,8 @@
 ﻿using System;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.Network;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Client;

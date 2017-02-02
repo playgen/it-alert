@@ -1,5 +1,5 @@
 ﻿using System;
-using PlayGen.ITAlert.Unity.Behaviours;
+using GameWork.Unity.Engine.Components;
 using PlayGen.Photon.Messaging.Interfaces;
 using UnityEngine;
 using ExitGames.Client.Photon;
@@ -10,6 +10,7 @@ namespace PlayGen.Photon.Unity.Client
 	{
 		private readonly PhotonClientWrapper _photonClientWrapper;
 		private readonly IMessageSerializationHandler _messageSerializationHandler;
+
 		private readonly GameObject _clientGameObject;
 
 		private bool _isDisposed;
