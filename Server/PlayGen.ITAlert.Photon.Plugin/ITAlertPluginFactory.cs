@@ -20,11 +20,8 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			{
 				// this should match assembly qualified class name from config
 				case RoomControllerPlugin.PluginName:
-					var sugarAnalytics = new AnalyticsServiceAdapter();
-					var analyticsServiceManager = new AnalyticsServiceManager(sugarAnalytics);
-
 					plugin = new RoomControllerPlugin(new ITAlertMessageSerializationHandler(), 
-						new ITAlertRoomStateControllerFactory(), analyticsServiceManager);
+						new ITAlertRoomStateControllerFactory());
 					break;
 
 				default:

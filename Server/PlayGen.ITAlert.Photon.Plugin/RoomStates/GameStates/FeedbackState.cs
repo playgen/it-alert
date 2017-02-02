@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Plugin.States;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using Photon.Hive.Plugin;

@@ -2,6 +2,7 @@
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.Photon.Messaging.Interfaces;
 using UnityEngine;
+using ExitGames.Client.Photon;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -68,9 +69,9 @@ namespace PlayGen.Photon.Unity.Client
 			return _photonClientWrapper.ListRooms(filters);
 		}
 
-		public void CreateRoom(string roomName, int maxPlayers)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
 		{
-			_photonClientWrapper.CreateRoom(roomName, maxPlayers);
+			_photonClientWrapper.CreateRoom(roomName, maxPlayers, customRoomProperties);
 		}
 
 		public void JoinRoom(string roomName)

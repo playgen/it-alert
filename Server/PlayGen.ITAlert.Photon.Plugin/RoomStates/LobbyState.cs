@@ -6,7 +6,6 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.Photon.Analytics;
@@ -53,7 +52,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var startGameMessage = message as StartGameMessage;
 			if (startGameMessage != null)
 			{
-				TryStartGame(startGameMessage.Force, startGameMessage.Close);
+				TryStartGame(startGameMessage.Force);
 				return;
 			}
 
@@ -62,27 +61,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private void TryStartGame()
 		{
-			TryStartGame(false, true);
+			TryStartGame(false);
 		}
 
-		private void TryStartGame(bool force, bool close)
+		private void TryStartGame(bool force)
 		{
-			if (AreStartGameConditionsMet() || force)
+			if (force || (PlayerManager.Players.Count >= RoomSettings.MinPlayers &&
+					PlayerManager.Players.GetCombinedStates() == ClientState.Ready))
 			{
-				// todo check if CloseOnStart AND :
-				if (close)
+				if (RoomSettings.CloseOnStarted)
 				{
 					RoomSettings.IsOpen = false;
+					RoomSettings.IsVisible = false;
 				}
 
 				GameStartedEvent?.Invoke();
 			}
-		}
-
-		private bool AreStartGameConditionsMet()
-		{
-			return PlayerManager.Players.Count >= RoomSettings.MinPlayers &&
-					PlayerManager.Players.GetCombinedStates() == ClientState.Ready;
 		}
 	}
 }
