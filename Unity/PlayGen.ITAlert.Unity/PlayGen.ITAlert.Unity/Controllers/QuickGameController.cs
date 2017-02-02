@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
 
@@ -28,7 +29,14 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			}
 			else
 			{
-				_createGameController.CreateGame(UniqueGameName, _defaultMaxPlayers);
+			    _createGameController.CreateGame(new CreateRoomSettings
+			    {
+			        Name = UniqueGameName,
+			        MinPlayers = _defaultMaxPlayers,
+			        MaxPlayers = _defaultMaxPlayers,
+			        CloseOnStarted = true,
+			        OpenOnEnded = true
+			    });
 			}
 		}
 	}

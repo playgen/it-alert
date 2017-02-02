@@ -3,6 +3,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -52,7 +53,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		private void OnCreateClick()
 		{
 			var details = _createGamePanel.GetComponent<CreateGamePopupBehaviour>().GetGameDetails();
-			CommandQueue.AddCommand(new CreateGameCommand(details.GameName, details.MaxPlayers));
+			CommandQueue.AddCommand(new CreateGameCommand(new CreateRoomSettings
+			{
+				Name = details.GameName,
+				MinPlayers = details.MaxPlayers,
+				MaxPlayers = details.MaxPlayers,
+				CloseOnStarted = true,
+				OpenOnEnded = true
+			}));
 			LoadingUtility.ShowSpinner();
 		}
 
