@@ -3,7 +3,7 @@ using System.Linq;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
-using PlayGen.ITAlert.Unity.Behaviours;
+using GameWork.Unity.Engine.Components;
 
 namespace PlayGen.Photon.Unity.Client
 {

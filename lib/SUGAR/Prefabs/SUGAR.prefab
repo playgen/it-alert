@@ -107,14 +107,16 @@ MonoBehaviour:
   m_Script: {fileID: -2015201922, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _baseAddress: http://localhost:62312/
-  _gameToken: 
-  _gameId: 0
+  _baseAddress: http://api.sugarengine.org/
+  _gameToken: IT Alert
+  _gameId: 2
   _useAchievements: 1
   _useLeaderboards: 1
   _uiBlocker: {fileID: 1823420820520756, guid: 32aeda71493f8f843ac0595a41de113d, type: 2}
+  _useBlocker: 1
+  _blockerClickClose: 0
   _uiSpinner: {fileID: 1728504751892352, guid: 225fde9262ab3a441a877acceec873ec, type: 2}
-  _spinSpeed: 1
+  _spinSpeed: 5
   _spinClockwise: 1
 --- !u!114 &114000012266143498
 MonoBehaviour:
@@ -199,16 +201,16 @@ Canvas:
   m_GameObject: {fileID: 1000011383437524}
   m_Enabled: 1
   serializedVersion: 2
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
+  m_PlaneDistance: 1
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1238663097
+  m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!224 &224000013773299334
 RectTransform:

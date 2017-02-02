@@ -184,7 +184,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 		public static SimulationRoot GenerateSimulation(SimulationConfiguration configuration)
 		{
 			// TODO: this should all come from config
-			configuration.NodeConfiguration.First().EnhancementName = GameEntities.AnalysisEnhancement.Name;
+			//configuration.NodeConfiguration.First().EnhancementName = GameEntities.AnalysisEnhancement.Name;
 
 			return SimulationInstaller.CreateSimulationRoot(configuration);
 
