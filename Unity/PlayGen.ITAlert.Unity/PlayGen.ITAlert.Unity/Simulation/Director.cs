@@ -73,6 +73,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static PlayerBehaviour[] Players { get; private set; }
 
+		public static ItemPanel ItemPanel { get; private set; }
+
 		public static CommandResolver LocaResolver { get; private set; }
 
 		public static SimulationRules Rules => new SimulationRules();
@@ -151,6 +153,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				//SetState();
 				CreateInitialEntities();
 				// todo uncomment SelectPlayer();
+				ItemPanel = new ItemPanel();
 
 				SetupPlayers(players, playerServerId);
 
