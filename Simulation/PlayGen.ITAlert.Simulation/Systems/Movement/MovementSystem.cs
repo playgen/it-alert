@@ -14,18 +14,20 @@ using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class MovementSystem : Engine.Systems.System, ITickableSystem
+	public class MovementSystem : ISystem, ITickableSystem
 	{
 		private readonly Dictionary<EntityType, IMovementSystemExtension> _movementSystems;
 
 		private readonly ComponentMatcherGroup _movementNodesMatcher;
 
+		private readonly IEntityRegistry _entityRegistry;
+
 		public MovementSystem(IMatcherProvider matcherProvider, 
 			IEntityRegistry entityRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<IMovementSystemExtension> movementSystemExtensions)
-			: base(matcherProvider, entityRegistry)
 		{
+			_entityRegistry = entityRegistry;
 			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
 
 			foreach (var entityMovementSystem in _movementSystems)
@@ -53,7 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		private void ValueOnVisitorTransition(int nodeId, Entity visitor, Entity source, int initialPosition, int currentTick)
 		{
 			Entity node;
-			if (EntityRegistry.TryGetEntityById(nodeId, out node))
+			if (_entityRegistry.TryGetEntityById(nodeId, out node))
 			{
 				ExecuteMovementSystemAction(node, system => system.AddVisitorToNode(node, visitor, source, initialPosition, currentTick));
 			}
