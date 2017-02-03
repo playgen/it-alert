@@ -52,10 +52,9 @@ Unity/*.csproj
 Unity/Unity.userprefs
 Unity/Assets/SUGAR/
 Unity/Assets/GameWork/
-Unity/Assets/PlayGen.ITAlert.Unity/
-Unity/Assets/PlayGen.Photon.Unity/
 *.mdb.meta
 *.mdb
+*.pdb.meta
 
 # we want photon server lib dlls
 !/Server/lib/*
@@ -73,12 +72,6 @@ Server/deploy/LoadBalancing/bin/Cache/
 *.dll
 *.pdb
 bin/*.xml
-
-!lib/*.dll
-!lib/*.pdb
-!lib/**/*.dll
-!lib/**/*.pdb
-!lib/**/[Bb]in
 
 !Server/deploy/Policy/
 !Server/deploy/bin*/*
@@ -103,6 +96,7 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 !Server/deploy/LoadBalancing/bin/*.pdb
 
 !Unity/lib/*.dll
+!Unity/lib/*.dll.meta
 
 ~*.docx
 
