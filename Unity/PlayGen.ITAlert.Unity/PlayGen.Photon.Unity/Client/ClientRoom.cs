@@ -71,7 +71,6 @@ namespace PlayGen.Photon.Unity.Client
 			Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
 
 			_voiceClient = new VoiceClient();
-			_voiceClient.OnJoinedRoom();
 
 			_photonClientWrapper.EventRecievedEvent += OnRecievedEvent;
 
@@ -137,7 +136,7 @@ namespace PlayGen.Photon.Unity.Client
 
 				Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
 
-				_voiceClient.OnLeftRoom();
+				_voiceClient.Dispose();
 				_photonClientWrapper.EventRecievedEvent -= OnRecievedEvent;
 
 				_isDisposed = true;
@@ -157,12 +156,12 @@ namespace PlayGen.Photon.Unity.Client
 
 		internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)
 		{
-			OtherPlayerJoinedEvent?.Invoke(otherPlayer);
+			OtherPlayerLeftEvent?.Invoke(otherPlayer);
 		}
 
 		internal void OnOtherPlayerJoined(PhotonPlayer otherPlayer)
 		{
-			OtherPlayerLeftEvent?.Invoke(otherPlayer);
+			OtherPlayerJoinedEvent?.Invoke(otherPlayer);
 		}
 	}
 }

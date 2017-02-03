@@ -12,19 +12,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public const string StateName = "RoomState";
 		public override string Name => StateName;
 		
-		private readonly VoiceController _voiceController;
-		private readonly Room.RoomStateControllerFactory _controllerFactory;
+		private readonly RoomStateControllerFactory _controllerFactory;
+        private readonly Client _photonClient;
 
-		private TickStateController _stateController;
+        private TickStateController _stateController;
+	    private VoiceController _voiceController;
 
-		private readonly Client _photonClient;
-
-		public RoomState(RoomStateInput tickStateInput, Client photonClient, VoiceController voiceController) 
+	    public RoomState(RoomStateInput tickStateInput, Client photonClient) 
 			: base(tickStateInput)
 		{
-			_voiceController = voiceController;
-			_controllerFactory = new Room.RoomStateControllerFactory(photonClient, voiceController);
-			_photonClient = photonClient;
+		    _photonClient = photonClient;
+			_controllerFactory = new RoomStateControllerFactory(photonClient);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
@@ -34,7 +32,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnEnter()
 		{
-			_stateController = _controllerFactory.Create();
+            _voiceController = new VoiceController(_photonClient);
+
+            _stateController = _controllerFactory.Create();
 			_stateController.Initialize();
 			_stateController.EnterState(LobbyState.StateName);
 		}
