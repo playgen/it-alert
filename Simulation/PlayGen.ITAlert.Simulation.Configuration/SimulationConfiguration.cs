@@ -17,10 +17,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		//public SimulationRules Rules { get; private set; }
 
-		public SimulationConfiguration()
-		{
-		}
-
 		public SimulationConfiguration(List<NodeConfig> nodeConfiguration, 
 			List<EdgeConfig> edgeConfiguration, 
 			List<PlayerConfig> playerConfiguration, 

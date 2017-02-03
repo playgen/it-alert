@@ -30,6 +30,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private static readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
+		private static readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
 
 		private static float _tps;
 		private static int _tick;
@@ -65,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static Client Client { get; set; }
 
-		public static System.Random Random = new System.Random((int) DateTime.UtcNow.Ticks);
+		public static System.Random Random = new System.Random((int)DateTime.UtcNow.Ticks);
 
 		private static GameObject _gameOverWon;
 		private static GameObject _gameOverLost;
@@ -144,8 +145,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				// center graph
 				//
 				UIConstants.NetworkOffset -= new Vector2(
-					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
-					(float) SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
+					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
+					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
 
 				//SetState();
 				CreateInitialEntities();
@@ -186,8 +187,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			Entities.Clear();
 		}
 
-		public void Awake()
+		public void Start()
 		{
+
+
+
 		}
 
 		private static void SetupPlayers(List<Player> players, int playerServerId)
@@ -201,7 +205,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					UIEntity playerUiEntity;
 					if (Entities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
 					{
-						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
+						var playerBehaviour = (PlayerBehaviour)playerUiEntity.EntityBehaviour;
 						if (player.PhotonId == playerServerId)
 						{
 							_activePlayer = playerBehaviour;
@@ -254,6 +258,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static string _stateJson;
 
+		public static void StopWorker()
+		{
+			TerminateSignal.Set();
+		}
+
 		private static void ThreadWorker()
 		{
 			DateTime start;
@@ -263,9 +272,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			while (true)
 			{
 				//start = DateTime.Now;
-				var handle = WaitHandle.WaitAny(new WaitHandle[] { MessageSignal });
+				var handle = WaitHandle.WaitAny(new WaitHandle[] { TerminateSignal, MessageSignal });
 				//wait = DateTime.Now.Subtract(start).TotalMilliseconds;
 				if (handle == 0)
+				{
+					break;
+				}
+				if (handle == 1)
 				{
 					_tick++;
 					//start = DateTime.Now;
@@ -273,17 +286,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
 					//start = DateTime.Now;
 					UpdateSignal.Set();
+					//System.IO.File.WriteAllText($"d:\\temp\\{_tick++}.json", _stateJson);
 					UpdateCompleteSignal.WaitOne();
 					//update = DateTime.Now.Subtract(start).TotalMilliseconds;
 				}
 				//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
-				_tps = (float) (1.0f / (deserialize + update));
+				_tps = (float)(1.0f / (deserialize + update));
 			}
 		}
 
 		public static void UpdateSimulation(string stateJson)
 		{
-			System.IO.File.WriteAllText($"o:\\temp\\{_tick++}.json", stateJson);
+			
 			_stateJson = stateJson;
 			MessageSignal.Set();
 		}
@@ -361,7 +375,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var behaviour = didWin ? GameOverBehaviours[GameOverBehaviour.GameOverCondition.Success] : GameOverBehaviours[GameOverBehaviour.GameOverCondition.Failure];
 			behaviour.SetActive(true);
 		}
-	
+
 		#endregion
 
 		#region UI accessors
