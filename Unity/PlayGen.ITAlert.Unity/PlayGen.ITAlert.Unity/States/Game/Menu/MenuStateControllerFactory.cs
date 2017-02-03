@@ -1,7 +1,9 @@
-﻿using GameWork.Core.States;
+﻿using System;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.ITAlert.Unity.States.Game.Menu.GamesList;
 using PlayGen.ITAlert.Unity.States.Game.Room;
@@ -46,7 +48,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 		private MainMenuState CreateMainMenuState(Client photonClient, CreateGameController createGameController)
 		{
-			var quickGameController = new QuickGameController(_photonClient, createGameController, 4);
+			var quickGameController = new QuickGameController(_photonClient, createGameController, new CreateRoomSettings
+			{
+				Name = Guid.NewGuid().ToString().Substring(0, 7),
+				MinPlayers = 1,
+				MaxPlayers = 4,
+				CloseOnStarted = true,
+				OpenOnEnded = true
+				
+			});
 
 			var input = new MenuStateInput(photonClient);
 			var state = new MainMenuState(input, quickGameController);
