@@ -89,8 +89,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				var playerItem = UnityEngine.Object.Instantiate(_playerChatItemPrefab).transform;
 
-				var color = new Color();
-				ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				Color color;
+				ColorUtility.TryParseHtmlString(player.Color, out color);
+				if (color == Color.white)
+				{
+					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				}
 
 				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
 				nameText.text = player.Name;

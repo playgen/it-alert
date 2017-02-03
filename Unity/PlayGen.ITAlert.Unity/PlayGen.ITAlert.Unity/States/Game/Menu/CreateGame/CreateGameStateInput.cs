@@ -82,6 +82,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			{
 				OnBackClick();
 			}
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				OnBackClick();
+			}
 		}
 
 		private void OnJoinedRoom(ClientRoom room)
