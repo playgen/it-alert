@@ -63,6 +63,11 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		{
 			try
 			{
+			    if (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Disconnected)
+			    {
+			        _photonClient.Connect();
+			    }
+
 				_stateController.Tick(deltaTime);
 			}
 			catch (Exception exception)
