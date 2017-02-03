@@ -158,6 +158,7 @@
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
+    <Compile Include="Simulation\ItemPanel.cs" />
     <Compile Include="States\GameErrorContainer.cs" />
     <Compile Include="States\Game\GameState.cs" />
     <Compile Include="States\Game\Menu\CreateGame\CreateGameController.cs" />
