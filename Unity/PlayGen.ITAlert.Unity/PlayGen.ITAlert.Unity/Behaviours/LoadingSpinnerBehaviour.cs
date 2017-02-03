@@ -26,11 +26,11 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			_spinner = transform.Find("LoadingPanelContainer/LoadingSpinner").gameObject;
 		}
 
-		private void FixedUpdate()
+		private void Update()
 		{
 			if (_spin)
 			{
-				_spinner.transform.Rotate(0, 0, (_spinClockwise ? -1 : 1) * _spinSpeed);
+				_spinner.transform.Rotate(0, 0, (_spinClockwise ? -1 : 1) * _spinSpeed * Time.smoothDeltaTime);
 			}
 		}
 
@@ -42,7 +42,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		public void StartSpinner()
 		{
-			//Debug.Log("Show spinner");
 			_panel.SetActive(true);
 			_spinner.transform.localEulerAngles = Vector2.zero;
 			_spin = true;
@@ -50,7 +49,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		public void StopSpinner()
 		{
-			//Debug.Log("Stop spinner");
 			_panel.SetActive(false);
 			_spin = false;
 		}

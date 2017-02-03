@@ -1,4 +1,5 @@
-﻿using GameWork.Core.States;
+﻿using System;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -18,21 +19,18 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 	public class RoomStateControllerFactory
 	{
 		private readonly Client _photonClient;
-		private readonly VoiceController _voiceController;
 
 		public StateControllerBase ParentStateController { private get; set; }
 
 
-		public RoomStateControllerFactory(Client photonClient, VoiceController voiceController)
+		public RoomStateControllerFactory(Client photonClient)
 		{
 			_photonClient = photonClient;
-			_voiceController = voiceController;
 		}
-
 
 		public TickStateController Create()
 		{
-			var lobbyState = CreateLobbyState(_photonClient, _voiceController);
+			var lobbyState = CreateLobbyState(_photonClient);
 			var initializingState = CreateInitializingState(_photonClient);
 			var playingState = CreatePlayingState(_photonClient);
 			var pausedState = CreatePausedState(_photonClient);
@@ -51,12 +49,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			return stateController;
 		}
+		
 
-		private LobbyState CreateLobbyState(Client photonClient, VoiceController voiceController)
+		private LobbyState CreateLobbyState(Client photonClient)
 		{
 			var lobbyController = new LobbyController(_photonClient);
 			var input = new LobbyStateInput(lobbyController, photonClient);
-			var state = new LobbyState(input, lobbyController, photonClient, voiceController);
+			var state = new LobbyState(input, lobbyController, photonClient);
 
 			var initializingTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(InitializingMessage), InitializingState.StateName);
 			var toMenuStateTransition = new OnEventTransition(MenuState.StateName);
@@ -74,15 +73,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var state = new PausedState(input, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
-			var toFromStateTransition = new ToFromStateTranstition();
+			var toPlayingStateTransition = new OnEventTransition(PlayingState.StateName);
 			var toSettingsStateTransition = new OnEventTransition(SettingsState.StateName);
-			var quitTransition = new QuitTransition();
+			var quitTransition = new OnEventTransition(MenuState.StateName);
 
-			input.ContinueClickedEvent += toFromStateTransition.ChangeState;
+			input.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
 			input.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
-			input.QuitClickedEvent += quitTransition.Quit;
+			input.QuitClickedEvent += quitTransition.ChangeState;
 
-			state.AddTransitions(onFeedbackStateSyncTransition, toFromStateTransition, toSettingsStateTransition, quitTransition);
+			state.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
 
 			return state;
 		}
@@ -115,13 +114,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private SettingsState CreateSettingsState(Client photonClient)
 		{
-			var state = new SettingsState(new SettingsStateInput());
+			var input = new SettingsStateInput();
+			var state = new SettingsState(input);
 
+			var previousStateTransition = new OnEventTransition(PausedState.StateName);
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 
-			state.AddTransitions(onFeedbackStateSyncTransition);
+			input.BackClickedEvent += previousStateTransition.ChangeState;
 
-			return state; ;
+			state.AddTransitions(onFeedbackStateSyncTransition, previousStateTransition);
+
+			return state;
 		}
 
 		private static FeedbackState CreateFeedbackState(Client photonClient)

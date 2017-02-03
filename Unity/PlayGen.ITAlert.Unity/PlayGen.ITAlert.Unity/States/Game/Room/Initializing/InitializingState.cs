@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Simulation;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
@@ -33,6 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			{
 				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 			});
+			LoadingUtility.ShowSpinner();
 		}
 
 		protected override void OnExit()

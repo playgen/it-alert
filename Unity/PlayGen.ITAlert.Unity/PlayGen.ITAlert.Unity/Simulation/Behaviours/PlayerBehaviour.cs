@@ -23,9 +23,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Color _playerColor;
 		public Color PlayerColor => _playerColor;
 
-		[SerializeField]
-		private GameObject _decorator;
-
 		#region Initialization
 
 		public void Start()
@@ -92,29 +89,5 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		}
 
 		#endregion
-
-		private void ManageInventory(Vector2 itemPosition)
-		{
-			//if (EntityState.InventoryItem.HasValue)
-			//{
-			//	var item = Director.GetEntity(EntityState.InventoryItem.Value);
-			//	if ((item.EntityBehaviour as ItemBehaviour).IsOnSubsystem == false)
-			//	{
-			//		item.GameObject.transform.position = itemPosition;
-			//		//item.GameObject.transform.localScale = Vector3.one*UIConstants.ItemPlayerScale;
-			//	}
-			//}
-		}
-
-		public void EnableDecorator()
-		{
-			//_decorator.SetActive(true);
-
-		}
-
-		public void SetActive()
-		{
-			GetComponent<Renderer>().sortingOrder++;
-		}
 	}
 }
