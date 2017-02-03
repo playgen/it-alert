@@ -17,22 +17,22 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 	public class VisitorsConsumeCPUEffect : ISubsystemResourceEffect
 	{
 		private readonly ComponentMatcherGroup<Subsystem, Visitors, CPUResource> _subsystemMatcher;
-		private readonly ComponentMatcherGroup<IItem, ConsumeCPU> _visitorMatcher;
+		private readonly ComponentMatcherGroup<VisitorPosition, ConsumeCPU> _visitorMatcher;
 
 		public VisitorsConsumeCPUEffect(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
 			_subsystemMatcher = matcherProvider.CreateMatcherGroup<Subsystem, Visitors, CPUResource>();
-			_visitorMatcher = matcherProvider.CreateMatcherGroup<IItem, ConsumeCPU>();
+			_visitorMatcher = matcherProvider.CreateMatcherGroup<VisitorPosition, ConsumeCPU>();
 		}
 
 		public void Tick()
 		{
 			foreach (var subsystemTuple in _subsystemMatcher.MatchingEntities)
 			{
-				var sum = 0;
+				var sum = subsystemTuple.Component3.Value;
 				foreach (var visitorId in subsystemTuple.Component2.Values)
 				{
-					ComponentEntityTuple<IItem, ConsumeCPU> visitorTuple;
+					ComponentEntityTuple<VisitorPosition, ConsumeCPU> visitorTuple;
 					if (_visitorMatcher.TryGetMatchingEntity(visitorId, out visitorTuple))
 					{
 						sum += visitorTuple.Component2.Value;

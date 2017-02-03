@@ -21,7 +21,9 @@
 		public const int SubsystemPositions = 48;
 		public const int SubsystemMaxItems = 4;
 
+		public const int SubsystemInitialMemory = 0;
 		public const int SubsystemMaxMemory = 5;
+		public const int SubsystemInitialCPU = 0;
 		public const int SubsystemMaxCPU = 4;
 
 
@@ -40,9 +42,15 @@
 
 		#region items
 
+		public const int ItemMemoryConsumption = 1;
 
+		public const int ItemDefaultActivationDuration = 20;
 
 		#endregion
+
+		#region actors
+
+		public const int ActorCPUConsumption = 1;
 
 		#region viruses
 
@@ -66,7 +74,9 @@
 		/// <summary>
 		/// number of units to mvoe every tick
 		/// </summary>
-		public const int PlayerSpeed = 1;
+		public const int PlayerSpeed = 2;
+
+		#endregion
 
 		#endregion
 

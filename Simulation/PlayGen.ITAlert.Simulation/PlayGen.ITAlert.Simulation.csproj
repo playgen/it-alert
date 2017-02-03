@@ -108,6 +108,8 @@
     <Compile Include="Systems\Items\ItemManagement.cs" />
     <Compile Include="Systems\Malware\MalwareEffects.cs" />
     <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
+    <Compile Include="Systems\Resources\ResetMemoryEachTick.cs" />
+    <Compile Include="Systems\Resources\ResetCPUEachTick.cs" />
     <Compile Include="Systems\Resources\SubsystemResources.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
     <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />

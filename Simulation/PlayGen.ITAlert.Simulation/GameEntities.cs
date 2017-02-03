@@ -68,13 +68,15 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new MemoryResource()
 				{
-						Maximum = SimulationConstants.SubsystemMaxMemory,
+					Value = SimulationConstants.SubsystemInitialMemory,
+					Maximum = SimulationConstants.SubsystemMaxMemory,
 				}
 			})
 			.HasComponent(new ComponentBinding<CPUResource>()
 			{
 				ComponentTemplate = new CPUResource()
 				{
+					Value = SimulationConstants.SubsystemInitialCPU,
 					Maximum = SimulationConstants.SubsystemMaxCPU,
 				}
 			});
@@ -119,7 +121,14 @@ namespace PlayGen.ITAlert.Simulation
 					Value = EntityType.Player
 				}
 			})
-			.HasComponent(new ComponentBinding<Player>());
+			.HasComponent(new ComponentBinding<Player>())
+			.HasComponent(new ComponentBinding<ConsumeCPU>()
+			{
+				ComponentTemplate = new ConsumeCPU()
+				{
+					Value = SimulationConstants.ActorCPUConsumption,
+				}
+			});
 
 		#region viruses
 
@@ -187,7 +196,7 @@ namespace PlayGen.ITAlert.Simulation
 				{
 					ComponentTemplate = new ConsumeMemory()
 					{
-						Value = 1,
+						Value = SimulationConstants.ItemMemoryConsumption,
 					}
 				},
 				new ComponentBinding<Activation>(), 
@@ -200,7 +209,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -211,7 +220,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -222,7 +231,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -233,7 +242,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -244,7 +253,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -255,7 +264,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
@@ -266,7 +275,7 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new TimedActivation()
 				{
-					ActivationDuration = 20,
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
 
