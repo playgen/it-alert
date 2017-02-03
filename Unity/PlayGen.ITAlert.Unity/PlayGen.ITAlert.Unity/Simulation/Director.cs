@@ -165,7 +165,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			catch (Exception ex)
 			{
 				Debug.LogError($"Error initializing Director: {ex}");
-				throw ex;
+				throw;
 			}
 		}
 
