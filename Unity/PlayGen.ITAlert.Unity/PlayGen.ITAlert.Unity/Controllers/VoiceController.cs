@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		private VoiceClient _voiceClient;
 		private readonly Client _photonClient;
 
-		public VoiceController(Client photonClient)
+	    public VoiceController(Client photonClient)
 		{
 			_photonClient = photonClient;
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;

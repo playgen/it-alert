@@ -1,28 +1,23 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace PlayGen.Photon.Unity.Client.Voice
 {
-	public class VoiceClient
+	public class VoiceClient : IDisposable
 	{
 		private const string VoicePlayerPath = "PhotonVoicePlayer";
 
 		private static readonly Dictionary<int, PhotonVoicePlayer> VoicePlayers = new Dictionary<int, PhotonVoicePlayer>();
 
-		private readonly PhotonClientWrapper _photonClientWrapper;
+		private readonly GameObject _gameObject;
+		private readonly PhotonVoiceRecorder _rec;
 
-		private PhotonVoiceRecorder _rec;
-		
-		public bool IsEnabled
-		{
-			get { return _rec.enabled; }
-		}
+		private bool _isDisposed;
 
-		public bool IsTransmitting
-		{
-			get { return false; //_rec.IsTransmitting; }
-			}
-		}
+		public bool IsEnabled => _rec.enabled;
+		public bool IsTransmitting => _rec.IsTransmitting;
 
 		public static Dictionary<int, bool> TransmittingStatuses
 		{
@@ -52,6 +47,26 @@ namespace PlayGen.Photon.Unity.Client.Voice
 			PhotonVoiceSettings.Instance.AutoTransmit = false;
 			PhotonVoiceSettings.Instance.AutoDisconnect = true;
 			PhotonVoiceSettings.Instance.AutoConnect = true;
+
+			_gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
+			_rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
+
+			_rec.enabled = true;
+		}
+
+		~VoiceClient()
+		{
+			Dispose();
+		}
+
+		public void Dispose()
+		{
+			if (_isDisposed) return;
+
+			_rec.enabled = false;
+			Object.Destroy(_gameObject);
+
+			_isDisposed = true;
 		}
 
 		public static void RegisterVoicePlayer(int id, PhotonVoicePlayer photonVoicePlayer)
@@ -63,20 +78,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 		{
 			VoicePlayers.Remove(id);
 		}
-
-		public void OnJoinedRoom()
-		{
-			//var gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
-			//_rec = gameObject.GetComponent<PhotonVoiceRecorder>();
-
-			//_rec.enabled = true;
-		}
-
-		public void OnLeftRoom()
-		{
-			//_rec.enabled = false;
-		}
-
+		
 		public void StartTransmission()
 		{
 			if (!PhotonNetwork.connected)
@@ -95,7 +97,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 				return;
 			}
 
-			//_rec.Transmit = true;
+			_rec.Transmit = true;
 		}
 
 		public void StopTransmission()
@@ -115,8 +117,8 @@ namespace PlayGen.Photon.Unity.Client.Voice
 				Log("No PhotonVoiceRecorder found. Check the PhotonVoicePrefab loaded and is configured correctly.");
 				return;
 			}
-			
-			//_rec.Transmit = false;
+
+			_rec.Transmit = false;
 		}
 
 		private void Log(string message)

@@ -15,32 +15,29 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
         public bool IsOutputting { get; private set; }
 
-        public int OwnerId
-        {
-            get { return _photonView.ownerId; }
-        }
+        public int OwnerId => _photonView.ownerId; 
 
         private void OnEnable()
         {
-            //_photonView = GetComponent<PhotonView>();
-            //_photonVoiceRecorder = GetComponent<PhotonVoiceRecorder>();
-            //_photonVoiceSpeaker = GetComponent<PhotonVoiceSpeaker>();
+            _photonView = GetComponent<PhotonView>();
+            _photonVoiceRecorder = GetComponent<PhotonVoiceRecorder>();
+            _photonVoiceSpeaker = GetComponent<PhotonVoiceSpeaker>();
 
-            //VoiceClient.RegisterVoicePlayer(_photonView.ownerId, this);
+            VoiceClient.RegisterVoicePlayer(_photonView.ownerId, this);
         }
 
         private void OnDisable()
         {
-            //VoiceClient.UnregisterVoicePlayer(_photonView.ownerId);
+            VoiceClient.UnregisterVoicePlayer(_photonView.ownerId);
         }
 
         void Update()
         {
-            //IsRecording = _photonVoiceRecorder != null && _photonVoiceRecorder.IsTransmitting
-            //              && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
+            IsRecording = _photonVoiceRecorder != null && _photonVoiceRecorder.IsTransmitting
+                          && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
 
-            //IsOutputting = _photonVoiceSpeaker != null && _photonVoiceSpeaker.IsPlaying
-            //               && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
+            IsOutputting = _photonVoiceSpeaker != null && _photonVoiceSpeaker.IsPlaying
+                           && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
         }
     }
 }

@@ -15,8 +15,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public TickStateController Create(Client photonClient)
 		{
-			var voiceController = new VoiceController(photonClient);
-
 			// Loading
 			var loadingState = new LoadingState(new LoadingStateInput());
 			loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));
@@ -30,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 			// Room
 			var roomStateInput = new RoomStateInput(photonClient);
-			var roomState = new RoomState(roomStateInput, photonClient, voiceController);
+			var roomState = new RoomState(roomStateInput, photonClient);
 
 			var stateController = new TickStateController(loadingState, loginState, menuState, roomState);
 			stateController.SetParent(ParentStateController);
