@@ -57,11 +57,11 @@ namespace PlayGen.ITAlert.Unity.Utilities
 			{
 				if (results.Length == 0)
 				{
-					Debug.LogWarning(string.Format("Couldn't find any objects matching the path: \"{0}\"", absolutePath));
+					Debug.LogWarning($"Couldn't find any objects matching the path: \"{absolutePath}\"");
 				}
 				else
 				{
-					Debug.LogWarning(string.Format("Found {0} objects matching the path: \"{1}\"", results.Length, absolutePath));
+					Debug.LogWarning($"Found {results.Length} objects matching the path: \"{absolutePath}\"");
 				}
 
 				return null;
@@ -84,7 +84,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 			if (childCount < 1)
 			{
-				Debug.LogWarning(string.Format("Couldn't find any children of the object matching the path: \"{0}\"", absolutePath));
+				Debug.LogWarning($"Couldn't find any children of the object matching the path: \"{absolutePath}\"");
 				return null;
 			}
 

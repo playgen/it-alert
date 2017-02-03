@@ -60,6 +60,8 @@
     <Compile Include="Client\Client.cs" />
     <Compile Include="Client\ClientRoom.cs" />
     <Compile Include="Client\ClientState.cs" />
+    <Compile Include="Client\Exceptions\ClientException.cs" />
+    <Compile Include="Client\Exceptions\ConnectionException.cs" />
     <Compile Include="Client\ListRoomsFilters.cs" />
     <Compile Include="Client\PhotonClientWrapper.cs" />
     <Compile Include="Client\Voice\PhotonVoicePlayer.cs" />
