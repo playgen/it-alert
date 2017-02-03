@@ -199,7 +199,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
 
 					UIEntity playerUiEntity;
-					if (Entities.TryGetValue(internalPlayer.Id, out playerUiEntity))
+					if (Entities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
 					{
 						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
 						if (player.PhotonId == playerServerId)
