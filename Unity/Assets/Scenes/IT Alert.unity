@@ -2908,7 +2908,7 @@ MonoBehaviour:
   m_Script: {fileID: -358830008, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spinSpeed: 1
+  _spinSpeed: 300
   _spinClockwise: 1
 --- !u!222 &2012367506
 CanvasRenderer:

@@ -73,15 +73,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var state = new PausedState(input, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
-			var toFromStateTransition = new ToFromStateTranstition();
+			var toPlayingStateTransition = new OnEventTransition(PlayingState.StateName);
 			var toSettingsStateTransition = new OnEventTransition(SettingsState.StateName);
-			var quitTransition = new QuitTransition();
+			var quitTransition = new OnEventTransition(MenuState.StateName);
 
-			input.ContinueClickedEvent += toFromStateTransition.ChangeState;
+			input.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
 			input.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
-			input.QuitClickedEvent += quitTransition.Quit;
+			input.QuitClickedEvent += quitTransition.ChangeState;
 
-			state.AddTransitions(onFeedbackStateSyncTransition, toFromStateTransition, toSettingsStateTransition, quitTransition);
+			state.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
 
 			return state;
 		}
@@ -114,13 +114,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private SettingsState CreateSettingsState(Client photonClient)
 		{
-			var state = new SettingsState(new SettingsStateInput());
+			var input = new SettingsStateInput();
+			var state = new SettingsState(input);
 
+			var previousStateTransition = new OnEventTransition(PausedState.StateName);
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 
-			state.AddTransitions(onFeedbackStateSyncTransition);
+			input.BackClickedEvent += previousStateTransition.ChangeState;
 
-			return state; ;
+			state.AddTransitions(onFeedbackStateSyncTransition, previousStateTransition);
+
+			return state;
 		}
 
 		private static FeedbackState CreateFeedbackState(Client photonClient)

@@ -56,7 +56,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			CommandQueue.AddCommand(new CreateGameCommand(new CreateRoomSettings
 			{
 				Name = details.GameName,
-				MinPlayers = details.MaxPlayers,
+				MinPlayers = 1,
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true
@@ -87,6 +87,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		protected override void OnTick(float deltaTime)
 		{
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+			{
+				OnBackClick();
+			}
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnBackClick();
 			}
