@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using Photon.Hive.Plugin;
+﻿using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.Plugin.States;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
-using GameWork.Core.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
-using PlayGen.Photon.Plugin.Analytics;
+using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -22,11 +19,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public override string Name => StateName;
 
-		public StateController<RoomState> ParentStateController { private get; set; }
+		public RoomStateController ParentStateController { private get; set; }
 
 		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
-			RoomController roomController, AnalyticsServiceManager analytics)
-			: base(photonPlugin, messenger, playerManager, roomController, analytics)
+			RoomSettings roomSettings, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 		}
 
@@ -47,6 +44,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			//_simulation.Dispose();
 
 			Analytics.EndMatch();
+
+			if (RoomSettings.OpenOnEnded)
+			{
+				RoomSettings.IsOpen = true;
+			    RoomSettings.IsVisible = true;
+			}
 		}
 
 		public override void OnCreate(ICreateGameCallInfo info)
@@ -87,17 +90,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 			var simulationRoot = InitializeSimulationRoot();
 
-			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
+			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
-			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
+			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
 			playingState.AddTransitions(playingStateTransition);
 			
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomController, Analytics);
+			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);

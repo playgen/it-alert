@@ -13,7 +13,7 @@ using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public class ItemActivationSystem : Engine.Systems.System, ITickableSystem
+	public class ItemActivationSystem : ITickableSystem
 	{
 		private IntentSystem _intentSystem;
 
@@ -22,12 +22,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		private readonly ComponentMatcherGroup<Activation> _activationMatcher;
 
 		public ItemActivationSystem(IMatcherProvider matcherProvider, 
-			IEntityRegistry entityRegistry, 
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
 			[InjectOptional] List<IItemActivationExtension> itemActivationExtensions,
 			IntentSystem intentSystem) 
-
-			: base(matcherProvider, entityRegistry)
 		{
 			_itemActivationExtensions = itemActivationExtensions;
 			_intentSystem = intentSystem;

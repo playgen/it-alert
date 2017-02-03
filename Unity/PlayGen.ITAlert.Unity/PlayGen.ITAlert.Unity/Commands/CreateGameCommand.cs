@@ -1,22 +1,21 @@
 ﻿using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 
 namespace PlayGen.ITAlert.Unity.Commands
 {
 	public class CreateGameCommand : ICommand<CreateGameController>
 	{
-		private readonly string _gameName;
-		private readonly int _maxPlayers;
-
-		public CreateGameCommand(string gameName, int maxPlayers)
+		private readonly CreateRoomSettings _createRoomSettings;
+		
+		public CreateGameCommand(CreateRoomSettings createRoomSettings)
 		{
-			_gameName = gameName;
-			_maxPlayers = maxPlayers;
+			_createRoomSettings = createRoomSettings;
 		}
 
 		public void Execute(CreateGameController parameter)
 		{
-			parameter.CreateGame(_gameName, _maxPlayers);
+			parameter.CreateGame(_createRoomSettings);
 		}
 	}
 }

@@ -32,9 +32,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Plugin", "ph
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.SUGAR", "photon-plugin\PlayGen.Photon.SUGAR\PlayGen.Photon.SUGAR.csproj", "{F62B5705-BF54-498A-B662-704C0B50C0B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Plugin.Analytics", "photon-plugin\PlayGen.Photon.Plugin.Analytics\PlayGen.Photon.Plugin.Analytics.csproj", "{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Analytics", "photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj", "{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Room", "photon-plugin\PlayGen.Photon.Room\PlayGen.Photon.Room.csproj", "{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Common", "photon-plugin\PlayGen.Photon.Common\PlayGen.Photon.Common.csproj", "{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Photon.Common", "PlayGen.ITAlert.Photon.Common\PlayGen.ITAlert.Photon.Common.csproj", "{61105235-93D2-4793-BDAD-C7EF42B198FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,12 +105,18 @@ Global
 		{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
 		{A0A648DC-B80D-4E19-B3BF-B47C697EDC29}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Unity_Debug_Client|Any CPU.ActiveCfg = Debug|Any CPU
+		{61105235-93D2-4793-BDAD-C7EF42B198FE}.Unity_Debug_Client|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +132,7 @@ Global
 		{CA3E391B-7EAB-428E-B869-2C974E211067} = {B7CD0185-B07B-4422-A262-A37577775171}
 		{F62B5705-BF54-498A-B662-704C0B50C0B6} = {B7CD0185-B07B-4422-A262-A37577775171}
 		{A0A648DC-B80D-4E19-B3BF-B47C697EDC29} = {B7CD0185-B07B-4422-A262-A37577775171}
-		{47C2D2FD-B5FA-4A5D-95C6-97CA4EB9B16B} = {B7CD0185-B07B-4422-A262-A37577775171}
+		{DFDC2F6A-1B15-4F21-AB15-9F5CB9864961} = {D93A8B7A-0B81-4D93-A490-BC09044FF0A1}
+		{61105235-93D2-4793-BDAD-C7EF42B198FE} = {D93A8B7A-0B81-4D93-A490-BC09044FF0A1}
 	EndGlobalSection
 EndGlobal

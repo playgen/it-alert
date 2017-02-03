@@ -9,12 +9,11 @@ using PlayGen.ITAlert.Simulation.Components.Common;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Planning
 {
-	public class IntentSystem : Engine.Systems.System
+	public class IntentSystem : ISystem
 	{
 		private ComponentMatcherGroup _visitorIntentsMatcher;
 
 		public IntentSystem(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
-			: base(matcherProvider, entityRegistry)
 		{
 			_visitorIntentsMatcher = matcherProvider.CreateMatcherGroup(new [] { typeof(Intents) });
 

@@ -1,44 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Entities;
+using Engine.Util;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
-	// ReSharper disable once InconsistentNaming
+	//// ReSharper disable once InconsistentNaming
 	public class VisitorsConsumeCPUEffect : ISubsystemResourceEffect
 	{
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly ComponentMatcherGroup<Subsystem, Visitors, CPUResource> _subsystemMatcher;
+		private readonly ComponentMatcherGroup<IItem, ConsumeCPU> _visitorMatcher;
 
-		public VisitorsConsumeCPUEffect(IEntityRegistry entityRegistry)
+		public VisitorsConsumeCPUEffect(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
-			_entityRegistry = entityRegistry;
+			_subsystemMatcher = matcherProvider.CreateMatcherGroup<Subsystem, Visitors, CPUResource>();
+			_visitorMatcher = matcherProvider.CreateMatcherGroup<IItem, ConsumeCPU>();
 		}
 
-		public void Tick(Entity subsystem)
+		public void Tick()
 		{
-			CPUResource cpuResource;
-			Visitors visitors;
-			if (subsystem.TryGetComponent(out cpuResource)
-				&& subsystem.TryGetComponent(out visitors))
+			foreach (var subsystemTuple in _subsystemMatcher.MatchingEntities)
 			{
 				var sum = 0;
-				foreach (var visitorId in visitors.Values)
+				foreach (var visitorId in subsystemTuple.Component2.Values)
 				{
-					Entity visitor;
-					if (_entityRegistry.TryGetEntityById(visitorId, out visitor))
+					ComponentEntityTuple<IItem, ConsumeCPU> visitorTuple;
+					if (_visitorMatcher.TryGetMatchingEntity(visitorId, out visitorTuple))
 					{
-						ConsumeCPU consumeCpu;
-						if (visitor.TryGetComponent(out consumeCpu))
-						{
-							sum += consumeCpu.Value;
-						}
+						sum += visitorTuple.Component2.Value;
 					}
 				}
-				cpuResource.Value = sum;
+				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, subsystemTuple.Component3.Maximum);
 			}
+		}
+
+		public bool IsMatch(Entity entity)
+		{
+			return _subsystemMatcher.IsMatch(entity);
 		}
 	}
 }

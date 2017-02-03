@@ -12,7 +12,7 @@ using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class EnhancementSystem : Engine.Systems.System, IInitializingSystem
+	public class EnhancementSystem : IInitializingSystem
 	{
 		private readonly List<IEnhancementSystemExtension> _enhancementSystemExtensions;
 
@@ -20,11 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		#region constructor
 
-		public EnhancementSystem(IMatcherProvider matcherProvider, 
-			IEntityRegistry entityRegistry,
-			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			[InjectOptional] List<IEnhancementSystemExtension> enhancementSystemExtensions)
-			: base(matcherProvider, entityRegistry)
+		public EnhancementSystem([InjectOptional] List<IEnhancementSystemExtension> enhancementSystemExtensions) // TODO: remove zenject dependency when implicit optional collection paramters is implemented
 		{
 			_enhancementSystemExtensions = enhancementSystemExtensions;
 			//_enhancementMatcherGroup = matcherProvider.CreateMatcherGroup<ISubsystemEnhancement>();
