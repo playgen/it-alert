@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Unity.Settings
 		[SerializeField] private GameObject _slider;
 		[SerializeField] private GameObject _button;
 		private TextAnchor _labelAnchor = TextAnchor.MiddleRight;
-		private Resolution _previousResolution;
+		private Vector2 _previousResolution;
 
 		private void OnValidate()
 		{
@@ -38,12 +38,11 @@ namespace PlayGen.ITAlert.Unity.Settings
 			}
 		}
 
-		private void Update()
+		private void LateUpdate()
 		{
-			if (_previousResolution.width != Screen.currentResolution.width ||
-				_previousResolution.height != Screen.currentResolution.height)
+			if (!Mathf.Approximately(_previousResolution.x, Screen.width) || !Mathf.Approximately(_previousResolution.y, Screen.height))
 			{
-				_previousResolution = Screen.currentResolution;
+				_previousResolution = new Vector2(Screen.width, Screen.height);
 				RebuildLayout();
 			}
 
