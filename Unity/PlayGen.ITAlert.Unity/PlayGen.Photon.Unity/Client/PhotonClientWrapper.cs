@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
 using GameWork.Unity.Engine.Components;
 using PlayGen.Photon.Unity.Client.Exceptions;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -369,6 +371,7 @@ namespace PlayGen.Photon.Unity.Client
 		public override void OnFailedToConnectToPhoton(DisconnectCause cause)
 		{
 			Log("Failed to Connect to Photon: " + cause);
+			DisconnectedEvent?.Invoke();
 			ExceptionEvent(new ConnectionException("Failed to Connect to Photon: " + cause));
 		}
 
@@ -379,10 +382,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		public override void OnDisconnectedFromPhoton()
 		{
-			if (DisconnectedEvent == null)
-			{
-				DisconnectedEvent();
-			}
+			DisconnectedEvent?.Invoke();
 		}
 
 
