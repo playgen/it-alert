@@ -49,17 +49,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1610953669819490}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -973018082, guid: 51ec520cd2de34a4abac05fc794b6851, type: 3}
+  m_Script: {fileID: -973018082, guid: 14ab83e6b50863843945cdea1b2f7c38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rawCopy: 0
-  flushInterval: 1
+  flushInterval: -1
   checkInterval: 3
-  storageType: net
-  traceFormat: xapi
-  host: http://tracker.playgen.com/api/proxy/gleaner/collector/
-  trackingCode: 58935a97e6806a006e3ae7bdmxu025wsdu7919k9
-  debug: 1
+  storageType: local
+  traceFormat: csv
+  host: 
+  trackingCode: 
+  debug: 0
 --- !u!114 &114354962514626870
 MonoBehaviour:
   m_ObjectHideFlags: 1
