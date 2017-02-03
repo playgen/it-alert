@@ -53,6 +53,7 @@
     <Compile Include="Components\ItemStorageTests.cs" />
     <Compile Include="Components\ItemActivatorTests.cs" />
     <Compile Include="Components\AnalyserEnhancementTests.cs" />
+    <Compile Include="Components\MemoryResourceTests.cs" />
     <Compile Include="ItemSelectionTests.cs" />
     <Compile Include="LayoutGeneratorTests.cs" />
     <Compile Include="PathFinderTests.cs" />

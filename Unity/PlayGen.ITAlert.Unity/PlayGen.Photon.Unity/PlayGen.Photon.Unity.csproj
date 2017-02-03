@@ -32,6 +32,7 @@
   <ItemGroup>
     <Reference Include="GameWork.Unity.Engine.Components">
       <HintPath>..\..\..\lib\GameWork\Engine\GameWork.Unity.Engine.Components.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>

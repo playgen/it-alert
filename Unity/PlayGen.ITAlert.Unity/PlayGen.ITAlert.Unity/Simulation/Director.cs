@@ -288,7 +288,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
 					//start = DateTime.Now;
 					UpdateSignal.Set();
-					//System.IO.File.WriteAllText($"d:\\temp\\{_tick++}.json", _stateJson);
+					//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
 					UpdateCompleteSignal.WaitOne();
 					//update = DateTime.Now.Subtract(start).TotalMilliseconds;
 				}

@@ -10,21 +10,21 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class SimulationConfiguration : ECSConfiguration
 	{
-		public List<NodeConfig> NodeConfiguration { get; private set; }
-		public List<EdgeConfig> EdgeConfiguration { get; private set; }
-		public List<PlayerConfig> PlayerConfiguration { get; private set; }
-		public List<ItemConfig> ItemConfiguration { get; private set; }
+		public IEnumerable<NodeConfig> NodeConfiguration { get; private set; }
+		public IEnumerable<EdgeConfig> EdgeConfiguration { get; private set; }
+		public IEnumerable<PlayerConfig> PlayerConfiguration { get; private set; }
+		public IEnumerable<ItemConfig> ItemConfiguration { get; private set; }
 
 		//public SimulationRules Rules { get; private set; }
 
-		public SimulationConfiguration(List<NodeConfig> nodeConfiguration, 
-			List<EdgeConfig> edgeConfiguration, 
-			List<PlayerConfig> playerConfiguration, 
-			List<ItemConfig> itemConfiguration, 
-			List<Archetype> archetypes,
-			List<SystemConfiguration> systems = null, 
+		public SimulationConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
+			IEnumerable<EdgeConfig> edgeConfiguration,
+			IEnumerable<PlayerConfig> playerConfiguration,
+			IEnumerable<ItemConfig> itemConfiguration,
+			IEnumerable<Archetype> archetypes,
+			IEnumerable<SystemConfiguration> systems = null, 
 			SimulationRules rules = null) 
-			:base (archetypes, systems)
+			: base (archetypes, systems)
 		{
 			NotNullHelper.ArgumentNotNull(nodeConfiguration, nameof(nodeConfiguration));
 			NotNullHelper.ArgumentNotNull(edgeConfiguration, nameof(edgeConfiguration));

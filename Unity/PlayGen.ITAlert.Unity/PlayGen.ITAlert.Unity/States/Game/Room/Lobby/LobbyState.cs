@@ -17,16 +17,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private readonly LobbyController _controller;
 		private readonly Client _photonClient;
-		private readonly VoiceController _voiceController;
 
 		public event Action GameStartedEvent;
 		
-		public LobbyState(LobbyStateInput input, LobbyController controller, Client photonClient, VoiceController voiceController)
+		public LobbyState(LobbyStateInput input, LobbyController controller, Client photonClient)
 			: base(input)
 		{
 			input.LeaveLobbyClickedEvent += LeaveLobby;
 			_controller = controller;
-			_voiceController = voiceController;
 			_photonClient = photonClient;
 		}
 
@@ -45,8 +43,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnTick(float deltaTime)
 		{
-			_voiceController.HandleVoiceInput();
-
 			ICommand command;
 			if (CommandQueue.TryTakeFirstCommand(out command))
 			{

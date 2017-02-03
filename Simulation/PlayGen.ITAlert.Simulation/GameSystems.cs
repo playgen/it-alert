@@ -46,6 +46,7 @@ namespace PlayGen.ITAlert.Simulation
 				}
 			},
 			new SystemConfiguration<IntentSystem>(),
+			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<ItemActivationSystem>(),
 			new SystemConfiguration<ItemManagement>(),
 			// TODO: decide if the enhancement system should be responsible for manipulating the item storage of enhanced systems
@@ -68,7 +69,6 @@ namespace PlayGen.ITAlert.Simulation
 					}
 				}
 			},
-			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<SubsystemResources>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -77,7 +77,10 @@ namespace PlayGen.ITAlert.Simulation
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetCPUEachTick>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetMemoryEachTick>(),
 							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeCPUEffect>(),
 						}
 					}
 				}
