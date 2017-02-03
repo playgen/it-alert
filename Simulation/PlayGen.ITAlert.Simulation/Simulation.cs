@@ -166,13 +166,13 @@ namespace PlayGen.ITAlert.Simulation
 				Entity player;
 				if (EntityFactoryProvider.TryCreateEntityFromArchetype(GameEntities.Player.Name, out player))
 				{
-					playerConfig.Id = player.Id;
+					playerConfig.EntityId = player.Id;
 					var startingLocationId = playerConfig.StartingLocation ?? 0;
 					movementSystem.AddVisitor(subsystems[startingLocationId], player);
 					continue;
 				}
 				player?.Dispose();
-				throw new SimulationException($"Could not craete player for id '{playerConfig.Id}'");
+				throw new SimulationException($"Could not craete player for id '{playerConfig.EntityId}'");
 			}
 		}
 		#endregion

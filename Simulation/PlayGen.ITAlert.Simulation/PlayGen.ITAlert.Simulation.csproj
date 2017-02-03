@@ -74,7 +74,6 @@
     <Compile Include="Components\Tutorial\Highlight.cs" />
     <Compile Include="Components\Tutorial\Text.cs" />
     <Compile Include="Configuration\Scenario.cs" />
-    <Compile Include="GameScenarios.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />

@@ -283,6 +283,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static void UpdateSimulation(string stateJson)
 		{
+			System.IO.File.WriteAllText($"o:\\temp\\{_tick++}.json", stateJson);
 			_stateJson = stateJson;
 			MessageSignal.Set();
 		}
