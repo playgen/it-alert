@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Photon.Common">
       <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Common.dll</HintPath>

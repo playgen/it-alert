@@ -44,7 +44,7 @@ _ReSharper*/
 Unity/[Ll]ibrary/
 Unity/[Tt]emp/
 Unity/[Oo]bj/
-Unity/[Bb]uild[s]/
+Unity/[Bb]uild/
 Unity/*.suo
 Unity/*.user
 Unity/*.sln
