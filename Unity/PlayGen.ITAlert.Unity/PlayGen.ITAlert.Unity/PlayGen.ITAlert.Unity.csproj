@@ -237,7 +237,6 @@
     <Compile Include="Settings\SettingObjectType.cs" />
     <Compile Include="Settings\SettingType.cs" />
     <Compile Include="Settings\SliderHandleSizeSetter.cs" />
-    <Compile Include="Transitions\ToFromStateTranstition.cs" />
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
     <Compile Include="Utilities\LoadingUtility.cs" />

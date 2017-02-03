@@ -15,6 +15,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public TickStateController Create(Client photonClient)
 		{
+			var popupController = new PopupController();
 			// Loading
 			var loadingState = new LoadingState(new LoadingStateInput());
 			loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));

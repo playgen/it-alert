@@ -37,7 +37,6 @@ namespace PlayGen.ITAlert.Unity.Utilities
 				path = hitParent.name + "/" + path;
 				hitParent = hitParent.transform.parent;
 			}
-			Debug.LogWarning(path);
 			Tracker.T.trackedGameObject.Interacted(path, GameObjectTracker.TrackedGameObject.GameObject);
 		}
 	}

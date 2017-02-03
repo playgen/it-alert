@@ -72,6 +72,10 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
 			{
 				OnBackClick();
 			}
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				OnBackClick();
+			}
 		}
 
 		private void SelectScenario(ScenarioInfo scenario)

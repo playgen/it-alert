@@ -209,7 +209,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						if (player.PhotonId == playerServerId)
 						{
 							_activePlayer = playerBehaviour;
-							_activePlayer.SetActive();
 						}
 						playerBehaviour.SetColor(player.Color);
 					}

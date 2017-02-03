@@ -37,6 +37,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnExit()
 		{
 			_chatPanel.SetActive(false);
+			//_photonClient.CurrentRoom.PlayerListUpdatedEvent -= InitializePlayers;
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -49,7 +50,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void InitializePlayers(List<Player> players)
 		{
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= InitializePlayers;
 			SetPlayerColors(players);
 			PopulateChatPanel(players);
 		}
@@ -89,8 +89,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				var playerItem = UnityEngine.Object.Instantiate(_playerChatItemPrefab).transform;
 
-				var color = new Color();
-				ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				Color color;
+				ColorUtility.TryParseHtmlString(player.Color, out color);
+				if (color == Color.white)
+				{
+					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				}
 
 				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
 				nameText.text = player.Name;
