@@ -128,10 +128,10 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			return GenerateItemConfig(nodeConfigs, enumCounts);
 		}
 
-		private static SimulationConfiguration GenerateConfiguration(List<NodeConfig> nodeConfiguration,
-			List<EdgeConfig> edgeConfiguration,
-			List<PlayerConfig> playerConfiguration,
-			List<ItemConfig> itemConfiguration)
+		public static SimulationConfiguration GenerateConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
+			IEnumerable<EdgeConfig> edgeConfiguration,
+			IEnumerable<PlayerConfig> playerConfiguration,
+			IEnumerable<ItemConfig> itemConfiguration)
 		{
 			// the helper is fine here since archetype ordering doesnt matter
 			var archetypes = ArchetypeHelper.GetPublicStaticArchetypes(typeof(GameEntities));
@@ -139,7 +139,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			// TODO: the order of these is really important
 			// TODO: so we need a smarter helper than we can use on archetypes
 			var systems = GameSystems.Systems;
-			var configuration = new SimulationConfiguration(nodeConfiguration, edgeConfiguration, playerConfiguration, itemConfiguration, archetypes, systems);
+			var configuration = new SimulationConfiguration(nodeConfiguration.ToList(), edgeConfiguration.ToList(), playerConfiguration.ToList(), itemConfiguration.ToList(), archetypes, systems);
 			// TODO: implement ComponentDependency/SystemDependency attribute validation of configuration
 
 			return configuration;

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using Photon;
 using UnityEngine;
 using ExitGames.Client.Photon;
 using GameWork.Unity.Engine.Components;
+using PlayGen.Photon.Unity.Client.Exceptions;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 namespace PlayGen.Photon.Unity.Client
 {
@@ -148,7 +151,7 @@ namespace PlayGen.Photon.Unity.Client
 			).ToArray();
 		}        
 
-		public void CreateRoom(string roomName, int maxPlayers)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -170,7 +173,8 @@ namespace PlayGen.Photon.Unity.Client
 				new RoomOptions()
 				{
 					Plugins = new string[] {_gamePlugin},
-					MaxPlayers = (byte) maxPlayers
+					MaxPlayers = (byte) maxPlayers,
+					CustomRoomProperties = customRoomProperties
 				},
 				PhotonNetwork.lobby);
 		}
@@ -361,64 +365,45 @@ namespace PlayGen.Photon.Unity.Client
 
 		public override void OnConnectedToMaster()
 		{
-			if (ConnectedEvent != null)
-			{
-				ConnectedEvent();
-			}
+			ConnectedEvent?.Invoke();
 		}
 
 		public override void OnFailedToConnectToPhoton(DisconnectCause cause)
 		{
-			ExceptionEvent(new Exception("Failed to Connect to Photon: " + cause));
+			Log("Failed to Connect to Photon: " + cause);
+			DisconnectedEvent?.Invoke();
+			ExceptionEvent(new ConnectionException("Failed to Connect to Photon: " + cause));
 		}
 
 		public override void OnJoinedLobby()
 		{
-			if (ConnectedEvent != null)
-			{
-				ConnectedEvent();
-			}
+			ConnectedEvent?.Invoke();
 		}
 
 		public override void OnDisconnectedFromPhoton()
 		{
-			if (DisconnectedEvent != null)
-			{
-				DisconnectedEvent();
-			}
+			DisconnectedEvent?.Invoke();
 		}
 
 
 		public override void OnJoinedRoom()
 		{
-			if (JoinedRoomEvent != null)
-			{
-				JoinedRoomEvent();
-			}
+			JoinedRoomEvent?.Invoke();
 		}
 
 		public override void OnPhotonPlayerDisconnected(PhotonPlayer otherPlayer)
 		{
-			if (OtherPlayerLeftRoomEvent != null)
-			{
-				OtherPlayerLeftRoomEvent(otherPlayer);
-			}
+			OtherPlayerLeftRoomEvent?.Invoke(otherPlayer);
 		}
 
 		public override void OnLeftRoom()
 		{
-			if (LeftRoomEvent != null)
-			{
-				LeftRoomEvent();
-			}
+			LeftRoomEvent?.Invoke();
 		}
 
 		public override void OnPhotonPlayerConnected(PhotonPlayer otherPlayer)
 		{
-			if (OtherPlayerJoinedRoomEvent != null)
-			{
-				OtherPlayerJoinedRoomEvent(otherPlayer);
-			}
+			OtherPlayerJoinedRoomEvent?.Invoke(otherPlayer);
 		}
 
 		#endregion

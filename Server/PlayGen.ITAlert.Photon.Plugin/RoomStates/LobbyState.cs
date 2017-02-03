@@ -6,11 +6,9 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.Plugin.States;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Plugin.Extensions;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using PlayGen.Photon.Plugin.Analytics;
+using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -23,8 +21,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		public event Action GameStartedEvent;
 
 		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
-			RoomController roomController, AnalyticsServiceManager analytics)
-			: base(photonPlugin, messenger, playerManager, roomController, analytics)
+			RoomSettings roomSettings, AnalyticsServiceManager analytics)
+			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 		}
 
@@ -39,12 +37,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			PlayerManager.ChangeAllState((int)ClientState.NotReady);
 			PlayerManager.PlayersUpdated += TryStartGame;
-			RoomController.MinPlayersChangedEvent += TryStartGame;
+			RoomSettings.MinPlayersChangedEvent += TryStartGame;
 		}
 
 		protected override void OnExit()
 		{
-			RoomController.MinPlayersChangedEvent -= TryStartGame;
+			RoomSettings.MinPlayersChangedEvent -= TryStartGame;
 			PlayerManager.PlayersUpdated -= TryStartGame;
 			Messenger.Unsubscribe((int)ITAlertChannel.GameCommands, ProcessGameCommandMessage);
 		}
@@ -54,7 +52,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var startGameMessage = message as StartGameMessage;
 			if (startGameMessage != null)
 			{
-				TryStartGame(startGameMessage.Force, startGameMessage.Close);
+				TryStartGame(startGameMessage.Force);
 				return;
 			}
 
@@ -63,26 +61,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private void TryStartGame()
 		{
-			TryStartGame(false, true);
+			TryStartGame(false);
 		}
 
-		private void TryStartGame(bool force, bool close)
+		private void TryStartGame(bool force)
 		{
-			if (AreStartGameConditionsMet() || force)
+			if (force || (PlayerManager.Players.Count >= RoomSettings.MinPlayers &&
+					PlayerManager.Players.GetCombinedStates() == ClientState.Ready))
 			{
-				if (close)
+				if (RoomSettings.CloseOnStarted)
 				{
-					RoomController.TrySetOpen(!close);
+					RoomSettings.IsOpen = false;
+					RoomSettings.IsVisible = false;
 				}
 
 				GameStartedEvent?.Invoke();
 			}
-		}
-
-		private bool AreStartGameConditionsMet()
-		{
-			return PlayerManager.Players.Count >= RoomController.MinPlayers &&
-					PlayerManager.Players.GetCombinedStates() == ClientState.Ready;
 		}
 	}
 }

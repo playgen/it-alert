@@ -74,7 +74,6 @@
     <Compile Include="Components\Tutorial\Highlight.cs" />
     <Compile Include="Components\Tutorial\Text.cs" />
     <Compile Include="Configuration\Scenario.cs" />
-    <Compile Include="GameScenarios.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
@@ -111,6 +110,7 @@
     <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
     <Compile Include="Systems\Resources\SubsystemResources.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
+    <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="GameEntities.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />

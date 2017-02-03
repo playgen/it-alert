@@ -77,8 +77,7 @@ namespace PlayGen.ITAlert.Simulation
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeMemoryEffect>(),
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeCPUEffect>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
 						}
 					}
 				}

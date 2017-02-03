@@ -2,6 +2,7 @@
 using PlayGen.ITAlert.Unity.States.Error;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
+using PlayGen.Photon.Unity.Client.Exceptions;
 
 namespace PlayGen.ITAlert.Unity.States
 {
@@ -23,7 +24,7 @@ namespace PlayGen.ITAlert.Unity.States
 		{
 			var state = new GameState(gameErrorContainer);
 
-			var exceptionCaughtTransition = new OnExceptionEventTransition(ErrorState.StateName);
+			var exceptionCaughtTransition = new OnExceptionEventTransition(ErrorState.StateName, typeof(ConnectionException));
 			state.ExceptionEvent += exceptionCaughtTransition.ChangeState;
 
 			state.AddTransitions(exceptionCaughtTransition);

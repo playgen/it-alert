@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.Photon.Unity", "Pla
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhotonDependencies", "PhotonDependencies\PhotonDependencies.csproj", "{5252E94A-DF1C-4CEB-A3FB-E8D6ED4FA9DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Unity.Editor", "PlayGen.ITAlert.Unity.Editor\PlayGen.ITAlert.Unity.Editor.csproj", "{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug UNITY_EDITOR|Any CPU = Debug UNITY_EDITOR|Any CPU
@@ -34,6 +36,12 @@ Global
 		{5252E94A-DF1C-4CEB-A3FB-E8D6ED4FA9DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5252E94A-DF1C-4CEB-A3FB-E8D6ED4FA9DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5252E94A-DF1C-4CEB-A3FB-E8D6ED4FA9DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Debug UNITY_EDITOR|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Debug UNITY_EDITOR|Any CPU.Build.0 = Debug|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AB8525F-4789-4EFA-BA02-F9BC961CEC81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
@@ -12,9 +13,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			_photonClient = photonClient;
 		}
 
-		public void CreateGame(string gameName, int maxPlayers)
+		public void CreateGame(CreateRoomSettings createRoomSettings)
 		{
-			_photonClient.CreateRoom(gameName, maxPlayers);
+			_photonClient.CreateRoom(createRoomSettings.Name, 
+				createRoomSettings.MaxPlayers, 
+				createRoomSettings.CustomPropertiesToHashtable());
 		}
 	}
 }

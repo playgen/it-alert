@@ -6,7 +6,7 @@ namespace PlayGen.ITAlert.Unity.Commands
 {
 	public class ChangePlayerColorCommand : ICommand<LobbyController>
 	{
-		private string _color;
+		private readonly string _color;
 
 		public ChangePlayerColorCommand(string color)
 		{

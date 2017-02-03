@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Assets\PlayGen.ITAlert.Unity\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -64,6 +64,12 @@
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\bin\Simulation\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Photon3Unity3D">
+      <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Common">
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Common.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Messages.dll</HintPath>
@@ -151,6 +157,7 @@
     <Compile Include="Commands\RefreshPlayerListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
+    <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="States\GameErrorContainer.cs" />
     <Compile Include="States\Game\GameState.cs" />
     <Compile Include="States\Game\Menu\CreateGame\CreateGameController.cs" />
