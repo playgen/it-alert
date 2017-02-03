@@ -9,12 +9,11 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public class ItemManagement : Engine.Systems.System, ITickableSystem
+	public class ItemManagement : ITickableSystem
 	{
 		private ComponentMatcherGroup<Owner> _itemTypeMatcher;
 
-		public ItemManagement(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
-			: base(matcherProvider, entityRegistry)
+		public ItemManagement(IMatcherProvider matcherProvider)
 		{
 			_itemTypeMatcher = matcherProvider.CreateMatcherGroup<Owner>();
 		}

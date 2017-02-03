@@ -21,8 +21,8 @@
 		public const int SubsystemPositions = 48;
 		public const int SubsystemMaxItems = 4;
 
-		public const int SubsystemInitialMemory = 5;
-		public const int SubsystemInitialCPU = 4;
+		public const int SubsystemMaxMemory = 5;
+		public const int SubsystemMaxCPU = 4;
 
 
 		#endregion

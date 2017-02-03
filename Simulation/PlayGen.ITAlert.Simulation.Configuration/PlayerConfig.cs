@@ -8,7 +8,7 @@
         /// <summary>
         /// Id within the simulation
         /// </summary>
-        public int Id { get; set; }
+        public int EntityId { get; set; }
 	
         /// <summary>
 		/// Uid, for tracking on photon etc
