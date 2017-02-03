@@ -15,7 +15,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
 	public class ItemsConsumeMemoryEffect : ISubsystemResourceEffect
 	{
-
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage, MemoryResource> _subsystemMatcher;
 		private readonly ComponentMatcherGroup<IItem, ConsumeMemory> _itemMatcher;
 
@@ -38,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 						sum += itemTuple.Component2.Value;
 					}
 				}
-				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, SimulationConstants.SubsystemMaxMemory);
+				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, subsystemTuple.Component3.Maximum);
 			}
 		}
 

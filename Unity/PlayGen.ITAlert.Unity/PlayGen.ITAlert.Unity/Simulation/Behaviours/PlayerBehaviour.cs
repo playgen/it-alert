@@ -26,8 +26,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private GameObject _decorator;
 
-		private readonly GameObject[] _trail = new GameObject[PositionHistory];
-
 		#region Initialization
 
 		public void Start()
@@ -117,21 +115,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void SetActive()
 		{
 			GetComponent<Renderer>().sortingOrder++;
-			//transform.localScale = new Vector3(2.5f, 2.5f, 0f);
-
-			for (var i = 0; i < PositionHistory - 1; i++)
-			{
-				_trail[i] = new GameObject();
-				var alpha = (float) (PositionHistory - (i + 1)) / PositionHistory;
-
-				_trail[i].transform.localScale = new Vector2(1f + alpha, 1f + alpha);
-				var spriteRenderer = _trail[i].AddComponent<SpriteRenderer>();
-				spriteRenderer.sprite = Resources.Load<Sprite>("PlaceholderCircle");
-
-				var trailColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, alpha + 0.4f);
-				spriteRenderer.color = trailColor;
-
-			}
 		}
 	}
 }

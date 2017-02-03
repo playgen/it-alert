@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandSequenceHelper.cs" />
+    <Compile Include="GameScenarios.cs" />
     <Compile Include="ScenarioLoader.cs" />
     <Compile Include="SimulationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -58,6 +59,10 @@
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Lifecycle\Engine.Lifecycle.csproj">
+      <Project>{4421783e-7c1b-47bc-b26c-fc7b0653d706}</Project>
+      <Name>Engine.Lifecycle</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>

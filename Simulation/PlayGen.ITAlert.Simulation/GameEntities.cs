@@ -16,6 +16,7 @@ using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
+using PlayGen.ITAlert.Simulation.Systems.Malware;
 
 namespace PlayGen.ITAlert.Simulation
 {
@@ -67,15 +68,13 @@ namespace PlayGen.ITAlert.Simulation
 			{
 				ComponentTemplate = new MemoryResource()
 				{
-					Value = 0,
-					Maximum = SimulationConstants.SubsystemMaxMemory,
+						Maximum = SimulationConstants.SubsystemMaxMemory,
 				}
 			})
 			.HasComponent(new ComponentBinding<CPUResource>()
 			{
 				ComponentTemplate = new CPUResource()
 				{
-					Value = 4,
 					Maximum = SimulationConstants.SubsystemMaxCPU,
 				}
 			});
@@ -124,7 +123,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region viruses
 
-		public static readonly Archetype Virus = new Archetype("Virus")
+		private static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
 			.HasComponent(new ComponentBinding<EntityTypeProperty>()
 			{
@@ -133,7 +132,7 @@ namespace PlayGen.ITAlert.Simulation
 					Value = EntityType.Npc
 				}
 			})
-			.HasComponent(new ComponentBinding<MalwareGenome>())
+			//.HasComponent(new ComponentBinding<MalwareGenome>())
 			.HasComponent(new ComponentBinding<ConsumeMemory>()
 			{
 				ComponentTemplate = new ConsumeMemory()
@@ -149,6 +148,22 @@ namespace PlayGen.ITAlert.Simulation
 				}
 			});
 
+		public static readonly Archetype CPUVirus = new Archetype("CPUVirus")
+			.Extends(Virus)
+			// TODO: need a better way of overriding existing component binding or component template
+			// TODO: need a way of passing configuration to the archetype factory dyanmically
+			//		eg. initialize a virus with a specific genome from one archetype rahter than having one archetype per virus class
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+				{
+					ComponentTemplate = new MalwareGenome()
+					{
+						Values = new List<string>()
+						{
+							ConsumeCPUMalwareEffect.Key,
+						}
+					}
+				})
+			;
 
 		#endregion
 
@@ -168,7 +183,13 @@ namespace PlayGen.ITAlert.Simulation
 				},
 				new ComponentBinding<CurrentLocation>(),
 				new ComponentBinding<Owner>(),
-				new ComponentBinding<ConsumeMemory>(),
+				new ComponentBinding<ConsumeMemory>()
+				{
+					ComponentTemplate = new ConsumeMemory()
+					{
+						Value = 1,
+					}
+				},
 				new ComponentBinding<Activation>(), 
 			});
 

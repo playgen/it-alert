@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		{
 			foreach (var resourceEffect in _resourceEffects)
 			{
-				
+				resourceEffect.Tick();
 			}
 		}
 	}
