@@ -1,5 +1,4 @@
-﻿using System;
-using GameWork.Core.Commands.Interfaces;
+﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
@@ -10,15 +9,13 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	{
 		private readonly Client _photonClient;
 		private readonly CreateGameController _createGameController;
-		private readonly int _defaultMaxPlayers;
+	    private readonly CreateRoomSettings _roomSettings;
 
-		private string UniqueGameName => Guid.NewGuid().ToString().Substring(0, 7);
-
-		public QuickGameController(Client photonClient, CreateGameController createGameController, int defaultMaxPlayers)
+		public QuickGameController(Client photonClient, CreateGameController createGameController, CreateRoomSettings roomSettings)
 		{
 			_photonClient = photonClient;
 			_createGameController = createGameController;
-			_defaultMaxPlayers = defaultMaxPlayers;
+		    _roomSettings = roomSettings;
 		}
 
 		public void QuickMatch()
@@ -29,14 +26,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			}
 			else
 			{
-			    _createGameController.CreateGame(new CreateRoomSettings
-			    {
-			        Name = UniqueGameName,
-			        MinPlayers = _defaultMaxPlayers,
-			        MaxPlayers = _defaultMaxPlayers,
-			        CloseOnStarted = true,
-			        OpenOnEnded = true
-			    });
+			    _createGameController.CreateGame(_roomSettings);
 			}
 		}
 	}
