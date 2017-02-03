@@ -8,28 +8,35 @@ namespace PlayGen.ITAlert.Unity.Controllers
 {
 	public class VoiceController
 	{
-		private VoiceClient _voiceClient;
 		private readonly Client _photonClient;
+
+		private VoiceClient VoiceClient => _photonClient.CurrentRoom.VoiceClient;
 
 		public VoiceController(Client photonClient)
 		{
 			_photonClient = photonClient;
-			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 		}
 
+		/// <summary>
+		/// This should never be called when there is no _photonClient.CurrentRoom as 
+		/// voice functionality cannot exist outside of a room.
+		/// </summary>
 		public void HandleVoiceInput()
 		{
 			try
 			{
-				if ((_photonClient.CurrentRoom?.Players?.Count ?? 0) > 1)
+				if (_photonClient.CurrentRoom.Players.Count > 1)
 				{
-					if (Input.GetKey(KeyCode.Tab) && !_voiceClient.IsTransmitting)
+					if (Input.GetKey(KeyCode.Tab))
 					{
-						_voiceClient.StartTransmission();
+						if (!VoiceClient.IsTransmitting)
+						{
+							VoiceClient.StartTransmission();
+						}
 					}
-					else if (!Input.GetKey(KeyCode.Tab) && _voiceClient.IsTransmitting)
+					else if (VoiceClient.IsTransmitting)
 					{
-						_voiceClient.StopTransmission();
+						VoiceClient.StopTransmission();
 					}
 				}
 			}
@@ -37,11 +44,6 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			{
 				throw new PhotonVoiceException("Error processing voice communciation", ex);
 			}
-		}
-
-		private void OnJoinedRoom(ClientRoom room)
-		{
-			_voiceClient = room.VoiceClient;
 		}
 	}
 }

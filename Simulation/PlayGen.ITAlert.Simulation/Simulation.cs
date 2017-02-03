@@ -64,7 +64,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		}
 
-		private void LayoutSystems(List<NodeConfig> nodeConfigs, List<EdgeConfig> edgeConfigs)
+		private void LayoutSystems(IEnumerable<NodeConfig> nodeConfigs, IEnumerable<EdgeConfig> edgeConfigs)
 		{
 			//var nodeDict = nodeConfigs.ToDictionary(k => k.Id, v => v);
 
@@ -79,7 +79,7 @@ namespace PlayGen.ITAlert.Simulation
 			//}
 		}
 
-		public Dictionary<int, Entity> CreateSystems(List<NodeConfig> nodeConfigs)
+		public Dictionary<int, Entity> CreateSystems(IEnumerable<NodeConfig> nodeConfigs)
 		{
 			return nodeConfigs.ToDictionary(sc => sc.Id, CreateSystem);
 		}
@@ -107,7 +107,7 @@ namespace PlayGen.ITAlert.Simulation
 			throw new SimulationException($"Could not create system for archetype '{archetype}'");
 		}
 
-		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, List<EdgeConfig> edgeConfigs)
+		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, IEnumerable<EdgeConfig> edgeConfigs)
 		{
 			return edgeConfigs.Select(cc => CreateConnection(subsystems, cc)).ToList();
 		}
@@ -137,7 +137,7 @@ namespace PlayGen.ITAlert.Simulation
 			throw new SimulationException($"Could not create connection from archetype '{archetype}'");
 		}
 
-		private void CreateItems(Dictionary<int, Entity> subsystems, List<ItemConfig> itemConfigs)
+		private void CreateItems(Dictionary<int, Entity> subsystems, IEnumerable<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
@@ -153,26 +153,29 @@ namespace PlayGen.ITAlert.Simulation
 		}
 
 
-		private void CreatePlayers(Dictionary<int, Entity> subsystems, List<PlayerConfig> playerConfigs)
+		private void CreatePlayers(Dictionary<int, Entity> subsystems, IEnumerable<PlayerConfig> playerConfigs)
 		{
-			MovementSystem movementSystem;
-			if (SystemRegistry.TryGetSystem(out movementSystem) == false)
+			if (playerConfigs.Any())
 			{
-				throw new ConfigurationException($"Unable to resolve {typeof(MovementSystem).Name} while processing player configuration.");
-			}
-
-			foreach (var playerConfig in playerConfigs)
-			{
-				Entity player;
-				if (EntityFactoryProvider.TryCreateEntityFromArchetype(GameEntities.Player.Name, out player))
+				MovementSystem movementSystem;
+				if (SystemRegistry.TryGetSystem(out movementSystem) == false)
 				{
-					playerConfig.EntityId = player.Id;
-					var startingLocationId = playerConfig.StartingLocation ?? 0;
-					movementSystem.AddVisitor(subsystems[startingLocationId], player);
-					continue;
+					throw new ConfigurationException($"Unable to resolve {typeof(MovementSystem).Name} while processing player configuration.");
 				}
-				player?.Dispose();
-				throw new SimulationException($"Could not craete player for id '{playerConfig.EntityId}'");
+
+				foreach (var playerConfig in playerConfigs)
+				{
+					Entity player;
+					if (EntityFactoryProvider.TryCreateEntityFromArchetype(GameEntities.Player.Name, out player))
+					{
+						playerConfig.EntityId = player.Id;
+						var startingLocationId = playerConfig.StartingLocation ?? 0;
+						movementSystem.AddVisitor(subsystems[startingLocationId], player);
+						continue;
+					}
+					player?.Dispose();
+					throw new SimulationException($"Could not craete player for id '{playerConfig.EntityId}'");
+				}
 			}
 		}
 		#endregion

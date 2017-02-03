@@ -12,6 +12,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomStateInput : TickStateInput
 	{
+		private const string PlayerChatPrefabName = "PlayerChatEntry";
+
 		private readonly Client _photonClient;
 		private GameObject _chatPanel;
 		private GameObject _playerChatItemPrefab;
@@ -26,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnInitialize()
 		{
 			_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
-			_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
+			_playerChatItemPrefab = Resources.Load(PlayerChatPrefabName) as GameObject;
 		}
 
 		protected override void OnEnter()
@@ -42,10 +44,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnTick(float deltaTime)
 		{
-		    if (_chatPanel.activeSelf)
-		    {
-		        UpdateChatPanel();
-		    }
+			if (_chatPanel.activeSelf)
+			{
+				UpdateChatPanel();
+			}
 		}
 
 		private void InitializePlayers(List<Player> players)
@@ -58,36 +60,26 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			foreach (Transform child in _chatPanel.transform)
 			{
-			    if (child.name != "Background Image")
-			    {
-			        GameObject.Destroy(child.gameObject);
-			    }
+				if (child.name.StartsWith(PlayerChatPrefabName))
+				{
+					Object.Destroy(child.gameObject);
+				}
 			}
 
-		    if (players.Count == 1)
-		    {
-		        _chatPanel.SetActive(false);
-		        return;
-		    }
+			if (players.Count == 1)
+			{
+				_chatPanel.SetActive(false);
+				return;
+			}
 			_chatPanel.SetActive(true);
 
 			var playersList = players.OrderBy(player => player.PhotonId).ToList();
-
-			var offset = 0f;
-			var maximumPlayersPossible = 6f;
-			_chatPanel.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0.92f - (players.Count * 0.0166f));
-			_chatPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-			// the maximum number of players the game currently supports - Not the max for the room
-			var height = _chatPanel.GetComponent<RectTransform>().rect.height / players.Count;
-
-			//sort array into list
-			
 
 			_playerVoiceIcons = new Dictionary<int, Image>();
 
 			foreach (var player in playersList)
 			{
-				var playerItem = UnityEngine.Object.Instantiate(_playerChatItemPrefab).transform;
+				var playerItem = Object.Instantiate(_playerChatItemPrefab).transform;
 
 				Color color;
 				ColorUtility.TryParseHtmlString(player.Color, out color);
@@ -105,21 +97,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				_playerVoiceIcons[player.PhotonId] = soundIcon;
 
 				playerItem.SetParent(_chatPanel.transform, false);
-
-				// set anchors
-				var playerItemRect = playerItem.GetComponent<RectTransform>();
-
-				playerItemRect.localScale = Vector3.one;
-
-				playerItemRect.pivot = new Vector2(0.5f, 1f);
-				playerItemRect.anchorMax = Vector2.one;
-				playerItemRect.anchorMin = new Vector2(0f, 1f);
-
-				playerItemRect.offsetMin = new Vector2(0f, offset - height);
-				playerItemRect.offsetMax = new Vector2(0f, offset);
-
-				// increment the offset
-				offset -= height;
 			}
 		}
 

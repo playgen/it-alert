@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		{
 			foreach (var subsystemTuple in _subsystemMatcher.MatchingEntities)
 			{
-				var sum = 0;
+				var sum = subsystemTuple.Component3.Value;
 				foreach (var itemContainer in subsystemTuple.Component2.Items)
 				{
 					ComponentEntityTuple<IItem, ConsumeMemory> itemTuple;
@@ -39,11 +39,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				}
 				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, subsystemTuple.Component3.Maximum);
 			}
-		}
-
-		public bool IsMatch(Entity entity)
-		{
-			return _subsystemMatcher.IsMatch(entity);
 		}
 	}
 }
