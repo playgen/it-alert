@@ -72,6 +72,8 @@ namespace PlayGen.Photon.Unity.Client
 
 			_voiceClient = new VoiceClient();
 
+			Players = new List<Player>();
+
 			_photonClientWrapper.EventRecievedEvent += OnRecievedEvent;
 
 			RefreshPlayers();
