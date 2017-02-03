@@ -16,9 +16,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// </summary>
 		[SerializeField]
 		private Text _timerText;
-		
-		[SerializeField]
-		private Text _tpsText;
 
 		#endregion
 
@@ -43,16 +40,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			//	//_repairText.text = _repairGen.Amount.ToString();
 			//}
 
-			SetTps();
 			SetTimer();
 		}
 
 		#region read game params
-
-		private void SetTps()
-		{
-			_tpsText.text = Director.GetTps().ToString("n1");
-		}
 
 		private void SetTimer()
 		{

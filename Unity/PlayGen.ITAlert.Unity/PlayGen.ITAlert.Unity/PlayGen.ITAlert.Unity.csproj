@@ -237,6 +237,7 @@
     <Compile Include="Settings\SettingType.cs" />
     <Compile Include="Settings\SliderHandleSizeSetter.cs" />
     <Compile Include="Utilities\ButtonList.cs" />
+    <Compile Include="Utilities\CameraSizingUtility.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
     <Compile Include="Utilities\LoadingUtility.cs" />
     <Compile Include="Utilities\PopupUtility.cs" />
