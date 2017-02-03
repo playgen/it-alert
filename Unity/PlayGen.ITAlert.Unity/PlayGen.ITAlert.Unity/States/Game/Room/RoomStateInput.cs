@@ -37,6 +37,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnExit()
 		{
 			_chatPanel.SetActive(false);
+			//_photonClient.CurrentRoom.PlayerListUpdatedEvent -= InitializePlayers;
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -49,7 +50,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void InitializePlayers(List<Player> players)
 		{
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= InitializePlayers;
 			SetPlayerColors(players);
 			PopulateChatPanel(players);
 		}
