@@ -21,19 +21,22 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			{
 				_repeatBlock = true;
 				IsComplete = false;
-				SUGARManager.Account.DisplayPanel(success =>
+				if (SUGARManager.CurrentUser == null)
 				{
-					var autoLogIn = !SUGARManager.Account.IsActive;
-					if (success)
+					SUGARManager.Account.DisplayPanel(success =>
 					{
-						IsComplete = true;
-					}
-					else if (autoLogIn)
-					{
-						_repeatBlock = false;
-						OnEnter();
-					}
-				});
+						var autoLogIn = !SUGARManager.Account.IsActive;
+						if (success)
+						{
+							IsComplete = true;
+						}
+						else if (autoLogIn)
+						{
+							_repeatBlock = false;
+							OnEnter();
+						}
+					});
+				}
 			}
 		}
 

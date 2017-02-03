@@ -20,7 +20,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		private readonly GameErrorContainer _gameErrorContainer;
 
 		private Client _photonClient;
-		private SUGARClient _sugarClient;
 		private TickStateController _stateController;
 
 		public override string Name => StateName;
@@ -43,7 +42,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());;
 			_photonClient.ExceptionEvent += OnClientException;
 
-			_sugarClient = new SUGARClient("http://api.sugarengine.org/");
 			PlayerCommands.PhotonClient = _photonClient;
 
 			_stateController = _stateControllerFactory.Create(_photonClient);
@@ -63,6 +61,11 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		{
 			try
 			{
+			    if (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Disconnected)
+			    {
+			        _photonClient.Connect();
+			    }
+
 				_stateController.Tick(deltaTime);
 			}
 			catch (Exception exception)
