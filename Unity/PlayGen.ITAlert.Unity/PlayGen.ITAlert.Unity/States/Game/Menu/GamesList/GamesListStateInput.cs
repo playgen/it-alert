@@ -87,7 +87,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
             {
                 OnBackClick();
             }
-        }
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				OnBackClick();
+			}
+		}
 
         private void JoinGame(string name)
 		{

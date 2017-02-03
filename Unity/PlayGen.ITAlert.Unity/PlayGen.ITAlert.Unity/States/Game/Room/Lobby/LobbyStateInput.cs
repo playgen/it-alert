@@ -106,6 +106,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			{
 				OnBackButtonClick();
 			}
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				OnBackButtonClick();
+			}
 		}
 
 		private void OnReadyButtonClick()
@@ -180,7 +184,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				var playerItem = Object.Instantiate(_playerItemPrefab).transform;
 
 				Color color;
-				ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				ColorUtility.TryParseHtmlString(player.Color, out color);
+				if (color == Color.white)
+				{
+					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				}
 
 				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
 				nameText.text = player.Name;

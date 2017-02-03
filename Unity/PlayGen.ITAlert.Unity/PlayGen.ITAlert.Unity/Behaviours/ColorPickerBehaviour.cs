@@ -38,7 +38,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			foreach (var colourString in PlayerColors.Colors)
 			{
 				Color color;
-				if (ColorUtility.TryParseHtmlString("#" + colourString, out color))
+				if (ColorUtility.TryParseHtmlString(colourString, out color))
 				{
 					colours.Add(color);
 				}
@@ -57,14 +57,14 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 				if (index >= totalColors)
 					continue;
 				var row = Instantiate(_colourPickerRow);
-				row.transform.parent = ColourPickerPanel.transform;
+				row.transform.SetParent(ColourPickerPanel.transform, false);
 				for (int j = 0; j < rows; j++)
 				{
 					if (index >= totalColors)
 						continue;
 					// Populate the row with colour picker objects
 					var obj = Instantiate(_colourPickerObject);
-					obj.transform.parent = row.transform;
+					obj.transform.SetParent(row.transform, false);
 					var image = obj.GetComponent<Image>();
 					image.color = colors[index];
 					var button = obj.GetComponent<Button>();
