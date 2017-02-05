@@ -1,8 +1,11 @@
 ﻿using System;
+using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
 	public class ScenarioController : ICommandAction
 	{
@@ -13,27 +16,26 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
 		public event Action ScenarioSelectedSuccessEvent;
 		public event Action<ScenarioInfo[]> ScenarioListSuccessEvent;
 
+		private readonly ScenarioLoader _scenarioLoader;
+
 		public ScenarioController(Client photonClient)
 		{
 			_photonClient = photonClient;
+			_scenarioLoader = new ScenarioLoader();
 		}
 
 		//to-do: Get actual list from server
 		public void GetScenarioList()
 		{
-			var scenarios = new ScenarioInfo[]
-								{
-									new ScenarioInfo("Large", 3, 6, "Game for many players"),
-									new ScenarioInfo("Small", 1, 1, "Game for one"),
-									new ScenarioInfo("Pair", 1, 2, "Game for two"),
-								};
-			ScenarioListSuccessEvent(scenarios);
+			var scenarios = _scenarioLoader.GetScenarioInfo();
+
+			ScenarioListSuccessEvent?.Invoke(scenarios);
 		}
 
 		public void SelectScenario(ScenarioInfo scenario)
 		{
 			_selected = scenario;
-			ScenarioSelectedSuccessEvent();
+			ScenarioSelectedSuccessEvent?.Invoke();
 		}
 
 	}

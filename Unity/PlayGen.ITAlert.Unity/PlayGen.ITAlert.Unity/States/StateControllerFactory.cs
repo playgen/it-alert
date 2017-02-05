@@ -1,4 +1,5 @@
 ﻿using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Error;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
@@ -26,6 +27,10 @@ namespace PlayGen.ITAlert.Unity.States
 
 			var exceptionCaughtTransition = new OnExceptionEventTransition(ErrorState.StateName, typeof(ConnectionException));
 			state.ExceptionEvent += exceptionCaughtTransition.ChangeState;
+			// exceptions thrown in the Unity Update loop dont propogate
+			// TODO: firgure out how to catch unmity exceptions and trigger state transition
+			// temporarily catch ui exception from the director ourselves
+			Director.ExceptionEvent += exceptionCaughtTransition.ChangeState;
 
 			state.AddTransitions(exceptionCaughtTransition);
 

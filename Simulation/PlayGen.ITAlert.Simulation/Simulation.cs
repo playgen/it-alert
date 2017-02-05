@@ -259,7 +259,7 @@ namespace PlayGen.ITAlert.Simulation
 		//public void RequestActivateItem(int playerId, int itemId)
 		//{
 		//	var player = _actors[playerId] as Player;
-		//	var item = _items[itemId] as IItem;
+		//	var item = _items[itemId] as IItemType;
 
 		//	if (item.OwnerState == player)
 		//	{

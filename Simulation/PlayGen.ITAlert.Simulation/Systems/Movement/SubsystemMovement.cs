@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Intents;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 
@@ -12,100 +14,108 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	public class SubsystemMovement : MovementSystemExtensionBase
 	{
-		public override EntityType EntityType => EntityType.Subsystem;
+		private readonly ComponentMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes> _subsystemMatcherGroup;
 
-		public SubsystemMovement(IEntityRegistry entityRegistry)
-			: base (entityRegistry)
+		public override int[] NodeIds => _subsystemMatcherGroup.MatchingEntityKeys;
+
+		public SubsystemMovement(IMatcherProvider matcherProvider)
+			: base (matcherProvider)
 		{
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes>();
 		}
-
-		public override void MoveVisitors(Entity node, int currentTick)
+		public override void MoveVisitors(int currentTick)
 		{
-			var graphNode = node.GetComponent<GraphNode>();
-			var visitors = node.GetComponent<Visitors>().Values.ToArray();
-			var exitRoutes = node.GetComponent<ExitRoutes>();
-
-			foreach (var visitorId in visitors)
+			foreach (var subsystemTuple in _subsystemMatcherGroup.MatchingEntities)
 			{
-				Entity visitor;
-				if (EntityRegistry.TryGetEntityById(visitorId, out visitor))
+
+				foreach (var visitorId in subsystemTuple.Component3.Values.ToArray())
 				{
-					var visitorPosition = visitor.GetComponent<VisitorPosition>();
-
-					int? exitNode = null;
-
-					#region movement intent handling
-
-					// TODO: extract this into the intent system?
-
-					IIntent visitorIntent;
-					Intents visitorIntents;
-					if (visitor.TryGetComponent(out visitorIntents) && visitorIntents.TryPeek(out visitorIntent))
+					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
+					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
 					{
-						var moveIntent = visitorIntent as MoveIntent;
-						if (moveIntent != null)
+						int? exitNode = null;
+
+						#region movement intent handling
+
+						// TODO: extract this into the intent system?
+
+						IIntent visitorIntent;
+						if (visitorTuple.Component4.TryPeek(out visitorIntent))
 						{
-							exitNode = exitRoutes[moveIntent.Destination];
+							var moveIntent = visitorIntent as MoveIntent;
+							if (moveIntent != null)
+							{
+								if (moveIntent.Destination == subsystemTuple.Entity.Id)
+								{
+									visitorTuple.Component4.Pop();
+								}
+								else
+								{
+									exitNode = subsystemTuple.Component4[moveIntent.Destination];
+								}
+							}
 						}
-					}
 
-					#endregion
+						#endregion
 
-					var movementSpeed = visitor.GetComponent<MovementSpeed>().Value;
-					var nextPosition = (visitorPosition.Position + movementSpeed) % SimulationConstants.SubsystemPositions;
+						var nextPosition = (visitorTuple.Component1.Position + visitorTuple.Component3.Value) % SimulationConstants.SubsystemPositions;
 
-					if (exitNode != null)
-					{
-						var exitPosition = graphNode.ExitPositions[exitNode.Value];
-						var exitAfterTop = exitPosition < visitorPosition.Position;
-						var nextPositionAfterTop = nextPosition < visitorPosition.Position;
-						var nextPositionAfterExit = nextPosition > exitPosition;
-
-						if (visitorPosition.Position == exitPosition
-							|| (exitAfterTop && nextPositionAfterTop && nextPositionAfterExit)
-							|| (exitAfterTop == false & nextPositionAfterExit))
+						if (exitNode != null)
 						{
-							var overflow = Math.Max(nextPosition - exitPosition, 0);
+							var exitPosition = subsystemTuple.Component2.ExitPositions[exitNode.Value];
+							var exitAfterTop = exitPosition < visitorTuple.Component1.Position;
+							var nextPositionAfterTop = nextPosition < visitorTuple.Component1.Position;
+							var nextPositionAfterExit = nextPosition > exitPosition;
 
-							RemoveVisitorFromNode(node, visitor);
+							if (visitorTuple.Component1.Position == exitPosition
+								|| (exitAfterTop && nextPositionAfterTop && nextPositionAfterExit)
+								|| (exitAfterTop == false & nextPositionAfterExit))
+							{
+								var overflow = Math.Max(nextPosition - exitPosition, 0);
 
-							//exitNode.GetComponent<IMovementSystemExtension>().AddVisitor(visitor, Entity, overflow, currentTick);
-							OnVisitorTransition(exitNode.Value, visitor, node, overflow, currentTick);
+								RemoveVisitorFromNode(subsystemTuple.Entity.Id, subsystemTuple.Component3, visitorTuple.Entity.Id, visitorTuple.Component2);
+
+								//exitNode.GetComponent<IMovementSystemExtension>().AddVisitor(visitor, Entity, overflow, currentTick);
+								OnVisitorTransition(exitNode.Value, visitorId, subsystemTuple.Entity.Id, overflow, currentTick);
+							}
+							else
+							{
+								visitorTuple.Component1.SetPosition(nextPosition, currentTick);
+							}
 						}
 						else
 						{
-							visitorPosition.SetPosition(nextPosition, currentTick);
+							visitorTuple.Component1.SetPosition(nextPosition, currentTick);
 						}
-					}
-					else
-					{
-						visitorPosition.SetPosition(nextPosition, currentTick);
 					}
 				}
 			}
 		}
 
-		public override void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick)
+		public override void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			var graphNode = node.GetComponent<GraphNode>();
-
-			// determine entrance position
-			var direction = graphNode.EntrancePositions.ContainsKey(source.Id) 
-				? graphNode.EntrancePositions[source.Id].FromPosition(SimulationConstants.SubsystemPositions) 
-				: EdgeDirection.North;
-
-			var position = direction.ToPosition(SimulationConstants.SubsystemPositions) + initialPosition;
-
-			AddVisitor(node, visitor, position, currentTick);
-
-			IIntent visitorIntent;
-			var visitorIntents = visitor.GetComponent<Intents>();
-			if (visitorIntents != null && visitorIntents.TryPeek(out visitorIntent))
+			ComponentEntityTuple<Subsystem, GraphNode, Visitors, ExitRoutes> subsystemTuple;
+			if (_subsystemMatcherGroup.TryGetMatchingEntity(nodeId, out subsystemTuple))
 			{
-				var moveIntent = visitorIntent as MoveIntent;
-				if (moveIntent != null && moveIntent.Destination == node.Id)
+				// determine entrance position
+				var direction = subsystemTuple.Component2.EntrancePositions.ContainsKey(sourceId)
+					? subsystemTuple.Component2.EntrancePositions[sourceId].FromPosition(SimulationConstants.SubsystemPositions)
+					: EdgeDirection.North;
+
+				var position = direction.ToPosition(SimulationConstants.SubsystemPositions) + initialPosition;
+
+				AddVisitor(nodeId, subsystemTuple.Component3, visitorId, position, currentTick);
+
+				ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
+				IIntent visitorIntent;
+				if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple)
+					&& visitorTuple.Component4.TryPeek(out visitorIntent))
 				{
-					visitorIntents.Pop();
+					var moveIntent = visitorIntent as MoveIntent;
+					if (moveIntent != null && moveIntent.Destination == nodeId)
+					{
+						visitorTuple.Component4.Pop();
+					}
 				}
 			}
 		}

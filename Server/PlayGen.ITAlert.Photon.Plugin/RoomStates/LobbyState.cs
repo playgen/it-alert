@@ -20,8 +20,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public event Action GameStartedEvent;
 
-		public LobbyState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
-			RoomSettings roomSettings, AnalyticsServiceManager analytics)
+		public LobbyState(PluginBase photonPlugin, 
+			Messenger messenger, 
+			PlayerManager playerManager, 
+			RoomSettings roomSettings,
+			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 		}

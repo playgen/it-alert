@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 224910895712122996}
   - component: {fileID: 222332164643921104}
   - component: {fileID: 114448262279408666}
+  - component: {fileID: 114939142839232072}
   m_Layer: 5
   m_Name: ScenarioText
   m_TagString: Untagged
@@ -74,7 +75,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.15686275, g: 0.1764706, b: 0.19607843, a: 1}
+  m_Color: {r: 0.15686275, g: 0.1764706, b: 0.19607843, a: 0.634}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -101,7 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -148,7 +149,18 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: Welcome to IT ALERT!
+--- !u!114 &114939142839232072
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112668031604564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -480580383, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222332164643921104
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -201,7 +213,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -10, y: -10}
+  m_SizeDelta: {x: -60, y: -40}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224910895712122996
 RectTransform:

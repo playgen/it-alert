@@ -2,8 +2,8 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Commands;
-using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -59,7 +59,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 				MinPlayers = 1,
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
-				OpenOnEnded = true
+				OpenOnEnded = true,
+				GameScenario = _scenarioController.Selected.Name,
 			}));
 			LoadingUtility.ShowSpinner();
 		}

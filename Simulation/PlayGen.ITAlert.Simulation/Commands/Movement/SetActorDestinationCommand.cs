@@ -2,11 +2,10 @@
 using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
-using PlayGen.ITAlert.Simulation.Components;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Intents;
 
-namespace PlayGen.ITAlert.Simulation.Commands
+namespace PlayGen.ITAlert.Simulation.Commands.Movement
 {
 	public class SetActorDestinationCommand : ICommand
 	{

@@ -163,7 +163,6 @@
     <Compile Include="States\GameErrorContainer.cs" />
     <Compile Include="States\Game\GameState.cs" />
     <Compile Include="States\Game\Menu\CreateGame\CreateGameController.cs" />
-    <Compile Include="States\Game\Menu\ScenarioList\ScenarioInfo.cs" />
     <Compile Include="States\Game\Menu\ScenarioList\ScenarioController.cs" />
     <Compile Include="States\Game\Menu\ScenarioList\ScenarioListState.cs" />
     <Compile Include="States\Game\Menu\ScenarioList\ScenarioListStateInput.cs" />
@@ -207,7 +206,7 @@
     <Compile Include="Simulation\Behaviours\ItemContainerBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\NodeBehaviour.cs" />
     <Compile Include="States\StateControllerFactory.cs" />
-    <Compile Include="Simulation\Behaviours\TextBehaviour.cs" />
+    <Compile Include="Simulation\Behaviours\ScenarioTextBehaviour.cs" />
     <Compile Include="Transitions\OnCompletedTransition.cs" />
     <Compile Include="Transitions\OnEventTransition.cs" />
     <Compile Include="Transitions\OnExceptionEventTransition.cs" />

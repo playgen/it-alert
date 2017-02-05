@@ -1,13 +1,19 @@
-﻿using Photon.Hive.Plugin;
+﻿using System;
+using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
+using Engine.Lifecycle;
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Photon.Plugin.RoomStates;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
+using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.Photon.Analytics;
+using PlayGen.Photon.Common.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -21,10 +27,16 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public RoomStateController ParentStateController { private get; set; }
 
-		public GameState(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, 
-			RoomSettings roomSettings, AnalyticsServiceManager analytics)
+		private readonly ScenarioLoader _scenarioLoader;
+
+		public GameState(PluginBase photonPlugin, 
+			Messenger messenger, 
+			PlayerManager playerManager, 
+			RoomSettings roomSettings, 
+			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
+			_scenarioLoader = new ScenarioLoader();
 		}
 
 		protected override void OnEnter()
@@ -67,35 +79,46 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			_stateController.OnLeave(info);
 		}
 
-		private SimulationRoot InitializeSimulationRoot()
+		private SimulationLifecycleManager InitializeSimulationRoot()
 		{
-			var playerConfigs = PhotonPlugin.PluginHost.GameActorsActive.Select(p =>
+
+			var scenarioName = PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string>(CustomRoomSettingKeys.GameScenario);
+
+			if (string.IsNullOrEmpty(scenarioName) == false)
 			{
-				var player = PlayerManager.Get(p.ActorNr);
-
-				return new PlayerConfig
+				SimulationScenario scenario;
+				if (_scenarioLoader.TryGetScenario(scenarioName, out scenario))
 				{
-					ExternalId = player.PhotonId,
-					Name = player.Name,
-					Colour = "#" + player.Color,
-				};
-			}).ToList();
+					scenario.Configuration.PlayerConfiguration = PhotonPlugin.PluginHost.GameActorsActive.Select((p, i) =>
+					{
+						var player = PlayerManager.Get(p.ActorNr);
+						var playerConfig = scenario.CreatePlayerConfig(i);
+						playerConfig.ExternalId = player.PhotonId;
+						playerConfig.Name = player.Name;
+						playerConfig.Colour = "#" + player.Color;
+						return playerConfig;
+					}).ToList();
 
-			// todo make config data driven
-			var simulation = SimulationHelper.GenerateSimulation(5, 3, playerConfigs, 2, 4);
-			return simulation;
+					return SimulationLifecycleManager.Initialize(scenario);
+
+				}
+			}
+
+			throw new SimulationException($"Could not load scenario");
 		}
 
 		private RoomStateController CreateStateController()
 		{
-			var simulationRoot = InitializeSimulationRoot();
+			var lifecycleManager = InitializeSimulationRoot();
 
-			var initializingState = new InitializingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
+			// TODO: handle the lifecyclemanager changestate event in the case of error -> kick players back to lobby.
+
+			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition);
 
-			var playingState = new PlayingState(simulationRoot, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
+			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var playingStateTransition = new EventTransition(FeedbackState.StateName);
 			playingState.GameOverEvent += playingStateTransition.ChangeState;
 			playingState.AddTransitions(playingStateTransition);

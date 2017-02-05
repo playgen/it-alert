@@ -10,10 +10,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class SimulationConfiguration : ECSConfiguration
 	{
-		public IEnumerable<NodeConfig> NodeConfiguration { get; private set; }
-		public IEnumerable<EdgeConfig> EdgeConfiguration { get; private set; }
-		public IEnumerable<PlayerConfig> PlayerConfiguration { get; private set; }
-		public IEnumerable<ItemConfig> ItemConfiguration { get; private set; }
+		public IEnumerable<NodeConfig> NodeConfiguration { get; set; }
+		public IEnumerable<EdgeConfig> EdgeConfiguration { get; set; }
+		public IEnumerable<PlayerConfig> PlayerConfiguration { get; set; }
+		public IEnumerable<ItemConfig> ItemConfiguration { get; set; }
 
 		//public SimulationRules Rules { get; private set; }
 
@@ -22,19 +22,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			IEnumerable<PlayerConfig> playerConfiguration,
 			IEnumerable<ItemConfig> itemConfiguration,
 			IEnumerable<Archetype> archetypes,
-			IEnumerable<SystemConfiguration> systems = null, 
-			SimulationRules rules = null) 
-			: base (archetypes, systems)
+			IEnumerable<SystemConfiguration> systems, 
+			LifeCycleConfiguration lifeCycleConfiguration) 
+			: base (archetypes, systems, lifeCycleConfiguration)
 		{
-			NotNullHelper.ArgumentNotNull(nodeConfiguration, nameof(nodeConfiguration));
-			NotNullHelper.ArgumentNotNull(edgeConfiguration, nameof(edgeConfiguration));
-			NotNullHelper.ArgumentNotNull(playerConfiguration, nameof(playerConfiguration));
-			NotNullHelper.ArgumentNotNull(itemConfiguration, nameof(itemConfiguration));
-
-			NodeConfiguration = nodeConfiguration;
-			EdgeConfiguration = edgeConfiguration;
-			PlayerConfiguration = playerConfiguration;
-			ItemConfiguration = itemConfiguration;
+			NodeConfiguration = nodeConfiguration ?? new NodeConfig[0];
+			EdgeConfiguration = edgeConfiguration ?? new EdgeConfig[0];
+			PlayerConfiguration = playerConfiguration ?? new PlayerConfig[0];
+			ItemConfiguration = itemConfiguration ?? new ItemConfig[0];
 			//Rules = rules ?? new SimulationRules();
 		}
 

@@ -6,7 +6,7 @@ using Engine.Configuration;
 using Engine.Startup;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
@@ -114,7 +114,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 
 		private static List<ItemConfig> GetRandomItems(List<NodeConfig> nodeConfigs, int total)
 		{
-			var enumMembers = ModuleLoader.GetTypesImplementing(typeof(IItem)).Select(t => t.Name).ToArray();
+			var enumMembers = ModuleLoader.GetTypesImplementing(typeof(IItemType)).Select(t => t.Name).ToArray();
 			var enumCounts = enumMembers.ToDictionary(k => k, v => 1);
 			var count = enumMembers.Length;
 
@@ -139,7 +139,13 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			// TODO: the order of these is really important
 			// TODO: so we need a smarter helper than we can use on archetypes
 			var systems = GameSystems.Systems;
-			var configuration = new SimulationConfiguration(nodeConfiguration.ToList(), edgeConfiguration.ToList(), playerConfiguration.ToList(), itemConfiguration.ToList(), archetypes, systems);
+			var configuration = new SimulationConfiguration(nodeConfiguration?.ToList(), 
+				edgeConfiguration?.ToList(), 
+				playerConfiguration?.ToList(), 
+				itemConfiguration?.ToList(), 
+				archetypes, 
+				systems,
+				new LifeCycleConfiguration());
 			// TODO: implement ComponentDependency/SystemDependency attribute validation of configuration
 
 			return configuration;

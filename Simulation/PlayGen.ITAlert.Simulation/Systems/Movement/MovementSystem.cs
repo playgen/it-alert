@@ -16,53 +16,26 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	public class MovementSystem : ISystem, ITickableSystem
 	{
-		private readonly Dictionary<EntityType, IMovementSystemExtension> _movementSystems;
+		private readonly List<IMovementSystemExtension> _movementSystems;
 
-		private readonly ComponentMatcherGroup _movementNodesMatcher;
-
-		private readonly IEntityRegistry _entityRegistry;
-
-		public MovementSystem(IMatcherProvider matcherProvider, 
-			IEntityRegistry entityRegistry,
-			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			[InjectOptional] List<IMovementSystemExtension> movementSystemExtensions)
+		public MovementSystem([InjectOptional] List<IMovementSystemExtension> movementSystemExtensions) // TODO: remove zenject dependency when implicit optional collection paramters is implemented
 		{
-			_entityRegistry = entityRegistry;
-			_movementSystems = movementSystemExtensions.ToDictionary(k => k.EntityType, v => v);
+			_movementSystems = movementSystemExtensions;
 
 			foreach (var entityMovementSystem in _movementSystems)
 			{
-				entityMovementSystem.Value.VisitorTransition += ValueOnVisitorTransition;
+				entityMovementSystem.VisitorTransition += ValueOnVisitorTransition;
 			}
-
-			_movementNodesMatcher = matcherProvider.CreateMatcherGroup(new[] { typeof(Visitors), typeof(GraphNode) });
-			matcherProvider.RegisterMatcher(_movementNodesMatcher);
 		}
 
 		public void AddVisitor(Entity node, Entity visitor)
 		{
-			ExecuteMovementSystemAction(node, system => system.AddVisitor(node, visitor));
+			ExecuteMovementSystemAction(node.Id, system => system.AddVisitorToNode(node.Id, visitor.Id, 0, 0, 0));
 		}
 
-		/// <summary>
-		/// Handle a vistitor leaving one node and entering another
-		/// </summary>
-		/// <param name="nodeId"></param>
-		/// <param name="visitor"></param>
-		/// <param name="source"></param>
-		/// <param name="initialPosition"></param>
-		/// <param name="currentTick"></param>
-		private void ValueOnVisitorTransition(int nodeId, Entity visitor, Entity source, int initialPosition, int currentTick)
+		private void ValueOnVisitorTransition(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			Entity node;
-			if (_entityRegistry.TryGetEntityById(nodeId, out node))
-			{
-				ExecuteMovementSystemAction(node, system => system.AddVisitorToNode(node, visitor, source, initialPosition, currentTick));
-			}
-			else
-			{
-				// something has gone wrong!
-			}
+			ExecuteMovementSystemAction(nodeId, system => system.AddVisitorToNode(nodeId, visitorId, sourceId, initialPosition, currentTick));
 		}
 
 		/// <summary>
@@ -72,33 +45,25 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// <param name="currentTick"></param>
 		public void Tick(int currentTick)
 		{
-			var nodes = _movementNodesMatcher.MatchingEntities;
-
-			foreach (var node in nodes)
+			foreach (var movementSystemExtension in _movementSystems)
 			{
-				ExecuteMovementSystemAction(node, system => system.MoveVisitors(node, currentTick));
+				movementSystemExtension.MoveVisitors(currentTick);
 			}
 		}
 
 		/// <summary>
 		/// Execute an action using the approproate movement system for the node type
 		/// </summary>
-		/// <param name="node"></param>
+		/// <param name="nodeId"></param>
 		/// <param name="action"></param>
-		private void ExecuteMovementSystemAction(Entity node, Action<IMovementSystemExtension> action)
+		private void ExecuteMovementSystemAction(int nodeId, Action<IMovementSystemExtension> action)
 		{
-			var entityType = node.GetComponent<EntityTypeProperty>().Value;
-			
-			IMovementSystemExtension movementSystemExtension;
-			if (_movementSystems.TryGetValue(entityType, out movementSystemExtension))
+			var movementSystemExtension = _movementSystems.SingleOrDefault(ms => ms.NodeIds.Contains(nodeId));
+			if (movementSystemExtension == null)
 			{
-				action(movementSystemExtension);
+				throw new MovementException($"No movement system extension found for node id {nodeId}");
 			}
-			else
-			{
-				// TODO: log unknown node type
-			}
-
+			action(movementSystemExtension);
 		}
 
 		#region command/movement logic

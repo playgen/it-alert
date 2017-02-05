@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 				}
 			};
 
-			var configuration = new ECSConfiguration(archetypes, systems);
+			var configuration = new ECSConfiguration(archetypes, systems, null);
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
 
 			Entity entity;

@@ -22,22 +22,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 			set { PositionFloat = value; }
 		}
 
-		// TODO: dereference and store just id
-		public Entity Host { get; private set; }
-
-		//private IDisposable _visitorSubscription;
-
-		public void SetHost(Entity host)
-		{
-			Host = host;
-			//_visitorSubscription?.Dispose();
-			//_visitorSubscription = new CompositeDisposable
-			//{
-			//	Host.Subscribe(Entity),
-			//	Entity.Subscribe(Host),
-			//};
-		}
-
 		/// <summary>
 		/// Provide a tick safe method to update the current position
 		/// </summary>

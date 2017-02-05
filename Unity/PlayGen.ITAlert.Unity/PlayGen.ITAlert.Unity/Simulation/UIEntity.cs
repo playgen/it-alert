@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Unity.Network.Behaviours;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
@@ -18,48 +18,43 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public int Id => _entityBehaviour.Id;
 
-		public EntityType Type => _entityBehaviour.EntityType;
-
 		private readonly IEntityBehaviour _entityBehaviour;
-
-
+		
 		public IEntityBehaviour EntityBehaviour => _entityBehaviour;
+
+		private static readonly Dictionary<string, Func<GameObject, IEntityBehaviour>> BehaviourMappers = new Dictionary<string, Func<GameObject, IEntityBehaviour>>()
+		{
+			{ typeof(Subsystem).Name, go => go.GetComponent<SubsystemBehaviour>() },
+			//{ typeof(Subsystem).Name, go => go.GetComponent<EnhancementBehaviour>() },
+			{ typeof(Connection).Name, go => go.GetComponent<ConnectionBehaviour>() },
+			{ typeof(Player).Name, go => go.GetComponent<PlayerBehaviour>() },
+			{ typeof(Npc).Name, go => go.GetComponent<NpcBehaviour>() },
+			{ typeof(Item).Name, go => go.GetComponent<ItemBehaviour>() },
+			{ typeof(ScenarioText).Name, go => go.GetComponent<ScenarioTextBehaviour>() },
+		};
 
 		public UIEntity(Entity entity)
 		{
-			EntityTypeProperty entityType;
-			if (entity.TryGetComponent(out entityType))
+			IEntityType entityTypeFlag;
+			if (entity.TryGetComponent(out entityTypeFlag))
 			{
-				_gameObject = Director.InstantiateEntity(entityType.Value.ToString());
-				_gameObject.transform.SetParent(Director.Graph.transform, false);
+				var entityTypeName = entityTypeFlag.GetType().Name;
+				Func<GameObject, IEntityBehaviour> behaviourMapper;
 
-				switch (entityType.Value)
+				if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
 				{
-					case EntityType.Subsystem:
-						_entityBehaviour = GameObject.GetComponent<SubsystemBehaviour>();
-						break;
-					case EntityType.Enhancement:
-						_entityBehaviour = GameObject.GetComponent<EnhancementBehaviour>();
-						break;
-					case EntityType.Connection:
-						_entityBehaviour = GameObject.GetComponent<ConnectionBehaviour>();
-						break;
-					case EntityType.Player:
-						_entityBehaviour = GameObject.GetComponent<PlayerBehaviour>();
-						break;
-					case EntityType.Npc:
-						_entityBehaviour = GameObject.GetComponent<NpcBehaviour>();
-						break;
-					case EntityType.Item:
-						_entityBehaviour = GameObject.GetComponent<ItemBehaviour>();
-						break;
-					default:
-						// bad practice to throw an exception from a constructor, but this is serious!
-						throw new Exception("Unknow entity type");
-				}
+					_gameObject = Director.InstantiateEntity(entityTypeName);
 
-				// initialize will be called after all the entities have been created
-				//_entityBehaviour.Initialize(entity);
+					_entityBehaviour = behaviourMapper(GameObject);
+				}
+				else
+				{
+					Debug.LogWarning($"Unknown entity type '{entityTypeName}' on entity {entity.Id}");
+				}
+			}
+			else
+			{
+				throw new Exception($"Entity type flag missing for entity {entity.Id}");
 			}
 		}
 

@@ -1,13 +1,14 @@
 ﻿using System;
+using Engine.Configuration;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
 	public class ScenarioListStateInput : TickStateInput
 	{
@@ -49,7 +50,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
 
 		private void OnBackClick()
 		{
-			BackClickedEvent();
+			BackClickedEvent?.Invoke();
 		}
 
 		protected override void OnEnter()
@@ -95,9 +96,11 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
 			// Populate Scenario list UI
 			foreach (var scenario in scenarios)
 			{
-				var gameItem = Object.Instantiate(_scenarioItemPrefab).transform;
+				var gameItem = UnityEngine.Object.Instantiate(_scenarioItemPrefab).transform;
 				gameItem.FindChild("Name").GetComponent<Text>().text = scenario.Name;
-				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount ? string.Format("{0}-{1}", scenario.MinPlayerCount, scenario.MaxPlayerCount) : scenario.MaxPlayerCount.ToString();
+				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
+					? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
+					: scenario.MaxPlayerCount.ToString();
 				gameItem.FindChild("Players").GetComponent<Text>().text = players;
 				gameItem.FindChild("Description").GetComponent<Text>().text = scenario.Description;
 				gameItem.SetParent(_scenarioListObject.transform, false);

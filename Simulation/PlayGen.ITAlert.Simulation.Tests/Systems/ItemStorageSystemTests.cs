@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems
 				new SystemConfiguration<ItemStorageSystem>()
 			};
 
-			var configuration = new ECSConfiguration(archetypes, systems);
+			var configuration = new ECSConfiguration(archetypes, systems, null);
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
 			Entity entity;
 			Assert.That(ecs.TryCreateEntityFromArchetype("Test", out entity));
