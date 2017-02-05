@@ -1,9 +1,8 @@
 ﻿using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
-using PlayGen.ITAlert.Unity.Controllers;
 
-namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
+namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
 	public class ScenarioListState : InputTickState
 	{
@@ -27,10 +26,7 @@ namespace PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList
 			if (CommandQueue.TryTakeFirstCommand(out command))
 			{
 				var selectCommand = command as SelectScenarioCommand;
-				if (selectCommand != null)
-				{
-					selectCommand.Execute(_scenarioController);
-				}
+				selectCommand?.Execute(_scenarioController);
 			}
 		}
 	}

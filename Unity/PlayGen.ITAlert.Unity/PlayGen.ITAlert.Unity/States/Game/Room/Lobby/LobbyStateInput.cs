@@ -70,6 +70,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnEnter()
 		{
+			_ready = false;
 			_controller.ReadySuccessEvent += OnReadySucceeded;
 			_controller.RefreshSuccessEvent += UpdatePlayerList;
 

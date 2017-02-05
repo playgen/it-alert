@@ -23,9 +23,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	/// There should only ever be one instance of this
 	/// </summary>
 	// TODO: use zenject singleton container rather than statics
-	public class Director : MonoBehaviour
+	public sealed class Director : MonoBehaviour
 	{
 		private static Thread _updatethread;
+
+		public static event Action<Exception> ExceptionEvent;
 
 		private static readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
@@ -68,7 +70,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static System.Random Random = new System.Random((int)DateTime.UtcNow.Ticks);
 
+		[SerializeField]
 		private static GameObject _gameOverWon;
+		[SerializeField]
 		private static GameObject _gameOverLost;
 
 		public static PlayerBehaviour[] Players { get; private set; }
@@ -80,6 +84,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public static SimulationRules Rules => new SimulationRules();
 
 		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
+
+		private static GameObject _graph;
+
+		public static GameObject Graph => _graph ?? (_graph = GameObjectUtilities.FindGameObject("Game/Graph"));
+
+		private static GameObject _canvas;
+
+		public static GameObject Canvas => _canvas ?? (_canvas = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer"));
+
 
 		[Obsolete("Use TryGetEntity instead")]
 		public static UIEntity GetEntity(int id)
@@ -110,9 +123,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		//	//PlayerCommands.Client =	new DebugClientProxy();
 		//}
 
-		private static GameObject _graph;
-
-		public static GameObject Graph => _graph ?? (_graph = GameObjectUtilities.FindGameObject("Game/Graph"));
 
 		public static GameObject InstantiateEntity(string resourceString)
 		{
@@ -267,33 +277,41 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void ThreadWorker()
 		{
-			DateTime start;
-			var deserialize = 0.0;
-			var update = 0.0;
-			var wait = 0.0;
+			//DateTime start;
+			//var deserialize = 0.0;
+			//var update = 0.0;
+			//var wait = 0.0;
 			while (true)
 			{
-				//start = DateTime.Now;
-				var handle = WaitHandle.WaitAny(new WaitHandle[] { TerminateSignal, MessageSignal });
-				//wait = DateTime.Now.Subtract(start).TotalMilliseconds;
-				if (handle == 0)
+				try
 				{
+					//start = DateTime.Now;
+					var handle = WaitHandle.WaitAny(new WaitHandle[] {TerminateSignal, MessageSignal});
+					//wait = DateTime.Now.Subtract(start).TotalMilliseconds;
+					if (handle == 0)
+					{
+						break;
+					}
+					if (handle == 1)
+					{
+						_tick++;
+						//start = DateTime.Now;
+						SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
+						//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
+						//start = DateTime.Now;
+						UpdateSignal.Set();
+						//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
+						UpdateCompleteSignal.WaitOne();
+						//update = DateTime.Now.Subtract(start).TotalMilliseconds;
+					}
+					//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
+					//_tps = (float) (1.0f / (deserialize + update));
+				}
+				catch (Exception ex)
+				{
+					OnExceptionEvent(new SimulationIntegrationException($"Terminating simulation worker thread", ex));
 					break;
 				}
-				if (handle == 1)
-				{
-					_tick++;
-					//start = DateTime.Now;
-					SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
-					//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
-					//start = DateTime.Now;
-					UpdateSignal.Set();
-					//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
-					UpdateCompleteSignal.WaitOne();
-					//update = DateTime.Now.Subtract(start).TotalMilliseconds;
-				}
-				//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
-				_tps = (float)(1.0f / (deserialize + update));
 			}
 		}
 
@@ -319,7 +337,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			if (UpdateSignal.WaitOne(0))
 			{
-				UpdateEntityStates();
+				try
+				{
+					UpdateEntityStates();
+				}
+				catch (Exception ex)
+				{
+					OnExceptionEvent(ex);
+				}
 			}
 		}
 
@@ -336,7 +361,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					UIEntity newUiEntity;
 					if (TryGetEntity(newEntity.Key, out newUiEntity))
 					{
-						newUiEntity.EntityBehaviour.Initialize(newEntity.Value);
+						newUiEntity.EntityBehaviour?.Initialize(newEntity.Value);
 					}
 					else
 					{
@@ -344,7 +369,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 				}
 
-				foreach (var existingEntity in entities.Except(entitiesAdded))
+				foreach (var existingEntity in entities.Except(entitiesAdded).ToArray())
 				{
 					UIEntity uiEntity;
 					if (TryGetEntity(existingEntity.Key, out uiEntity))
@@ -353,7 +378,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 				}
 
-				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key));
+				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key)).ToArray();
 				foreach (var entityToRemove in entitiesRemoved)
 				{
 					UIEntity uiEntity;
@@ -437,5 +462,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		}
 
 		#endregion
+
+		protected static void OnExceptionEvent(Exception obj)
+		{
+			ExceptionEvent?.Invoke(obj);
+		}
 	}
 }

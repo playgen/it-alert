@@ -42,20 +42,20 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			//TODO: implement the item activator
 		}
 
-		public bool CanActivate(Entity entity)
-		{
-			ItemStorage itemStorage;
-			if (entity.TryGetComponent(out itemStorage))
-			{
-				var itemContainer = itemStorage.Items[AnalysisTargetStorageLocation] as AnalysisTargetItemContainer;
-				Entity item;
-				if (itemContainer != null && itemContainer.Item.HasValue && _entityRegistry.TryGetEntityById(itemContainer.Item.Value, out item))
-				{
-					return item.TestComponent<EntityTypeProperty>(et => et.Value == EntityType.Npc) && item.HasComponent<MalwareGenome>();
-				}
-			}
-			return false;
-		} 
+		//public bool CanActivate(Entity entity)
+		//{
+		//	ItemStorage itemStorage;
+		//	if (entity.TryGetComponent(out itemStorage))
+		//	{
+		//		var itemContainer = itemStorage.Items[AnalysisTargetStorageLocation] as AnalysisTargetItemContainer;
+		//		Entity item;
+		//		if (itemContainer != null && itemContainer.Item.HasValue && _entityRegistry.TryGetEntityById(itemContainer.Item.Value, out item))
+		//		{
+		//			return item.TestComponent<EntityTypeProperty>(et => et.Value == EntityType.Npc) && item.HasComponent<MalwareGenome>();
+		//		}
+		//	}
+		//	return false;
+		//} 
 	}
 
 	#region custom containers

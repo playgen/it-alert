@@ -27,6 +27,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Start()
 		{
+			gameObject.transform.SetParent(Director.Graph.transform, false);
 
 		}
 

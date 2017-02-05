@@ -1,63 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Entities;
+using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	public class ConnectionMovement : MovementSystemExtensionBase
 	{
-		public override EntityType EntityType => EntityType.Connection;
+		private readonly ComponentMatcherGroup<Connection, GraphNode, Visitors, MovementCost> _connectionMatcherGroup;
 
-		public ConnectionMovement(IEntityRegistry entityRegistry)
-			: base(entityRegistry)
+		public override int[] NodeIds => _connectionMatcherGroup.MatchingEntityKeys;
+
+		public ConnectionMovement(IMatcherProvider matcherProvider)
+			: base (matcherProvider)
 		{
+			_connectionMatcherGroup = matcherProvider.CreateMatcherGroup<Connection, GraphNode, Visitors, MovementCost>();
 		}
 
-		public override void MoveVisitors(Entity node, int currentTick)
+		public override void MoveVisitors(int currentTick)
 		{
-			var movementCost = node.GetComponent<MovementCost>()?.Value ?? 1;
-
-			var graphNode = node.GetComponent<GraphNode>();
-			var exitNode = graphNode.ExitPositions.Single();
-
-			var visitors = node.GetComponent<Visitors>().Values.ToArray();
-
-			foreach (var visitorId in visitors)
+			foreach (var connectionTuple in _connectionMatcherGroup.MatchingEntities)
 			{
-				Entity visitor;
-				if (EntityRegistry.TryGetEntityById(visitorId, out visitor))
+				var exitNode = connectionTuple.Component2.ExitPositions.Single();
+
+				foreach (var visitorId in connectionTuple.Component3.Values.ToArray())
 				{
-					//TODO handle failed lookups
-					var movementSpeed = visitor.GetComponent<MovementSpeed>().Value;
-					var visitorPosition = visitor.GetComponent<VisitorPosition>();
-
-					var nextPosition = visitorPosition.PositionFloat + ((float)movementSpeed / movementCost);
-
-					if (nextPosition >= exitNode.Value)
+					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
+					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
 					{
-						var overflow = Math.Max((int)nextPosition - exitNode.Value, 0);
+						var nextPosition = visitorTuple.Component1.PositionFloat + ((float)visitorTuple.Component3.Value / connectionTuple.Component4.Value);
 
-						RemoveVisitorFromNode(node, visitor);
+						if (nextPosition >= exitNode.Value)
+						{
+							var overflow = Math.Max((int)nextPosition - exitNode.Value, 0);
 
-						OnVisitorTransition(exitNode.Key, visitor, node, overflow, currentTick);
-					}
-					else
-					{
-						visitorPosition.SetPosition(nextPosition, currentTick);
+							RemoveVisitorFromNode(connectionTuple.Entity.Id, connectionTuple.Component3, visitorTuple.Entity.Id, visitorTuple.Component2);
+
+							OnVisitorTransition(exitNode.Key, visitorId, connectionTuple.Entity.Id, overflow, currentTick);
+						}
+						else
+						{
+							visitorTuple.Component1.SetPosition(nextPosition, currentTick);
+						}
 					}
 				}
 			}
 		}
 
-		public override void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick)
+		public override void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			var graphNode = node.GetComponent<GraphNode>();
-
-			var position = graphNode.EntrancePositions[source.Id] + initialPosition;
-			AddVisitor(node, visitor, position, currentTick);
+			ComponentEntityTuple<Connection, GraphNode, Visitors, MovementCost> connectionTuple;
+			if (_connectionMatcherGroup.TryGetMatchingEntity(nodeId, out connectionTuple))
+			{
+				var position = connectionTuple.Component2.EntrancePositions.ContainsKey(sourceId)
+					? connectionTuple.Component2.EntrancePositions[sourceId] + initialPosition
+					: initialPosition;
+				AddVisitor(nodeId, connectionTuple.Component3, visitorId, position, currentTick);
+			}
 		}
 	}
 }

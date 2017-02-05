@@ -4,7 +4,6 @@ using System.Linq;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
-using PlayGen.ITAlert.Simulation.Components.Flags;
 using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources

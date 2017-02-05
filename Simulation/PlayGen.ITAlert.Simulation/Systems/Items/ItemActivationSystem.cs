@@ -30,7 +30,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_intentSystem = intentSystem;
 			
 			_activationMatcher = matcherProvider.CreateMatcherGroup<Activation>();
-			matcherProvider.RegisterMatcher(_activationMatcher);
 		}
 
 		public void Tick(int currentTick)

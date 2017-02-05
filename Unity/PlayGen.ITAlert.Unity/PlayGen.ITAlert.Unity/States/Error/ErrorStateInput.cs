@@ -39,8 +39,8 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		
 		protected override void OnEnter()
 		{
-			_messageText.text = _gameErrorContainer?.Exception.Message;
-			_panelVisibility.gameObject.SetActive(true);
+			_messageText.text = _gameErrorContainer?.Exception?.Message;
+			_panelVisibility.gameObject?.SetActive(true);
 			_buttons.BestFit();
 		}
 

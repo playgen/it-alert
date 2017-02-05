@@ -1,7 +1,6 @@
 ﻿using System;
-
-using PlayGen.ITAlert.Unity.GameStates.Menu.ScenarioList;
-
+using Engine.Configuration;
+using PlayGen.ITAlert.Simulation.Configuration;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

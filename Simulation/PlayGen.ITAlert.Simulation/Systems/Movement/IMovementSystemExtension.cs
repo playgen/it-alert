@@ -5,23 +5,23 @@ using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public delegate void AddVisitorToNode(int nodeId, Entity visitor, Entity source, int initialPosition, int currentTick);
+	public delegate void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick);
 
 	public interface IMovementSystemExtension : ISystemExtension
 	{
 		event AddVisitorToNode VisitorTransition;
 
-		EntityType EntityType { get; }
+		int[] NodeIds { get; }
 
-		void MoveVisitors(Entity node, int currentTick);
+		void MoveVisitors(int currentTick);
 
-		void AddVisitor(Entity node, Entity visitor);
+		void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick);
 
-		void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick);
-
-		void RemoveVisitorFromNode(Entity node, Entity visitor);
+		void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, int visitorId, CurrentLocation visitorLocation);
 	}
 }

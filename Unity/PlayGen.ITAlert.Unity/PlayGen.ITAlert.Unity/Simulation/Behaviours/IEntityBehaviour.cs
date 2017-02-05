@@ -8,8 +8,6 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 	{
 		int Id { get; }
 
-		EntityType EntityType { get; }
-
 		Entity Entity { get; }
 
 		void UpdateState();

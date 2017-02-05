@@ -29,8 +29,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		public int Id => Entity.Id;
 
-		public EntityType EntityType { get; private set; }
-		
 		#region Unity Update
 
 		/// <summary>
@@ -85,19 +83,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	/// <param name="entity"></param>
 		public void Initialize(Entity entity)
 		{
-			EntityTypeProperty entityType;
-			if (entity.TryGetComponent(out entityType))
-			{
-				EntityType = entityType.Value;
-				Entity = entity;
-				OnInitialize();
-				Initialized = true;
-			}
-			else
-			{
-				throw new InvalidOperationException("Could read entity type component!");
-			}
-
+			Entity = entity;
+			OnInitialize();
+			Initialized = true;
 		}
 		/// <summary>
 		/// actions to perform on initialization

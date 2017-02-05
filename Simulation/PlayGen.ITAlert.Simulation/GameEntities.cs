@@ -10,12 +10,12 @@ using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
+using PlayGen.ITAlert.Simulation.Components.Tutorial;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 
 namespace PlayGen.ITAlert.Simulation
@@ -38,25 +38,11 @@ namespace PlayGen.ITAlert.Simulation
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
 			.HasComponent(new ComponentBinding<Connection>())
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()
-			{
-				ComponentTemplate = new EntityTypeProperty()
-				{
-					Value = EntityType.Connection
-				}
-			})
 			.HasComponent(new ComponentBinding<MovementCost>());
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
 			.HasComponent(new ComponentBinding<Subsystem>())
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()
-			{
-				ComponentTemplate = new EntityTypeProperty()
-				{
-					Value = EntityType.Subsystem
-				}
-			})
 			.HasComponent(new ComponentBinding<Name>())
 			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
 			.HasComponent(new ComponentBinding<ItemActivator>())
@@ -114,13 +100,6 @@ namespace PlayGen.ITAlert.Simulation
 
 		public static readonly Archetype Player = new Archetype("Player")
 			.Extends(Actor)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()
-			{
-				ComponentTemplate = new EntityTypeProperty()
-				{
-					Value = EntityType.Player
-				}
-			})
 			.HasComponent(new ComponentBinding<Player>())
 			.HasComponent(new ComponentBinding<ConsumeCPU>()
 			{
@@ -134,14 +113,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		private static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
-			.HasComponent(new ComponentBinding<EntityTypeProperty>()
-			{
-				ComponentTemplate = new EntityTypeProperty()
-				{
-					Value = EntityType.Npc
-				}
-			})
-			//.HasComponent(new ComponentBinding<MalwareGenome>())
+			.HasComponent(new ComponentBinding<Npc>())
 			.HasComponent(new ComponentBinding<ConsumeMemory>()
 			{
 				ComponentTemplate = new ConsumeMemory()
@@ -183,13 +155,6 @@ namespace PlayGen.ITAlert.Simulation
 		private static readonly Archetype Item = new Archetype("Item")
 			.HasComponents(new ComponentBinding[]
 			{
-				new ComponentBinding<EntityTypeProperty>()
-				{
-					ComponentTemplate = new EntityTypeProperty()
-					{
-						Value = EntityType.Item
-					}
-				},
 				new ComponentBinding<CurrentLocation>(),
 				new ComponentBinding<Owner>(),
 				new ComponentBinding<ConsumeMemory>()
@@ -199,6 +164,7 @@ namespace PlayGen.ITAlert.Simulation
 						Value = SimulationConstants.ItemMemoryConsumption,
 					}
 				},
+				new ComponentBinding<Item>(), 
 				new ComponentBinding<Activation>(), 
 			});
 
@@ -282,6 +248,14 @@ namespace PlayGen.ITAlert.Simulation
 		public static readonly Archetype Data = new Archetype("Data")
 			.Extends(Item)
 			.HasComponent(new ComponentBinding<Data>());
+
+		#endregion
+
+		#region tutorial system
+
+		public static Archetype TutorialText = new Archetype("TutorialText")
+			.HasComponent(new ComponentBinding<ScenarioText>())
+			.HasComponent(new ComponentBinding<Text>());
 
 		#endregion
 	}

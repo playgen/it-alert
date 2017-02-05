@@ -3,7 +3,6 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
@@ -31,7 +30,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		// required
 		private CurrentLocation _currentLocation;
 		private Owner _owner;
-		private IItem _itemType;
+		private IItemType _itemType;
 		private Activation _activation;
 
 		// optional components
@@ -43,6 +42,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Start()
 		{
+			gameObject.transform.SetParent(Director.Graph.transform, false);
 
 		}
 
@@ -97,18 +97,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdatePosition()
 		{
-			UIEntity currentLocationEntity;
-			if (Director.TryGetEntity(_currentLocation.Value, out currentLocationEntity))
-			{
-				if (currentLocationEntity.Type == EntityType.Subsystem)
-				{
-					//Item
-				}
-				else
-				{
+			//UIEntity currentLocationEntity;
+			//if (Director.TryGetEntity(_currentLocation.Value, out currentLocationEntity))
+			//{
+			//	if (currentLocationEntity.Type == EntityType.Subsystem)
+			//	{
+			//		//Item
+			//	}
+			//	else
+			//	{
 					
-				}
-			}
+			//	}
+			//}
 		}
 
 		private void UpdateItemColor()

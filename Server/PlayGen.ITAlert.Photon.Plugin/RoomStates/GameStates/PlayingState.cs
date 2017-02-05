@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Commands;
+using Engine.Lifecycle;
 using Engine.Systems;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
@@ -22,20 +23,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Playing";
 
-		private readonly SimulationRoot _simulationRoot;
+		private readonly SimulationLifecycleManager _simulationLifecycleManager;
 
-		private int _tickIntervalMS = 100;
-		private object _tickTimer;
-		
 		public override string Name => StateName;
 
 		public event Action GameOverEvent;
 
-		public PlayingState(SimulationRoot simulationRoot, PluginBase photonPlugin, Messenger messenger,
+		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, PluginBase photonPlugin, Messenger messenger,
 			PlayerManager playerManager,RoomSettings roomSettings, AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
-			_simulationRoot = simulationRoot;
+			_simulationLifecycleManager = simulationLifecycleManager;
+			// TODO: should log game exit code to analytics
+			_simulationLifecycleManager.Stopped += s => OnGameOverEvent();
 		}
 
 		protected override void OnEnter()
@@ -51,7 +51,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.Unsubscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 
-			DestroyTimer(_tickTimer);
+			_simulationLifecycleManager.Tick -= OnTick;
+			_simulationLifecycleManager.TryStop();
+			_simulationLifecycleManager.Dispose();
 		}
 
 		private void ProcessGameStateMessage(Message message)
@@ -63,9 +65,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				player.State = (int) ClientState.Playing;
 				PlayerManager.UpdatePlayer(player);
 
-				if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing)
+				if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing 
+					&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
 				{
-					_tickTimer = CreateTickTimer();
+					if (_simulationLifecycleManager.TryStart())
+					{
+						_simulationLifecycleManager.Tick += OnTick;
+					}
+					else
+					{
+						throw new LifecycleException("Start lifecycle failed.");
+					}
 				}
 				return;
 			}
@@ -79,8 +89,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				throw new SimulationException($"Unhandled Simulation Command: ${message}");
 			}
 			var command = commandMessage.Command;
-			CommandSystem commandSystem;
-			if (_simulationRoot.ECS.TryGetSystem(out commandSystem) == false)
+			ICommandSystem commandSystem;
+			if (_simulationLifecycleManager.ECSRoot.ECS.TryGetSystem(out commandSystem) == false)
 			{
 				throw new SimulationException($"Could not locate command processing system");
 			}
@@ -91,39 +101,22 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			
 		}
 
-		private void Tick()
+		private void OnTick()
 		{
-			//var commands = _commandSequence.Tick();
-			//_resolver.ProcessCommands(commands);
-
-			// TODO: reimplement tick!
-			_simulationRoot.ECS.Tick();
-
-			//if (_simulationRoot.IsGameFailure 
-			//	|| (!_simulationRoot.HasViruses && !_commandSequence.HasPendingCommands))
-			//{
-			//	GameOverEvent();
-			//}
-			//else
-			//{
-				Messenger.SendAllMessage(new TickMessage
-				{
-					EntityState = _simulationRoot.GetEntityState()
-				});
-			//}
-		}
-
-		private object CreateTickTimer()
-		{
-			return PhotonPlugin.PluginHost.CreateTimer(
-				Tick,
-				SimulationConstants.TickInterval,
-				SimulationConstants.TickInterval);
+			Messenger.SendAllMessage(new TickMessage
+			{
+				EntityState = _simulationLifecycleManager.ECSRoot.GetEntityState()
+			});
 		}
 
 		private void DestroyTimer(object timer)
 		{
 			PhotonPlugin.PluginHost.StopTimer(timer);
+		}
+
+		protected virtual void OnGameOverEvent()
+		{
+			GameOverEvent?.Invoke();
 		}
 	}
 }

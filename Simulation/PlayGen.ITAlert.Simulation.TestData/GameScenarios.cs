@@ -1,25 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Commands;
 using Engine.Entities;
 using Engine.Evaluators;
-using Engine.Lifecycle;
+using Engine.Lifecycle.Commands;
 using Engine.Sequencing;
-using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Components.Common;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Startup;
 
-namespace PlayGen.ITAlert.Simulation
+namespace PlayGen.ITAlert.Simulation.Startup
 {
 	public static class GameScenarios
 	{
 		// TODO: this should be parameterized further and read from config
-		private static Scenario GenerateIntroductionScenario()
+		private static SimulationScenario GenerateIntroductionScenario()
 		{
 			const int width = 2;
 			const int height = 1;
@@ -28,34 +25,28 @@ namespace PlayGen.ITAlert.Simulation
 			var nodeConfigs = SimulationHelper.GenerateGraphNodes(width, height);
 			var edgeConfigs = SimulationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 
-			var player = new PlayerConfig()
-			{
-				Colour = "#ff00ff",
-				Name = "Player",
-				StartingLocation = 1,
-			};
-			var playerConfigs = new PlayerConfig[]
-			{
-				player,
-			};
-
 			var itemConfigs = new ItemConfig[]
 			{
 				new ItemConfig()
 				{
-					StartingLocation = 2,
+					StartingLocation = 0,
 					TypeName = nameof(Scanner),
 				}
 			};
 
-			var configuration = SimulationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
+			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig() {StartingLocation = 1});
 
-			return new Scenario()
+			var configuration = SimulationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+
+			return new SimulationScenario()
 			{
 				Name = "Introduction",
+				Description = "Introduction",
 				MinPlayers = playerCount,
 				MaxPlayers = playerCount,
 				Configuration = configuration,
+
+				CreatePlayerConfig = playerConfigFactory,
 
 				// TODO: need a config driven specification for these
 				Sequence = new SequenceFrame<Simulation>[]
@@ -83,12 +74,25 @@ namespace PlayGen.ITAlert.Simulation
 								Name = "Welcome Message"
 							}
 						},
-						OnExitActions = new List<ECSAction<Simulation>>(),
+						OnExitActions = new List<ECSAction<Simulation>>()
+						{
+							new ECSAction<Simulation>()
+							{
+								Action = ecs =>
+								{
+									ICommandSystem commandSystem;
+									if (ecs.TryGetSystem(out commandSystem))
+									{
+										commandSystem.TryHandleCommand(new HideTextCommand());
+									}
+								}
+							}
+						},
 						// TODO: need a more polymorphic way of specifying evaluators
 						// c# 7 pattern match will be nice
-						Evaluator = new TickEvaluator<Simulation>()
+						Evaluator = new TimeEvaluator<Simulation>()
 						{
-							Threshold = 20,
+							Threshold = 3000,
 						}
 					},
 					// frame 2 - movement
@@ -121,10 +125,10 @@ namespace PlayGen.ITAlert.Simulation
 							{
 								Action = ecs =>
 								{
-									LifecycleSystem lifecycleSystem;
-									if (ecs.TryGetSystem(out lifecycleSystem))
+									ICommandSystem commandSystem;
+									if (ecs.TryGetSystem(out commandSystem))
 									{
-										lifecycleSystem.TryStop();
+										commandSystem.TryHandleCommand(new HideTextCommand());
 									}
 								}
 							}
@@ -133,16 +137,16 @@ namespace PlayGen.ITAlert.Simulation
 						{
 							Entity playerEntity;
 							CurrentLocation location;
-							return sim.Entities.TryGetValue(player.EntityId, out playerEntity)
+							return sim.Entities.TryGetValue(configuration.PlayerConfiguration.Single().EntityId, out playerEntity)
 									&& playerEntity.TryGetComponent(out location)
-									&& location.Value == nodeConfigs.Last().EntityId;
+									&& location.Value == nodeConfigs.First().EntityId;
 						})
 					}
 				}
 			};
 		}
 
-		private static Scenario _introduction = null;
-		public static Scenario Introduction => _introduction ?? (_introduction = GenerateIntroductionScenario());
+		private static SimulationScenario _introduction = null;
+		public static SimulationScenario Introduction => _introduction ?? (_introduction = GenerateIntroductionScenario());
 	}
 }

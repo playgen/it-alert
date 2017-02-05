@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		///// <param name="item">Item reference if available</param>
 		///// <param name="requestor"></param>
 		///// <returns>Boolean indiciting whether item was obtained</returns>
-		//public bool TryGetItem(ItemType itemType, Entity requestor, int itemLocation, out IItem item)
+		//public bool TryGetItem(ItemType itemType, Entity requestor, int itemLocation, out IItemType item)
 		//{
 		//	var itemContainer = Items[itemLocation];
 		//	if (itemContainer != null
@@ -69,7 +69,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		//	return false;
 		//}
 
-		//public void GetItem(IItem item)
+		//public void GetItem(IItemType item)
 		//{
 		//	for (var i = 0; i < ItemLimit; i++)
 		//	{
@@ -88,7 +88,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		//	return Items.Any(ic => ic.HasItem == false && ic.Enabled);
 		//}
 
-		//public bool HasItem(IItem item)
+		//public bool HasItem(IItemType item)
 		//{
 		//	return Items.Any(ic => ic.Item == item);
 		//}

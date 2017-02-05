@@ -4,7 +4,7 @@ using System.Linq;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using Priority_Queue;
 

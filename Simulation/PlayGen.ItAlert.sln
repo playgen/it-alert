@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Lifecycle", "Engine\Engine.Lifecycle\Engine.Lifecycle.csproj", "{4421783E-7C1B-47BC-B26C-FC7B0653D706}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Commands", "Engine\Engine.Commands\Engine.Commands.csproj", "{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Engine\Newtonsoft.Json\Src\Newtonsoft.Json\Newtonsoft.Json.Shared.projitems*{1ac37270-0adc-43f6-9fc8-6feb96686356}*SharedItemsImports = 13
@@ -195,6 +197,12 @@ Global
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.UnityDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.UnityDebug|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,5 +231,6 @@ Global
 		{27721DC6-0DFD-42E7-86BA-33FB9632AD19} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{503B216A-3070-4211-AB66-6B975246CB57} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
+		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 	EndGlobalSection
 EndGlobal

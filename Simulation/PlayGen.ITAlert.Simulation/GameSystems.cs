@@ -6,6 +6,8 @@ using Engine.Commands;
 using Engine.Configuration;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands;
+using PlayGen.ITAlert.Simulation.Commands.Movement;
+using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -37,11 +39,14 @@ namespace PlayGen.ITAlert.Simulation
 				{
 					new SystemExtensionConfiguration<ICommandHandler>()
 					{
-						Implementations = new []
+						Implementations = new SystemExtensionImplementation[]
 						{
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(), 
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DisplayTextCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HideTextCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SpawnNpcCommandHandler>(),
 						}
-						
+
 					}
 				}
 			},

@@ -5,7 +5,7 @@ using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Systems;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Layout;
 

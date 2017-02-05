@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Components;
 using Engine.Entities;
+using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Movement;
@@ -11,50 +13,39 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 	public abstract class MovementSystemExtensionBase : IMovementSystemExtension
 	{
 		public event AddVisitorToNode VisitorTransition;
-		public abstract EntityType EntityType { get; }
 
-		protected readonly IEntityRegistry EntityRegistry;
+		public abstract int[] NodeIds { get; }
 
-		protected MovementSystemExtensionBase(IEntityRegistry entityRegistry)
+		protected ComponentMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents> VisitorMatcherGroup;
+		
+		protected MovementSystemExtensionBase(IMatcherProvider matcherProvider)
 		{
-			EntityRegistry = entityRegistry;
+			VisitorMatcherGroup = matcherProvider.CreateMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents>();
 		}
 
-		public abstract void MoveVisitors(Entity node, int currentTick);
+		public abstract void MoveVisitors(int currentTick);
 
-		public abstract void AddVisitorToNode(Entity node, Entity visitor, Entity source, int initialPosition, int currentTick);
+		public abstract void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick);
 
-		public void AddVisitor(Entity node, Entity visitor)
+		protected void AddVisitor(int nodeId, Visitors nodeVisitors, int visitorId, int position, int currentTick)
 		{
-			AddVisitor(node, visitor, 0, 0);
+			ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
+			if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
+			{
+				nodeVisitors.Values.Add(visitorId);
+				visitorTuple.Component1.SetPosition(position, currentTick);
+				visitorTuple.Component2.Value = nodeId;
+			}
 		}
 
-		protected void AddVisitor(Entity node, Entity visitor, int position, int currentTick)
+		public void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, int visitorId, CurrentLocation visitorLocation)
 		{
-			var visitorPosition = visitor.GetComponent<VisitorPosition>();
-			visitorPosition.SetHost(node);
-			visitorPosition.SetPosition(position, currentTick);
-
-			var visitors = node.GetComponent<Visitors>().Values;
-			visitors.Add(visitor.Id);
-
-			// TODO: reimplement - we can use the current location property of the visitor to remove them from the appropriate node
-			// visitor.EntityDestroyed += v => RemoveVisitorFromNode(node, v);
-
-			var currentLocation = visitor.GetComponent<CurrentLocation>();
-			currentLocation.Value = node.Id;
+			nodeVisitors.Values.Remove(visitorId);
 		}
 
-		public void RemoveVisitorFromNode(Entity node, Entity visitor)
+		protected void OnVisitorTransition(int nodeId, int visitorId, int sourceId, int initialposition, int currenttick)
 		{
-			var visitors = node.GetComponent<Visitors>().Values;
-			//visitor.EntityDestroyed -= RemoveVisitor;
-			visitors.Remove(visitor.Id);
-		}
-
-		protected void OnVisitorTransition(int nodeId, Entity visitor, Entity source, int initialposition, int currenttick)
-		{
-			VisitorTransition?.Invoke(nodeId, visitor, source, initialposition, currenttick);
+			VisitorTransition?.Invoke(nodeId, visitorId, sourceId, initialposition, currenttick);
 		}
 
 	}

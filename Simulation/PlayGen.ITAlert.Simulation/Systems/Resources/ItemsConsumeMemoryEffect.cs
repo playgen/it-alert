@@ -5,9 +5,8 @@ using Engine.Components;
 using Engine.Entities;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 
@@ -16,12 +15,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 	public class ItemsConsumeMemoryEffect : ISubsystemResourceEffect
 	{
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage, MemoryResource> _subsystemMatcher;
-		private readonly ComponentMatcherGroup<IItem, ConsumeMemory> _itemMatcher;
+		private readonly ComponentMatcherGroup<IItemType, ConsumeMemory> _itemMatcher;
 
 		public ItemsConsumeMemoryEffect(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
 			_subsystemMatcher = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage, MemoryResource>();
-			_itemMatcher = matcherProvider.CreateMatcherGroup<IItem, ConsumeMemory>();
+			_itemMatcher = matcherProvider.CreateMatcherGroup<IItemType, ConsumeMemory>();
 		}
 
 		public void Tick()
@@ -31,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				var sum = subsystemTuple.Component3.Value;
 				foreach (var itemContainer in subsystemTuple.Component2.Items)
 				{
-					ComponentEntityTuple<IItem, ConsumeMemory> itemTuple;
+					ComponentEntityTuple<IItemType, ConsumeMemory> itemTuple;
 					if (itemContainer.Item != null && _itemMatcher.TryGetMatchingEntity(itemContainer.Item.Value, out itemTuple))
 					{
 						sum += itemTuple.Component2.Value;

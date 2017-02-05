@@ -17,17 +17,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	{
 		public const string StateName = "Initializing";
 
-		private readonly SimulationRoot _simulationRoot;
+		private readonly SimulationLifecycleManager _simulationLifecycleManager;
 	
 		public override string Name => StateName;
 
 		public event Action<List<Player>> PlayerInitializedEvent;
 
-		public InitializingState(SimulationRoot simulationRoot, PluginBase photonPlugin, Messenger messenger,
+		public InitializingState(SimulationLifecycleManager simulationLifecycleManager, PluginBase photonPlugin, Messenger messenger,
 			PlayerManager playerManager,RoomSettings roomSettings, AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
-			_simulationRoot = simulationRoot;
+			_simulationLifecycleManager = simulationLifecycleManager;
 		}
 
 		protected override void OnEnter()
@@ -55,8 +55,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				{
 					Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
 					{
-						SimulationConfiguration = _simulationRoot.GetConfiguration(),
-						SimulationState = _simulationRoot.GetEntityState(),
+						SimulationConfiguration = _simulationLifecycleManager.ECSRoot.GetConfiguration(),
+						SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
 					});
 				}
 				return;
@@ -69,7 +69,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				player.State = (int) ClientState.Initialized;
 				PlayerManager.UpdatePlayer(player);
 
-				PlayerInitializedEvent(PlayerManager.Players);
+				PlayerInitializedEvent?.Invoke(PlayerManager.Players);
 				return;
 			}
 		}

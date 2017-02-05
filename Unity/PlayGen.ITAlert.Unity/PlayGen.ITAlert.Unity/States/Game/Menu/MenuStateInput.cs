@@ -123,12 +123,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_serverConnectionText.color = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? Color.green : Color.red;
 			if (SUGARManager.CurrentUser != null)
 			{
-				_sugarConnectionText.text = "SUGAR User: " + SUGARManager.CurrentUser.Name;
+				_sugarConnectionText.text = SUGARManager.CurrentUser.Name;
 				_sugarConnectionText.color = Color.green;
 			}
 			else
 			{
-				_sugarConnectionText.text = "SUGAR: Not Signed In";
+				_sugarConnectionText.text = "Not Signed In";
 				_sugarConnectionText.color = Color.red;
 			}
 		}

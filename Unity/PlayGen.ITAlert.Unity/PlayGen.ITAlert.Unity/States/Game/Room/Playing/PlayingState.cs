@@ -41,7 +41,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnExit()
 		{
-			_photonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+			_photonClient.CurrentRoom?.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 		}
 
 		private static void ProcessSimulationStateMessage(Message message)

@@ -35,7 +35,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntityType.cs" />
     <Compile Include="IdentifierType.cs" />
     <Compile Include="NodeType.cs" />
     <Compile Include="NpcActorType.cs" />

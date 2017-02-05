@@ -7,9 +7,8 @@ using Engine.Entities;
 using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
-using PlayGen.ITAlert.Simulation.Components.Flags;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Items.Flags;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -31,8 +30,6 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 					Name = "Node 0"
 				}
 			};
-			var edges = new EdgeConfig[0];
-			var players = new PlayerConfig[0];
 			var items = new[]
 			{
 				new ItemConfig()
@@ -41,6 +38,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 					TypeName = "Scanner",
 				}
 			};
+
 			var systems = new SystemConfiguration[]
 			{
 				new SystemConfiguration<ItemStorageSystem>(),
@@ -66,8 +64,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				GameEntities.Scanner,
 			};
 
-
-			var configuration = new SimulationConfiguration(nodes, edges, players, items, archetypes, systems);
+			var lifecycleConfig = new LifeCycleConfiguration();
+			var configuration = new SimulationConfiguration(nodes, null, null, items, archetypes, systems, lifecycleConfig);
 			var rootA = SimulationInstaller.CreateSimulationRoot(configuration);
 			var ecsA = rootA.ECS;
 
@@ -102,7 +100,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			Assert.That(system.HasComponent<Subsystem>(), "First entity does not have subsystem component");
 
 			var item = ecs.Entities[2];
-			Assert.That(item.HasComponent<IItem>(), "Second entity does not have item component");
+			Assert.That(item.HasComponent<IItemType>(), "Second entity does not have item component");
 
 			ItemStorage itemStorage;
 			Assert.That(system.TryGetComponent(out itemStorage), "System does not have ItemSTorage component");
