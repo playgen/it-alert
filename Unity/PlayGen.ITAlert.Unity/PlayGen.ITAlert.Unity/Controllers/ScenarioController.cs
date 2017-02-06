@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Linq;
+
 using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
+
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
@@ -69,9 +73,12 @@ namespace PlayGen.ITAlert.Unity.Controllers
 				GameScenario = _selected.Name
 
 			};
-			if (0 < _photonClient.ListRooms(ListRoomsFilters.Open, roomSettings.CustomPropertiesToHashtable()).Length)
+			var rooms = _photonClient.ListRooms(ListRoomsFilters.Open);
+			rooms = rooms.Where(r => (string)r.customProperties[CustomRoomSettingKeys.GameScenario] == roomSettings.GameScenario).ToArray();
+			rooms = rooms.Where(r => r.maxPlayers != r.playerCount).ToArray();
+			if (0 < rooms.Length)
 			{
-				_photonClient.JoinRandomRoom();
+				_photonClient.JoinRandomRoom(roomSettings.CustomPropertiesToHashtable());
 			}
 			else
 			{
