@@ -5,7 +5,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Activation
 {
 	public class Activation : IComponent
 	{
-		public ActivationState ActivationState { get; private set; }
+		public ActivationState ActivationState { get; private set; } = ActivationState.NotActive;
 
 		public void Activate()
 		{

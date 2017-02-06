@@ -142,7 +142,7 @@ namespace PlayGen.ITAlert.Simulation
 		public void CreateItem(ItemConfig itemConfig, Dictionary<int, Entity> subsystems)
 		{
 			Entity item;
-			if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.TypeName, out item))
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.ArchetypeName, out item))
 			{
 				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
 
@@ -150,7 +150,7 @@ namespace PlayGen.ITAlert.Simulation
 			else
 			{
 				item?.Dispose();
-				throw new SimulationException($"Could not craete item for archtype '{itemConfig.TypeName}'");
+				throw new SimulationException($"Could not craete item for archtype '{itemConfig.ArchetypeName}'");
 			}
 		}
 

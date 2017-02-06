@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public const string StateName = nameof(GameState);
 		private const string GamePlugin = "RoomControllerPlugin";
 		private const string GameVersion = "1";
-		
+
 		private readonly GameStateControllerFactory _stateControllerFactory;
 		private readonly GameErrorContainer _gameErrorContainer;
 
@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public override string Name => StateName;
 
 		public event Action<Exception> ExceptionEvent;
-		
+
 		public GameState(GameErrorContainer gameErrorContainer)
 		{
 			_gameErrorContainer = gameErrorContainer;
@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		protected override void OnEnter()
 		{
-			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());;
+			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler()); ;
 			_photonClient.ExceptionEvent += OnClientException;
 
 			PlayerCommands.PhotonClient = _photonClient;
@@ -61,10 +61,10 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		{
 			try
 			{
-			    if (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Disconnected)
-			    {
-			        _photonClient.Connect();
-			    }
+				if (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Disconnected)
+				{
+					_photonClient.Connect();
+				}
 
 				_stateController.Tick(deltaTime);
 			}
