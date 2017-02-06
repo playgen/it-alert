@@ -1,8 +1,8 @@
 ﻿using System;
 using Engine.Configuration;
 using GameWork.Core.States.Tick.Input;
-using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;

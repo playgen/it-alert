@@ -26,9 +26,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		public TickStateController Create()
 		{
 			var createGameController = new CreateGameController(_photonClient);
-			var scenarioController = new ScenarioController(_photonClient);
+			var scenarioController = new ScenarioController(_photonClient, createGameController);
 
-			var mainMenuState = CreateMainMenuState(_photonClient, createGameController);
+			var mainMenuState = CreateMainMenuState(_photonClient, scenarioController);
 			var scenarioListState = CreateScenarioListState(_photonClient, scenarioController);
 			var gameListState = CreateGameListState(_photonClient);
 			var createGameState = CreateCreateGameState(_photonClient, createGameController, scenarioController);
@@ -46,20 +46,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			return stateController;
 		}
 
-		private MainMenuState CreateMainMenuState(Client photonClient, CreateGameController createGameController)
+		private MainMenuState CreateMainMenuState(Client photonClient, ScenarioController scenarioController)
 		{
-			var quickGameController = new QuickGameController(_photonClient, createGameController, new CreateRoomSettings
-			{
-				Name = Guid.NewGuid().ToString().Substring(0, 7),
-				MinPlayers = 1,
-				MaxPlayers = 4,
-				CloseOnStarted = true,
-				OpenOnEnded = true
-				
-			});
-
-			var input = new MenuStateInput(photonClient);
-			var state = new MainMenuState(input, quickGameController);
+			var input = new MenuStateInput(photonClient, scenarioController);
+			var state = new MainMenuState(input);
 
 			var joinGameTransition = new OnEventTransition(GamesListState.StateName);
 			var createGameTransition = new OnEventTransition(ScenarioListState.StateName);
@@ -85,12 +75,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			var state = new ScenarioListState(input, scenarioController);
 
 			var scenarioSelectedTransition = new OnEventTransition(CreateGameState.StateName);
+			var quickMatchTransition = new OnEventTransition(RoomState.StateName);
 			var previousStateTransition = new OnEventTransition(MainMenuState.StateName);
 
 			scenarioController.ScenarioSelectedSuccessEvent += scenarioSelectedTransition.ChangeState;
+			scenarioController.QuickMatchSuccessEvent += quickMatchTransition.ChangeState;
 			input.BackClickedEvent += previousStateTransition.ChangeState;
 
-			state.AddTransitions(scenarioSelectedTransition, previousStateTransition);
+			state.AddTransitions(scenarioSelectedTransition, previousStateTransition, quickMatchTransition);
 
 			return state;
 		}

@@ -130,7 +130,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		#region Rooms
 
-		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
+		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None, Hashtable customRoomProperties = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -205,7 +205,7 @@ namespace PlayGen.Photon.Unity.Client
 			PhotonNetwork.JoinRoom(roomName);
 		}
 
-		public void JoinRandomRoom()
+		public void JoinRandomRoom(Hashtable customRoomProperties = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -223,7 +223,7 @@ namespace PlayGen.Photon.Unity.Client
 				return;
 			}
 
-			PhotonNetwork.JoinRandomRoom();
+			PhotonNetwork.JoinRandomRoom(customRoomProperties, 0);
 		}
 
 		public void LeaveRoom()

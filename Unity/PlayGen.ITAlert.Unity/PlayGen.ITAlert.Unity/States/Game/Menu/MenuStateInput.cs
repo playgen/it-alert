@@ -1,6 +1,7 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
@@ -14,6 +15,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		public event Action QuitClickedEvent;
 
 		private readonly Client _photonClient;
+		private readonly ScenarioController _controller;
 
 		private GameObject _mainMenuPanel;
 		private ButtonList _buttons;
@@ -30,9 +32,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		public event Action SettingsClickedEvent;
 		public event Action JoinGameSuccessEvent;
 
-		public MenuStateInput(Client photonClient)
+		public MenuStateInput(Client photonClient, ScenarioController controller)
 		{
 			_photonClient = photonClient;
+			_controller = controller;
 		}
 
 		protected override void OnInitialize()
@@ -78,13 +81,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 		private void OnCreateGameClick()
 		{
+			_controller.SetQuickMatch(false);
 			CreateGameClickedEvent();
 		}
 
 		private void OnQuickMatchClick()
 		{
-			CommandQueue.AddCommand(new QuickGameCommand());
-			LoadingUtility.ShowSpinner();
+			_controller.SetQuickMatch(true);
+			CreateGameClickedEvent();
 		}
 
 		private void OnSettingsClick()
