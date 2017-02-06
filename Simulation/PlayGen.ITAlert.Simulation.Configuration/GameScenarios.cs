@@ -476,28 +476,44 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			const int minPlayerCount = 4;
 			const int maxPlayerCount = 4;
 
-			var nodeLeft = new NodeConfig(0)
+			var nodeTopLeft = new NodeConfig(0)
 			{
-				Name = "Left",
+				Name = "Top Left",
 				X = 0,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeRight = new NodeConfig(1)
+			var nodeTopRight = new NodeConfig(1)
 			{
-				Name = "Right",
+				Name = "Top Right",
 				X = 1,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight };
+			var nodeBottomLeft = new NodeConfig(2)
+			{
+				Name = "Bottom Left",
+				X = 0,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeBottomRight = new NodeConfig(3)
+			{
+				Name = "Bottom Right",
+				X = 1,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeConfigs = new NodeConfig[] { nodeTopLeft, nodeTopRight, nodeBottomLeft, nodeBottomRight };
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			var itemConfigs = new ItemConfig[0];
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{
-				StartingLocation = nodeRight.Id,
+				StartingLocation = i,
 				ArchetypeName = nameof(GameEntities.Player)
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
@@ -518,7 +534,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						SetCommandEnabled<SetActorDestinationCommand>(false),
 						GenerateTextAction($"Hellooo humans!{Environment.NewLine} Seeing as you're biological brains aren't anywhere close to the computational speed of my CPU, I" +
 											$"figured: the more of you, the better.{Environment.NewLine}Let's get started...also this is a test level so you're now stuck here until you escape! Mwuhahaha!")
 					},
