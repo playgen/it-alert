@@ -325,16 +325,34 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
 						SetCommandEnabled<ActivateItemCommand>(false),
-						GenerateTextAction($"The item that has just been spawned on the right hand node is a scanner.{Environment.NewLine}To use items you must be on the same node.")
+						GenerateTextAction($"The item that has just been spawned on the right hand node is a scanner.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						HideTextAction,
 					},
 					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
-					Evaluator = OnlyPlayerIsAtLocation(nodeRight).And(WaitForTutorialContinue),
+					Evaluator = WaitForTutorialContinue,
 				}
 			);
+
+			frames.Add(// frame 4a - item
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						GenerateTextAction($"To use items you must be on the same node...", false)
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
+					Evaluator = OnlyPlayerIsAtLocation(nodeRight),
+				}
+			);
+
+			
 
 			frames.Add(// frame 4b - item
 				new SimulationFrame()
@@ -372,7 +390,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						GenerateTextAction($"While the item is active the colouyr changes to indicate the player that is performing the action."),
+						GenerateTextAction($"While the item is active the colour changes to indicate the player that is performing the action."),
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -387,7 +405,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						GenerateTextAction($"Unfortunately the scanner had no affect this time.{Environment.NewLine}The scanner reveals malware on a system when it is present and hidden.")
+						GenerateTextAction($"The scanner reveals malware on a system when it is present and hidden.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -422,7 +440,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						CreateNpcCommand(nameof(GameEntities.CPUVirus), nodeLeft.Id),
 						GenerateTextAction($"It appears that this infections is consuming CPU cycles on the system. As CPU is consumed the performance of the system decreases and so does movement speed.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -459,28 +476,44 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			const int minPlayerCount = 4;
 			const int maxPlayerCount = 4;
 
-			var nodeLeft = new NodeConfig(0)
+			var nodeTopLeft = new NodeConfig(0)
 			{
-				Name = "Left",
+				Name = "Top Left",
 				X = 0,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeRight = new NodeConfig(1)
+			var nodeTopRight = new NodeConfig(1)
 			{
-				Name = "Right",
+				Name = "Top Right",
 				X = 1,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight };
+			var nodeBottomLeft = new NodeConfig(2)
+			{
+				Name = "Bottom Left",
+				X = 0,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeBottomRight = new NodeConfig(3)
+			{
+				Name = "Bottom Right",
+				X = 1,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeConfigs = new NodeConfig[] { nodeTopLeft, nodeTopRight, nodeBottomLeft, nodeBottomRight };
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			var itemConfigs = new ItemConfig[0];
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{
-				StartingLocation = nodeRight.Id,
+				StartingLocation = i,
 				ArchetypeName = nameof(GameEntities.Player)
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
@@ -501,7 +534,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						SetCommandEnabled<SetActorDestinationCommand>(false),
 						GenerateTextAction($"Hellooo humans!{Environment.NewLine} Seeing as you're biological brains aren't anywhere close to the computational speed of my CPU, I" +
 											$"figured: the more of you, the better.{Environment.NewLine}Let's get started...also this is a test level so you're now stuck here until you escape! Mwuhahaha!")
 					},

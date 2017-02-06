@@ -156,10 +156,10 @@ namespace PlayGen.Photon.Unity.Client
 			}
 
 			return PhotonNetwork.GetRoomList().Where(r =>
-				((ListRoomsFilters.Open & filters)      != ListRoomsFilters.Open    || r.open)
-				&& ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed  || !r.open)
-				&& ((ListRoomsFilters.Visible & filters)!= ListRoomsFilters.Visible || r.visible)
-				&& ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden  || !r.visible)
+				((ListRoomsFilters.Open & filters) != ListRoomsFilters.Open || r.open)
+				&& ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed || !r.open)
+				&& ((ListRoomsFilters.Visible & filters) != ListRoomsFilters.Visible || r.visible)
+				&& ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden || !r.visible)
 			).ToArray();
 		}        
 
@@ -219,7 +219,7 @@ namespace PlayGen.Photon.Unity.Client
 			PhotonNetwork.JoinRoom(roomName);
 		}
 
-		public void JoinRandomRoom()
+		public void JoinRandomRoom(Hashtable customRoomProperties = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -237,7 +237,7 @@ namespace PlayGen.Photon.Unity.Client
 				return;
 			}
 
-			PhotonNetwork.JoinRandomRoom();
+			PhotonNetwork.JoinRandomRoom(customRoomProperties, 0);
 		}
 
 		public void LeaveRoom()

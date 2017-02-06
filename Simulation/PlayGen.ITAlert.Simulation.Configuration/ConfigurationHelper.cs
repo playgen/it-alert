@@ -112,7 +112,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					itemConfigs.Add(new ItemConfig()
 					{
 						StartingLocation = random.Next(0, nodeConfigs.Count),
-						TypeName = item.Key,
+						ArchetypeName = item.Key,
 					});
 				}
 			}

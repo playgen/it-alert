@@ -28,7 +28,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				{
 					X = 0,
 					Y = 0,
-					Name = "Node 0"
+					Name = "Node 0",
+					ArchetypeName = nameof(GameEntities.Subsystem)
 				}
 			};
 			var items = new[]
@@ -36,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				new ItemConfig()
 				{
 					StartingLocation = 0,
-					TypeName = "Scanner",
+					ArchetypeName = "Scanner",
 				}
 			};
 

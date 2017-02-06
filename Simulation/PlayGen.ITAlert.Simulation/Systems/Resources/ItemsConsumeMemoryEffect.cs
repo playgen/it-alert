@@ -17,7 +17,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage, MemoryResource> _subsystemMatcher;
 		private readonly ComponentMatcherGroup<IItemType, ConsumeMemory> _itemMatcher;
 
-		public ItemsConsumeMemoryEffect(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
+		public ItemsConsumeMemoryEffect(IMatcherProvider matcherProvider)
 		{
 			_subsystemMatcher = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage, MemoryResource>();
 			_itemMatcher = matcherProvider.CreateMatcherGroup<IItemType, ConsumeMemory>();
