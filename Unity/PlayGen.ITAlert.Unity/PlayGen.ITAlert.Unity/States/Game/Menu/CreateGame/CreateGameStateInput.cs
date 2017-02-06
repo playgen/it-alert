@@ -2,8 +2,8 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
-using PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -56,7 +56,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			CommandQueue.AddCommand(new CreateGameCommand(new CreateRoomSettings
 			{
 				Name = details.GameName,
-				MinPlayers = 1,
+				MinPlayers = _scenarioController.Selected.MinPlayerCount,
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true,

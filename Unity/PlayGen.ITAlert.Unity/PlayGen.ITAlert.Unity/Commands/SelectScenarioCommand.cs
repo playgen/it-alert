@@ -1,9 +1,6 @@
-﻿using System;
-using Engine.Configuration;
+﻿using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
-using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Unity.Controllers;
-using PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList;
 
 namespace PlayGen.ITAlert.Unity.Commands
 {
