@@ -1,3 +1,27 @@
 <linker>
-	<assembly fullname="GameWork.Core.States" preserve="all"/>
+  <assembly fullname="GameWork.Core.Audio" preserve="all" />
+  <assembly fullname="GameWork.Core.Commands" preserve="all" />
+  <assembly fullname="GameWork.Core.Components" preserve="all" />
+  <assembly fullname="GameWork.Core.Controllers" preserve="all" />
+  <assembly fullname="GameWork.Core.Extensions" preserve="all" />
+  <assembly fullname="GameWork.Core.Factories" preserve="all" />
+  <assembly fullname="GameWork.Core.IO" preserve="all" />
+  <assembly fullname="GameWork.Core.Localization" preserve="all" />
+  <assembly fullname="GameWork.Core.Logging" preserve="all" />
+  <assembly fullname="GameWork.Core.Math" preserve="all" />
+  <assembly fullname="GameWork.Core.Models" preserve="all" />
+  <assembly fullname="GameWork.Core.ObjectPool" preserve="all" />
+  <assembly fullname="GameWork.Core.States" preserve="all" />
+  <assembly fullname="GameWork.Core.Utilities" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Animation" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Audio" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Components" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.GameObjectPool" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.IO" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Logging" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Math" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.States" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.Transform" preserve="all" />
+  <assembly fullname="GameWork.Unity.Engine.UI" preserve="all" />
+  <assembly fullname="Newtonsoft.Json" preserve="all" />
 </linker>
