@@ -1,1 +1,1 @@
-4848f35 stopped references being copied to output
+6831c44 changed to late update to ensure additions or subtractions of childernb have bveen made before render
