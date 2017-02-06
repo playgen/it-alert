@@ -93,9 +93,9 @@ namespace PlayGen.Photon.Unity.Client
 			_photonClientWrapper.JoinRoom(roomName);
 		}
 
-		public void JoinRandomRoom()
+		public void JoinRandomRoom(Hashtable customRoomProperties = null)
 		{
-			_photonClientWrapper.JoinRandomRoom();
+			_photonClientWrapper.JoinRandomRoom(customRoomProperties);
 		}
 
 		#region Callbacks

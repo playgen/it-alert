@@ -80,6 +80,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
 			SetRoomName(_photonClient.CurrentRoom.RoomInfo.name);
 
+			_readyButton.gameObject.GetComponentInChildren<Text>().text = "READY";
 			_lobbyPanel.SetActive(true);
 			_buttons.BestFit();
 			LoadingUtility.HideSpinner();

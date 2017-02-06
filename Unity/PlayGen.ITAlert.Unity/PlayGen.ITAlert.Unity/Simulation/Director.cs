@@ -138,7 +138,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				SimulationRoot = simulationRoot;
 
 				// center graph
-				UIConstants.NetworkOffset -= new Vector2(
+				UIConstants.CurrentNetworkOffset = UIConstants.NetworkOffset;
+				UIConstants.CurrentNetworkOffset -= new Vector2(
 					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
 					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
 
@@ -153,7 +154,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					behaviour.Value.SetActive(false);
 				}
 
-				Initialized = true;
 				return true;
 			}
 			catch (Exception ex)

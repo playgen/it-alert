@@ -10,26 +10,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		public const string StateName = nameof(MainMenuState);
 
 		public override string Name => StateName;
-
-		private readonly QuickGameController _controller;
 		
-		public MainMenuState(MenuStateInput input, QuickGameController controller) : base(input)
+		public MainMenuState(MenuStateInput input) : base(input)
 		{
-			_controller = controller;
-		}
-
-		protected override void OnTick(float deltaTime)
-		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
-			{
-				var quickGameCommand = command as QuickGameCommand;
-				if (quickGameCommand != null)
-				{
-					quickGameCommand.Execute(_controller);
-					return;
-				}
-			}
 		}
 	}
 }

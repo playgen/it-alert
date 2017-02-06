@@ -141,7 +141,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void SetPosition()
 		{
 			var coordinate = Entity.GetComponent<Coordinate2DProperty>();
-			transform.position = new Vector3(UIConstants.NetworkOffset.x + (UIConstants.SubsystemSpacing.x * coordinate.X), UIConstants.NetworkOffset.y + (UIConstants.SubsystemSpacing.y * coordinate.Y));
+			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (UIConstants.SubsystemSpacing.x * coordinate.X), UIConstants.CurrentNetworkOffset.y + (UIConstants.SubsystemSpacing.y * coordinate.Y));
 			_itemPositions = CornerItemOffsets.Select(c => c + (Vector2) _connectionSquare.transform.position).ToArray();
 		}
 
