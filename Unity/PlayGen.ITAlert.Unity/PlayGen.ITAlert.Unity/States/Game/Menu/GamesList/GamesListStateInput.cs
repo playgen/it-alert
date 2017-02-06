@@ -124,8 +124,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				gameItem.FindChild("Name").GetComponent<Text>().text = name;
 				gameItem.FindChild("Scenario").GetComponent<Text>().text = (string)scenario;
 				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
+				var minPlayers = room.customProperties[CustomRoomSettingKeys.MinPlayers];
 
-				if (room.playerCount == room.maxPlayers || int.Parse((string)room.customProperties[CustomRoomSettingKeys.MinPlayers]) > room.playerCount)
+				if (room.playerCount == room.maxPlayers || (minPlayers != null && (int)minPlayers > room.playerCount))
 				{
 					gameItem.FindChild("Name").GetComponent<Text>().color = Color.red;
 					gameItem.FindChild("Scenario").GetComponent<Text>().color = Color.red;
