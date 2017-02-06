@@ -1,5 +1,4 @@
-﻿using System;
-using Photon.Hive.Plugin;
+﻿using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -7,7 +6,6 @@ using System.Linq;
 using Engine.Lifecycle;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Photon.Plugin.RoomStates;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
@@ -19,7 +17,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
 	public class GameState : RoomState
 	{
-		public const string StateName = "Game";
+		public const string StateName = nameof(GameState);
 
 		private RoomStateController _stateController;
 
@@ -109,16 +107,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var lifecycleManager = InitializeSimulationRoot();
 
 			// TODO: handle the lifecyclemanager changestate event in the case of error -> kick players back to lobby.
+			var lifecycleStoppedErrorTransition = new LifecycleStoppedTransition(ErrorState.StateName,
+				ExitCode.Error, ExitCode.Failure, ExitCode.Undefined);
+			lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
 
 			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
 			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
-			initializingState.AddTransitions(initializedTransition);
+			initializingState.AddTransitions(initializedTransition, lifecycleStoppedErrorTransition);
 
 			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
-			var playingStateTransition = new EventTransition(FeedbackState.StateName);
-			playingState.GameOverEvent += playingStateTransition.ChangeState;
-			playingState.AddTransitions(playingStateTransition);
+			var lifecycleStoppedSuccessTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Success);
+			lifecycleManager.Stopped += lifecycleStoppedSuccessTransition.OnLifecycleExit;
+			playingState.AddTransitions(lifecycleStoppedSuccessTransition, lifecycleStoppedErrorTransition);
 			
 			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);

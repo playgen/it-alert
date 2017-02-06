@@ -469,7 +469,93 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			};
 		}
 
+		private static SimulationScenario GenerateMultiplayerIntroductionScenario()
+		{
+			#region configuration
+
+			const int minPlayerCount = 4;
+			const int maxPlayerCount = 4;
+
+			var nodeLeft = new NodeConfig(0)
+			{
+				Name = "Left",
+				X = 0,
+				Y = 0,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeRight = new NodeConfig(1)
+			{
+				Name = "Right",
+				X = 1,
+				Y = 0,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight };
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
+			var itemConfigs = new ItemConfig[0];
+			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
+			{
+				StartingLocation = nodeRight.Id,
+				ArchetypeName = nameof(GameEntities.Player)
+			});
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+			configuration.Archetypes.Add(TutorialScanner);
+
+
+			#endregion
+
+			#region frames
+
+			// ReSharper disable once UseObjectOrCollectionInitializer
+			var frames = new List<SimulationFrame>();
+
+			#region 1
+
+			frames.Add(// frame 1 - welcome
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						SetCommandEnabled<SetActorDestinationCommand>(false),
+						GenerateTextAction($"Hellooo humans!{Environment.NewLine} Seeing as you're biological brains aren't anywhere close to the computational speed of my CPU, I" +
+											$"figured: the more of you, the better.{Environment.NewLine}Let's get started...also this is a test level so you're now stuck here until you escape! Mwuhahaha!")
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					// TODO: need a more polymorphic way of specifying evaluators
+					// c# 7 pattern match will be nice
+					Evaluator = WaitForTutorialContinue,
+				}
+			);
+
+			#endregion
+			
+
+			#endregion
+
+			return new SimulationScenario()
+			{
+				Name = "MultiplayerIntroduction",
+				Description = "MultiplayerIntroduction",
+				MinPlayers = minPlayerCount,
+				MaxPlayers = maxPlayerCount,
+				Configuration = configuration,
+
+				CreatePlayerConfig = playerConfigFactory,
+
+				// TODO: need a config driven specification for these
+				Sequence = frames.ToArray(),
+			};
+		}
+
 		private static SimulationScenario _introduction = null;
 		public static SimulationScenario Introduction => _introduction ?? (_introduction = GenerateIntroductionScenario());
+
+		private static SimulationScenario _multiplayerIntroduction = null;
+		public static SimulationScenario MultiplayerIntroduction => _multiplayerIntroduction ?? (_multiplayerIntroduction = GenerateMultiplayerIntroductionScenario());
 	}
 }

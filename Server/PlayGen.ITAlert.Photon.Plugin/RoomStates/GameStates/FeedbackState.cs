@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
 	public class FeedbackState : RoomState
 	{
-		public const string StateName = "Feedback";
+		public const string StateName = nameof(FeedbackState);
 
 		public override string Name => StateName;
 

@@ -87,6 +87,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(activateItemCommand);
 		}
 
+		public static void HaltAndFire()
+		{
+			Log("Halt and Fire");
+
+			IssueCommand(new HaltAndCatchFireCommand());
+		}
+
 		private static void IssueCommand(ICommand command)
 		{
 			PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage()

@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Photon.Hive.Plugin;
-using PlayGen.Photon.Analytics;
 using PlayGen.Photon.Plugin;
-using PlayGen.Photon.SUGAR;
 
 namespace PlayGen.ITAlert.Photon.Plugin
 {
@@ -21,7 +19,8 @@ namespace PlayGen.ITAlert.Photon.Plugin
 				// this should match assembly qualified class name from config
 				case RoomControllerPlugin.PluginName:
 					plugin = new RoomControllerPlugin(new ITAlertMessageSerializationHandler(), 
-						new ITAlertRoomStateControllerFactory());
+						new ITAlertRoomStateControllerFactory(), 
+						new ITAlertExceptionHandler());
 					break;
 
 				default:

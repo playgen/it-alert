@@ -1,7 +1,5 @@
-﻿using System;
-using Engine.Commands;
+﻿using Engine.Commands;
 using Engine.Lifecycle;
-using Engine.Systems;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
@@ -12,7 +10,6 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.Photon.Analytics;
@@ -21,21 +18,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
 	public class PlayingState : RoomState
 	{
-		public const string StateName = "Playing";
+		public const string StateName = nameof(PlayingState);
 
 		private readonly SimulationLifecycleManager _simulationLifecycleManager;
 
 		public override string Name => StateName;
-
-		public event Action GameOverEvent;
 
 		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, PluginBase photonPlugin, Messenger messenger,
 			PlayerManager playerManager,RoomSettings roomSettings, AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 			_simulationLifecycleManager = simulationLifecycleManager;
-			// TODO: should log game exit code to analytics
-			_simulationLifecycleManager.Stopped += s => OnGameOverEvent();
 		}
 
 		protected override void OnEnter()
@@ -109,16 +102,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			{
 				EntityState = _simulationLifecycleManager.ECSRoot.GetEntityState()
 			});
-		}
-
-		private void DestroyTimer(object timer)
-		{
-			PhotonPlugin.PluginHost.StopTimer(timer);
-		}
-
-		protected virtual void OnGameOverEvent()
-		{
-			GameOverEvent?.Invoke();
-		}
+		}		
 	}
 }

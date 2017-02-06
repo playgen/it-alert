@@ -17,7 +17,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		{
 			_photonClient.CreateRoom(createRoomSettings.Name, 
 				createRoomSettings.MaxPlayers, 
-				createRoomSettings.CustomPropertiesToHashtable());
+				createRoomSettings.CustomPropertiesToHashtable(),
+				createRoomSettings.CustomRoomPropertiesForLobby);
 		}
 	}
 }

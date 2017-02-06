@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 		public static event Action EndLoadingEvent;
 		public static event Action<Color> ColorPickerEvent;
 
-		public static PopupController PopupController;
+		public static readonly PopupController PopupController = new PopupController();
 
 		public static void LogError(string message)
 		{

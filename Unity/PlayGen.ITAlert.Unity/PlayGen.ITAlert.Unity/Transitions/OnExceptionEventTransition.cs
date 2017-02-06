@@ -6,21 +6,21 @@ namespace PlayGen.ITAlert.Unity.Transitions
 {
 	public class OnExceptionEventTransition : OnExceptionEventTransition<Exception>
 	{
-        public OnExceptionEventTransition(string toStateName, params Type[] ignoreExceptionTypes) : base(toStateName, ignoreExceptionTypes)
-        {
-        }
-    }
+		public OnExceptionEventTransition(string toStateName, params Type[] ignoreExceptionTypes) : base(toStateName, ignoreExceptionTypes)
+		{
+		}
+	}
 
 	public class OnExceptionEventTransition<TException> : EventStateTransition
 		where TException : Exception
 	{
 		private readonly string _toStateName;
-	    private readonly Type[] _ignoreExceptionTypes;
+		private readonly Type[] _ignoreExceptionTypes;
 
-	    public OnExceptionEventTransition(string toStateName, params Type[] ignoreExceptionTypes) 
+		public OnExceptionEventTransition(string toStateName, params Type[] ignoreExceptionTypes) 
 		{
 			_toStateName = toStateName;
-            _ignoreExceptionTypes = ignoreExceptionTypes;
+			_ignoreExceptionTypes = ignoreExceptionTypes;
 		}
 
 		public void ChangeState(Exception exception)

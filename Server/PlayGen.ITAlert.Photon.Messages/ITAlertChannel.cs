@@ -9,6 +9,8 @@
 
 		Logging = PlayGen.Photon.Messages.Channels.Logging,
 
+		Error = PlayGen.Photon.Messages.Channels.Error,
+
 		GameState,
 
 		GameCommands,

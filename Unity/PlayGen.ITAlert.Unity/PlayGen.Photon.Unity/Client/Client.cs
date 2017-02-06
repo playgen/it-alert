@@ -15,10 +15,13 @@ namespace PlayGen.Photon.Unity.Client
 
 		private bool _isDisposed;
 		private ClientState _lastState;
+		private bool _didClientIssueDisconnect;
 
 		public event Action<ClientRoom> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
 		public event Action<Exception> ExceptionEvent;
+		public event Action DisconnectedEvent;
+		public event Action ConnectedEvent;
 
 		public ClientState ClientState { get; private set; }
 		public ClientRoom CurrentRoom { get; private set; }
@@ -44,10 +47,20 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			ClientState = ClientState.Connecting;
 
-			if (_photonClientWrapper.Connect() == false && _photonClientWrapper.IsConnected == false)
+			if (_photonClientWrapper.IsConnected)
+			{
+				ClientState = ClientState.Connected;
+			}
+			else if (_photonClientWrapper.Connect() == false)
 			{
 				ClientState = ClientState.Disconnected;
 			};
+		}
+
+		public void Disconnect()
+		{
+			_didClientIssueDisconnect = true;
+			_photonClientWrapper.Disconnect();
 		}
 
 		~Client()
@@ -70,9 +83,9 @@ namespace PlayGen.Photon.Unity.Client
 			return _photonClientWrapper.ListRooms(filters);
 		}
 
-		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null, string[] customRoomPropertiesForLobby = null)
 		{
-			_photonClientWrapper.CreateRoom(roomName, maxPlayers, customRoomProperties);
+			_photonClientWrapper.CreateRoom(roomName, maxPlayers, customRoomProperties, customRoomPropertiesForLobby);
 		}
 
 		public void JoinRoom(string roomName)
@@ -89,11 +102,13 @@ namespace PlayGen.Photon.Unity.Client
 		private void OnConnected()
 		{
 			ClientState = ClientState.Connected;
+			ConnectedEvent?.Invoke();
 		}
 
 		private void OnDisconnected()
 		{
 			ClientState = ClientState.Disconnected;
+			DisconnectedEvent?.Invoke();
 		}
 
 		private void OnJoinedRoom()
