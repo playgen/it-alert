@@ -47,31 +47,28 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			var initializedMessage = message as ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
 			if (initializedMessage != null)
 			{
-				if (Director.Initialized == false)
+				if (string.IsNullOrEmpty(initializedMessage.SimulationConfiguration))
 				{
-					if (string.IsNullOrEmpty(initializedMessage.SimulationConfiguration))
-					{
-						throw new InvalidOperationException("Received InitializedMessage without configuration.");
-					}
+					throw new InvalidOperationException("Received InitializedMessage without configuration.");
+				}
 
-					try
+				try
+				{
+					// TODO: extract simulation initialization to somewhere else
+					var simulationRoot = SimulationInstaller.CreateSimulationRoot(initializedMessage.SimulationConfiguration);
+					if (Director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 					{
-						// TODO: extract simulation initialization to somewhere else
-						var simulationRoot = SimulationInstaller.CreateSimulationRoot(initializedMessage.SimulationConfiguration);
-						if (Director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
+						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
 						{
-							_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
-							{
-								PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
-							});
-						}
+							PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
+						});
 					}
-					catch (Exception ex)
-					{
-						//TODO: transition back to lobby, or show error message
+				}
+				catch (Exception ex)
+				{
+					//TODO: transition back to lobby, or show error message
 
-						throw new SimulationException("Error creating simulation root", ex);
-					}
+					throw new SimulationException("Error creating simulation root", ex);
 				}
 			}
 			else

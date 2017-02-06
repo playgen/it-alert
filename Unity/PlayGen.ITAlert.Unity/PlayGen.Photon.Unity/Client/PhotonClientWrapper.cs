@@ -148,7 +148,8 @@ namespace PlayGen.Photon.Unity.Client
 				&& ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed  || !r.open)
 				&& ((ListRoomsFilters.Visible & filters)!= ListRoomsFilters.Visible || r.visible)
 				&& ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden  || !r.visible)
-			).ToArray();
+			).Where(r => 
+			r.maxPlayers != r.playerCount).ToArray();
 		}        
 
 		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
