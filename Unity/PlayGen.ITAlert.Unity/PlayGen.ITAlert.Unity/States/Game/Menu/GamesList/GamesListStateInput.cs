@@ -123,8 +123,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				var scenario = room.customProperties[CustomRoomSettingKeys.GameScenario];
 				gameItem.FindChild("Name").GetComponent<Text>().text = name;
 				gameItem.FindChild("Scenario").GetComponent<Text>().text = (string)scenario;
-				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" +
-																		room.maxPlayers.ToString();
+				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
+
+				if (room.playerCount == room.maxPlayers || int.Parse((string)room.customProperties[CustomRoomSettingKeys.MinPlayers]) > room.playerCount)
+				{
+					gameItem.FindChild("Name").GetComponent<Text>().color = Color.red;
+					gameItem.FindChild("Scenario").GetComponent<Text>().color = Color.red;
+					gameItem.FindChild("Players").GetComponent<Text>().color = Color.red;
+				}
 				gameItem.SetParent(_gameListObject.transform, false);
 
 				// set anchors

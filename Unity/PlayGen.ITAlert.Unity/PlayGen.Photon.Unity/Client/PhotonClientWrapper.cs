@@ -142,7 +142,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		#region Rooms
 
-		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None, Hashtable customRoomProperties = null)
+		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -156,12 +156,11 @@ namespace PlayGen.Photon.Unity.Client
 			}
 
 			return PhotonNetwork.GetRoomList().Where(r =>
-				((ListRoomsFilters.Open & filters)      != ListRoomsFilters.Open    || r.open)
-				&& ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed  || !r.open)
-				&& ((ListRoomsFilters.Visible & filters)!= ListRoomsFilters.Visible || r.visible)
-				&& ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden  || !r.visible)
-			).Where(r => 
-			r.maxPlayers != r.playerCount).ToArray();
+				((ListRoomsFilters.Open & filters) != ListRoomsFilters.Open || r.open)
+				&& ((ListRoomsFilters.Closed & filters) != ListRoomsFilters.Closed || !r.open)
+				&& ((ListRoomsFilters.Visible & filters) != ListRoomsFilters.Visible || r.visible)
+				&& ((ListRoomsFilters.Hidden & filters) != ListRoomsFilters.Hidden || !r.visible)
+			).ToArray();
 		}        
 
 		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null, 
