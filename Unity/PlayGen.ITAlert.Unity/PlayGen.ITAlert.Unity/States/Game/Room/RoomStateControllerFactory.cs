@@ -96,7 +96,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toPauseTransition = new OnEventTransition(PausedState.StateName);
 
-
 			input.PauseClickedEvent += toPauseTransition.ChangeState;
 
 			state.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition);

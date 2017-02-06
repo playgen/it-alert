@@ -56,7 +56,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			CommandQueue.AddCommand(new CreateGameCommand(new CreateRoomSettings
 			{
 				Name = details.GameName,
-				MinPlayers = 1,
+				MinPlayers = _scenarioController.Selected.MinPlayerCount,
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
