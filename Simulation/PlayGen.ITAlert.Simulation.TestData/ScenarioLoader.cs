@@ -17,7 +17,8 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			// TODO: populate this from configuration
 			_scenarios = new Dictionary<string, SimulationScenario>()
 			{
-				{GameScenarios.Introduction.Name, GameScenarios.Introduction}
+				{GameScenarios.Introduction.Name, GameScenarios.Introduction},
+				{GameScenarios.MultiplayerIntroduction.Name, GameScenarios.MultiplayerIntroduction }
 			};
 		}
 
