@@ -12,26 +12,34 @@ namespace PlayGen.ITAlert.Unity.Simulation
 // ReSharper disable once InconsistentNaming
 	public class UIEntity
 	{
-		private readonly GameObject _gameObject;
+		private GameObject _gameObject;
 
 		public GameObject GameObject => _gameObject;
 
 		public int Id => _entityBehaviour.Id;
 
-		private readonly IEntityBehaviour _entityBehaviour;
+		private IEntityBehaviour _entityBehaviour;
 		
 		public IEntityBehaviour EntityBehaviour => _entityBehaviour;
 
 		private static readonly Dictionary<string, Func<GameObject, IEntityBehaviour>> BehaviourMappers = new Dictionary<string, Func<GameObject, IEntityBehaviour>>()
 		{
-			{ typeof(Subsystem).Name, go => go.GetComponent<SubsystemBehaviour>() },
+			{ nameof(Subsystem), go => go.GetComponent<SubsystemBehaviour>() },
 			//{ typeof(Subsystem).Name, go => go.GetComponent<EnhancementBehaviour>() },
-			{ typeof(Connection).Name, go => go.GetComponent<ConnectionBehaviour>() },
-			{ typeof(Player).Name, go => go.GetComponent<PlayerBehaviour>() },
-			{ typeof(Npc).Name, go => go.GetComponent<NpcBehaviour>() },
-			{ typeof(Item).Name, go => go.GetComponent<ItemBehaviour>() },
-			{ typeof(ScenarioText).Name, go => go.GetComponent<ScenarioTextBehaviour>() },
+			{ nameof(Connection), go => go.GetComponent<ConnectionBehaviour>() },
+			{ nameof(Player), go => go.GetComponent<PlayerBehaviour>() },
+			{ nameof(Npc), go => go.GetComponent<NpcBehaviour>() },
+			{ nameof(Item), go => go.GetComponent<ItemBehaviour>() },
+			{ nameof(ScenarioText), go => go.GetComponent<ScenarioTextBehaviour>() },
 		};
+
+		public UIEntity(string entityTypeName)
+		{
+			if (TryInistantiateEntity(entityTypeName) == false)
+			{
+				Debug.LogWarning($"Unknown entity type '{entityTypeName}'");
+			}
+		}
 
 		public UIEntity(Entity entity)
 		{
@@ -39,15 +47,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			if (entity.TryGetComponent(out entityTypeFlag))
 			{
 				var entityTypeName = entityTypeFlag.GetType().Name;
-				Func<GameObject, IEntityBehaviour> behaviourMapper;
-
-				if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
-				{
-					_gameObject = Director.InstantiateEntity(entityTypeName);
-
-					_entityBehaviour = behaviourMapper(GameObject);
-				}
-				else
+				if (TryInistantiateEntity(entityTypeName) == false)
 				{
 					Debug.LogWarning($"Unknown entity type '{entityTypeName}' on entity {entity.Id}");
 				}
@@ -56,6 +56,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				throw new Exception($"Entity type flag missing for entity {entity.Id}");
 			}
+		}
+
+		private bool TryInistantiateEntity(string entityTypeName)
+		{
+			Func<GameObject, IEntityBehaviour> behaviourMapper;
+
+			if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
+			{
+				_gameObject = Director.InstantiateEntity(entityTypeName);
+				_entityBehaviour = behaviourMapper(GameObject);
+				return true;
+			}
+			return false;
 		}
 
 		public void UpdateEntityState()

@@ -5,37 +5,37 @@ using PlayGen.ITAlert.Simulation.Components.Activation;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public abstract class TimedActivationExtension : IItemActivationExtension
+	public class TimedActivationExtension : IItemActivationExtension
 	{
-		public ComponentMatcher Matcher { get; }
-		
+		private readonly ComponentMatcherGroup<TimedActivation> _timedActivationMatcherGroup;
+
 		protected TimedActivationExtension(IMatcherProvider matcherProvider)
 		{
-			Matcher = matcherProvider.CreateMatcher(new [] { typeof(TimedActivation) });
+			_timedActivationMatcherGroup = matcherProvider.CreateMatcherGroup<TimedActivation>();
 		}
 
-		public void OnActivating(Entity item, Activation activation)
+		public void OnActivating(int itemId, Activation activation)
 		{
-			TimedActivation timedActivation;
-			if (item.TryGetComponent(out timedActivation))
+			ComponentEntityTuple<TimedActivation> itemTuple;
+			if (_timedActivationMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
 			{
-				timedActivation.ActivationTicksRemaining = timedActivation.ActivationDuration;
+				itemTuple.Component1.ActivationTicksRemaining = itemTuple.Component1.ActivationDuration;
 			}
 		}
 
-		public void OnActive(Entity item, Activation activation)
+		public void OnActive(int itemId, Activation activation)
 		{
-			TimedActivation timedActivation;
-			if (item.TryGetComponent(out timedActivation))
+			ComponentEntityTuple<TimedActivation> itemTuple;
+			if (_timedActivationMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
 			{
-				if (timedActivation.ActivationTicksRemaining-- <= 0)
+				if (itemTuple.Component1.ActivationTicksRemaining-- <= 0)
 				{
 					activation.Deactivate();
 				}
 			}
 		}
 
-		public void OnDeactivating(Entity item, Activation activation)
+		public void OnDeactivating(int entityId, Activation activation)
 		{
 		}
 

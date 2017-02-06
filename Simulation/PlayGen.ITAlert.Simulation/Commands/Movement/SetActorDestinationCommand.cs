@@ -18,29 +18,25 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 	{
 		private readonly IEntityRegistry _entityRegistry;
 
-		private readonly ComponentMatcher _playerComponentMatcher;
-		private readonly ComponentMatcher _subsystemMatcher;
+		private readonly ComponentMatcherGroup<Player, Intents> _playerMatcherGroup;
+		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 
 		public SetActorDestinationCommandHandler(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
 			_entityRegistry = entityRegistry;
 
-			_playerComponentMatcher = matcherProvider.CreateMatcher(new[] {typeof(Player), typeof(Intents)});
-			_subsystemMatcher = matcherProvider.CreateMatcher(new[] {typeof(Subsystem)});
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, Intents>();
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
 		}
 
 		protected override bool TryProcessCommand(SetActorDestinationCommand command)
 		{
-			Entity playerEntity;
-			Entity destinationEntity;
-			Intents playerIntents;
-			if (_entityRegistry.TryGetEntityById(command.PlayerId, out playerEntity) 
-				&& _playerComponentMatcher.IsMatch(playerEntity)
-				&& _entityRegistry.TryGetEntityById(command.DestinationId, out destinationEntity)
-				&& _subsystemMatcher.IsMatch(destinationEntity)
-				&& playerEntity.TryGetComponent(out playerIntents))
+			ComponentEntityTuple<Player, Intents> playerTuple;
+			ComponentEntityTuple<Subsystem> subsystemTuple;
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationId, out subsystemTuple))
 			{
-				playerIntents.Replace(new MoveIntent(destinationEntity.Id));
+				playerTuple.Component2.Replace(new MoveIntent(command.DestinationId));
 				return true;
 			}
 			return false;

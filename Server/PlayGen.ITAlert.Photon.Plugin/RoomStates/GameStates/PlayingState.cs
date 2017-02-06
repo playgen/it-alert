@@ -96,8 +96,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			}
 			if (commandSystem.TryHandleCommand(command) == false)
 			{
-				throw new SimulationException($"Unhandled Simulation Command: ${message}");
+				// TODO: log failed message hadnler, but dont exception
+				//throw new SimulationException($"Unhandled Simulation Command: ${message}");
 			}
+			// TODO: infer player entity id from photon player, rather than command parameter
 			
 		}
 

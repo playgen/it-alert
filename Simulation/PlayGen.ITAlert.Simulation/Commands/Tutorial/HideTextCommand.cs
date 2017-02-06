@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Tutorial
 
 	public class HideTextCommandHandler : CommandHandler<HideTextCommand>
 	{
-		private ComponentMatcherGroup<Text> _textMatcher;
+		private readonly ComponentMatcherGroup<Text> _textMatcher;
 
 		public HideTextCommandHandler(IMatcherProvider matcherProvider)
 		{
@@ -41,6 +41,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Tutorial
 				{
 					textTuple.Entity.Dispose();
 				}
+				return true;
 			}
 			return false;
 		}

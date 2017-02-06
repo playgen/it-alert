@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Engine.Commands;
 using Engine.Configuration;
-using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
@@ -13,8 +9,9 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Systems.Planning;
 using PlayGen.ITAlert.Simulation.Systems.Resources;
+using PlayGen.ITAlert.Simulation.Systems.Tutorial;
 
-namespace PlayGen.ITAlert.Simulation
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	/// <summary>
 	/// The default system configuration for IT Alert
@@ -41,10 +38,20 @@ namespace PlayGen.ITAlert.Simulation
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
+							// TODO: some of these handlers should be encapsulated into the relevant system
+							// probably create a zenject installer
+
+							// movement
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(),
+							// tutorial
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DisplayTextCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ContinueCommandCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HideTextCommandHandler>(),
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SpawnNpcCommandHandler>(),
+							// entity creation - no system mapping yet
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateNpcCommandHandler>(),
+							// items
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ActivateItemCommandHandler>(),
 						}
 
 					}
@@ -52,7 +59,20 @@ namespace PlayGen.ITAlert.Simulation
 			},
 			new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
-			new SystemConfiguration<ItemActivationSystem>(),
+			new SystemConfiguration<ItemActivationSystem>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<IItemActivationExtension>()
+					{
+						Implementations = new SystemExtensionImplementation[]
+						{
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
+						}
+					}
+				}
+			},
 			new SystemConfiguration<ItemManagement>(),
 			// TODO: decide if the enhancement system should be responsible for manipulating the item storage of enhanced systems
 			// or if the item storage system should have an extension
@@ -90,7 +110,8 @@ namespace PlayGen.ITAlert.Simulation
 					}
 				}
 			},
-			new SystemConfiguration<PathFindingSystem>()
+			new SystemConfiguration<PathFindingSystem>(),
+			new SystemConfiguration<TutorialSystem>()
 		};
 	}
 }

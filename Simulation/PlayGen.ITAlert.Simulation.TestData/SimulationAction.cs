@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PlayGen.ITAlert.Simulation.Components.EntityTypes
+namespace PlayGen.ITAlert.Simulation.Startup
 {
-	public class IgnoreUI : IEntityType
+	class SimulationAction
 	{
 	}
 }

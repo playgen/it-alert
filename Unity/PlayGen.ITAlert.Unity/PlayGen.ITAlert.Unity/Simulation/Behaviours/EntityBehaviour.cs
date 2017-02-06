@@ -87,6 +87,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			OnInitialize();
 			Initialized = true;
 		}
+
+		public void Uninitialize()
+		{
+			Initialized = false;
+			Entity = null;
+		}
+
 		/// <summary>
 		/// actions to perform on initialization
 		/// </summary>

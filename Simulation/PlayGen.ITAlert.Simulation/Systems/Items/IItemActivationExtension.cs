@@ -11,12 +11,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public interface IItemActivationExtension : ISystemExtension
 	{
-		ComponentMatcher Matcher { get; }
+		void OnActivating(int itemId, Activation activation);
 
-		void OnActivating(Entity item, Activation activation);
+		void OnActive(int itemId, Activation activation);
 
-		void OnActive(Entity item, Activation activation);
-
-		void OnDeactivating(Entity item, Activation activation);
+		void OnDeactivating(int itemId, Activation activation);
 	}
 }

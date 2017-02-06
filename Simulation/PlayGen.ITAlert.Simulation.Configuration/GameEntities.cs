@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using Engine.Archetypes;
 using Engine.Components;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
@@ -18,7 +14,7 @@ using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.Components.Tutorial;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 
-namespace PlayGen.ITAlert.Simulation
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	/// <summary>
 	/// The default game entities for IT Alert
@@ -253,7 +249,7 @@ namespace PlayGen.ITAlert.Simulation
 
 		#region tutorial system
 
-		public static Archetype TutorialText = new Archetype("TutorialText")
+		public static Archetype TutorialText = new Archetype(SimulationConstants.TutorialTextArchetype)
 			.HasComponent(new ComponentBinding<ScenarioText>())
 			.HasComponent(new ComponentBinding<Text>());
 

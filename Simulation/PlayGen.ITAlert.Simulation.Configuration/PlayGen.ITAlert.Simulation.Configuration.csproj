@@ -35,27 +35,34 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameConfiguration.cs" />
+    <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="GameEntities.cs" />
+    <Compile Include="GameScenarios.cs" />
+    <Compile Include="GameSystems.cs" />
     <Compile Include="PlayerColours.cs" />
-    <Compile Include="EdgeConfig.cs" />
-    <Compile Include="ItemConfig.cs" />
-    <Compile Include="NodeConfig.cs" />
-    <Compile Include="PlayerConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimulationConfiguration.cs" />
-    <Compile Include="SimulationRules.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Builder\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Lifecycle\Engine.Lifecycle.csproj">
+      <Project>{4421783e-7c1b-47bc-b26c-fc7b0653d706}</Project>
+      <Name>Engine.Lifecycle</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
+      <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
+      <Name>Engine.Startup</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

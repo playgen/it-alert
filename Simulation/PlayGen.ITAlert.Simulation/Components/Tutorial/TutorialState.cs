@@ -6,10 +6,8 @@ using Engine.Components;
 
 namespace PlayGen.ITAlert.Simulation.Components.Tutorial
 {
-	public class Text : IComponent
+	public class TutorialState : IComponent
 	{
-		public string Value { get; set; }
-
-		public bool ShowContinue { get; set; }
+		public bool Continue { get; set; }
 	}
 }

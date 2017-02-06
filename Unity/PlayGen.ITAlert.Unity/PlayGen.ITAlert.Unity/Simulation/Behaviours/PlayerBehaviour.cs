@@ -8,20 +8,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	// ReSharper disable once CheckNamespace
 	public class PlayerBehaviour : ActorBehaviour
 	{
-		/// <summary>
-		/// number of positions to store
-		/// </summary>
-		private const int PositionHistory = 15;
-
-		private const int InventoryPositionHistory = 5;
-
-		public bool IsTalking = false;
-
 		public int? InventoryItem => null;
-		// EntityState.InventoryItem; } }
 
 		private Color _playerColor;
 		public Color PlayerColor => _playerColor;
+
+
 
 		#region Initialization
 

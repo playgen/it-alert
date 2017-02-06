@@ -11,11 +11,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Planning
 {
 	public class IntentSystem : ISystem
 	{
-		private ComponentMatcherGroup _visitorIntentsMatcher;
+		private readonly ComponentMatcherGroup<Intents> _intentsMatcherGroup;
 
-		public IntentSystem(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
+		public IntentSystem(IMatcherProvider matcherProvider)
 		{
-			_visitorIntentsMatcher = matcherProvider.CreateMatcherGroup(new [] { typeof(Intents) });
+			_intentsMatcherGroup = matcherProvider.CreateMatcherGroup<Intents>();
 
 		}
 

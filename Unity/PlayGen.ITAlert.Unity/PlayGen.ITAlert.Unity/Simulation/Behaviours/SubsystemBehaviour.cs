@@ -82,6 +82,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		//optional
 		private ItemStorage _itemStorage;
 
+		public ItemStorage ItemStorage => _itemStorage;
+
 		#endregion
 
 		#region Initialization

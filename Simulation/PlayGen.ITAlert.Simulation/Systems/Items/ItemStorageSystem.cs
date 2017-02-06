@@ -32,7 +32,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			{
 				if (itemStorage.Items[i] == null)
 				{
-					itemStorage.Items[i] = new ItemContainer();
+					itemStorage.Items[i] = new ItemContainer()
+					{
+						Enabled = true,
+					};
 				}
 			}
 

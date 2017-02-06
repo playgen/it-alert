@@ -155,9 +155,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
 
-			if (subsystemHits.Any() && itemHits.Any())
+			if (itemHits.Any())
 			{
-				OnClickItem(subsystemHits.Single(), itemHits.Single());
+				OnClickItem(itemHits.Single());
 			}
 			else if (subsystemHits.Any())
 			{
@@ -171,16 +171,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			PlayerCommands.Move(subsystem.Id);
 		}
 
-		private void OnClickItem(RaycastHit2D subsystemHit, RaycastHit2D itemHit)
+		private void OnClickItem(RaycastHit2D itemHit)
 		{
 			var item = itemHit.collider.GetComponent<ItemBehaviour>();
-			item.OnClick(false);
-		}
-
-		private void OnClickEnhancement(RaycastHit2D subsystemHit, RaycastHit2D enhancementHit)
-		{
-			//var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
-			//var enhancement = enhancementHit.collider.GetComponent<EnhancementBehaviour>();
+			item.OnClick();
 		}
 
 		#endregion

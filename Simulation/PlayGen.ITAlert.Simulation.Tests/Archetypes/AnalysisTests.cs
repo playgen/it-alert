@@ -8,6 +8,7 @@ using Engine.Entities;
 using Engine.Testing;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
+using PlayGen.ITAlert.Simulation.Configuration;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Archetypes
 {

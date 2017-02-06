@@ -47,7 +47,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SetTimer()
 		{
-			_timerText.text = Director.GetTick().ToString("d4");
+			_timerText.text = Director.Tick.ToString("d4");
 		}
 
 		#endregion

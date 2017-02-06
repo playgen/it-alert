@@ -3,6 +3,7 @@ using Engine.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
+using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -29,19 +30,36 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static Client PhotonClient { get; set; }
 
-		public static void PickupItem(int itemId, int subsystemId)
+		public static void PickupItem(int itemId)
 		{
-			Log($"Request PickupItem item: {itemId} at subsystem: {subsystemId}");
-			//var requestPickupItemCommand = new RequestPickupItemCommand
-			//{
-			//	PlayerId = Director.Player.Id,
-			//	ItemId = itemId,
-			//	LocationId = subsystemId
-			//};
-			//IssueCommand(requestPickupItemCommand);
-
-			// todo process locally too and resync later Director.RequestPickupItem(item.Id, subsystem.Id);
+			Log($"Request PickupItem item: {itemId}");
+			var pickupItemCommand = new PickupItemCommand
+			{
+				PlayerId = Director.Player.Id,
+				ItemId = itemId
+			};
+			IssueCommand(pickupItemCommand);
 		}
+
+		public static void DropItem(int itemId)
+		{
+			Log($"Request PickupItem item: {itemId}");
+			var pickupItemCommand = new DropItemCommand()
+			{
+				PlayerId = Director.Player.Id,
+				ItemId = itemId
+			};
+			IssueCommand(pickupItemCommand);
+		}
+
+		public static void Continue()
+		{
+			Log($"Request tutorial continue");
+
+			var continueCommand = new ContinueCommand();
+			IssueCommand(continueCommand);
+		}
+
 
 		public static void Move(int subsystemId)
 		{
@@ -57,37 +75,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			// todo process locally too and resync laterDirector.RequestMovePlayer(destination.Id);
 		}
 
-		public static void DisownItem(int itemId)
-		{
-			Log($"Request Disown item: {itemId}");
-
-			//var requestDropItemCommand = new RequestDropItemCommand()
-			//{
-			//	PlayerId = Director.Player.Id,
-			//	ItemId = itemId
-			//};
-			//IssueCommand(requestDropItemCommand);
-
-			// todo process locally too and resync laterDirector.RequestDropItem(item.Id);
-		}
-
 		public static void ActivateItem(int itemId)
 		{
 			Log($"Request Activate item: {itemId}");
 
-			//var requestActivateItemCommand = new RequestActivateItemCommand()
-			//{
-			//	PlayerId = Director.Player.Id,
-			//	ItemId = itemId
-			//};
-			//IssueCommand(requestActivateItemCommand);
-
-			// todo process locally too and resync later Director.RequestActivateItem(item.Id);
-		}
-
-		public static void ActivateEnhancement(EnhancementBehaviour enhancement)
-		{
-			throw new NotImplementedException("Send Command to Simulation");
+			var activateItemCommand = new ActivateItemCommand()
+			{
+				PlayerId = Director.Player.Id,
+				ItemId = itemId
+			};
+			IssueCommand(activateItemCommand);
 		}
 
 		private static void IssueCommand(ICommand command)

@@ -69,10 +69,20 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DrawConnection(int headId, int tailId)
 		{
-			var head = Director.GetEntity(headId).EntityBehaviour as SubsystemBehaviour;
-			var headPos = head.ConnectionSquare.transform.position;
-			var tail = Director.GetEntity(tailId).EntityBehaviour as SubsystemBehaviour;
-			var tailPos = tail.ConnectionSquare.transform.position;
+			UIEntity head;
+			UIEntity tail;
+			if (Director.TryGetEntity(headId, out head) == false)
+			{
+				throw new SimulationIntegrationException($"Could not find entity id {headId} as head on connection id {Entity.Id}");
+			}
+			if (Director.TryGetEntity(tailId, out tail) == false)
+			{
+				throw new SimulationIntegrationException($"Could not find entity id {tailId} as tail on connection id {Entity.Id}");
+			}
+			var headBehaviour = (SubsystemBehaviour) head.EntityBehaviour;
+			var headPos = headBehaviour.ConnectionSquare.transform.position;
+			var tailBehaviour = (SubsystemBehaviour) tail.EntityBehaviour;
+			var tailPos = tailBehaviour.ConnectionSquare.transform.position;
 
 			//get distance between start and end points
 			var distance = Vector2.Distance(headPos, tailPos);
@@ -86,7 +96,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			//scale and position the connection accordingly
 			var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
-			transform.localScale = new Vector2(relativeWeight, distance - (tail.ConnectionSquareRadius * 2));
+			transform.localScale = new Vector2(relativeWeight, distance - (tailBehaviour.ConnectionSquareRadius * 2));
 			transform.eulerAngles = new Vector3(0, 0, _angle + 90);
 
 			//GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
@@ -94,8 +104,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//transform.Find("End Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
 
 			//adjust node images to correct scale
-			_headPos = ScaleEndPoint(headPos, tail.ConnectionSquareRadius);
-			_tailPos = ScaleEndPoint(tailPos, tail.ConnectionSquareRadius);
+			_headPos = ScaleEndPoint(headPos, tailBehaviour.ConnectionSquareRadius);
+			_tailPos = ScaleEndPoint(tailPos, tailBehaviour.ConnectionSquareRadius);
 
 			transform.Find("Start Node").position = _headPos;
 			transform.Find("End Node").position = _tailPos;
