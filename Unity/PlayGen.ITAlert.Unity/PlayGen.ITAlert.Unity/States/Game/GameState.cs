@@ -5,7 +5,6 @@ using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.Photon.Unity.Client;
-using PlayGen.SUGAR.Client;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.States.Game
@@ -25,6 +24,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public override string Name => StateName;
 
 		public event Action<Exception> ExceptionEvent;
+		public event Action DisconnectedEvent;
 		
 		public GameState(GameErrorContainer gameErrorContainer)
 		{
@@ -39,8 +39,9 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		protected override void OnEnter()
 		{
-			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());;
+			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());
 			_photonClient.ExceptionEvent += OnClientException;
+			_photonClient.ConnectedEvent += OnConnected;
 
 			PlayerCommands.PhotonClient = _photonClient;
 
@@ -50,7 +51,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 			_photonClient.Connect();
 		}
-
+		
 		protected override void OnExit()
 		{
 			_stateController.Terminate();
@@ -73,6 +74,18 @@ namespace PlayGen.ITAlert.Unity.States.Game
 				Debug.LogError(exception);
 				OnException(exception);
 			}
+		}
+
+
+		private void OnConnected()
+		{
+			_photonClient.DisconnectedEvent += OnDisconnected;
+		}
+
+		private void OnDisconnected()
+		{
+			_photonClient.DisconnectedEvent -= OnDisconnected;
+			DisconnectedEvent?.Invoke();
 		}
 
 		private void OnClientException(Exception exception)

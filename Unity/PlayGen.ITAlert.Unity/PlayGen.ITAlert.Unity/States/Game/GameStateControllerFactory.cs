@@ -1,6 +1,5 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room;
@@ -15,7 +14,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public TickStateController Create(Client photonClient)
 		{
-			var popupController = new PopupController();
 			// Loading
 			var loadingState = new LoadingState(new LoadingStateInput());
 			loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));

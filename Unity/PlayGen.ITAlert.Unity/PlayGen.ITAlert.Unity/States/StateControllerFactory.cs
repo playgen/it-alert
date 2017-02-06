@@ -32,7 +32,10 @@ namespace PlayGen.ITAlert.Unity.States
 			// temporarily catch ui exception from the director ourselves
 			Director.ExceptionEvent += exceptionCaughtTransition.ChangeState;
 
-			state.AddTransitions(exceptionCaughtTransition);
+			var disconnectedTransition = new OnEventTransition(state.Name);
+			state.DisconnectedEvent += disconnectedTransition.ChangeState;
+
+			state.AddTransitions(exceptionCaughtTransition, disconnectedTransition);
 
 			return state;
 		}
