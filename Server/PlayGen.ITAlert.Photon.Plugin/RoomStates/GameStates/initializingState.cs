@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
 	public class InitializingState : RoomState
 	{
-		public const string StateName = "Initializing";
+		public const string StateName = nameof(InitializingState);
 
 		private readonly SimulationLifecycleManager _simulationLifecycleManager;
 	
