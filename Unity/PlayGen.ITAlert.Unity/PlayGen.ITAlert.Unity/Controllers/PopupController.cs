@@ -2,7 +2,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using PlayGen.ITAlert.Unity.Behaviours;
-using PlayGen.ITAlert.Unity.Utilities;
 using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -16,7 +15,6 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			_popupPanel = GameObject.Find("PopupContainer").transform.GetChild(0).gameObject;
 			_popupBehaviour = _popupPanel.GetComponent<PopupBehaviour>();
-			PopupUtility.PopupController = this;
 		}
 
 		public void ShowErrorPopup(string msg)
