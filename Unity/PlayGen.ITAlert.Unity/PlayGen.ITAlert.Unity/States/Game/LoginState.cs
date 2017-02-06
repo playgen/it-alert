@@ -1,6 +1,7 @@
 ﻿using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.SUGAR.Unity;
+using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.States.Game
 {
@@ -10,33 +11,31 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public override string Name => StateName;
 
-
-		public bool IsComplete { get; private set; }
-
-		private bool _repeatBlock;
+		public bool IsComplete => SUGARManager.CurrentUser != null;
 
 		protected override void OnEnter()
 		{
-			if (!_repeatBlock)
+			SugarLogin();
+		}
+
+		private void SugarLogin()
+		{
+			if (!IsComplete)
 			{
-				_repeatBlock = true;
-				IsComplete = false;
-				if (SUGARManager.CurrentUser == null)
+				SUGARManager.Account.DisplayPanel(success =>
 				{
-					SUGARManager.Account.DisplayPanel(success =>
+					if (!success)
 					{
-						var autoLogIn = !SUGARManager.Account.IsActive;
-						if (success)
+						if (!SUGARManager.Account.IsActive)
 						{
-							IsComplete = true;
+							SugarLogin();
 						}
-						else if (autoLogIn)
+						else
 						{
-							_repeatBlock = false;
-							OnEnter();
+							Debug.Log("Sugar Login Failed");
 						}
-					});
-				}
+					}
+				});
 			}
 		}
 
@@ -44,6 +43,5 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		{
 			SUGARManager.Account.Hide();
 		}
-
 	}
 }

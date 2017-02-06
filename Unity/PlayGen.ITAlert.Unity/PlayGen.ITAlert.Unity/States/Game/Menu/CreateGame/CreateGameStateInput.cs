@@ -60,7 +60,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
-				GameScenario = _scenarioController.Selected.Name,
+				GameScenario = _scenarioController.Selected.Name
 			}));
 			LoadingUtility.ShowSpinner();
 		}
