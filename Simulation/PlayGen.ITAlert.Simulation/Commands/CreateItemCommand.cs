@@ -5,12 +5,13 @@ using Engine.Commands;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
-	public class SpawnNpcCommand : ICommand
+	public class CreateItemCommand : ICommand
 	{
 		public string Archetype { get; set; }
 
@@ -19,24 +20,24 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public IdentifierType IdentifierType { get; set; }
 	}
 
-	public class SpawnNpcCommandHandler : CommandHandler<SpawnNpcCommand>
+	public class CreateItemCommandHandler : CommandHandler<CreateItemCommand>
 	{
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
 		private readonly IEntityRegistry _entityRegistry;
 
-		private readonly Dictionary<int, int> _logicalIdMap;
+		private SimulationConfiguration _configuration;
 
-		public SpawnNpcCommandHandler(IEntityFactoryProvider entityFactoryProvider, 
+		public CreateItemCommandHandler(IEntityFactoryProvider entityFactoryProvider, 
 			IEntityRegistry entityRegistry,
 			SimulationConfiguration configuration)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
 			_entityRegistry = entityRegistry;
-			_logicalIdMap = configuration.NodeConfiguration.ToDictionary(k => k.Id, v => v.EntityId);
+			_configuration = configuration;
 		}
 
-		protected override bool TryProcessCommand(SpawnNpcCommand command)
+		protected override bool TryProcessCommand(CreateItemCommand command)
 		{
 			int systemEntityId;
 			switch (command.IdentifierType)
@@ -45,33 +46,37 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					systemEntityId = command.SystemId;
 					break;
 				case IdentifierType.Logical:
-					if (_logicalIdMap.TryGetValue(command.SystemId, out systemEntityId) == false)
+					var nodeConfig = _configuration.NodeConfiguration.SingleOrDefault(nc => nc.Id == command.SystemId);
+					if (nodeConfig == null)
 					{
 						return false;
 					}
+					systemEntityId = nodeConfig.EntityId;
 					break;
 				default:
 					return false;
 			} 
 			Entity systemEntity;
-			Visitors systemVisitors;
+			ItemStorage itemStorage;
 			if (string.IsNullOrEmpty(command.Archetype) == false
 				&& _entityRegistry.TryGetEntityById(systemEntityId, out systemEntity)
-				&& systemEntity.TryGetComponent(out systemVisitors))
+				&& systemEntity.TryGetComponent(out itemStorage))
 			{
-				Entity npc;
+				Entity item;
 				CurrentLocation currentLocation;
-				VisitorPosition visitorPosition;
-				if (_entityFactoryProvider.TryCreateEntityFromArchetype(command.Archetype, out npc)
-					&& npc.TryGetComponent(out currentLocation)
-					&& npc.TryGetComponent(out visitorPosition))
+				if (_entityFactoryProvider.TryCreateEntityFromArchetype(command.Archetype, out item)
+					&& item.TryGetComponent(out currentLocation))
 				{
-					systemVisitors.Values.Add(npc.Id);
+					var itemContainer = itemStorage.Items.FirstOrDefault(ic => ic != null && ic.Item.HasValue == false && ic.Enabled);
+					if (itemContainer == null)
+					{
+						return false;
+					}
+					itemContainer.Item = item.Id;
 					currentLocation.Value = systemEntity.Id;
-					visitorPosition.SetPosition(0, 0);
 					return true;
 				}
-				npc?.Dispose();
+				item?.Dispose();
 			}
 			return false;
 

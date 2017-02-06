@@ -45,20 +45,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					case ActivationState.Activating:
 						activation.SetState(ActivationState.Active);
 						// TODO: confirm that this makes sense - process system extensions, then any components that are activatable
-						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnActivating(match.Entity, activation));
-
-						//ExecuteActivatableAction(entity, a => a.OnActivating(entity));
+						ExecuteActivationExtensionActions(iax => iax.OnActivating(match.Entity.Id, activation));
 						break;
 					case ActivationState.Deactivating:
 						activation.SetState(ActivationState.NotActive);
-						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnDeactivating(match.Entity, activation));
-
-						//ExecuteActivatableAction(entity, a => a.OnDeactivating(entity));
+						ExecuteActivationExtensionActions(iax => iax.OnDeactivating(match.Entity.Id, activation));
 						break;
 					case ActivationState.Active:
-						ExecuteActivationExtensionActions(match.Entity, iax => iax.OnActive(match.Entity, activation));
-
-						//ExecuteActivatableAction(entity, a => a.OnActive(entity));
+						ExecuteActivationExtensionActions(iax => iax.OnActive(match.Entity.Id, activation));
 						break;
 				}
 			}
@@ -72,7 +66,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			}
 		}
 		
-		private void ExecuteActivationExtensionActions(Entity entity, Action<IItemActivationExtension> action)
+		private void ExecuteActivationExtensionActions(Action<IItemActivationExtension> action)
 		{
 			foreach (var activationExtension in _itemActivationExtensions)
 			{

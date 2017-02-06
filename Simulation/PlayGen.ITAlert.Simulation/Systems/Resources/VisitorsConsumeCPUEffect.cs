@@ -40,10 +40,5 @@ namespace PlayGen.ITAlert.Simulation.Systems.Resources
 				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, subsystemTuple.Component3.Maximum);
 			}
 		}
-
-		public bool IsMatch(Entity entity)
-		{
-			return _subsystemMatcher.IsMatch(entity);
-		}
 	}
 }

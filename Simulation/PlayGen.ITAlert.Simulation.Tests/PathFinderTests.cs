@@ -124,8 +124,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// v    v
 			// 2 <> 3
 			// expected route 0 - 2 - 3
-				SimulationHelper.GenerateGraphNodes(2, 2),
-				SimulationHelper.GenerateFullyConnectedConfiguration(2, 2, 1),
+				ConfigurationHelper.GenerateGraphNodes(2, 2),
+				ConfigurationHelper.GenerateFullyConnectedConfiguration(2, 2, 1),
 				0,
 				3,
 				new List<int[]>()

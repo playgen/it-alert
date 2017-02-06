@@ -87,12 +87,8 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateSystem(NodeConfig config)
 		{
-			var archetype = string.IsNullOrEmpty(config.EnhancementName)
-				? GameEntities.Subsystem.Name
-				: config.EnhancementName;
-
 			Entity subsystem;
-			if (EntityFactoryProvider.TryCreateEntityFromArchetype(archetype, out subsystem))
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(config.ArchetypeName, out subsystem))
 			{
 				config.EntityId = subsystem.Id;
 
@@ -104,7 +100,7 @@ namespace PlayGen.ITAlert.Simulation
 			}
 			subsystem?.Dispose();
 
-			throw new SimulationException($"Could not create system for archetype '{archetype}'");
+			throw new SimulationException($"Could not create system for archetype '{config.ArchetypeName}'");
 		}
 
 		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, IEnumerable<EdgeConfig> edgeConfigs)
@@ -114,10 +110,8 @@ namespace PlayGen.ITAlert.Simulation
 
 		public Entity CreateConnection(Dictionary<int, Entity> subsystems, EdgeConfig edgeConfig)
 		{
-			var archetype = GameEntities.Connection.Name;
-
 			Entity connection;
-			if (EntityFactoryProvider.TryCreateEntityFromArchetype(archetype, out connection))
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(edgeConfig.ArchetypeName, out connection))
 			{ 
 				var head = subsystems[edgeConfig.Source];
 				var tail = subsystems[edgeConfig.Destination];
@@ -134,24 +128,31 @@ namespace PlayGen.ITAlert.Simulation
 				return connection;
 			}
 			connection?.Dispose();
-			throw new SimulationException($"Could not create connection from archetype '{archetype}'");
+			throw new SimulationException($"Could not create connection from archetype '{edgeConfig.ArchetypeName}'");
 		}
 
 		private void CreateItems(Dictionary<int, Entity> subsystems, IEnumerable<ItemConfig> itemConfigs)
 		{
 			foreach (var itemConfig in itemConfigs)
 			{
-				Entity item;
-				if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.TypeName, out item))
-				{
-					subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
-					continue;
-				}
+				CreateItem(itemConfig, subsystems);
+			}
+		}
+
+		public void CreateItem(ItemConfig itemConfig, Dictionary<int, Entity> subsystems)
+		{
+			Entity item;
+			if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.TypeName, out item))
+			{
+				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
+
+			}
+			else
+			{
 				item?.Dispose();
 				throw new SimulationException($"Could not craete item for archtype '{itemConfig.TypeName}'");
 			}
 		}
-
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, IEnumerable<PlayerConfig> playerConfigs)
 		{
@@ -166,7 +167,7 @@ namespace PlayGen.ITAlert.Simulation
 				foreach (var playerConfig in playerConfigs)
 				{
 					Entity player;
-					if (EntityFactoryProvider.TryCreateEntityFromArchetype(GameEntities.Player.Name, out player))
+					if (EntityFactoryProvider.TryCreateEntityFromArchetype(playerConfig.ArchetypeName, out player))
 					{
 						playerConfig.EntityId = player.Id;
 						var startingLocationId = playerConfig.StartingLocation ?? 0;

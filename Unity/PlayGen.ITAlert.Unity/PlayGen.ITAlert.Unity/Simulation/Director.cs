@@ -25,6 +25,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	// TODO: use zenject singleton container rather than statics
 	public sealed class Director : MonoBehaviour
 	{
+		#region simulation
+
 		private static Thread _updatethread;
 
 		public static event Action<Exception> ExceptionEvent;
@@ -34,56 +36,26 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private static readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
 
-		private static float _tps;
 		private static int _tick;
-		/// <summary>
-		/// Entity to GameObject map
-		/// </summary>
-		private static readonly Dictionary<int, UIEntity> Entities = new Dictionary<int, UIEntity>();
+
+		public static int Tick => _tick;
 
 		/// <summary>
 		/// Simulation  Container
 		/// </summary>
 		public static SimulationRoot SimulationRoot;
 
-		//TODO: load this dynamically
 		/// <summary>
-		/// How fast the simulator is running
+		/// Tracked entities have their lifecycle managed by the simulation and will bbe created and destroyed as required
 		/// </summary>
-		public const float SimulationTick = 0.25f;
-
-		public static float SimulationAnimationRatio;
+		private static readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>();
 
 		/// <summary>
-		/// has the simulation been initialized
+		/// Untracked entities do not have a 1:1 mapping with simulation entities and their lifecycle is managed manually
 		/// </summary>
-		public static bool Initialized { get; private set; }
+		private static readonly List<UIEntity> UntrackedEntities = new List<UIEntity>();
 
-		/// <summary>
-		/// the active player
-		/// </summary>
-		private static PlayerBehaviour _activePlayer;
-
-		public static PlayerBehaviour Player => _activePlayer;
-
-		public static Client Client { get; set; }
-
-		public static System.Random Random = new System.Random((int)DateTime.UtcNow.Ticks);
-
-		[SerializeField]
-		private static GameObject _gameOverWon;
-		[SerializeField]
-		private static GameObject _gameOverLost;
-
-		public static PlayerBehaviour[] Players { get; private set; }
-
-		public static ItemPanel ItemPanel { get; private set; }
-
-		public static CommandResolver LocaResolver { get; private set; }
-
-		public static SimulationRules Rules => new SimulationRules();
-
-		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
+		#region game object root
 
 		private static GameObject _graph;
 
@@ -93,47 +65,60 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static GameObject Canvas => _canvas ?? (_canvas = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer"));
 
+		#endregion
 
-		[Obsolete("Use TryGetEntity instead")]
-		public static UIEntity GetEntity(int id)
+		#endregion
+
+		#region game over
+
+		[SerializeField]
+		private static GameObject _gameOverWon;
+		[SerializeField]
+		private static GameObject _gameOverLost;
+
+		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
+
+		#endregion
+
+		/// <summary>
+		/// has the simulation been initialized
+		/// </summary>
+		public static bool Initialized { get; private set; }
+
+		#region player
+
+		/// <summary>
+		/// the active player
+		/// </summary>
+		private static PlayerBehaviour _activePlayer;
+
+		public static PlayerBehaviour Player => _activePlayer;
+
+		public static PlayerBehaviour[] Players { get; private set; }
+
+		#endregion
+		
+		#region item panel
+
+		private static ItemPanel _itemPanel = new ItemPanel();
+
+		#endregion
+
+		public static void AddUntrackedEntity(UIEntity uiEntity)
 		{
-			UIEntity entity;
-			if (Entities.TryGetValue(id, out entity))
-			{
-				return entity;
-			}
-			throw new Exception($"Entity id:{id} not found");
+			UntrackedEntities.Add(uiEntity);
 		}
 
 		public static bool TryGetEntity(int id, out UIEntity uiEntity)
 		{
-			return Entities.TryGetValue(id, out uiEntity);
+			return TrackedEntities.TryGetValue(id, out uiEntity);
 		}
 
 		#region Initialization
 
-		//public static void DebugInitialize()
-		//{
-		//	Initialize(InitializeTestSimulation(), 1);
-		//	//GameObject.Find("Canvas/Score").GetComponent<Image>().color = _activePlayer.PlayerColor;
-		//	//GameObject.Find("Canvas/Score/Icon").GetComponent<Image>().color = _activePlayer.PlayerColor;
-		//	_activePlayer.EnableDecorator();
-
-		//	// todo fixup for refactor
-		//	//PlayerCommands.Client =	new DebugClientProxy();
-		//}
-
-
 		public static GameObject InstantiateEntity(string resourceString)
 		{
 			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
-		}
-
-		private static SimulationRoot InitializeTestSimulation()
-		{
-			var width = 6;
-			var height = 3;
-			return SimulationHelper.GenerateSimulation(width, height, 2, width * height, 4);
 		}
 
 		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
@@ -152,27 +137,23 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Reset();
 				SimulationRoot = simulationRoot;
 
-				SimulationAnimationRatio = Time.deltaTime / SimulationTick;
-
 				// center graph
-				//
 				UIConstants.NetworkOffset -= new Vector2(
 					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
 					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
 
-				//SetState();
 				CreateInitialEntities();
-				// todo uncomment SelectPlayer();
-				ItemPanel = new ItemPanel();
-
 				SetupPlayers(players, playerServerId);
-
-				Initialized = true;
+				// item panel must come after players
+				_itemPanel.Initialize();
+				_itemPanel.Update();
 
 				foreach (var behaviour in GameOverBehaviours)
 				{
 					behaviour.Value.SetActive(false);
 				}
+
+				Initialized = true;
 				return true;
 			}
 			catch (Exception ex)
@@ -185,7 +166,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private static void Reset()
 		{
 			_tick = 0;
-			_tps = 0;
 
 			MessageSignal.Reset();
 			UpdateSignal.Reset();
@@ -193,11 +173,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_stateJson = null;
 
 			_activePlayer = null;
-			foreach (var entity in Entities)
+			foreach (var entity in TrackedEntities)
 			{
 				Destroy(entity.Value.GameObject);
 			}
-			Entities.Clear();
+			TrackedEntities.Clear();
 		}
 
 		public void Start()
@@ -216,7 +196,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
 
 					UIEntity playerUiEntity;
-					if (Entities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
+					if (TrackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
 					{
 						var playerBehaviour = (PlayerBehaviour)playerUiEntity.EntityBehaviour;
 						if (player.PhotonId == playerServerId)
@@ -268,6 +248,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region State Update
 
+		#region worker thread
+
 		private static string _stateJson;
 
 		public static void StopWorker()
@@ -317,21 +299,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static void UpdateSimulation(string stateJson)
 		{
-			
 			_stateJson = stateJson;
 			MessageSignal.Set();
 		}
 
-		private static void CreateEntity(Entity entity)
-		{
-			var uiEntity = new UIEntity(entity);
-			Entities.Add(entity.Id, uiEntity);
-		}
 
-		public static float GetTps()
-		{
-			return _tps;
-		}
 
 		public void Update()
 		{
@@ -348,13 +320,23 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
+		#endregion
+
+		#region entity management
+
+		private static void CreateEntity(Entity entity)
+		{
+			var uiEntity = new UIEntity(entity);
+			TrackedEntities.Add(entity.Id, uiEntity);
+		}
+
 		private static void UpdateEntityStates()
 		{
 			try
 			{
 				var entities = SimulationRoot.ECS.Entities;
 
-				var entitiesAdded = entities.Where(entity => Entities.ContainsKey(entity.Key) == false).ToArray();
+				var entitiesAdded = entities.Where(entity => TrackedEntities.ContainsKey(entity.Key) == false).ToArray();
 				foreach (var newEntity in entitiesAdded)
 				{
 					CreateEntity(newEntity.Value);
@@ -378,7 +360,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 				}
 
-				var entitiesRemoved = Entities.Keys.Except(entities.Select(k => k.Key)).ToArray();
+				var entitiesRemoved = TrackedEntities.Keys.Except(entities.Select(k => k.Key)).ToArray();
 				foreach (var entityToRemove in entitiesRemoved)
 				{
 					UIEntity uiEntity;
@@ -386,8 +368,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					{
 						Destroy(uiEntity.GameObject);
 					}
-					Entities.Remove(entityToRemove);
+					TrackedEntities.Remove(entityToRemove);
 				}
+
+				foreach (var untrackedEntity in UntrackedEntities)
+				{
+					untrackedEntity.UpdateEntityState();
+				}
+
+				_itemPanel.Update();
+
 				UpdateCompleteSignal.Set();
 			}
 			catch (Exception exception)
@@ -397,6 +387,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
+		#endregion
+
 		private static void OnGameOver(bool didWin)
 		{
 			var behaviour = didWin ? GameOverBehaviours[GameOverBehaviour.GameOverCondition.Success] : GameOverBehaviours[GameOverBehaviour.GameOverCondition.Failure];
@@ -405,65 +397,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
-		#region UI accessors
-
-		private static void DoInitialized(Action action)
-		{
-			if (Initialized)
-			{
-				action();
-			}
-		}
-
-		private static T GetInitialized<T>(Func<T> func)
-		{
-			if (Initialized)
-			{
-				return func();
-			}
-			return default(T);
-		}
-
-		public static int GetTick()
-		{
-			return _tick;
-		}
-
-		#endregion
-
-		#region commands (temporary) 
-
-		//TODO: better implementation
-
-		public static void RequestMovePlayer(int destinationId)
-		{
-			//Simulation.RequestMovePlayer(_activePlayer.Id, destinationId);
-		}
-
-		public static void RequestActivateItem(int itemId)
-		{
-			//Simulation.RequestActivateItem(_activePlayer.Id, itemId);
-		}
-
-		public static void RequestDropItem(int itemId)
-		{
-			//Simulation.RequestDropItem(_activePlayer.Id, itemId);
-		}
-
-		public static void RequestPickupItem(int itemId, int subsystemId)
-		{
-			//Simulation.RequestPickupItem(_activePlayer.Id, itemId, subsystemId);
-		}
-
-		public static void SpawnVirus()
-		{
-			//var subsystems = Entities.Values.Where(e => e.Type == EntityType.Subsystem).ToArray();
-			//Simulation.SpawnVirus((subsystems[Random.Next(0, subsystems.Length)].EntityBehaviour as SubsystemBehaviour).LogicalId);
-		}
-
-		#endregion
-
-		protected static void OnExceptionEvent(Exception obj)
+		private static void OnExceptionEvent(Exception obj)
 		{
 			ExceptionEvent?.Invoke(obj);
 		}

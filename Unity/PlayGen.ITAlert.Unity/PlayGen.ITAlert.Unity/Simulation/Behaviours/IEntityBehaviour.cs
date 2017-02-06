@@ -13,5 +13,7 @@ namespace PlayGen.ITAlert.Unity.Network.Behaviours
 		void UpdateState();
 
 		void Initialize(Entity entity);
+
+		void Uninitialize();
 	}
 }

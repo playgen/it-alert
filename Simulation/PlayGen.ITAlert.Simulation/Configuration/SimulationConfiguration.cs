@@ -11,8 +11,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	public class SimulationConfiguration : ECSConfiguration
 	{
 		public IEnumerable<NodeConfig> NodeConfiguration { get; set; }
+
 		public IEnumerable<EdgeConfig> EdgeConfiguration { get; set; }
+
 		public IEnumerable<PlayerConfig> PlayerConfiguration { get; set; }
+
 		public IEnumerable<ItemConfig> ItemConfiguration { get; set; }
 
 		//public SimulationRules Rules { get; private set; }

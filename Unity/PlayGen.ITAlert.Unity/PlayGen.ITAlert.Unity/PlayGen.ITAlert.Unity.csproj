@@ -222,7 +222,6 @@
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\PlayerBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\SubsystemBehaviour.cs" />
-    <Compile Include="Simulation\DebugCommands.cs" />
     <Compile Include="Simulation\Director.cs" />
     <Compile Include="Simulation\PlayerInputHandler.cs" />
     <Compile Include="Simulation\PlayerCommands.cs" />

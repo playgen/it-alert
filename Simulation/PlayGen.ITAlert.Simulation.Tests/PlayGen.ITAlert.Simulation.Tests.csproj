@@ -49,7 +49,6 @@
   <ItemGroup>
     <Compile Include="ActorTests.cs" />
     <Compile Include="Archetypes\AnalysisTests.cs" />
-    <Compile Include="Commands\CommandSequenceTests.cs" />
     <Compile Include="Components\ItemStorageTests.cs" />
     <Compile Include="Components\ItemActivatorTests.cs" />
     <Compile Include="Components\AnalyserEnhancementTests.cs" />
@@ -102,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

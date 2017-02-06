@@ -19,11 +19,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private SpriteRenderer _iconRenderer;
 
-		private bool _dragging;
-
-		private int _dragCount;
-
-		public bool Dragging => _dragging || _dragCount > 0;
+		public bool ClickEnable { get; set; }
 
 		#region components
 
@@ -53,7 +49,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnInitialize()
 		{
-
 			if (Entity.TryGetComponent(out _itemType)
 				&& Entity.TryGetComponent(out _currentLocation)
 				&& Entity.TryGetComponent(out _owner)
@@ -90,25 +85,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnStateUpdated()
 		{
 			//TODO: if owner has changed
-			UpdatePosition();
 			UpdateItemColor();
 			UpdateActivationTimer();
-		}
-
-		private void UpdatePosition()
-		{
-			//UIEntity currentLocationEntity;
-			//if (Director.TryGetEntity(_currentLocation.Value, out currentLocationEntity))
-			//{
-			//	if (currentLocationEntity.Type == EntityType.Subsystem)
-			//	{
-			//		//Item
-			//	}
-			//	else
-			//	{
-					
-			//	}
-			//}
 		}
 
 		private void UpdateItemColor()
@@ -149,8 +127,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		}
 
 		#endregion
-
-
+		
 		private void TriggerHint()
 		{
 			//TODO: reimplement
@@ -166,57 +143,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					&& _owner.Value.Value == Director.Player.Id;
 		}
 
-		public void OnClick(bool dragging)
+		public void OnClick()
 		{
 			Debug.Log("Item OnClick");
 
-			if (CanActivate())
+			if (ClickEnable && CanActivate())
 			{
-				if (PlayerOwnsItem())
-				{
-					if (dragging == false)
-					{
-						PlayerCommands.DisownItem(this.Id);
-					}
-				}
-				else
-				{
-					//PlayerCommands.PickupItem(Id, EntityState.CurrentNode.Value);
-				}
+				PlayerCommands.ActivateItem(Id);
 			}
 		}
 
 		public bool CanActivate()
 		{
-			return false;
-				//EntityState.Active == false 
-				//&& EntityState.CanActivate 
-				//&& (EntityState.Owner.HasValue == false || EntityState.Owner.Value == Director.Player.Id);
-		}
-
-		public void Deactivate()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Activate()
-		{
-			// TODO: Start Item Animation
-			throw new NotImplementedException();
-		}
-
-		public void DragStart()
-		{
-			_dragging = true;
-		}
-
-		public void DragStop()
-		{
-			_dragging = false;
-			_dragCount = 2;
+			return _activation.ActivationState == ActivationState.NotActive;
 		}
 
 		#endregion
-
 	}
 }

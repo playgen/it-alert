@@ -55,6 +55,10 @@
       <Project>{4def971e-0a4e-4880-ae2c-b2d187766fa4}</Project>
       <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

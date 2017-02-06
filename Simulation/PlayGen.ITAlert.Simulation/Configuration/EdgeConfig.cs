@@ -18,6 +18,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		// TODO: calculate in graph layout pass
 		public int Length { get; set; }
 
+		public string ArchetypeName { get; set; }
+
 		public EdgeConfig(int source, EdgeDirection sourcePosition, int destination, int weight = 1, int length = 1){
 			Source = source;
 			SourcePosition = sourcePosition;

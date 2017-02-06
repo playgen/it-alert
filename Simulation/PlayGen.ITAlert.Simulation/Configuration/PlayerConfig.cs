@@ -5,15 +5,17 @@
 	/// </summary>
 	public class PlayerConfig
 	{
-        /// <summary>
-        /// Id within the simulation
-        /// </summary>
-        public int EntityId { get; set; }
+		/// <summary>
+		/// Id within the simulation
+		/// </summary>
+		public int EntityId { get; set; }
 	
-        /// <summary>
+		/// <summary>
 		/// Uid, for tracking on photon etc
 		/// </summary>
 		public int ExternalId { get; set; }
+
+		public string ArchetypeName { get; set; }
 
 		public string Name { get; set; }
 

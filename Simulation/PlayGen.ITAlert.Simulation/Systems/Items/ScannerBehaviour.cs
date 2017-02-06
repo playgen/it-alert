@@ -16,53 +16,49 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	public class ScannerBehaviour : IItemActivationExtension
 	{
 		// TODO: this all feels a bit clunky!
-		public ComponentMatcher Matcher => _scannerMatcherGroup;
+		public int[] ItemIds => _scannerMatcherGroup.MatchingEntityKeys;
 
 		private readonly IEntityRegistry _entityRegistry;
 
 		private readonly ComponentMatcherGroup<Scanner, CurrentLocation> _scannerMatcherGroup;
+		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
-
+		
 		public ScannerBehaviour(IEntityRegistry entityRegistry, IMatcherProvider matcherProvider)
 		{
 			_entityRegistry = entityRegistry;
 			_scannerMatcherGroup = matcherProvider.CreateMatcherGroup<Scanner, CurrentLocation>();
+			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
 		}
 
-		public void OnActivating(Entity item, Activation activation)
+		public void OnActivating(int itemId, Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnActive(Entity item, Activation activation)
+		public void OnActive(int itemId, Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(Entity item, Activation activation)
+		public void OnDeactivating(int itemId, Activation activation)
 		{
-			if (Matcher.IsMatch(item))
+			ComponentEntityTuple<Scanner, CurrentLocation> itemTuple;
+			ComponentEntityTuple<Visitors> locationTuple;
+			if (_scannerMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple)
+				&& _visitorsMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value, out locationTuple))
 			{
-				CurrentLocation currentLocation;
-				Entity currentLocationEntity;
-				Visitors currentLocationVisitors;
-				if (item.TryGetComponent(out currentLocation)
-					&& _entityRegistry.TryGetEntityById(currentLocation.Value, out currentLocationEntity)
-					&& currentLocationEntity.TryGetComponent(out currentLocationVisitors))
+				// join the current locations list of visitors with all malware entities
+				foreach (var malwareVisitor in locationTuple.Component1.Values
+					.Join(_malwareMatcherGroup.MatchingEntities,
+						k => k,
+						k => k.Entity.Id,
+						(o, i) => i))
 				{
-					// join the current locations list of visitors with all malware entities
-					foreach (var malwareVisitor in currentLocationVisitors.Values
-						.Join(_malwareMatcherGroup.MatchingEntities,
-							k => k,
-							k => k.Entity.Id,
-							(o, i) => i))
-					{
-						// add the visible gene
-						malwareVisitor.Component1.Values.Add(SimulationConstants.MalwareVisibilityGene);
-					}
+					// add the visible gene
+					malwareVisitor.Component1.Values.Add(SimulationConstants.MalwareVisibilityGene);
 				}
-
 			}
 		}
 	}

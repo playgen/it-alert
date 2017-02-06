@@ -81,19 +81,19 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			_joinGamePanel.SetActive(false);
 		}
 
-        protected override void OnTick(float deltaTime)
-        {
-            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
-            {
-                OnBackClick();
-            }
+		protected override void OnTick(float deltaTime)
+		{
+			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+			{
+				OnBackClick();
+			}
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnBackClick();
 			}
 		}
 
-        private void JoinGame(string name)
+		private void JoinGame(string name)
 		{
 			CommandQueue.AddCommand(new JoinGameCommand(name));
 			LoadingUtility.ShowSpinner();

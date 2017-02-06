@@ -51,13 +51,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\RequestActivateItemCommand.cs" />
-    <Compile Include="Commands\RequestDropItemCommand.cs" />
+    <Compile Include="Commands\ActivateItemCommand.cs" />
+    <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
-    <Compile Include="Commands\RequestPickupItemCommand.cs" />
+    <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\Sequence\CommandSequence.cs" />
     <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
-    <Compile Include="Commands\SpawnNpcCommand.cs" />
+    <Compile Include="Commands\CreateItemCommand.cs" />
+    <Compile Include="Commands\CreateNpcCommand.cs" />
+    <Compile Include="Commands\Tutorial\ContinueCommand.cs" />
     <Compile Include="Commands\Tutorial\HideTextCommand.cs" />
     <Compile Include="Commands\Tutorial\DisplayTextCommand.cs" />
     <Compile Include="Components\Activation\ActivationState.cs" />
@@ -65,7 +67,7 @@
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
     <Compile Include="Components\EntityTypes\Connection.cs" />
     <Compile Include="Components\EntityTypes\IEntityType.cs" />
-    <Compile Include="Components\EntityTypes\IgnoreUI.cs" />
+    <Compile Include="Components\EntityTypes\NonUI.cs" />
     <Compile Include="Components\EntityTypes\Npc.cs" />
     <Compile Include="Components\EntityTypes\ScenarioText.cs" />
     <Compile Include="Components\EntityTypes\Subsystem.cs" />
@@ -76,9 +78,18 @@
     <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="Components\Tutorial\Highlight.cs" />
     <Compile Include="Components\Tutorial\Text.cs" />
+    <Compile Include="Components\Tutorial\TutorialState.cs" />
+    <Compile Include="Configuration\EdgeConfig.cs" />
+    <Compile Include="Configuration\ItemConfig.cs" />
+    <Compile Include="Configuration\NodeConfig.cs" />
+    <Compile Include="Configuration\PlayerConfig.cs" />
+    <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationScenario.cs" />
-    <Compile Include="GameSystems.cs" />
+    <Compile Include="Evaluators\SimulationEvaluator.cs" />
+    <Compile Include="Extensions\SystemExtensions.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
+    <Compile Include="Sequencing\SimulationAction.cs" />
+    <Compile Include="Sequencing\SimulationFrame.cs" />
     <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
@@ -117,7 +128,6 @@
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
     <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
-    <Compile Include="GameEntities.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />
     <Compile Include="Systems\Movement\IMovementSystemExtension.cs" />
     <Compile Include="Systems\Movement\ConnectionMovement.cs" />
@@ -150,6 +160,8 @@
     <Compile Include="Layout\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\SimulationException.cs" />
+    <Compile Include="Systems\Tutorial\ITutorialSystem.cs" />
+    <Compile Include="Systems\Tutorial\TutorialSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
@@ -176,15 +188,8 @@
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-    <Folder Include="Systems\Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
