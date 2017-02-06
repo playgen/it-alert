@@ -163,7 +163,8 @@ namespace PlayGen.Photon.Unity.Client
 			).ToArray();
 		}        
 
-		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null, 
+			string[] customRoomPropertiesForLobby = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -186,7 +187,8 @@ namespace PlayGen.Photon.Unity.Client
 				{
 					Plugins = new string[] {_gamePlugin},
 					MaxPlayers = (byte) maxPlayers,
-					CustomRoomProperties = customRoomProperties
+					CustomRoomProperties = customRoomProperties,
+					CustomRoomPropertiesForLobby = customRoomPropertiesForLobby
 				},
 				PhotonNetwork.lobby);
 		}

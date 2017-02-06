@@ -1,4 +1,5 @@
-﻿using ExitGames.Client.Photon;
+﻿using System.Collections.Generic;
+using ExitGames.Client.Photon;
 using PlayGen.ITAlert.Photon.Common;
 
 namespace PlayGen.ITAlert.Unity.Photon
@@ -19,6 +20,12 @@ namespace PlayGen.ITAlert.Unity.Photon
 		public string GameScenario { get; set; }
 
 		#endregion
+
+		public string[] CustomRoomPropertiesForLobby = 
+		{
+			CustomRoomSettingKeys.MinPlayers,
+			CustomRoomSettingKeys.GameScenario,
+		};
 
 		public Hashtable CustomPropertiesToHashtable()
 		{
