@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
 using PlayGen.ITAlert.Unity.States.Game.Room.Initializing;
@@ -80,6 +81,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			input.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
 			input.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
 			input.QuitClickedEvent += quitTransition.ChangeState;
+			input.QuitClickedEvent += photonClient.CurrentRoom.Leave;
 
 			state.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
 
