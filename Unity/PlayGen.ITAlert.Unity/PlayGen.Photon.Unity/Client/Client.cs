@@ -83,9 +83,9 @@ namespace PlayGen.Photon.Unity.Client
 			return _photonClientWrapper.ListRooms(filters);
 		}
 
-		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null, string[] customRoomPropertiesForLobby = null)
 		{
-			_photonClientWrapper.CreateRoom(roomName, maxPlayers, customRoomProperties);
+			_photonClientWrapper.CreateRoom(roomName, maxPlayers, customRoomProperties, customRoomPropertiesForLobby);
 		}
 
 		public void JoinRoom(string roomName)
