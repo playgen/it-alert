@@ -84,6 +84,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ITAlertExceptionHandler.cs" />
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />
     <Compile Include="RoomSettings.cs" />
@@ -91,11 +92,13 @@
     <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
     <Compile Include="RoomStates\GameStates\PlayingState.cs" />
+    <Compile Include="RoomStates\ErrorState.cs" />
     <Compile Include="RoomStates\LobbyState.cs" />
     <Compile Include="ITAlertRoomStateControllerFactory.cs" />
     <Compile Include="RoomStates\RoomState.cs" />
     <Compile Include="RoomStates\Transitions\EventTransition.cs" />
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
+    <Compile Include="RoomStates\Transitions\LifecycleStoppedTransition.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj">

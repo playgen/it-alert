@@ -19,11 +19,14 @@ namespace PlayGen.ITAlert.Photon.Plugin
 		/// <param name="messenger"></param>
 		/// <param name="playerManager"></param>
 		/// <returns></returns>
-		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager)
+		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, ExceptionHandler exceptionHandler)
 		{
 			var sugarAnalytics = new AnalyticsServiceAdapter();
 			var analytics = new AnalyticsServiceManager(sugarAnalytics);
 			var roomSettings = new RoomSettings(photonPlugin);
+
+			var exceptionTransition = new EventTransition(ErrorState.StateName);
+			exceptionHandler.ExceptionEvent += e => exceptionTransition.ChangeState();
 
 			var lobbyState = new LobbyState(photonPlugin, messenger, playerManager, roomSettings, analytics);
 			var gameStartedTransition = new EventTransition(GameState.StateName);
@@ -32,7 +35,9 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 			var gameState = new GameState(photonPlugin, messenger, playerManager, roomSettings, analytics);
 
-			var controller = new RoomStateController(lobbyState, gameState);
+			var errorState = new ErrorState(photonPlugin, messenger, playerManager, roomSettings, analytics, exceptionHandler);
+
+			var controller = new RoomStateController(lobbyState, gameState, errorState);
 
 			gameState.ParentStateController = controller;
 			

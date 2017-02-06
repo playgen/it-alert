@@ -123,6 +123,18 @@ namespace PlayGen.Photon.Unity.Client
 			}
 		}
 
+		public void Disconnect()
+		{
+			if (PhotonNetwork.connected || PhotonNetwork.connecting)
+			{
+				PhotonNetwork.Disconnect();
+			}
+			else
+			{
+				Log("Already not connected");
+			}
+		}
+
 		public bool RegisterSerializableType(Type customType, byte code, SerializeMethod serializeMethod, DeserializeMethod constructor)
 		{
 			return PhotonPeer.RegisterType(customType, code, serializeMethod, constructor);
