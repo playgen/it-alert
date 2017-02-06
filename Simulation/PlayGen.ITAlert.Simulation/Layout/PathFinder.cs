@@ -148,7 +148,7 @@ namespace PlayGen.ITAlert.Simulation.Layout
 				.Select(connection => new NeighbourNode()
 				{
 					NodeId = connections[connection.Key].Component1.ExitPositions.Keys.Single(),
-					ConnectionCost = connections[connection.Key].Component3.Value,
+					ConnectionCost = (int)connections[connection.Key].Component3.Value,
 					TraversalCost = entryPoint?.PositionsToExit(connection.Value.FromPosition(SimulationConstants.SubsystemPositions)) ?? 0
 				})
 				.ToList();

@@ -36,6 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value, out subsystemTuple))
 			{
 				itemTuple.Component2.Activate();
+				itemTuple.Component4.Value = command.PlayerId;
 				return true;
 			}
 			return false;

@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 		/// </summary>
 		public virtual bool Enabled { get; set; }
 
-		public virtual bool CanDrop => Enabled && Item.HasValue == false;
+		public virtual bool CanDrop(int itemId) => Enabled && Item.HasValue == false;
 		public virtual bool CanPickup => Enabled && Item.HasValue && Locked == false;
 	}
 }

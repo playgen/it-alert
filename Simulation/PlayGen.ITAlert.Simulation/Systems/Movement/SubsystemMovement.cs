@@ -14,14 +14,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
 	public class SubsystemMovement : MovementSystemExtensionBase
 	{
-		private readonly ComponentMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes> _subsystemMatcherGroup;
+		private readonly ComponentMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost> _subsystemMatcherGroup;
 
 		public override int[] NodeIds => _subsystemMatcherGroup.MatchingEntityKeys;
 
 		public SubsystemMovement(IMatcherProvider matcherProvider)
 			: base (matcherProvider)
 		{
-			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes>();
+			// TODO: this is a good example where creating arbitrarily larger n-tuples might not be the best option
+			// the flag components will never be used in the tuple but consume one valuable slot
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost>();
 		}
 		public override void MoveVisitors(int currentTick)
 		{
@@ -58,7 +60,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 						#endregion
 
-						var nextPosition = (visitorTuple.Component1.Position + visitorTuple.Component3.Value) % SimulationConstants.SubsystemPositions;
+						var nextPosition = (visitorTuple.Component1.PositionFloat + (float)visitorTuple.Component3.Value / Math.Max(1, subsystemTuple.Component5.Value)) % SimulationConstants.SubsystemPositions;
 
 						if (exitNode != null)
 						{
@@ -71,7 +73,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 								|| (exitAfterTop && nextPositionAfterTop && nextPositionAfterExit)
 								|| (exitAfterTop == false & nextPositionAfterExit))
 							{
-								var overflow = Math.Max(nextPosition - exitPosition, 0);
+								var overflow = Math.Max((int)nextPosition - exitPosition, 0);
 
 								RemoveVisitorFromNode(subsystemTuple.Entity.Id, subsystemTuple.Component3, visitorTuple.Entity.Id, visitorTuple.Component2);
 
@@ -94,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public override void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			ComponentEntityTuple<Subsystem, GraphNode, Visitors, ExitRoutes> subsystemTuple;
+			ComponentEntityTuple<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost> subsystemTuple;
 			if (_subsystemMatcherGroup.TryGetMatchingEntity(nodeId, out subsystemTuple))
 			{
 				// determine entrance position

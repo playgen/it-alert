@@ -10,5 +10,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public const string Item = "Item";
 		public const string Enhancement = "Enhancement";
 		public const string Connection = "Connection";
+		public const string ItemContainer = "ItemContainer";
 	}
 }

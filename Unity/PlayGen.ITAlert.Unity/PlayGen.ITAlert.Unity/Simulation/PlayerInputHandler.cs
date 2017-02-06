@@ -154,8 +154,17 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
 			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+			var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
 
-			if (itemHits.Any())
+			if (itemHits.Any() && itemContainerHits.Any())
+			{
+				OnClickItemInContainer(itemHits.Single(), itemContainerHits.Single());
+			}
+			else if (itemContainerHits.Any())
+			{
+				OnClickItemContainer(itemContainerHits.Single());
+			}
+			else if (itemHits.Any())
 			{
 				OnClickItem(itemHits.Single());
 			}
@@ -175,6 +184,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			var item = itemHit.collider.GetComponent<ItemBehaviour>();
 			item.OnClick();
+		}
+
+		private void OnClickItemInContainer(RaycastHit2D itemHit, RaycastHit2D containerHit)
+		{
+			var item = itemHit.collider.GetComponent<ItemBehaviour>();
+			var container = itemHit.collider.GetComponent<ItemContainerBehaviour>();
+			container.OnClick();
+		}
+
+		private void OnClickItemContainer(RaycastHit2D containerHit)
+		{
+			var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
+			container.OnClick();
 		}
 
 		#endregion

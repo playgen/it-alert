@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Archetypes;
 using Engine.Configuration;
 using Engine.Entities;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				}
 			};
 
-			var systems = new SystemConfiguration[]
+			var systems = new List<SystemConfiguration>()
 			{
 				new SystemConfiguration<ItemStorageSystem>(),
 				new SystemConfiguration<SubsystemResources>()
@@ -58,7 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				},
 			};
 
-			var archetypes = new[]
+			var archetypes = new List<Archetype>()
 			{
 				GameEntities.Subsystem,
 				GameEntities.Scanner,

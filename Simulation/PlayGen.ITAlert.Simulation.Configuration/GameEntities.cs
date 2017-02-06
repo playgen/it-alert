@@ -3,6 +3,7 @@ using Engine.Archetypes;
 using Engine.Components;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
@@ -28,13 +29,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			{
 				new ComponentBinding<Visitors>(), 
 				new ComponentBinding<GraphNode>(), 
-				new ComponentBinding<ExitRoutes>(), 
+				new ComponentBinding<ExitRoutes>(),
+				new ComponentBinding<MovementCost>(),
 			});
 
 		public static readonly Archetype Connection = new Archetype("Connection")
 			.Extends(Node)
-			.HasComponent(new ComponentBinding<Connection>())
-			.HasComponent(new ComponentBinding<MovementCost>());
+			.HasComponent(new ComponentBinding<Connection>());
 
 		public static readonly Archetype Subsystem = new Archetype("Subsystem")
 			.Extends(Node)
@@ -45,6 +46,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			.HasComponent(new ComponentBinding<ItemStorage>()
 			{
 				ComponentTemplate = new ItemStorage()
+				{
+					Items = new ItemContainer[SimulationConstants.SubsystemMaxItems],
+				}
 			})
 			.HasComponent(new ComponentBinding<MemoryResource>()
 			{
@@ -102,6 +106,18 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				ComponentTemplate = new ConsumeCPU()
 				{
 					Value = SimulationConstants.ActorCPUConsumption,
+				}
+			})
+			.HasComponent(new ComponentBinding<ItemStorage>()
+			{
+				ComponentTemplate = new ItemStorage()
+				{
+					ItemLimit = 1,
+					MaxItems = 1,
+					Items = new ItemContainer[]
+					{
+						new InventoryItemContainer(), 
+					}
 				}
 			});
 

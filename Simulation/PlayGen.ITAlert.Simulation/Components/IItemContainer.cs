@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Components
 
 		bool Enabled { get; }
 
-		bool CanDrop { get; }
+		bool CanDrop(int itemId);
 
 		bool CanPickup { get; }
 	}

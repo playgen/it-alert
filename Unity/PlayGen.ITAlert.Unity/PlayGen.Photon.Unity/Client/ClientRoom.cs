@@ -123,7 +123,7 @@ namespace PlayGen.Photon.Unity.Client
 				}
 				catch(Exception exception)
 				{
-					UnityEngine.Debug.Log($"{exception}");
+					UnityEngine.Debug.LogError($"{exception}");
 					ExceptionEvent(exception);
 				}
 			}
