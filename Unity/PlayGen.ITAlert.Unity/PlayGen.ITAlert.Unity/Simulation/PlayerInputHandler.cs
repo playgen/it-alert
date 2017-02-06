@@ -189,7 +189,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void OnClickItemInContainer(RaycastHit2D itemHit, RaycastHit2D containerHit)
 		{
 			var item = itemHit.collider.GetComponent<ItemBehaviour>();
-			var container = itemHit.collider.GetComponent<ItemContainerBehaviour>();
+			var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
 			container.OnClick();
 		}
 

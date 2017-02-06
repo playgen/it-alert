@@ -56,7 +56,7 @@
 		#region viruses
 
 		public const int VirusMemoryConsumedInitialValue = 0;
-		public const int VirusCPUConsumedInitialValue = 1;
+		public const int VirusCPUConsumedInitialValue = 2;
 
 		public const int VirusMemoryConsumedIncrementPerTick = 1;
 		public const int VirusCPUConsumedIncrementPerTick = 1;
@@ -64,6 +64,8 @@
 		public const string DefaultVirusArchetype = "Virus";
 
 		public const float CPUMovementSpeedReduction = 0.5f;
+
+		public const string MalwareVisibilityGene = "Visible";
 
 		#endregion
 
@@ -83,7 +85,6 @@
 
 		#endregion
 
-		public const string MalwareVisibilityGene = "Visible";
 
 		#region tutorial
 

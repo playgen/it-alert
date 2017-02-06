@@ -325,16 +325,34 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
 						SetCommandEnabled<ActivateItemCommand>(false),
-						GenerateTextAction($"The item that has just been spawned on the right hand node is a scanner.{Environment.NewLine}To use items you must be on the same node.")
+						GenerateTextAction($"The item that has just been spawned on the right hand node is a scanner.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						HideTextAction,
 					},
 					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
-					Evaluator = OnlyPlayerIsAtLocation(nodeRight).And(WaitForTutorialContinue),
+					Evaluator = WaitForTutorialContinue,
 				}
 			);
+
+			frames.Add(// frame 4a - item
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						GenerateTextAction($"To use items you must be on the same node...", false)
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
+					Evaluator = OnlyPlayerIsAtLocation(nodeRight),
+				}
+			);
+
+			
 
 			frames.Add(// frame 4b - item
 				new SimulationFrame()
@@ -372,7 +390,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						GenerateTextAction($"While the item is active the colouyr changes to indicate the player that is performing the action."),
+						GenerateTextAction($"While the item is active the colour changes to indicate the player that is performing the action."),
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -387,7 +405,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						GenerateTextAction($"Unfortunately the scanner had no affect this time.{Environment.NewLine}The scanner reveals malware on a system when it is present and hidden.")
+						GenerateTextAction($"The scanner reveals malware on a system when it is present and hidden.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -422,7 +440,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						CreateNpcCommand(nameof(GameEntities.CPUVirus), nodeLeft.Id),
 						GenerateTextAction($"It appears that this infections is consuming CPU cycles on the system. As CPU is consumed the performance of the system decreases and so does movement speed.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

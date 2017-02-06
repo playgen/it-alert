@@ -81,13 +81,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private SimulationLifecycleManager InitializeSimulationRoot()
 		{
-
-			var scenarioName = PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string>(CustomRoomSettingKeys.GameScenario);
-
-			if (string.IsNullOrEmpty(scenarioName) == false)
+			if (string.IsNullOrEmpty(RoomSettings.GameScenario) == false)
 			{
 				SimulationScenario scenario;
-				if (_scenarioLoader.TryGetScenario(scenarioName, out scenario))
+				if (_scenarioLoader.TryGetScenario(RoomSettings.GameScenario, out scenario))
 				{
 					scenario.Configuration.PlayerConfiguration = PhotonPlugin.PluginHost.GameActorsActive.Select((p, i) =>
 					{

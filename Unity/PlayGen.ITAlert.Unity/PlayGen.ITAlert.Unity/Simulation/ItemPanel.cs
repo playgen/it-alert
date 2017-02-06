@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
@@ -15,12 +16,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	{
 		private const int ItemCount = SimulationConstants.SubsystemMaxItems;
 
-		private GameObject _inventoryItemContainer;
-		private ItemContainerBehaviour _inventoryItemBehaviour;
+		private GameObject _inventoryItemContainerObject;
+		private ItemContainerBehaviour _inventoryItemContainerBehaviour;
 		private UIEntity _inventoryItem;
+		private InventoryItemContainer _inventoryItemContainer;
 
-		private GameObject[] _systemItemContainers;
-		private UIEntity[] _systemItems;
+		private readonly GameObject[] _systemItemContainers;
+		private readonly ItemContainerBehaviour[] _systemItemContainerBehaviours;
+		private readonly UIEntity[] _systemItems;
 		
 		private PlayerBehaviour _player;
 
@@ -28,46 +31,113 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public ItemPanel()
 		{
+			_systemItemContainerBehaviours = new ItemContainerBehaviour[ItemCount];
 			_systemItemContainers = new GameObject[ItemCount];
 			_systemItems = new UIEntity[ItemCount];
 		}
 
 		public void Initialize()
 		{
+			const float itemScale = 1.6f;
+			const string sortingLayerOverride = "UI";
+
 			_player = Director.Player;
 			ItemStorage itemStorage;
 			if (_player.Entity.TryGetComponent(out itemStorage) == false)
 			{
 				throw new SimulationIntegrationException("No item storage found on player");
 			}
-			var inventoryContainer = itemStorage.Items[0] as InventoryItemContainer;
+			_inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
-			_inventoryItemContainer = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
-			_inventoryItemBehaviour = _inventoryItemContainer.GetComponent<ItemContainerBehaviour>();
-			_inventoryItemBehaviour.Initialize(inventoryContainer);
-			_inventoryItemBehaviour.ClickEnable = true;
+			#region inventory container
+
+			_inventoryItemContainerObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
+			_inventoryItemContainerBehaviour = _inventoryItemContainerObject.GetComponent<ItemContainerBehaviour>();
+
+			_inventoryItemContainerBehaviour.Initialize(_inventoryItemContainer);
+			_inventoryItemContainerBehaviour.ClickEnable = true;
+			_inventoryItemContainerBehaviour.CanCapture = true;
 
 			_inventoryItem = new UIEntity(nameof(Item));
 			_inventoryItem.GameObject.SetActive(false);
-			
+			_inventoryItem.GameObject.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayerOverride;
+			_inventoryItem.GameObject.transform.localScale = new Vector2(itemScale, itemScale);
+
+			_inventoryItemContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
+
+			#endregion
+
+			#region system items
+
 			for (var i = 0; i < ItemCount; i++)
 			{
-				_systemItemContainers[i] = (GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + 0));
+				_systemItemContainers[i] = (GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + i));
+				_systemItemContainerBehaviours[i] = _systemItemContainers[i].GetComponent<ItemContainerBehaviour>();
+				_systemItemContainerBehaviours[i].Click += SystemContaineBehaviourOnClick;
 
 				var itemPanelItem = new UIEntity(nameof(Item));
 				Director.AddUntrackedEntity(itemPanelItem);
+
 				_systemItems[i] = itemPanelItem;
 				_systemItems[i].GameObject.SetActive(false);
 				_systemItems[i].GameObject.transform.position = _systemItemContainers[i].transform.position;
-				((ItemBehaviour) itemPanelItem.EntityBehaviour).ClickEnable = true;
+				_systemItems[i].GameObject.GetComponent<SpriteRenderer>().sortingLayerName = sortingLayerOverride;
+				_systemItems[i].GameObject.transform.localScale = new Vector2(itemScale, itemScale);
+
+				var systemItemBehaviour = (ItemBehaviour) itemPanelItem.EntityBehaviour;
+				systemItemBehaviour.ClickEnable = true;
 			}
 
+			#endregion
 		}
 
+		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+		{
+			ItemBehaviour item;
+			switch (_inventoryItemContainerBehaviour.State)
+			{
+				case ContainerState.Capturing:
+					if (itemContainerBehaviour.TryGetItem(out item))
+					{
+						_inventoryItemContainerBehaviour.SetItem(item);
+					}
+					break;
+				case ContainerState.Releasing:
+					if (_inventoryItemContainerBehaviour.TryGetItem(out item)
+						&& itemContainerBehaviour.State == ContainerState.Empty)
+					{
+						PlayerCommands.PickupItem(item.Id);
+					}
+					break;
+				default:
+					switch (itemContainerBehaviour.State)
+					{
+						case ContainerState.HasItem:
+							if (itemContainerBehaviour.TryGetItem(out item))
+							{
+								PlayerCommands.ActivateItem(item.Id);
+							}
+							break;
+					}
+					break;
+			}
+		}
+
+		private void InventoryItemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+		{
+		}
+		
 		private void DeactivateItem(UIEntity itemEntity)
 		{
 			itemEntity.GameObject.SetActive(false);
 			itemEntity.EntityBehaviour.Uninitialize();
+		}
+
+		private void DeactivateSystemItem(int i)
+		{
+			DeactivateItem(_systemItems[i]);
+			//_systemItemContainerBehaviours[i].Uninitialize();
+			//_systemItemContainerBehaviours[i].SetItem(null);
 		}
 
 		public void Update()
@@ -77,7 +147,23 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				throw new SimulationIntegrationException($"Player is unassigned");
 			}
 
-			_inventoryItemBehaviour.HandlePulse();
+			//if (_inventoryItemContainer.Item.HasValue == false 
+			//	&& _inventoryItemContainerBehaviour.State == ContainerState.HasItem)
+			//{
+			//	DeactivateItem(_inventoryItem);
+			//	//_systemItemContainerBehaviours[i].Uninitialize();
+			//	_inventoryItemContainerBehaviour.SetItem(null);
+			//}
+			//else if (_inventoryItemContainer.Item != null
+			//	&& _inventoryItemContainerBehaviour.State == ContainerState.Empty)
+			//{
+			//	UIEntity inventoryEntity;
+			//	if (Director.TryGetEntity(_inventoryItemContainer.Item.Value, out inventoryEntity))
+			//	{
+			//		_inventoryItem.EntityBehaviour.Initialize(inventoryEntity.EntityBehaviour.Entity);
+			//		_inventoryItem.GameObject.SetActive(true);
+			//	}
+			//}
 
 			if (_player.CurrentLocationEntity.Id != _playerLocationLast)
 			{
@@ -91,14 +177,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					{
 						if (i > subsystemBehaviour.ItemStorage.Items.Length - 1)
 						{
-							DeactivateItem(_systemItems[i]);
+							DeactivateSystemItem(i);
 							continue;
 						}
 
 						var itemContainer = subsystemBehaviour.ItemStorage.Items[i];
 						if ((itemContainer == null || itemContainer.Item.HasValue == false) && _systemItems[i].GameObject.activeSelf)
 						{
-							DeactivateItem(_systemItems[i]);
+							DeactivateSystemItem(i);
 						}
 						else if (itemContainer?.Item != null)
 						{
@@ -106,12 +192,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							if (Director.TryGetEntity(itemContainer.Item.Value, out itemEntity)
 								&& itemContainer.Item.Value != (_systemItems[i].EntityBehaviour.Entity?.Id ?? -1))
 							{
+								_systemItemContainerBehaviours[i].Initialize(itemContainer);
 								_systemItems[i].EntityBehaviour.Initialize(itemEntity.EntityBehaviour.Entity);
 								_systemItems[i].GameObject.SetActive(true);
+								_systemItemContainerBehaviours[i].SetItem(_systemItems[i].EntityBehaviour as ItemBehaviour);
+								_systemItemContainerBehaviours[i].ClickEnable = true;
 							}
 						}
 					}
-
 				}
 				else
 				{

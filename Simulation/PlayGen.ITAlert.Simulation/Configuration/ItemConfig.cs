@@ -6,6 +6,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public int StartingLocation { get; set; }
 
-		public string TypeName { get; set; }
+		public string ArchetypeName { get; set; }
 	}
 }
