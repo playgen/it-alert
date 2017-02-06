@@ -65,9 +65,9 @@ namespace PlayGen.Photon.Unity.Client
 			_isDisposed = true;
 		}
 
-		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)
+		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None, Hashtable customRoomProperties = null)
 		{
-			return _photonClientWrapper.ListRooms(filters);
+			return _photonClientWrapper.ListRooms(filters, customRoomProperties);
 		}
 
 		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
@@ -80,9 +80,9 @@ namespace PlayGen.Photon.Unity.Client
 			_photonClientWrapper.JoinRoom(roomName);
 		}
 
-		public void JoinRandomRoom()
+		public void JoinRandomRoom(Hashtable customRoomProperties = null)
 		{
-			_photonClientWrapper.JoinRandomRoom();
+			_photonClientWrapper.JoinRandomRoom(customRoomProperties);
 		}
 
 		#region Callbacks
