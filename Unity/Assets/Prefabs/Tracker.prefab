@@ -59,7 +59,7 @@ MonoBehaviour:
   traceFormat: xapi
   host: http://tracker.playgen.com/api/proxy/gleaner/collector/
   trackingCode: 58935a97e6806a006e3ae7bdmxu025wsdu7919k9
-  debug: 1
+  debug: 0
 --- !u!114 &114354962514626870
 MonoBehaviour:
   m_ObjectHideFlags: 1

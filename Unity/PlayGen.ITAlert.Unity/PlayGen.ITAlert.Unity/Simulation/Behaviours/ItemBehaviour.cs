@@ -89,23 +89,28 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			UpdateActivationTimer();
 		}
 
+		private int? _ownerId;
+
 		private void UpdateItemColor()
 		{
-			bool isWhite = GetComponent<SpriteRenderer>().color == Color.white;
-			if ((_owner?.Value.HasValue ?? false) && isWhite)
+			if (_owner?.Value != _ownerId)
 			{
-				UIEntity owner;
-				if (Director.TryGetEntity(_owner.Value.Value, out owner))
+				_ownerId = _owner?.Value;
+				if (_owner?.Value.HasValue ?? false)
 				{
-					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
-					GetComponent<SpriteRenderer>().color = playerColour;
-					_activationTimerImage.color = playerColour;
+					UIEntity owner;
+					if (Director.TryGetEntity(_owner.Value.Value, out owner))
+					{
+						var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+						GetComponent<SpriteRenderer>().color = playerColour;
+						_activationTimerImage.color = playerColour;
+					}
 				}
-			}
-			else if ((_owner?.Value.HasValue ?? false) == false && isWhite == false)
-			{
-				GetComponent<SpriteRenderer>().color = Color.white;
-				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+				else 
+				{
+					GetComponent<SpriteRenderer>().color = Color.white;
+					_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+				}
 			}
 		}
 
@@ -143,7 +148,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			if (ClickEnable && CanActivate)
 			{
-				PlayerCommands.ActivateItem(Id);
+				
 			}
 		}
 

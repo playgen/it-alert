@@ -1,5 +1,7 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
@@ -118,9 +120,18 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			{
 				var gameItem = Object.Instantiate(_gameItemPrefab).transform;
 				var name = room.name;
+				var scenario = room.customProperties[CustomRoomSettingKeys.GameScenario];
 				gameItem.FindChild("Name").GetComponent<Text>().text = name;
-				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount.ToString() + "/" +
-																		room.maxPlayers.ToString();
+				gameItem.FindChild("Scenario").GetComponent<Text>().text = (string)scenario;
+				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
+				var minPlayers = room.customProperties[CustomRoomSettingKeys.MinPlayers];
+
+				if (room.playerCount == room.maxPlayers || (minPlayers != null && (int)minPlayers > room.playerCount))
+				{
+					gameItem.FindChild("Name").GetComponent<Text>().color = Color.red;
+					gameItem.FindChild("Scenario").GetComponent<Text>().color = Color.red;
+					gameItem.FindChild("Players").GetComponent<Text>().color = Color.red;
+				}
 				gameItem.SetParent(_gameListObject.transform, false);
 
 				// set anchors
