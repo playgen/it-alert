@@ -52,8 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ActivateItemCommand.cs" />
-    <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
+    <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\Sequence\CommandSequence.cs" />
     <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
@@ -72,10 +72,12 @@
     <Compile Include="Components\EntityTypes\ScenarioText.cs" />
     <Compile Include="Components\EntityTypes\Subsystem.cs" />
     <Compile Include="Components\Items\IItemType.cs" />
+    <Compile Include="Components\Items\InventoryItemContainer.cs" />
     <Compile Include="Components\Items\ItemTypes.cs" />
     <Compile Include="Components\EntityTypes\Item.cs" />
     <Compile Include="Components\EntityTypes\Player.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
+    <Compile Include="Components\Tutorial\ActivationContinue.cs" />
     <Compile Include="Components\Tutorial\Highlight.cs" />
     <Compile Include="Components\Tutorial\Text.cs" />
     <Compile Include="Components\Tutorial\TutorialState.cs" />
@@ -95,6 +97,7 @@
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
+    <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
@@ -125,6 +128,7 @@
     <Compile Include="Systems\Resources\ResetMemoryEachTick.cs" />
     <Compile Include="Systems\Resources\ResetCPUEachTick.cs" />
     <Compile Include="Systems\Resources\SubsystemResources.cs" />
+    <Compile Include="Systems\Resources\CPUReducesMovementSpeed.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
     <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
@@ -160,6 +164,7 @@
     <Compile Include="Layout\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\SimulationException.cs" />
+    <Compile Include="Systems\Tutorial\ContinueActivationExtension.cs" />
     <Compile Include="Systems\Tutorial\ITutorialSystem.cs" />
     <Compile Include="Systems\Tutorial\TutorialSystem.cs" />
   </ItemGroup>

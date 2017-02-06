@@ -20,6 +20,23 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
+			new SystemConfiguration<SubsystemResources>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<ISubsystemResourceEffect>()
+					{
+						Implementations = new SystemExtensionImplementation[]
+						{
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetCPUEachTick>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetMemoryEachTick>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeCPUEffect>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<CPUReducesMovementSpeed>(), 
+						}
+					}
+				}
+			},
 			new SystemConfiguration<MovementSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -52,6 +69,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							// items
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateItemCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ActivateItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemCommandHandler>(),
 						}
 
 					}
@@ -69,6 +88,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
+							// TODO: need to find a good way to append extensions from the scenario definition
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
 						}
 					}
 				}
@@ -94,23 +116,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
-			new SystemConfiguration<SubsystemResources>()
-			{
-				ExtensionConfiguration = new SystemExtensionConfiguration[]
-				{
-					new SystemExtensionConfiguration<ISubsystemResourceEffect>()
-					{
-						Implementations = new SystemExtensionImplementation[]
-						{
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetCPUEachTick>(),
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetMemoryEachTick>(),
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeCPUEffect>(),
-						}
-					}
-				}
-			},
+
 			new SystemConfiguration<PathFindingSystem>(),
+			// TODO: need to find a good way to append systems from the scenario definition
 			new SystemConfiguration<TutorialSystem>()
 		};
 	}

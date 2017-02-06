@@ -2,6 +2,7 @@
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
@@ -15,6 +16,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private const int ItemCount = SimulationConstants.SubsystemMaxItems;
 
 		private GameObject _inventoryItemContainer;
+		private ItemContainerBehaviour _inventoryItemBehaviour;
 		private UIEntity _inventoryItem;
 
 		private GameObject[] _systemItemContainers;
@@ -32,7 +34,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void Initialize()
 		{
+			_player = Director.Player;
+			ItemStorage itemStorage;
+			if (_player.Entity.TryGetComponent(out itemStorage) == false)
+			{
+				throw new SimulationIntegrationException("No item storage found on player");
+			}
+			var inventoryContainer = itemStorage.Items[0] as InventoryItemContainer;
+
 			_inventoryItemContainer = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
+			_inventoryItemBehaviour = _inventoryItemContainer.GetComponent<ItemContainerBehaviour>();
+			_inventoryItemBehaviour.Initialize(inventoryContainer);
+			_inventoryItemBehaviour.ClickEnable = true;
+
 			_inventoryItem = new UIEntity(nameof(Item));
 			_inventoryItem.GameObject.SetActive(false);
 			
@@ -48,7 +62,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				((ItemBehaviour) itemPanelItem.EntityBehaviour).ClickEnable = true;
 			}
 
-			_player = Director.Player;
 		}
 
 		private void DeactivateItem(UIEntity itemEntity)
@@ -63,6 +76,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				throw new SimulationIntegrationException($"Player is unassigned");
 			}
+
+			_inventoryItemBehaviour.HandlePulse();
 
 			if (_player.CurrentLocationEntity.Id != _playerLocationLast)
 			{

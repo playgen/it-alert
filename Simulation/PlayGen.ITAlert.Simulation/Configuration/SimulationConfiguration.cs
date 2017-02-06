@@ -24,8 +24,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			IEnumerable<EdgeConfig> edgeConfiguration,
 			IEnumerable<PlayerConfig> playerConfiguration,
 			IEnumerable<ItemConfig> itemConfiguration,
-			IEnumerable<Archetype> archetypes,
-			IEnumerable<SystemConfiguration> systems, 
+			List<Archetype> archetypes,
+			List<SystemConfiguration> systems, 
 			LifeCycleConfiguration lifeCycleConfiguration) 
 			: base (archetypes, systems, lifeCycleConfiguration)
 		{

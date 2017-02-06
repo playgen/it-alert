@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine;
+using Engine.Archetypes;
 using Engine.Commands;
 using Engine.Entities;
 using Engine.Evaluators;
@@ -12,6 +13,7 @@ using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Tutorial;
 using PlayGen.ITAlert.Simulation.Evaluators;
 using PlayGen.ITAlert.Simulation.Extensions;
 using PlayGen.ITAlert.Simulation.Sequencing;
@@ -33,9 +35,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 	public static class GameScenarios
 	{
+		public static readonly Archetype TutorialScanner = new Archetype("TutorialScanner")
+			.Extends(GameEntities.Scanner)
+			.HasComponent(new ComponentBinding<ActivationContinue>()
+			{
+				ComponentTemplate = new ActivationContinue()
+				{
+					ContinueOn = ActivationContinue.ActivationPhase.Activating,
+				}
+			});
+
+
 		// TODO: extract helpers to factory or the command class that is applicable
 		#region Action helpers
-			
+
 		#region text
 
 		private static SimulationAction HideTextAction => new SimulationAction((ecs, config) =>
@@ -157,6 +170,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		// TODO: this should be parameterized further and read from config
 		private static SimulationScenario GenerateIntroductionScenario()
 		{
+			#region configuration
+
 			const int playerCount = 1;
 
 			var nodeLeft = new NodeConfig(0)
@@ -184,11 +199,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				ArchetypeName = nameof(GameEntities.Player)
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+			configuration.Archetypes.Add(TutorialScanner);
+
+
+			#endregion
+
+			#region frames
 
 			// ReSharper disable once UseObjectOrCollectionInitializer
 			var frames = new List<SimulationFrame>();
-
-			#region frames
 
 			#region 1
 
@@ -304,9 +323,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						CreateItemCommand(nameof(Scanner), nodeRight.Id),
+						CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
 						SetCommandEnabled<ActivateItemCommand>(false),
-						GenerateTextAction("The item that has just been spawned on the right hand node is a scanner. To use items you must be on the same node.")
+						GenerateTextAction($"The item that has just been spawned on the right hand node is a scanner.{Environment.NewLine}To use items you must be on the same node.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -338,7 +357,73 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						SetCommandEnabled<ActivateItemCommand>(true),
-						GenerateTextAction("Clicking the item on your tray will activate the item.")
+						GenerateTextAction("Clicking the item on your tray will activate the item.", false)
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					Evaluator = WaitForTutorialContinue,
+				}
+			);
+
+			frames.Add(// frame 4e - item
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						GenerateTextAction($"While the item is active the colouyr changes to indicate the player that is performing the action."),
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					Evaluator = WaitForTutorialContinue,
+				}
+			);
+
+			frames.Add(// frame 4e - item
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						GenerateTextAction($"Unfortunately the scanner had no affect this time.{Environment.NewLine}The scanner reveals malware on a system when it is present and hidden.")
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					Evaluator = WaitForTutorialContinue,
+				}
+			);
+
+			#endregion
+
+			#region 5 - malware
+
+			frames.Add(// frame 5a - malware
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						CreateNpcCommand(nameof(GameEntities.CPUVirus), nodeLeft.Id),
+						GenerateTextAction($"Malware has infected the Left system! You should investigate")
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						HideTextAction,
+					},
+					Evaluator = OnlyPlayerIsAtLocation(nodeLeft).And(WaitForTutorialContinue),
+				}
+			);
+
+			frames.Add(// frame 5a - malware
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						CreateNpcCommand(nameof(GameEntities.CPUVirus), nodeLeft.Id),
+						GenerateTextAction($"It appears that this infections is consuming CPU cycles on the system. As CPU is consumed the performance of the system decreases and so does movement speed.")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{

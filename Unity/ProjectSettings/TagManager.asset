@@ -12,6 +12,7 @@ TagManager:
   - Player
   - PhotonVoicePlayer
   - Loading
+  - ItemContainer
   layers:
   - Default
   - TransparentFX

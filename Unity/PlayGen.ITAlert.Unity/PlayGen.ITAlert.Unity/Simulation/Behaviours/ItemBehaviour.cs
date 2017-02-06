@@ -91,23 +91,22 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateItemColor()
 		{
-			//bool isWhite = GetComponent<SpriteRenderer>().color == Color.white ? true : false;
-			//if (_owner.Value.HasValue && isWhite)
-			//{
-			//	UIEntity owner;
-			//	if (Director.TryGetEntity(_owner.Value.Value, out owner))
-			//	{
-			//		var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
-			//		_iconRenderer.color = playerColour;
-			//		_activationTimerImage.color = playerColour;
-			//	}
-			//	//TriggerHint();
-			//}
-			//else if (!_owner.Value.HasValue && !isWhite)
-			//{
-			//	_iconRenderer.color = Color.white;
-			//	_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
-			//}
+			bool isWhite = GetComponent<SpriteRenderer>().color == Color.white;
+			if ((_owner?.Value.HasValue ?? false) && isWhite)
+			{
+				UIEntity owner;
+				if (Director.TryGetEntity(_owner.Value.Value, out owner))
+				{
+					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+					GetComponent<SpriteRenderer>().color = playerColour;
+					_activationTimerImage.color = playerColour;
+				}
+			}
+			else if ((_owner?.Value.HasValue ?? false) == false && isWhite == false)
+			{
+				GetComponent<SpriteRenderer>().color = Color.white;
+				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+			}
 		}
 
 		private void UpdateActivationTimer()
@@ -136,26 +135,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region player interaction
 
-		private bool PlayerOwnsItem()
-		{
-			return Director.Player != null
-					&& _owner.Value.HasValue
-					&& _owner.Value.Value == Director.Player.Id;
-		}
+		public bool CanActivate => _activation.ActivationState == ActivationState.NotActive;
 
 		public void OnClick()
 		{
 			Debug.Log("Item OnClick");
 
-			if (ClickEnable && CanActivate())
+			if (ClickEnable && CanActivate)
 			{
 				PlayerCommands.ActivateItem(Id);
 			}
-		}
-
-		public bool CanActivate()
-		{
-			return _activation.ActivationState == ActivationState.NotActive;
 		}
 
 		#endregion
