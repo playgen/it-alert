@@ -1,8 +1,12 @@
-﻿using GameWork.Core.States;
+﻿using System;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
+using PlayGen.Photon.Messages.Error;
+using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
@@ -32,6 +36,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnEnter()
 		{
+			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.Error, ProcessErrorMessage);
+
 			_voiceController = new VoiceController(_photonClient);
 
 			_stateController = _controllerFactory.Create();
@@ -39,8 +45,18 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_stateController.EnterState(LobbyState.StateName);
 		}
 
+		private void ProcessErrorMessage(Message message)
+		{
+			var errorMessage = message as ErrorMessage;
+			if (errorMessage != null)
+			{
+				throw new Exception(errorMessage.Message);
+			}
+		}
+
 		protected override void OnExit()
 		{
+			// CurrentRoom and messenger would have been destroyed by this poin so no need to unsubscribe
 			_stateController.Terminate();
 		}
 

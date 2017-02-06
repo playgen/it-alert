@@ -123,6 +123,18 @@ namespace PlayGen.Photon.Unity.Client
 			}
 		}
 
+		public void Disconnect()
+		{
+			if (PhotonNetwork.connected || PhotonNetwork.connecting)
+			{
+				PhotonNetwork.Disconnect();
+			}
+			else
+			{
+				Log("Already not connected");
+			}
+		}
+
 		public bool RegisterSerializableType(Type customType, byte code, SerializeMethod serializeMethod, DeserializeMethod constructor)
 		{
 			return PhotonPeer.RegisterType(customType, code, serializeMethod, constructor);
@@ -152,7 +164,8 @@ namespace PlayGen.Photon.Unity.Client
 			r.maxPlayers != r.playerCount).ToArray();
 		}        
 
-		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null)
+		public void CreateRoom(string roomName, int maxPlayers, Hashtable customRoomProperties = null, 
+			string[] customRoomPropertiesForLobby = null)
 		{
 			if (!PhotonNetwork.connected)
 			{
@@ -175,7 +188,8 @@ namespace PlayGen.Photon.Unity.Client
 				{
 					Plugins = new string[] {_gamePlugin},
 					MaxPlayers = (byte) maxPlayers,
-					CustomRoomProperties = customRoomProperties
+					CustomRoomProperties = customRoomProperties,
+					CustomRoomPropertiesForLobby = customRoomPropertiesForLobby
 				},
 				PhotonNetwork.lobby);
 		}
