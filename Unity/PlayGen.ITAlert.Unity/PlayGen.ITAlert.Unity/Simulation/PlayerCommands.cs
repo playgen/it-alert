@@ -10,7 +10,6 @@ using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-	// ReSharper disable once CheckNamespace
 	public class PlayerCommands
 	{
 		static PlayerCommands()

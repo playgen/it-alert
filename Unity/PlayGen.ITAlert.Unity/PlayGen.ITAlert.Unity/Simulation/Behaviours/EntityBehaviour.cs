@@ -1,14 +1,9 @@
 ﻿using System;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Common;
-using PlayGen.ITAlert.Unity.Network.Behaviours;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable once CheckNamespace
-
 	/// <summary>
 	/// Base class for all behaviour scripts attached to simulator entities
 	/// </summary>
@@ -43,7 +38,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		protected abstract void OnFixedUpdate();
+		protected virtual void OnFixedUpdate()
+		{
+			
+		}
 
 		/// <summary>
 		/// Do not override, this needs the initialization check
@@ -57,7 +55,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		protected abstract void OnUpdate();
+		protected virtual void OnUpdate()
+		{
+			
+		}
 
 		#endregion
 
@@ -91,6 +92,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void Uninitialize()
 		{
 			Initialized = false;
+			OnUninitialize();
 			Entity = null;
 		}
 
@@ -98,6 +100,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// actions to perform on initialization
 		/// </summary>
 		protected abstract void OnInitialize();
+
+		protected virtual void OnUninitialize()
+		{
+			
+		}
 
 		#endregion
 	}

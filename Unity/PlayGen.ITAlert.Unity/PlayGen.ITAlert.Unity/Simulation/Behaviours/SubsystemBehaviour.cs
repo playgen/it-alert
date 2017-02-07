@@ -11,11 +11,8 @@ using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 649
-
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable once CheckNamespace
 	public class SubsystemBehaviour : NodeBehaviour
 	{
 		private const float ItemContainerOffset = 0.3f;
@@ -170,37 +167,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_nameText.text = _name.Value;
 			}
 
-			//TODO: reimplement
-			//if (EntityState.Disabled)
-			//{
-			//	//SetName("SYSTEM OFFLINE");
-			//	_iconRenderer.color = new Color(0,0,0,0.5f);
-			//}
-			//else if (EntityState.Infection.HasValue)
-			//{
-			//	Color infectedColor;
-			//	ColorUtility.TryParseHtmlString("#E32730", out infectedColor);
-			//	_iconRenderer.color = infectedColor - new Color(0, 0, 0, 1 - _iconRenderer.color.a);
+			//_iconRenderer.color = Color.white;
 
-			//	var virus = Director.GetEntity(EntityState.Infection.Value);
-			//	//TODO: get center of square properly
-			//	virus.GameObject.transform.position = transform.position;
-			//}
-			//else
-			//{
-			_iconRenderer.color = Color.white;
-			//_nameText.text = Name.ToUpper();
-			//}
-
-
-			//if (EntityState.VisitorPositions.Count > 0)
-			//{
-			//	FadeInUpdate();
-			//}
-			//else
-			//{
-			//	FadeOutUpdate();
-			//}
 			UpdateItemContainers();
 		}
 
@@ -213,7 +181,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					var itemContainer = _itemStorage.Items[i];
 					if (itemContainer != null)
 					{
-						var itemContainerObject = Director.InstantiateEntity(ItemContainerBehaviour.Prefab);
+						var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
 						itemContainerObject.transform.SetParent(this.transform, false);
 						_itemContainers.Add(itemContainerObject);
 

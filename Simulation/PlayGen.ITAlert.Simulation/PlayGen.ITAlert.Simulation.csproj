@@ -96,6 +96,7 @@
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
+    <Compile Include="Systems\Items\PlayerInventorySystem.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
@@ -113,7 +114,7 @@
     <Compile Include="Components\Activation\IActivation.cs" />
     <Compile Include="Components\Activation\TimedActivation.cs" />
     <Compile Include="Systems\Malware\IMalwareEffect.cs" />
-    <Compile Include="Components\IItemContainer.cs" />
+    <Compile Include="Components\Items\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateIntent.cs" />
     <Compile Include="Components\Resources\ConsumeCPU.cs" />
     <Compile Include="Components\Items\ItemActivator.cs" />
@@ -153,7 +154,7 @@
     <Compile Include="Components\Intents\InfectSystemIntent.cs" />
     <Compile Include="Components\Intents\MoveIntent.cs" />
     <Compile Include="Components\Intents\PickUpItemIntent.cs" />
-    <Compile Include="Components\ItemContainer.cs" />
+    <Compile Include="Components\Items\ItemContainer.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Layout\GraphValidator.cs" />
     <Compile Include="Layout\Layout.cs" />

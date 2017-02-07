@@ -63,13 +63,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 	public class AnalysisTargetItemContainer : ItemContainer
 	{
 
-		public override bool CanPickup { get; }
+		public override bool CanRelease { get; }
 	}
 
 	public class AnalysisActivatorItemContainer : ItemContainer
 	{
 
-		public override bool CanPickup { get; }
+		public override bool CanRelease { get; }
 	}
 
 
