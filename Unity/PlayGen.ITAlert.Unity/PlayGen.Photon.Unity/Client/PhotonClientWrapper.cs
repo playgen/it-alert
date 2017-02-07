@@ -36,7 +36,7 @@ namespace PlayGen.Photon.Unity.Client
 			{
 				if (!PhotonNetwork.connected)
 				{
-					Log("Not connected.");
+					Logger.LogError("Not connected.");
 					return false;
 				}
 
@@ -50,7 +50,7 @@ namespace PlayGen.Photon.Unity.Client
 			{
 				if (!PhotonNetwork.connected)
 				{
-					Log("Not connected.");
+					Logger.LogError("Not connected.");
 					return false;
 				}
 
@@ -64,12 +64,12 @@ namespace PlayGen.Photon.Unity.Client
 			{
 				if (!PhotonNetwork.connected)
 				{
-					Log("Not connected.");
+					Logger.LogError("Not connected.");
 					return null;
 				}
 				else if (!IsInRoom)
 				{
-					Log("Not in a room.");
+					Logger.LogError("Not in a room.");
 					return null;
 				}
 
@@ -114,7 +114,7 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (PhotonNetwork.connected)
 			{
-				Log("Already Connected");
+				Logger.LogError("Already Connected");
 				return false;
 			}
 			else
@@ -131,7 +131,7 @@ namespace PlayGen.Photon.Unity.Client
 			}
 			else
 			{
-				Log("Already not connected");
+				Logger.LogError("Already not connected");
 			}
 		}
 
@@ -146,12 +146,12 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return new RoomInfo[0];
 			}
 			else if (!PhotonNetwork.insideLobby)
 			{
-				Log("You need to be in a \"lobby\" to retrieve a list of \"rooms\".");
+				Logger.LogError("You need to be in a \"lobby\" to retrieve a list of \"rooms\".");
 				return new RoomInfo[0];
 			}
 
@@ -168,17 +168,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (IsInRoom)
 			{
-				Log("Already in a room.");
+				Logger.LogError("Already in a room.");
 				return;
 			}
 			else if (ListRooms().Any(r => r.name.ToLower() == roomName.ToLower()))
 			{
-				Log("A room with the name: \"" + roomName + "\" already exists.");
+				Logger.LogError("A room with the name: \"" + roomName + "\" already exists.");
 				return;
 			}
 
@@ -197,22 +197,22 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (IsInRoom)
 			{
-				Log("Already in a room.");
+				Logger.LogError("Already in a room.");
 				return;
 			}
 			else if (ListRooms().All(r => r.name != roomName))
 			{
-				Log("No room with the name: \"" + roomName + "\" was found.");
+				Logger.LogError("No room with the name: \"" + roomName + "\" was found.");
 				return;
 			}
 			else if (!ListRooms().Single(r => r.name == roomName).open)
 			{
-				Log("The room: \"" + roomName + "\" is \"closed\". You can only join \"open\" rooms.");
+				Logger.LogError("The room: \"" + roomName + "\" is \"closed\". You can only join \"open\" rooms.");
 				return;
 			}
 
@@ -223,17 +223,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (IsInRoom)
 			{
-				Log("Already in a room.");
+				Logger.LogError("Already in a room.");
 				return;
 			}
 			else if (!ListRooms(ListRoomsFilters.Open).Any())
 			{
-				Log("No open rooms to join.");
+				Logger.LogError("No open rooms to join.");
 				return;
 			}
 
@@ -244,12 +244,12 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 
@@ -260,17 +260,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 			else if (!PhotonNetwork.room.visible)
 			{
-				Log("Room is already hidden.");
+				Logger.LogError("Room is already hidden.");
 				return;
 			}
 
@@ -281,17 +281,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 			else if (PhotonNetwork.room.visible)
 			{
-				Log("Room is already shown.");
+				Logger.LogError("Room is already shown.");
 				return;
 			}
 
@@ -302,17 +302,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 			else if (!PhotonNetwork.room.open)
 			{
-				Log("Room is already closed.");
+				Logger.LogError("Room is already closed.");
 				return;
 			}
 
@@ -323,17 +323,17 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 			else if (PhotonNetwork.room.open)
 			{
-				Log("Room is already open.");
+				Logger.LogError("Room is already open.");
 				return;
 			}
 
@@ -347,12 +347,12 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!PhotonNetwork.connected)
 			{
-				Log("Not connected.");
+				Logger.LogError("Not connected.");
 				return;
 			}
 			else if (!IsInRoom)
 			{
-				Log("Not in a room.");
+				Logger.LogError("Not in a room.");
 				return;
 			}
 
@@ -366,11 +366,12 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (EventRecievedEvent == null)
 			{
-				Log("Event Recieved but no event callbacks have been connected.");
-				return;
+				Logger.LogWarn("Event Recieved but no event callbacks have been connected.");
 			}
-
-			EventRecievedEvent(eventCode, content, senderId);
+			else
+			{
+				EventRecievedEvent(eventCode, content, senderId);
+			}
 		}
 
 		#endregion
@@ -384,7 +385,6 @@ namespace PlayGen.Photon.Unity.Client
 
 		public override void OnFailedToConnectToPhoton(DisconnectCause cause)
 		{
-			Log("Failed to Connect to Photon: " + cause);
 			DisconnectedEvent?.Invoke();
 			ExceptionEvent(new ConnectionException("Failed to Connect to Photon: " + cause));
 		}
@@ -421,13 +421,5 @@ namespace PlayGen.Photon.Unity.Client
 		}
 
 		#endregion
-
-		private void Log(string message)
-		{
-			// todo use gamework logger
-			Debug.Log("Network.PhotonClient: " + message);
-			//// todo make event based
-			//PopupUtility.LogError("Network.PhotonClient: " + message);
-		}
 	}
 }

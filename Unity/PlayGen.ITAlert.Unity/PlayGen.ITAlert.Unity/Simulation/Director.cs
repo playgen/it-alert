@@ -126,14 +126,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			try
 			{
-				if (_updatethread == null)
+				_updatethread = new Thread(ThreadWorker)
 				{
-					_updatethread = new Thread(ThreadWorker)
-					{
-						IsBackground = true,
-					};
-					_updatethread.Start();
-				}
+					IsBackground = true,
+				};
+				_updatethread.Start();
 
 				Reset();
 				SimulationRoot = simulationRoot;
@@ -172,6 +169,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			UpdateSignal.Reset();
 			UpdateCompleteSignal.Reset();
 			_stateJson = null;
+			ThreadWorkerException = null;
 
 			_activePlayer = null;
 			foreach (var entity in TrackedEntities)
@@ -179,13 +177,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Destroy(entity.Value.GameObject);
 			}
 			TrackedEntities.Clear();
-		}
-
-		public void Start()
-		{
-
-
-
 		}
 
 		private static void SetupPlayers(List<Player> players, int playerServerId)
@@ -404,8 +395,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void OnExceptionEvent(Exception obj)
 		{
-			UpdateSignal.Set();
-			UpdateCompleteSignal.Set();
 			ExceptionEvent?.Invoke(obj);
 		}
 	}
