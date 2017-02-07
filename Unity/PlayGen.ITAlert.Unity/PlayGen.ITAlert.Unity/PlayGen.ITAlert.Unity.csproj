@@ -160,7 +160,8 @@
     <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />
-    <Compile Include="States\GameErrorContainer.cs" />
+    <Compile Include="Transitions\OnEventTransition.cs" />
+    <Compile Include="Utilities\GameExceptionHandler.cs" />
     <Compile Include="States\Game\GameState.cs" />
     <Compile Include="States\Game\Menu\CreateGame\CreateGameController.cs" />
     <Compile Include="Controllers\ScenarioController.cs" />
@@ -206,11 +207,10 @@
     <Compile Include="Simulation\Behaviours\NodeBehaviour.cs" />
     <Compile Include="States\StateControllerFactory.cs" />
     <Compile Include="Simulation\Behaviours\ScenarioTextBehaviour.cs" />
-    <Compile Include="Transitions\OnCompletedTransition.cs" />
-    <Compile Include="Transitions\OnEventTransition.cs" />
-    <Compile Include="Transitions\OnExceptionEventTransition.cs" />
-    <Compile Include="Transitions\OnMessageTransition.cs" />
-    <Compile Include="Transitions\QuitTransition.cs" />
+    <Compile Include="Transitions\GameExceptionChecked\OnCompletedTransition.cs" />
+    <Compile Include="Transitions\GameExceptionChecked\OnEventTransition.cs" />
+    <Compile Include="Transitions\GameExceptionChecked\OnMessageTransition.cs" />
+    <Compile Include="Transitions\GameExceptionChecked\QuitTransition.cs" />
     <Compile Include="Interfaces\ICompletable.cs" />
     <Compile Include="Simulation\Behaviours\ConnectionBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\EnhancementBehaviour.cs" />

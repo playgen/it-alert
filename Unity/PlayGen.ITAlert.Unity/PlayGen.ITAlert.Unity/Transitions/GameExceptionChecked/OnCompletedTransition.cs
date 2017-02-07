@@ -1,7 +1,8 @@
 ﻿using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Interfaces;
+using PlayGen.ITAlert.Unity.Utilities;
 
-namespace PlayGen.ITAlert.Unity.Transitions
+namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 {
 	public class OnCompletedTransition : TickStateTransition
 	{
@@ -16,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.Transitions
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (_completable.IsComplete)
+			if (!GameExceptionHandler.HasException && _completable.IsComplete)
 			{
 				ExitState(_toStateName);
 				EnterState(_toStateName);

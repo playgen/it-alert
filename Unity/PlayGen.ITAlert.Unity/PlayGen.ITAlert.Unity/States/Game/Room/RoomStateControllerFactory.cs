@@ -12,7 +12,7 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
 using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.States.Game.Settings;
-using PlayGen.ITAlert.Unity.Transitions;
+using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room

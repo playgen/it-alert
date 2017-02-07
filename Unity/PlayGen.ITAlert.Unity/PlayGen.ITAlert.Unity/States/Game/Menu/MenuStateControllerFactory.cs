@@ -8,7 +8,7 @@ using PlayGen.ITAlert.Unity.States.Game.Menu.GamesList;
 using PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList;
 using PlayGen.ITAlert.Unity.States.Game.Room;
 using PlayGen.ITAlert.Unity.States.Game.Settings;
-using PlayGen.ITAlert.Unity.Transitions;
+using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
