@@ -42,6 +42,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			_stateController = _controllerFactory.Create();
 			_stateController.Initialize();
+
+
+
 			_stateController.EnterState(LobbyState.StateName);
 		}
 
