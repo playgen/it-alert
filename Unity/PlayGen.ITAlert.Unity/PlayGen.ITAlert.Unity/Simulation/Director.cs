@@ -176,6 +176,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
+			ThreadWorkerException = null;
 
 		/// <summary>
 		/// Create the entities from the 
@@ -394,8 +395,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void OnExceptionEvent(Exception obj)
 		{
-			UpdateSignal.Set();
-			UpdateCompleteSignal.Set();
 			ExceptionEvent?.Invoke(obj);
 		}
 	}
