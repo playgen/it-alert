@@ -102,7 +102,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
-						ScenarioHelpers.GenerateTextAction(true, 
+						ScenarioHelpers.GenerateTextAction(false, 
 							"Try navigating to another system by clicking on it..")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
