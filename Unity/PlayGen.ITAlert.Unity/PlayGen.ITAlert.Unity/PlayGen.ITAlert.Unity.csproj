@@ -155,7 +155,6 @@
     <Compile Include="Commands\LeaveRoomCommand.cs" />
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
-    <Compile Include="Commands\RefreshPlayerListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />

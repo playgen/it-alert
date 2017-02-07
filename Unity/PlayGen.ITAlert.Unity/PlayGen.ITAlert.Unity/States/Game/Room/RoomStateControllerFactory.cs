@@ -55,7 +55,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private LobbyState CreateLobbyState(Client photonClient)
 		{
 			var lobbyController = new LobbyController(_photonClient);
-			var input = new LobbyStateInput(lobbyController, photonClient);
+			var input = new LobbyStateInput(photonClient);
 			var state = new LobbyState(input, lobbyController, photonClient);
 
 			var initializingTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(InitializingMessage), InitializingState.StateName);
