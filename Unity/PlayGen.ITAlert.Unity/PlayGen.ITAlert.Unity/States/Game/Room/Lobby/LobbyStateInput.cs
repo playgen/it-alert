@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = PlayGen.Photon.Unity.Logger;
 using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyStateInput : TickStateInput
 	{
-		private readonly LobbyController _controller;
 		private readonly Client _photonClient;
+		private readonly List<Color> _playerColors = new List<Color>();
 
 		private GameObject _lobbyPanel;
 		private ButtonList _buttons;
@@ -30,14 +32,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private bool _ready;
 		private int _lobbyPlayerMax;
-		private List<Color> _playerColors;
 		private Button _backButton;
 
 		public event Action LeaveLobbyClickedEvent;
 
-		public LobbyStateInput(LobbyController controller, Client photonClient)
+		public LobbyStateInput(Client photonClient)
 		{
-			_controller = controller;
 			_photonClient = photonClient;
 		}
 
@@ -71,10 +71,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		protected override void OnEnter()
 		{
 			_ready = false;
-			_controller.ReadySuccessEvent += OnReadySucceeded;
-			_controller.RefreshSuccessEvent += UpdatePlayerList;
 
-			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
 
 			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
@@ -88,11 +85,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnExit()
 		{
-			_controller.ReadySuccessEvent -= OnReadySucceeded;
-			_controller.RefreshSuccessEvent -= UpdatePlayerList;
-
-			_photonClient.JoinedRoomEvent -= OnJoinedRoom;
-
 			if (_photonClient.CurrentRoom != null)
 			{
 				_photonClient.CurrentRoom.PlayerListUpdatedEvent -= OnPlayersChanged;
@@ -116,7 +108,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private void OnReadyButtonClick()
 		{
-			CommandQueue.AddCommand(new ReadyPlayerCommand(!_ready));
+			var currentlyReady = _photonClient.CurrentRoom.Player.State ==
+								(int) ITAlert.Photon.Players.ClientState.Ready;
+			CommandQueue.AddCommand(new ReadyPlayerCommand(!currentlyReady));
 			LoadingUtility.ShowSpinner();
 		}
 
@@ -140,48 +134,33 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		{
 			_roomNameObject.GetComponent<Text>().text = name;
 		}
-
-		private void OnReadySucceeded()
+		
+		private void UpdatePlayerList(List<Player> players)
 		{
-			var text = "";
-			if (_ready)
-			{
-				text = "READY";
-				_ready = false;
-			}
-			else
-			{
-				text = "WAITING";
-				_ready = true;
+			_readyButton.gameObject.GetComponentInChildren<Text>().text = 
+				_photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready
+				? "Waiting"
+				: "Ready";
 
-			}
+			// todo give this a condition list that gets subtracted from as conditions are fulfilled
+			// so the spinner will remain active in a case where a player had it show for ready state change
+			// and some other state change, where at this point in code the ready state has returned so that
+			// condition is fulfilled but it should still remain active as we are still waiting on the other
+			// state to return.
 			LoadingUtility.HideSpinner();
-			_readyButton.gameObject.GetComponentInChildren<Text>().text = text;
-		}
 
-		private void RefreshPlayerList()
-		{
-			CommandQueue.AddCommand(new RefreshPlayerListCommand());
-		}
-
-		private void UpdatePlayerList(LobbyController.LobbyPlayer[] players)
-		{
 			foreach (Transform child in _playerListObject.transform)
 			{
-				GameObject.Destroy(child.gameObject);
+				Object.Destroy(child.gameObject);
 			}
 
 			var offset = 0f;
 			var maximumPlayersPossible = 6f;
 				// the maximum number of players the game currently supports - Not the max for the room
 			var height = _playerListObject.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
-
-			//sort array into list
-			var playersList = players.OrderBy(player => player.Id).ToList();
-
 			_playerVoiceIcons = new Dictionary<int, Image>();
 
-			foreach (var player in playersList)
+			foreach (var player in players)
 			{
 				var playerItem = Object.Instantiate(_playerItemPrefab).transform;
 
@@ -197,12 +176,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				nameText.color = color;
 
 				var readyText = playerItem.FindChild("Ready").GetComponent<Text>();
-				readyText.text = player.IsReady ? "Ready" : "Waiting";
+				readyText.text = player.State == (int)ITAlert.Photon.Players.ClientState.Ready ? "Ready" : "Waiting";
 				readyText.color = color;
 
 				var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
 				soundIcon.color = color;
-				_playerVoiceIcons[player.Id] = soundIcon;
+				_playerVoiceIcons[player.PhotonId] = soundIcon;
 
 				playerItem.SetParent(_playerListObject.transform, false);
 
@@ -220,7 +199,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				offset -= height;
 			}
 
-			for (var i = players.Length; i < _lobbyPlayerMax; i++)
+			for (var i = players.Count; i < _lobbyPlayerMax; i++)
 			{
 				var playerSpace = Object.Instantiate(_playerSpacePrefab).transform;
 				playerSpace.SetParent(_playerListObject.transform, false);
@@ -245,20 +224,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_lobbyPlayerMax = currentRoomMaxPlayers;
 		}
 
-		private void SetPlayerColors(Dictionary<int, string> colors)
+		private void SetPlayerColors(List<Player> players)
 		{
-			// Convert Dictionary to string list
-			var colorStrings = colors.Select(item => item.Value).ToList();
-			var colorList = new List<Color>();
-			var c = new Color();
-			foreach (var color in colorStrings)
-			{
-				ColorUtility.TryParseHtmlString("#" + color, out c);
-				colorList.Add(c);
-			}
-			_playerColors = colorList;
+			_playerColors.Clear();
 
-			CommandQueue.AddCommand(new RefreshPlayerListCommand());
+			Color color;
+			foreach (var colorString in players.Select(p => p.Color))
+			{
+				if (ColorUtility.TryParseHtmlString("#" + colorString, out color))
+				{
+					_playerColors.Add(color);
+				}
+				else
+				{
+					Logger.LogError($"Couldn't parse {colorString} to {typeof(Color)}");
+				}
+			}
 		}
 
 		private void UpdateVoiceStatuses()
@@ -272,20 +253,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			}
 		}
 
-		private void OnJoinedRoom(ClientRoom room)
+		private void OnPlayersChanged(List<Player> players)
 		{
-			room.OtherPlayerJoinedEvent += (otherPlayer) => RefreshPlayerList();
-			room.OtherPlayerLeftEvent += (otherPlayer) => RefreshPlayerList();
-
-			RefreshPlayerList();
-		}
-
-		private void OnPlayersChanged(ICollection<Player> players)
-		{
-			RefreshPlayerList();
-			SetPlayerColors(players.ToDictionary(
-				p => p.PhotonId,
-				p => p.Color));
+			UpdatePlayerList(players);
+			SetPlayerColors(players);
 		}
 	}
 }

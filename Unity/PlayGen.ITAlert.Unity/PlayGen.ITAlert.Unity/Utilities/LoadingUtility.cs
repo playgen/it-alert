@@ -13,17 +13,17 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 		public static void SetSpinner(int speed, bool clockwise)
 		{
-			LoadingSpinner.SetSpinner(clockwise, speed);
+			LoadingSpinner?.SetSpinner(clockwise, speed);
 		}
 
 		public static void ShowSpinner()
 		{
-			LoadingSpinner.StartSpinner();
+			LoadingSpinner?.StartSpinner();
 		}
 
 		public static void HideSpinner()
 		{
-			LoadingSpinner.StopSpinner();
+			LoadingSpinner?.StopSpinner();
 		}
 	}
 }

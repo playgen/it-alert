@@ -58,7 +58,11 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			PlayerNumberInputField.text = "";
 			_minPlayers = scenario.MinPlayerCount;
 			_maxPlayers = scenario.MaxPlayerCount;
-			OnChangePlayerCount("2");
+			OnChangePlayerCount(_maxPlayers);
+
+			// Disable editing controls if there is no range for player editing
+			var isNumPlayersEditable = _minPlayers != _maxPlayers;
+			SetPlayerNumberEditorsInteractable(isNumPlayersEditable);
 		}
 
 		public struct GameDetails
@@ -117,6 +121,13 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 				}
 				EventSystem.current.SetSelectedGameObject(next.gameObject, new BaseEventData(EventSystem.current));
 			}
+		}
+
+		private void SetPlayerNumberEditorsInteractable(bool interactable)
+		{
+			IncrementPlayersButton.interactable = interactable;
+			DecrementPlayersButton.interactable = interactable;
+			PlayerNumberInputField.interactable = interactable;
 		}
 	}
 
