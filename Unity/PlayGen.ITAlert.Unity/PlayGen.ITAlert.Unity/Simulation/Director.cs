@@ -282,7 +282,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
 						//start = DateTime.Now;
 						UpdateSignal.Set();
-						System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
 						UpdateCompleteSignal.WaitOne();
 						//update = DateTime.Now.Subtract(start).TotalMilliseconds;
 					}
@@ -399,6 +398,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void OnExceptionEvent(Exception obj)
 		{
+			UpdateSignal.Set();
+			UpdateCompleteSignal.Set();
 			ExceptionEvent?.Invoke(obj);
 		}
 	}

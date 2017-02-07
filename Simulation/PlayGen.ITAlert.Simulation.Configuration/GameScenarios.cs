@@ -473,7 +473,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		{
 			#region configuration
 
-			const int minPlayerCount = 4;
+			const int minPlayerCount = 2;
 			const int maxPlayerCount = 4;
 
 			var nodeTopLeft = new NodeConfig(0)
