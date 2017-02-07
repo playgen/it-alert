@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
-using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
@@ -59,14 +58,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 					readyCommand.Execute(_controller);
 					return;
 				}
-
-				var refreshCommand = command as RefreshPlayerListCommand;
-				if (refreshCommand != null)
-				{
-					refreshCommand.Execute(_controller);
-					return;
-				}
-
+				
 				var colorCommand = command as ChangePlayerColorCommand;
 				if (colorCommand != null)
 				{
