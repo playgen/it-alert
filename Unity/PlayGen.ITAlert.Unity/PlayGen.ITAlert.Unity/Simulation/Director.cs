@@ -127,6 +127,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			MessageSignal.Reset();
 			UpdateSignal.Reset();
 			UpdateCompleteSignal.Reset();
+			ThreadWorkerException = null;
 			_stateJson = null;
 
 			_activePlayer = null;
@@ -175,8 +176,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				throw;
 			}
 		}
-
-			ThreadWorkerException = null;
 
 		/// <summary>
 		/// Create the entities from the 
