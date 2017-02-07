@@ -473,7 +473,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		{
 			#region configuration
 
-			const int minPlayerCount = 4;
+			const int minPlayerCount = 2;
 			const int maxPlayerCount = 4;
 
 			var nodeTopLeft = new NodeConfig(0)
@@ -534,7 +534,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						GenerateTextAction($"Hellooo humans!{Environment.NewLine} Seeing as you're biological brains aren't anywhere close to the computational speed of my CPU, I" +
+						GenerateTextAction($"Hellooo humans!{Environment.NewLine} Seeing as your biological brains aren't anywhere close to the computational speed of my CPU, I" +
 											$"figured: the more of you, the better.{Environment.NewLine}Let's get started...also this is a test level so you're now stuck here until you escape! Mwuhahaha!")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -548,14 +548,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			);
 
 			#endregion
-			
 
 			#endregion
 
 			return new SimulationScenario()
 			{
 				Name = "MultiplayerIntroduction",
-				Description = "MultiplayerIntroduction",
+				Description = "Multiplayer Introduction",
 				MinPlayers = minPlayerCount,
 				MaxPlayers = maxPlayerCount,
 				Configuration = configuration,
