@@ -20,6 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
+			// TODO: if the systems are tickable the order they are defined here is the order they will be ticked; we probably need to make this more explicit
 			new SystemConfiguration<SubsystemResources>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -80,6 +81,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			},
 			new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
+			new SystemConfiguration<PlayerInventorySystem>(),
 			new SystemConfiguration<ItemActivationSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]

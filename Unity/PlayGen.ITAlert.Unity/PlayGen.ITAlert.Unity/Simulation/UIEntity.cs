@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
-using PlayGen.ITAlert.Unity.Network.Behaviours;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-// ReSharper disable once CheckNamespace
-// ReSharper disable once InconsistentNaming
+	// ReSharper disable once InconsistentNaming
 	public class UIEntity
 	{
 		private GameObject _gameObject;

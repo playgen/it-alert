@@ -3,8 +3,7 @@ using PlayGen.ITAlert.Simulation.Components.Malware;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
-{ 
-	// ReSharper disable once CheckNamespace
+{
 	public class NpcBehaviour : ActorBehaviour
 	{
 		//private Image _timerImage;

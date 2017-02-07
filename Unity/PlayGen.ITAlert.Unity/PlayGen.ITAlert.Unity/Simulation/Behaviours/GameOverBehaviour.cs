@@ -2,7 +2,6 @@
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable once CheckNamespace
 	public class GameOverBehaviour : MonoBehaviour
 	{
 		public enum GameOverCondition

@@ -10,18 +10,19 @@ using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable CheckNamespace
 	public class ItemBehaviour : EntityBehaviour
 	{
+		#region editor fields
+
 		[SerializeField]
 		private Image _activationTimerImage;
 
 		[SerializeField]
 		private SpriteRenderer _iconRenderer;
 
-		public bool ClickEnable { get; set; }
+		#endregion
 
-		#region components
+		#region unity components
 
 		// required
 		private CurrentLocation _currentLocation;
@@ -33,6 +34,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private TimedActivation _timedActivation;
 
 		#endregion
+
+		#region public events
+
+		public event Action<ItemBehaviour> Click;
+		
+		#endregion
+
+
+		public bool ClickEnable { get; set; }
+
 
 		#region Initialization
 
@@ -146,9 +157,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Debug.Log("Item OnClick");
 
-			if (ClickEnable && CanActivate)
+			if (ClickEnable)
 			{
-				
+				Click?.Invoke(this);
 			}
 		}
 

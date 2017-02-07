@@ -5,16 +5,12 @@ using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable once CheckNamespace
 	public class PlayerBehaviour : ActorBehaviour
 	{
 		public int? InventoryItem => null;
 
 		private Color _playerColor;
-		public Color PlayerColor => _playerColor;
-
-
-
+		
 		#region Initialization
 
 		public void Start()
@@ -23,17 +19,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		}
 
-		public void Awake()
-		{
-		}
-
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			//GetComponent<TrailRenderer>().sortingOrder = 10;
 		}
 
-
+		#endregion
 		public void SetColor(string colour)
 		{
 			if (colour.IndexOf("#", StringComparison.Ordinal) == -1)
@@ -49,21 +40,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				GetComponent<TrailRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 			}
 		}
-
-		#endregion
-
-		#region Unity Update
-
-		protected override void OnFixedUpdate()
-		{
-		}
-
-		protected override void OnUpdate()
-		{
-
-		}
-
-		#endregion
 
 		#region State Update
 
