@@ -96,27 +96,27 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			switch (_state)
 			{
 				case ContainerState.Capturing:
-					if (_itemContainer.Item.HasValue)
+					if (_itemContainer?.Item != null)
 					{
 						Transition(ContainerState.HasItem);
 					}
 					break;
 				case ContainerState.Releasing:
-					if (_itemContainer.Item == null)
+					if (_itemContainer?.Item == null)
 					{
 						Transition(ContainerState.Empty);
 					}
 					break;
 				default:
-					if (_itemContainer.Enabled == false)
+					if (_itemContainer?.Enabled == false)
 					{
 						Transition(ContainerState.Disabled);
 					}
-					else if (_itemContainer.Item.HasValue)
+					else if (_itemContainer?.Item != null)
 					{
 						Transition(ContainerState.HasItem);
 					}
-					else if (_itemContainer.Item == null)
+					else if (_itemContainer?.Item == null)
 					{
 						Transition(ContainerState.Empty);
 					}
@@ -135,7 +135,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				switch (_state)
 				{
 					case ContainerState.Empty:
-						if (CanCapture && _itemContainer.CanCapture())
+						if (CanCapture && (_itemContainer?.CanCapture() ?? false))
 						{
 							Transition(ContainerState.Capturing);
 						}
@@ -146,7 +146,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					case ContainerState.Disabled:
 						break;
 					case ContainerState.HasItem:
-						if (CanCapture && _itemContainer.CanRelease)
+						if (CanCapture && (_itemContainer?.CanRelease ?? false))
 						{
 							Transition(ContainerState.Releasing);
 						}
