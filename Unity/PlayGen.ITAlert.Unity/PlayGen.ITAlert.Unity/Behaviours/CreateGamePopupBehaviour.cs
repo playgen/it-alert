@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			PlayerNumberInputField.text = "";
 			_minPlayers = scenario.MinPlayerCount;
 			_maxPlayers = scenario.MaxPlayerCount;
-			OnChangePlayerCount("2");
+			OnChangePlayerCount(_maxPlayers);
 		}
 
 		public struct GameDetails
