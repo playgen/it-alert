@@ -6,11 +6,9 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 
-#pragma warning disable 649
-
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	// ReSharper disable CheckNamespace
+
 	public class ConnectionBehaviour : NodeBehaviour
 	{
 		[SerializeField]

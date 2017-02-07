@@ -1,8 +1,6 @@
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
 
-// ReSharper disable once CheckNamespace
-namespace PlayGen.ITAlert.Unity.Network.Behaviours
+namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public interface IEntityBehaviour
 	{

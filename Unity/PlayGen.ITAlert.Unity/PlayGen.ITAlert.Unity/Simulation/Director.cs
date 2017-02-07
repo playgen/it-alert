@@ -17,8 +17,6 @@ using Debug = UnityEngine.Debug;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-	// ReSharper disable CheckNamespace
-
 	/// <summary>
 	/// There should only ever be one instance of this
 	/// </summary>
@@ -121,19 +119,33 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 		}
+		
+		private static void Reset()
+		{
+			_tick = 0;
+
+			MessageSignal.Reset();
+			UpdateSignal.Reset();
+			UpdateCompleteSignal.Reset();
+			_stateJson = null;
+
+			_activePlayer = null;
+			foreach (var entity in TrackedEntities)
+			{
+				Destroy(entity.Value.GameObject);
+			}
+			TrackedEntities.Clear();
+		}
 
 		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
 		{
 			try
 			{
-				if (_updatethread == null)
+				_updatethread = new Thread(ThreadWorker)
 				{
-					_updatethread = new Thread(ThreadWorker)
-					{
-						IsBackground = true,
-					};
-					_updatethread.Start();
-				}
+					IsBackground = true,
+				};
+				_updatethread.Start();
 
 				Reset();
 				SimulationRoot = simulationRoot;
@@ -164,55 +176,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private static void Reset()
-		{
-			_tick = 0;
-
-			MessageSignal.Reset();
-			UpdateSignal.Reset();
-			UpdateCompleteSignal.Reset();
-			_stateJson = null;
-
-			_activePlayer = null;
-			foreach (var entity in TrackedEntities)
-			{
-				Destroy(entity.Value.GameObject);
-			}
-			TrackedEntities.Clear();
-		}
-
-		public void Start()
-		{
-
-
-
-		}
-
-		private static void SetupPlayers(List<Player> players, int playerServerId)
-		{
-			foreach (var player in players)
-			{
-				try
-				{
-					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
-
-					UIEntity playerUiEntity;
-					if (TrackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
-					{
-						var playerBehaviour = (PlayerBehaviour)playerUiEntity.EntityBehaviour;
-						if (player.PhotonId == playerServerId)
-						{
-							_activePlayer = playerBehaviour;
-						}
-						playerBehaviour.SetColor(player.Color);
-					}
-				}
-				catch (Exception ex)
-				{
-					throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
-				}
-			}
-		}
 
 		/// <summary>
 		/// Create the entities from the 
@@ -244,6 +207,33 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 			}
 		}
+
+		private static void SetupPlayers(List<Player> players, int playerServerId)
+		{
+			foreach (var player in players)
+			{
+				try
+				{
+					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
+
+					UIEntity playerUiEntity;
+					if (TrackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
+					{
+						var playerBehaviour = (PlayerBehaviour)playerUiEntity.EntityBehaviour;
+						if (player.PhotonId == playerServerId)
+						{
+							_activePlayer = playerBehaviour;
+						}
+						playerBehaviour.SetColor(player.Color);
+					}
+				}
+				catch (Exception ex)
+				{
+					throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
+				}
+			}
+		}
+
 
 		#endregion
 

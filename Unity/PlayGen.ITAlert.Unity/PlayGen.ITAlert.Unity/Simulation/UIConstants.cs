@@ -3,7 +3,6 @@
 namespace PlayGen.ITAlert.Unity.Simulation
 {
 	// ReSharper disable once InconsistentNaming
-	// ReSharper disable once CheckNamespace
 	public class UIConstants
 	{
 		/// <summary>
@@ -30,5 +29,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public const float ConnectionWidth = 0.05f;
 
 		public const int PlayerTrailRendererMaterials = 5;
+
+		public const string ItemContainerPrefab = "ItemContainer";
+		public const string ItemContainerDefaultSpriteName = "ItemContainer";
+
 	}
 }
