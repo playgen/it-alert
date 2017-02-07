@@ -35,6 +35,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
 		private static readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
+		private static readonly AutoResetEvent WorkerThreadExceptionSignal = new AutoResetEvent(false);
 
 		private static int _tick;
 
@@ -291,11 +292,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				catch (Exception ex)
 				{
-					OnExceptionEvent(new SimulationIntegrationException($"Terminating simulation worker thread", ex));
+					ThreadWorkerException = new SimulationIntegrationException($"Terminating simulation worker thread", ex);
+					WorkerThreadExceptionSignal.Set();
 					break;
 				}
 			}
 		}
+
+		public static SimulationIntegrationException ThreadWorkerException { get; set; }
 
 		public static void UpdateSimulation(string stateJson)
 		{
@@ -303,11 +307,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			MessageSignal.Set();
 		}
 
-
-
 		public void Update()
 		{
-			if (UpdateSignal.WaitOne(0))
+			if (WorkerThreadExceptionSignal.WaitOne(0))
+			{
+				OnExceptionEvent(ThreadWorkerException);
+			}
+			else if (UpdateSignal.WaitOne(0))
 			{
 				try
 				{
