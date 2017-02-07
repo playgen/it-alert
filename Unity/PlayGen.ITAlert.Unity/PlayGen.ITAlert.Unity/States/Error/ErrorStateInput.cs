@@ -2,6 +2,7 @@
 using GameWork.Core.States.Tick.Input;
 using GameWork.Unity.Engine.Components.Utilities;
 using GameWork.Unity.Engine.Transform.Utilities;
+using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -42,6 +43,8 @@ namespace PlayGen.ITAlert.Unity.States.Error
 			_messageText.text = _gameErrorContainer?.Exception?.Message;
 			_panelVisibility.gameObject?.SetActive(true);
 			_buttons.BestFit();
+
+			LoadingUtility.HideSpinner();
 		}
 
 		protected override void OnExit()
