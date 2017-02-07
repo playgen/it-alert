@@ -36,6 +36,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private ItemContainer _itemContainer;
 
+		public string DefaultSprite { private get; set; } = UIConstants.ItemContainerDefaultSpriteName;
+
 		#region initialization
 
 		public void Initialize(ItemContainer itemContainer)
@@ -46,7 +48,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_itemContainer = itemContainer;
 
 			var itemContainerTypeName = itemContainer.GetType().Name.ToLowerInvariant();
-			var sprite = Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName);
+			var sprite = Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(DefaultSprite);
 			_containerImage.sprite = sprite;
 		}
 
@@ -60,10 +62,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#endregion
 
 		#region player interaction
-
-		public bool Capturing { get; set; }
-
-		private bool CanActivate => true;
 
 		private void Transition(ContainerState state)
 		{

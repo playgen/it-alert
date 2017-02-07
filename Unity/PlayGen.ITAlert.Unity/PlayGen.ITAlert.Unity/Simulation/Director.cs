@@ -270,11 +270,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						_tick++;
 						//start = DateTime.Now;
 						SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
+						System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
 						//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
 						//start = DateTime.Now;
 						UpdateSignal.Set();
 						UpdateCompleteSignal.WaitOne();
 						//update = DateTime.Now.Subtract(start).TotalMilliseconds;
+
 					}
 					//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
 					//_tps = (float) (1.0f / (deserialize + update));
