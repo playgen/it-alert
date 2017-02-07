@@ -15,7 +15,6 @@ namespace PlayGen.Photon.Unity.Client
 
 		private bool _isDisposed;
 		private ClientState _lastState;
-		private bool _didClientIssueDisconnect;
 
 		public event Action<ClientRoom> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
@@ -59,7 +58,6 @@ namespace PlayGen.Photon.Unity.Client
 
 		public void Disconnect()
 		{
-			_didClientIssueDisconnect = true;
 			_photonClientWrapper.Disconnect();
 		}
 
@@ -111,14 +109,24 @@ namespace PlayGen.Photon.Unity.Client
 			DisconnectedEvent?.Invoke();
 		}
 
+		/// <summary>
+		/// Callback for when photon recieves the notification that the player has entered a room
+		/// </summary>
 		private void OnJoinedRoom()
 		{
 			Debug.Log($"PlayGen.Photon.Unity::Client::JoinedRoom");
 
 			CurrentRoom?.Dispose();
-			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler);
+			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler, OnRoomInitialized);
 			CurrentRoom.ExceptionEvent += OnException;
-			
+		}
+
+		/// <summary>
+		/// Callback for when room is fully initialized
+		/// </summary>
+		/// <param name="room"></param>
+		private void OnRoomInitialized(ClientRoom room)
+		{
 			JoinedRoomEvent?.Invoke(CurrentRoom);
 		}
 
@@ -129,9 +137,9 @@ namespace PlayGen.Photon.Unity.Client
 
 		private void OnLeftRoom()
 		{
-			if (!_photonClientWrapper.IsInRoom)
+			if (CurrentRoom != null)
 			{
-				CurrentRoom = null;
+				CurrentRoom.Dispose();
 				LeftRoomEvent?.Invoke();
 			}
 		}

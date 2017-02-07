@@ -2,7 +2,6 @@
 using System.Linq;
 using PlayGen.Photon.Messaging;
 using System.Collections.Generic;
-using System.Threading;
 using PlayGen.Photon.Messages;
 using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Unity.Client.Voice;
@@ -20,50 +19,29 @@ namespace PlayGen.Photon.Unity.Client
 	{
 		private readonly PhotonClientWrapper _photonClientWrapper;
 		private readonly VoiceClient _voiceClient;
+		private readonly ClientRoomInitializedCallback _initializedCallback;
 
 		private bool _isDisposed;
+		private bool _isInitialized;
 
-		public event Action<PhotonPlayer> OtherPlayerJoinedEvent;
-		public event Action<PhotonPlayer> OtherPlayerLeftEvent;
+		public Messenger Messenger { get; }
+		public RoomInfo RoomInfo => _photonClientWrapper.CurrentRoom;
+		public VoiceClient VoiceClient => _voiceClient;
+		public PhotonPlayer[] ListCurrentRoomPlayers => _photonClientWrapper.ListCurrentRoomPlayers;
+		public bool IsMasterClient => _photonClientWrapper.IsMasterClient;
+		public List<Player> Players { get; private set; }
+		public Player Player { get; private set; }
+
 		public event Action<List<Player>> PlayerListUpdatedEvent;
 		public event Action<Exception> ExceptionEvent;
+		public delegate void ClientRoomInitializedCallback(ClientRoom clientRoom);
 
-		public Messenger Messenger { get; private set; }
-
-		public List<Player> Players { get; private set; }
-
-		public RoomInfo RoomInfo => _photonClientWrapper.CurrentRoom;
-
-		public VoiceClient VoiceClient => _voiceClient;
-
-		public PhotonPlayer[] ListCurrentRoomPlayers => _photonClientWrapper.ListCurrentRoomPlayers;
-
-		public bool IsMasterClient => _photonClientWrapper.IsMasterClient;
-
-		public ManualResetEvent GetPlayersWait { get; } = new ManualResetEvent(false);
-
-		public Player Player
-		{
-			get
-			{
-				try
-				{
-					GetPlayersWait.WaitOne();
-					return Players.Single(p => p.PhotonId == _photonClientWrapper.Player.ID);
-				}
-				catch (InvalidOperationException ioex)
-				{
-					throw new PhotonClientException($"No player with photon id {_photonClientWrapper.Player.ID}", ioex);
-				}
-			}
-		}
-
-		public ClientRoom(PhotonClientWrapper photonClientWrapper, IMessageSerializationHandler messageSerializationHandler)
+		public ClientRoom(PhotonClientWrapper photonClientWrapper, 
+			IMessageSerializationHandler messageSerializationHandler,
+			ClientRoomInitializedCallback initializedCallback)
 		{
 			_photonClientWrapper = photonClientWrapper;
-
-			_photonClientWrapper.OtherPlayerJoinedRoomEvent += OnOtherPlayerJoined;
-			_photonClientWrapper.OtherPlayerLeftRoomEvent += OnOtherPlayerLeft;
+			_initializedCallback = initializedCallback;
 
 			Messenger = new Messenger(messageSerializationHandler, photonClientWrapper);
 			Logger.SetMessenger(Messenger);
@@ -76,8 +54,6 @@ namespace PlayGen.Photon.Unity.Client
 
 			_photonClientWrapper.EventRecievedEvent += OnRecievedEvent;
 
-			RefreshPlayers();
-
 			Logger.LogDebug("Created ClientRoom");
 		}
 
@@ -85,17 +61,7 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			Dispose();
 		}
-
-		public void RefreshPlayers()
-		{
-			GetPlayersWait.Reset();
-
-			Messenger.SendMessage(new ListPlayersMessage
-			{
-				PhotonId = _photonClientWrapper.Player.ID
-			});
-		}
-
+		
 		public void Leave()
 		{
 			Dispose();
@@ -133,9 +99,6 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (!_isDisposed)
 			{
-				_photonClientWrapper.OtherPlayerJoinedRoomEvent -= OnOtherPlayerJoined;
-				_photonClientWrapper.OtherPlayerLeftRoomEvent -= OnOtherPlayerLeft;
-
 				Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
 
 				_voiceClient.Dispose();
@@ -151,19 +114,29 @@ namespace PlayGen.Photon.Unity.Client
 			if (listedPlayersMessage != null)
 			{
 				Players = listedPlayersMessage.Players;
-				GetPlayersWait.Set();
+
+				// Position this player as the first player in the list
+				var player = Players.SingleOrDefault(p => p.PhotonId == PhotonNetwork.player.ID);
+
+				if (player == null)
+				{
+					throw new PhotonClientException($"This player with Id: {PhotonNetwork.player.ID} " +
+													$"is not in the server's player list for this room.");
+				}
+
+				Players.Remove(player);
+				Players.Insert(0, player);
+
+				Player = player;
+
+				if (!_isInitialized)
+				{
+					_initializedCallback(this);
+					_isInitialized = true;
+				}
+
 				PlayerListUpdatedEvent?.Invoke(Players);
 			}
-		}
-
-		internal void OnOtherPlayerLeft(PhotonPlayer otherPlayer)
-		{
-			OtherPlayerLeftEvent?.Invoke(otherPlayer);
-		}
-
-		internal void OnOtherPlayerJoined(PhotonPlayer otherPlayer)
-		{
-			OtherPlayerJoinedEvent?.Invoke(otherPlayer);
 		}
 	}
 }
