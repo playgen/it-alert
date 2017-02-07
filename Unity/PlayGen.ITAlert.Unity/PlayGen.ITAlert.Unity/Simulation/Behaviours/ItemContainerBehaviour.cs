@@ -10,30 +10,29 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	[RequireComponent(typeof(SpriteRenderer))]
 	public class ItemContainerBehaviour : MonoBehaviour
 	{
+		#region public events
+
 		public event Action<ItemContainerBehaviour> Click;
 
 		public event Action<ContainerState> StateChanged;
-		
-		private ContainerState _state = ContainerState.Empty;
-		public ContainerState State => _state;
-		
-		public const string Prefab = "ItemContainer";
-		public const string DefaultSprite = "ItemContainer";
 
-
-		private BlinkBehaviour _blinkBehaviour;
-
-
-		public bool CanCapture { get; set; }
-
+		#endregion
 
 		#region game elements
 
 		private SpriteRenderer _containerImage;
+		private BlinkBehaviour _blinkBehaviour;
 
 		#endregion
 
+		public bool CanCapture { get; set; }
+
 		public bool ClickEnable { get; set; }
+
+		// TODO: push this down int othe item containers
+
+		private ContainerState _state = ContainerState.Empty;
+		public ContainerState State => _state;
 
 		private ItemContainer _itemContainer;
 
@@ -47,13 +46,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_itemContainer = itemContainer;
 
 			var itemContainerTypeName = itemContainer.GetType().Name.ToLowerInvariant();
-			var sprite = Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(DefaultSprite);
+			var sprite = Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName);
 			_containerImage.sprite = sprite;
 		}
 
 		//public void Uninitialize()
 		//{
-		//	var sprite = Resources.Load<Sprite>(DefaultSprite);
+		//	var sprite = Resources.Load<Sprite>(DefaultSpriteName);
 		//	_containerImage.sprite = sprite;
 
 		//}
@@ -68,10 +67,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Transition(ContainerState state)
 		{
-			_state = state;
-			_blinkBehaviour.enabled = state == ContainerState.Capturing || state == ContainerState.Releasing;
-			ClickEnable = CanCapture || state == ContainerState.HasItem || state == ContainerState.Empty;
-			OnStateChanged(state);
+			if (_state != state)
+			{
+				_state = state;
+				_blinkBehaviour.enabled = state == ContainerState.Capturing || state == ContainerState.Releasing;
+				ClickEnable = CanCapture || state == ContainerState.HasItem || state == ContainerState.Empty;
+				OnStateChanged(state);
+			}
 		}
 
 		public bool TryGetItem(out ItemBehaviour itemBehaviour)
@@ -89,14 +91,41 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			return false;
 		}
 
-		public void SetItem(ItemBehaviour item)
+		public void Update()
 		{
-			_itemContainer.Item = item?.Id;
-			Transition(_itemContainer.Item.HasValue
-				? ContainerState.HasItem
-				: ContainerState.Empty);
+			switch (_state)
+			{
+				case ContainerState.Capturing:
+					if (_itemContainer.Item.HasValue)
+					{
+						Transition(ContainerState.HasItem);
+					}
+					break;
+				case ContainerState.Releasing:
+					if (_itemContainer.Item == null)
+					{
+						Transition(ContainerState.Empty);
+					}
+					break;
+				default:
+					if (_itemContainer.Enabled == false)
+					{
+						Transition(ContainerState.Disabled);
+					}
+					else if (_itemContainer.Item.HasValue)
+					{
+						Transition(ContainerState.HasItem);
+					}
+					else if (_itemContainer.Item == null)
+					{
+						Transition(ContainerState.Empty);
+					}
+					break;
+
+			}
+
 		}
-		
+
 		public void OnClick()
 		{
 			Debug.Log("ItemContainer OnClick");
@@ -106,7 +135,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				switch (_state)
 				{
 					case ContainerState.Empty:
-						if (CanCapture)
+						if (CanCapture && _itemContainer.CanCapture())
 						{
 							Transition(ContainerState.Capturing);
 						}
@@ -117,7 +146,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					case ContainerState.Disabled:
 						break;
 					case ContainerState.HasItem:
-						if (CanCapture)
+						if (CanCapture && _itemContainer.CanRelease)
 						{
 							Transition(ContainerState.Releasing);
 						}
@@ -127,21 +156,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						break;
 				}
 
-				OnClick(this);
+				Click?.Invoke(this);
+
 			}
 
 		}
 
 		#endregion
 
-		protected virtual void OnClick(ItemContainerBehaviour obj)
-		{
-			Click?.Invoke(obj);
-		}
-
 		protected virtual void OnStateChanged(ContainerState obj)
 		{
 			StateChanged?.Invoke(obj);
 		}
+
+
 	}
 }

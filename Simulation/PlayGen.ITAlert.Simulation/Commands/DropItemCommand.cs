@@ -42,7 +42,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& itemTuple.Component2.Value == playerTuple.Entity.Id)
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
-				var target = subsystemTuple.Component2.Items.FirstOrDefault(ic => ic != null && ic.CanDrop(itemTuple.Entity.Id));
+				var target = subsystemTuple.Component2.Items.FirstOrDefault(ic => ic != null && ic.CanCapture(itemTuple.Entity.Id));
 				if (inventory != null 
 					&& inventory.Item == itemTuple.Entity.Id
 					&& target != null)

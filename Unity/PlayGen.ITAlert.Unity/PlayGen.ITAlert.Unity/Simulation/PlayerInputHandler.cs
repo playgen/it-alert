@@ -7,42 +7,29 @@ using Debug = UnityEngine.Debug;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-	// ReSharper disable once CheckNamespace
 	public class PlayerInputHandler : MonoBehaviour
 	{
 		/// <summary>
 		/// store the item hit for dragging
 		/// </summary>
-		private RaycastHit2D? _selectedItemHit;
+		//private RaycastHit2D? _selectedItemHit;
 
-		private ItemBehaviour _selectedItem;
-		private SubsystemBehaviour _selectedSubsystem;
+		//private ItemBehaviour _selectedItem;
+		//private SubsystemBehaviour _selectedSubsystem;
 
-		private const float CligDragThreshold = 0.2f;
+		//private const float CligDragThreshold = 0.2f;
 
-		private float _mouseDown = 0;
-		private Vector2 _mouseDownPos;
-		private Vector2 _minDragBounds;
-		private Vector2 _maxDragBounds;
+		//private float _mouseDown = 0;
+		//private Vector2 _mouseDownPos;
+		//private Vector2 _minDragBounds;
+		//private Vector2 _maxDragBounds;
 
-		private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
+		//private Vector2 _defaultDragBounds = new Vector2(-100f, -100f); // we can use a negative number as the lowest value is 0,0
 
-		private bool _dragging;
-
-		public static bool DebugLog { get; set; }
+		//private bool _dragging;
 
 
 		#region Initialization 
-
-		private void Start()
-		{
-
-		}
-
-		private void Awake()
-		{
-
-		}
 
 		private void Update()
 		{
@@ -53,39 +40,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region Util
 
-		private void Log(string message)
-		{
-			if (DebugLog)
-			{
-				Debug.Log(message);
-			}
-		}
-
-		private bool PlayerHasItem(ItemBehaviour item)
-		{
-			return Director.Player != null
-					&& Director.Player.InventoryItem.HasValue
-					&& Director.Player.InventoryItem.Value == item.Id;
-		}
-
-		private bool PlayerOwnsItem(ItemBehaviour item)
-		{
-			return Director.Player != null && false;
-					//&& item._owner.Value.HasValue
-					//&& item._owner.Value.Value == Director.Player.Id;
-		}
-
 		#endregion
 
 		private void HandleInput()
 		{
-			if (Input.GetMouseButtonDown(0))
-			{
-				//Debug.Log("InputHandler::MouseDown");
-				_mouseDown = Time.time;
-				_mouseDownPos = Input.mousePosition;
-				GetDragBounds();
-			}
+			//if (Input.GetMouseButtonDown(0))
+			//{
+			//	_mouseDown = Time.time;
+			//	_mouseDownPos = Input.mousePosition;
+			//	GetDragBounds();
+			//}
 
 			//if (Input.GetMouseButton(0))
 			//{
@@ -103,8 +67,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				//if (!_dragging)
 				//{
-					Log("InputHandler::Click");
-
 					OnClick();
 				//}
 				//else
@@ -120,8 +82,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void GetDragBounds()
-		{
+		//private void GetDragBounds()
+		//{
 		//if (_selectedItem == null)
 		//{
 		//    var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
@@ -135,16 +97,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		//        _maxDragBounds = _selectedItemHit.Value.collider.bounds.max;
 		//    }
 		//}   
-		}
+		//}
 
-		private bool IsMouseOutsideBounds()
-		{
-			//if (_minDragBounds == _defaultDragBounds || _maxDragBounds == _defaultDragBounds)
-			//    return false;
-			var inputPosition = (Vector2) (Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position);
-			return inputPosition.x < _minDragBounds.x || inputPosition.y < _minDragBounds.y ||
-					inputPosition.x > _maxDragBounds.x || inputPosition.y > _maxDragBounds.y;
-		}
+		//private bool IsMouseOutsideBounds()
+		//{
+		//	//if (_minDragBounds == _defaultDragBounds || _maxDragBounds == _defaultDragBounds)
+		//	//    return false;
+		//	var inputPosition = (Vector2) (Camera.main.ScreenToWorldPoint(Input.mousePosition) - Camera.main.transform.position);
+		//	return inputPosition.x < _minDragBounds.x || inputPosition.y < _minDragBounds.y ||
+		//			inputPosition.x > _maxDragBounds.x || inputPosition.y > _maxDragBounds.y;
+		//}
 
 		#region Clicks
 

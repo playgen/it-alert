@@ -1,11 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-#pragma warning disable 649
-
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-	// ReSharper disable once CheckNamespace
 	// ReSharper disable once InconsistentNaming
 	public class UIManager : MonoBehaviour
 	{
