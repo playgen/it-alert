@@ -20,11 +20,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			const float ItemScale = 1.6f;
 			const string SortingLayerOverride = "UI";
 
-			public GameObject GameObject { get; }
+			private GameObject GameObject { get; }
 
 			public ItemContainerBehaviour ContainerBehaviour { get; }
 
-			public ItemContainer ItemContainer { get; set; }
+			public ItemContainer ItemContainer { private get; set; }
 
 			private UIEntity ItemEntity { get; }
 
@@ -66,6 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						ContainerBehaviour.Initialize(ItemContainer);
 						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
 						itemBehaviour.Initialize(item.EntityBehaviour.Entity);
+						ItemEntity.GameObject.SetActive(true);
 					}
 					else 
 					{
@@ -74,8 +75,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				else
 				{
-					if (ItemContainer.Item.HasValue)
+					if (ItemContainer?.Item != null)
 					{
+						//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
+						ContainerBehaviour.Initialize(ItemContainer);
+
 						if (Director.TryGetEntity(ItemContainer.Item.Value, out item))
 						{
 							item.GameObject.transform.position = GameObject.transform.position;
@@ -90,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private ItemPanelContainer _inventoryItem;
 
-		private ItemPanelContainer[] _systemItems;
+		private readonly ItemPanelContainer[] _systemItems;
 		
 		private PlayerBehaviour _player;
 
@@ -113,7 +117,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
 			var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
-			_inventoryItem = new ItemPanelContainer(inventoryGameObject, inventoryItemContainer, true);
+			_inventoryItem = new ItemPanelContainer(inventoryGameObject, inventoryItemContainer, false);
 			_inventoryItem.ContainerBehaviour.ClickEnable = true;
 			_inventoryItem.ContainerBehaviour.CanCapture = true;
 			_inventoryItem.ContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
@@ -122,6 +126,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + i);
 				_systemItems[i] = new ItemPanelContainer(gameObject);
+				_systemItems[i].ContainerBehaviour.DefaultSprite = UIConstants.PanelItemContainerDefaultSpriteName;
 				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
 			}
 		}
@@ -133,7 +138,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				throw new SimulationIntegrationException($"Player is unassigned");
 			}
 
-			_inventoryItem.Update();
+			// TODO: the following shouldnt be necessary when the container reference isnt changed
+			ItemStorage itemStorage;
+			if (_player.Entity.TryGetComponent(out itemStorage))
+			{
+				var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
+				_inventoryItem.ItemContainer = inventoryItemContainer;
+				// TODO: keep this when above fixed
+				_inventoryItem.Update();
+			}
 
 			if (_player.CurrentLocationEntity.Id != _playerLocationLast)
 			{
