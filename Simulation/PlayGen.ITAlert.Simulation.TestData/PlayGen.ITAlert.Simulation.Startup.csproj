@@ -47,7 +47,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ScenarioLoader.cs" />
     <Compile Include="SimulationAction.cs" />
     <Compile Include="SimulationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

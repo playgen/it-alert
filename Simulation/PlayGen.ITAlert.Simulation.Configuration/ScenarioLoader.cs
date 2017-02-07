@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Configuration;
-using Engine.Sequencing;
-using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Configuration.Scenarios;
 
-namespace PlayGen.ITAlert.Simulation.Startup
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class ScenarioLoader
 	{
@@ -15,11 +13,11 @@ namespace PlayGen.ITAlert.Simulation.Startup
 		public ScenarioLoader()
 		{
 			// TODO: populate this from configuration
-			_scenarios = new Dictionary<string, SimulationScenario>()
+			_scenarios = new[]
 			{
-				{GameScenarios.Introduction.Name, GameScenarios.Introduction},
-				{GameScenarios.MultiplayerIntroduction.Name, GameScenarios.MultiplayerIntroduction }
-			};
+				Introduction.Scenario,
+				MultiplayerIntroduction.Scenario
+			}.ToDictionary(k => k.Name, v => v);
 		}
 
 		public bool TryGetScenario(string name, out SimulationScenario scenario)
