@@ -32,6 +32,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public const string ItemContainerPrefab = "ItemContainer";
 		public const string ItemContainerDefaultSpriteName = "ItemContainer";
+		public const string PanelItemContainerDefaultSpriteName = "ItemContainer_Panel";
+
 
 	}
 }
