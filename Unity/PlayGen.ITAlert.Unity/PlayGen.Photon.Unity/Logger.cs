@@ -7,22 +7,28 @@ namespace PlayGen.Photon.Unity
 	public static class Logger
 	{
 		private static Messenger Messenger;
+		private static bool _isSendingMessage;
 
 		internal static int PlayerPhotonId { get; set; }
 
 		public static void Log(LogLevel logLevel, string message)
 		{
-			if (message == null)
+			if (Messenger == null || _isSendingMessage)
 			{
 				UnityLog(logLevel, message);
+				_isSendingMessage = false;
 			}
-
-			Messenger.SendMessage(new LogMessage()
+			else
 			{
-				PlayerPhotonId = PlayerPhotonId,
-				LogLevel = logLevel,
-				Message = message
-			});
+				_isSendingMessage = true;
+				Messenger.SendMessage(new LogMessage()
+				{
+					PlayerPhotonId = PlayerPhotonId,
+					LogLevel = logLevel,
+					Message = message
+				});
+				_isSendingMessage = false;
+			}
 		}
 
 		public static void LogFatal(string message)
