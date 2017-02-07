@@ -12,6 +12,11 @@ namespace PlayGen.Photon.Unity
 
 		public static void Log(LogLevel logLevel, string message)
 		{
+			if (message == null)
+			{
+				UnityLog(logLevel, message);
+			}
+
 			Messenger.SendMessage(new LogMessage()
 			{
 				PlayerPhotonId = PlayerPhotonId,
@@ -57,6 +62,27 @@ namespace PlayGen.Photon.Unity
 		internal static void SetMessenger(Messenger messenger)
 		{
 			Messenger = messenger;
+		}
+
+		private static void UnityLog(LogLevel logLevel, string message)
+		{
+			switch (logLevel)
+			{
+				case LogLevel.Fatal:
+				case LogLevel.Error:
+					UnityEngine.Debug.LogError(message);
+					break;
+				case LogLevel.Warn:
+					UnityEngine.Debug.LogWarning(message);
+					break;
+				case LogLevel.Debug:
+				case LogLevel.Info:
+					UnityEngine.Debug.Log(message);
+					break;
+				default:
+					UnityEngine.Debug.LogError($"Unhandled log level type: {logLevel}. \nMessage: {message}");
+					break;
+			}
 		}
 	}
 }
