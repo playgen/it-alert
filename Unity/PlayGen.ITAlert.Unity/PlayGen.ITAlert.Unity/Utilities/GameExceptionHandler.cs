@@ -25,7 +25,8 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 		public static void OnException(Exception exception)
 		{
-			if (_ignoreExceptionTypes.All(type => type != exception.GetType()))
+			var exceptionType = exception.GetType();
+			if (_ignoreExceptionTypes.All(type => type != exceptionType))
 			{
 				Exception = exception;
 				HadUnignoredExceptionEvent?.Invoke();

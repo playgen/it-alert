@@ -5,6 +5,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity.Client;
@@ -43,9 +44,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_stateController = _controllerFactory.Create();
 			_stateController.Initialize();
 
-
-
-			_stateController.EnterState(LobbyState.StateName);
+			if (!GameExceptionHandler.HasException)
+			{
+				_stateController.EnterState(LobbyState.StateName);
+			}
 		}
 
 		private void ProcessErrorMessage(Message message)
@@ -59,7 +61,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnExit()
 		{
-			// CurrentRoom and messenger would have been destroyed by this poin so no need to unsubscribe
+			// CurrentRoom and messenger would have been destroyed by this point so no need to unsubscribe
 			_stateController.Terminate();
 		}
 

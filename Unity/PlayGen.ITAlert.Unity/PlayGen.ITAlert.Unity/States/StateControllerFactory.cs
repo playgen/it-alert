@@ -1,11 +1,8 @@
 ﻿using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Error;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
-using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Unity.Client.Exceptions;
 
 namespace PlayGen.ITAlert.Unity.States
 {
@@ -17,7 +14,7 @@ namespace PlayGen.ITAlert.Unity.States
 			var gameState = CreateGameState();
 
 			var stateController = new TickStateController(errorState, gameState);
-			
+
 			return stateController;
 		}
 
