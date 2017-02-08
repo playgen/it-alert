@@ -1,5 +1,6 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
@@ -29,7 +30,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		{
 			_stateController = _controllerFactory.Create();
 			_stateController.Initialize();
-			_stateController.EnterState(MainMenuState.StateName);
+
+			if (!GameExceptionHandler.HasException)
+			{
+				_stateController.EnterState(MainMenuState.StateName);
+			}
 		}
 
 		protected override void OnExit()
