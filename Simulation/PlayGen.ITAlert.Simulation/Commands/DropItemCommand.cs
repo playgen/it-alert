@@ -20,25 +20,27 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	{
 		private readonly ComponentMatcherGroup<Player, ItemStorage, CurrentLocation> _playerMatcherGroup;
 
-		private readonly ComponentMatcherGroup<Item, Owner> _itemMatcherGroup;
+		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation> _itemMatcherGroup;
 
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
 		public DropItemCommandHandler(IMatcherProvider matcherProvider)
 		{
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
-			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner>();
+			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 		}
 
 		protected override bool TryProcessCommand(DropItemCommand command)
 		{
 			ComponentEntityTuple<Player, ItemStorage, CurrentLocation> playerTuple;
-			ComponentEntityTuple<Item, Owner> itemTuple;
+			ComponentEntityTuple<Item, Owner, CurrentLocation> itemTuple;
 			ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple;
+
 			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value, out subsystemTuple)
+				&& playerTuple.Component3.Value.HasValue
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out subsystemTuple)
 				&& itemTuple.Component2.Value == playerTuple.Entity.Id)
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
@@ -48,6 +50,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					&& target != null)
 				{
 					target.Item = itemTuple.Entity.Id;
+					itemTuple.Component3.Value = subsystemTuple.Entity.Id;
 					inventory.Item = null;
 					itemTuple.Component2.Value = null;
 					return true;

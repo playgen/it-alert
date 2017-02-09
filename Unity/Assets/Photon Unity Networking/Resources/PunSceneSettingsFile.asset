@@ -8,6 +8,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 907645257, guid: d56b1f6d5a764874fac7a8ec170215dc, type: 3}
+  m_Script: {fileID: 2023530807, guid: d56b1f6d5a764874fac7a8ec170215dc, type: 3}
   m_Name: PunSceneSettingsFile
   m_EditorClassIdentifier: 

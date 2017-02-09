@@ -27,9 +27,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		public void Tick(int currentTick)
 		{
 			var subsystems = _subsystemMatcher.MatchingEntityKeys;
-			foreach (var playerTuple in _playerMatcher.MatchingEntities)
+			foreach (var playerTuple in _playerMatcher.MatchingEntities.Where(pt => pt.Component2.Value.HasValue))
 			{
-				playerTuple.Component3.Items[0].Enabled = subsystems.Contains(playerTuple.Component2.Value);
+				playerTuple.Component3.Items[0].Enabled = subsystems.Contains(playerTuple.Component2.Value.Value);
 			}
 		}
 	}

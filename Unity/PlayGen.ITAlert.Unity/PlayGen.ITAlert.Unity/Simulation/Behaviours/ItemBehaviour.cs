@@ -41,6 +41,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		
 		#endregion
 
+		public bool ScaleUp { private get; set; }
 
 		public bool ClickEnable { get; set; }
 
@@ -97,7 +98,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			//TODO: if owner has changed
 			UpdateItemColor();
+			UpdateScale();
 			UpdateActivationTimer();
+		}
+
+		private void UpdateScale()
+		{
+			transform.localScale = ScaleUp
+				? UIConstants.ItemPanelItemScale
+				: UIConstants.DefaultItemScale;
 		}
 
 		private int? _ownerId;

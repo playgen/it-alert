@@ -27,14 +27,18 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private readonly ScenarioLoader _scenarioLoader;
 
+		private readonly ExceptionHandler _exceptionHandler;
+
 		public GameState(PluginBase photonPlugin, 
 			Messenger messenger, 
 			PlayerManager playerManager, 
 			RoomSettings roomSettings, 
-			AnalyticsServiceManager analytics)
+			AnalyticsServiceManager analytics, 
+			ExceptionHandler exceptionHandler)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 			_scenarioLoader = new ScenarioLoader();
+			_exceptionHandler = exceptionHandler;
 		}
 
 		protected override void OnEnter()
@@ -104,12 +108,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private RoomStateController CreateStateController()
 		{
-			var lifecycleManager = InitializeSimulationRoot();
-
 			// TODO: handle the lifecyclemanager changestate event in the case of error -> kick players back to lobby.
 			var lifecycleStoppedErrorTransition = new LifecycleStoppedTransition(ErrorState.StateName,
 				ExitCode.Error, ExitCode.Failure, ExitCode.Undefined);
-			lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
+
+			var lifecycleManager = InitializeSimulationRoot();
+			lifecycleManager.Exception += _exceptionHandler.OnException;
+			lifecycleStoppedErrorTransition.OnLifecycleExit(ExitCode.Error);
+			//lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
 
 			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);

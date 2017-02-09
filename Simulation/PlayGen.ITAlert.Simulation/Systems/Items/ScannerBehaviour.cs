@@ -42,7 +42,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			if (_scannerMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
 			{
 				ComponentEntityTuple<Visitors> locationTuple;
-				if (_visitorsMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value, out locationTuple))
+				if (itemTuple.Component2.Value.HasValue
+					&&_visitorsMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple))
 				{
 					// join the current locations list of visitors with all malware entities
 					foreach (var malwareVisitor in locationTuple.Component1.Values

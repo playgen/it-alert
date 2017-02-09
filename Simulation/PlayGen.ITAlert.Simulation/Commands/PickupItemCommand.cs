@@ -1,5 +1,8 @@
-﻿using Engine.Commands;
+﻿using System.Linq;
+using Engine.Commands;
 using Engine.Components;
+using PlayGen.ITAlert.Simulation.Components.Activation;
+using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 
@@ -18,27 +21,39 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	{
 		private readonly ComponentMatcherGroup<Player, ItemStorage> _playerMatcherGroup;
 
-		private readonly ComponentMatcherGroup<Item, Owner> _itemMatcherGroup;
+		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation, Activation> _itemMatcherGroup;
+
+		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
 		public PickupItemCommandHandler(IMatcherProvider matcherProvider)
 		{
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage>();
-			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner>();
+			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation, Activation>();
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 		}
 
 		protected override bool TryProcessCommand(PickupItemCommand command)
 		{
 			ComponentEntityTuple<Player, ItemStorage> playerTuple;
-			ComponentEntityTuple<Item, Owner> itemTuple;
+			// TODO: item activation might not need to be mandatory?
+			ComponentEntityTuple<Item, Owner, CurrentLocation, Activation> itemTuple;
+			ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple;
 			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
-				&& itemTuple.Component2.Value.HasValue == false)
+				&& itemTuple.Component2.Value.HasValue == false
+				&& itemTuple.Component4.ActivationState == ActivationState.NotActive
+				&& itemTuple.Component3.Value.HasValue
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out subsystemTuple))
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
-				if (inventory != null && inventory.Item.HasValue == false)
+				var source = subsystemTuple.Component2.Items.SingleOrDefault(ic => ic.Item == itemTuple.Entity.Id);
+				if (inventory != null && inventory.Item.HasValue == false
+					&& source != null && source.CanRelease)
 				{
 					inventory.Item = itemTuple.Entity.Id;
 					itemTuple.Component2.Value = playerTuple.Entity.Id;
+					itemTuple.Component3.Value = null;
+					source.Item = null;
 					return true;
 				}
 

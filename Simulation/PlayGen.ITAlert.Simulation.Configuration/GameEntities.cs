@@ -47,7 +47,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			{
 				ComponentTemplate = new ItemStorage()
 				{
-					Items = new ItemContainer[SimulationConstants.SubsystemMaxItems],
+					Items = new ItemContainer[]
+					{
+						new ItemContainer(),
+						new ItemContainer(),
+						new ItemContainer()
+						{
+							Enabled = false,
+						},
+						new ItemContainer()
+						{
+							Enabled = false,
+						},
+					},
 				}
 			})
 			.HasComponent(new ComponentBinding<MemoryResource>()
