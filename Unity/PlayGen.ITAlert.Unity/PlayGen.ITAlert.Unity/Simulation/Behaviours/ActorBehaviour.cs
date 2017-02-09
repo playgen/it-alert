@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected void UpdatePosition()
 		{
 			UIEntity currentLocationEntity;
-			if (Director.TryGetEntity(CurrentLocation.Value, out currentLocationEntity))
+			if (CurrentLocation.Value.HasValue && Director.TryGetEntity(CurrentLocation.Value.Value, out currentLocationEntity))
 			{
 				CurrentLocationEntity = currentLocationEntity;
 

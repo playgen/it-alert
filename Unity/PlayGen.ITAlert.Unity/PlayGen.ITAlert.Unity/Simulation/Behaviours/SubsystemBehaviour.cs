@@ -205,6 +205,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					if (itemContainer?.Item != null
 						&& Director.TryGetEntity(itemContainer.Item.Value, out item))
 					{
+						var itemBehaviour = (ItemBehaviour)item.EntityBehaviour;
+						itemBehaviour.ScaleUp = false;
 						item.GameObject.transform.position = _itemPositions[i];
 					}
 				}

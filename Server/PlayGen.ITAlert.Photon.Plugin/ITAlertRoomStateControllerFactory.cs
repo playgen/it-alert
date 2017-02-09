@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			lobbyState.GameStartedEvent += gameStartedTransition.ChangeState;
 			lobbyState.AddTransitions(gameStartedTransition);
 
-			var gameState = new GameState(photonPlugin, messenger, playerManager, roomSettings, analytics);
+			var gameState = new GameState(photonPlugin, messenger, playerManager, roomSettings, analytics, exceptionHandler);
 
 			var errorState = new ErrorState(photonPlugin, messenger, playerManager, roomSettings, analytics, exceptionHandler);
 

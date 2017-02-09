@@ -20,7 +20,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region game elements
 
+		[SerializeField]
 		private SpriteRenderer _containerImage;
+		[SerializeField]
 		private BlinkBehaviour _blinkBehaviour;
 
 		#endregion
@@ -36,20 +38,29 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private ItemContainer _itemContainer;
 
-		public string DefaultSprite { private get; set; } = UIConstants.ItemContainerDefaultSpriteName;
+		public string SpriteOverride { private get; set; }
 
 		#region initialization
 
+		public void Start()
+		{
+
+		}
+
 		public void Initialize(ItemContainer itemContainer)
 		{
-			_blinkBehaviour = GetComponent<BlinkBehaviour>();
-			_containerImage = GetComponent<SpriteRenderer>();
+			if (itemContainer != _itemContainer)
+			{
+				_itemContainer = itemContainer;
 
-			_itemContainer = itemContainer;
-
-			var itemContainerTypeName = itemContainer.GetType().Name.ToLowerInvariant();
-			var sprite = Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(DefaultSprite);
-			_containerImage.sprite = sprite;
+				var itemContainerTypeName = itemContainer?.GetType().Name.ToLowerInvariant();
+				var sprite = String.IsNullOrEmpty(SpriteOverride)
+					? string.IsNullOrEmpty(itemContainerTypeName)
+						? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
+						: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
+					: Resources.Load<Sprite>(SpriteOverride);
+				_containerImage.sprite = sprite;
+			}
 		}
 
 		//public void Uninitialize()

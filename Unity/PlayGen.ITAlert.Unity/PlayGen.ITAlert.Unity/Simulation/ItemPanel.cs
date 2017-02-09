@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public ItemContainer ItemContainer { private get; set; }
 
-			private UIEntity ItemEntity { get; }
+			private UIEntity ItemEntity { get; set; }
 
 			private readonly bool _proxyItem;
 
@@ -49,7 +49,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					ItemEntity.GameObject.SetActive(false);
 					ItemEntity.GameObject.transform.position = GameObject.transform.position;
 					ItemEntity.GameObject.GetComponent<SpriteRenderer>().sortingLayerName = SortingLayerOverride;
-					ItemEntity.GameObject.transform.localScale = new Vector2(ItemScale, ItemScale);
+
+					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
+
+					//ItemEntity.GameObject.transform.localScale = new Vector2(ItemScale, ItemScale);
 				}
 
 				_proxyItem = proxyItem;
@@ -57,33 +60,39 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public void Update()
 			{
+				ContainerBehaviour.Initialize(ItemContainer);
 				UIEntity item;
 				if (_proxyItem)
 				{
 					if (ItemContainer?.Item != null
 						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-						ContainerBehaviour.Initialize(ItemContainer);
-						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
-						itemBehaviour.Initialize(item.EntityBehaviour.Entity);
-						ItemEntity.GameObject.SetActive(true);
+						if (ItemEntity.GameObject.activeSelf == false)
+						{
+							var itemBehaviour = (ItemBehaviour) ItemEntity.EntityBehaviour;
+							itemBehaviour.Initialize(item.EntityBehaviour.Entity);
+							ItemEntity.GameObject.SetActive(true);
+							itemBehaviour.ScaleUp = true;
+						}
 					}
 					else 
 					{
-						ItemEntity.GameObject.SetActive(false);
+						if (ItemEntity.GameObject.activeSelf)
+						{
+							ItemEntity.GameObject.SetActive(false);
+						}
 					}
 				}
 				else
 				{
-					if (ItemContainer?.Item != null)
+					//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
+					if (ItemContainer?.Item != null
+						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-						//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
-						ContainerBehaviour.Initialize(ItemContainer);
-
-						if (Director.TryGetEntity(ItemContainer.Item.Value, out item))
-						{
-							item.GameObject.transform.position = GameObject.transform.position;
-						}
+						item.GameObject.transform.position = GameObject.transform.position;
+						ItemEntity = item;
+						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
+						itemBehaviour.ScaleUp = true;
 					}					
 				}
 				ContainerBehaviour.Update();
@@ -126,7 +135,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + i);
 				_systemItems[i] = new ItemPanelContainer(gameObject);
-				_systemItems[i].ContainerBehaviour.DefaultSprite = UIConstants.PanelItemContainerDefaultSpriteName;
+				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
 			}
 		}
@@ -148,8 +157,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_inventoryItem.Update();
 			}
 
-			if (_player.CurrentLocationEntity.Id != _playerLocationLast)
-			{
+			//if (_player.CurrentLocationEntity.Id != _playerLocationLast)
+			//{
 				_playerLocationLast = _player.CurrentLocationEntity.Id;
 
 				var currentLocation = _player.CurrentLocationEntity;
@@ -178,7 +187,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						_systemItems[i].Update();
 					}
 				}
-			}
+			//}
 		}
 
 		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
@@ -193,6 +202,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 					break;
 				case ContainerState.Releasing:
+					if (itemContainerBehaviour.TryGetItem(out item))
+					{
+						PlayerCommands.DropItem(item.Id);
+					}
 					break;
 				default:
 					switch (itemContainerBehaviour.State)

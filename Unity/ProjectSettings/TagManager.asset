@@ -53,6 +53,9 @@ TagManager:
   - name: Graph
     uniqueID: 1075429483
     locked: 0
+  - name: ItemContainer
+    uniqueID: 519731075
+    locked: 0
   - name: Items
     uniqueID: 3668786217
     locked: 0

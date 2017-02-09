@@ -33,7 +33,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
 				&& itemTuple.Component2.ActivationState == ActivationState.NotActive
 				&& (itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId)
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value, out subsystemTuple))
+				&& itemTuple.Component3.Value.HasValue
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out subsystemTuple))
 			{
 				itemTuple.Component2.Activate();
 				itemTuple.Component4.Value = command.PlayerId;
