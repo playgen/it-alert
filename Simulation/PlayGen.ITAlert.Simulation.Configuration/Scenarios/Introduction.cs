@@ -61,7 +61,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 			configuration.Archetypes.Add(TutorialScanner);
 
-
 			#endregion
 
 			#region frames

@@ -49,8 +49,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					Items = new ItemContainer[]
 					{
-						new ItemContainer(),
-						new ItemContainer(),
+						new ItemContainer()
+						{
+							Enabled = true,
+						},
+						new ItemContainer()
+						{
+							Enabled = true,
+						},
 						new ItemContainer()
 						{
 							Enabled = false,

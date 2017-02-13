@@ -202,7 +202,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 					break;
 				case ContainerState.Releasing:
-					if (itemContainerBehaviour.TryGetItem(out item))
+					if (itemContainerBehaviour.TryGetItem(out item) == false
+						&& _inventoryItem.ContainerBehaviour.TryGetItem(out item))
 					{
 						PlayerCommands.DropItem(item.Id);
 					}
