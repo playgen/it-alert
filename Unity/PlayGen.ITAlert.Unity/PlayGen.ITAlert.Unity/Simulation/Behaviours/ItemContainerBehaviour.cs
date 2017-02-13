@@ -81,7 +81,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_state = state;
 				_blinkBehaviour.enabled = state == ContainerState.Capturing || state == ContainerState.Releasing;
 				ClickEnable = CanCapture || state == ContainerState.HasItem || state == ContainerState.Empty;
-				OnStateChanged(state);
+				_containerImage.color = state == ContainerState.Disabled 
+					? UIConstants.ItemContainerDisabledColor
+					: UIConstants.ItemContainerEnabledColor;
+
+					OnStateChanged(state);
 			}
 		}
 
@@ -102,35 +106,37 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Update()
 		{
+			var hasItem = _itemContainer?.Item != null;
+			var isEnabled = _itemContainer?.Enabled == true;
+
 			switch (_state)
 			{
 				case ContainerState.Capturing:
-					if (_itemContainer?.Item != null)
+					if (hasItem)
 					{
 						Transition(ContainerState.HasItem);
 					}
 					break;
 				case ContainerState.Releasing:
-					if (_itemContainer?.Item == null)
+					if (!hasItem)
 					{
 						Transition(ContainerState.Empty);
 					}
 					break;
 				default:
-					if (_itemContainer?.Enabled == false)
-					{
-						Transition(ContainerState.Disabled);
-					}
-					else if (_itemContainer?.Item != null)
+					if (hasItem)
 					{
 						Transition(ContainerState.HasItem);
 					}
-					else if (_itemContainer?.Item == null)
+					else if (isEnabled)
 					{
 						Transition(ContainerState.Empty);
 					}
+					else
+					{
+						Transition(ContainerState.Disabled);
+					}
 					break;
-
 			}
 
 		}
@@ -152,6 +158,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					case ContainerState.Capturing:
 						Transition(ContainerState.Empty);
 						break;
+					case ContainerState.Releasing:
+						Transition(ContainerState.HasItem);
+						break;
 					case ContainerState.Disabled:
 						break;
 					case ContainerState.HasItem:
@@ -159,9 +168,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						{
 							Transition(ContainerState.Releasing);
 						}
-						break;
-					case ContainerState.Releasing:
-						Transition(ContainerState.HasItem);
 						break;
 				}
 

@@ -231,7 +231,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			Color color;
 			foreach (var colorString in players.Select(p => p.Color))
 			{
-				if (ColorUtility.TryParseHtmlString("#" + colorString, out color))
+				if (ColorUtility.TryParseHtmlString(colorString, out color))
 				{
 					_playerColors.Add(color);
 				}

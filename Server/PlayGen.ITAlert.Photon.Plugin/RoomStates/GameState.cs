@@ -114,8 +114,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var lifecycleManager = InitializeSimulationRoot();
 			lifecycleManager.Exception += _exceptionHandler.OnException;
-			lifecycleStoppedErrorTransition.OnLifecycleExit(ExitCode.Error);
-			//lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
+			//lifecycleStoppedErrorTransition.OnLifecycleExit(ExitCode.Error);
+			lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
 
 			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
