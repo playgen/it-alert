@@ -82,25 +82,15 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				throw new SimulationException($"Unhandled Simulation Command: ${message}");
 			}
 			var command = commandMessage.Command;
-			ICommandSystem commandSystem;
-			if (_simulationLifecycleManager.ECSRoot.ECS.TryGetSystem(out commandSystem) == false)
-			{
-				throw new SimulationException($"Could not locate command processing system");
-			}
-			if (commandSystem.TryHandleCommand(command) == false)
-			{
-				// TODO: log failed message hadnler, but dont exception
-				//throw new SimulationException($"Unhandled Simulation Command: ${message}");
-			}
-			// TODO: infer player entity id from photon player, rather than command parameter
-			
+			_simulationLifecycleManager.EnqueueCommand(command);
 		}
 
 		private void OnTick()
 		{
 			Messenger.SendAllMessage(new TickMessage
 			{
-				EntityState = _simulationLifecycleManager.ECSRoot.GetEntityState()
+				// EntityState = 
+				TickString = //TODO: implement serialization of the tick object returned from the lifecycle manager
 			});
 		}		
 	}
