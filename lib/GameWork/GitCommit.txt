@@ -1,1 +1,1 @@
-6831c44 changed to late update to ensure additions or subtractions of childernb have bveen made before render
+0100c99 return build path from Build(). Build path set to be absolute.

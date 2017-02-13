@@ -72,11 +72,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 			_chatPanel.SetActive(true);
 
-			var playersList = players.OrderBy(player => player.PhotonId).ToList();
-
 			_playerVoiceIcons = new Dictionary<int, Image>();
 
-			foreach (var player in playersList)
+			foreach (var player in players)
 			{
 				var playerItem = Object.Instantiate(_playerChatItemPrefab).transform;
 

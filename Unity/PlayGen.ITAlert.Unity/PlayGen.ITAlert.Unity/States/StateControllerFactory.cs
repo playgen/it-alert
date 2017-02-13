@@ -1,9 +1,8 @@
 ﻿using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Error;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
-using PlayGen.Photon.Unity.Client.Exceptions;
+using PlayGen.ITAlert.Unity.Utilities;
 
 namespace PlayGen.ITAlert.Unity.States
 {
@@ -11,38 +10,36 @@ namespace PlayGen.ITAlert.Unity.States
 	{
 		public TickStateController Create()
 		{
-			var errorMessage = new GameErrorContainer();
-
-			var errorState = CreateErrorState(errorMessage);
-			var gameState = CreateGameState(errorMessage);
+			var errorState = CreateErrorState();
+			var gameState = CreateGameState();
 
 			var stateController = new TickStateController(errorState, gameState);
-			
+
 			return stateController;
 		}
 
-		private GameState CreateGameState(GameErrorContainer gameErrorContainer)
+		private GameState CreateGameState()
 		{
-			var state = new GameState(gameErrorContainer);
+			var state = new GameState();
 
-			var exceptionCaughtTransition = new OnExceptionEventTransition(ErrorState.StateName, typeof(ConnectionException));
-			state.ExceptionEvent += exceptionCaughtTransition.ChangeState;
+			var hadExceptionTransition = new OnEventTransition(ErrorState.StateName);
 			// exceptions thrown in the Unity Update loop dont propogate
 			// TODO: firgure out how to catch unmity exceptions and trigger state transition
 			// temporarily catch ui exception from the director ourselves
-			Director.ExceptionEvent += exceptionCaughtTransition.ChangeState;
+			state.ExceptionEvent += GameExceptionHandler.OnException;
+			GameExceptionHandler.HadUnignoredExceptionEvent += hadExceptionTransition.ChangeState;
 
 			var disconnectedTransition = new OnEventTransition(state.Name);
 			state.DisconnectedEvent += disconnectedTransition.ChangeState;
 
-			state.AddTransitions(exceptionCaughtTransition, disconnectedTransition);
+			state.AddTransitions(hadExceptionTransition, disconnectedTransition);
 
 			return state;
 		}
 
-		private ErrorState CreateErrorState(GameErrorContainer gameErrorContainer)
+		private ErrorState CreateErrorState()
 		{
-			var input = new ErrorStateInput(gameErrorContainer);
+			var input = new ErrorStateInput();
 			var state = new ErrorState(input);
 
 			var backClickedTransition = new OnEventTransition(GameState.StateName);

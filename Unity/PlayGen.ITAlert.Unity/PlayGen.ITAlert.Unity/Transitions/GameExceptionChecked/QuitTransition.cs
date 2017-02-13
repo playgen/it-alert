@@ -1,7 +1,7 @@
 ﻿using GameWork.Core.States.Event;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Unity.Transitions
+namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 {
 	public class QuitTransition : EventStateTransition
 	{

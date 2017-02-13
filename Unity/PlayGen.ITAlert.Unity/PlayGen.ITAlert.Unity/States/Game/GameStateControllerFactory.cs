@@ -3,7 +3,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room;
-using PlayGen.ITAlert.Unity.Transitions;
+using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game

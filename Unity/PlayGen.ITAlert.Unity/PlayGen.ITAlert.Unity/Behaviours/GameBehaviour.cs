@@ -3,16 +3,20 @@ using GameWork.Unity.Engine.Components;
 using UnityEngine;
 using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.States.Game;
+using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Photon.Unity.Client.Exceptions;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {
 	[RequireComponent(typeof(DontDestroyOnLoad))]
-	public class StateBehaviour : MonoBehaviour
+	public class GameBehaviour : MonoBehaviour
 	{
 		private TickStateController _stateController;
 
 		private void Awake()
 		{
+			GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
+
 			var stateControllerFactory = new StateControllerFactory();
 			_stateController = stateControllerFactory.Create();
 		}

@@ -1,10 +1,11 @@
 ﻿using System;
 using GameWork.Core.States.Event;
 using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity.Client;
 
-namespace PlayGen.ITAlert.Unity.Transitions
+namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 {
 	public class OnMessageTransition : EventStateTransition
 	{
@@ -33,7 +34,7 @@ namespace PlayGen.ITAlert.Unity.Transitions
 
 		private void OnMessageRecieved(Message message)
 		{
-			if (message.GetType() == _requiredMessageType)
+			if (!GameExceptionHandler.HasException && message.GetType() == _requiredMessageType)
 			{
 				ExitState(_toStateName);
 				EnterState(_toStateName);
