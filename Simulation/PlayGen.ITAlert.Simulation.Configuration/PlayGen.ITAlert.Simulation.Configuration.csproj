@@ -40,6 +40,7 @@
     <Compile Include="GameEntities.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="PlayerColours.cs" />
+    <Compile Include="PlayerConfigFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioHelpers.cs" />
     <Compile Include="ScenarioLoader.cs" />
