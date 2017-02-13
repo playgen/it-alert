@@ -90,7 +90,7 @@ namespace PlayGen.Photon.Unity.Client
 				catch(Exception exception)
 				{
 					UnityEngine.Debug.LogError($"{exception}");
-					ExceptionEvent(exception);
+					ExceptionEvent?.Invoke(exception);
 				}
 			}
 		}
@@ -120,7 +120,7 @@ namespace PlayGen.Photon.Unity.Client
 
 				if (player == null)
 				{
-					throw new PhotonClientException($"This player with Id: {PhotonNetwork.player.ID} " +
+					throw new PhotonClientException($"The current player with Id: {PhotonNetwork.player.ID} " +
 													$"is not in the server's player list for this room.");
 				}
 

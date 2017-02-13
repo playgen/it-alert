@@ -11,7 +11,6 @@ namespace PlayGen.ITAlert.Unity.States.Error
 {
 	public class ErrorStateInput : TickStateInput
 	{
-		private readonly GameErrorContainer _gameErrorContainer;
 
 		public event Action BackClickedEvent;
 
@@ -19,12 +18,7 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		private Button _backButton;
 		private Transform _panelVisibility;
 		private Text _messageText;
-
-		public ErrorStateInput(GameErrorContainer gameGameErrorContainer)
-		{
-			_gameErrorContainer = gameGameErrorContainer;
-		}
-
+		
 		protected override void OnInitialize()
 		{
 			var panel = TransformFinder.Find("Menu/ErrorContainer");
@@ -40,11 +34,12 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		
 		protected override void OnEnter()
 		{
-			_messageText.text = _gameErrorContainer?.Exception?.Message;
+			_messageText.text = GameExceptionHandler.Exception?.Message;
 			_panelVisibility.gameObject?.SetActive(true);
 			_buttons.BestFit();
 
 			LoadingUtility.HideSpinner();
+			GameExceptionHandler.ClearException();
 		}
 
 		protected override void OnExit()

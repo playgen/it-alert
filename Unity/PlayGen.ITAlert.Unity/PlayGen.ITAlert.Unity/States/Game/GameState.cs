@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 
@@ -16,7 +17,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		private const string GameVersion = "1";
 
 		private readonly GameStateControllerFactory _stateControllerFactory;
-		private readonly GameErrorContainer _gameErrorContainer;
 
 		private Client _photonClient;
 		private TickStateController _stateController;
@@ -26,10 +26,10 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public event Action<Exception> ExceptionEvent;
 		public event Action DisconnectedEvent;
 
-		public GameState(GameErrorContainer gameErrorContainer)
+		public GameState()
 		{
-			_gameErrorContainer = gameErrorContainer;
 			_stateControllerFactory = new GameStateControllerFactory();
+			Director.ExceptionEvent += OnException;
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
@@ -47,9 +47,12 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 			_stateController = _stateControllerFactory.Create(_photonClient);
 			_stateController.Initialize();
-			_stateController.EnterState(LoadingState.StateName);
 
-			_photonClient.Connect();
+			if (!GameExceptionHandler.HasException)
+			{
+				_stateController.EnterState(LoadingState.StateName);
+				_photonClient.Connect();
+			}
 		}
 		
 		protected override void OnExit()
@@ -76,7 +79,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			}
 		}
 
-
 		private void OnConnected()
 		{
 			_photonClient.DisconnectedEvent += OnDisconnected;
@@ -95,9 +97,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		private void OnException(Exception exception)
 		{
-			_gameErrorContainer.Exception = exception;
-			ExceptionEvent(exception);
+			ExceptionEvent?.Invoke(exception);
 		}
-
 	}
 }
