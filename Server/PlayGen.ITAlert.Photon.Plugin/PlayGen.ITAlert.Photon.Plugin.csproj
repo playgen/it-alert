@@ -48,6 +48,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Simulation\Engine.Lifecycle.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\Engine.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Startup">
       <HintPath>..\..\bin\Simulation\Engine.Startup.dll</HintPath>
     </Reference>

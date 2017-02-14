@@ -12,6 +12,10 @@ using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
+	/// <summary>
+	/// This subsystem resource effect causes the CPU Resource value to be reset to zero on each tick and should be placed before effects that incremenmt the counter
+	/// </summary>
+	// ReSharper disable once InconsistentNaming
 	public class ResetCPUEachTick : ISubsystemResourceEffect
 	{
 		private readonly ComponentMatcherGroup<Subsystem, CPUResource> _subsystemMatcher;

@@ -60,7 +60,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 						#endregion
 
-						var nextPosition = (visitorTuple.Component1.PositionFloat + (float)visitorTuple.Component3.Value / Math.Max(1, subsystemTuple.Component5.Value)) % SimulationConstants.SubsystemPositions;
+						var nextPosition = (visitorTuple.Component1.PositionDecimal + visitorTuple.Component3.Value / Math.Max(1, subsystemTuple.Component5.Value)) % SimulationConstants.SubsystemPositions;
 
 						if (exitNode != null)
 						{

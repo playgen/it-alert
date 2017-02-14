@@ -12,6 +12,9 @@ using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
+	/// <summary>
+	/// This subsystem resource effect causes the CPU Resource to be consumed by visitors located on Subsystems with the Visitors component
+	/// </summary>
 	//// ReSharper disable once InconsistentNaming
 	public class VisitorsConsumeCPUEffect : ISubsystemResourceEffect
 	{

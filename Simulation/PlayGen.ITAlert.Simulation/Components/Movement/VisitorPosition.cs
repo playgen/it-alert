@@ -12,14 +12,14 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 	{
 		public int CurrentTick { get; private set; }
 
-		[DefaultValue(-1f)]
-		public float PositionFloat { get; set; }
+		//[DefaultValue(-1f)]
+		public decimal PositionDecimal { get; set; }
 
 		[JsonIgnore]
 		public int Position
 		{
-			get { return (int) PositionFloat; }
-			set { PositionFloat = value; }
+			get { return (int) PositionDecimal; }
+			set { PositionDecimal = value; }
 		}
 
 		/// <summary>
@@ -45,11 +45,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 		/// <param name="position"></param>
 		/// <param name="currentTick"></param>
 		/// <returns>True if the position was updated. False if this position has been updated already this tick.</returns>
-		public bool SetPosition(float position, int currentTick)
+		public bool SetPosition(decimal position, int currentTick)
 		{
 			if (currentTick > CurrentTick)
 			{
-				PositionFloat = position;
+				PositionDecimal = position;
 				CurrentTick = currentTick;
 				return true;
 			}

@@ -1,5 +1,7 @@
-﻿using Engine.Commands;
+﻿using System;
+using Engine.Commands;
 using Engine.Lifecycle;
+using Engine.Serialization;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Players;
@@ -24,8 +26,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public override string Name => StateName;
 
-		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, PluginBase photonPlugin, Messenger messenger,
-			PlayerManager playerManager,RoomSettings roomSettings, AnalyticsServiceManager analytics)
+		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, 
+			PluginBase photonPlugin, 
+			Messenger messenger,
+			PlayerManager playerManager,
+			RoomSettings roomSettings, 
+			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
 			_simulationLifecycleManager = simulationLifecycleManager;
@@ -43,6 +49,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 			Messenger.Unsubscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
+			Shutdown();
+		}
+
+		private void Shutdown()
+		{
+			switch (_simulationLifecycleManager.EngineState)
+			{
+				case EngineState.Error:
+				case EngineState.Stopped:
+					return;
+			}
 
 			_simulationLifecycleManager.Tick -= OnTick;
 			_simulationLifecycleManager.TryStop();
@@ -85,13 +102,25 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			_simulationLifecycleManager.EnqueueCommand(command);
 		}
 
-		private void OnTick()
+		private void OnTick(Tick tick, uint crc)
 		{
+			var tickString = ConfigurationSerializer.Serialize(tick);
+
 			Messenger.SendAllMessage(new TickMessage
 			{
-				// EntityState = 
-				TickString = //TODO: implement serialization of the tick object returned from the lifecycle manager
+				CRC = crc,
+				TickString = tickString,
 			});
-		}		
+		}
+
+
+		public override void OnLeave(ILeaveGameCallInfo info)
+		{
+			if (PlayerManager.Players.Count == 0)
+			{
+				Shutdown();
+			}
+			base.OnLeave(info);
+		}
 	}
 }

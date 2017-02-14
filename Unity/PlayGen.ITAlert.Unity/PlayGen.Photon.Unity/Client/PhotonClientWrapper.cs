@@ -131,7 +131,7 @@ namespace PlayGen.Photon.Unity.Client
 			}
 			else
 			{
-				Logger.LogError("Already not connected");
+				Logger.LogWarn("Already not connected");
 			}
 		}
 

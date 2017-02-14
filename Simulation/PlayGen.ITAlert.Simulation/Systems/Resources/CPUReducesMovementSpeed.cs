@@ -12,6 +12,9 @@ using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
+	/// <summary>
+	/// This subsystem resource effect causes the value of the MovementSpeed component to be modulated accoring to the utilisation of the CPU Resource on that node
+	/// </summary>
 	//// ReSharper disable once InconsistentNaming
 	public class CPUReducesMovementSpeed : ISubsystemResourceEffect
 	{

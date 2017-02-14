@@ -63,7 +63,7 @@
 
 		public const string DefaultVirusArchetype = "Virus";
 
-		public const float CPUMovementSpeedReduction = 0.5f;
+		public const decimal CPUMovementSpeedReduction = 0.5m;
 
 		public const string MalwareVisibilityGene = "Visible";
 

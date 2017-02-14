@@ -6,6 +6,7 @@ using System.Media;
 using Engine.Components;
 using Engine.Entities;
 using Engine;
+using Engine.Commands;
 using Engine.Common;
 using Engine.Exceptions;
 using Engine.Planning;
@@ -38,8 +39,9 @@ namespace PlayGen.ITAlert.Simulation
 			IMatcherProvider matcherProvider, 
 			ISystemRegistry systemRegistry,
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			IEntityFactoryProvider entityFactoryProvider)
-			: base(configuration, entityRegistry, matcherProvider, systemRegistry, entityFactoryProvider)
+			IEntityFactoryProvider entityFactoryProvider,
+			CommandQueue commandQueue)
+			: base(configuration, entityRegistry, matcherProvider, systemRegistry, entityFactoryProvider, commandQueue)
 		{
 			_configuration = configuration;
 			// TODO: !!! initialize from DI, sub-container per archetype? factory per archetype?

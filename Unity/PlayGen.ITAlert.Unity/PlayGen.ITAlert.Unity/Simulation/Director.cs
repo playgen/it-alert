@@ -3,8 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Engine.Commands;
 using Engine.Entities;
+using Engine.Lifecycle;
+using Engine.Serialization;
 using GameWork.Core.Commands;
+using ModestTree;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
@@ -128,7 +133,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			UpdateSignal.Reset();
 			UpdateCompleteSignal.Reset();
 			ThreadWorkerException = null;
-			_stateJson = null;
+			_tickMessage = null;
 
 			_activePlayer = null;
 			foreach (var entity in TrackedEntities)
@@ -241,7 +246,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region worker thread
 
-		private static string _stateJson;
+		private static TickMessage _tickMessage;
+
+		private static bool _applyCommands = true;
 
 		public static void StopWorker()
 		{
@@ -250,17 +257,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void ThreadWorker()
 		{
-			//DateTime start;
-			//var deserialize = 0.0;
-			//var update = 0.0;
-			//var wait = 0.0;
 			while (true)
 			{
 				try
 				{
-					//start = DateTime.Now;
 					var handle = WaitHandle.WaitAny(new WaitHandle[] {TerminateSignal, MessageSignal});
-					//wait = DateTime.Now.Subtract(start).TotalMilliseconds;
 					if (handle == 0)
 					{
 						break;
@@ -268,18 +269,54 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (handle == 1)
 					{
 						_tick++;
-						//start = DateTime.Now;
-						SimulationRoot.EntityStateSerializer.DeserializeEntities(_stateJson);
-						// System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", _stateJson);
-						//deserialize = DateTime.Now.Subtract(start).TotalMilliseconds;
-						//start = DateTime.Now;
+						var message = _tickMessage;
+						if (_applyCommands)
+						{
+
+							// TODO: Tick class needs to be moved out of hte lifecycler project so that I can remove the reference here
+							var tick = ConfigurationSerializer.Deserialize<Tick>(message.TickString);
+							System.IO.File.WriteAllText($"d:\\temp\\{_tick}.tick.json", message.TickString);
+
+							// TODO: this should probably be pushed into the ECS
+							ICommandSystem commandSystem;
+							if (SimulationRoot.ECS.TryGetSystem(out commandSystem) == false)
+							{
+								throw new SimulationIntegrationException($"Could not locate command processing system");
+							}
+							var success = true;
+							foreach (var command in tick.CommandQueue)
+							{
+								success &= commandSystem.TryHandleCommand(command);
+							}
+							if (success != true)
+							{
+								throw new SimulationIntegrationException("Command application failed. This indicates that the client state is out of sync with the master.");
+							}
+							SimulationRoot.ECS.Tick();
+
+							if (tick.CurrentTick != SimulationRoot.ECS.CurrentTick)
+							{
+								throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
+							}
+
+							uint crc;
+							var state = SimulationRoot.GetEntityState(out crc);
+							//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", state);
+
+							if (message.CRC != crc)
+							{
+								throw new SimulationSynchronisationException($"Simulation out of sync at tick {SimulationRoot.ECS.CurrentTick}: Local CRC {crc} doest not match master {message.CRC}");
+							}
+						}
+						else
+						{
+							SimulationRoot.EntityStateSerializer.DeserializeEntities(message.EntityState); 
+						}
+						
 						UpdateSignal.Set();
 						UpdateCompleteSignal.WaitOne();
-						//update = DateTime.Now.Subtract(start).TotalMilliseconds;
 
 					}
-					//Debug.Log($"Wait: {wait}, Deserialize: {deserialize}, Update: {update}");
-					//_tps = (float) (1.0f / (deserialize + update));
 				}
 				catch (Exception ex)
 				{
@@ -292,9 +329,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static SimulationIntegrationException ThreadWorkerException { get; set; }
 
-		public static void UpdateSimulation(string stateJson)
+		public static void UpdateSimulation(TickMessage tickMessage)
 		{
-			_stateJson = stateJson;
+			_tickMessage = tickMessage;
 			MessageSignal.Set();
 		}
 
