@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private SpriteRenderer _spriteRenderer;
 
-		private MalwareGenome _malwareGenome;
+		private MalwareVisibility _malwareVisibility;
 
 		#region Initialization
 
@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			if (Entity.TryGetComponent(out _malwareGenome))
+			if (Entity.TryGetComponent(out _malwareVisibility))
 			{
 				
 			}
@@ -49,15 +49,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			//var visible = _malwareGenome.Values.Contains(SimulationConstants.MalwareVisibilityGene);
-			//if (_spriteRenderer.enabled == false && visible)
-			//{
-			//	_spriteRenderer.enabled = true;
-			//}
-			//else if (_spriteRenderer.enabled && visible == false)
-			//{
-			//	_spriteRenderer.enabled = false;
-			//}
+			var visible = _malwareVisibility.Visible;
+			if (_spriteRenderer.enabled == false && visible)
+			{
+				_spriteRenderer.enabled = true;
+			}
+			else if (_spriteRenderer.enabled && visible == false)
+			{
+				_spriteRenderer.enabled = false;
+			}
 		}
 
 		#endregion

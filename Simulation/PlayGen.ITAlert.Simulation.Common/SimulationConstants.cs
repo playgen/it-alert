@@ -65,7 +65,11 @@
 
 		public const decimal CPUMovementSpeedReduction = 0.5m;
 
-		public const string MalwareVisibilityGene = "Visible";
+
+		public const int MalwareGeneRed = 0x1;
+		public const int MalwareGeneGreen = 0x2;
+		public const int MalwareGeneBlue = 0x4;
+
 
 		#endregion
 

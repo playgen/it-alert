@@ -7,6 +7,8 @@ using Engine.Evaluators;
 using Engine.Sequencing;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Tutorial;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
@@ -17,7 +19,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
 
-		public static readonly Archetype TutorialScanner = new Archetype("TutorialScanner")
+		#region scenario specific archetypes
+
+		private static readonly Archetype TutorialScanner = new Archetype("TutorialScanner")
 			.Extends(GameEntities.Scanner)
 			.HasComponent(new ComponentBinding<ActivationContinue>()
 			{
@@ -26,7 +30,29 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					ContinueOn = ActivationContinue.ActivationPhase.Activating,
 				}
 			});
-		
+
+		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
+			.Extends(GameEntities.CPUVirus)
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+			{
+				ComponentTemplate = new MalwareGenome()
+				{
+					Value = SimulationConstants.MalwareGeneRed,
+				}
+			});
+
+		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
+			.Extends(GameEntities.CPUVirus)
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+			{
+				ComponentTemplate = new MalwareGenome()
+				{
+					Value = SimulationConstants.MalwareGeneGreen,
+				}
+			});
+
+		#endregion
+
 		// TODO: this should be parameterized further and read from config
 		private static SimulationScenario GenerateScenario()
 		{
@@ -297,7 +323,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.CreateNpcCommand(nameof(GameEntities.CPUVirus), nodeLeft.Id),
+						ScenarioHelpers.CreateNpcCommand(nameof(RedTutorialVirus), nodeLeft.Id),
 						ScenarioHelpers.GenerateTextAction(true,
 							"Malware has infected the Left system! You should investigate")
 					},
@@ -324,6 +350,25 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
+
+			frames.Add(// frame 5a - malware
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.CreateItemCommand(GameEntities.RedAntivirus.Name, nodeRight.Id),
+						ScenarioHelpers.GenerateTextAction(true,
+							"You need to use the scanner tool to reveal the source of the problem.")
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.HideTextAction,
+					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
+				}
+			);
+
+
 
 			#endregion
 

@@ -17,13 +17,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	{
 		private readonly ComponentMatcherGroup<Scanner, CurrentLocation, Owner> _scannerMatcherGroup;
 		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
-		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<MalwareGenome, MalwareVisibility> _malwareMatcherGroup;
 		
 		public ScannerBehaviour(IMatcherProvider matcherProvider)
 		{
 			_scannerMatcherGroup = matcherProvider.CreateMatcherGroup<Scanner, CurrentLocation, Owner>();
 			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
-			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
+			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();
 		}
 
 		public void OnActivating(int itemId, Activation activation)
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 							(o, i) => i))
 					{
 						// add the visible gene
-						malwareVisitor.Component1.Values.Add(SimulationConstants.MalwareVisibilityGene);
+						malwareVisitor.Component2.Visible = true;
 					}
 				}
 				itemTuple.Component3.Value = null;

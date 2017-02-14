@@ -144,13 +144,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		private static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
 			.HasComponent(new ComponentBinding<Npc>())
-			.HasComponent(new ComponentBinding<ConsumeMemory>()
-			{
-				ComponentTemplate = new ConsumeMemory()
-				{
-					Value = SimulationConstants.VirusMemoryConsumedInitialValue,
-				}
-			})
+			
+			;
+
+		public static readonly Archetype CPUVirus = new Archetype("CPUVirus")
+			.Extends(Virus)
 			.HasComponent(new ComponentBinding<ConsumeCPU>()
 			{
 				ComponentTemplate = new ConsumeCPU()
@@ -159,22 +157,26 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype CPUVirus = new Archetype("CPUVirus")
+		public static readonly Archetype MemoryVirus = new Archetype("MemoryVirus")
 			.Extends(Virus)
-			// TODO: need a better way of overriding existing component binding or component template
-			// TODO: need a way of passing configuration to the archetype factory dyanmically
-			//		eg. initialize a virus with a specific genome from one archetype rahter than having one archetype per virus class
-			.HasComponent(new ComponentBinding<MalwareGenome>()
+			.HasComponent(new ComponentBinding<ConsumeMemory>()
+			{
+				ComponentTemplate = new ConsumeMemory()
 				{
-					ComponentTemplate = new MalwareGenome()
-					{
-						Values = new List<string>()
-						{
-							ConsumeCPUMalwareEffect.Key,
-						}
-					}
-				})
-			;
+					Value = SimulationConstants.VirusMemoryConsumedInitialValue,
+				}
+			});
+		// TODO: need a better way of overriding existing component binding or component template
+		// TODO: need a way of passing configuration to the archetype factory dyanmically
+		//		eg. initialize a virus with a specific genome from one archetype rahter than having one archetype per virus class
+		//.HasComponent(new ComponentBinding<MalwareGenome>()
+		//	{
+		//		ComponentTemplate = new MalwareGenome()
+		//		{
+		//			Value = SimulationConstants.MalwareGeneRed,
+		//		}
+		//	})
+		//;
 
 		#endregion
 
@@ -253,9 +255,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype Antivirus = new Archetype("Antivirus")
+		#region antivirus
+
+		private static readonly Archetype Antivirus = new Archetype("Antivirus")
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Antivirus>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()
@@ -263,6 +266,92 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
+
+		public static readonly Archetype RedAntivirus = new Archetype("RedAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneRed,
+				}
+			});
+
+		public static readonly Archetype GreenAntivirus = new Archetype("GreenAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneGreen,
+				}
+			});
+
+		public static readonly Archetype BlueAntivirus = new Archetype("BlueAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneBlue,
+				}
+			});
+
+		public static readonly Archetype CyanAntivirus = new Archetype("CyanAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue,
+				}
+			});
+
+		public static readonly Archetype MagentaAntivirus = new Archetype("MagentaAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneBlue,
+				}
+			});
+
+		public static readonly Archetype YellowAntivirus = new Archetype("YellowAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen,
+				}
+			});
+
+		public static readonly Archetype WhiteAntivirus = new Archetype("WhiteAntivirus")
+			.Extends(Antivirus)
+			// TODO: definitely need a way of parameterising the archetype construction and modifying existing component bindings
+			// I should be able to inject the required gene target 
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{
+					TargetGenome = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue,
+				}
+			});
+
+		#endregion
 
 		public static readonly Archetype Capture = new Archetype("Capture")
 			.Extends(Item)
