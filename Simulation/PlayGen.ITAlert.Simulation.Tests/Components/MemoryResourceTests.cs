@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 							Implementations = new SystemExtensionImplementation[]
 							{
 								new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetMemoryEachTick>(),
-								new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
+								new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemStorageConsumesMemoryEffect>(),
 							}
 						}
 					}

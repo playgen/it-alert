@@ -8,6 +8,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
 	public class MovementCost : IComponent
 	{
-		public float Value { get; set; } = SimulationConstants.DefaultMovementCost;
+		public decimal Value { get; set; } = SimulationConstants.DefaultMovementCost;
 	}
 }

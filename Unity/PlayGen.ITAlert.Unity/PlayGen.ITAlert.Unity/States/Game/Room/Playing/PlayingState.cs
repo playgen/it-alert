@@ -49,7 +49,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			var tickMessage = message as TickMessage;
 			if (tickMessage != null)
 			{
-				Director.UpdateSimulation(tickMessage.EntityState);
+				Director.UpdateSimulation(tickMessage);
 				return;
 			}
 

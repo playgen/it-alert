@@ -34,7 +34,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
 					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
 					{
-						var nextPosition = visitorTuple.Component1.PositionFloat + ((float)visitorTuple.Component3.Value / connectionTuple.Component4.Value);
+						var nextPosition = visitorTuple.Component1.PositionDecimal + (visitorTuple.Component3.Value / connectionTuple.Component4.Value);
 
 						if (nextPosition >= exitNode.Value)
 						{

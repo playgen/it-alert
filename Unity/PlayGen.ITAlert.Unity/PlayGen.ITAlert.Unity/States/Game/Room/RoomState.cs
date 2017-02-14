@@ -63,6 +63,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			// CurrentRoom and messenger would have been destroyed by this point so no need to unsubscribe
 			_stateController.Terminate();
+
+			_photonClient.Disconnect();
 		}
 
 		protected override void OnTick(float deltaTime)

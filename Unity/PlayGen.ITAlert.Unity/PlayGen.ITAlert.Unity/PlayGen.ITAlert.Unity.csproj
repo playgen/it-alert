@@ -36,6 +36,10 @@
     <Reference Include="Engine.Core">
       <HintPath>..\..\..\bin\Simulation\Engine.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Lifecycle, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Simulation\Engine.Lifecycle.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Newtonsoft.Json">
       <HintPath>..\..\..\bin\Simulation\Engine.Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -157,6 +161,7 @@
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
+    <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />

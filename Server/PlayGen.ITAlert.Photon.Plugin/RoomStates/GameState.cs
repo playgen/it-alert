@@ -110,7 +110,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 			// TODO: handle the lifecyclemanager changestate event in the case of error -> kick players back to lobby.
 			var lifecycleStoppedErrorTransition = new LifecycleStoppedTransition(ErrorState.StateName,
-				ExitCode.Error, ExitCode.Failure, ExitCode.Undefined);
+				ExitCode.Error, ExitCode.Undefined, ExitCode.Abort);
 
 			var lifecycleManager = InitializeSimulationRoot();
 			lifecycleManager.Exception += _exceptionHandler.OnException;
@@ -123,9 +123,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			initializingState.AddTransitions(initializedTransition, lifecycleStoppedErrorTransition);
 
 			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
-			var lifecycleStoppedSuccessTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Success);
-			lifecycleManager.Stopped += lifecycleStoppedSuccessTransition.OnLifecycleExit;
-			playingState.AddTransitions(lifecycleStoppedSuccessTransition, lifecycleStoppedErrorTransition);
+			var lifecycleCompleteTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Complete);
+			lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
+			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
 			
 			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);

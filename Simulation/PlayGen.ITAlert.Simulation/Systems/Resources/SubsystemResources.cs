@@ -8,6 +8,10 @@ using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Resources
 {
+	/// <summary>
+	/// This system is responsible for manipulating system resources, that is currently CPU, Memory and Bandwidth
+	/// Specific behaviours are implemented on classes implementing the ISubsystemResourceEffect interface
+	/// </summary>
 	public class SubsystemResources : ISystem, ITickableSystem
 	{
 		private readonly List<ISubsystemResourceEffect> _resourceEffects;

@@ -79,7 +79,6 @@
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationScenario.cs" />
     <Compile Include="Evaluators\SimulationEvaluator.cs" />
-    <Compile Include="Extensions\SystemExtensions.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
@@ -122,7 +121,7 @@
     <Compile Include="Systems\Resources\SubsystemResources.cs" />
     <Compile Include="Systems\Resources\CPUReducesMovementSpeed.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
-    <Compile Include="Systems\Resources\ItemsConsumeMemoryEffect.cs" />
+    <Compile Include="Systems\Resources\ItemStorageConsumesMemoryEffect.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />
     <Compile Include="Systems\Movement\IMovementSystemExtension.cs" />
@@ -186,7 +185,9 @@
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

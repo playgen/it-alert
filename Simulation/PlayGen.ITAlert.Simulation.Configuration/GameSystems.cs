@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetCPUEachTick>(),
 							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ResetMemoryEachTick>(),
-							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemsConsumeMemoryEffect>(),
+							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<ItemStorageConsumesMemoryEffect>(),
 							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<VisitorsConsumeCPUEffect>(),
 							new SystemExtensionConfiguration<ISubsystemResourceEffect>.SystemExtensionImplementation<CPUReducesMovementSpeed>(), 
 						}
@@ -48,6 +48,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+			// TODO: this has now become mandatory so I need a better way of specifying the configuration such that I can find the CommandSystem config entry and append to it
+			// this pattern would also come in handy for adding scenario specific system bindings
 			new SystemConfiguration<CommandSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
