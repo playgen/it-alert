@@ -1,4 +1,6 @@
-﻿namespace PlayGen.ITAlert.Simulation.Components.Items
+﻿using System.Collections.Generic;
+
+namespace PlayGen.ITAlert.Simulation.Components.Items
 {
 	public class Scanner : IItemType
 	{
@@ -22,6 +24,7 @@
 
 	public class Antivirus : IItemType
 	{
+		public int TargetGenome { get; set; }
 	}
 
 	public class Capture : IItemType
