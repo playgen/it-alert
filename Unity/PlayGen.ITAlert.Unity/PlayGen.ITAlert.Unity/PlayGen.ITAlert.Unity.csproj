@@ -165,6 +165,7 @@
     <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />
+    <Compile Include="Simulation\MalwareGeneMapper.cs" />
     <Compile Include="Transitions\OnEventTransition.cs" />
     <Compile Include="Utilities\GameExceptionHandler.cs" />
     <Compile Include="States\Game\GameState.cs" />
