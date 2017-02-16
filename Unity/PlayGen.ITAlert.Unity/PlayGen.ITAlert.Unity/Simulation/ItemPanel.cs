@@ -48,7 +48,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 					ItemEntity.GameObject.SetActive(false);
 					ItemEntity.GameObject.transform.position = GameObject.transform.position;
-					ItemEntity.GameObject.GetComponent<SpriteRenderer>().sortingLayerName = SortingLayerOverride;
+					//ItemEntity.GameObject. GetComponent<SpriteRenderer>().sortingLayerName = SortingLayerOverride;
 
 					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
 

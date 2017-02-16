@@ -275,7 +275,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 							// TODO: Tick class needs to be moved out of hte lifecycler project so that I can remove the reference here
 							var tick = ConfigurationSerializer.Deserialize<Tick>(message.TickString);
-							System.IO.File.WriteAllText($"d:\\temp\\{_tick}.tick.json", message.TickString);
+							//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.tick.json", message.TickString);
 
 							// TODO: this should probably be pushed into the ECS
 							ICommandSystem commandSystem;

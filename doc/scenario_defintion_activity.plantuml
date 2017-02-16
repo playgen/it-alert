@@ -1,0 +1,18 @@
+@startuml
+
+:Enter Scenario;
+repeat 
+	:Enter Frame;
+	while (OnEnter Action Available)
+		:Execute Action;
+	endwhile
+	while (Evaluation Criteria Unsatisfied)
+		:Tick;
+	endwhile
+	while (OnExit Action Available)
+		:Execute Action;
+	endwhile 
+	:Exit Frame;
+repeat while (Frames Remaining)
+:End Scenario;
+@enduml

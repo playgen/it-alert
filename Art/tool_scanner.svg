@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Generator: Adobe Illustrator 21.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="257.17px" height="257.17px" viewBox="0 0 257.17 257.17" enable-background="new 0 0 257.17 257.17" xml:space="preserve">
-<path display="none" fill="#414042" stroke="#FFFFFF" stroke-width="2.0526" stroke-miterlimit="10" d="M225.099,255.118H30.018
-	C13.497,255.118,0,241.407,0,224.63V30.496C0,13.722,13.497,0,30.018,0h195.096c16.504,0,30.004,13.722,30.004,30.496v194.648
-	C255.12,241.921,241.62,255.118,225.099,255.118z"/>
+	 viewBox="0 0 257.2 257.2" style="enable-background:new 0 0 257.2 257.2;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#414042;stroke:#FFFFFF;stroke-width:2.0526;stroke-miterlimit:10;}
+	.st1{fill:#FFFFFF;}
+	.st2{fill:none;}
+</style>
+<path class="st0" d="M225.1,255.1H30c-16.5,0-30-13.7-30-30.5V30.5C0,13.7,13.5,0,30,0h195.1c16.5,0,30,13.7,30,30.5v194.6
+	C255.1,241.9,241.6,255.1,225.1,255.1z"/>
 <g>
-	<path fill="#FFFFFF" d="M128.062,57.943c38.021,0,69.023,31.497,69.023,70.132s-31.024,70.153-69.023,70.153
-		c-38.028,0-69.035-31.517-69.035-70.152S90.034,57.943,128.062,57.943 M128.062,47.771c-43.529,0-79.039,36.074-79.039,80.281
-		c0,44.242,35.51,80.305,79.039,80.305c43.518,0,79.02-36.063,79.02-80.305C207.098,83.861,171.58,47.771,128.062,47.771
-		L128.062,47.771z"/>
+	<path class="st1" d="M130.5,32.4c51.1,0,92.8,42.4,92.8,94.3S181.6,221,130.5,221c-51.1,0-92.8-42.4-92.8-94.4
+		S79.3,32.4,130.5,32.4 M130.5,18.7c-58.5,0-106.3,48.5-106.3,108c0,59.5,47.8,108,106.3,108c58.5,0,106.3-48.5,106.3-108
+		C236.8,67.2,189,18.7,130.5,18.7L130.5,18.7z"/>
 </g>
-<path fill="#FFFFFF" d="M230.595,88.934c-1.993-16.778-8.984-32.026-20.491-43.7c-16.49-16.774-40.025-23.38-65.019-20.831
-	l-17.007,104.176L230.595,88.934z"/>
+<g id="Layer_2">
+	<polyline class="st1" points="127.6,126.7 183,18.7 236.8,72.7 	"/>
+	<path class="st2" d="M236.8,72.7c0-29.8-24-54-53.8-54"/>
+</g>
 </svg>
