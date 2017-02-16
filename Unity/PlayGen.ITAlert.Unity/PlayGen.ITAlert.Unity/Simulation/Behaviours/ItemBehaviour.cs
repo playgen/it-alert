@@ -18,8 +18,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _activationTimerImage;
 
 		[SerializeField]
-		private SpriteRenderer _iconRenderer;
+		private SpriteRenderer _foregroundSprite;
 
+		[SerializeField]
+		private SpriteRenderer _midgroundSprite;
+
+		[SerializeField]
+		private SpriteRenderer _backgroundSprite;
 		#endregion
 
 		#region unity components
@@ -32,6 +37,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		// optional components
 		private TimedActivation _timedActivation;
+
+		private Antivirus _antivirus;
 
 		#endregion
 
@@ -51,8 +58,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void Start()
 		{
 			gameObject.transform.SetParent(Director.Graph.transform, false);
-
-		}
+			}
 
 		public void Awake()
 		{
@@ -67,9 +73,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _activation))
 			{
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
-				GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spriteName);
+				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
 
 				Entity.TryGetComponent(out _timedActivation);
+				Entity.TryGetComponent(out _antivirus);
 			}
 			else
 			{
@@ -96,8 +103,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnStateUpdated()
 		{
-			//TODO: if owner has changed
-			UpdateItemColor();
+			UpdateOwnerColor();
+			UpdateForegroundColour();
 			UpdateScale();
 			UpdateActivationTimer();
 		}
@@ -109,9 +116,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				: UIConstants.DefaultItemScale;
 		}
 
+		private void UpdateForegroundColour()
+		{
+			if (_antivirus != null)
+			{
+				_foregroundSprite.color = _antivirus.GetColourForGenome();
+			}
+		}
+
+		private void UpdateMidgroundColour()
+		{
+		}
+
 		private int? _ownerId;
 
-		private void UpdateItemColor()
+		private void UpdateOwnerColor()
 		{
 			if (_owner?.Value != _ownerId)
 			{
@@ -122,14 +141,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					if (Director.TryGetEntity(_owner.Value.Value, out owner))
 					{
 						var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
-						GetComponent<SpriteRenderer>().color = playerColour;
 						_activationTimerImage.color = playerColour;
+						_backgroundSprite.color = playerColour;
 					}
 				}
 				else 
 				{
-					GetComponent<SpriteRenderer>().color = Color.white;
 					_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+					_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
 				}
 			}
 		}
