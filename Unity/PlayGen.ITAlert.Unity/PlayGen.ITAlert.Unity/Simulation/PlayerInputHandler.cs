@@ -118,7 +118,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
 			var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
 
-			if (itemHits.Any() && itemContainerHits.Any())
+			if (subsystemHits.Any())
+			{
+				OnClickSubsystem(subsystemHits.Single());
+			}
+			else if (itemHits.Any() && itemContainerHits.Any())
 			{
 				OnClickItemInContainer(itemHits.Single(), itemContainerHits.Single());
 			}
@@ -129,10 +133,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			else if (itemHits.Any())
 			{
 				OnClickItem(itemHits.Single());
-			}
-			else if (subsystemHits.Any())
-			{
-				OnClickSubsystem(subsystemHits.Single());
 			}
 		}
 

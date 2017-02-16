@@ -33,6 +33,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			IsComplete = false;
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 
+
 			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage()
 			{
 				PlayerPhotonId	= _photonClient.CurrentRoom.Player.PhotonId,
@@ -50,6 +51,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			if (tickMessage != null)
 			{
 				Director.UpdateSimulation(tickMessage);
+				return;
+			}
+
+			var stopMessage = message as StopMessage;
+			if (stopMessage != null)
+			{
+				Director.EndGame();
 				return;
 			}
 

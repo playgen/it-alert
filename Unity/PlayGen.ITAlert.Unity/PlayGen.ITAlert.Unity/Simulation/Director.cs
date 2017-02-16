@@ -28,6 +28,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	// TODO: use zenject singleton container rather than statics
 	public sealed class Director : MonoBehaviour
 	{
+		public static event Action<EndGameState> GameEnded;
+
+		public static event Action Reset;
+
 		#region simulation
 
 		private static Thread _updatethread;
@@ -49,6 +53,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// </summary>
 		public static SimulationRoot SimulationRoot;
 
+		// TODO: replace temporary implementation
+		private static EndGameSystem _endGameSystem;
+
+
 		/// <summary>
 		/// Tracked entities have their lifecycle managed by the simulation and will bbe created and destroyed as required
 		/// </summary>
@@ -58,6 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// Untracked entities do not have a 1:1 mapping with simulation entities and their lifecycle is managed manually
 		/// </summary>
 		private static readonly List<UIEntity> UntrackedEntities = new List<UIEntity>();
+
 
 		#region game object root
 
@@ -70,17 +79,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public static GameObject Canvas => _canvas ?? (_canvas = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer"));
 
 		#endregion
-
-		#endregion
-
-		#region game over
-
-		[SerializeField]
-		private static GameObject _gameOverWon;
-		[SerializeField]
-		private static GameObject _gameOverLost;
-
-		public static readonly Dictionary<GameOverBehaviour.GameOverCondition, GameObject> GameOverBehaviours = new Dictionary<GameOverBehaviour.GameOverCondition, GameObject>();
 
 		#endregion
 
@@ -125,7 +123,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
 		}
 		
-		private static void Reset()
+		private static void ResetSimulation()
 		{
 			_tick = 0;
 
@@ -141,6 +139,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Destroy(entity.Value.GameObject);
 			}
 			TrackedEntities.Clear();
+			UntrackedEntities.Clear();
+
+			OnReset();
 		}
 
 		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
@@ -153,7 +154,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				};
 				_updatethread.Start();
 
-				Reset();
+				ResetSimulation();
 				SimulationRoot = simulationRoot;
 
 				// center graph
@@ -168,9 +169,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_itemPanel.Initialize();
 				_itemPanel.Update();
 
-				foreach (var behaviour in GameOverBehaviours)
+				if (SimulationRoot.ECS.TryGetSystem(out _endGameSystem) == false)
 				{
-					behaviour.Value.SetActive(false);
+					throw new SimulationIntegrationException("Could not locate end game system");
 				}
 
 				return true;
@@ -335,6 +336,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			MessageSignal.Set();
 		}
 
+		public static void EndGame()
+		{
+			StopWorker();
+			OnGameEnded(_endGameSystem.EndGameState);
+		}
+
 		public void Update()
 		{
 			if (WorkerThreadExceptionSignal.WaitOne(0))
@@ -423,17 +430,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
-		private static void OnGameOver(bool didWin)
-		{
-			var behaviour = didWin ? GameOverBehaviours[GameOverBehaviour.GameOverCondition.Success] : GameOverBehaviours[GameOverBehaviour.GameOverCondition.Failure];
-			behaviour.SetActive(true);
-		}
-
 		#endregion
 
 		private static void OnExceptionEvent(Exception obj)
 		{
 			ExceptionEvent?.Invoke(obj);
+		}
+
+		private static void OnGameEnded(EndGameState obj)
+		{
+			GameEnded?.Invoke(obj);
+		}
+
+		private static void OnReset()
+		{
+			Reset?.Invoke();
 		}
 	}
 }

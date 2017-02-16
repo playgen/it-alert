@@ -65,6 +65,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_stateController.Terminate();
 
 			_photonClient.Disconnect();
+
+			LoadingUtility.LoadingSpinner.StopSpinner();
 		}
 
 		protected override void OnTick(float deltaTime)
