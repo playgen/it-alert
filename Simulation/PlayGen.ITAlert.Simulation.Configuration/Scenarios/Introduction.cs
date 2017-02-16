@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Evaluators;
+using Engine.Lifecycle;
 using Engine.Sequencing;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Tutorial;
 using PlayGen.ITAlert.Simulation.Sequencing;
@@ -27,7 +29,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			{
 				ComponentTemplate = new ActivationContinue()
 				{
-					ContinueOn = ActivationContinue.ActivationPhase.Activating,
+					ContinueOn = ActivationContinue.ActivationPhase.Deactivating,
 				}
 			});
 
@@ -85,7 +87,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = nameof(GameEntities.Player)
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+
 			configuration.Archetypes.Add(TutorialScanner);
+			configuration.Archetypes.Add(RedTutorialVirus);
 
 			#endregion
 
@@ -94,9 +98,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			// ReSharper disable once UseObjectOrCollectionInitializer
 			var frames = new List<SequenceFrame<Simulation, SimulationConfiguration>>();
 
-			#region 1
-
-			frames.Add(// frame 1 - welcome
+			// frame 1
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -105,272 +108,250 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 						ScenarioHelpers.GenerateTextAction(true,
 							"Welcome to IT Alert!", 
 							"You are a system administrator tasked with maintaing the network.",
-							"Let's get started..")
+							"Let's get started...")
 					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
+						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
 					},
-					// TODO: need a more polymorphic way of specifying evaluators
-					// c# 7 pattern match will be nice
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-			#endregion
-
-			#region 2 - movement
-
-			frames.Add(// frame 2a - movement
+			// frame 2
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
 						ScenarioHelpers.GenerateTextAction(false, 
-							"Try navigating to another system by clicking on it..")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
+							"Try navigating to another system by clicking on it...")
 					},
 					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeLeft),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.HideTextAction,
+					},
 				}
 			);
 
-			frames.Add(// frame 2b - patronise
+			// frame 3
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.GenerateTextAction(false, 
-							"Well done. You can follow simple instructions!")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
+							"Well done. Now you know how to move around the network!")
 					},
 					Evaluator = ScenarioHelpers.WaitForSeconds(3),
-				}
-			);
-
-			#endregion
-
-			#region 3 - resources
-
-			frames.Add(// frame 3a - resources
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true,
-							"Systems have resources, the red bar represents available CPU and the blue bar available memory.")
-					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-			frames.Add(// frame 3b - resources
+			// frame 4
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.GenerateTextAction(true, 
-							"Items consume system memory, and players consume CPU. When either run out the system won't be able to contain any more of that type of object.")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
-
-
-			frames.Add(// frame 3c - resources
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true, 
-							"As you move between nodes you will notice the CPU consumption vary.")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
-
-			#endregion
-
-			#region 4 - items
-
-			frames.Add(// frame 4a - item
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
+						// TODO: this should disable the cancapture flag of the inventory slot
+						ScenarioHelpers.SetCommandEnabled<PickupItemCommand>(false),	
 						ScenarioHelpers.SetCommandEnabled<ActivateItemCommand>(false),
+						ScenarioHelpers.CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
 						ScenarioHelpers.GenerateTextAction(true, 
-							"The item that has just been spawned on the right hand node is a scanner.")
+							"The item that has just been spawned on the right is a scanner.",
+							"",
+							"The scanner reveals malware on a system when it is activated.")
 					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
 					},
-					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-			frames.Add(// frame 4a - item
+			// frame 5
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.GenerateTextAction(false, 
-							"To use items you must be on the same node...")
+							"To use items you must be located on the same system...")
 					},
+					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeRight),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
+						//ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
-					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeRight),
 				}
 			);
 
-
-
-			frames.Add(// frame 4b - item
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true, 
-							"When you are on the same node as available items they will appear in the tray at the bottom of your screen.")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
-
-			frames.Add(// frame 4c - item
+			// frame 6
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.SetCommandEnabled<ActivateItemCommand>(true),
-						ScenarioHelpers.GenerateTextAction(false, 
-							"Clicking the item on your tray will activate the item.")
+						ScenarioHelpers.GenerateTextAction(false,
+							"When you are on the same system as available items they will appear in the tray at the bottom of your screen.",
+							"",
+							"Clicking the item on your tray will activate the item...")
 					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-			frames.Add(// frame 4e - item
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true,
-							"While the item is active the colour changes to indicate the player that is performing the action."),
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
+			//// frame 7
+			//frames.Add(
+			//	new SimulationFrame()
+			//	{
+			//		OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+			//		{
+			//			ScenarioHelpers.GenerateTextAction(false,
+			//				"While the item is active the colour changes to indicate the player that is performing the action."),
+			//		},
+			//		Evaluator = ScenarioHelpers.WaitForSeconds(3),
+			//		OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+			//		{
+			//			ScenarioHelpers.HideTextAction,
+			//		},
+			//	}
+			//);
 
-			frames.Add(// frame 4e - item
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true,
-							"The scanner reveals malware on a system when it is present and hidden.")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
-
-			#endregion
-
-			#region 5 - malware
-
-			frames.Add(// frame 5a - malware
+			// frame 8
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.CreateNpcCommand(nameof(RedTutorialVirus), nodeLeft.Id),
 						ScenarioHelpers.GenerateTextAction(true,
-							"Malware has infected the Left system! You should investigate")
+							"Malware has infected the Left system! You should investigate...",
+							"",
+							"You'll need to bring the scanner with you...")
 					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
 					},
-					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeLeft).And(ScenarioHelpers.WaitForTutorialContinue),
 				}
 			);
 
-			frames.Add(// frame 5a - malware
+			// frame 9
+			frames.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.SetCommandEnabled<PickupItemCommand>(true),
+						ScenarioHelpers.GenerateTextAction(false,
+							"To pick up an item you must click on your inventory slot, and then on the item you want to pick up.",
+							"",
+							"The inventory slot is on the right, indicated by the breifcase.")
+					},
+					Evaluator = ScenarioHelpers.ItemTypeIsInInventory<Scanner>(),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.HideTextAction,
+						ScenarioHelpers.SetCommandEnabled<DropItemCommand>(false),
+					},
+				}
+			);
+
+			// frame 10
+			frames.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.GenerateTextAction(false,
+							"Now it is time to investigate.",
+							"",
+							"Make your way to the left system..")
+					},
+					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeLeft),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
+						ScenarioHelpers.HideTextAction,
+					},
+				}
+			);
+
+			// frame 11
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.GenerateTextAction(true,
-							"It appears that this infections is consuming CPU cycles on the system. As CPU is consumed the performance of the system decreases and so does movement speed.")
+							"You need to use the scanner tool to reveal the source of the problem."),
 					},
+					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-			frames.Add(// frame 5a - malware
+			// frame 12
+			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.CreateItemCommand(GameEntities.RedAntivirus.Name, nodeRight.Id),
-						ScenarioHelpers.GenerateTextAction(true,
-							"You need to use the scanner tool to reveal the source of the problem.")
+						ScenarioHelpers.SetCommandEnabled<DropItemCommand>(true),
+						ScenarioHelpers.GenerateTextAction(false,
+							"First you will have to install the item on the current system",
+							"",
+							"Select your inventory and then click on one of the item slots in the panel at the bottom of the screen.")
 					},
+					Evaluator = ScenarioHelpers.ItemTypeIsAtLocation<Scanner>(nodeLeft)
+						.And(ScenarioHelpers.WaitForTutorialContinue),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
 						ScenarioHelpers.HideTextAction,
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 				}
 			);
 
-
-
-			#endregion
+			// frame 13
+			frames.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.CreateItemCommand(nameof(GameEntities.RedAntivirus), nodeRight.Id),
+						ScenarioHelpers.GenerateTextAction(false,
+							"You have now revealed the source of the infection.",
+							"",
+							"We've provided you with the necessary antivirus, you'll have to figure out the rest on your own...")
+					},
+					Evaluator = EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeLeft)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						ScenarioHelpers.HideTextAction,
+						ScenarioHelpers.EndGame(EndGameState.Success),
+					},
+				}
+			);
 
 			#endregion
 

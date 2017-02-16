@@ -103,8 +103,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnStateUpdated()
 		{
-			UpdateOwnerColor();
-			UpdateForegroundColour();
+			UpdateColour();
 			UpdateScale();
 			UpdateActivationTimer();
 		}
@@ -118,37 +117,44 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateForegroundColour()
 		{
-			if (_antivirus != null)
-			{
-				_foregroundSprite.color = _antivirus.GetColourForGenome();
-			}
 		}
 
 		private void UpdateMidgroundColour()
 		{
 		}
 
-		private int? _ownerId;
-
-		private void UpdateOwnerColor()
+		private void UpdateColour()
 		{
-			if (_owner?.Value != _ownerId)
+			if (_owner?.Value.HasValue ?? false)
 			{
-				_ownerId = _owner?.Value;
-				if (_owner?.Value.HasValue ?? false)
+				UIEntity owner;
+				if (Director.TryGetEntity(_owner.Value.Value, out owner))
 				{
-					UIEntity owner;
-					if (Director.TryGetEntity(_owner.Value.Value, out owner))
+					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+					_activationTimerImage.color = playerColour;
+					_backgroundSprite.color = playerColour;
+
+					if (_antivirus != null)
 					{
-						var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
-						_activationTimerImage.color = playerColour;
-						_backgroundSprite.color = playerColour;
+						_foregroundSprite.color = _antivirus.GetColourForGenome();
+					}
+					else
+					{
+						_foregroundSprite.color = playerColour;
 					}
 				}
-				else 
+			}
+			else 
+			{
+				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
+				_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
+				if (_antivirus != null)
 				{
-					_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
-					_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
+					_foregroundSprite.color = _antivirus.GetColourForGenome();
+				}
+				else
+				{
+					_foregroundSprite.color = new Color(1f, 1f, 1f, 1f);
 				}
 			}
 		}

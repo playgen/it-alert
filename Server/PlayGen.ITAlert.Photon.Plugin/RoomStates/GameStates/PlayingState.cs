@@ -81,6 +81,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 					if (_simulationLifecycleManager.TryStart())
 					{
 						_simulationLifecycleManager.Tick += OnTick;
+						_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
 					}
 					else
 					{
@@ -89,6 +90,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				}
 				return;
 			}
+		}
+
+		private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
+		{
+			Messenger.SendAllMessage(new StopMessage());
 		}
 
 		private void ProcessSimulationCommandMessage(Message message)

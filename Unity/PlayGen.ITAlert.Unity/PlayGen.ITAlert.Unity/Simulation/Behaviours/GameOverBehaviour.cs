@@ -21,7 +21,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		// Use this for initialization
 		void Start()
 		{
-			Director.GameOverBehaviours.Add(_condition, this.transform.gameObject);
 		}
 
 		void Awake()

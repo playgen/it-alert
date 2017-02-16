@@ -17,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		private ButtonList _buttons;
 		private Button _backButton;
 		private Transform _panelVisibility;
-		private Text _messageText;
+		private InputField _messageText;
 		
 		protected override void OnInitialize()
 		{
@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.States.Error
 
 			_buttons = new ButtonList("ErrorContainer/ErrorPanelContainer/ButtonPanel");
 
-			_messageText = ComponentFinder.Find<Text>("ErrorPanel/Message", _panelVisibility);
+			_messageText = ComponentFinder.Find<InputField>("ErrorPanel/Scroll View/Viewport/Content", _panelVisibility);
 
 			_backButton = _buttons.GetButton("BackButtonContainer");
 			_backButton.onClick.AddListener(OnBackButtonClick);

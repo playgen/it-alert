@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Engine.Commands;
 using Engine.Configuration;
+using Engine.Lifecycle;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
@@ -76,6 +77,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemCommandHandler>(),
 							// testing
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HaltAndCatchFireCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<EndGameCommandHandler>(), 
 						}
 
 					}
@@ -94,6 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
 							// TODO: need to find a good way to append extensions from the scenario definition
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
@@ -125,7 +128,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			new SystemConfiguration<PathFindingSystem>(),
 			// TODO: need to find a good way to append systems from the scenario definition
-			new SystemConfiguration<TutorialSystem>()
+			new SystemConfiguration<TutorialSystem>(),
+			new SystemConfiguration<EndGameSystem>(),
 		};
 	}
 }

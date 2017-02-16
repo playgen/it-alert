@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 
 		public static Vector3 DefaultItemScale = new Vector3(0.18f, 0.18f);
-		public static Vector3 ItemPanelItemScale = new Vector3(0.25f, 0.25f);
+		public static Vector3 ItemPanelItemScale = new Vector3(0.35f, 0.35f);
 
 		//TODO: these can probably be removed
 		public static Vector2 LocationColliderOffset = new Vector2(0, 0);

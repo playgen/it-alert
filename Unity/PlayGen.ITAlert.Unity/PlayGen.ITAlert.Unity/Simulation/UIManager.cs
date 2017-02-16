@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Engine.Lifecycle;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation
@@ -14,29 +15,38 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		[SerializeField]
 		private Text _timerText;
 
-		#endregion
+		[SerializeField]
+		private GameObject _successOverlay;
 
-		//TODO: why are these coroutines?
-		private static Coroutine _warningFlash;
-		//private static Coroutine _hintMove;
-		private static int _flashCount;
+		[SerializeField]
+		private GameObject _failureOverlay;
+
+		#endregion
 
 		private void Awake()
 		{
+			Director.Reset += Reset;
+			Director.GameEnded += Director_GameEnded;
+		}
 
+		private void Director_GameEnded(EndGameState endGameState)
+		{
+			switch (endGameState)
+			{
+				case EndGameState.Success:
+					ShowSuccess();
+					break;
+				case EndGameState.Failure:
+					ShowFailure();
+					break;
+				default:
+					Debug.LogError("Director ended game with unknown state");
+					break;
+			}
 		}
 
 		private void FixedUpdate()
 		{
-			//if (_upgradeGen != null)
-			//{
-			//	//_upgradeText.text = _upgradeGen.Amount.ToString();
-			//}
-			//if (_repairGen != null)
-			//{
-			//	//_repairText.text = _repairGen.Amount.ToString();
-			//}
-
 			SetTimer();
 		}
 
@@ -49,5 +59,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
+		public void ShowSuccess()
+		{
+			_successOverlay.SetActive(true);
+		}
+
+		public void ShowFailure()
+		{
+			_failureOverlay.SetActive(true);
+		}
+
+		public void Reset()
+		{
+			_successOverlay.SetActive(false);
+			_failureOverlay.SetActive(false);
+			_timerText.text = 0.ToString("d4");
+		}
 	}
 }

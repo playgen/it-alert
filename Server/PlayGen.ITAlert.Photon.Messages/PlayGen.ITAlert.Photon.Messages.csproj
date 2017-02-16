@@ -60,6 +60,7 @@
     <Compile Include="Simulation\Commands\CommandMessage.cs" />
     <Compile Include="Simulation\States\InitializedMessage.cs" />
     <Compile Include="Simulation\States\SimulationMessage.cs" />
+    <Compile Include="Simulation\States\StopMessage.cs" />
     <Compile Include="Simulation\States\TickMessage.cs" />
     <Compile Include="Game\States\PlayingMessage.cs" />
   </ItemGroup>
