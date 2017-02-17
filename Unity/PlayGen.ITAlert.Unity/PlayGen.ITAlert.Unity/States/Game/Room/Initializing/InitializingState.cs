@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using Engine.Serialization;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Simulation;
@@ -20,14 +23,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		public override string Name => StateName;
 
+		private readonly ScenarioLoader _scenarioLoader;
+
 		public InitializingState(Client photonClient)
 		{
 			_photonClient = photonClient;
+			_scenarioLoader = new ScenarioLoader();
 		}
 
 		protected override void OnEnter()
 		{
-			Logger.LogDebug("Entered " + StateName);
+			Logger.LogDebug("Entered " + StateName); 
 
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 			_photonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
@@ -47,15 +53,19 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			var initializedMessage = message as ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
 			if (initializedMessage != null)
 			{
-				if (string.IsNullOrEmpty(initializedMessage.SimulationConfiguration))
+				SimulationScenario scenario;
+				if (string.IsNullOrEmpty(initializedMessage.PlayerConfiguration) 
+					|| string.IsNullOrEmpty(initializedMessage.ScenarioName)
+					|| _scenarioLoader.TryGetScenario(initializedMessage.ScenarioName, out scenario) == false)
 				{
-					throw new InvalidOperationException("Received InitializedMessage without configuration.");
+					throw new InvalidOperationException("Received invalid InitializedMessage.");
 				}
 
 				try
 				{
+					scenario.Configuration.PlayerConfiguration = ConfigurationSerializer.Deserialize<List<PlayerConfig>>(initializedMessage.PlayerConfiguration);
 					// TODO: extract simulation initialization to somewhere else
-					var simulationRoot = SimulationInstaller.CreateSimulationRoot(initializedMessage.SimulationConfiguration);
+					var simulationRoot = SimulationInstaller.CreateSimulationRoot(scenario.Configuration);
 					if (Director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 					{
 						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()

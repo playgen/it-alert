@@ -76,10 +76,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.GenerateTextAction(true, 
-							"Hellooo humans!", 
-							"Seeing as your biological brains aren't anywhere close to the computational speed of my CPU, I figured: the more of you, the better.",
-							"Let's get started...",
-							"also this is a test level so you're now stuck here until you escape! Mwuhahaha!")
+							"Click continue when you are ready to end!")
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{

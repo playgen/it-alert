@@ -55,8 +55,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				{
 					Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
 					{
-						SimulationConfiguration = _simulationLifecycleManager.ECSRoot.GetConfiguration(),
+						PlayerConfiguration = _simulationLifecycleManager.ECSRoot.GetPlayerConfiguration(),
 						SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
+						ScenarioName = RoomSettings.GameScenario,
 					});
 				}
 				return;
