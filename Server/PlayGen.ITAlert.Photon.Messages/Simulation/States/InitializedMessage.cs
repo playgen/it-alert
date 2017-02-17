@@ -6,6 +6,8 @@ namespace PlayGen.ITAlert.Photon.Messages.Simulation.States
 	{
 		public string SimulationState { get; set; }
 
-		public string SimulationConfiguration { get; set; }
+		public string PlayerConfiguration { get; set; }
+
+		public string ScenarioName { get; set; }
 	}
 }

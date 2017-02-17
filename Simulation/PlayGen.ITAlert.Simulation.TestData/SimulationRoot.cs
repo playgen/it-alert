@@ -14,5 +14,10 @@ namespace PlayGen.ITAlert.Simulation.Startup
 			: base(ecs, configuration, entityStateSerializer)
 		{
 		}
+
+		public string GetPlayerConfiguration()
+		{
+			return ConfigurationSerializer.Serialize(Configuration.PlayerConfiguration);
+		}
 	}
 }

@@ -108,3 +108,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 *.orig
 *.orig.meta
 *.7z
+Demo/

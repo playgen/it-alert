@@ -262,7 +262,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 						ScenarioHelpers.GenerateTextAction(false,
 							"To pick up an item you must click on your inventory slot, and then on the item you want to pick up.",
 							"",
-							"The inventory slot is on the right, indicated by the breifcase.")
+							"The inventory slot is on the right, indicated by the case.")
 					},
 					Evaluator = ScenarioHelpers.ItemTypeIsInInventory<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
