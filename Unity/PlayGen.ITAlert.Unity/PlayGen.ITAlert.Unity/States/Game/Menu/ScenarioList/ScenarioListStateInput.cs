@@ -40,12 +40,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			_scenarioListObject = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioListContainer/Viewport/Content");
 			_scenarioItemPrefab = Resources.Load("ScenarioItem") as GameObject;
 
-			_backButton.onClick.AddListener(OnBackClick);
-		}
-
-		protected override void OnTerminate()
-		{
-			_backButton.onClick.RemoveListener(OnBackClick);
 		}
 
 		private void OnBackClick()
@@ -55,6 +49,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		protected override void OnEnter()
 		{
+			_backButton.onClick.AddListener(OnBackClick);
+
 			_scenarioController.ScenarioListSuccessEvent += OnScenarioSuccess;
 			_scenarioController.GetScenarioList();
 			_scenarioPanel.SetActive(true);
@@ -63,6 +59,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		protected override void OnExit()
 		{
+			_backButton.onClick.RemoveListener(OnBackClick);
+
 			_scenarioController.ScenarioListSuccessEvent -= OnScenarioSuccess;
 			_scenarioPanel.SetActive(false);
 		}

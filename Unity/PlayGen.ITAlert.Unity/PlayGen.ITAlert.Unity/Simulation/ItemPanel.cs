@@ -15,11 +15,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 {
 	public class ItemPanel
 	{
+		#region item panel container
+
 		private class ItemPanelContainer
 		{
-			const float ItemScale = 1.6f;
-			const string SortingLayerOverride = "UI";
-
 			private GameObject GameObject { get; }
 
 			public ItemContainerBehaviour ContainerBehaviour { get; }
@@ -47,8 +46,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					Director.AddUntrackedEntity(ItemEntity);
 
 					ItemEntity.GameObject.SetActive(false);
-					ItemEntity.GameObject.transform.position = GameObject.transform.position;
-					//ItemEntity.GameObject. GetComponent<SpriteRenderer>().sortingLayerName = SortingLayerOverride;
+					//ItemEntity.GameObject.transform.position = GameObject.transform.position;
 
 					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
 
@@ -57,6 +55,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				_proxyItem = proxyItem;
 			}
+
+			public void Reset()
+			{
+				
+			}
+
 
 			public void Update()
 			{
@@ -89,7 +93,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (ItemContainer?.Item != null
 						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-						item.GameObject.transform.position = GameObject.transform.position;
+						//item.GameObject.transform.position = GameObject.transform.position;
 						ItemEntity = item;
 						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
 						itemBehaviour.ScaleUp = true;
@@ -98,6 +102,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ContainerBehaviour.Update();
 			}
 		}
+
+		#endregion
 
 		private const int ItemCount = SimulationConstants.SubsystemMaxItems;
 

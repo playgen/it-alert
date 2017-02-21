@@ -69,7 +69,8 @@ namespace PlayGen.Photon.Unity.Client
 		public void Dispose()
 		{
 			if (_isDisposed) return;
-			
+
+			Disconnect();
 			_photonClientWrapper.Dispose();
 			UnityEngine.Object.Destroy(_clientGameObject);
 

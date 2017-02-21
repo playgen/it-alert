@@ -34,7 +34,7 @@ namespace PlayGen.ITAlert.Simulation.Startup
 
 		public static SimulationRoot GenerateSimulation(List<NodeConfig> nodeConfigs, List<PlayerConfig> playerConfigs, int items, int weight)
 		{
-			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, weight);
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, weight);
 			ConfigurationHelper.SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = ConfigurationHelper.GetRandomItems(nodeConfigs, items);
 

@@ -49,6 +49,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_joinGameButton = _buttons.GetButton("JoinGameButtonContainer");
 			_quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
 			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
+
 			_serverConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/ServerConnection").GetComponent<Text>();
 			_sugarConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/SUGARConnection").GetComponent<Text>();
 

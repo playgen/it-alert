@@ -83,7 +83,7 @@
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
-    <Compile Include="Systems\Enhancements\AnalyserEnhancementExtension.cs" />
+    <Compile Include="Systems\Enhancements\AntivirusWorkstationExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
@@ -101,7 +101,6 @@
     <Compile Include="Systems\Malware\ConsumeMemoryMalwareEffect.cs" />
     <Compile Include="Components\Enhacements\DatabaseEnhancement.cs" />
     <Compile Include="Components\Enhacements\AntivirusEnhancement.cs" />
-    <Compile Include="Components\Enhacements\AnalyserEnhancement.cs" />
     <Compile Include="Components\Activation\IActivatable.cs" />
     <Compile Include="Components\Activation\IActivation.cs" />
     <Compile Include="Components\Activation\TimedActivation.cs" />

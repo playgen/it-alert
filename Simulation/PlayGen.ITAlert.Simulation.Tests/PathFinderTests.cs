@@ -22,8 +22,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// 0 > 1
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1)
+					new NodeConfig(),
+					new NodeConfig()
 				},
 				new List<EdgeConfig>()
 				{
@@ -40,8 +40,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				// 0 -> 1
 					new List<NodeConfig>()
 					{
-						new NodeConfig(0),
-						new NodeConfig(1)
+						new NodeConfig(),
+						new NodeConfig()
 					},
 					new List<EdgeConfig>()
 					{
@@ -62,10 +62,10 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// expected route 0 - 2 - 3
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1),
-					new NodeConfig(2),
-					new NodeConfig(3)
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig()
 				},
 				new List<EdgeConfig>()
 				{
@@ -90,10 +90,10 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// expected route 0 - 2 - 3
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1),
-					new NodeConfig(2),
-					new NodeConfig(3)
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig()
 				},
 				new List<EdgeConfig>()
 				{
@@ -125,7 +125,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// 2 <> 3
 			// expected route 0 - 2 - 3
 				ConfigurationHelper.GenerateGraphNodes(2, 2),
-				ConfigurationHelper.GenerateFullyConnectedConfiguration(2, 2, 1),
+				ConfigurationHelper.GenerateFullyConnectedGridConfiguration(2, 2, 1),
 				0,
 				3,
 				new List<int[]>()
@@ -145,15 +145,15 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// 6 <> 7 <> 8
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1),
-					new NodeConfig(2),
-					new NodeConfig(3),
-					new NodeConfig(4),
-					new NodeConfig(5),
-					new NodeConfig(6),
-					new NodeConfig(7),
-					new NodeConfig(8),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
 				},
 				new List<EdgeConfig>()
 				{
@@ -205,11 +205,11 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// 3 3> 4
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1),
-					new NodeConfig(2),
-					new NodeConfig(3),
-					new NodeConfig(4),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
 				},
 				new List<EdgeConfig>()
 				{
@@ -241,15 +241,15 @@ namespace PlayGen.ITAlert.Simulation.Tests
 			// expected route 0, 1, 4, 5, 3, 2, 6,
 				new List<NodeConfig>()
 				{
-					new NodeConfig(0),
-					new NodeConfig(1),
-					new NodeConfig(2),
-					new NodeConfig(3),
-					new NodeConfig(4),
-					new NodeConfig(5),
-					new NodeConfig(6),
-					new NodeConfig(7),
-					new NodeConfig(8),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
+					new NodeConfig(),
 				},
 				new List<EdgeConfig>()
 				{

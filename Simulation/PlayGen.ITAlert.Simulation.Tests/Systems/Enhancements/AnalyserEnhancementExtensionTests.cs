@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 					Components =
 					{
 						new ComponentBinding<ItemStorage>(),
-						new ComponentBinding<AnalyserEnhancement>(),
+						new ComponentBinding<Antivirus>(),
 					}
 				},
 			};
@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 						{
 							Implementations = new SystemExtensionImplementation[]
 							{
-								new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AnalyserEnhancementExtension>(), 
+								new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusWorkstationExtension>(), 
 							}
 						}
 					}
@@ -61,7 +61,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 			var component = entity.GetComponent<ItemStorage>();
 			Assert.That(component, Is.Not.Null);
 			Assert.That(component.Items.Length, Is.EqualTo(SimulationConstants.SubsystemMaxItems));
-			Assert.That(component.Items[AnalyserEnhancementExtension.AnalysisTargetStorageLocation], Is.Not.Null);
+			Assert.That(component.Items[AntivirusWorkstationExtension.AnalysisTargetStorageLocation], Is.Not.Null);
 		}
 	}
 }

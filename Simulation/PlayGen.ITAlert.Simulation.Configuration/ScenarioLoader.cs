@@ -16,7 +16,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			_scenarios = new[]
 			{
 				Introduction.Scenario,
-				MultiplayerIntroduction.Scenario
+				MultiplayerIntroduction.Scenario,
+				Analysis.Scenario,
 			}.ToDictionary(k => k.Name, v => v);
 		}
 

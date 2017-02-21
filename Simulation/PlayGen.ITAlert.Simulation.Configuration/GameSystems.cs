@@ -120,7 +120,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							// this very long winded call is necessary to enforce the extension implementation of the extension interface
 							// TODO: can the extension interface be inferred from the parent class?
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AnalyserEnhancementExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusWorkstationExtension>(),
 						}
 					}
 				}

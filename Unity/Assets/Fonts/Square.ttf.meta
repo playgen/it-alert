@@ -3,13 +3,15 @@ guid: d2d22ca2cb8eadc4bbefa57c867abf73
 timeCreated: 1458559433
 licenseType: Free
 TrueTypeFontImporter:
-  serializedVersion: 3
-  fontSize: 16
+  serializedVersion: 4
+  fontSize: 64
   forceTextureCase: -2
-  characterSpacing: 1
-  characterPadding: 0
+  characterSpacing: 0
+  characterPadding: 1
   includeFontData: 1
-  fontNames: []
+  fontName: SquareFont
+  fontNames:
+  - SquareFont
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

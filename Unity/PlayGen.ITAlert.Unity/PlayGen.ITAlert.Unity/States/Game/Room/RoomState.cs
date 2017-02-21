@@ -61,10 +61,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnExit()
 		{
+			_photonClient.CurrentRoom?.Leave();
+
 			// CurrentRoom and messenger would have been destroyed by this point so no need to unsubscribe
 			_stateController.Terminate();
-
-			_photonClient.Disconnect();
 
 			LoadingUtility.LoadingSpinner.StopSpinner();
 		}

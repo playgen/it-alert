@@ -15,15 +15,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		private const float ItemContainerOffset = 0.3f;
+		private const float ItemContainerOffset = 25f;
+
 
 		private static readonly Vector2[] CornerItemOffsets = new[]
 		{
-			new Vector2(-2 * ItemContainerOffset, ItemContainerOffset),
-			new Vector2(2 * ItemContainerOffset, ItemContainerOffset),
-			new Vector2(-2 * ItemContainerOffset, -1 * ItemContainerOffset),
-			new Vector2(2 * ItemContainerOffset, -1 * ItemContainerOffset),
+			new Vector2(-2 * ItemContainerOffset, ItemContainerOffset + 4),
+			new Vector2(2 * ItemContainerOffset, ItemContainerOffset + 4),
+			new Vector2(-2 * ItemContainerOffset, -1 * ItemContainerOffset - 4),
+			new Vector2(2 * ItemContainerOffset, -1 * ItemContainerOffset - 4),
 		};
+
+		private Vector3[] _itemPositions;
 
 		#region game elements
 
@@ -47,17 +50,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public GameObject ConnectionSquare => _connectionSquare;
 
-		private BoxCollider2D _connectionSquareCollider;
-
-		public BoxCollider2D ConnectionSquareCollider => _connectionSquareCollider;
-
-		public float ConnectionSquareRadius => _connectionSquare.transform.localScale.x * (_connectionSquareCollider.size.x / 2) * transform.localScale.x;
-
 		private List<GameObject> _itemContainers;
 
 		#endregion
 
-		private Vector2[] _itemPositions;
 
 		#region movement constants
 
@@ -99,14 +95,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//_iconRenderer.transparentMaterial = material;
 			//_filled.transparentMaterial = material;
 
-			_nameText = transform.Find("Canvas/Name").GetComponent<Text>();
+			_nameText = transform.Find("Name").GetComponent<Text>();
 
 
-			_cpuImage = transform.Find("Canvas/CPU/Amount").gameObject.GetComponent<Image>();
-			_memoryImage = transform.Find("Canvas/Memory/Amount").gameObject.GetComponent<Image>();
+			_cpuImage = transform.Find("CPU/Amount").gameObject.GetComponent<Image>();
+			_memoryImage = transform.Find("Memory/Amount").gameObject.GetComponent<Image>();
 
-			_connectionSquare = transform.Find("Connections").gameObject;
-			_connectionSquareCollider = _connectionSquare.GetComponent<BoxCollider2D>();
+			_connectionSquare = transform.Find("ConnectionSquare").gameObject;
 			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			DropCollider = GetComponent<BoxCollider2D>();
@@ -138,8 +133,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void SetPosition()
 		{
 			var coordinate = Entity.GetComponent<Coordinate2DProperty>();
-			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (UIConstants.SubsystemSpacing.x * coordinate.X), UIConstants.CurrentNetworkOffset.y + (UIConstants.SubsystemSpacing.y * coordinate.Y));
-			_itemPositions = CornerItemOffsets.Select(c => c + (Vector2) _connectionSquare.transform.position).ToArray();
+			var rectTransform = GetComponent<RectTransform>();
+			var width = rectTransform.rect.width * rectTransform.localScale.x;
+			var height = rectTransform.rect.height * rectTransform.localScale.y;
+
+			var subsystemZ = ((GameObject)Resources.Load("Subsystem")).transform.position.z;
+			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (width * UIConstants.SubsystemSpacingMultiplier * coordinate.X), UIConstants.CurrentNetworkOffset.y + (height * UIConstants.SubsystemSpacingMultiplier * coordinate.Y), subsystemZ);
+
+			var itemZ = ((GameObject)Resources.Load("Item")).transform.position.z;
+			_itemPositions = CornerItemOffsets.Select(c => new Vector3(c.x + transform.position.x, c.y + transform.position.y, itemZ)).ToArray();
 		}
 
 		#endregion
@@ -188,7 +190,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
 						itemContainerBehaviour.Initialize(itemContainer);
 
-						itemContainerObject.transform.position = GetItemPosition(i);
+						itemContainerObject.transform.position = _itemPositions[i];
 					}
 				}
 			}
@@ -215,10 +217,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region static properties
 
-		public Vector2 GetItemPosition(int itemContainerIndex)
-		{
-			return _itemPositions[itemContainerIndex];
-		}
 
 		public void FadeInUpdate()
 		{
@@ -259,7 +257,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			// Position on square perimeter
 			// Top Left = (-1, -1), Bottom Right = (1, 1)
-			var sideLength = _connectionScaleCoefficient * _connectionSquareCollider.bounds.size.x;
+			var sideLength = _connectionScaleCoefficient * _connectionSquare.GetComponent<RectTransform>().rect.width * transform.localScale.x;
 			var halfSide = sideLength / 2;
 			//var step = sideLength / PointsPerSide * 2;
 			var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;

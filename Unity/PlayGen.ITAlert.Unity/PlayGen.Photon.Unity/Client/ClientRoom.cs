@@ -64,6 +64,7 @@ namespace PlayGen.Photon.Unity.Client
 		
 		public void Leave()
 		{
+			Messenger.Dispose();
 			Dispose();
 			_photonClientWrapper.LeaveRoom();
 		}

@@ -9,11 +9,12 @@ using Engine.Testing.Components;
 using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
+using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Components
 {
 	[TestFixture]
-	public class AnalyserEnhancementTests : ComponentTestBase<AnalyserEnhancement>
+	public class AnalyserEnhancementTests : ComponentTestBase<Antivirus>
 	{
 		[Test]
 		public void WriteMoreTests()

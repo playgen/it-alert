@@ -56,16 +56,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_playerItemPrefab = Resources.Load("PlayerItem") as GameObject;
 			_playerSpacePrefab = Resources.Load("PlayerSpace") as GameObject;
 
-			_backButton.onClick.AddListener(OnBackButtonClick);
-			_readyButton.onClick.AddListener(OnReadyButtonClick);
-			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
-		}
-
-		protected override void OnTerminate()
-		{
-			_backButton.onClick.RemoveListener(OnBackButtonClick);
-			_readyButton.onClick.RemoveListener(OnReadyButtonClick);
-			_changeColorButton.onClick.RemoveListener(OnColorChangeButtonClick);
 		}
 
 		protected override void OnEnter()
@@ -80,6 +70,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_readyButton.gameObject.GetComponentInChildren<Text>().text = "READY";
 			_lobbyPanel.SetActive(true);
 			_buttons.BestFit();
+
+			_backButton.onClick.AddListener(OnBackButtonClick);
+			_readyButton.onClick.AddListener(OnReadyButtonClick);
+			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
+
 			LoadingUtility.HideSpinner();
 		}
 
@@ -90,6 +85,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				_photonClient.CurrentRoom.PlayerListUpdatedEvent -= OnPlayersChanged;
 			}
 
+			_backButton.onClick.RemoveListener(OnBackButtonClick);
+			_readyButton.onClick.RemoveListener(OnReadyButtonClick);
+			_changeColorButton.onClick.RemoveListener(OnColorChangeButtonClick);
 			_lobbyPanel.SetActive(false);
 		}
 

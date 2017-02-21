@@ -13,6 +13,7 @@ using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.Components.Tutorial;
+using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
@@ -85,11 +86,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype AnalysisEnhancement = new Archetype("AnalysisEnhancement")
-			.Extends(Subsystem)
-			.HasComponent(new ComponentBinding<AnalyserEnhancement>());
-
-		public static readonly Archetype AntivirusEnhancement = new Archetype("AntivirusEnhancement")
+		public static readonly Archetype AntivirusWorkstation = new Archetype("AntivirusWorkstation")
 			.Extends(Subsystem)
 			.HasComponent(new ComponentBinding<AntivirusEnhancement>());
 
@@ -232,7 +229,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype Analyser = new Archetype("Analyser")
+		// TODO: this should bne declared along with the antivirus workstation archetype and the system implementing the behaviour, but at the moment this would cause a circular reference
+		public static readonly Archetype AnalysisActivator = new Archetype(AntivirusWorkstationExtension.AnalysisActivatorArchetypeName)
 			.Extends(Item)
 			.HasComponent(new ComponentBinding<Analyser>())
 			.HasComponent(new ComponentBinding<TimedActivation>()

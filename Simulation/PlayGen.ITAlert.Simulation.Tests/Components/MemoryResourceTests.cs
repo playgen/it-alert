@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 		[Test]
 		public void TestMemoryResourceTransmission()
 		{
-			var nodes = new[] { new NodeConfig(0)
+			var nodeConfigs = new[] { new NodeConfig()
 				{
 					X = 0,
 					Y = 0,
@@ -32,6 +32,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 					ArchetypeName = nameof(GameEntities.Subsystem)
 				}
 			};
+			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
+
 			var items = new[]
 			{
 				new ItemConfig()
@@ -67,7 +69,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 
 			var lifecycleConfig = new LifeCycleConfiguration();
-			var configuration = new SimulationConfiguration(nodes, null, null, items, archetypes, systems, lifecycleConfig);
+			var configuration = new SimulationConfiguration(nodeConfigs, null, null, items, archetypes, systems, lifecycleConfig);
 			var rootA = SimulationInstaller.CreateSimulationRoot(configuration);
 			var ecsA = rootA.ECS;
 

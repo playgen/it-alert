@@ -20,8 +20,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			{
 				for (var i = 0; i < width; i++)
 				{
-					nodeConfigs.Add(new NodeConfig(i + (j * width))
+					nodeConfigs.Add(new NodeConfig()
 					{
+						Id = i + (j * width),
 						Name = $"Subsystem {i + (j * width)}",
 						X = i,
 						Y = j,
@@ -32,7 +33,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			return nodeConfigs;
 		}
 
-		public static List<EdgeConfig> GenerateFullyConnectedConfiguration(int width, int height, int weight)
+		public static void ProcessNodeConfigs(IEnumerable<NodeConfig> nodeConfigs)
+		{
+			var enumerable = nodeConfigs as NodeConfig[] ?? nodeConfigs.ToArray();
+			var maxId = enumerable.Max(nc => nc.Id);
+			foreach (var nodeConfig in enumerable)
+			{
+				if (nodeConfig.Id == NodeConfig.IdUnassigned)
+				{
+					nodeConfig.Id = ++maxId;
+				}
+			}
+		}
+
+		public static List<EdgeConfig> GenerateFullyConnectedGridConfiguration(int width, int height, int weight)
 		{
 			var edgeConfigs = new List<EdgeConfig>();
 			for (var i = 0; i < height; i++)
@@ -69,7 +83,55 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			}
 
-			return edgeConfigs; ;
+			return edgeConfigs;
+		}
+
+		public static List<EdgeConfig> GenerateFullyConnectedConfiguration(IEnumerable<NodeConfig> nodeConfigs, int weight)
+		{
+			var enumerable = nodeConfigs as NodeConfig[] ?? nodeConfigs.ToArray();
+			var width = enumerable.Max(nc => nc.X);
+			var height = enumerable.Max(nc => nc.Y);
+
+			var nodesByCoordinate = enumerable.ToDictionary(k => new {x = k.X, y = k.Y}, v => v);
+
+			var edgeConfigs = new List<EdgeConfig>();
+			for (var i = 0; i < height; i++)
+			{
+				for (var j = 0; j < width; j++)
+				{
+					NodeConfig currentNode;
+					if (nodesByCoordinate.TryGetValue(new {x = j, y = i}, out currentNode))
+					{
+						NodeConfig nextX;
+						if (nodesByCoordinate.TryGetValue(new {x = j + 1, y = i}, out nextX))
+						{
+							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.East, nextX.Id, weight)
+							{
+								ArchetypeName = nameof(GameEntities.Connection)
+							});
+							edgeConfigs.Add(new EdgeConfig(nextX.Id, EdgeDirection.West, currentNode.Id, weight)
+							{
+								ArchetypeName = nameof(GameEntities.Connection)
+							});
+						}
+
+						NodeConfig nextY;
+						if (nodesByCoordinate.TryGetValue(new { x = j, y = i + 1 }, out nextY))
+						{
+							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.South, nextY.Id, weight)
+							{
+								ArchetypeName = nameof(GameEntities.Connection)
+							});
+							edgeConfigs.Add(new EdgeConfig(nextY.Id, EdgeDirection.North, currentNode.Id, weight)
+							{
+								ArchetypeName = nameof(GameEntities.Connection)
+							});
+						}
+					}
+				}
+			}
+
+			return edgeConfigs;
 		}
 
 		public static List<PlayerConfig> GeneratePlayerConfigs(List<NodeConfig> nodeConfigs, int count)
@@ -163,7 +225,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static SimulationConfiguration GenerateConfiguration(int width, int height, List<PlayerConfig> playerConfigs, int items)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
-			var edgeConfigs = GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
+			var edgeConfigs = GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 

@@ -62,7 +62,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 			const int playerCount = 1;
 
-			var nodeLeft = new NodeConfig(0)
+			var nodeLeft = new NodeConfig()
 			{
 				Name = "Left",
 				X = 0,
@@ -70,7 +70,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeRight = new NodeConfig(1)
+			var nodeRight = new NodeConfig()
 			{
 				Name = "Right",
 				X = 1,
@@ -79,7 +79,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			};
 
 			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight };
-			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
+			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
+
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			var itemConfigs = new ItemConfig[0];
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{

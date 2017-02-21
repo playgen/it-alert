@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					Debug.LogError($"EntityBehaviour for entity {Entity.Id} is not NodeBehaviour");
 				}
 				var position = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
-				transform.position = position;
+				transform.position = new Vector3(position.x, position.y, transform.position.z);
 			}
 			else
 			{

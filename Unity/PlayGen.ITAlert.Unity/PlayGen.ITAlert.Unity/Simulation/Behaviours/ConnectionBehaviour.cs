@@ -82,31 +82,26 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var tailBehaviour = (SubsystemBehaviour) tail.EntityBehaviour;
 			var tailPos = tailBehaviour.ConnectionSquare.transform.position;
 
-			//get distance between start and end points
-			var distance = Vector2.Distance(headPos, tailPos);
-
-			//move connection to centre point between locations
-			transform.position = ((headPos + tailPos) * 0.5f);
+			var length = Vector2.Distance(headPos, tailPos);
+			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
+			var midpoint = (headPos + tailPos) * 0.5f;
+			transform.position = new Vector3(midpoint.x, midpoint.y, connectionZ);
 
 			//get the angle between the locations
 			Vector2 v2 = tailPos - headPos;
 			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
 
+			var connectionSquareSize = tailBehaviour.ConnectionSquare.GetComponent<RectTransform>().rect.width * tail.GameObject.transform.localScale.x;
+			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
+			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
+
 			//scale and position the connection accordingly
 			var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
-			transform.localScale = new Vector2(relativeWeight, distance - (tailBehaviour.ConnectionSquareRadius * 2));
-			transform.eulerAngles = new Vector3(0, 0, _angle + 90);
 
-			//GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
-			//transform.Find("Start Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
-			//transform.Find("End Node").GetComponent<SpriteRenderer>().color = _weightColors[EntityState.RelativeWeight - 1];
+			var rectTransform = GetComponent<RectTransform>();
 
-			//adjust node images to correct scale
-			_headPos = ScaleEndPoint(headPos, tailBehaviour.ConnectionSquareRadius);
-			_tailPos = ScaleEndPoint(tailPos, tailBehaviour.ConnectionSquareRadius);
-
-			transform.Find("Start Node").position = _headPos;
-			transform.Find("End Node").position = _tailPos;
+			rectTransform.sizeDelta = new Vector2(length - connectionSquareSize, 8 * relativeWeight);
+			transform.eulerAngles = new Vector3(0, 0, _angle);
 		}
 
 		private Vector2 ScaleEndPoint(Vector2 point, float scaleDelta)
