@@ -20,7 +20,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private void OnPauseClicked()
 		{
-			PauseClickedEvent();
+			PauseClickedEvent?.Invoke();
 		}
 
 		protected override void OnEnter()

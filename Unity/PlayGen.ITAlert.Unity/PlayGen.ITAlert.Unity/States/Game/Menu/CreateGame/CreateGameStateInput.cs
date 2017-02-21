@@ -39,15 +39,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			_createGameCloseButton = _buttons.GetButton("BackButtonContainer");
 			_createGamePopupButton = _buttons.GetButton("CreateButtonContainer");
 
-			_createGameCloseButton.onClick.AddListener(OnBackClick);
-			_createGamePopupButton.onClick.AddListener(OnCreateClick);
 			// Create Game Listener Goes Here
-		}
-
-		protected override void OnTerminate()
-		{
-			_createGameCloseButton.onClick.RemoveListener(OnBackClick);
-			_createGamePopupButton.onClick.RemoveListener(OnCreateClick);
 		}
 
 		private void OnCreateClick()
@@ -72,6 +64,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnEnter()
 		{
+			_createGameCloseButton.onClick.AddListener(OnBackClick);
+			_createGamePopupButton.onClick.AddListener(OnCreateClick);
+
 			LoadingUtility.HideSpinner();
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_createGamePanel.SetActive(true);
@@ -81,6 +76,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnExit()
 		{
+			_createGameCloseButton.onClick.RemoveListener(OnBackClick);
+			_createGamePopupButton.onClick.RemoveListener(OnCreateClick);
+
 			_photonClient.JoinedRoomEvent -= OnJoinedRoom;
 			_createGamePanel.SetActive(false);
 		}

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace PlayGen.Photon.Unity.Messaging
 {
-	public class Messenger
+	public class Messenger : IDisposable
 	{
 		private readonly MessageSubscriptionHandler _subscriptionHandler = new MessageSubscriptionHandler();
 		private readonly IMessageSerializationHandler _serializationHandler;
@@ -26,6 +26,11 @@ namespace PlayGen.Photon.Unity.Messaging
 		public void Unsubscribe(int channel, Action<Message> messageReceivedCallback)
 		{
 			_subscriptionHandler.Unsubscribe(channel, messageReceivedCallback);
+		}
+
+		public void Dispose()
+		{
+			_subscriptionHandler.UnsubscribeAll();
 		}
 
 		public void SendMessage(Message message)

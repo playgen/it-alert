@@ -29,41 +29,39 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
 			_quitButton = _buttons.GetButton("QuitButtonContainer");
 
-			_continueButton.onClick.AddListener(OnContinueClick);
-			_settingsButton.onClick.AddListener(OnSettingsClick);
-			_quitButton.onClick.AddListener(OnQuitClick);
-		}
-
-		protected override void OnTerminate()
-		{
-			_continueButton.onClick.RemoveListener(OnContinueClick);
-			_settingsButton.onClick.RemoveListener(OnSettingsClick);
-			_quitButton.onClick.RemoveListener(OnQuitClick);
 		}
 
 		private void OnContinueClick()
 		{
-			ContinueClickedEvent();
+			ContinueClickedEvent?.Invoke();
 		}
 
 		private void OnSettingsClick()
 		{
-			SettingsClickedEvent();
+			SettingsClickedEvent?.Invoke();
 		}
 
 		private void OnQuitClick()
 		{
-			QuitClickedEvent();
+			QuitClickedEvent?.Invoke();
 		}
 
 		protected override void OnEnter()
 		{
+			_continueButton.onClick.AddListener(OnContinueClick);
+			_settingsButton.onClick.AddListener(OnSettingsClick);
+			_quitButton.onClick.AddListener(OnQuitClick);
+
 			_menuPanel.SetActive(true);
 			_buttons.BestFit();
 		}
 
 		protected override void OnExit()
 		{
+			_continueButton.onClick.RemoveListener(OnContinueClick);
+			_settingsButton.onClick.RemoveListener(OnSettingsClick);
+			_quitButton.onClick.RemoveListener(OnQuitClick);
+
 			_menuPanel.SetActive(false);
 		}
 

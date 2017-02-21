@@ -20,21 +20,21 @@ namespace PlayGen.ITAlert.Unity.States
 
 		private GameState CreateGameState()
 		{
-			var state = new GameState();
+			var gameState = new GameState();
 
 			var hadExceptionTransition = new OnEventTransition(ErrorState.StateName);
 			// exceptions thrown in the Unity Update loop dont propogate
 			// TODO: firgure out how to catch unmity exceptions and trigger state transition
 			// temporarily catch ui exception from the director ourselves
-			state.ExceptionEvent += GameExceptionHandler.OnException;
+			gameState.ExceptionEvent += GameExceptionHandler.OnException;
 			GameExceptionHandler.HadUnignoredExceptionEvent += hadExceptionTransition.ChangeState;
 
-			var disconnectedTransition = new OnEventTransition(state.Name);
-			state.DisconnectedEvent += disconnectedTransition.ChangeState;
+			var disconnectedTransition = new OnEventTransition(gameState.Name);
+			gameState.DisconnectedEvent += disconnectedTransition.ChangeState;
 
-			state.AddTransitions(hadExceptionTransition, disconnectedTransition);
+			gameState.AddTransitions(hadExceptionTransition, disconnectedTransition);
 
-			return state;
+			return gameState;
 		}
 
 		private ErrorState CreateErrorState()

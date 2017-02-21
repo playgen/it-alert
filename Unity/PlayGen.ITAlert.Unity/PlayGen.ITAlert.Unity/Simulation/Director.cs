@@ -159,9 +159,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				// center graph
 				UIConstants.CurrentNetworkOffset = UIConstants.NetworkOffset;
+
+				var subsystemRectTransform = ((GameObject)Resources.Load("Subsystem")).GetComponent<RectTransform>();
+				var subsystemWidth = subsystemRectTransform.rect.width * subsystemRectTransform.localScale.x;
+				var subsystemHeight = subsystemRectTransform.rect.height * subsystemRectTransform.localScale.y;
+
 				UIConstants.CurrentNetworkOffset -= new Vector2(
-					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacing.x,
-					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacing.y);
+					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemWidth,
+					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemHeight);
 
 				CreateInitialEntities();
 				SetupPlayers(players, playerServerId);
@@ -416,7 +421,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					untrackedEntity.UpdateEntityState();
 				}
-
 				_itemPanel.Update();
 
 				UpdateCompleteSignal.Set();

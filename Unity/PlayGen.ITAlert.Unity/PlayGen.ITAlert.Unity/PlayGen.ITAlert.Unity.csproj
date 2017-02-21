@@ -219,7 +219,6 @@
     <Compile Include="Transitions\GameExceptionChecked\QuitTransition.cs" />
     <Compile Include="Interfaces\ICompletable.cs" />
     <Compile Include="Simulation\Behaviours\ConnectionBehaviour.cs" />
-    <Compile Include="Simulation\Behaviours\EnhancementBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\EntityBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\GameOverBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\IEntityBehaviour.cs" />

@@ -36,8 +36,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				GetComponent<SpriteRenderer>().color = _playerColor;
 				GetComponent<TrailRenderer>().startColor = _playerColor;
 				GetComponent<TrailRenderer>().endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
-				GetComponent<TrailRenderer>().sortingLayerID = GetComponent<SpriteRenderer>().sortingLayerID;
-				GetComponent<TrailRenderer>().sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
 			}
 		}
 

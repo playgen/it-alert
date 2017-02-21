@@ -104,17 +104,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				GameObjectUtilities.FindGameObject("FeedbackContainer/FeedbackPanelContainer/FeedbackPanel/RankingImage");
 
 			_sendButton = _buttons.GetButton("SendButtonContainer");
-			_sendButton.onClick.AddListener(OnSendClick);
-		}
-
-
-		protected override void OnTerminate()
-		{
-			_sendButton.onClick.RemoveListener(OnSendClick);
 		}
 
 		protected override void OnEnter()
 		{
+			_sendButton.onClick.AddListener(OnSendClick);
+
 			PopulateFeedback(_photonClient.CurrentRoom.Players, _photonClient.CurrentRoom.Player);
 			_feedbackPanel.transform.parent.gameObject.SetActive(true);
 			_buttons.BestFit();
@@ -122,6 +117,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		protected override void OnExit()
 		{
+			_sendButton.onClick.RemoveListener(OnSendClick);
 			_feedbackPanel.transform.parent.gameObject.SetActive(false);
 		}
 

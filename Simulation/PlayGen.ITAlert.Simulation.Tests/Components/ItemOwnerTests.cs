@@ -42,7 +42,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				.HasComponent(new ComponentBinding<Scanner>())
 				.HasComponent(new ComponentBinding<Owner>());
 
-			var nodes = new NodeConfig[] { new NodeConfig(0)
+			var nodeConfigs = new NodeConfig[] { new NodeConfig()
 				{
 					X = 0,
 					Y = 0,
@@ -50,6 +50,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 					ArchetypeName = testSystem.Name
 				},
 			};
+			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
+
 			var items = new[]
 			{
 				new ItemConfig()
@@ -71,7 +73,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 
 			var lifecycleConfig = new LifeCycleConfiguration();
-			var configuration = new SimulationConfiguration(nodes, null, null, items, archetypes, systems, lifecycleConfig);
+			var configuration = new SimulationConfiguration(nodeConfigs, null, null, items, archetypes, systems, lifecycleConfig);
 			var rootA = SimulationInstaller.CreateSimulationRoot(configuration);
 			var ecsA = rootA.ECS;
 

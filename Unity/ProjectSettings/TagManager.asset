@@ -50,18 +50,3 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Graph
-    uniqueID: 1075429483
-    locked: 0
-  - name: ItemContainer
-    uniqueID: 519731075
-    locked: 0
-  - name: Items
-    uniqueID: 3668786217
-    locked: 0
-  - name: Actors
-    uniqueID: 2134443475
-    locked: 0
-  - name: UI
-    uniqueID: 1238663097
-    locked: 0

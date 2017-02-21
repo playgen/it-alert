@@ -26,6 +26,8 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public event Action<Exception> ExceptionEvent;
 		public event Action DisconnectedEvent;
 
+		private bool _firstTime = true;
+
 		public GameState()
 		{
 			_stateControllerFactory = new GameStateControllerFactory();
@@ -58,6 +60,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		protected override void OnExit()
 		{
 			_stateController.Terminate();
+			_photonClient.Disconnect();
 			_photonClient.Dispose();
 		}
 

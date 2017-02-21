@@ -44,14 +44,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			_gameListObject = GameObjectUtilities.FindGameObject("JoinGameContainer/JoinPanelContainer/GameListContainer/Viewport/Content");
 			_gameItemPrefab = Resources.Load("GameItem") as GameObject;
 
-			_backButton.onClick.AddListener(OnBackClick);
-			_refreshButton.onClick.AddListener(OnRefreshClick);
-		}
-
-		protected override void OnTerminate()
-		{
-			_backButton.onClick.RemoveListener(OnBackClick);
-			_refreshButton.onClick.RemoveListener(OnRefreshClick);
 		}
 
 		private void OnRefreshClick()
@@ -67,6 +59,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnEnter()
 		{
+			_backButton.onClick.AddListener(OnBackClick);
+			_refreshButton.onClick.AddListener(OnRefreshClick);
+
 			_photonClient.JoinedRoomEvent += OnJoinGameSuccess;
 			_gameListController.GamesListSuccessEvent += OnGamesListSuccess;
 
@@ -78,6 +73,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnExit()
 		{
+			_backButton.onClick.RemoveListener(OnBackClick);
+			_refreshButton.onClick.RemoveListener(OnRefreshClick);
+
 			_photonClient.JoinedRoomEvent -= OnJoinGameSuccess;
 			_gameListController.GamesListSuccessEvent -= OnGamesListSuccess;
 			_joinGamePanel.SetActive(false);

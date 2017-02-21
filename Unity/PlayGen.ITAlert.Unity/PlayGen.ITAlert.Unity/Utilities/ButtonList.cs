@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 			{
 				LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) _buttons[0].transform.parent);
 			}
-			int smallestFontSize = 0;
+			int smallestFontSize = 1;
 			foreach (var textObj in _buttons)
 			{
 				var text = textObj.GetComponentInChildren<Text>();
@@ -29,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 				}
 				text.resizeTextForBestFit = true;
 				text.resizeTextMinSize = 1;
-				text.resizeTextMaxSize = 100;
+				text.resizeTextMaxSize = 48;
 				text.cachedTextGenerator.Invalidate();
 				text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
 				text.resizeTextForBestFit = false;
@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 					newSizeRescale = text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y;
 				}
 				newSize = Mathf.FloorToInt(newSize * newSizeRescale);
-				if (newSize < smallestFontSize || smallestFontSize == 0)
+				if (newSize < smallestFontSize || smallestFontSize == 1)
 				{
 					smallestFontSize = newSize;
 				}

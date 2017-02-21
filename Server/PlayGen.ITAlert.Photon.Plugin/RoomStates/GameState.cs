@@ -124,7 +124,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var lifecycleCompleteTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Complete);
-			lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
+			//lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
 			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
 			
 			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);

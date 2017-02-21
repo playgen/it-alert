@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			const int minPlayerCount = 2;
 			const int maxPlayerCount = 4;
 
-			var nodeTopLeft = new NodeConfig(0)
+			var nodeTopLeft = new NodeConfig()
 			{
 				Name = "Top Left",
 				X = 0,
@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeTopRight = new NodeConfig(1)
+			var nodeTopRight = new NodeConfig()
 			{
 				Name = "Top Right",
 				X = 1,
@@ -35,7 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeBottomLeft = new NodeConfig(2)
+			var nodeBottomLeft = new NodeConfig()
 			{
 				Name = "Bottom Left",
 				X = 0,
@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeBottomRight = new NodeConfig(3)
+			var nodeBottomRight = new NodeConfig()
 			{
 				Name = "Bottom Right",
 				X = 1,
@@ -52,7 +52,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			};
 
 			var nodeConfigs = new NodeConfig[] { nodeTopLeft, nodeTopRight, nodeBottomLeft, nodeBottomRight };
-			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
+			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			var itemConfigs = new ItemConfig[0];
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{

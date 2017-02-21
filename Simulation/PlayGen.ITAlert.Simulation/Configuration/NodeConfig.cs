@@ -5,7 +5,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class NodeConfig : IEquatable<NodeConfig>
 	{
-		public int Id { get; }
+		public const int IdUnassigned = -1;
+
+		public int Id { get; set; } = IdUnassigned;
 
 		public int EntityId { get; set; }
 
@@ -17,11 +19,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public int Y { get; set; }
 
 		public string Name { get; set; }
-
-		public NodeConfig(int id)
-		{
-			Id = id;
-		}
 
 		public bool Equals(NodeConfig other)
 		{
