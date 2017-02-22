@@ -18,13 +18,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _activationTimerImage;
 
 		[SerializeField]
-		private SpriteRenderer _foregroundSprite;
+		private Image _foregroundSprite;
 
 		[SerializeField]
-		private SpriteRenderer _midgroundSprite;
+		private Image _midgroundSprite;
 
 		[SerializeField]
-		private SpriteRenderer _backgroundSprite;
+		private Image _backgroundSprite;
 		#endregion
 
 		#region unity components
@@ -54,16 +54,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 
 		#region Initialization
-
-		public void Start()
-		{
-			gameObject.transform.SetParent(Director.Graph.transform, false);
-		}
-
-		public void Awake()
-		{
-
-		}
 
 		protected override void OnInitialize()
 		{

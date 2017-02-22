@@ -327,6 +327,12 @@ MonoBehaviour:
   m_Script: {fileID: 790174058, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _nameText: {fileID: 114000012371800668}
+  _cpuImage: {fileID: 114000010031072572}
+  _memoryImage: {fileID: 114000010482817606}
+  _iconRenderer: {fileID: 212000011552730512}
+  _filled: {fileID: 212000013987902578}
+  _connectionSquare: {fileID: 1000010052614556}
 --- !u!212 &212000011552730512
 SpriteRenderer:
   m_ObjectHideFlags: 1

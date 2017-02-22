@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -21,7 +23,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public Vector Position;
 
-		private SpriteRenderer _spriteRenderer;
+		[SerializeField]
+		private Image _spriteRenderer;
 
 		#region Components
 
@@ -36,16 +39,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private float _angle;
 
 		#region Initialization
-
-		public void Start()
-		{
-			gameObject.transform.SetParent(Director.Graph.transform, false);
-
-		}
-
-		public void Awake()
-		{
-		}
 
 		/// <summary>
 		/// Called by the base class after the state has been set during initialization
@@ -77,10 +70,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				throw new SimulationIntegrationException($"Could not find entity id {tailId} as tail on connection id {Entity.Id}");
 			}
-			var headBehaviour = (SubsystemBehaviour) head.EntityBehaviour;
-			var headPos = headBehaviour.ConnectionSquare.transform.position;
-			var tailBehaviour = (SubsystemBehaviour) tail.EntityBehaviour;
-			var tailPos = tailBehaviour.ConnectionSquare.transform.position;
+			var headPos = head.GameObject.transform.localPosition;
+			var tailPos = tail.GameObject.transform.localPosition;
 
 			var length = Vector2.Distance(headPos, tailPos);
 			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
@@ -91,7 +82,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			Vector2 v2 = tailPos - headPos;
 			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
 
-			var connectionSquareSize = tailBehaviour.ConnectionSquare.GetComponent<RectTransform>().rect.width * tail.GameObject.transform.localScale.x;
+			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
 			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
@@ -106,19 +97,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private Vector2 ScaleEndPoint(Vector2 point, float scaleDelta)
 		{
-			if (point.x > transform.position.x)
+			if (point.x > transform.localPosition.x)
 			{
 				point.x -= scaleDelta;
 			}
-			else if (point.x < transform.position.x)
+			else if (point.x < transform.localPosition.x)
 			{
 				point.x += scaleDelta;
 			}
-			if (point.y > transform.position.y)
+			if (point.y > transform.localPosition.y)
 			{
 				point.y -= scaleDelta;
 			}
-			else if (point.y < transform.position.y)
+			else if (point.y < transform.localPosition.y)
 			{
 				point.y += scaleDelta;
 

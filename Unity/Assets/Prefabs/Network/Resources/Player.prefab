@@ -49,7 +49,7 @@ TrailRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014000263050}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_MotionVectors: 1
@@ -163,6 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 299254994, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _trailRenderer: {fileID: 96668158742469704}
 --- !u!212 &212000011909136302
 SpriteRenderer:
   m_ObjectHideFlags: 1
