@@ -22,9 +22,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_text = GetComponentInChildren<Text>();
 			_continue = transform.FindChild("Continue").gameObject;
 			_continue.GetComponent<Button>().onClick.AddListener(OnContinue);
-
-			gameObject.transform.SetParent(Director.Canvas.transform, false);
-
 		}
 
 		protected override void OnInitialize()

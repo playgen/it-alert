@@ -109,7 +109,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
 						ScenarioHelpers.GenerateTextAction(true,
 							"Welcome to IT Alert!", 
-							"You are a system administrator tasked with maintaing the network.",
+							"You are a system administrator tasked with maintaining the network.",
 							"Let's get started...")
 					},
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,

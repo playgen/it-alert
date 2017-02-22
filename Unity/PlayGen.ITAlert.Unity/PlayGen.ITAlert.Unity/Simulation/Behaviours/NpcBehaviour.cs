@@ -13,22 +13,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		//private string _warningText;
 
+		[SerializeField]
 		private SpriteRenderer _spriteRenderer;
 
 		private MalwareVisibility _malwareVisibility;
 
 		#region Initialization
 
-		public void Start()
-		{
-			gameObject.transform.SetParent(Director.Graph.transform, false);
-
-		}
-
-		private void Awake()
-		{
-			_spriteRenderer = GetComponent<SpriteRenderer>();
-		}
 
 		protected override void OnInitialize()
 		{

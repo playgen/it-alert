@@ -120,9 +120,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static GameObject InstantiateEntity(string resourceString)
 		{
-			return UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
+			var gameObject = UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
+			gameObject?.transform.SetParent(Director.Graph.transform, false);
+			return gameObject;
 		}
-		
+
 		private static void ResetSimulation()
 		{
 			_tick = 0;

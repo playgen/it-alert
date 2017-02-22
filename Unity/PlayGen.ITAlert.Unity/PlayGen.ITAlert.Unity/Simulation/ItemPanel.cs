@@ -46,11 +46,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					Director.AddUntrackedEntity(ItemEntity);
 
 					ItemEntity.GameObject.SetActive(false);
-					//ItemEntity.GameObject.transform.position = GameObject.transform.position;
+					ItemEntity.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
 
 					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
-
-					//ItemEntity.GameObject.transform.localScale = new Vector2(ItemScale, ItemScale);
 				}
 
 				_proxyItem = proxyItem;
@@ -93,7 +91,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (ItemContainer?.Item != null
 						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-						//item.GameObject.transform.position = GameObject.transform.position;
+						item.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
 						ItemEntity = item;
 						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
 						itemBehaviour.ScaleUp = true;

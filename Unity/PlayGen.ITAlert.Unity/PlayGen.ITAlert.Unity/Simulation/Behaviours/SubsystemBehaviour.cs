@@ -30,14 +30,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region game elements
 
+		[SerializeField]
 		private Text _nameText;
 
 
+		[SerializeField]
 		private Image _cpuImage;
-
+		[SerializeField]
 		private Image _memoryImage;
 
+		[SerializeField]
 		private SpriteRenderer _iconRenderer;
+		[SerializeField]
 		private SpriteRenderer _filled;
 
 		public BoxCollider2D DropCollider
@@ -45,7 +49,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			get; private set;
 		}
 
-		// everything is centered around this
+		[SerializeField]
 		private GameObject _connectionSquare;
 
 		public GameObject ConnectionSquare => _connectionSquare;
@@ -81,27 +85,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Initialization
 
-		public void Start()
-		{
-			gameObject.transform.SetParent(Director.Graph.transform, false);
-		}
-
 		public void Awake()
 		{
-			_iconRenderer = transform.Find("Icon").GetComponent<SpriteRenderer>();
-			_filled = transform.Find("Filled").GetComponent<SpriteRenderer>();
-
-			//var material = Resources.Load<Material>("DefaultMaterial");
-			//_iconRenderer.transparentMaterial = material;
-			//_filled.transparentMaterial = material;
-
-			_nameText = transform.Find("Name").GetComponent<Text>();
-
-
-			_cpuImage = transform.Find("CPU/Amount").gameObject.GetComponent<Image>();
-			_memoryImage = transform.Find("Memory/Amount").gameObject.GetComponent<Image>();
-
-			_connectionSquare = transform.Find("ConnectionSquare").gameObject;
 			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			DropCollider = GetComponent<BoxCollider2D>();
@@ -141,7 +126,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (width * UIConstants.SubsystemSpacingMultiplier * coordinate.X), UIConstants.CurrentNetworkOffset.y + (height * UIConstants.SubsystemSpacingMultiplier * coordinate.Y), subsystemZ);
 
 			var itemZ = ((GameObject)Resources.Load("Item")).transform.position.z;
-			_itemPositions = CornerItemOffsets.Select(c => new Vector3(c.x + transform.position.x, c.y + transform.position.y, itemZ)).ToArray();
+			_itemPositions = CornerItemOffsets.Select(c => new Vector3(c.x + rectTransform.anchoredPosition.x, c.y + rectTransform.anchoredPosition.y, itemZ)).ToArray();
 		}
 
 		#endregion

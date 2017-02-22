@@ -17,8 +17,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public static Vector2 CurrentNetworkOffset = new Vector2(0, -0.5f);
 
 
-		public static Vector3 DefaultItemScale = new Vector3(0.15f, 0.15f, 0.15f);
-		public static Vector3 ItemPanelItemScale = new Vector3(1.5f, 1.5f, 1f);
+		public static Vector3 DefaultItemScale = new Vector3(0.15f, 0.15f, 1f);
+		public static Vector3 ItemPanelItemScale = new Vector3(0.26f, 0.26f, 1f);
 
 		public const float ConnectionWidth = 1f;
 

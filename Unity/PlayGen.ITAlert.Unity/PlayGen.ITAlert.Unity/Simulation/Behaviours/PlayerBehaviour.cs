@@ -10,18 +10,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public int? InventoryItem => null;
 
 		private Color _playerColor;
-		
+
+		[SerializeField]
+		private TrailRenderer _trailRenderer;
+
 		#region Initialization
-
-		public void Start()
-		{
-			gameObject.transform.SetParent(Director.Graph.transform, false);
-
-		}
 
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
+			_trailRenderer.enabled = true;
 		}
 
 		#endregion
