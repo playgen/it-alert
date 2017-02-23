@@ -28,104 +28,96 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	// TODO: use zenject singleton container rather than statics
 	public sealed class Director : MonoBehaviour
 	{
-		public static event Action<EndGameState> GameEnded;
+		public event Action<EndGameState> GameEnded;
 
-		public static event Action Reset;
+		public event Action Reset;
 
 		#region simulation
 
-		private static Thread _updatethread;
+		private Thread _updatethread;
 
-		public static event Action<Exception> ExceptionEvent;
+		public event Action<Exception> ExceptionEvent;
 
-		private static readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
-		private static readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
-		private static readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
-		private static readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
-		private static readonly AutoResetEvent WorkerThreadExceptionSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent WorkerThreadExceptionSignal = new AutoResetEvent(false);
 
-		private static int _tick;
+		private int _tick;
 
-		public static int Tick => _tick;
+		public int Tick => _tick;
 
 		/// <summary>
 		/// Simulation  Container
 		/// </summary>
-		public static SimulationRoot SimulationRoot;
+		public SimulationRoot SimulationRoot;
 
 		// TODO: replace temporary implementation
-		private static EndGameSystem _endGameSystem;
+		private EndGameSystem _endGameSystem;
 
 
 		/// <summary>
 		/// Tracked entities have their lifecycle managed by the simulation and will bbe created and destroyed as required
 		/// </summary>
-		private static readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>();
+		private readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>();
 
 		/// <summary>
 		/// Untracked entities do not have a 1:1 mapping with simulation entities and their lifecycle is managed manually
 		/// </summary>
-		private static readonly List<UIEntity> UntrackedEntities = new List<UIEntity>();
+		private readonly List<UIEntity> UntrackedEntities = new List<UIEntity>();
 
 
-		#region game object root
+		#region game objects
 
-		private static GameObject _graph;
+		[SerializeField]
+		private RectTransform _rectTransform;
 
-		public static GameObject Graph => _graph ?? (_graph = GameObjectUtilities.FindGameObject("Game/Graph"));
-
-		private static GameObject _canvas;
-
-		public static GameObject Canvas => _canvas ?? (_canvas = GameObjectUtilities.FindGameObject("Game/GameCanvas/GameContainer"));
+		private Vector3 _scale;
 
 		#endregion
 
 		#endregion
-
-		/// <summary>
-		/// has the simulation been initialized
-		/// </summary>
-		public static bool Initialized { get; private set; }
 
 		#region player
 
 		/// <summary>
 		/// the active player
 		/// </summary>
-		private static PlayerBehaviour _activePlayer;
+		private PlayerBehaviour _activePlayer;
 
-		public static PlayerBehaviour Player => _activePlayer;
+		public PlayerBehaviour Player => _activePlayer;
 
-		public static PlayerBehaviour[] Players { get; private set; }
+		public PlayerBehaviour[] Players { get; private set; }
 
 		#endregion
 		
 		#region item panel
 
-		private static ItemPanel _itemPanel = new ItemPanel();
+		private ItemPanel _itemPanel;
 
 		#endregion
 
-		public static void AddUntrackedEntity(UIEntity uiEntity)
+		public void AddUntrackedEntity(UIEntity uiEntity)
 		{
 			UntrackedEntities.Add(uiEntity);
 		}
 
-		public static bool TryGetEntity(int id, out UIEntity uiEntity)
+		public bool TryGetEntity(int id, out UIEntity uiEntity)
 		{
 			return TrackedEntities.TryGetValue(id, out uiEntity);
 		}
 
 		#region Initialization
 
-		public static GameObject InstantiateEntity(string resourceString)
+		public GameObject InstantiateEntity(string resourceString)
 		{
 			var gameObject = UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
-			gameObject?.transform.SetParent(Director.Graph.transform, false);
+			gameObject?.transform.SetParent(transform.FindChild("Graph").transform, false);
 			return gameObject;
 		}
 
-		private static void ResetSimulation()
+		private void ResetSimulation()
 		{
 			_tick = 0;
 
@@ -146,10 +138,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			OnReset();
 		}
 
-		public static bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
+		public bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
 		{
 			try
 			{
+				//TODO: get rid of this hacky sack
+				PlayerCommands.Director = this;
+				
+				_itemPanel = new ItemPanel(this);
+
 				_updatethread = new Thread(ThreadWorker)
 				{
 					IsBackground = true,
@@ -159,16 +156,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ResetSimulation();
 				SimulationRoot = simulationRoot;
 
-				// center graph
-				UIConstants.CurrentNetworkOffset = UIConstants.NetworkOffset;
-
-				var subsystemRectTransform = ((GameObject)Resources.Load("Subsystem")).GetComponent<RectTransform>();
-				var subsystemWidth = subsystemRectTransform.rect.width * subsystemRectTransform.localScale.x;
-				var subsystemHeight = subsystemRectTransform.rect.height * subsystemRectTransform.localScale.y;
-
-				UIConstants.CurrentNetworkOffset -= new Vector2(
-					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemWidth,
-					(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemHeight);
+				CalculateNetworkOffset();
 
 				CreateInitialEntities();
 				SetupPlayers(players, playerServerId);
@@ -190,10 +178,24 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
+		private void CalculateNetworkOffset()
+		{
+			UIConstants.CurrentNetworkOffset = UIConstants.NetworkOffset;
+
+			var subsystemRectTransform = ((GameObject)Resources.Load("Subsystem")).GetComponent<RectTransform>();
+			var subsystemWidth = subsystemRectTransform.rect.width * subsystemRectTransform.localScale.x;
+			var subsystemHeight = subsystemRectTransform.rect.height * subsystemRectTransform.localScale.y;
+
+			UIConstants.CurrentNetworkOffset -= new Vector2(
+				(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemWidth,
+				(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemHeight);
+
+		}
+
 		/// <summary>
 		/// Create the entities from the 
 		/// </summary>
-		private static void CreateInitialEntities()
+		private void CreateInitialEntities()
 		{
 			foreach (var entityKvp in SimulationRoot.ECS.Entities)
 			{
@@ -207,7 +209,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					UIEntity uiEntity;
 					if (TryGetEntity(entityKvp.Key, out uiEntity))
 					{
-						uiEntity.EntityBehaviour.Initialize(entityKvp.Value);
+						uiEntity.EntityBehaviour.Initialize(entityKvp.Value, this);
 					}
 					else
 					{
@@ -221,7 +223,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private static void SetupPlayers(List<Player> players, int playerServerId)
+		private void SetupPlayers(List<Player> players, int playerServerId)
 		{
 			foreach (var player in players)
 			{
@@ -258,12 +260,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static bool _applyCommands = true;
 
-		public static void StopWorker()
+		public void StopWorker()
 		{
 			TerminateSignal.Set();
 		}
 
-		private static void ThreadWorker()
+		private void ThreadWorker()
 		{
 			while (true)
 			{
@@ -337,13 +339,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static SimulationIntegrationException ThreadWorkerException { get; set; }
 
-		public static void UpdateSimulation(TickMessage tickMessage)
+		public void UpdateSimulation(TickMessage tickMessage)
 		{
 			_tickMessage = tickMessage;
 			MessageSignal.Set();
 		}
 
-		public static void EndGame()
+		public void EndGame()
 		{
 			StopWorker();
 			OnGameEnded(_endGameSystem.EndGameState);
@@ -351,6 +353,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void Update()
 		{
+			UpdateScale();
+
 			if (WorkerThreadExceptionSignal.WaitOne(0))
 			{
 				OnExceptionEvent(ThreadWorkerException);
@@ -368,17 +372,31 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
+		private void UpdateScale()
+		{
+			if (_rectTransform.localScale != _scale)
+			{
+				Debug.LogWarning("Director: RectTransform scale updated");
+				_scale = _rectTransform.localScale;
+				CalculateNetworkOffset();
+				foreach (var entity in TrackedEntities.Values.Concat(UntrackedEntities))
+				{
+					entity.EntityBehaviour.UpdateScale(_scale);
+				}
+			}
+		}
+
 		#endregion
 
 		#region entity management
 
-		private static void CreateEntity(Entity entity)
+		private void CreateEntity(Entity entity)
 		{
-			var uiEntity = new UIEntity(entity);
+			var uiEntity = new UIEntity(entity, this);
 			TrackedEntities.Add(entity.Id, uiEntity);
 		}
 
-		private static void UpdateEntityStates()
+		private void UpdateEntityStates()
 		{
 			try
 			{
@@ -391,7 +409,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					UIEntity newUiEntity;
 					if (TryGetEntity(newEntity.Key, out newUiEntity))
 					{
-						newUiEntity.EntityBehaviour?.Initialize(newEntity.Value);
+						newUiEntity.EntityBehaviour?.Initialize(newEntity.Value, this);
 					}
 					else
 					{
@@ -438,17 +456,17 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
-		private static void OnExceptionEvent(Exception obj)
+		private void OnExceptionEvent(Exception obj)
 		{
 			ExceptionEvent?.Invoke(obj);
 		}
 
-		private static void OnGameEnded(EndGameState obj)
+		private void OnGameEnded(EndGameState obj)
 		{
 			GameEnded?.Invoke(obj);
 		}
 
-		private static void OnReset()
+		private void OnReset()
 		{
 			Reset?.Invoke();
 		}

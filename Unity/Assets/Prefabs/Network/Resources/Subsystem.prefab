@@ -333,6 +333,7 @@ MonoBehaviour:
   _iconRenderer: {fileID: 212000011552730512}
   _filled: {fileID: 212000013987902578}
   _connectionSquare: {fileID: 1000010052614556}
+  _rectTransform: {fileID: 224695457509665158}
 --- !u!212 &212000011552730512
 SpriteRenderer:
   m_ObjectHideFlags: 1

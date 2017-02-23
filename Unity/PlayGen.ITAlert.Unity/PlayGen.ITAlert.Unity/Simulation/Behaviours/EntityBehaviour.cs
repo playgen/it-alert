@@ -19,6 +19,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		public Entity Entity { get; private set; }
 
+		protected Director Director { get; private set; }
+
 		/// <summary>
 		/// Id of this entity
 		/// </summary>
@@ -82,9 +84,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// Initialize the object from simulation state
 		/// </summary>
 	/// <param name="entity"></param>
-		public void Initialize(Entity entity)
+		public void Initialize(Entity entity, Director director)
 		{
 			Entity = entity;
+			Director = director;
 			OnInitialize();
 			Initialized = true;
 		}
@@ -102,6 +105,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected abstract void OnInitialize();
 
 		protected virtual void OnUninitialize()
+		{
+			
+		}
+
+		public virtual void UpdateScale(Vector3 scale)
 		{
 			
 		}

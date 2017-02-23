@@ -19,14 +19,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 	{
 		public const string StateName = "Initializing";
 
+		private readonly Director _director;
+
 		private readonly Client _photonClient;
 
 		public override string Name => StateName;
 
 		private readonly ScenarioLoader _scenarioLoader;
 
-		public InitializingState(Client photonClient)
+		public InitializingState(Director director, Client photonClient)
 		{
+			_director = director;
 			_photonClient = photonClient;
 			_scenarioLoader = new ScenarioLoader();
 		}
@@ -66,7 +69,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 					scenario.Configuration.PlayerConfiguration = ConfigurationSerializer.Deserialize<List<PlayerConfig>>(initializedMessage.PlayerConfiguration);
 					// TODO: extract simulation initialization to somewhere else
 					var simulationRoot = SimulationInstaller.CreateSimulationRoot(scenario.Configuration);
-					if (Director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
+					if (_director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 					{
 						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
 						{

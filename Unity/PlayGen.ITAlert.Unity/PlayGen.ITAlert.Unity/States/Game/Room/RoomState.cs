@@ -23,11 +23,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private TickStateController _stateController;
 		private VoiceController _voiceController;
 
-		public RoomState(RoomStateInput tickStateInput, Client photonClient) 
-			: base(tickStateInput)
+		public RoomState(RoomStateInput roomStateInput, Client photonClient) 
+			: base(roomStateInput)
 		{
 			_photonClient = photonClient;
-			_controllerFactory = new RoomStateControllerFactory(photonClient);
+			_controllerFactory = new RoomStateControllerFactory(roomStateInput.Director, photonClient);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)

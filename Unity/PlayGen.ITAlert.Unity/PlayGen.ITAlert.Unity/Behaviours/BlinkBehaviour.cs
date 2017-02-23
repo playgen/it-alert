@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {
 	public class BlinkBehaviour : MonoBehaviour
 	{
-		[SerializeField] private SpriteRenderer _spriteRenderer;
+		[SerializeField]
+		private Image _image;
 
-		[SerializeField] private float _interval = 1f;
-
-		private float _step = 0.05f;
+		[SerializeField]
+		private float _interval = 1f;
 
 		private bool _pulseDown;
 
@@ -33,24 +34,24 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		public void OnDisable()
 		{
-			_spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1.0f);
+			_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 1.0f);
 		}
 
 		public void Pulse(float step)
 		{
 			if (_pulseDown)
 			{
-				_spriteRenderer.color -= new Color(0, 0, 0, step);
+				_image.color -= new Color(0, 0, 0, step);
 			}
 			else
 			{
-				_spriteRenderer.color += new Color(0, 0, 0, step);
+				_image.color += new Color(0, 0, 0, step);
 			}
-			if (_spriteRenderer.color.a <= 0)
+			if (_image.color.a <= 0)
 			{
 				_pulseDown = false;
 			}
-			else if (_spriteRenderer.color.a >= 1)
+			else if (_image.color.a >= 1)
 			{
 				_pulseDown = true;
 			}

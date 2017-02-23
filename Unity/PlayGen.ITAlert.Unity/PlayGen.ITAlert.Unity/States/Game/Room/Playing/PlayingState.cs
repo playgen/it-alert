@@ -16,13 +16,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		public const string StateName = "Playing";
 		public override string Name => StateName;
 
+		private readonly Director _director;
 
 		private readonly Client _photonClient;
 		
 		public bool IsComplete { get; private set; }
 
-		public PlayingState(PlayingStateInput input, Client photonClient) : base(input)
+		public PlayingState(Director director, PlayingStateInput input, Client photonClient) : base(input)
 		{
+			_director = director;
 			_photonClient = photonClient;
 		}
 
@@ -45,19 +47,19 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			_photonClient.CurrentRoom?.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 		}
 
-		private static void ProcessSimulationStateMessage(Message message)
+		private void ProcessSimulationStateMessage(Message message)
 		{
 			var tickMessage = message as TickMessage;
 			if (tickMessage != null)
 			{
-				Director.UpdateSimulation(tickMessage);
+				_director.UpdateSimulation(tickMessage);
 				return;
 			}
 
 			var stopMessage = message as StopMessage;
 			if (stopMessage != null)
 			{
-				Director.EndGame();
+				_director.EndGame();
 				return;
 			}
 

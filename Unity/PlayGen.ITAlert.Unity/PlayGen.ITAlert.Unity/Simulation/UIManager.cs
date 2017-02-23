@@ -21,12 +21,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		[SerializeField]
 		private GameObject _failureOverlay;
 
+		[SerializeField]
+		private Director _director;
+
 		#endregion
 
 		private void Awake()
 		{
-			Director.Reset += Reset;
-			Director.GameEnded += Director_GameEnded;
+			_director.Reset += Reset;
+			_director.GameEnded += Director_GameEnded;
 		}
 
 		private void Director_GameEnded(EndGameState endGameState)
@@ -54,7 +57,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SetTimer()
 		{
-			_timerText.text = Director.Tick.ToString("d4");
+			_timerText.text = _director.Tick.ToString("d5");
 		}
 
 		#endregion
@@ -73,7 +76,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			_successOverlay.SetActive(false);
 			_failureOverlay.SetActive(false);
-			_timerText.text = 0.ToString("d4");
+			_timerText.text = 0.ToString("d5");
 		}
 	}
 }

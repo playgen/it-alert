@@ -29,6 +29,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static Client PhotonClient { get; set; }
 
+		public static Director Director { get; set; }
+
 		public static void PickupItem(int itemId)
 		{
 			Log($"Request PickupItem item: {itemId}");

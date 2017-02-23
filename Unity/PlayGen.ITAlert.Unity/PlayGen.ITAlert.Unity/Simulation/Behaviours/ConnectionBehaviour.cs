@@ -31,8 +31,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		// required
 		private MovementCost _movementCost;
 		private int _length;
+		private GraphNode _graphNode;
 
-		//optional
+		private UIEntity _head;
+		private UIEntity _tail;
 
 		#endregion
 
@@ -45,12 +47,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		protected override void OnInitialize()
 		{
-			GraphNode graphNode;
-			if (Entity.TryGetComponent(out graphNode)
+			if (Entity.TryGetComponent(out _graphNode)
 				&& Entity.TryGetComponent(out _movementCost))
 			{
-				DrawConnection(graphNode.EntrancePositions.Single().Key, graphNode.ExitPositions.Single().Key);
-				_length = graphNode.ExitPositions.Single().Value;
+				GetSubsystems();
+				DrawConnection();
+				_length = _graphNode.ExitPositions.Single().Value;
 			}
 			else
 			{
@@ -58,20 +60,30 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		private void DrawConnection(int headId, int tailId)
+		private void GetSubsystems()
 		{
-			UIEntity head;
-			UIEntity tail;
-			if (Director.TryGetEntity(headId, out head) == false)
+			var headId = _graphNode.EntrancePositions.Single().Key;
+			var tailId = _graphNode.ExitPositions.Single().Key;
+			if (Director.TryGetEntity(headId, out _head) == false)
 			{
 				throw new SimulationIntegrationException($"Could not find entity id {headId} as head on connection id {Entity.Id}");
 			}
-			if (Director.TryGetEntity(tailId, out tail) == false)
+			if (Director.TryGetEntity(tailId, out _tail) == false)
 			{
 				throw new SimulationIntegrationException($"Could not find entity id {tailId} as tail on connection id {Entity.Id}");
 			}
-			var headPos = head.GameObject.transform.localPosition;
-			var tailPos = tail.GameObject.transform.localPosition;
+			
+		}
+
+		public override void UpdateScale(Vector3 scale)
+		{
+			DrawConnection();
+		}
+
+		private void DrawConnection()
+		{
+			var headPos = _head.GameObject.transform.localPosition;
+			var tailPos = _tail.GameObject.transform.localPosition;
 
 			var length = Vector2.Distance(headPos, tailPos);
 			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
@@ -82,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			Vector2 v2 = tailPos - headPos;
 			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
 
-			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * tail.GameObject.transform.localScale.x;
+			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
 			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
@@ -143,6 +155,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/_length);
 		}
+
+
 
 		#endregion
 

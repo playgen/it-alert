@@ -29,21 +29,24 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			private readonly bool _proxyItem;
 
-			public ItemPanelContainer(GameObject gameObject, ItemContainer itemContainer = null, bool proxyItem = true)
+			private Director _director;
+
+			public ItemPanelContainer(Director director, GameObject gameObject, ItemContainer itemContainer = null, bool proxyItem = true)
 			{
+				_director = director;
 				GameObject = gameObject;
 				ContainerBehaviour = gameObject.GetComponent<ItemContainerBehaviour>();
 
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
 				{
-					ContainerBehaviour.Initialize(ItemContainer);
+					ContainerBehaviour.Initialize(ItemContainer, _director);
 				}
 
 				if (proxyItem)
 				{
-					ItemEntity = new UIEntity(nameof(Item));
-					Director.AddUntrackedEntity(ItemEntity);
+					ItemEntity = new UIEntity(nameof(Item), director);
+					director.AddUntrackedEntity(ItemEntity);
 
 					ItemEntity.GameObject.SetActive(false);
 					ItemEntity.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
@@ -62,17 +65,17 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public void Update()
 			{
-				ContainerBehaviour.Initialize(ItemContainer);
+				ContainerBehaviour.Initialize(ItemContainer, _director);
 				UIEntity item;
 				if (_proxyItem)
 				{
 					if (ItemContainer?.Item != null
-						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
+						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
 						if (ItemEntity.GameObject.activeSelf == false)
 						{
 							var itemBehaviour = (ItemBehaviour) ItemEntity.EntityBehaviour;
-							itemBehaviour.Initialize(item.EntityBehaviour.Entity);
+							itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
 							ItemEntity.GameObject.SetActive(true);
 							itemBehaviour.ScaleUp = true;
 						}
@@ -89,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
 					if (ItemContainer?.Item != null
-						&& Director.TryGetEntity(ItemContainer.Item.Value, out item))
+						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
 						item.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
 						ItemEntity = item;
@@ -113,15 +116,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private int _playerLocationLast = -1;
 
-		public ItemPanel()
+		private Director _director;
+
+		public ItemPanel(Director director)
 		{
+			_director = director;
 			_systemItems = new ItemPanelContainer[ItemCount];
 		}
 
 		public void Initialize()
 		{
 			// get player entity item storage component
-			_player = Director.Player;
+			_player = _director.Player;
 			ItemStorage itemStorage;
 			if (_player.Entity.TryGetComponent(out itemStorage) == false)
 			{
@@ -130,7 +136,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
 			var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
-			_inventoryItem = new ItemPanelContainer(inventoryGameObject, inventoryItemContainer, false);
+			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, inventoryItemContainer, false);
 			_inventoryItem.ContainerBehaviour.ClickEnable = true;
 			_inventoryItem.ContainerBehaviour.CanCapture = true;
 			_inventoryItem.ContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
@@ -138,7 +144,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			for (var i = 0; i < ItemCount; i++)
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + i);
-				_systemItems[i] = new ItemPanelContainer(gameObject);
+				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
 			}

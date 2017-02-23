@@ -20,6 +20,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		
 		public IEntityBehaviour EntityBehaviour => _entityBehaviour;
 
+		private Director _director;
+
 		private static readonly Dictionary<string, Func<GameObject, IEntityBehaviour>> BehaviourMappers = new Dictionary<string, Func<GameObject, IEntityBehaviour>>()
 		{
 			{ nameof(Subsystem), go => go.GetComponent<SubsystemBehaviour>() },
@@ -31,16 +33,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{ nameof(ScenarioText), go => go.GetComponent<ScenarioTextBehaviour>() },
 		};
 
-		public UIEntity(string entityTypeName)
+		public UIEntity(string entityTypeName, Director director)
 		{
+			_director = director;
 			if (TryInistantiateEntity(entityTypeName) == false)
 			{
 				Debug.LogWarning($"Unknown entity type '{entityTypeName}'");
 			}
 		}
 
-		public UIEntity(Entity entity)
+		public UIEntity(Entity entity, Director director)
 		{
+			_director = director;
 			IEntityType entityTypeFlag;
 			if (entity.TryGetComponent(out entityTypeFlag))
 			{
@@ -62,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
 			{
-				_gameObject = Director.InstantiateEntity(entityTypeName);
+				_gameObject = _director.InstantiateEntity(entityTypeName);
 				_entityBehaviour = behaviourMapper(GameObject);
 				return true;
 			}

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
@@ -20,9 +21,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private Dictionary<int, string> _playerColors;
 		private Dictionary<int, Image> _playerVoiceIcons;
 
+		public Director Director { get; private set; }
+
 		public RoomStateInput(Client photonClient)
 		{
 			_photonClient = photonClient;
+			Director = GameObjectUtilities.FindGameObject("Game").GetComponent<Director>();
 		}
 
 		protected override void OnInitialize()
