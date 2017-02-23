@@ -1,4 +1,5 @@
 using Engine.Entities;
+using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -10,8 +11,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		void UpdateState();
 
-		void Initialize(Entity entity);
+		void Initialize(Entity entity, Director director);
 
 		void Uninitialize();
+
+		void UpdateScale(Vector3 scale);
 	}
 }

@@ -10,6 +10,9 @@ namespace PlayGen.ITAlert.Unity.Editor
 {
 	public class DirectorThreadHelper : MonoBehaviour
 	{
+		[SerializeField]
+		private Director _director;
+
 		public void Start()
 		{
 #if UNITY_EDITOR
@@ -25,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.Editor
 
 			if (!unpausedAndPlaying && !paused)
 			{
-				Director.StopWorker();
+				_director.StopWorker();
 			}
 		}
 	}

@@ -4,10 +4,10 @@ using System.Linq;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	[RequireComponent(typeof(SpriteRenderer))]
 	public class ItemContainerBehaviour : MonoBehaviour
 	{
 		#region public events
@@ -20,8 +20,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region game elements
 
+		protected Director Director { get; private set; }
+
 		[SerializeField]
-		private SpriteRenderer _containerImage;
+		private Image _containerImage;
 		[SerializeField]
 		private BlinkBehaviour _blinkBehaviour;
 
@@ -47,8 +49,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		}
 
-		public void Initialize(ItemContainer itemContainer)
+		public void Initialize(ItemContainer itemContainer, Director director)
 		{
+			Director = director;
 			if (itemContainer != _itemContainer)
 			{
 				_itemContainer = itemContainer;

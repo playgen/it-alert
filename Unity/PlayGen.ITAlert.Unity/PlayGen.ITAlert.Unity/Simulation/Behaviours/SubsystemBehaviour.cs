@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Resources;
@@ -15,18 +16,32 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		private const float ItemContainerOffset = 25f;
-
-
-		private static readonly Vector2[] CornerItemOffsets = new[]
+		[SerializeField]
+		private Vector2[] _itemContainerPositions = new Vector2[4]
 		{
-			new Vector2(-2 * ItemContainerOffset, ItemContainerOffset + 4),
-			new Vector2(2 * ItemContainerOffset, ItemContainerOffset + 4),
-			new Vector2(-2 * ItemContainerOffset, -1 * ItemContainerOffset - 4),
-			new Vector2(2 * ItemContainerOffset, -1 * ItemContainerOffset - 4),
+			new Vector2(30, -120),
+			new Vector2(-30, -120),
+			new Vector2(30, 130),
+			new Vector2(-30, 130),
 		};
 
-		private Vector3[] _itemPositions;
+		[SerializeField]
+		private Vector2[] _itemContainerOffsets = new Vector2[4]
+		{
+			new Vector2(0, 1),
+			new Vector2(1, 1),
+			new Vector2(0, 0),
+			new Vector2(1, 0),
+		};
+
+		[SerializeField]
+		private Vector2[] _itemContainerPivots = new Vector2[4]
+		{
+			new Vector2(0, 1),
+			new Vector2(1, 1),
+			new Vector2(0, 0),
+			new Vector2(1, 0),
+		};
 
 		#region game elements
 
@@ -54,7 +69,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public GameObject ConnectionSquare => _connectionSquare;
 
+		[SerializeField]
 		private List<GameObject> _itemContainers;
+
+		[SerializeField]
+		private RectTransform _rectTransform;
+
+		private float _itemZ;
 
 		#endregion
 
@@ -92,11 +113,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			DropCollider = GetComponent<BoxCollider2D>();
 
 			// TODO: these should probably be UIEntities
-			_itemContainers = new List<GameObject>();
+			_itemZ = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>().position.z;
+
+			//ForEachItemContainer((i, itemContainer) =>
+			//{
+			//	SetItemContainerPosition(i);
+			//});
 		}
 
 		protected override void OnInitialize()
 		{
+			_itemContainers = new List<GameObject>();
+
 			if (Entity.TryGetComponent(out _cpuResource)
 				&& Entity.TryGetComponent(out _memoryResource)
 				&& Entity.TryGetComponent(out _name))
@@ -105,6 +133,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 				SetPosition();
 				CreateItemContainers();
+				UpdateItemContainers();
 
 				OnStateUpdated();
 			}
@@ -115,30 +144,48 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		}
 
+		private void CreateItemContainers()
+		{
+			ForEachItemContainer((i, itemContainer) =>
+			{
+				var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
+				itemContainerObject.transform.SetParent(this.transform, false);
+				_itemContainers.Add(itemContainerObject);
+
+				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
+				itemContainerBehaviour.Initialize(itemContainer, Director);
+				SetItemContainerPosition(i);
+			});
+		}
+
+		private void SetItemContainerPosition(int index)
+		{
+			var rectTransform = _itemContainers[index].GetComponent<RectTransform>();
+			rectTransform.anchorMin = _itemContainerOffsets[index];
+			rectTransform.anchorMax = _itemContainerOffsets[index];
+			rectTransform.pivot = _itemContainerPivots[index];
+			rectTransform.localPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
+		}
+
+		public override void UpdateScale(Vector3 scale)
+		{
+			//ForEachItemContainer((i, itemContainer) =>
+			//{
+			//	SetItemContainerPosition(i);
+			//});
+			//SetPosition();
+			//UpdateItemContainers();
+		}
+
 		private void SetPosition()
 		{
 			var coordinate = Entity.GetComponent<Coordinate2DProperty>();
-			var rectTransform = GetComponent<RectTransform>();
-			var width = rectTransform.rect.width * rectTransform.localScale.x;
-			var height = rectTransform.rect.height * rectTransform.localScale.y;
+			var width = _rectTransform.rect.width * _rectTransform.localScale.x;
+			var height = _rectTransform.rect.height * _rectTransform.localScale.y;
 
 			var subsystemZ = ((GameObject)Resources.Load("Subsystem")).transform.position.z;
 			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (width * UIConstants.SubsystemSpacingMultiplier * coordinate.X), UIConstants.CurrentNetworkOffset.y + (height * UIConstants.SubsystemSpacingMultiplier * coordinate.Y), subsystemZ);
 
-			var itemZ = ((GameObject)Resources.Load("Item")).transform.position.z;
-			_itemPositions = CornerItemOffsets.Select(c => new Vector3(c.x + rectTransform.anchoredPosition.x, c.y + rectTransform.anchoredPosition.y, itemZ)).ToArray();
-		}
-
-		#endregion
-
-		#region Unity Update
-
-		protected override void OnFixedUpdate()
-		{
-		}
-
-		protected override void OnUpdate()
-		{
 		}
 
 		#endregion
@@ -159,7 +206,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			UpdateItemContainers();
 		}
 
-		private void CreateItemContainers()
+		private void ForEachItemContainer(Action<int, ItemContainer> action)
 		{
 			if (_itemStorage != null)
 			{
@@ -168,14 +215,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					var itemContainer = _itemStorage.Items[i];
 					if (itemContainer != null)
 					{
-						var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
-						itemContainerObject.transform.SetParent(this.transform, false);
-						_itemContainers.Add(itemContainerObject);
-
-						var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
-						itemContainerBehaviour.Initialize(itemContainer);
-
-						itemContainerObject.transform.position = _itemPositions[i];
+						action(i, itemContainer);
 					}
 				}
 			}
@@ -183,25 +223,20 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateItemContainers()
 		{
-			if (_itemStorage != null)
+			ForEachItemContainer((i, itemContainer) =>
 			{
-				for (var i = 0; i < _itemStorage.Items.Length; i++)
+				UIEntity item;
+				if (itemContainer.Item != null
+					&& Director.TryGetEntity(itemContainer.Item.Value, out item))
 				{
-					var itemContainer = _itemStorage.Items[i];
-					UIEntity item;
-					if (itemContainer?.Item != null
-						&& Director.TryGetEntity(itemContainer.Item.Value, out item))
-					{
-						var itemBehaviour = (ItemBehaviour)item.EntityBehaviour;
-						itemBehaviour.ScaleUp = false;
-						item.GameObject.transform.position = _itemPositions[i];
-					}
+					var itemBehaviour = (ItemBehaviour)item.EntityBehaviour;
+					itemBehaviour.ScaleUp = false;
+					item.GameObject.transform.position = new Vector3(_itemContainers[i].transform.position.x, _itemContainers[i].transform.position.y, _itemZ);
 				}
-			}
+			});
 		}
 
 		#region static properties
-
 
 		public void FadeInUpdate()
 		{

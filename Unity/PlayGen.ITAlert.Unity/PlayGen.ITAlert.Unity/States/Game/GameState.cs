@@ -31,7 +31,9 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public GameState()
 		{
 			_stateControllerFactory = new GameStateControllerFactory();
-			Director.ExceptionEvent += OnException;
+
+			//TODO: this needs reattaching
+			//Director.ExceptionEvent += OnException;
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
