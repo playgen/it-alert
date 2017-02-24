@@ -94,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		
 		#region item panel
 
-		private ItemPanel _itemPanel;
+		public ItemPanel ItemPanel { get; private set; }
 
 		#endregion
 
@@ -144,8 +144,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				//TODO: get rid of this hacky sack
 				PlayerCommands.Director = this;
-				
-				_itemPanel = new ItemPanel(this);
+
+				ItemPanel = transform.Find("Graph/ItemPanel").GetComponent<ItemPanel>();
 
 				_updatethread = new Thread(ThreadWorker)
 				{
@@ -161,8 +161,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				CreateInitialEntities();
 				SetupPlayers(players, playerServerId);
 				// item panel must come after players
-				_itemPanel.Initialize();
-				_itemPanel.Update();
+				ItemPanel.Initialize();
+				ItemPanel.Update();
 
 				if (SimulationRoot.ECS.TryGetSystem(out _endGameSystem) == false)
 				{
@@ -441,7 +441,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					untrackedEntity.UpdateEntityState();
 				}
-				_itemPanel.Update();
+				ItemPanel.Update();
 
 				UpdateCompleteSignal.Set();
 			}

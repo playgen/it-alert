@@ -27,7 +27,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _backgroundSprite;
 		#endregion
 
-		#region unity components
+		#region components
+
 
 		// required
 		private CurrentLocation _currentLocation;
@@ -48,9 +49,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		
 		#endregion
 
-		public bool ScaleUp { private get; set; }
-
 		public bool ClickEnable { get; set; }
+
 
 
 		#region Initialization
@@ -63,6 +63,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _activation))
 			{
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
+				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
 
 				Entity.TryGetComponent(out _timedActivation);
@@ -94,15 +95,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnStateUpdated()
 		{
 			UpdateColour();
-			UpdateScale();
 			UpdateActivationTimer();
-		}
-
-		private void UpdateScale()
-		{
-			transform.localScale = ScaleUp
-				? UIConstants.ItemPanelItemScale
-				: UIConstants.DefaultItemScale;
 		}
 
 		private void UpdateForegroundColour()

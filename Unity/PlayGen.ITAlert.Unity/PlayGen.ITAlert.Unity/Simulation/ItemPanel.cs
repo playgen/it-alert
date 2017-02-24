@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
-	public class ItemPanel
+	public class ItemPanel : MonoBehaviour
 	{
 		#region item panel container
 
@@ -25,17 +25,23 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public ItemContainer ItemContainer { private get; set; }
 
-			private UIEntity ItemEntity { get; set; }
+			public UIEntity ItemEntity { get; private set; }
 
 			private readonly bool _proxyItem;
 
 			private Director _director;
+
+			private RectTransform _itemTransform;
+
+			private readonly Vector2 InventoryItemOffset = new Vector2(0.5f, 0.5f);
+
 
 			public ItemPanelContainer(Director director, GameObject gameObject, ItemContainer itemContainer = null, bool proxyItem = true)
 			{
 				_director = director;
 				GameObject = gameObject;
 				ContainerBehaviour = gameObject.GetComponent<ItemContainerBehaviour>();
+				_itemTransform = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>();
 
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
@@ -45,23 +51,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				if (proxyItem)
 				{
-					ItemEntity = new UIEntity(nameof(Item), director);
+					ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
 					director.AddUntrackedEntity(ItemEntity);
-
+					ItemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
 					ItemEntity.GameObject.SetActive(false);
-					ItemEntity.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
+					//ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
+					ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
 
 					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
 				}
 
 				_proxyItem = proxyItem;
 			}
-
-			public void Reset()
-			{
-				
-			}
-
 
 			public void Update()
 			{
@@ -77,7 +78,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							var itemBehaviour = (ItemBehaviour) ItemEntity.EntityBehaviour;
 							itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
 							ItemEntity.GameObject.SetActive(true);
-							itemBehaviour.ScaleUp = true;
 						}
 					}
 					else 
@@ -94,10 +94,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (ItemContainer?.Item != null
 						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-						item.GameObject.transform.localPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, ItemEntity.GameObject.transform.localPosition.z);
+						item.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
+						var rectTransform = item.GameObject.GetComponent<RectTransform>();
+						rectTransform.anchorMin = InventoryItemOffset;
+						rectTransform.anchorMax = InventoryItemOffset;
+						rectTransform.pivot = InventoryItemOffset;
+						rectTransform.anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
 						ItemEntity = item;
 						var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
-						itemBehaviour.ScaleUp = true;
 					}					
 				}
 				ContainerBehaviour.Update();
@@ -116,11 +120,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private int _playerLocationLast = -1;
 
+		[SerializeField]
 		private Director _director;
 
-		public ItemPanel(Director director)
+		public ItemPanel()
 		{
-			_director = director;
 			_systemItems = new ItemPanelContainer[ItemCount];
 		}
 
@@ -133,7 +137,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				throw new SimulationIntegrationException("No item storage found on player");
 			}
-			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/InventoryItemContainer");
+			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer_Inventory");
 			var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
 			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, inventoryItemContainer, false);
@@ -143,7 +147,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			for (var i = 0; i < ItemCount; i++)
 			{
-				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer" + i);
+				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer_" + i);
 				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
