@@ -107,7 +107,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private InitializingState CreateInitializingState(Client photonClient)
 		{
-			var state = new InitializingState(_director, photonClient);
+			var input = new InitializingStateInput();
+			var state = new InitializingState(_director, input, photonClient);
 
 			var onPlayingStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(PlayingMessage), PlayingState.StateName);
 			state.AddTransitions(onPlayingStateSyncTransition);

@@ -33,10 +33,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{ nameof(ScenarioText), go => go.GetComponent<ScenarioTextBehaviour>() },
 		};
 
-		public UIEntity(string entityTypeName, Director director)
+		public UIEntity(string entityTypeName, string name, Director director)
 		{
 			_director = director;
-			if (TryInistantiateEntity(entityTypeName) == false)
+			if (TryInistantiateEntity(entityTypeName, name) == false)
 			{
 				Debug.LogWarning($"Unknown entity type '{entityTypeName}'");
 			}
@@ -49,7 +49,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			if (entity.TryGetComponent(out entityTypeFlag))
 			{
 				var entityTypeName = entityTypeFlag.GetType().Name;
-				if (TryInistantiateEntity(entityTypeName) == false)
+				if (TryInistantiateEntity(entityTypeName, entity.Id.ToString()) == false)
 				{
 					Debug.LogWarning($"Unknown entity type '{entityTypeName}' on entity {entity.Id}");
 				}
@@ -60,14 +60,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private bool TryInistantiateEntity(string entityTypeName)
+		private bool TryInistantiateEntity(string entityTypeName, string id = null)
 		{
 			Func<GameObject, IEntityBehaviour> behaviourMapper;
 
 			if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
 			{
 				_gameObject = _director.InstantiateEntity(entityTypeName);
+				_gameObject.name = id == null ? entityTypeName : $"[{id}]_{entityTypeName}";
 				_entityBehaviour = behaviourMapper(GameObject);
+				_entityBehaviour.Name = _gameObject.name;
 				return true;
 			}
 			return false;

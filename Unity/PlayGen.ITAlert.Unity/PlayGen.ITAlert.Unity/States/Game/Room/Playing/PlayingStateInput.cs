@@ -23,7 +23,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnEnter()
 		{
-			_gameContainer.SetActive(true);
 			LoadingUtility.HideSpinner();
 		}
 

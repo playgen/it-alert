@@ -16,8 +16,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		[SerializeField]
-		private Vector2[] _itemContainerPositions = new Vector2[4]
+		private readonly Vector2[] _itemContainerPositions = new Vector2[4]
 		{
 			new Vector2(30, -120),
 			new Vector2(-30, -120),
@@ -25,8 +24,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			new Vector2(-30, 130),
 		};
 
-		[SerializeField]
-		private Vector2[] _itemContainerOffsets = new Vector2[4]
+		private readonly Vector2[] _itemContainerOffsets = new Vector2[4]
 		{
 			new Vector2(0, 1),
 			new Vector2(1, 1),
@@ -34,8 +32,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			new Vector2(1, 0),
 		};
 
-		[SerializeField]
-		private Vector2[] _itemContainerPivots = new Vector2[4]
+		private readonly Vector2[] _itemContainerPivots = new Vector2[4]
 		{
 			new Vector2(0, 1),
 			new Vector2(1, 1),
@@ -106,6 +103,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Initialization
 
+
+		public void Start()
+		{
+			//Canvas.ForceUpdateCanvases();
+		}
+
 		public void Awake()
 		{
 			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
@@ -114,17 +117,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			// TODO: these should probably be UIEntities
 			_itemZ = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>().position.z;
-
-			//ForEachItemContainer((i, itemContainer) =>
-			//{
-			//	SetItemContainerPosition(i);
-			//});
 		}
 
 		protected override void OnInitialize()
 		{
 			_itemContainers = new List<GameObject>();
-
 			if (Entity.TryGetComponent(out _cpuResource)
 				&& Entity.TryGetComponent(out _memoryResource)
 				&& Entity.TryGetComponent(out _name))
@@ -150,31 +147,23 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
 				itemContainerObject.transform.SetParent(this.transform, false);
+				itemContainerObject.name = $"ItemContainer_{i}";
 				_itemContainers.Add(itemContainerObject);
 
 				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
 				itemContainerBehaviour.Initialize(itemContainer, Director);
-				SetItemContainerPosition(i);
+				SetItemPosition(i, _itemContainers[i]);
+
 			});
 		}
 
-		private void SetItemContainerPosition(int index)
+		private void SetItemPosition(int index, GameObject go)
 		{
-			var rectTransform = _itemContainers[index].GetComponent<RectTransform>();
+			var rectTransform = go.GetComponent<RectTransform>();
 			rectTransform.anchorMin = _itemContainerOffsets[index];
 			rectTransform.anchorMax = _itemContainerOffsets[index];
 			rectTransform.pivot = _itemContainerPivots[index];
-			rectTransform.localPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
-		}
-
-		public override void UpdateScale(Vector3 scale)
-		{
-			//ForEachItemContainer((i, itemContainer) =>
-			//{
-			//	SetItemContainerPosition(i);
-			//});
-			//SetPosition();
-			//UpdateItemContainers();
+			rectTransform.anchoredPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
 		}
 
 		private void SetPosition()
@@ -185,7 +174,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			var subsystemZ = ((GameObject)Resources.Load("Subsystem")).transform.position.z;
 			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (width * UIConstants.SubsystemSpacingMultiplier * coordinate.X), UIConstants.CurrentNetworkOffset.y + (height * UIConstants.SubsystemSpacingMultiplier * coordinate.Y), subsystemZ);
-
 		}
 
 		#endregion
@@ -229,9 +217,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (itemContainer.Item != null
 					&& Director.TryGetEntity(itemContainer.Item.Value, out item))
 				{
-					var itemBehaviour = (ItemBehaviour)item.EntityBehaviour;
-					itemBehaviour.ScaleUp = false;
-					item.GameObject.transform.position = new Vector3(_itemContainers[i].transform.position.x, _itemContainers[i].transform.position.y, _itemZ);
+					item.GameObject.transform.SetParent(this.transform, false);
+					SetItemPosition(i, item.GameObject);
 				}
 			});
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Serialization;
 using GameWork.Core.States.Tick;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Simulation.Configuration;
@@ -15,7 +16,7 @@ using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 {
-	public class InitializingState : TickState
+	public class InitializingState : InputTickState
 	{
 		public const string StateName = "Initializing";
 
@@ -27,7 +28,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		private readonly ScenarioLoader _scenarioLoader;
 
-		public InitializingState(Director director, Client photonClient)
+		public InitializingState(Director director, InitializingStateInput input, Client photonClient)
+			: base (input)
 		{
 			_director = director;
 			_photonClient = photonClient;

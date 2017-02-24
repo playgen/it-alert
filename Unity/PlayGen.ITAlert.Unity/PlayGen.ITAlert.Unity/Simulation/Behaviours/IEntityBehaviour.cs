@@ -7,6 +7,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	{
 		int Id { get; }
 
+		string Name { get; set; }
+
 		Entity Entity { get; }
 
 		void UpdateState();

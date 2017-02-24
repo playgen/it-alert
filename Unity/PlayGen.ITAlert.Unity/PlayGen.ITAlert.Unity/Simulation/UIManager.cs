@@ -26,6 +26,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
+		private void Start()
+		{
+			Canvas.ForceUpdateCanvases();
+		}
+
 		private void Awake()
 		{
 			_director.Reset += Reset;

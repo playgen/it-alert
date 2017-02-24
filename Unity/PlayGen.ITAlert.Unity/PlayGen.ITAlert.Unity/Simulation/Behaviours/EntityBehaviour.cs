@@ -26,6 +26,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		public int Id => Entity.Id;
 
+		public string Name { get; set; }
+
+
 		#region Unity Update
 
 		/// <summary>

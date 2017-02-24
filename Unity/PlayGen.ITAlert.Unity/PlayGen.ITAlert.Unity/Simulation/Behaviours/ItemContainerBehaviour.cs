@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Start()
 		{
-
+			//Canvas.ForceUpdateCanvases();
 		}
 
 		public void Initialize(ItemContainer itemContainer, Director director)
