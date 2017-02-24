@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// <summary>
 		/// Graph centering
 		/// </summary>
-		public static Vector2 NetworkOffset = new Vector2(0, -0.5f);
+		public static Vector2 NetworkOffset = new Vector2(128, 92);
 		public static Vector2 CurrentNetworkOffset = new Vector2(0, -0.5f);
 
 

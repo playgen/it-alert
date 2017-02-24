@@ -82,17 +82,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DrawConnection()
 		{
-			var headPos = _head.GameObject.transform.localPosition;
-			var tailPos = _tail.GameObject.transform.localPosition;
+			var headPos = _head.GameObject.transform.position;
+			var tailPos = _tail.GameObject.transform.position;
 
 			var length = Vector2.Distance(headPos, tailPos);
 			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
 			var midpoint = (headPos + tailPos) * 0.5f;
-			transform.position = new Vector3(midpoint.x, midpoint.y, connectionZ);
+			var rectTransform = GetComponent<RectTransform>();
 
 			//get the angle between the locations
-			Vector2 v2 = tailPos - headPos;
-			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+			//Vector2 v2 = tailPos - headPos;
+			//_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
 
 			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
@@ -100,11 +100,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			//scale and position the connection accordingly
 			var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
-
-			var rectTransform = GetComponent<RectTransform>();
-
+			
+			rectTransform.anchoredPosition = new Vector3(midpoint.x, midpoint.y, connectionZ);
 			rectTransform.sizeDelta = new Vector2(length - connectionSquareSize, 8 * relativeWeight);
-			transform.eulerAngles = new Vector3(0, 0, _angle);
+			//transform.eulerAngles = new Vector3(0, 0, _angle);
+			//rectTransform.rotation = 
 		}
 
 		private Vector2 ScaleEndPoint(Vector2 point, float scaleDelta)

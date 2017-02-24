@@ -93,6 +93,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private CPUResource _cpuResource;
 		private MemoryResource _memoryResource;
 		private Name _name;
+		private Coordinate2DProperty _coordinate2D;
 
 		//optional
 		private ItemStorage _itemStorage;
@@ -124,7 +125,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_itemContainers = new List<GameObject>();
 			if (Entity.TryGetComponent(out _cpuResource)
 				&& Entity.TryGetComponent(out _memoryResource)
-				&& Entity.TryGetComponent(out _name))
+				&& Entity.TryGetComponent(out _name)
+				&& Entity.TryGetComponent(out _coordinate2D))
 			{
 				Entity.TryGetComponent(out _itemStorage);
 
@@ -168,12 +170,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void SetPosition()
 		{
-			var coordinate = Entity.GetComponent<Coordinate2DProperty>();
-			var width = _rectTransform.rect.width * _rectTransform.localScale.x;
-			var height = _rectTransform.rect.height * _rectTransform.localScale.y;
-
 			var subsystemZ = ((GameObject)Resources.Load("Subsystem")).transform.position.z;
-			transform.position = new Vector3(UIConstants.CurrentNetworkOffset.x + (width * UIConstants.SubsystemSpacingMultiplier * coordinate.X), UIConstants.CurrentNetworkOffset.y + (height * UIConstants.SubsystemSpacingMultiplier * coordinate.Y), subsystemZ);
+
+			var relativeX = _coordinate2D.X - ((Director.NetworkDimensions.x -1) / 2);
+			var relativeY = _coordinate2D.Y - ((Director.NetworkDimensions.y -1) / 2);
+
+			Debug.Log($"x: {_coordinate2D.X}({relativeX}) y: {_coordinate2D.Y}({relativeY})");
+
+			GetComponent<RectTransform>().anchoredPosition = new Vector3(relativeX * Director.NetworkSize.x, relativeY * Director.NetworkSize.y, subsystemZ);
 		}
 
 		#endregion

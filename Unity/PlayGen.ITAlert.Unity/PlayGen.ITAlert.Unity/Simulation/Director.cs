@@ -75,6 +75,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private Vector3 _scale;
 
+		public Vector2 NetworkDimensions { get; private set; }
+		public Vector2 NetworkSize { get; private set; }
+
+
 		#endregion
 
 		#endregion
@@ -180,16 +184,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void CalculateNetworkOffset()
 		{
-			UIConstants.CurrentNetworkOffset = UIConstants.NetworkOffset;
-
-			var subsystemRectTransform = ((GameObject)Resources.Load("Subsystem")).GetComponent<RectTransform>();
-			var subsystemWidth = subsystemRectTransform.rect.width * subsystemRectTransform.localScale.x;
-			var subsystemHeight = subsystemRectTransform.rect.height * subsystemRectTransform.localScale.y;
-
-			UIConstants.CurrentNetworkOffset -= new Vector2(
-				(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemWidth,
-				(float)SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) / 2 * UIConstants.SubsystemSpacingMultiplier * subsystemHeight);
-
+			NetworkDimensions = new Vector2(SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) + 1, SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) + 1);
+			NetworkSize = new Vector2(((2 * NetworkDimensions.x) - 2) * UIConstants.NetworkOffset.x, ((2 * NetworkDimensions.y) - 2) * UIConstants.NetworkOffset.y);
 		}
 
 		/// <summary>
