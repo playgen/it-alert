@@ -17,10 +17,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
 		}
 
-		protected override void OnEnter()
-		{
-			_gameContainer.SetActive(true);
-		}
 
 	}
 }
