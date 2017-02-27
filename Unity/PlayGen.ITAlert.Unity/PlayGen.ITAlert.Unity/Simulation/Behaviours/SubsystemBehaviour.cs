@@ -79,7 +79,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region movement constants
 
-		private static float _connectionScaleCoefficient;
+		//private static float _connectionScaleCoefficient;
 		// TODO: read from sim constants
 		private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
 		private const int SquareSideCount = 4;
@@ -112,7 +112,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Awake()
 		{
-			_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
+			//_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			DropCollider = GetComponent<BoxCollider2D>();
 
@@ -175,9 +175,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var relativeX = _coordinate2D.X - ((Director.NetworkDimensions.x -1) / 2);
 			var relativeY = _coordinate2D.Y - ((Director.NetworkDimensions.y -1) / 2);
 
-			Debug.Log($"x: {_coordinate2D.X}({relativeX}) y: {_coordinate2D.Y}({relativeY})");
-
-			GetComponent<RectTransform>().anchoredPosition = new Vector3(relativeX * Director.NetworkSize.x, relativeY * Director.NetworkSize.y, subsystemZ);
+			GetComponent<RectTransform>().anchoredPosition = new Vector3(relativeX * Director.SubsystemSpacing.x, -1 * relativeY * Director.SubsystemSpacing.y, subsystemZ);
 		}
 
 		#endregion
@@ -196,7 +194,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//_iconRenderer.color = Color.white;
 
 			UpdateItemContainers();
-		}
+		} 
 
 		private void ForEachItemContainer(Action<int, ItemContainer> action)
 		{
@@ -251,24 +249,24 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Visitor Movement
 
-		protected override Vector3 GetPositionFromPathPoint(int pathPoint)
+		protected override Vector2 GetPositionFromPathPoint(int pathPoint)
 		{
 			var localPosition = GetPositionOnSquare(pathPoint);
 			localPosition.y *= -1; // Flip Y so displays correctly relative to the view
-			localPosition *= _connectionSquare.transform.localScale.x;
-			localPosition += _connectionSquare.transform.position; // Move relative to this subsystem
+			//localPosition *= _connectionSquare.transform.localScale.x;
+			localPosition += _connectionSquare.GetComponent<RectTransform>().anchoredPosition; // Move relative to this subsystem
 
 			return localPosition;
 		}
 
-		private Vector3 GetPositionOnSquare(int pathPoint)
+		private Vector2 GetPositionOnSquare(int pathPoint)
 		{
 			var squarePermimiterSideScale = 1f;
 			var offsetPositionAlong = GetOffsetPositionAlongSquare(pathPoint, squarePermimiterSideScale);
 
 			// Position on square perimeter
 			// Top Left = (-1, -1), Bottom Right = (1, 1)
-			var sideLength = _connectionScaleCoefficient * _connectionSquare.GetComponent<RectTransform>().rect.width * transform.localScale.x;
+			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width;
 			var halfSide = sideLength / 2;
 			//var step = sideLength / PointsPerSide * 2;
 			var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;
@@ -276,41 +274,33 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			// TOP
 			if (offsetPositionAlong < squarePermimiterSideScale)
 			{
-				return new Vector3((localPositionAlong) - halfSide, -halfSide, 0);
+				return new Vector2((localPositionAlong) - halfSide, -halfSide);
 			}
 			// RIGHT
-			else if (offsetPositionAlong < 2 * squarePermimiterSideScale)
+			if (offsetPositionAlong < 2 * squarePermimiterSideScale)
 			{
-				return new Vector3(halfSide, (localPositionAlong) - halfSide, 0);
+				return new Vector2(halfSide, (localPositionAlong) - halfSide);
 			}
 			// BOTTOM
-			else if (offsetPositionAlong < 3 * squarePermimiterSideScale)
+			if (offsetPositionAlong < 3 * squarePermimiterSideScale)
 			{
-				return new Vector3(halfSide - (localPositionAlong), halfSide, 0);
+				return new Vector2(halfSide - (localPositionAlong), halfSide);
 			}
 			// LEFT
-			else if (offsetPositionAlong < 4 * squarePermimiterSideScale)
+			if (offsetPositionAlong < 4 * squarePermimiterSideScale)
 			{
-				return new Vector3(-halfSide, halfSide - (localPositionAlong), 0);
+				return new Vector2(-halfSide, halfSide - (localPositionAlong));
 			}
-			else
-			{
-				throw new Exception("This should never be hit.");
-			}
+			throw new Exception("Subsystem movement has exceeded bounds: this should never be hit.");
 		}
 
 		private float GetOffsetPositionAlongSquare(int pathPoint, float scale)
 		{
-
 			pathPoint = pathPoint % PathPointsInSubsystem; // Wrap around
-
 			// Point along the perimeter as if it were a straight line.
 			var halfScale = scale / 2;
-
 			var progressAlongSide = pathPoint / PointsPerSide;
-
 			var offsetPositionAlong = (progressAlongSide + halfScale) % (SquareSideCount * scale);  // Offsets the position so that entry points are half way along each square side.
-
 			return offsetPositionAlong;
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -10,6 +11,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public int? InventoryItem => null;
 
 		private Color _playerColor;
+
+		[SerializeField]
+		private Image _image;
 
 		[SerializeField]
 		private TrailRenderer _trailRenderer;
@@ -31,9 +35,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
 			{
-				GetComponent<SpriteRenderer>().color = _playerColor;
-				GetComponent<TrailRenderer>().startColor = _playerColor;
-				GetComponent<TrailRenderer>().endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
+				_image.color = _playerColor;
+				_trailRenderer.startColor = _playerColor;
+				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
 			}
 		}
 

@@ -76,8 +76,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private Vector3 _scale;
 
 		public Vector2 NetworkDimensions { get; private set; }
-		public Vector2 NetworkSize { get; private set; }
+		//public Vector2 NetworkSize { get; private set; }
 
+		[SerializeField]
+		public Vector2 SubsystemSpacing = new Vector2(192, 128);
 
 		#endregion
 
@@ -117,7 +119,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public GameObject InstantiateEntity(string resourceString)
 		{
 			var gameObject = UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
-			gameObject?.transform.SetParent(transform.FindChild("Graph").transform, false);
+			gameObject?.transform.SetParent(transform.Find("Canvas/Graph").transform, false);
 			return gameObject;
 		}
 
@@ -149,7 +151,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				//TODO: get rid of this hacky sack
 				PlayerCommands.Director = this;
 
-				ItemPanel = transform.Find("Graph/ItemPanel").GetComponent<ItemPanel>();
+				ItemPanel = transform.Find("Canvas/ItemPanel").GetComponent<ItemPanel>();
 
 				_updatethread = new Thread(ThreadWorker)
 				{
@@ -185,7 +187,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void CalculateNetworkOffset()
 		{
 			NetworkDimensions = new Vector2(SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.X) + 1, SimulationRoot.Configuration.NodeConfiguration.Max(nc => nc.Y) + 1);
-			NetworkSize = new Vector2(((2 * NetworkDimensions.x) - 2) * UIConstants.NetworkOffset.x, ((2 * NetworkDimensions.y) - 2) * UIConstants.NetworkOffset.y);
+			//NetworkSize = new Vector2(((2 * NetworkDimensions.x) - 2) * UIConstants.NetworkOffset.x, ((2 * NetworkDimensions.y) - 2) * UIConstants.NetworkOffset.y);
 		}
 
 		/// <summary>
