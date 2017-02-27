@@ -1,6 +1,7 @@
 ﻿using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -14,7 +15,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		//private string _warningText;
 
 		[SerializeField]
-		private SpriteRenderer _spriteRenderer;
+		private Image _image;
 
 		private MalwareVisibility _malwareVisibility;
 
@@ -41,13 +42,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnUpdate()
 		{
 			var visible = _malwareVisibility.Visible;
-			if (_spriteRenderer.enabled == false && visible)
+			if (_image.enabled == false && visible)
 			{
-				_spriteRenderer.enabled = true;
+				_image.enabled = true;
 			}
-			else if (_spriteRenderer.enabled && visible == false)
+			else if (_image.enabled && visible == false)
 			{
-				_spriteRenderer.enabled = false;
+				_image.enabled = false;
 			}
 		}
 
@@ -64,23 +65,23 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void HandlePulse()
 		{
 		//TODO: reimplement pulse => visible property
-		//_spriteRenderer.enabled = EntityState.Visible;
+		//_image.enabled = EntityState.Visible;
 
 		//if (EntityState.Active)
 		//{
 		//	if (_pulseDown)
 		//	{
-		//		_spriteRenderer.color -= new Color(0, 0, 0, 0.05f);
+		//		_image.color -= new Color(0, 0, 0, 0.05f);
 		//	}
 		//	else
 		//	{
-		//		_spriteRenderer.color += new Color(0, 0, 0, 0.05f);
+		//		_image.color += new Color(0, 0, 0, 0.05f);
 		//	}
-		//	if (_spriteRenderer.color.a <= 0)
+		//	if (_image.color.a <= 0)
 		//	{
 		//		_pulseDown = false;
 		//	}
-		//	else if (_spriteRenderer.color.a >= 1)
+		//	else if (_image.color.a >= 1)
 		//	{
 		//		_pulseDown = true;
 		//	}
@@ -88,7 +89,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		//else
 		//{
 		//	_pulseDown = false;
-		//	_spriteRenderer.color = new Color(_spriteRenderer.color.r, _spriteRenderer.color.g, _spriteRenderer.color.b, 1);
+		//	_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 1);
 		//}
 		}
 

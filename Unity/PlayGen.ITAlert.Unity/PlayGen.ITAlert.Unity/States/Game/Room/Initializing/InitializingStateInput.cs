@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		protected override void OnInitialize()
 		{
-			_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
+			_gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas/Graph");
 		}
 
 

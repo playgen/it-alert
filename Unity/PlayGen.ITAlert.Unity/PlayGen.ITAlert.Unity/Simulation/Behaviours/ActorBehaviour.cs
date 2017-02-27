@@ -15,6 +15,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		
 		protected VisitorPosition VisitorPosition { get; private set; }
 
+		[SerializeField]
+		private RectTransform _rectTransform;
+
+		public float ActorZ => _rectTransform.position.z;
+
 		protected void UpdatePosition()
 		{
 			UIEntity currentLocationEntity;
@@ -27,8 +32,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					Debug.LogError($"EntityBehaviour for entity {Entity.Id} is not NodeBehaviour");
 				}
+				if (transform.parent != CurrentLocationEntity.GameObject)
+				{
+					transform.SetParent(CurrentLocationEntity.GameObject.transform, false);
+				}
 				var position = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
-				transform.position = new Vector3(position.x, position.y, transform.position.z);
+				_rectTransform.anchoredPosition = new Vector3(position.x, position.y, transform.position.z);
 			}
 			else
 			{

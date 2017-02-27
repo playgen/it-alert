@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 {
-	internal static class MultiplayerIntroduction
+	internal static class BigGraphTest
 	{
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
@@ -16,44 +16,104 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		{
 			#region configuration
 
-			const int minPlayerCount = 2;
+			const int minPlayerCount = 1;
 			const int maxPlayerCount = 4;
 
-			var nodeTopLeft = new NodeConfig()
+			var node00 = new NodeConfig()
 			{
-				Name = "Top Left",
+				Name = "0 0",
 				X = 0,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeTopRight = new NodeConfig()
+			var node10 = new NodeConfig()
 			{
-				Name = "Top Right",
+				Name = "1 0",
 				X = 1,
 				Y = 0,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeBottomLeft = new NodeConfig()
+			var node01 = new NodeConfig()
 			{
-				Name = "Bottom Left",
+				Name = "0 1",
 				X = 0,
 				Y = 1,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeBottomRight = new NodeConfig()
+			var node11 = new NodeConfig()
 			{
-				Name = "Bottom Right",
+				Name = "1 1",
 				X = 1,
 				Y = 1,
 				ArchetypeName = nameof(GameEntities.Subsystem),
 			};
 
-			var nodeConfigs = new NodeConfig[] { nodeTopLeft, nodeTopRight, nodeBottomLeft, nodeBottomRight };
+			var node21 = new NodeConfig()
+			{
+				Name = "2 1",
+				X = 2,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var node22 = new NodeConfig()
+			{
+				Name = "2 2",
+				X = 2,
+				Y = 2,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var node30 = new NodeConfig()
+			{
+				Name = "3 0",
+				X = 3,
+				Y = 0,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var node31 = new NodeConfig()
+			{
+				Name = "3 1",
+				X = 3,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var node40 = new NodeConfig()
+			{
+				Name = "4 0",
+				X = 4,
+				Y = 0,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var node41 = new NodeConfig()
+			{
+				Name = "4 1",
+				X = 4,
+				Y = 1,
+				ArchetypeName = nameof(GameEntities.Subsystem),
+			};
+
+			var nodeConfigs = new NodeConfig[]
+			{
+				node00,
+				node01,
+				node10,
+				node11,
+				node21,
+				node22,
+				node30,
+				node31,
+				node40,
+				node41,
+			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
-			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{
@@ -96,8 +156,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 			return new SimulationScenario()
 			{
-				Name = "MultiplayerIntroduction",
-				Description = "MultiplayerIntroduction",
+				Name = "BigGraphTest",
+				Description = "BigGraphTest",
 				MinPlayers = minPlayerCount,
 				MaxPlayers = maxPlayerCount,
 				Configuration = configuration,

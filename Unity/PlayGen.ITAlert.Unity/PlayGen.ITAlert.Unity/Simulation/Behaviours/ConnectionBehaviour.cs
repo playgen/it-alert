@@ -26,6 +26,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Image _spriteRenderer;
 
+		[SerializeField]
+		private RectTransform _rectTransform;
+
 		#region Components
 
 		// required
@@ -53,6 +56,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				GetSubsystems();
 				DrawConnection();
 				_length = _graphNode.ExitPositions.Single().Value;
+				gameObject.name = $"{Name}_{_head.Id}:{_tail.Id}";
 			}
 			else
 			{
@@ -82,29 +86,30 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DrawConnection()
 		{
-			var headPos = _head.GameObject.transform.position;
-			var tailPos = _tail.GameObject.transform.position;
+			var headPos = _head.GameObject.GetComponent<RectTransform>().anchoredPosition;
+			var tailPos = _tail.GameObject.GetComponent<RectTransform>().anchoredPosition;
 
-			var length = Vector2.Distance(headPos, tailPos);
+			var length = Math.Abs(Vector2.Distance(headPos, tailPos));
 			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
 			var midpoint = (headPos + tailPos) * 0.5f;
 			var rectTransform = GetComponent<RectTransform>();
 
 			//get the angle between the locations
-			//Vector2 v2 = tailPos - headPos;
-			//_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+			var v2 = tailPos - headPos;
+			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+			transform.eulerAngles = new Vector3(0, 0, _angle);
 
 			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
 			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
+			//Debug.Log($"Connection {gameObject.name}, angle: {_angle}, head: {_headPos.x},{_headPos.y}, tail {_tailPos.x},{_tailPos.y}");
 			//scale and position the connection accordingly
 			var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
 			
 			rectTransform.anchoredPosition = new Vector3(midpoint.x, midpoint.y, connectionZ);
 			rectTransform.sizeDelta = new Vector2(length - connectionSquareSize, 8 * relativeWeight);
-			//transform.eulerAngles = new Vector3(0, 0, _angle);
-			//rectTransform.rotation = 
+
 		}
 
 		private Vector2 ScaleEndPoint(Vector2 point, float scaleDelta)
@@ -151,9 +156,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Visitor movement
 
-		protected override Vector3 GetPositionFromPathPoint(int pathPoint)
+		protected override Vector2 GetPositionFromPathPoint(int pathPoint)
 		{
-			return Vector3.Lerp(_headPos, _tailPos, (float) pathPoint/_length);
+			return Vector2.Lerp(_headPos, _tailPos, (float) pathPoint/_length);
 		}
 
 

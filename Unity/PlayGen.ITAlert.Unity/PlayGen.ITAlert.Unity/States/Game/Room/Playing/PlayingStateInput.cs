@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnInitialize()
 		{
-			_gameContainer = GameObjectUtilities.FindGameObject("Game/Graph");
+			_gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
 		}
 
 		private void OnPauseClicked()

@@ -46,7 +46,7 @@
     <Compile Include="ScenarioLoader.cs" />
     <Compile Include="Scenarios\Analysis.cs" />
     <Compile Include="Scenarios\Introduction.cs" />
-    <Compile Include="Scenarios\MultiplayerIntroduction.cs" />
+    <Compile Include="Scenarios\BigGraphTest.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

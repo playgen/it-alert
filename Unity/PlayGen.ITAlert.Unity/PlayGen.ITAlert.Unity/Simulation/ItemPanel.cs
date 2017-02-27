@@ -137,7 +137,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				throw new SimulationIntegrationException("No item storage found on player");
 			}
-			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer_Inventory");
+			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory");
 			var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
 			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, inventoryItemContainer, false);
@@ -147,7 +147,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			for (var i = 0; i < ItemCount; i++)
 			{
-				var gameObject = GameObjectUtilities.FindGameObject("Game/Graph/ItemPanel/ItemContainer_" + i);
+				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
 				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
