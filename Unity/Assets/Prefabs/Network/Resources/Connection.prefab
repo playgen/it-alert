@@ -40,7 +40,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 36e229f147ea2884b859989569bcf5e1, type: 2}
+  m_Material: {fileID: 2100000, guid: 86033ee25d8a70849b8465f0c7ce9d6d, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -68,7 +68,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weightColors: []
-  _spriteRenderer: {fileID: 0}
+  _spriteRenderer: {fileID: 114532947901074548}
+  _rectTransform: {fileID: 224873514546760006}
 --- !u!222 &222265957609184864
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -82,7 +83,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 154514}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -30}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
