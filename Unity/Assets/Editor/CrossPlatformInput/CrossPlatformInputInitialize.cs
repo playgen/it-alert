@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 
 namespace UnityStandardAssets.CrossPlatformInput.Inspector
 {
-	[InitializeOnLoad]
+    [InitializeOnLoad]
     public class CrossPlatformInitialize
     {
         // Custom compiler defines:
@@ -84,8 +85,7 @@ namespace UnityStandardAssets.CrossPlatformInput.Inspector
             {
                 BuildTargetGroup.Standalone,
                 BuildTargetGroup.Android,
-                BuildTargetGroup.iOS,
-                BuildTargetGroup.WSA
+                BuildTargetGroup.iOS
             };
 
         private static BuildTargetGroup[] mobileBuildTargetGroups = new BuildTargetGroup[]

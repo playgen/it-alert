@@ -158,7 +158,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override Vector2 GetPositionFromPathPoint(int pathPoint)
 		{
-			return Vector2.Lerp(_headPos, _tailPos, (float) pathPoint/_length);
+			var halfWidth = _rectTransform.rect.width / 2;
+			var position = Vector2.Lerp(new Vector2(-1 * halfWidth, 0), new Vector2(halfWidth, 0), (float) pathPoint/_length);
+			return position;
 		}
 
 

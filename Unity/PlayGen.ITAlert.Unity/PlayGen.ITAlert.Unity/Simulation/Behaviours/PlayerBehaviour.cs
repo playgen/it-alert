@@ -18,6 +18,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private TrailRenderer _trailRenderer;
 
+		[SerializeField]
+		private Light _light;
+
 		#region Initialization
 
 		protected override void OnInitialize()
@@ -36,6 +39,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
 			{
 				_image.color = _playerColor;
+				_light.color = _playerColor;
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
 			}
