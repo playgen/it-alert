@@ -2,6 +2,7 @@
 using Engine.Commands;
 using Engine.Configuration;
 using Engine.Lifecycle;
+using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
@@ -21,6 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
+			new SystemConfiguration<RNGSystem>(),
 			// TODO: if the systems are tickable the order they are defined here is the order they will be ticked; we probably need to make this more explicit
 			new SystemConfiguration<SubsystemResources>()
 			{
@@ -95,8 +97,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						Implementations = new SystemExtensionImplementation[]
 						{
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
+							// items
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(), 
+
 							// TODO: need to find a good way to append extensions from the scenario definition
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 

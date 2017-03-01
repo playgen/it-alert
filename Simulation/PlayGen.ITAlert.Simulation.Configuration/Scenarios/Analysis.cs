@@ -98,7 +98,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
-			var itemConfigs = new ItemConfig[0];
+			var itemConfigs = new ItemConfig[]
+			{
+				new ItemConfig()
+				{
+					ArchetypeName = GameEntities.Capture.Name,
+					StartingLocation = nodeLeft.Id,
+				},
+				new ItemConfig()
+				{
+					ArchetypeName = GameEntities.Scanner.Name,
+					StartingLocation = nodeMiddle.Id,
+				}
+
+			};
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{
 				StartingLocation = nodeRight.Id,
@@ -122,145 +135,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
+						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, nodeRight.Id),
+						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, nodeMiddle.Id),
+
 						ScenarioHelpers.GenerateTextAction(true,
 							"Welcome to IT Alert!", 
 							"You are a system administrator tasked with maintaing the network.",
-							"Let's get started...")
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
-					},
-				}
-			);
-
-			// frame 2
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(false, 
-							"Try navigating to another system by clicking on it...")
-					},
-					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeLeft),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 3
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(false, 
-							"Well done. Now you know how to move around the network!")
-					},
-					Evaluator = ScenarioHelpers.WaitForSeconds(3),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 4
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						// TODO: this should disable the cancapture flag of the inventory slot
-						ScenarioHelpers.SetCommandEnabled<PickupItemCommand>(false),	
-						ScenarioHelpers.SetCommandEnabled<ActivateItemCommand>(false),
-						ScenarioHelpers.CreateItemCommand(nameof(TutorialScanner), nodeRight.Id),
-						ScenarioHelpers.GenerateTextAction(true, 
-							"The item that has just been spawned on the right is a scanner.",
-							"",
-							"The scanner reveals malware on a system when it is activated.")
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 5
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(false, 
-							"To use items you must be located on the same system...")
-					},
-					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeRight),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-						//ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
-					},
-					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
-				}
-			);
-
-			// frame 6
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.SetCommandEnabled<ActivateItemCommand>(true),
-						ScenarioHelpers.GenerateTextAction(false,
-							"When you are on the same system as available items they will appear in the tray at the bottom of your screen.",
-							"",
-							"Clicking the item on your tray will activate the item...")
-					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			//// frame 7
-			//frames.Add(
-			//	new SimulationFrame()
-			//	{
-			//		OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-			//		{
-			//			ScenarioHelpers.GenerateTextAction(false,
-			//				"While the item is active the colour changes to indicate the player that is performing the action."),
-			//		},
-			//		Evaluator = ScenarioHelpers.WaitForSeconds(3),
-			//		OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-			//		{
-			//			ScenarioHelpers.HideTextAction,
-			//		},
-			//	}
-			//);
-
-			// frame 8
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
+							"Let's get started..."),
 						ScenarioHelpers.CreateNpcCommand(nameof(RedTutorialVirus), nodeLeft.Id),
-						ScenarioHelpers.GenerateTextAction(true,
-							"Malware has infected the Left system! You should investigate...",
-							"",
-							"You'll need to bring the scanner with you...")
 					},
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -269,108 +151,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					},
 				}
 			);
-
-			// frame 9
 			frames.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.SetCommandEnabled<PickupItemCommand>(true),
-						ScenarioHelpers.GenerateTextAction(false,
-							"To pick up an item you must click on your inventory slot, and then on the item you want to pick up.",
-							"",
-							"The inventory slot is on the right, indicated by the case.")
-					},
-					Evaluator = ScenarioHelpers.ItemTypeIsInInventory<Scanner>(),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-						ScenarioHelpers.SetCommandEnabled<DropItemCommand>(false),
-					},
-				}
-			);
-
-			// frame 10
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(false,
-							"Now it is time to investigate.",
-							"",
-							"Make your way to the left system..")
-					},
-					Evaluator = ScenarioHelpers.OnlyPlayerIsAtLocation(nodeLeft),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 11
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true,
-							"You need to use the scanner tool to reveal the source of the problem."),
 					},
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 12
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.SetCommandEnabled<DropItemCommand>(true),
-						ScenarioHelpers.GenerateTextAction(false,
-							"First you will have to install the item on the current system",
-							"",
-							"Select your inventory and then click on one of the item slots in the panel at the bottom of the screen.")
-					},
-					Evaluator = ScenarioHelpers.ItemTypeIsAtLocation<Scanner>(nodeLeft)
-						.And(ScenarioHelpers.WaitForTutorialContinue),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(true),
-						ScenarioHelpers.HideTextAction,
-					},
-				}
-			);
-
-			// frame 13
-			frames.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.CreateItemCommand(nameof(GameEntities.RedAntivirus), nodeRight.Id),
-						ScenarioHelpers.GenerateTextAction(false,
-							"You have now revealed the source of the infection.",
-							"",
-							"We've provided you with the necessary antivirus, you'll have to figure out the rest on your own...")
-					},
-					Evaluator = EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeLeft)),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
 						ScenarioHelpers.EndGame(EndGameState.Success),
 					},
 				}
 			);
-
 			#endregion
 
 			return new SimulationScenario()

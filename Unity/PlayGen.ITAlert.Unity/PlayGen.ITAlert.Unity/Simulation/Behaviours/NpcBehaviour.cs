@@ -1,5 +1,6 @@
 ﻿using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Malware;
+using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,17 +18,28 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Image _image;
 
+		[SerializeField]
+		private TrailRenderer _trailRenderer;
+
+		[SerializeField]
+		private Light _light;
+
 		private MalwareVisibility _malwareVisibility;
+		private MalwareGenome _malwareGenome;
 
 		#region Initialization
-
-
+		
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
-			if (Entity.TryGetComponent(out _malwareVisibility))
+			if (Entity.TryGetComponent(out _malwareVisibility)
+				&& Entity.TryGetComponent(out _malwareGenome))
 			{
-				
+				SetColor();
+			}
+			else
+			{
+				throw new SimulationIntegrationException($"Failed to load NPC component(s) for on entity {Entity.Id}");
 			}
 		}
 
@@ -50,6 +62,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				_image.enabled = false;
 			}
+		}
+
+		private void SetColor()
+		{
+			_image.color = _malwareGenome.GetColourForGenome();
+			_trailRenderer.startColor = _malwareGenome.GetColourForGenome();
+			_trailRenderer.endColor = new Color(_trailRenderer.startColor.r, _trailRenderer.startColor.g, _trailRenderer.startColor.b, 0.375f);
+			_light.color = _malwareGenome.GetColourForGenome();
 		}
 
 		#endregion

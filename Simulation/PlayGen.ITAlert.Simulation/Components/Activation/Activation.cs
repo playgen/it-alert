@@ -21,5 +21,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Activation
 		{
 			ActivationState = ActivationState.Deactivating;
 		}
+
+		public void CancelActivation()
+		{
+			ActivationState = ActivationState.NotActive;
+		}
 	}
 }

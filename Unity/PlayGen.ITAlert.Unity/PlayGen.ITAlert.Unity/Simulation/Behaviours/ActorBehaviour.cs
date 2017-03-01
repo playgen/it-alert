@@ -36,8 +36,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					transform.SetParent(CurrentLocationEntity.GameObject.transform, true);
 				}
-				var position = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
-				_rectTransform.anchoredPosition = new Vector3(position.x, position.y, transform.position.z);
+				var visitorVectors = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
+				_rectTransform.anchoredPosition = new Vector3(visitorVectors.Position.x, visitorVectors.Position.y, transform.position.z);
+				//_rectTransform.rotation = new Quaternion(0, 0, visitorVectors.Rotation.z, 0);
 			}
 			else
 			{

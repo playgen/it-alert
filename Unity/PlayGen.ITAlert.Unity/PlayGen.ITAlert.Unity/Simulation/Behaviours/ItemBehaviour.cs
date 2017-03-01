@@ -40,6 +40,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private TimedActivation _timedActivation;
 
 		private Antivirus _antivirus;
+		private Capture _capture;
 
 		#endregion
 
@@ -50,9 +51,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#endregion
 
 		public bool ClickEnable { get; set; }
-
-
-
+		
 		#region Initialization
 
 		protected override void OnInitialize()
@@ -63,11 +62,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _activation))
 			{
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
+				Debug.Log($"Creating item type: {spriteName}");
 				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
 
 				Entity.TryGetComponent(out _timedActivation);
 				Entity.TryGetComponent(out _antivirus);
+				Entity.TryGetComponent(out _capture);
 			}
 			else
 			{
@@ -113,10 +114,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				UIEntity owner;
 				if (Director.TryGetEntity(_owner.Value.Value, out owner))
 				{
-					var playerColour = owner.GameObject.GetComponent<SpriteRenderer>().color;
+					var playerColour = ((PlayerBehaviour)owner.EntityBehaviour).PlayerColor;
 					_activationTimerImage.color = playerColour;
 					_backgroundSprite.color = playerColour;
-
+					
+					//TODO: extract item specific logic to subclasses
 					if (_antivirus != null)
 					{
 						_foregroundSprite.color = _antivirus.GetColourForGenome();
@@ -131,6 +133,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
 				_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
+				
+				//TODO: extract item specific logic to subclasses
 				if (_antivirus != null)
 				{
 					_foregroundSprite.color = _antivirus.GetColourForGenome();
@@ -138,6 +142,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				else
 				{
 					_foregroundSprite.color = new Color(1f, 1f, 1f, 1f);
+				}
+			}
+
+			if (_capture != null)
+			{
+				if (_capture.CapturedGenome == 0)
+				{
+					_midgroundSprite.enabled = false;
+				}
+				else
+				{
+					_midgroundSprite.enabled = true;
+					_midgroundSprite.color = _capture.GetColourForGenome();
 				}
 			}
 		}

@@ -12,6 +12,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private Color _playerColor;
 
+		public Color PlayerColor => _playerColor;
+
 		[SerializeField]
 		private Image _image;
 
@@ -30,6 +32,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		}
 
 		#endregion
+
 		public void SetColor(string colour)
 		{
 			if (colour.IndexOf("#", StringComparison.Ordinal) == -1)
@@ -50,15 +53,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnStateUpdated()
 		{
 			UpdatePosition();
-
-			////TODO: if inventory has changed
-			//_historicPositions.Enqueue(transform.position);
-			//if (_historicPositions.Count == PositionHistory)
-			//{
-			//	_historicPositions.Dequeue();
-			//	ManageInventory(_historicPositions.Count < InventoryPositionHistory ? _historicPositions.Last() : _historicPositions.ToArray()[InventoryPositionHistory - 1]);
-			//}
-			//DrawTrail();
 		}
 
 		#endregion

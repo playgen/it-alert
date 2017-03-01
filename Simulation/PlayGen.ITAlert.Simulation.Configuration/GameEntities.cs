@@ -262,7 +262,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				{
 					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
-			});
+			})
+			.HasComponent(new ComponentBinding<Antivirus>());
 
 		public static readonly Archetype RedAntivirus = new Archetype("RedAntivirus")
 			.Extends(Antivirus)
@@ -353,6 +354,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static readonly Archetype Capture = new Archetype("Capture")
 			.Extends(Item)
 			.HasComponent(new ComponentBinding<Capture>())
+			.HasComponent(new ComponentBinding<MalwareGenome>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()

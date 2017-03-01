@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems
 				{
 					Components =
 					{
-						new ComponentBinding<ItemStorage>(),
+						{ typeof(ComponentBinding<ItemStorage>),  new ComponentBinding<ItemStorage>() },
 					}
 				},
 			};

@@ -62,8 +62,6 @@ namespace PlayGen.ITAlert.Simulation
 			var connections = CreateConnections(subsystems, configuration.EdgeConfiguration);
 
 			CreatePlayers(subsystems, configuration.PlayerConfiguration);
-			CreateItems(subsystems, configuration.ItemConfiguration);
-
 		}
 
 		private void LayoutSystems(IEnumerable<NodeConfig> nodeConfigs, IEnumerable<EdgeConfig> edgeConfigs)
@@ -131,29 +129,6 @@ namespace PlayGen.ITAlert.Simulation
 			}
 			connection?.Dispose();
 			throw new SimulationException($"Could not create connection from archetype '{edgeConfig.ArchetypeName}'");
-		}
-
-		private void CreateItems(Dictionary<int, Entity> subsystems, IEnumerable<ItemConfig> itemConfigs)
-		{
-			foreach (var itemConfig in itemConfigs)
-			{
-				CreateItem(itemConfig, subsystems);
-			}
-		}
-
-		public void CreateItem(ItemConfig itemConfig, Dictionary<int, Entity> subsystems)
-		{
-			Entity item;
-			if (EntityFactoryProvider.TryCreateEntityFromArchetype(itemConfig.ArchetypeName, out item))
-			{
-				subsystems[itemConfig.StartingLocation].GetComponent<ItemStorage>().Items[0].Item = item.Id;
-
-			}
-			else
-			{
-				item?.Dispose();
-				throw new SimulationException($"Could not craete item for archtype '{itemConfig.ArchetypeName}'");
-			}
 		}
 
 		private void CreatePlayers(Dictionary<int, Entity> subsystems, IEnumerable<PlayerConfig> playerConfigs)
