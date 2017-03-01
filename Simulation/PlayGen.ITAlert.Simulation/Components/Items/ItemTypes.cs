@@ -29,6 +29,8 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 	public class Capture : IItemType
 	{
+		public int CapturedGenome { get; set; }
+
 	}
 
 	public class Data : IItemType

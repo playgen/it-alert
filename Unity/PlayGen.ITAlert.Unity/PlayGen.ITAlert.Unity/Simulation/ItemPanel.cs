@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					//ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
 					ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
 
-					ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
+					//ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
 				}
 
 				_proxyItem = proxyItem;
@@ -171,37 +171,32 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_inventoryItem.Update();
 			}
 
-			//if (_player.CurrentLocationEntity.Id != _playerLocationLast)
-			//{
-				_playerLocationLast = _player.CurrentLocationEntity.Id;
-
-				var currentLocation = _player.CurrentLocationEntity;
-				var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
-				if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			var currentLocation = _player.CurrentLocationEntity;
+			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			{
+				for (var i = 0; i < ItemCount; i++)
 				{
-					for (var i = 0; i < ItemCount; i++)
-					{
-						// the current subsystem has less item containers than the item panel
-						if (i > subsystemBehaviour.ItemStorage.Items.Length - 1)
-						{
-							_systemItems[i].ItemContainer = null;
-						}
-						else
-						{
-							_systemItems[i].ItemContainer = subsystemBehaviour.ItemStorage.Items[i];
-						}
-						_systemItems[i].Update();
-					}
-				}
-				else
-				{
-					for (var i = 0; i < ItemCount; i++)
+					// the current subsystem has less item containers than the item panel
+					if (i > subsystemBehaviour.ItemStorage.Items.Length - 1)
 					{
 						_systemItems[i].ItemContainer = null;
-						_systemItems[i].Update();
 					}
+					else
+					{
+						_systemItems[i].ItemContainer = subsystemBehaviour.ItemStorage.Items[i];
+					}
+					_systemItems[i].Update();
 				}
-			//}
+			}
+			else
+			{
+				for (var i = 0; i < ItemCount; i++)
+				{
+					_systemItems[i].ItemContainer = null;
+					_systemItems[i].Update();
+				}
+			}
 		}
 
 		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)

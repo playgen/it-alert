@@ -88,6 +88,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			_captureMatcherGroup = captureMatcherGroup;
 		}
 
+		public override bool Enabled => true;
+
 		public override bool CanRelease => false;
 
 		public override bool CanCapture(int? itemId = null)

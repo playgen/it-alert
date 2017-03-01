@@ -163,6 +163,7 @@
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
+    <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />
     <Compile Include="Simulation\MalwareGeneMapper.cs" />

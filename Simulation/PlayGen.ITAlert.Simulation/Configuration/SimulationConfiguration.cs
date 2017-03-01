@@ -16,8 +16,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public IEnumerable<PlayerConfig> PlayerConfiguration { get; set; }
 
-		public IEnumerable<ItemConfig> ItemConfiguration { get; set; }
-
 		//public SimulationRules Rules { get; private set; }
 
 		public SimulationConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
@@ -32,8 +30,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			NodeConfiguration = nodeConfiguration ?? new NodeConfig[0];
 			EdgeConfiguration = edgeConfiguration ?? new EdgeConfig[0];
 			PlayerConfiguration = playerConfiguration ?? new PlayerConfig[0];
-			ItemConfiguration = itemConfiguration ?? new ItemConfig[0];
-			//Rules = rules ?? new SimulationRules();
 		}
 
 

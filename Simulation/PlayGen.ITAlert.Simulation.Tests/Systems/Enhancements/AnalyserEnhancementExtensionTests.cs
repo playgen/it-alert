@@ -29,8 +29,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 				{
 					Components =
 					{
-						new ComponentBinding<ItemStorage>(),
-						new ComponentBinding<Antivirus>(),
+						{ typeof(ComponentBinding<ItemStorage>), new ComponentBinding<ItemStorage>() },
+						{ typeof(ComponentBinding<Antivirus>), new ComponentBinding<Antivirus>() },
 					}
 				},
 			};

@@ -2,6 +2,7 @@
 using PlayGen.Photon.Analytics;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
+using NLog;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -9,6 +10,9 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 	{
 		protected readonly AnalyticsServiceManager Analytics;
 		protected readonly RoomSettings RoomSettings;
+
+		private readonly Logger _logger;
+
 
 		protected RoomState(PluginBase photonPlugin,
 			Messenger messenger,

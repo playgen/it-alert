@@ -86,11 +86,14 @@
     <Compile Include="Systems\Enhancements\AntivirusWorkstationExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
+    <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Systems\Items\CaptureBehaviour.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
     <Compile Include="Systems\Items\PlayerInventorySystem.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
     <Compile Include="Systems\Items\AntivirusBehaviour.cs" />
+    <Compile Include="Systems\Items\AnalyserBehaviour.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />

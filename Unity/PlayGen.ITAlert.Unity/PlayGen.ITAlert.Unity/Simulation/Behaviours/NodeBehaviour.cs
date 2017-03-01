@@ -7,11 +7,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public abstract class NodeBehaviour : EntityBehaviour
 	{
-		public Vector2 GetVisitorPosition(int pathPoint)
+		public VisitorVectors GetVisitorPosition(int pathPoint)
 		{
 			return GetPositionFromPathPoint(pathPoint);
 		}
 
-		protected abstract Vector2 GetPositionFromPathPoint(int pathPoint);
+		protected abstract VisitorVectors GetPositionFromPathPoint(int pathPoint);
 	}
 }

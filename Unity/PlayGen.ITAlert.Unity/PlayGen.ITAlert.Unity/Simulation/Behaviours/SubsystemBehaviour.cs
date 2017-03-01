@@ -249,17 +249,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Visitor Movement
 
-		protected override Vector2 GetPositionFromPathPoint(int pathPoint)
+		protected override VisitorVectors GetPositionFromPathPoint(int pathPoint)
 		{
-			var localPosition = GetPositionOnSquare(pathPoint);
-			localPosition.y *= -1; // Flip Y so displays correctly relative to the view
+			var visitorVectors = GetPositionOnSquare(pathPoint);
+			var localPosition = visitorVectors.Position;
 			//localPosition *= _connectionSquare.transform.localScale.x;
 			localPosition += _connectionSquare.GetComponent<RectTransform>().anchoredPosition; // Move relative to this subsystem
+			visitorVectors.Position = localPosition;
 
-			return localPosition;
+			return visitorVectors;
 		}
 
-		private Vector2 GetPositionOnSquare(int pathPoint)
+		private VisitorVectors GetPositionOnSquare(int pathPoint)
 		{
 			var squarePermimiterSideScale = 1f;
 			var offsetPositionAlong = GetOffsetPositionAlongSquare(pathPoint, squarePermimiterSideScale);
@@ -274,22 +275,38 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			// TOP
 			if (offsetPositionAlong < squarePermimiterSideScale)
 			{
-				return new Vector2((localPositionAlong) - halfSide, -halfSide);
+				return new VisitorVectors()
+				{
+					Position = new Vector2((localPositionAlong) - halfSide, halfSide),
+					Rotation = new Vector3(0, 0, 0),
+				};
 			}
 			// RIGHT
 			if (offsetPositionAlong < 2 * squarePermimiterSideScale)
 			{
-				return new Vector2(halfSide, (localPositionAlong) - halfSide);
+				return new VisitorVectors()
+				{
+					Position = new Vector2(halfSide, (localPositionAlong - halfSide) * -1),
+					Rotation = new Vector3(0, 0, 270),
+				};
 			}
 			// BOTTOM
 			if (offsetPositionAlong < 3 * squarePermimiterSideScale)
 			{
-				return new Vector2(halfSide - (localPositionAlong), halfSide);
+				return new VisitorVectors()
+				{
+					Position = new Vector2(halfSide - (localPositionAlong), -halfSide),
+					Rotation = new Vector3(0, 0, 180),
+				};
 			}
 			// LEFT
 			if (offsetPositionAlong < 4 * squarePermimiterSideScale)
 			{
-				return new Vector2(-halfSide, halfSide - (localPositionAlong));
+				return new VisitorVectors()
+				{
+					Position = new Vector2(-halfSide, (halfSide - localPositionAlong) * -1),
+					Rotation = new Vector3(0, 0, 90),
+				};
 			}
 			throw new Exception("Subsystem movement has exceeded bounds: this should never be hit.");
 		}

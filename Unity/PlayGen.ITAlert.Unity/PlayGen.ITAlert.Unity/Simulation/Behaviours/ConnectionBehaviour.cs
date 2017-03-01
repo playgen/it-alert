@@ -156,11 +156,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Visitor movement
 
-		protected override Vector2 GetPositionFromPathPoint(int pathPoint)
+		protected override VisitorVectors GetPositionFromPathPoint(int pathPoint)
 		{
 			var halfWidth = _rectTransform.rect.width / 2;
 			var position = Vector2.Lerp(new Vector2(-1 * halfWidth, 0), new Vector2(halfWidth, 0), (float) pathPoint/_length);
-			return position;
+			return new VisitorVectors()
+			{
+				Position = position,
+				Rotation = transform.eulerAngles,
+			};
 		}
 
 
