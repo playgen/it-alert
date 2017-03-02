@@ -42,13 +42,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(pickupItemCommand);
 		}
 
-		public static void DropItem(int itemId)
+		public static void DropItem(int itemId, int containerIndex)
 		{
 			Log($"Request PickupItem item: {itemId}");
 			var pickupItemCommand = new DropItemCommand()
 			{
 				PlayerId = Director.Player.Id,
-				ItemId = itemId
+				ItemId = itemId,
+				ContainerId = containerIndex,
 			};
 			IssueCommand(pickupItemCommand);
 		}

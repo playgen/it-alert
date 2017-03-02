@@ -12,6 +12,36 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int PlayerId { get; set; }
 
 		public int ItemId { get; set; }
+
+		#region deduplication equality
+
+		protected bool Equals(ActivateItemCommand other)
+		{
+			return PlayerId == other.PlayerId && ItemId == other.ItemId;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((ActivateItemCommand) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return (PlayerId * 397) ^ ItemId;
+			}
+		}
+
+		public bool Equals(ICommand other)
+		{
+			return Equals(other as ActivateItemCommand);
+		}
+
+		#endregion
 	}
 
 	public class ActivateItemCommandHandler : CommandHandler<ActivateItemCommand>

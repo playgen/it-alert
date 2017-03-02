@@ -16,7 +16,12 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		[SerializeField]
 		private float _interval = 1f;
 
+		[SerializeField]
+		private bool _periodic = true;
+
 		private bool _pulseDown;
+
+		private float _initialAlpha;
 
 		public void AWake()
 		{
@@ -30,11 +35,12 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		public void OnEnable()
 		{
 			_pulseDown = true;
+			_initialAlpha = _image.color.a;
 		}
 
 		public void OnDisable()
 		{
-			_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, 1.0f);
+			_image.color = new Color(_image.color.r, _image.color.g, _image.color.b, _initialAlpha);
 		}
 
 		public void Pulse(float step)
@@ -51,9 +57,13 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			{
 				_pulseDown = false;
 			}
-			else if (_image.color.a >= 1)
+			else if (_image.color.a >= _initialAlpha)
 			{
 				_pulseDown = true;
+				if (_periodic == false)
+				{
+					this.enabled = false;
+				}
 			}
 		}
 

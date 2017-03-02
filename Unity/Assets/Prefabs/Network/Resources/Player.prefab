@@ -19,12 +19,12 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224019578208554498}
-  - component: {fileID: 96668158742469704}
   - component: {fileID: 114283422024362940}
+  - component: {fileID: 223216129224211668}
   - component: {fileID: 222849143527398976}
-  - component: {fileID: 114130811051096290}
+  - component: {fileID: 96668158742469704}
   - component: {fileID: 108916650317234336}
-  - component: {fileID: 223052052486121912}
+  - component: {fileID: 114380719367653808}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -176,7 +176,22 @@ Light:
   m_BounceIntensity: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114130811051096290
+--- !u!114 &114283422024362940
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014000263050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 299254994, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rectTransform: {fileID: 224019578208554498}
+  _image: {fileID: 114380719367653808}
+  _trailRenderer: {fileID: 96668158742469704}
+  _light: {fileID: 108916650317234336}
+--- !u!114 &114380719367653808
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -189,7 +204,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -203,28 +218,13 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114283422024362940
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000014000263050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 299254994, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rectTransform: {fileID: 224019578208554498}
-  _image: {fileID: 114130811051096290}
-  _trailRenderer: {fileID: 96668158742469704}
-  _light: {fileID: 108916650317234336}
 --- !u!222 &222849143527398976
 CanvasRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014000263050}
---- !u!223 &223052052486121912
+--- !u!223 &223216129224211668
 Canvas:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -240,8 +240,8 @@ Canvas:
   m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 20
+  m_SortingLayerID: 1143953085
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &224019578208554498
 RectTransform:
@@ -250,7 +250,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014000263050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -20}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

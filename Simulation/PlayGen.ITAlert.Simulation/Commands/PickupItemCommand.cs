@@ -15,6 +15,43 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int ItemId { get; set; }
 
 		public int LocationId { get; set; }
+
+		#region Equality members
+
+		protected bool Equals(PickupItemCommand other)
+		{
+			return PlayerId == other.PlayerId && ItemId == other.ItemId && LocationId == other.LocationId;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((PickupItemCommand) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hashCode = PlayerId;
+				hashCode = (hashCode * 397) ^ ItemId;
+				hashCode = (hashCode * 397) ^ LocationId;
+				return hashCode;
+			}
+		}
+
+		#region Implementation of IEquatable<ICommand>
+
+		public bool Equals(ICommand other)
+		{
+			return Equals(other as PickupItemCommand);
+		}
+
+		#endregion
+
+		#endregion
 	}
 
 	public class PickupItemCommandHandler : CommandHandler<PickupItemCommand>
