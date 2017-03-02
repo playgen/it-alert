@@ -233,6 +233,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static readonly Archetype AnalysisActivator = new Archetype(AntivirusWorkstationExtension.AnalysisActivatorArchetypeName)
 			.Extends(Item)
 			.HasComponent(new ComponentBinding<Analyser>())
+			.HasComponent(new ComponentBinding<Owner>()
+			{
+				ComponentTemplate = new Owner()
+				{
+					AllowAll = true,
+				}
+			})
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()
@@ -254,8 +261,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		#region antivirus
 
-		private static readonly Archetype Antivirus = new Archetype("Antivirus")
+		public static readonly Archetype Antivirus = new Archetype("Antivirus")
 			.Extends(Item)
+			.HasComponent(new ComponentBinding<Antivirus>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()

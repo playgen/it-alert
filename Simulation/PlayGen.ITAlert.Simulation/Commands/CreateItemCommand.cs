@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Commands;
+using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
@@ -95,21 +97,18 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& _entityRegistry.TryGetEntityById(systemEntityId, out systemEntity)
 				&& systemEntity.TryGetComponent(out itemStorage))
 			{
-				Entity item;
-				CurrentLocation currentLocation;
-				if (_entityFactoryProvider.TryCreateEntityFromArchetype(command.Archetype, out item)
-					&& item.TryGetComponent(out currentLocation))
+				ComponentEntityTuple<CurrentLocation, Owner> itemTuple;
+				if (_entityFactoryProvider.TryCreateItem(command.Archetype, systemEntityId, null, out itemTuple))
 				{
 					var itemContainer = itemStorage.Items.FirstOrDefault(ic => ic != null && ic.Item.HasValue == false && ic.Enabled);
 					if (itemContainer == null)
 					{
+						itemTuple.Entity.Dispose();
 						return false;
 					}
-					itemContainer.Item = item.Id;
-					currentLocation.Value = systemEntity.Id;
+					itemContainer.Item = itemTuple.Entity.Id;
 					return true;
 				}
-				item?.Dispose();
 			}
 			return false;
 

@@ -62,7 +62,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			ComponentEntityTuple<Subsystem> subsystemTuple;
 			if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
 				&& itemTuple.Component2.ActivationState == ActivationState.NotActive
-				&& (itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId)
+				&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId)
+				// TODO: should an item have to have a location to be activated?
 				&& itemTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out subsystemTuple))
 			{

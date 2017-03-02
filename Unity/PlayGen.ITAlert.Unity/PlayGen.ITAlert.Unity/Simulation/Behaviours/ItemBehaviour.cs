@@ -56,6 +56,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnInitialize()
 		{
+			_antivirus = null;
+			_capture = null;
+			_timedActivation = null;
+
 			if (Entity.TryGetComponent(out _itemType)
 				&& Entity.TryGetComponent(out _currentLocation)
 				&& Entity.TryGetComponent(out _owner)
@@ -69,6 +73,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				Entity.TryGetComponent(out _timedActivation);
 				Entity.TryGetComponent(out _antivirus);
 				Entity.TryGetComponent(out _capture);
+				UpdateColour();
 			}
 			else
 			{
@@ -145,7 +150,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 			}
 
-			if (_capture != null)
+			if (_capture == null)
+			{
+				_midgroundSprite.enabled = false;
+			}
+			else
 			{
 				if (_capture.CapturedGenome == 0)
 				{

@@ -89,6 +89,7 @@
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
     <Compile Include="Systems\Items\CaptureBehaviour.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
+    <Compile Include="Systems\Items\EntityFactoryExtensions.cs" />
     <Compile Include="Systems\Items\PlayerInventorySystem.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />

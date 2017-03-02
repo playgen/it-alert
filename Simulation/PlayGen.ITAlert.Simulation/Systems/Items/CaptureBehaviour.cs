@@ -21,13 +21,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		
 		private readonly ComponentMatcherGroup<Capture, CurrentLocation, Owner> _captureMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, Visitors> _subsystemMatcherGroup;
-		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<MalwareGenome, MalwareVisibility> _malwareMatcherGroup;
 
 		public CaptureBehaviour(IMatcherProvider matcherProvider)
 		{
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, Visitors>();
-			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
+			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();
 		}
 
 		public void OnActivating(int itemId, Activation activation)
@@ -58,7 +58,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 						.FirstOrDefault();
 
 					// TODO: probably need a better way of choosing the malware than selecting first, but this will do for now
-					if (malwareVisitor != null)
+					if (malwareVisitor != null 
+						&& malwareVisitor.Component2.Visible)
 					{
 						itemTuple.Component1.CapturedGenome = malwareVisitor.Component1.Value;
 					}

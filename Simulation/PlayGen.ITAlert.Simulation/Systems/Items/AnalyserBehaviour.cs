@@ -80,17 +80,17 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					&& locationTuple.Component2.TryGetItemContainer(out analysisOutputItemContainer)
 					&& analysisOutputItemContainer.Item.HasValue == false)
 				{
-					Entity antivirusEntity;
-					_entityFactoryProvider.TryCreateEntityFromArchetype(AnalysisOutputArchetypeName, out antivirusEntity);
+					ComponentEntityTuple<CurrentLocation, Owner> antivirusEntityTuple;
 					Antivirus antivirus;
-					if (antivirusEntity.TryGetComponent(out antivirus))
+					if (_entityFactoryProvider.TryCreateItem(AnalysisOutputArchetypeName, locationTuple.Entity.Id, null, out antivirusEntityTuple)
+						&& antivirusEntityTuple.Entity.TryGetComponent(out antivirus))
 					{
 						antivirus.TargetGenome = captureTuple.Component1.CapturedGenome;
-						analysisOutputItemContainer.Item = antivirusEntity.Id;
+						analysisOutputItemContainer.Item = antivirusEntityTuple.Entity.Id;
 					}
 					else
 					{
-						antivirusEntity.Dispose();
+						antivirusEntityTuple.Entity.Dispose();
 					}
 				}
 			}

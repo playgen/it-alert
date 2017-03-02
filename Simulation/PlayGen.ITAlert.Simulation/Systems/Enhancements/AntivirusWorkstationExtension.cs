@@ -10,6 +10,7 @@ using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
@@ -49,14 +50,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 			itemStorage.Items[AnalysisTargetStorageLocation] = new AnalysisTargetItemContainer(_captureMatcherGroup);
 
-			Entity activatorEntity;
-			if (_entityFactoryProvider.TryCreateEntityFromArchetype(AnalysisActivatorArchetypeName, out activatorEntity) == false)
+			ComponentEntityTuple<CurrentLocation, Owner> activatorEntityTuple;
+			if (_entityFactoryProvider.TryCreateItem(AnalysisActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
 			{
 				throw new SimulationException("AnalysisActivator archetype not registered");
 			}
 			itemStorage.Items[AnalysisActivatorStorageLocation] = new AnalysisActivatorItemContainer()
 			{
-				Item = activatorEntity.Id,
+				Item = activatorEntityTuple.Entity.Id,
 			};
 			itemStorage.Items[AnalysisOutputStorageLocation] = new AnalysisOutputItemContainer();
 		}
@@ -90,11 +91,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		public override bool Enabled => true;
 
-		public override bool CanRelease => false;
+		public override bool CanRelease => true;
 
 		public override bool CanCapture(int? itemId = null)
 		{
-			Entity captureEntity;
+			ComponentEntityTuple<Capture> captureEntity;
 			return itemId.HasValue && _captureMatcherGroup.TryGetMatchingEntity(itemId.Value, out captureEntity);
 		}
 	}
