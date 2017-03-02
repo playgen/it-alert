@@ -14,6 +14,40 @@ namespace PlayGen.ITAlert.Simulation.Commands.Tutorial
 		public string Text { get; set; }
 
 		public bool Continue { get; set; }
+
+		#region Equality members
+
+		protected bool Equals(DisplayTextCommand other)
+		{
+			return string.Equals(Text, other.Text) && Continue == other.Continue;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((DisplayTextCommand) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				return ((Text?.GetHashCode() ?? 0) * 397) ^ Continue.GetHashCode();
+			}
+		}
+
+		#region Implementation of IEquatable<ICommand>
+
+		public bool Equals(ICommand other)
+		{
+			return Equals(other as DisplayTextCommand);
+		}
+
+		#endregion
+
+		#endregion
 	}
 
 	public class DisplayTextCommandHandler : CommandHandler<DisplayTextCommand>

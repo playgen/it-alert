@@ -94,8 +94,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		public override bool CanCapture(int? itemId = null)
 		{
-			Entity capturEntity;
-			return itemId.HasValue && _captureMatcherGroup.TryGetMatchingEntity(itemId.Value, out capturEntity);
+			Entity captureEntity;
+			return itemId.HasValue && _captureMatcherGroup.TryGetMatchingEntity(itemId.Value, out captureEntity);
 		}
 	}
 

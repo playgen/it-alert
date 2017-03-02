@@ -50,6 +50,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 
 				if (proxyItem)
+
 				{
 					ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
 					director.AddUntrackedEntity(ItemEntity);
@@ -150,7 +151,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
 				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
-				_systemItems[i].ContainerBehaviour.Click += SystemContaineBehaviourOnClick;
+				var containerIndex = i;
+				_systemItems[i].ContainerBehaviour.Click += ic => SystemContaineBehaviourOnClick(ic, containerIndex);
 			}
 		}
 
@@ -199,7 +201,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
 		{
 			ItemBehaviour item;
 			switch (_inventoryItem.ContainerBehaviour.State)
@@ -214,7 +216,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (itemContainerBehaviour.TryGetItem(out item) == false
 						&& _inventoryItem.ContainerBehaviour.TryGetItem(out item))
 					{
-						PlayerCommands.DropItem(item.Id);
+						PlayerCommands.DropItem(item.Id, containerIndex);
 					}
 					break;
 				default:

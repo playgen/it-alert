@@ -12,6 +12,37 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 		public int PlayerId { get; set; }
 
 		public int DestinationId { get; set; }
+
+		#region Equality members
+
+		protected bool Equals(SetActorDestinationCommand other)
+		{
+			return PlayerId == other.PlayerId;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((SetActorDestinationCommand) obj);
+		}
+
+		public override int GetHashCode()
+		{
+			return PlayerId.GetHashCode();
+		}
+
+		#region Implementation of IEquatable<ICommand>
+
+		public bool Equals(ICommand other)
+		{
+			return Equals(other as SetActorDestinationCommand);
+		}
+
+		#endregion
+
+		#endregion
 	}
 
 	public class SetActorDestinationCommandHandler : CommandHandler<SetActorDestinationCommand>

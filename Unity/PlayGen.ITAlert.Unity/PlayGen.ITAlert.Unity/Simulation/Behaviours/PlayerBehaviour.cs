@@ -23,7 +23,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Light _light;
 
+		private Vector3 _scale;
+
 		#region Initialization
+
+		public void Awake()
+		{
+			_scale = ((GameObject) Resources.Load("Player")).GetComponent<RectTransform>().localScale;
+		}
 
 		protected override void OnInitialize()
 		{
@@ -46,6 +53,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
 			}
+		}
+
+		public void OnEnable()
+		{
+			transform.localScale = _scale;
 		}
 
 		#region State Update

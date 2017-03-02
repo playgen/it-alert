@@ -139,6 +139,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void OnClickSubsystem(RaycastHit2D subsystemHit)
 		{
 			var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
+			subsystem.OnClick();
 			PlayerCommands.Move(subsystem.Id);
 		}
 

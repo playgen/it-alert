@@ -14,5 +14,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static Color ItemContainerEnabledColor = new Color(1f, 1f, 1f, 1f);
 		public static Color ItemContainerDisabledColor = new Color(1f, 1f, 1f, 0.33f);
+
+		public const string ActivePlayerSortingLayer = "ActivePlayer";
 	}
 }

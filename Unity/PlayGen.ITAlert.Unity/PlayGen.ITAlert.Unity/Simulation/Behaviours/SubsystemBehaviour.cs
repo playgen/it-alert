@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
+using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,9 +53,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _memoryImage;
 
 		[SerializeField]
-		private SpriteRenderer _iconRenderer;
+		private Image _iconRenderer;
 		[SerializeField]
-		private SpriteRenderer _filled;
+		private Image _filled;
+
+		[SerializeField]
+		private BlinkBehaviour _blink;
 
 		public BoxCollider2D DropCollider
 		{
@@ -325,7 +329,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
-
+		public void OnClick()
+		{
+			_blink.enabled = true;
+		}
 
 	}
 }

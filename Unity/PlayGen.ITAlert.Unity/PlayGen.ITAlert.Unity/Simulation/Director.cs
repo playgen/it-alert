@@ -131,7 +131,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			UpdateSignal.Reset();
 			UpdateCompleteSignal.Reset();
 			ThreadWorkerException = null;
-			_tickMessage = null;
 
 			_activePlayer = null;
 			foreach (var entity in TrackedEntities)
@@ -158,6 +157,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					IsBackground = true,
 				};
 				_updatethread.Start();
+
+				_queuedMessages = new Queue<TickMessage>();
 
 				ResetSimulation();
 				SimulationRoot = simulationRoot;
@@ -236,6 +237,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						if (player.PhotonId == playerServerId)
 						{
 							_activePlayer = playerBehaviour;
+							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 						}
 						playerBehaviour.SetColor(player.Color);
 					}
@@ -254,9 +256,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region worker thread
 
-		private static TickMessage _tickMessage;
+		private readonly object _queueLock = new object();
 
-		private static bool _applyCommands = true;
+		private Queue<TickMessage> _queuedMessages;
+
+		//private static TickMessage _tickMessage;
+
+		//private static bool _applyCommands = true;
 
 		public void StopWorker()
 		{
@@ -277,13 +283,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (handle == 1)
 					{
 						_tick++;
-						var message = _tickMessage;
-						if (_applyCommands)
-						{
 
-							// TODO: Tick class needs to be moved out of hte lifecycler project so that I can remove the reference here
-							var tick = ConfigurationSerializer.Deserialize<Tick>(message.TickString);
-							//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.tick.json", message.TickString);
+						TickMessage[] queuedMessages;
+
+						lock (_queueLock)
+						{
+							queuedMessages = new TickMessage[_queuedMessages.Count];
+							_queuedMessages.CopyTo(queuedMessages, 0);
+							_queuedMessages.Clear();
+						}
+
+						var i = 1;
+						foreach (var tickMessage in queuedMessages)
+						{
+							var fastForward = i++ < queuedMessages.Length;
+							var tick = ConfigurationSerializer.Deserialize<Tick>(tickMessage.TickString);
 
 							// TODO: this should probably be pushed into the ECS
 							ICommandSystem commandSystem;
@@ -302,25 +316,29 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							}
 							SimulationRoot.ECS.Tick();
 
-							if (tick.CurrentTick != SimulationRoot.ECS.CurrentTick)
+							if (fastForward)
 							{
-								throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
+								Debug.LogWarning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
 							}
-
-							uint crc;
-							var state = SimulationRoot.GetEntityState(out crc);
-							//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", state);
-
-							if (message.CRC != crc)
+							else
 							{
-								throw new SimulationSynchronisationException($"Simulation out of sync at tick {SimulationRoot.ECS.CurrentTick}: Local CRC {crc} doest not match master {message.CRC}");
+								if (tick.CurrentTick != SimulationRoot.ECS.CurrentTick) 
+								{
+									throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
+								}
+
+								uint crc;
+								var state = SimulationRoot.GetEntityState(out crc);
+								//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", state);
+
+								if (tickMessage.CRC != crc)
+								{
+									throw new SimulationSynchronisationException($"Simulation out of sync at tick {SimulationRoot.ECS.CurrentTick}: Local CRC {crc} doest not match master {tickMessage.CRC}");
+								}
 							}
 						}
-						else
-						{
-							SimulationRoot.EntityStateSerializer.DeserializeEntities(message.EntityState); 
-						}
-						
+
+
 						UpdateSignal.Set();
 						UpdateCompleteSignal.WaitOne();
 
@@ -339,7 +357,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void UpdateSimulation(TickMessage tickMessage)
 		{
-			_tickMessage = tickMessage;
+			lock (_queueLock)
+			{
+				_queuedMessages.Enqueue(tickMessage);
+			}
 			MessageSignal.Set();
 		}
 
