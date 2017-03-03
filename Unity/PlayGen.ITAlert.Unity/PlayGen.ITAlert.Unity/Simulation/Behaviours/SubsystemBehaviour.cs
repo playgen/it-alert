@@ -260,7 +260,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//localPosition *= _connectionSquare.transform.localScale.x;
 			localPosition += _connectionSquare.GetComponent<RectTransform>().anchoredPosition; // Move relative to this subsystem
 			visitorVectors.Position = localPosition;
-
 			return visitorVectors;
 		}
 
@@ -282,7 +281,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				return new VisitorVectors()
 				{
 					Position = new Vector2((localPositionAlong) - halfSide, halfSide),
-					Rotation = new Vector3(0, 0, 0),
+					Rotation = new Vector3(0, 0, 180),
 				};
 			}
 			// RIGHT
@@ -291,7 +290,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				return new VisitorVectors()
 				{
 					Position = new Vector2(halfSide, (localPositionAlong - halfSide) * -1),
-					Rotation = new Vector3(0, 0, 270),
+					Rotation = new Vector3(0, 0, 90),
 				};
 			}
 			// BOTTOM
@@ -300,7 +299,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				return new VisitorVectors()
 				{
 					Position = new Vector2(halfSide - (localPositionAlong), -halfSide),
-					Rotation = new Vector3(0, 0, 180),
+					Rotation = new Vector3(0, 0, 0),
 				};
 			}
 			// LEFT
@@ -309,7 +308,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				return new VisitorVectors()
 				{
 					Position = new Vector2(-halfSide, (halfSide - localPositionAlong) * -1),
-					Rotation = new Vector3(0, 0, 90),
+					Rotation = new Vector3(0, 0, 270),
 				};
 			}
 			throw new Exception("Subsystem movement has exceeded bounds: this should never be hit.");

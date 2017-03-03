@@ -23,6 +23,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Light _light;
 
+		[SerializeField]
+		private Canvas _canvas;
+
 		private Vector3 _scale;
 
 		#region Initialization
@@ -52,12 +55,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_light.color = _playerColor;
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
+				_trailRenderer.sortingLayerName = _canvas.sortingLayerName;
 			}
 		}
 
 		public void OnEnable()
 		{
-			transform.localScale = _scale;
+			transform.localScale = new Vector3(_scale.x / transform.parent.localScale.x, _scale.y / transform.parent.localScale.y, _scale.z / transform.parent.localScale.z);
 		}
 
 		#region State Update
