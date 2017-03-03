@@ -191,6 +191,7 @@ MonoBehaviour:
   _image: {fileID: 114380719367653808}
   _trailRenderer: {fileID: 96668158742469704}
   _light: {fileID: 108916650317234336}
+  _canvas: {fileID: 223216129224211668}
 --- !u!114 &114380719367653808
 MonoBehaviour:
   m_ObjectHideFlags: 1
