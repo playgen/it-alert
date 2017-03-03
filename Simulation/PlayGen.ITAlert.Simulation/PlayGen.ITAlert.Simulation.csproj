@@ -84,11 +84,12 @@
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
-    <Compile Include="Systems\Enhancements\GarbageDisposalExtension.cs" />
-    <Compile Include="Systems\Enhancements\AntivirusExtension.cs" />
+    <Compile Include="Systems\Enhancements\GarbageDisposalEnhancementExtension.cs" />
+    <Compile Include="Systems\Enhancements\AntivirusEnhancementExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />
     <Compile Include="Systems\Items\GarbageDisposalBehaviour.cs" />
     <Compile Include="Systems\Items\CaptureBehaviour.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />

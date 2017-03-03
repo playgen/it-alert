@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public const string PanelItemContainerDefaultSpriteName = "ItemContainer_Panel";
 
 		public static Color ItemContainerEnabledColor = new Color(1f, 1f, 1f, 1f);
-		public static Color ItemContainerDisabledColor = new Color(1f, 1f, 1f, 0.33f);
+		public static Color ItemContainerDisabledColor = new Color(1f, 1f, 1f, 0.50f);
 
 		public const string ActivePlayerSortingLayer = "ActivePlayer";
 	}

@@ -53,6 +53,16 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				}
 			});
 
+		private static readonly Archetype YellowTutorialVirus = new Archetype("YellowTutorialVirus")
+			.Extends(GameEntities.CPUVirus)
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+			{
+				ComponentTemplate = new MalwareGenome()
+				{
+					Value = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen,
+				}
+			});
+
 		#endregion
 
 		// TODO: this should be parameterized further and read from config
@@ -115,12 +125,17 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
 			{
 				StartingLocation = nodeRight.Id,
-				ArchetypeName = nameof(GameEntities.Player)
+				ArchetypeName = GameEntities.Player.Name
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 
-			configuration.Archetypes.Add(TutorialScanner);
-			configuration.Archetypes.Add(RedTutorialVirus);
+			configuration.Archetypes.AddRange(new []
+			{
+				TutorialScanner,
+				RedTutorialVirus,
+				GreenTutorialVirus,
+				YellowTutorialVirus,
+			});
 
 			#endregion
 
@@ -135,15 +150,18 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						ScenarioHelpers.CreateNpcCommand(RedTutorialVirus.Name, nodeLeft.Id),
+						ScenarioHelpers.CreateNpcCommand(GreenTutorialVirus.Name, nodeMiddle.Id),
+						ScenarioHelpers.CreateNpcCommand(YellowTutorialVirus.Name, nodeRight.Id),
+
 						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, nodeRight.Id),
 						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, nodeMiddle.Id),
 
 						ScenarioHelpers.GenerateTextAction(true,
 							"Welcome to IT Alert!", 
-							"You are a system administrator tasked with maintaing the network.",
+							"You are a system administrator tasked with maintaining the network.",
 							"Let's get started..."),
-						ScenarioHelpers.CreateNpcCommand(nameof(RedTutorialVirus), nodeLeft.Id),
-						ScenarioHelpers.CreateNpcCommand(nameof(GreenTutorialVirus), nodeMiddle.Id),
+
 
 					},
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
