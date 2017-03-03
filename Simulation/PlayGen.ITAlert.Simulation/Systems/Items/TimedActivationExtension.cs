@@ -14,6 +14,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_timedActivationMatcherGroup = matcherProvider.CreateMatcherGroup<TimedActivation>();
 		}
 
+		public void OnNotActive(int itemId, Activation activation)
+		{
+
+		}
+
 		public void OnActivating(int itemId, Activation activation)
 		{
 			ComponentEntityTuple<TimedActivation> itemTuple;

@@ -67,7 +67,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "Left",
 				X = 0,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = GameEntities.Subsystem.Name,
 			};
 
 			var nodeMiddle = new NodeConfig()
@@ -75,7 +75,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "Middle",
 				X = 1,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = GameEntities.Subsystem.Name,
 			};
 
 			var nodeRight = new NodeConfig()
@@ -83,7 +83,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "Right",
 				X = 2,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = GameEntities.GarbageDisposalWorkstation.Name,
 			};
 
 			var nodeBottom = new NodeConfig()
@@ -91,7 +91,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "Bottom",
 				X = 1,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.AntivirusWorkstation),
+				ArchetypeName = GameEntities.AntivirusWorkstation.Name,
 			};
 
 			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight, nodeMiddle, nodeBottom };
@@ -143,6 +143,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 							"You are a system administrator tasked with maintaing the network.",
 							"Let's get started..."),
 						ScenarioHelpers.CreateNpcCommand(nameof(RedTutorialVirus), nodeLeft.Id),
+						ScenarioHelpers.CreateNpcCommand(nameof(GreenTutorialVirus), nodeMiddle.Id),
+
 					},
 					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

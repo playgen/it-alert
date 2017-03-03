@@ -30,6 +30,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();
 		}
 
+		public void OnNotActive(int itemId, Activation activation)
+		{
+
+		}
+
 		public void OnActivating(int itemId, Activation activation)
 		{
 			// do nothing

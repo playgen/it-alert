@@ -15,5 +15,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Extensions
 			itemContainer = itemStorage.Items.OfType<TItemContainer>().FirstOrDefault();
 			return itemContainer != null;
 		}
+
+		public static bool TryGetEmptyContainer(this ItemStorage itemStorage, out ItemContainer itemContainer)
+		{
+			itemContainer = itemStorage.Items.FirstOrDefault(ic => ic != null 
+				&& ic.GetType() == typeof(ItemContainer) 
+				&&  ic.Item.HasValue == false 
+				&& ic.Enabled);
+			return itemContainer != null;
+		}
+
 	}
 }

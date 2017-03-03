@@ -7,8 +7,7 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Components.Enhacements
 {
-	public sealed class AntivirusEnhancement : ISubsystemEnhancement
+	public sealed class GarbageDisposalEnhancement : ISubsystemEnhancement
 	{
 	}
 }
- 

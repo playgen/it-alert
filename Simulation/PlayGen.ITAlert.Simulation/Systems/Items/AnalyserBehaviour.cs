@@ -33,6 +33,17 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 
+		public void OnNotActive(int itemId, Activation activation)
+		{
+			ComponentEntityTuple<Analyser, CurrentLocation, Owner> itemTuple;
+			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple)
+				&& itemTuple.Component2.Value.HasValue
+				&& itemTuple.Component3.Value.HasValue)
+			{
+				itemTuple.Component3.Value = null;
+			}
+		}
+
 		public void OnActivating(int itemId, Activation activation)
 		{
 			ComponentEntityTuple<Analyser, CurrentLocation, Owner> itemTuple;
