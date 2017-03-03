@@ -15,21 +15,19 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class GarbageDisposalExtension : IEnhancementSystemExtension
+	public class GarbageDisposalEnhancementExtension : IEnhancementSystemExtension
 	{
 		public const string GarbageDisposalActivatorArchetypeName = "GarbageDisposalActivator";
 		public const int GarbageDisposalActivatorStorageLocation = 0;
 		public const int GarbageDisposalTargetStorageLocation = 2;
 
-		private readonly ComponentMatcherGroup<GarbageDisposalEnhancement, ItemStorage> _garbageDisposalMatcherGroup;
-
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public GarbageDisposalExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public GarbageDisposalEnhancementExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
-			_garbageDisposalMatcherGroup = matcherProvider.CreateMatcherGroup<GarbageDisposalEnhancement, ItemStorage>();
-			_garbageDisposalMatcherGroup.MatchingEntityAdded += OnNewEntity;
+			var garbageDisposalMatcherGroup = matcherProvider.CreateMatcherGroup<GarbageDisposalEnhancement, ItemStorage>();
+			garbageDisposalMatcherGroup.MatchingEntityAdded += OnNewEntity;
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 

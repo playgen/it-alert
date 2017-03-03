@@ -100,6 +100,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							// items
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<GarbageDisposalBehaviour>(), 
@@ -127,8 +128,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							// this very long winded call is necessary to enforce the extension implementation of the extension interface
 							// TODO: can the extension interface be inferred from the parent class?
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusExtension>(),
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<GarbageDisposalExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusEnhancementExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<GarbageDisposalEnhancementExtension>(),
 						}
 					}
 				}

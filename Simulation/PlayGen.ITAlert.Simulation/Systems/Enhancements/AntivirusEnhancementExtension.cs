@@ -14,7 +14,7 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class AntivirusExtension : IEnhancementSystemExtension
+	public class AntivirusEnhancementExtension : IEnhancementSystemExtension
 	{
 		public const string AnalysisActivatorArchetypeName = "AnalysisActivator";
 		public const int AnalysisActivatorStorageLocation = 0;
@@ -22,19 +22,17 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 		public const int AnalysisTargetStorageLocation = 2;
 		public const int AnalysisOutputStorageLocation = 3;
 
-		private readonly ComponentMatcherGroup<AntivirusEnhancement, ItemStorage> _antivirusMatcherGroup;
-
 		private readonly ComponentMatcherGroup<Capture> _captureMatcherGroup;
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public AntivirusExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public AntivirusEnhancementExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
 
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
-			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<AntivirusEnhancement, ItemStorage>();
-			_antivirusMatcherGroup.MatchingEntityAdded += OnNewEntity;
+			var antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<AntivirusEnhancement, ItemStorage>();
+			antivirusMatcherGroup.MatchingEntityAdded += OnNewEntity;
 
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture>();
 		}
@@ -87,6 +85,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 	public class AnalysisOutputItemContainer : ItemContainer
 	{
+		public override bool Enabled => true;
+
 		public override bool CanRelease => true;
 
 		public override bool CanCapture(int? itemId = null)
