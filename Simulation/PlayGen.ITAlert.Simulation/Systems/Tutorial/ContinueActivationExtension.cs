@@ -31,6 +31,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Tutorial
 			}
 		}
 
+		public void OnNotActive(int itemId, Activation activation)
+		{
+
+		}
+
 		public void OnActivating(int itemId, Activation activation)
 		{
 			TryContinueItem(itemId, ActivationContinue.ActivationPhase.Activating);

@@ -61,7 +61,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnEnable()
 		{
-			transform.localScale = new Vector3(_scale.x / transform.parent.localScale.x, _scale.y / transform.parent.localScale.y, _scale.z / transform.parent.localScale.z);
+			transform.localScale = new Vector3(_scale.x / transform.parent.localScale.x, _scale.y / transform.parent.localScale.y, 1);
 		}
 
 		#region State Update

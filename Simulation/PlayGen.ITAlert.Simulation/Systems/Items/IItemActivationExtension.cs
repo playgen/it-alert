@@ -11,6 +11,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public interface IItemActivationExtension : ISystemExtension
 	{
+		void OnNotActive(int itemId, Activation activation);
+
 		void OnActivating(int itemId, Activation activation);
 
 		void OnActive(int itemId, Activation activation);

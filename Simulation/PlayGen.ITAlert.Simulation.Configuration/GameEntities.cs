@@ -90,6 +90,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			.Extends(Subsystem)
 			.HasComponent(new ComponentBinding<AntivirusEnhancement>());
 
+		public static readonly Archetype GarbageDisposalWorkstation = new Archetype("GarbageDisposalWorkstation")
+			.Extends(Subsystem)
+			.HasComponent(new ComponentBinding<GarbageDisposalEnhancement>());
+
 		public static readonly Archetype DatabaseEnhacement = new Archetype("DatabaseEnhacement")
 			.Extends(Subsystem)
 			.HasComponent(new ComponentBinding<DatabaseEnhancement>());
@@ -218,9 +222,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype Cleaner = new Archetype("Cleaner")
+		public static readonly Archetype RecycleActivatator = new Archetype(GarbageDisposalExtension.GarbageDisposalActivatorArchetypeName)
 			.Extends(Item)
-			.HasComponent(new ComponentBinding<Cleaner>())
+			.HasComponent(new ComponentBinding<GarbageDisposal>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()
@@ -230,16 +234,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			});
 
 		// TODO: this should bne declared along with the antivirus workstation archetype and the system implementing the behaviour, but at the moment this would cause a circular reference
-		public static readonly Archetype AnalysisActivator = new Archetype(AntivirusWorkstationExtension.AnalysisActivatorArchetypeName)
+		public static readonly Archetype AnalysisActivator = new Archetype(AntivirusExtension.AnalysisActivatorArchetypeName)
 			.Extends(Item)
 			.HasComponent(new ComponentBinding<Analyser>())
-			.HasComponent(new ComponentBinding<Owner>()
-			{
-				ComponentTemplate = new Owner()
-				{
-					AllowAll = true,
-				}
-			})
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()

@@ -40,11 +40,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
-						// TODO: is activation pending?
+						ExecuteActivationExtensionActions(iax => iax.OnNotActive(match.Entity.Id, activation));
 						continue;
 					case ActivationState.Activating:
 						activation.SetState(ActivationState.Active);
-						// TODO: confirm that this makes sense - process system extensions, then any components that are activatable
 						ExecuteActivationExtensionActions(iax => iax.OnActivating(match.Entity.Id, activation));
 						break;
 					case ActivationState.Deactivating:

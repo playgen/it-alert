@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 //			sim.SubsystemsByLogicalId[1].AddVisitor(player, null, 0);
 //			Assert.That(subsystem.HasVisitor(player), "Player not added to subsystem");
 //
-//			var item = sim.CreateItem(ItemType.Cleaner);
+//			var item = sim.CreateItem(ItemType.GarbageDisposal);
 //			Assert.That(subsystem.CanAddItem(), "Could not add item");
 //			Assert.That(subsystem.TryAddItem(item), "Item not added");
 //			Assert.That(subsystem.HasItem(item), "Item not added to subsystem");

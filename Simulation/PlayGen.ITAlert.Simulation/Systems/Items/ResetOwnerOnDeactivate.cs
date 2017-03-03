@@ -22,6 +22,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			_ownerActivationMatcherGroup = matcherProvider.CreateMatcherGroup<Activation, Owner>();
 		}
 
+		public void OnNotActive(int itemId, Activation activation)
+		{
+
+		}
+
 		public void OnActivating(int itemId, Activation activation)
 		{
 

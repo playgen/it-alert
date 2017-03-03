@@ -346,6 +346,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				catch (Exception ex)
 				{
+					Debug.LogError($"Simulation worker thread terminating due to error: {ex}");
 					ThreadWorkerException = new SimulationIntegrationException($"Terminating simulation worker thread", ex);
 					WorkerThreadExceptionSignal.Set();
 					break;

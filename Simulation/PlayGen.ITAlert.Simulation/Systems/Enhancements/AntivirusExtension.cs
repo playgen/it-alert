@@ -14,7 +14,7 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class AntivirusWorkstationExtension : IEnhancementSystemExtension
+	public class AntivirusExtension : IEnhancementSystemExtension
 	{
 		public const string AnalysisActivatorArchetypeName = "AnalysisActivator";
 		public const int AnalysisActivatorStorageLocation = 0;
@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public AntivirusWorkstationExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public AntivirusExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
 
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			ComponentEntityTuple<CurrentLocation, Owner> activatorEntityTuple;
 			if (_entityFactoryProvider.TryCreateItem(AnalysisActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
 			{
-				throw new SimulationException("AnalysisActivator archetype not registered");
+				throw new SimulationException($"{AnalysisActivatorArchetypeName} archetype not registered");
 			}
 			itemStorage.Items[AnalysisActivatorStorageLocation] = new AnalysisActivatorItemContainer()
 			{
@@ -61,21 +61,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			};
 			itemStorage.Items[AnalysisOutputStorageLocation] = new AnalysisOutputItemContainer();
 		}
-
-		//public bool CanActivate(Entity entity)
-		//{
-		//	ItemStorage itemStorage;
-		//	if (entity.TryGetComponent(out itemStorage))
-		//	{
-		//		var itemContainer = itemStorage.Items[AnalysisTargetStorageLocation] as AnalysisTargetItemContainer;
-		//		Entity item;
-		//		if (itemContainer != null && itemContainer.Item.HasValue && _entityRegistry.TryGetEntityById(itemContainer.Item.Value, out item))
-		//		{
-		//			return item.TestComponent<EntityTypeProperty>(et => et.Value == EntityType.Npc) && item.HasComponent<MalwareGenome>();
-		//		}
-		//	}
-		//	return false;
-		//} 
 	}
 
 	#region custom containers

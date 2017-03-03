@@ -10,7 +10,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 	{
 	}
 
-	public class Cleaner : IItemType
+	public class GarbageDisposal : IItemType
 	{
 	}
 
