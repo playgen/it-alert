@@ -46,8 +46,6 @@
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\PickupItemCommand.cs" />
-    <Compile Include="Commands\Sequence\CommandSequence.cs" />
-    <Compile Include="Commands\Sequence\CommandSequenceEntry.cs" />
     <Compile Include="Commands\CreateItemCommand.cs" />
     <Compile Include="Commands\CreateNpcCommand.cs" />
     <Compile Include="Commands\Tutorial\ContinueCommand.cs" />

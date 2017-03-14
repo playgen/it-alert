@@ -1,4 +1,5 @@
-﻿using Engine.Commands;
+﻿using System.Collections.Generic;
+using Engine.Commands;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -12,43 +13,19 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int PlayerId { get; set; }
 
 		public int ItemId { get; set; }
-
-		#region deduplication equality
-
-		protected bool Equals(ActivateItemCommand other)
-		{
-			return PlayerId == other.PlayerId && ItemId == other.ItemId;
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
-			return Equals((ActivateItemCommand) obj);
-		}
-
-		public override int GetHashCode()
-		{
-			unchecked
-			{
-				return (PlayerId * 397) ^ ItemId;
-			}
-		}
-
-		public bool Equals(ICommand other)
-		{
-			return Equals(other as ActivateItemCommand);
-		}
-
-		#endregion
 	}
 
 	public class ActivateItemCommandHandler : CommandHandler<ActivateItemCommand>
 	{
 		private readonly ComponentMatcherGroup<Item, Activation, CurrentLocation, Owner> _activationMatcherGroup;
 		// TODO: match subsystems on presence of activationcontainer once theyr are refactored into independent entities
-		private ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup; 
+		private ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
+
+		#region Overrides of CommandHandler<ActivateItemCommand>
+
+		public override IEqualityComparer<ICommand> Deduplicator => new ActivateItemCommandqualityComparer();
+
+		#endregion
 
 		public ActivateItemCommandHandler(IMatcherProvider matcherProvider)
 		{
@@ -73,5 +50,18 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			}
 			return false;
 		}
+	}
+
+	public class ActivateItemCommandqualityComparer : CommandEqualityComparer<ActivateItemCommand>
+	{
+		#region Overrides of CommandEqualityComparer<SetActorDestinationCommand>
+
+		protected override bool IsDuplicate(ActivateItemCommand x, ActivateItemCommand other)
+		{
+			// player can only ever have one destination
+			return x.PlayerId == other.PlayerId && x.ItemId == other.ItemId;
+		}
+
+		#endregion
 	}
 }

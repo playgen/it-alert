@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation", "PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj", "{354189CC-C80B-4310-9B3A-7F9080AB4502}"
 EndProject
@@ -51,8 +51,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlayGen.ITAlert.Simulation.UI", "PlayGen.ITAlert.Simulation.UI\PlayGen.ITAlert.Simulation.UI.csproj", "{503B216A-3070-4211-AB66-6B975246CB57}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Lifecycle", "Engine\Engine.Lifecycle\Engine.Lifecycle.csproj", "{4421783E-7C1B-47BC-B26C-FC7B0653D706}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.Commands", "Engine\Engine.Commands\Engine.Commands.csproj", "{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -152,10 +150,6 @@ Global
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -184,6 +178,5 @@ Global
 		{27721DC6-0DFD-42E7-86BA-33FB9632AD19} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 		{503B216A-3070-4211-AB66-6B975246CB57} = {44462B28-1544-4653-B506-C4D6D5F7D416}
 		{4421783E-7C1B-47BC-B26C-FC7B0653D706} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
-		{1406EFAD-BA46-4E28-A510-FAB03C6EF64E} = {1ECFA4EB-642C-46B9-B677-815DD56B26E3}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
-﻿using Engine.Commands;
+﻿using System.Collections.Generic;
+using Engine.Commands;
 using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
@@ -7,42 +8,12 @@ using PlayGen.ITAlert.Simulation.Components.Intents;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Movement
 {
+	[Deduplicate(DeduplicationPolicy.Replace)]
 	public class SetActorDestinationCommand : ICommand
 	{
 		public int PlayerId { get; set; }
 
 		public int DestinationId { get; set; }
-
-		#region Equality members
-
-		protected bool Equals(SetActorDestinationCommand other)
-		{
-			return PlayerId == other.PlayerId;
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
-			return Equals((SetActorDestinationCommand) obj);
-		}
-
-		public override int GetHashCode()
-		{
-			return PlayerId.GetHashCode();
-		}
-
-		#region Implementation of IEquatable<ICommand>
-
-		public bool Equals(ICommand other)
-		{
-			return Equals(other as SetActorDestinationCommand);
-		}
-
-		#endregion
-
-		#endregion
 	}
 
 	public class SetActorDestinationCommandHandler : CommandHandler<SetActorDestinationCommand>
@@ -51,6 +22,12 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 
 		private readonly ComponentMatcherGroup<Player, Intents> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
+
+		#region Overrides of CommandHandler<SetActorDestinationCommand>
+
+		public override IEqualityComparer<ICommand> Deduplicator => new SetActorDestinationCommandEqualityComparer();
+
+		#endregion
 
 		public SetActorDestinationCommandHandler(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
 		{
@@ -72,5 +49,18 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 			}
 			return false;
 		}
+	}
+
+	public class SetActorDestinationCommandEqualityComparer : CommandEqualityComparer<SetActorDestinationCommand>
+	{
+		#region Overrides of CommandEqualityComparer<SetActorDestinationCommand>
+
+		protected override bool IsDuplicate(SetActorDestinationCommand x, SetActorDestinationCommand other)
+		{
+			// player can only ever have one destination
+			return x.PlayerId == other.PlayerId;
+		}
+
+		#endregion
 	}
 }
