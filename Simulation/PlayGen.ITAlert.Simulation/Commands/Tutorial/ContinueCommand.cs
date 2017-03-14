@@ -13,37 +13,6 @@ namespace PlayGen.ITAlert.Simulation.Commands.Tutorial
 	public class ContinueCommand : ICommand
 	{
 		public string Text { get; set; }
-
-		#region Equality members
-
-		protected bool Equals(ContinueCommand other)
-		{
-			return string.Equals(Text, other.Text);
-		}
-
-		public override bool Equals(object obj)
-		{
-			if (ReferenceEquals(null, obj)) return false;
-			if (ReferenceEquals(this, obj)) return true;
-			if (obj.GetType() != this.GetType()) return false;
-			return Equals((ContinueCommand) obj);
-		}
-
-		public override int GetHashCode()
-		{
-			return Text?.GetHashCode() ?? 0;
-		}
-
-		#region Implementation of IEquatable<ICommand>
-
-		public bool Equals(ICommand other)
-		{
-			return Equals(other as ContinueCommand);
-		}
-
-		#endregion
-
-		#endregion
 	}
 
 	public class ContinueCommandCommandHandler : CommandHandler<ContinueCommand>
