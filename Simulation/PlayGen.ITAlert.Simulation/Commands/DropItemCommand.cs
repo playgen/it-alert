@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Engine.Commands;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -7,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
+	[Deduplicate(DeduplicationPolicy.Discard)]
 	public class DropItemCommand : ICommand
 	{
 		public int PlayerId { get; set; }
@@ -23,6 +25,12 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation> _itemMatcherGroup;
 
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
+
+		#region Overrides of CommandHandler<DropItemCommand>
+
+		public override IEqualityComparer<ICommand> Deduplicator => new DropItemCommandEqualityComparer();
+
+		#endregion
 
 		public DropItemCommandHandler(IMatcherProvider matcherProvider)
 		{
@@ -59,6 +67,19 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 			}
 			return false;
+		}
+
+		public class DropItemCommandEqualityComparer : CommandEqualityComparer<DropItemCommand>
+		{
+			#region Overrides of CommandEqualityComparer<SetActorDestinationCommand>
+
+			protected override bool IsDuplicate(DropItemCommand x, DropItemCommand other)
+			{
+				// player can only ever have one destination
+				return x.PlayerId == other.PlayerId && x.ItemId == other.ItemId;
+			}
+
+			#endregion
 		}
 	}
 }

@@ -32,7 +32,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Awake()
 		{
-			_scale = ((GameObject) Resources.Load("Player")).GetComponent<RectTransform>().localScale;
 		}
 
 		protected override void OnInitialize()
@@ -61,6 +60,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnEnable()
 		{
+			_scale = ((GameObject)Resources.Load("Player")).GetComponent<RectTransform>().localScale;
 			transform.localScale = new Vector3(_scale.x / transform.parent.localScale.x, _scale.y / transform.parent.localScale.y, 1);
 		}
 

@@ -36,5 +36,10 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 	public class Data : IItemType
 	{
 	}
+
+	public class Transfer : IItemType
+	{
+		
+	}
 	
 }

@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
+	[Deduplicate(DeduplicationPolicy.Discard)]
 	public class ActivateItemCommand : ICommand
 	{
 		public int PlayerId { get; set; }
@@ -19,7 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	{
 		private readonly ComponentMatcherGroup<Item, Activation, CurrentLocation, Owner> _activationMatcherGroup;
 		// TODO: match subsystems on presence of activationcontainer once theyr are refactored into independent entities
-		private ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
+		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 
 		#region Overrides of CommandHandler<ActivateItemCommand>
 
