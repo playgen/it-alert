@@ -186,6 +186,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			);
 			#endregion
 
+			configuration.LifeCycleConfiguration.TickInterval = 100;
+
 			return new SimulationScenario()
 			{
 				Name = "Analysis",
