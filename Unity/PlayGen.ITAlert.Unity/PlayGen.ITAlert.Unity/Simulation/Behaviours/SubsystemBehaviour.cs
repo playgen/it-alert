@@ -6,6 +6,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
@@ -53,6 +54,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _memoryImage;
 
 		[SerializeField]
+		private GameObject _cpu;
+		[SerializeField]
+		private GameObject _memory;
+
+
+		[SerializeField]
 		private Image _iconRenderer;
 		[SerializeField]
 		private Image _filled;
@@ -98,6 +105,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private MemoryResource _memoryResource;
 		private Name _name;
 		private Coordinate2DProperty _coordinate2D;
+		private Visitors _visitors;
 
 		//optional
 		private ItemStorage _itemStorage;
@@ -130,7 +138,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (Entity.TryGetComponent(out _cpuResource)
 				&& Entity.TryGetComponent(out _memoryResource)
 				&& Entity.TryGetComponent(out _name)
-				&& Entity.TryGetComponent(out _coordinate2D))
+				&& Entity.TryGetComponent(out _coordinate2D)
+				&& Entity.TryGetComponent(out _visitors))
 			{
 				Entity.TryGetComponent(out _itemStorage);
 
@@ -198,6 +207,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//_iconRenderer.color = Color.white;
 
 			UpdateItemContainers();
+
+			UpdateResourceVisibility();
 		} 
 
 		private void ForEachItemContainer(Action<int, ItemContainer> action)
@@ -212,6 +223,22 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						action(i, itemContainer);
 					}
 				}
+			}
+		}
+
+		private void UpdateResourceVisibility()
+		{
+			if (_visitors != null 
+				&& Director.Player != null
+				&& _visitors.Values.Contains(Director.Player.Id))
+			{
+				_cpu.SetActive(true);
+				_memory.SetActive(true);
+			}
+			else
+			{
+				_cpu.SetActive(false);
+				_memory.SetActive(false);
 			}
 		}
 
