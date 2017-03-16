@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Archetypes;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -14,9 +16,25 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class AntivirusEnhancementExtension : IEnhancementSystemExtension
+	public class AntivirusEnhancementSystemExtension : IEnhancementSystemExtension
 	{
-		public const string AnalysisActivatorArchetypeName = "AnalysisActivator";
+		#region activator acrchetype
+
+		public const string AnalyserActivatorArchetypeName = "AnalyserActivator";
+
+		public static readonly Archetype AnalysisActivator = new Archetype(AnalyserActivatorArchetypeName)
+			.Extends(Archetypes.Item.Archetype)
+			.HasComponent(new ComponentBinding<AnalyserActivator>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
+				}
+			});
+
+		#endregion
+
 		public const int AnalysisActivatorStorageLocation = 0;
 
 		public const int AnalysisTargetStorageLocation = 2;
@@ -26,7 +44,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public AntivirusEnhancementExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public AntivirusEnhancementSystemExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
 
@@ -37,7 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture>();
 		}
 
-		// TODO: this should be run on every new entity created matching the Analyser flag
+		// TODO: this should be run on every new entity created matching the AnalyserActivator flag
 		public void OnSystemInitialize(Entity entity)
 		{
 		}
@@ -49,9 +67,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			itemStorage.Items[AnalysisTargetStorageLocation] = new AnalysisTargetItemContainer(_captureMatcherGroup);
 
 			ComponentEntityTuple<CurrentLocation, Owner> activatorEntityTuple;
-			if (_entityFactoryProvider.TryCreateItem(AnalysisActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
+			if (_entityFactoryProvider.TryCreateItem(AnalyserActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
 			{
-				throw new SimulationException($"{AnalysisActivatorArchetypeName} archetype not registered");
+				throw new SimulationException($"{AnalyserActivatorArchetypeName} archetype not registered");
 			}
 			itemStorage.Items[AnalysisActivatorStorageLocation] = new AnalysisActivatorItemContainer()
 			{
@@ -63,7 +81,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 	#region custom containers
 
-	public class AnalysisTargetItemContainer : ItemContainer
+	public class AnalysisTargetItemContainer : TargetItemContainer
 	{
 		private readonly ComponentMatcherGroup<Capture> _captureMatcherGroup;
 
@@ -72,10 +90,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			_captureMatcherGroup = captureMatcherGroup;
 		}
 
-		public override bool Enabled => true;
-
-		public override bool CanRelease => true;
-
 		public override bool CanCapture(int? itemId = null)
 		{
 			ComponentEntityTuple<Capture> captureEntity;
@@ -83,29 +97,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 		}
 	}
 
-	public class AnalysisOutputItemContainer : ItemContainer
+	public class AnalysisOutputItemContainer : OutputItemContainer
 	{
-		public override bool Enabled => true;
-
-		public override bool CanRelease => true;
-
-		public override bool CanCapture(int? itemId = null)
-		{
-			return false;
-		}
 	}
 
-	public class AnalysisActivatorItemContainer : ItemContainer
+	public class AnalysisActivatorItemContainer : ActivatorItemContainer
 	{
-
-		public override bool CanRelease => false;
-
-		public override bool CanCapture(int? itemId = null)
-		{
-			return false;
-		}
+		
 	}
-
 
 	#endregion
 }

@@ -23,6 +23,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
 			new SystemConfiguration<RNGSystem>(),
+
+			#region resource system
+
 			// TODO: if the systems are tickable the order they are defined here is the order they will be ticked; we probably need to make this more explicit
 			new SystemConfiguration<SubsystemResources>()
 			{
@@ -41,6 +44,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+
+			#endregion
+
+			#region movement system
+
 			new SystemConfiguration<MovementSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -51,6 +59,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+
+			#endregion
+
+			#region command system
+
 			// TODO: this has now become mandatory so I need a better way of specifying the configuration such that I can find the CommandSystem config entry and append to it
 			// this pattern would also come in handy for adding scenario specific system bindings
 			new SystemConfiguration<CommandSystem>()
@@ -85,9 +98,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+
+			#endregion
+
 			new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<PlayerInventorySystem>(),
+
+			#region item activation system
+
 			new SystemConfiguration<ItemActivationSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -101,9 +120,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<GarbageDisposalBehaviour>(), 
+							// enhancement actiovators
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<GarbageDisposalActivatorBehaviour>(),
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TransferBehaviour>(), 
 
 							// TODO: need to find a good way to append extensions from the scenario definition
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
@@ -112,7 +133,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+
+			#endregion
+
 			new SystemConfiguration<ItemManagement>(),
+
+			#region enhancement system
+
 			// TODO: decide if the enhancement system should be responsible for manipulating the item storage of enhanced systems
 			// or if the item storage system should have an extension
 			new SystemConfiguration<EnhancementSystem>()
@@ -128,12 +155,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							// this very long winded call is necessary to enforce the extension implementation of the extension interface
 							// TODO: can the extension interface be inferred from the parent class?
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusEnhancementExtension>(),
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<GarbageDisposalEnhancementExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusEnhancementSystemExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<GarbageDisposalEnhancementSystemExtension>(),
+							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<TransferEnhancementSystemExtension>(),
 						}
 					}
 				}
 			},
+
+			#endregion
 
 			new SystemConfiguration<PathFindingSystem>(),
 			// TODO: need to find a good way to append systems from the scenario definition

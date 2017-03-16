@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
@@ -23,11 +24,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private TickStateController _stateController;
 		private VoiceController _voiceController;
 
+		private readonly Director _director;
+
 		public RoomState(RoomStateInput roomStateInput, Client photonClient) 
 			: base(roomStateInput)
 		{
+			_director = roomStateInput.Director;
 			_photonClient = photonClient;
-			_controllerFactory = new RoomStateControllerFactory(roomStateInput.Director, photonClient);
+			_controllerFactory = new RoomStateControllerFactory(_director, photonClient);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
@@ -61,6 +65,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnExit()
 		{
+			_director.ResetSimulation();
+
 			_photonClient.CurrentRoom?.Leave();
 
 			// CurrentRoom and messenger would have been destroyed by this point so no need to unsubscribe

@@ -123,7 +123,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			return gameObject;
 		}
 
-		private void ResetSimulation()
+		public void ResetSimulation()
 		{
 			_tick = 0;
 
@@ -132,12 +132,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			UpdateCompleteSignal.Reset();
 			ThreadWorkerException = null;
 
+
+
 			_activePlayer = null;
 			foreach (var entity in TrackedEntities)
 			{
 				Destroy(entity.Value.GameObject);
 			}
 			TrackedEntities.Clear();
+			foreach (var entity in UntrackedEntities)
+			{
+				Destroy(entity.GameObject);
+			}
 			UntrackedEntities.Clear();
 
 			OnReset();
