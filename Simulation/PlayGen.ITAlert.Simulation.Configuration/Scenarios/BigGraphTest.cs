@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Lifecycle;
 using Engine.Sequencing;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
@@ -144,6 +145,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.HideTextAction,
+						ScenarioHelpers.EndGame(EndGameState.Success),
 					},
 					// TODO: need a more polymorphic way of specifying evaluators
 					// c# 7 pattern match will be nice
