@@ -42,6 +42,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetypes\Item.cs" />
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="Commands\Tutorial\DisplayTextCommand.cs" />
     <Compile Include="Components\Activation\ActivationState.cs" />
     <Compile Include="Components\Activation\Activation.cs" />
+    <Compile Include="Components\Enhacements\TransferEnhancement.cs" />
     <Compile Include="Components\Enhacements\GarbageDisposalEnhancement.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
     <Compile Include="Components\EntityTypes\Connection.cs" />
@@ -61,11 +63,14 @@
     <Compile Include="Components\EntityTypes\Npc.cs" />
     <Compile Include="Components\EntityTypes\ScenarioText.cs" />
     <Compile Include="Components\EntityTypes\Subsystem.cs" />
+    <Compile Include="Components\Items\ActivatorItemContainer.cs" />
     <Compile Include="Components\Items\IItemType.cs" />
     <Compile Include="Components\Items\InventoryItemContainer.cs" />
     <Compile Include="Components\Items\ItemTypes.cs" />
     <Compile Include="Components\EntityTypes\Item.cs" />
     <Compile Include="Components\EntityTypes\Player.cs" />
+    <Compile Include="Components\Items\OutputItemContainer.cs" />
+    <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\Malware\MalwareVisibility.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="Components\Tutorial\ActivationContinue.cs" />
@@ -82,13 +87,15 @@
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
-    <Compile Include="Systems\Enhancements\GarbageDisposalEnhancementExtension.cs" />
-    <Compile Include="Systems\Enhancements\AntivirusEnhancementExtension.cs" />
+    <Compile Include="Systems\Enhancements\TransferEnhancementSystemExtension.cs" />
+    <Compile Include="Systems\Enhancements\GarbageDisposalEnhancementSystemExtension.cs" />
+    <Compile Include="Systems\Enhancements\AntivirusEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Systems\Items\TransferBehaviour.cs" />
     <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />
-    <Compile Include="Systems\Items\GarbageDisposalBehaviour.cs" />
+    <Compile Include="Systems\Items\GarbageDisposalActivatorBehaviour.cs" />
     <Compile Include="Systems\Items\CaptureBehaviour.cs" />
     <Compile Include="Systems\Items\IItemActivationExtension.cs" />
     <Compile Include="Systems\Items\EntityFactoryExtensions.cs" />

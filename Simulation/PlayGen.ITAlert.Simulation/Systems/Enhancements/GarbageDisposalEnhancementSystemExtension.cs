@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using Engine.Archetypes;
 using Engine.Components;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -15,15 +18,31 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 {
-	public class GarbageDisposalEnhancementExtension : IEnhancementSystemExtension
+	public class GarbageDisposalEnhancementSystemExtension : IEnhancementSystemExtension
 	{
+		#region Archetype
+
 		public const string GarbageDisposalActivatorArchetypeName = "GarbageDisposalActivator";
+
+		public static readonly Archetype GarbageDisposalActivator = new Archetype(GarbageDisposalActivatorArchetypeName)
+			.Extends(Item.Archetype)
+			.HasComponent(new ComponentBinding<GarbageDisposalActivator>())
+			.HasComponent(new ComponentBinding<TimedActivation>()
+			{
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
+				}
+			});
+
+		#endregion
+
 		public const int GarbageDisposalActivatorStorageLocation = 0;
 		public const int GarbageDisposalTargetStorageLocation = 2;
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public GarbageDisposalEnhancementExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public GarbageDisposalEnhancementSystemExtension(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
 			// TODO: the matcher should be smart enough to infer all required types from the ComponentDependency attributes on the types specified
 			var garbageDisposalMatcherGroup = matcherProvider.CreateMatcherGroup<GarbageDisposalEnhancement, ItemStorage>();
@@ -31,7 +50,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 
-		// TODO: this should be run on every new entity created matching the Analyser flag
+		// TODO: this should be run on every new entity created matching the AnalyserActivator flag
 		public void OnSystemInitialize(Entity entity)
 		{
 		}
@@ -42,47 +61,29 @@ namespace PlayGen.ITAlert.Simulation.Systems.Enhancements
 
 			itemStorage.Items[GarbageDisposalTargetStorageLocation] = new GarbageDisposalTargetItemContainer();
 
-			ComponentEntityTuple<CurrentLocation, Owner> activatorEntityTuple;
-			if (_entityFactoryProvider.TryCreateItem(GarbageDisposalActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
+			if (_entityFactoryProvider.TryCreateItem(GarbageDisposalActivatorArchetypeName, tuple.Entity.Id, null, out var activatorEntityTuple))
+			{
+				itemStorage.Items[GarbageDisposalActivatorStorageLocation] = new GarbageDisposalActivatorItemContainer()
+				{
+					Item = activatorEntityTuple.Entity.Id,
+				};
+			}
+			else
 			{
 				throw new SimulationException($"{GarbageDisposalActivatorArchetypeName} archetype not registered");
 			}
-			itemStorage.Items[GarbageDisposalActivatorStorageLocation] = new AnalysisActivatorItemContainer()
-			{
-				Item = activatorEntityTuple.Entity.Id,
-			};
 		}
 	}
 
 	#region custom containers
 
-	public class GarbageDisposalTargetItemContainer : ItemContainer
+	public class GarbageDisposalTargetItemContainer : TargetItemContainer
 	{
-
-		public GarbageDisposalTargetItemContainer()
-		{
-		}
-
-		public override bool Enabled => true;
-
-		public override bool CanRelease => true;
-
-		public override bool CanCapture(int? itemId = null)
-		{
-			return true;
-		}
 	}
 
-	public class GarbageDisposalActivatorItemContainer : ItemContainer
+	public class GarbageDisposalActivatorItemContainer : ActivatorItemContainer
 	{
-		public override bool CanRelease => false;
-
-		public override bool CanCapture(int? itemId = null)
-		{
-			return false;
-		}
 	}
-
 
 	#endregion
 }

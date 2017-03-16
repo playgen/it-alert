@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	{
 		public const string AnalysisOutputArchetypeName = "Antivirus";
 		
-		private readonly ComponentMatcherGroup<Analyser, CurrentLocation, Owner> _analyserMatcherGroup;
+		private readonly ComponentMatcherGroup<AnalyserActivator, CurrentLocation, Owner> _analyserMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<Capture> _captureMatcherGroup;
 
@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public AnalyserBehaviour(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
-			_analyserMatcherGroup = matcherProvider.CreateMatcherGroup<Analyser, CurrentLocation, Owner>();
+			_analyserMatcherGroup = matcherProvider.CreateMatcherGroup<AnalyserActivator, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture>();
 
@@ -35,8 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnNotActive(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Analyser, CurrentLocation, Owner> itemTuple;
-			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple)
+			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
 				&& itemTuple.Component3.Value.HasValue)
 			{
@@ -46,19 +45,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnActivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Analyser, CurrentLocation, Owner> itemTuple;
-			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, ItemStorage> locationTuple;
-				AnalysisTargetItemContainer analysisTargetItemContainer;
-				ComponentEntityTuple<Capture> captureTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple)
-					&& locationTuple.Component2.TryGetItemContainer(out analysisTargetItemContainer)
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& locationTuple.Component2.TryGetItemContainer<AnalysisTargetItemContainer>(out var analysisTargetItemContainer)
 					&& analysisTargetItemContainer.Item.HasValue
-					&& _captureMatcherGroup.TryGetMatchingEntity(analysisTargetItemContainer.Item.Value, out captureTuple)
+					&& _captureMatcherGroup.TryGetMatchingEntity(analysisTargetItemContainer.Item.Value, out var captureTuple)
 					&& captureTuple.Component1.CapturedGenome != 0)
 				{
+					analysisTargetItemContainer.Locked = true;
 				}
 				else
 				{
@@ -75,20 +71,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnDeactivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Analyser, CurrentLocation, Owner> itemTuple;
+			ComponentEntityTuple<AnalyserActivator, CurrentLocation, Owner> itemTuple;
 			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, ItemStorage> locationTuple;
-				AnalysisTargetItemContainer analysisTargetItemContainer;
-				AnalysisOutputItemContainer analysisOutputItemContainer;
-				ComponentEntityTuple<Capture> captureTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple)
-					&& locationTuple.Component2.TryGetItemContainer(out analysisTargetItemContainer)
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& locationTuple.Component2.TryGetItemContainer<AnalysisTargetItemContainer>(out var analysisTargetItemContainer)
 					&& analysisTargetItemContainer.Item.HasValue
-					&& _captureMatcherGroup.TryGetMatchingEntity(analysisTargetItemContainer.Item.Value, out captureTuple)
+					&& _captureMatcherGroup.TryGetMatchingEntity(analysisTargetItemContainer.Item.Value, out var captureTuple)
 					&& captureTuple.Component1.CapturedGenome != 0
-					&& locationTuple.Component2.TryGetItemContainer(out analysisOutputItemContainer)
+					&& locationTuple.Component2.TryGetItemContainer<AnalysisOutputItemContainer>(out var analysisOutputItemContainer)
 					&& analysisOutputItemContainer.Item.HasValue == false)
 				{
 					ComponentEntityTuple<CurrentLocation, Owner> antivirusEntityTuple;
@@ -103,6 +95,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					{
 						antivirusEntityTuple.Entity.Dispose();
 					}
+					analysisTargetItemContainer.Locked = false;
 				}
 			}
 		}

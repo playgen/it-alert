@@ -20,9 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	public class PickupItemCommandHandler : CommandHandler<PickupItemCommand>
 	{
 		private readonly ComponentMatcherGroup<Player, ItemStorage> _playerMatcherGroup;
-
 		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation, Activation> _itemMatcherGroup;
-
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
 		public PickupItemCommandHandler(IMatcherProvider matcherProvider)
@@ -34,16 +32,12 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryProcessCommand(PickupItemCommand command)
 		{
-			ComponentEntityTuple<Player, ItemStorage> playerTuple;
-			// TODO: item activation might not need to be mandatory?
-			ComponentEntityTuple<Item, Owner, CurrentLocation, Activation> itemTuple;
-			ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple;
-			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
-				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue == false
 				&& itemTuple.Component4.ActivationState == ActivationState.NotActive
 				&& itemTuple.Component3.Value.HasValue
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out subsystemTuple))
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
 				var source = subsystemTuple.Component2.Items.SingleOrDefault(ic => ic.Item == itemTuple.Entity.Id);

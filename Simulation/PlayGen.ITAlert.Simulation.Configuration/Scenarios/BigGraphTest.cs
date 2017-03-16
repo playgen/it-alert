@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "0 0",
 				X = 0,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = nameof(GameEntities.TransferStation),
 			};
 
 			var node10 = new NodeConfig()
@@ -96,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "4 1",
 				X = 4,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = nameof(GameEntities.TransferStation),
 			};
 
 			var nodeConfigs = new NodeConfig[]
@@ -136,6 +136,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, node00.Id),
+						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, node41.Id),
 						ScenarioHelpers.GenerateTextAction(true, 
 							"Click continue when you are ready to end!")
 					},

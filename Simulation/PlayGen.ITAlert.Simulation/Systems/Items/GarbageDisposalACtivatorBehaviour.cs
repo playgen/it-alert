@@ -14,20 +14,18 @@ using PlayGen.ITAlert.Simulation.Systems.Extensions;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public class GarbageDisposalBehaviour : IItemActivationExtension
+	public class GarbageDisposalActivatorBehaviour : IItemActivationExtension
 	{
-		public const string AnalysisOutputArchetypeName = "Antivirus";
-		
-		private readonly ComponentMatcherGroup<GarbageDisposal, CurrentLocation, Owner> _garbageDisposalMatcherGroup;
+		private readonly ComponentMatcherGroup<GarbageDisposalActivator, CurrentLocation, Owner> _garbageDisposalMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<IItemType> _itemMatcherGroup;
 
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		public GarbageDisposalBehaviour(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
+		public GarbageDisposalActivatorBehaviour(IMatcherProvider matcherProvider, IEntityFactoryProvider entityFactoryProvider)
 		{
-			_garbageDisposalMatcherGroup = matcherProvider.CreateMatcherGroup<GarbageDisposal, CurrentLocation, Owner>();
+			_garbageDisposalMatcherGroup = matcherProvider.CreateMatcherGroup<GarbageDisposalActivator, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<IItemType>();
 
@@ -36,8 +34,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnNotActive(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<GarbageDisposal, CurrentLocation, Owner> itemTuple;
-			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple)
+			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
 				&& itemTuple.Component3.Value.HasValue)
 			{
@@ -47,16 +44,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnActivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<GarbageDisposal, CurrentLocation, Owner> itemTuple;
-			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, ItemStorage> locationTuple;
-				GarbageDisposalTargetItemContainer targetItemContainer;
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple)
-					&& locationTuple.Component2.TryGetItemContainer(out targetItemContainer)
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& locationTuple.Component2.TryGetItemContainer<GarbageDisposalTargetItemContainer>(out var targetItemContainer)
 					&& targetItemContainer.Item.HasValue)
 				{
+					targetItemContainer.Locked = true;
 				}
 				else
 				{
@@ -73,18 +68,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnDeactivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<GarbageDisposal, CurrentLocation, Owner> itemTuple;
-			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, ItemStorage> locationTuple;
-				GarbageDisposalTargetItemContainer targetItemContainer;
-				ComponentEntityTuple<IItemType> targetItemTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple)
-					&& locationTuple.Component2.TryGetItemContainer(out targetItemContainer)
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& locationTuple.Component2.TryGetItemContainer<GarbageDisposalTargetItemContainer>(out var targetItemContainer)
 					&& targetItemContainer.Item.HasValue
-					&& _itemMatcherGroup.TryGetMatchingEntity(targetItemContainer.Item.Value, out targetItemTuple))
+					&& _itemMatcherGroup.TryGetMatchingEntity(targetItemContainer.Item.Value, out var targetItemTuple))
 				{
+					targetItemContainer.Locked = false;
 					targetItemTuple.Entity.Dispose();
 				}
 			}

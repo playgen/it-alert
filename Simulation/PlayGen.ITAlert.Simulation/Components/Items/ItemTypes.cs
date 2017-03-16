@@ -10,11 +10,11 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 	{
 	}
 
-	public class GarbageDisposal : IItemType
+	public class GarbageDisposalActivator : IItemType
 	{
 	}
 
-	public class Analyser : IItemType
+	public class AnalyserActivator : IItemType
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 	{
 	}
 
-	public class Transfer : IItemType
+	public class TransferActivator : IItemType
 	{
 		
 	}

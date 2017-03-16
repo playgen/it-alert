@@ -16,7 +16,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnNotActive(int itemId, Activation activation)
 		{
-
+			ComponentEntityTuple<TimedActivation> itemTuple;
+			if (_timedActivationMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			{
+				itemTuple.Component1.ActivationTicksRemaining = 0;
+			}
 		}
 
 		public void OnActivating(int itemId, Activation activation)

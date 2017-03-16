@@ -86,17 +86,43 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
+		#endregion
+
+		#region enhancements
+
+		#region antivirus
+
 		public static readonly Archetype AntivirusWorkstation = new Archetype("AntivirusWorkstation")
 			.Extends(Subsystem)
 			.HasComponent(new ComponentBinding<AntivirusEnhancement>());
+
+		public static readonly Archetype AnalysisActivator = AntivirusEnhancementSystemExtension.AnalysisActivator;
+
+		#endregion
+
+		#region transfer
+
+		public static readonly Archetype TransferStation = new Archetype("TransferStation")
+			.Extends(Subsystem)
+			.HasComponent(new ComponentBinding<TransferEnhancement>());
+
+		public static readonly Archetype TransferActivator = TransferEnhancementSystemExtension.TransferActivator;
+
+		#endregion
+
+		#region garbage disposal
 
 		public static readonly Archetype GarbageDisposalWorkstation = new Archetype("GarbageDisposalWorkstation")
 			.Extends(Subsystem)
 			.HasComponent(new ComponentBinding<GarbageDisposalEnhancement>());
 
-		public static readonly Archetype DatabaseEnhacement = new Archetype("DatabaseEnhacement")
-			.Extends(Subsystem)
-			.HasComponent(new ComponentBinding<DatabaseEnhancement>());
+		public static readonly Archetype GarbageDisposalActivator = GarbageDisposalEnhancementSystemExtension.GarbageDisposalActivator;
+
+		#endregion
+
+		//public static readonly Archetype DatabaseEnhacement = new Archetype("DatabaseEnhacement")
+		//	.Extends(Subsystem)
+		//	.HasComponent(new ComponentBinding<DatabaseEnhancement>());
 
 		#endregion
 
@@ -183,25 +209,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		#endregion
 
 		#region items
-
-		private static readonly Archetype Item = new Archetype("Item")
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<CurrentLocation>(),
-				new ComponentBinding<Owner>(),
-				new ComponentBinding<ConsumeMemory>()
-				{
-					ComponentTemplate = new ConsumeMemory()
-					{
-						Value = SimulationConstants.ItemMemoryConsumption,
-					}
-				},
-				new ComponentBinding<Item>(), 
-				new ComponentBinding<Activation>(), 
-			});
-
+			
 		public static readonly Archetype Scanner = new Archetype("Scanner")
-			.Extends(Item)
+			.Extends(Archetypes.Item.Archetype)
 			.HasComponent(new ComponentBinding<Scanner>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
@@ -211,55 +221,32 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype Repair = new Archetype("Repair")
-			.Extends(Item)
-			.HasComponent(new ComponentBinding<Repair>())
-			.HasComponent(new ComponentBinding<TimedActivation>()
-			{
-				ComponentTemplate = new TimedActivation()
-				{
-					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-				}
-			});
-
-		public static readonly Archetype RecycleActivatator = new Archetype(GarbageDisposalEnhancementExtension.GarbageDisposalActivatorArchetypeName)
-			.Extends(Item)
-			.HasComponent(new ComponentBinding<GarbageDisposal>())
-			.HasComponent(new ComponentBinding<TimedActivation>()
-			{
-				ComponentTemplate = new TimedActivation()
-				{
-					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-				}
-			});
-
-		// TODO: this should bne declared along with the antivirus workstation archetype and the system implementing the behaviour, but at the moment this would cause a circular reference
-		public static readonly Archetype AnalysisActivator = new Archetype(AntivirusEnhancementExtension.AnalysisActivatorArchetypeName)
-			.Extends(Item)
-			.HasComponent(new ComponentBinding<Analyser>())
-			.HasComponent(new ComponentBinding<TimedActivation>()
-			{
-				ComponentTemplate = new TimedActivation()
-				{
-					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-				}
-			});
-
-		public static readonly Archetype Tracer = new Archetype("Tracer")
-			.Extends(Item)
-			.HasComponent(new ComponentBinding<Tracer>())
-			.HasComponent(new ComponentBinding<TimedActivation>()
-			{
-				ComponentTemplate = new TimedActivation()
-				{
-					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-				}
-			});
+		//public static readonly Archetype Repair = new Archetype("Repair")
+		//	.Extends(Archetypes.Item.Archetype)
+		//	.HasComponent(new ComponentBinding<Repair>())
+		//	.HasComponent(new ComponentBinding<TimedActivation>()
+		//	{
+		//		ComponentTemplate = new TimedActivation()
+		//		{
+		//			ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
+		//		}
+		//	});
+		
+		//public static readonly Archetype Tracer = new Archetype("Tracer")
+		//	.Extends(Archetypes.Item.Archetype)
+		//	.HasComponent(new ComponentBinding<Tracer>())
+		//	.HasComponent(new ComponentBinding<TimedActivation>()
+		//	{
+		//		ComponentTemplate = new TimedActivation()
+		//		{
+		//			ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
+		//		}
+		//	});
 
 		#region antivirus
 
 		public static readonly Archetype Antivirus = new Archetype("Antivirus")
-			.Extends(Item)
+			.Extends(Archetypes.Item.Archetype)
 			.HasComponent(new ComponentBinding<Antivirus>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
@@ -357,7 +344,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		#endregion
 
 		public static readonly Archetype Capture = new Archetype("Capture")
-			.Extends(Item)
+			.Extends(Archetypes.Item.Archetype)
 			.HasComponent(new ComponentBinding<Capture>())
 			.HasComponent(new ComponentBinding<MalwareGenome>())
 			.HasComponent(new ComponentBinding<TimedActivation>()
@@ -368,9 +355,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		public static readonly Archetype Data = new Archetype("Data")
-			.Extends(Item)
-			.HasComponent(new ComponentBinding<Data>());
+		//public static readonly Archetype Data = new Archetype("Data")
+		//	.Extends(Archetypes.Item.Archetype)
+		//	.HasComponent(new ComponentBinding<Data>());
 
 		#endregion
 
