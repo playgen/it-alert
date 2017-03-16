@@ -40,8 +40,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			const int maxPlayerCount = 4;
 
 			var nodeConfigs = ConfigurationHelper.GenerateGraphNodes(width, height);
-
-			
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
