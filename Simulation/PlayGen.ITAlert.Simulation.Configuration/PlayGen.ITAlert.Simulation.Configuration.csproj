@@ -45,6 +45,7 @@
     <Compile Include="ScenarioHelpers.cs" />
     <Compile Include="ScenarioLoader.cs" />
     <Compile Include="Scenarios\Analysis.cs" />
+    <Compile Include="Scenarios\GraphDemos.cs" />
     <Compile Include="Scenarios\Introduction.cs" />
     <Compile Include="Scenarios\BigGraphTest.cs" />
   </ItemGroup>

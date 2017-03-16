@@ -18,7 +18,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				Introduction.Scenario,
 				BigGraphTest.Scenario,
 				Analysis.Scenario,
-			}.ToDictionary(k => k.Name, v => v);
+			}
+			.Concat(GraphDemos.Scenarios)
+			.ToDictionary(k => k.Name, v => v);
 		}
 
 		public bool TryGetScenario(string name, out SimulationScenario scenario)
