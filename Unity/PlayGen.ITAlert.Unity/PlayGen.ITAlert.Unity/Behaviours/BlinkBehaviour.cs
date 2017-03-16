@@ -23,6 +23,9 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private float _initialAlpha;
 
+		[SerializeField]
+		private AnimationCurve _curve;
+
 		public void AWake()
 		{
 		}

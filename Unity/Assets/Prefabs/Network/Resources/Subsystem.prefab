@@ -503,6 +503,8 @@ MonoBehaviour:
   _nameText: {fileID: 114000012371800668}
   _cpuImage: {fileID: 114000010031072572}
   _memoryImage: {fileID: 114000010482817606}
+  _cpu: {fileID: 1000010845451186}
+  _memory: {fileID: 1000011774028848}
   _iconRenderer: {fileID: 114300050959162016}
   _filled: {fileID: 114300050959162016}
   _blink: {fileID: 114285210407176144}
