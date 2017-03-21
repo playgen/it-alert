@@ -16,6 +16,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class CoopMultiColourAntivirusBehaviour : IItemActivationExtension
 	{
+		private const bool AllowSamePlayerActivation = false;
+
 		private readonly ComponentMatcherGroup<Antivirus, CurrentLocation, Owner, Activation> _antivirusMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage, Visitors> _locationMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
@@ -44,16 +46,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnDeactivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Antivirus, CurrentLocation, Owner, Activation> itemTuple;
-			if (_antivirusMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_antivirusMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, ItemStorage, Visitors> locationTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&& _locationMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple))
+					&& _locationMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple))
 				{
 					var combinedGenome = itemTuple.Component1.TargetGenome 
 						| locationTuple.Component2.Items.Where(ic => ic?.Item != null && ic.Item.Value != itemId)
-							.Join(_antivirusMatcherGroup.MatchingEntities.Where(av => av.Component4.ActivationState == ActivationState.Active),
+							.Join(_antivirusMatcherGroup.MatchingEntities.Where(av => av.Component4.ActivationState == ActivationState.Active && (AllowSamePlayerActivation || av.Component3.Value != itemTuple.Component3.Value)),
 								k => k.Item.Value,
 								k => k.Entity.Id,
 								(o, i) => i)
