@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			var visible = _malwareVisibility.Visible;
+			var visible = _malwareVisibility.VisibleTo.Contains(Director.Player?.Id ?? -1);
 			if (_image.enabled == false && visible)
 			{
 				_image.enabled = true;
