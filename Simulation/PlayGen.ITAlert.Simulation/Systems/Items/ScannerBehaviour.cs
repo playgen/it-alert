@@ -59,7 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 							(o, i) => i))
 					{
 						// add the visible gene
-						malwareVisitor.Component2.Visible = true;
+						malwareVisitor.Component2.VisibleTo.Add(itemTuple.Component3.Value.Value);
 					}
 				}
 				itemTuple.Component3.Value = null;

@@ -63,8 +63,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 						.FirstOrDefault();
 
 					// TODO: probably need a better way of choosing the malware than selecting first, but this will do for now
-					if (malwareVisitor != null 
-						&& malwareVisitor.Component2.Visible)
+					if (malwareVisitor != null
+						&& itemTuple.Component3.Value.HasValue
+						&& malwareVisitor.Component2.VisibleTo.Contains(itemTuple.Component3.Value.Value))
 					{
 						itemTuple.Component1.CapturedGenome = malwareVisitor.Component1.Value;
 					}
