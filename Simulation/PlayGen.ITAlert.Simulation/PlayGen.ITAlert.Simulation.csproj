@@ -107,6 +107,9 @@
     <Compile Include="Systems\Items\AnalyserBehaviour.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
+    <Compile Include="Systems\Malware\ConsumeBandwidthMalwareEffect.cs" />
+    <Compile Include="Systems\Malware\IMalwarePropogator.cs" />
+    <Compile Include="Systems\Malware\MalwarePropogation.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
