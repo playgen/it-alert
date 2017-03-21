@@ -115,6 +115,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
+
+							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
 							// items
 							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),

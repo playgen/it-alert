@@ -93,6 +93,7 @@
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Systems\Items\CPUConsumptionIncreasesTimedActivationDurationExtension.cs" />
     <Compile Include="Systems\Items\TransferBehaviour.cs" />
     <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />
     <Compile Include="Systems\Items\GarbageDisposalActivatorBehaviour.cs" />
