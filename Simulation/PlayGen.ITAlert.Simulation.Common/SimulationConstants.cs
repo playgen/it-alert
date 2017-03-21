@@ -63,8 +63,8 @@
 
 		public const string DefaultVirusArchetype = "Virus";
 
+		public const decimal TimedActivationTickModifier = 1m;
 		public const decimal CPUMovementSpeedReduction = 0.5m;
-
 
 		public const int MalwareGeneRed = 0x1;
 		public const int MalwareGeneGreen = 0x2;
