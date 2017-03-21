@@ -19,6 +19,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 	//// ReSharper disable once InconsistentNaming
 	public class CPUConsumptionIncreasesTimedActivationDurationExtension : IItemActivationExtension
 	{
+		/*
+		 * a constant of 0.7 gives the following timed activation duration multiplier for each elvel of memory consumption
+		 * 0: 1x
+		 * 1: 1.21x
+		 * 2: 1.54x
+		 * 3: 2.11x
+		 * 4: 3.33x
+		 */
 		private const decimal CPURatioScalingFactor = 0.7m;
 
 		private readonly ComponentMatcherGroup<Subsystem, CPUResource, MovementCost> _subsystemMatcher;
