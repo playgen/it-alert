@@ -23,17 +23,12 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public override string Name => StateName;
 
-		public event Action<Exception> ExceptionEvent;
-		public event Action DisconnectedEvent;
-
-		private bool _firstTime = true;
+		public event Action<Exception> Exception;
+		public event Action Disconnected;
 
 		public GameState()
 		{
 			_stateControllerFactory = new GameStateControllerFactory();
-
-			//TODO: this needs reattaching
-			//Director.ExceptionEvent += OnException;
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
@@ -92,7 +87,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		private void OnDisconnected()
 		{
 			_photonClient.DisconnectedEvent -= OnDisconnected;
-			DisconnectedEvent?.Invoke();
+			Disconnected?.Invoke();
 		}
 
 		private void OnClientException(Exception exception)
@@ -102,7 +97,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		private void OnException(Exception exception)
 		{
-			ExceptionEvent?.Invoke(exception);
+			Exception?.Invoke(exception);
 		}
 	}
 }

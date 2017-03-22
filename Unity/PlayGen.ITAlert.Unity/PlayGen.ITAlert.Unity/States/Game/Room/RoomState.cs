@@ -30,6 +30,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			: base(roomStateInput)
 		{
 			_director = roomStateInput.Director;
+			_director.Exception += GameExceptionHandler.OnException;
 			_photonClient = photonClient;
 			_controllerFactory = new RoomStateControllerFactory(_director, photonClient);
 		}

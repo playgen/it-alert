@@ -70,7 +70,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		{
 			#region configuration
 
-			const int playerCount = 1;
+			const int PlayerCountMin = 1;
+			const int PlayerCountMax = 2;
 
 			var nodeLeft = new NodeConfig()
 			{
@@ -192,8 +193,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			{
 				Name = "Analysis",
 				Description = "Analysis",
-				MinPlayers = playerCount,
-				MaxPlayers = playerCount,
+				MinPlayers = PlayerCountMin,
+				MaxPlayers = PlayerCountMax,
 				Configuration = configuration,
 
 				CreatePlayerConfig = playerConfigFactory,
