@@ -145,7 +145,7 @@ MonoBehaviour:
   ownershipTransfer: 0
   ObservedComponents: []
   viewIdField: 0
-  instantiationId: 0
+  instantiationId: -1
   isRuntimeInstantiated: 0
 --- !u!114 &114246592976707754
 MonoBehaviour:

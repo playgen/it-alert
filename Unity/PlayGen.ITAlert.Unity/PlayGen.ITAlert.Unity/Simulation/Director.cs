@@ -36,13 +36,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private Thread _updatethread;
 
-		public event Action<Exception> ExceptionEvent;
+		public event Action<Exception> Exception;
 
-		private readonly AutoResetEvent MessageSignal = new AutoResetEvent(false);
-		private readonly AutoResetEvent UpdateSignal = new AutoResetEvent(false);
-		private readonly AutoResetEvent UpdateCompleteSignal = new AutoResetEvent(false);
-		private readonly AutoResetEvent TerminateSignal = new AutoResetEvent(false);
-		private readonly AutoResetEvent WorkerThreadExceptionSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent _messageSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent _updateSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent _updateCompleteSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent _terminateSignal = new AutoResetEvent(false);
+		private readonly AutoResetEvent _workerThreadExceptionSignal = new AutoResetEvent(false);
 
 		private int _tick;
 
@@ -127,9 +127,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			_tick = 0;
 
-			MessageSignal.Reset();
-			UpdateSignal.Reset();
-			UpdateCompleteSignal.Reset();
+			_messageSignal.Reset();
+			_updateSignal.Reset();
+			_updateCompleteSignal.Reset();
 			ThreadWorkerException = null;
 
 
@@ -272,7 +272,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void StopWorker()
 		{
-			TerminateSignal.Set();
+			_terminateSignal.Set();
 		}
 
 		private void ThreadWorker()
@@ -281,7 +281,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
-					var handle = WaitHandle.WaitAny(new WaitHandle[] {TerminateSignal, MessageSignal});
+					var handle = WaitHandle.WaitAny(new WaitHandle[] {_terminateSignal, _messageSignal});
 					if (handle == 0)
 					{
 						break;
@@ -345,8 +345,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						}
 
 
-						UpdateSignal.Set();
-						UpdateCompleteSignal.WaitOne();
+						_updateSignal.Set();
+						_updateCompleteSignal.WaitOne();
 
 					}
 				}
@@ -354,7 +354,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					Debug.LogError($"Simulation worker thread terminating due to error: {ex}");
 					ThreadWorkerException = new SimulationIntegrationException($"Terminating simulation worker thread", ex);
-					WorkerThreadExceptionSignal.Set();
+					_workerThreadExceptionSignal.Set();
 					break;
 				}
 			}
@@ -368,7 +368,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				_queuedMessages.Enqueue(tickMessage);
 			}
-			MessageSignal.Set();
+			_messageSignal.Set();
 		}
 
 		public void EndGame()
@@ -381,11 +381,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			UpdateScale();
 
-			if (WorkerThreadExceptionSignal.WaitOne(0))
+			if (_workerThreadExceptionSignal.WaitOne(0))
 			{
 				OnExceptionEvent(ThreadWorkerException);
 			}
-			else if (UpdateSignal.WaitOne(0))
+			else if (_updateSignal.WaitOne(0))
 			{
 				try
 				{
@@ -469,7 +469,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				ItemPanel.Update();
 
-				UpdateCompleteSignal.Set();
+				_updateCompleteSignal.Set();
 			}
 			catch (Exception exception)
 			{
@@ -484,7 +484,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void OnExceptionEvent(Exception obj)
 		{
-			ExceptionEvent?.Invoke(obj);
+			Exception?.Invoke(obj);
 		}
 
 		private void OnGameEnded(EndGameState obj)

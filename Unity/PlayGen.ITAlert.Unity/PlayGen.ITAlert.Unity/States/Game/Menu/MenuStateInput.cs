@@ -13,6 +13,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 	public class MenuStateInput : TickStateInput
 	{
 		public event Action QuitClickedEvent;
+		public event Action JoinGameEvent;
+		public event Action CreateGameClickedEvent;
+		public event Action SettingsClickedEvent;
+		public event Action JoinGameSuccessEvent;
 
 		private readonly Client _photonClient;
 		private readonly ScenarioController _controller;
@@ -27,10 +31,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private Text _serverConnectionText;
 		private Text _sugarConnectionText;
 
-		public event Action JoinGameEvent;
-		public event Action CreateGameClickedEvent;
-		public event Action SettingsClickedEvent;
-		public event Action JoinGameSuccessEvent;
 
 		public MenuStateInput(Client photonClient, ScenarioController controller)
 		{
@@ -71,35 +71,35 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 		private void OnJoinGameSuccess(ClientRoom clientRoom)
 		{
-			JoinGameSuccessEvent();
+			JoinGameSuccessEvent?.Invoke();
 		}
 
 		private void OnJoinGameClick()
 		{
-			JoinGameEvent();
+			JoinGameEvent?.Invoke();
 			LoadingUtility.ShowSpinner();
 		}
 
 		private void OnCreateGameClick()
 		{
 			_controller.SetQuickMatch(false);
-			CreateGameClickedEvent();
+			CreateGameClickedEvent?.Invoke();
 		}
 
 		private void OnQuickMatchClick()
 		{
 			_controller.SetQuickMatch(true);
-			CreateGameClickedEvent();
+			CreateGameClickedEvent?.Invoke();
 		}
 
 		private void OnSettingsClick()
 		{
-			SettingsClickedEvent();
+			SettingsClickedEvent?.Invoke();
 		}
 
 		private void OnQuitClick()
 		{
-			QuitClickedEvent();
+			QuitClickedEvent?.Invoke();
 		}
 
 		protected override void OnEnter()

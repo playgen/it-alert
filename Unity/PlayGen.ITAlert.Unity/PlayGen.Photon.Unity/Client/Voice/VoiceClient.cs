@@ -16,8 +16,8 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 		private bool _isDisposed;
 
-		public bool IsEnabled => _rec.enabled;
-		public bool IsTransmitting => _rec.IsTransmitting;
+		public bool IsEnabled => _rec?.enabled ?? false;
+		public bool IsTransmitting => _rec?.IsTransmitting ?? false;
 
 		public static Dictionary<int, bool> TransmittingStatuses
 		{

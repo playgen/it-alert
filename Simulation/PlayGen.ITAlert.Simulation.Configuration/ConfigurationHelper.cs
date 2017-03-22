@@ -95,9 +95,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			var nodesByCoordinate = enumerable.ToDictionary(k => new {x = k.X, y = k.Y}, v => v);
 
 			var edgeConfigs = new List<EdgeConfig>();
-			for (var i = 0; i < height; i++)
+			for (var i = 0; i <= height; i++)
 			{
-				for (var j = 0; j < width; j++)
+				for (var j = 0; j <= width; j++)
 				{
 					NodeConfig currentNode;
 					if (nodesByCoordinate.TryGetValue(new {x = j, y = i}, out currentNode))
