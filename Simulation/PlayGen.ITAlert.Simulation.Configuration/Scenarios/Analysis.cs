@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			{
 				ComponentTemplate = new MalwareVisibility()
 				{
-					All = true,
+					VisibleTo = MalwareVisibility.All,
 				}
 			});
 
@@ -63,7 +63,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			{
 				ComponentTemplate = new MalwareVisibility()
 				{
-					All = true,
+					VisibleTo = MalwareVisibility.All,
 				}
 			});
 
@@ -80,7 +80,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			{
 				ComponentTemplate = new MalwareVisibility()
 				{
-					All = true,
+					VisibleTo = MalwareVisibility.All,
 				}
 			});
 

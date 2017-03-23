@@ -75,28 +75,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		#region actors
 
-		public static readonly Archetype Player = new Archetype("Player")
-			.Extends(Actor.Archetype)
-			.HasComponent(new ComponentBinding<Player>())
-			.HasComponent(new ComponentBinding<ConsumeCPU>()
-			{
-				ComponentTemplate = new ConsumeCPU()
-				{
-					Value = SimulationConstants.ActorCPUConsumption,
-				}
-			})
-			.HasComponent(new ComponentBinding<ItemStorage>()
-			{
-				ComponentTemplate = new ItemStorage()
-				{
-					ItemLimit = 1,
-					MaxItems = 1,
-					Items = new ItemContainer[]
-					{
-						new InventoryItemContainer(), 
-					}
-				}
-			});
+		public static readonly Archetype Player = Archetypes.Player.Archetype;
 
 		#region malware
 

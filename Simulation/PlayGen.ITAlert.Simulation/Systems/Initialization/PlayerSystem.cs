@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Entities;
 using Engine.Systems;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -43,13 +44,17 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 		{
 			if (playerConfigs.Any())
 			{
+				int playerId = 0;
+
 				foreach (var playerConfig in playerConfigs)
 				{
-					if (_entityFactoryProvider.TryCreateEntityFromArchetype(playerConfig.ArchetypeName, out var player))
+					if (_entityFactoryProvider.TryCreateEntityFromArchetype(playerConfig.ArchetypeName, out var player)
+						&& player.TryGetComponent<PlayerBitMask>(out var playerBitMask))
 					{
 						playerConfig.EntityId = player.Id;
 						var startingLocationId = playerConfig.StartingLocation ?? 0;
 						_movementSystem.AddVisitor(subsystems[startingLocationId], player);
+						playerBitMask.Value = 1 << playerId++;
 						continue;
 					}
 					player?.Dispose();

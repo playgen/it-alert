@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +30,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private Vector3 _scale;
 
+		private PlayerBitMask _playerBitMask;
+
+		public PlayerBitMask BitMask => _playerBitMask;
+
 		#region Initialization
 
 		public void Awake()
@@ -38,6 +44,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			base.OnInitialize();
 			_trailRenderer.enabled = true;
+
+			if (Entity.TryGetComponent(out _playerBitMask) == false)
+			{
+				throw new SimulationIntegrationException("Player bitmask component missing");
+			}
 		}
 
 		#endregion

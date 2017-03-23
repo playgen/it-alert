@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Components;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
@@ -22,12 +23,16 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		private readonly ComponentMatcherGroup<Capture, CurrentLocation, Owner> _captureMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, Visitors> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome, MalwareVisibility> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<Player, PlayerBitMask> _playerMatcherGroup;
+
 
 		public CaptureBehaviour(IMatcherProvider matcherProvider)
 		{
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, Visitors>();
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, PlayerBitMask>();
+
 		}
 
 		public void OnNotActive(int itemId, Activation activation)
@@ -50,7 +55,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			if (_captureMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple))
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& _playerMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var playerTuple))
 				{
 					// join the current locations list of visitors with all malware entities
 					var malwareVisitor = locationTuple.Component2.Values
@@ -63,7 +69,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					// TODO: probably need a better way of choosing the malware than selecting first, but this will do for now
 					if (malwareVisitor != null
 						&& itemTuple.Component3.Value.HasValue
-						&& malwareVisitor.Component2.All || malwareVisitor.Component2.VisibleTo.Contains(itemTuple.Component3.Value.Value))
+						&& (malwareVisitor.Component2.VisibleTo & playerTuple.Component2.Value) == playerTuple.Component2.Value)
 					{
 						itemTuple.Component1.CapturedGenome = malwareVisitor.Component1.Value;
 					}
