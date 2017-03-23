@@ -63,6 +63,7 @@
     <Compile Include="Components\EntityTypes\Connection.cs" />
     <Compile Include="Components\EntityTypes\IEntityType.cs" />
     <Compile Include="Components\EntityTypes\NonUI.cs" />
+    <Compile Include="Components\EntityTypes\Malware.cs" />
     <Compile Include="Components\EntityTypes\Npc.cs" />
     <Compile Include="Components\EntityTypes\ScenarioText.cs" />
     <Compile Include="Components\EntityTypes\Subsystem.cs" />
@@ -98,6 +99,8 @@
     <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Systems\Initialization\GraphSystem.cs" />
+    <Compile Include="Systems\Initialization\PlayerSystem.cs" />
     <Compile Include="Systems\Items\CPUConsumptionIncreasesTimedActivationDurationExtension.cs" />
     <Compile Include="Systems\Items\TransferBehaviour.cs" />
     <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />
@@ -120,6 +123,7 @@
     <Compile Include="Systems\Malware\MalwarePropogationSystem.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
+    <Compile Include="Systems\Npc\NpcSystem.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
     <Compile Include="Systems\Planning\IntentSystem.cs" />
     <Compile Include="Components\Enhacements\DatabaseEnhancement.cs" />
@@ -208,8 +212,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Components\Npc\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Systems\Npc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

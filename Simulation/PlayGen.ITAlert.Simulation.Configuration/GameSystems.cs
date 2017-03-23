@@ -7,6 +7,7 @@ using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
+using PlayGen.ITAlert.Simulation.Systems.Initialization;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -23,6 +24,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
+			#region initialization
+
+			new SystemConfiguration<GraphSystem>(),
+			new SystemConfiguration<PlayerSystem>(),
+
+			#endregion
+
 			new SystemConfiguration<RNGSystem>(),
 
 			#region resource system

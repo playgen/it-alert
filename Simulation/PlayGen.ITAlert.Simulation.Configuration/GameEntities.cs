@@ -116,7 +116,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		private static readonly Archetype Virus = new Archetype("Virus")
 			.Extends(Actor)
-			.HasComponent(new ComponentBinding<Npc>())
+			.HasComponent(new ComponentBinding<Malware>())
 			.HasComponent(new ComponentBinding<MalwareVisibility>());
 
 		public static readonly Archetype CPUVirus = new Archetype("CPUVirus")

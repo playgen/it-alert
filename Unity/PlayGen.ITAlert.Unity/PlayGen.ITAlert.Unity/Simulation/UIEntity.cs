@@ -29,6 +29,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{ nameof(Connection), go => go.GetComponent<ConnectionBehaviour>() },
 			{ nameof(Player), go => go.GetComponent<PlayerBehaviour>() },
 			{ nameof(Npc), go => go.GetComponent<NpcBehaviour>() },
+			{ nameof(Malware), go => go.GetComponent<MalwareBehaviour>() },
 			{ nameof(Item), go => go.GetComponent<ItemBehaviour>() },
 			{ nameof(ScenarioText), go => go.GetComponent<ScenarioTextBehaviour>() },
 		};
