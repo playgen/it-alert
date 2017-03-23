@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Systems.Enhancements;
 using PlayGen.ITAlert.Simulation.Systems.Items;
+using PlayGen.ITAlert.Simulation.Systems.Malware;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Systems.Planning;
 using PlayGen.ITAlert.Simulation.Systems.Resources;
@@ -27,7 +28,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			#region resource system
 
 			// TODO: if the systems are tickable the order they are defined here is the order they will be ticked; we probably need to make this more explicit
-			new SystemConfiguration<SubsystemResources>()
+			new SystemConfiguration<ResourcesSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
 				{
@@ -44,6 +45,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					}
 				}
 			},
+
+			#endregion
+
+			#region malware effects
+
+			new SystemConfiguration<AdjacenetMalwareIncreaseMovementCostSystem>(),
 
 			#endregion
 
@@ -101,7 +108,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			new SystemConfiguration<IntentSystem>(),
+			//new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<PlayerInventorySystem>(),
 
@@ -138,7 +145,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			new SystemConfiguration<ItemManagement>(),
+			// new SystemConfiguration<ItemManagementSystem>(),
 
 			#region enhancement system
 

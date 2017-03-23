@@ -14,6 +14,10 @@ using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
+	/// <summary>
+	/// Responsible for moving Visitors around the graph
+	/// Specific types of movement behaviour (connection, subsystem) are implemented by extensions that handle the relevant logic
+	/// </summary>
 	public class MovementSystem : ISystem, ITickableSystem
 	{
 		private readonly List<IMovementSystemExtension> _movementSystems;

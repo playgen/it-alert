@@ -234,11 +234,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				_cpu.SetActive(true);
 				_memory.SetActive(true);
+				_nameText.enabled = false;
 			}
 			else
 			{
 				_cpu.SetActive(false);
 				_memory.SetActive(false);
+				_nameText.enabled = true;
 			}
 		}
 

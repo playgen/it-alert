@@ -12,6 +12,11 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
+	/// <summary>
+	/// Responsible for Visitor movement on subsystem nodes, this is where Visitors can idle and is a continuous cyclical movement
+	/// This is also where Visitor routing takes place
+	/// Movement is modulated by the visitor movement speed and node movement cost
+	/// </summary>
 	public class SubsystemMovement : MovementSystemExtensionBase
 	{
 		private readonly ComponentMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost> _subsystemMatcherGroup;
