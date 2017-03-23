@@ -72,6 +72,7 @@
     <Compile Include="Components\Items\OutputItemContainer.cs" />
     <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\Malware\MalwareVisibility.cs" />
+    <Compile Include="Components\Malware\PropogationCounter.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="Components\Tutorial\ActivationContinue.cs" />
     <Compile Include="Components\Tutorial\Highlight.cs" />
@@ -107,6 +108,9 @@
     <Compile Include="Systems\Items\AnalyserBehaviour.cs" />
     <Compile Include="Systems\Items\ScannerBehaviour.cs" />
     <Compile Include="Systems\Items\TimedActivationExtension.cs" />
+    <Compile Include="Systems\Malware\MutatingPropogator.cs" />
+    <Compile Include="Systems\Malware\CloningPropogator.cs" />
+    <Compile Include="Systems\Malware\BreedingPropogator.cs" />
     <Compile Include="Systems\Malware\ConsumeBandwidthMalwareEffect.cs" />
     <Compile Include="Systems\Malware\IMalwarePropogator.cs" />
     <Compile Include="Systems\Malware\MalwarePropogation.cs" />
