@@ -11,6 +11,10 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
+	/// <summary>
+	/// Responsible for Visitor movement along Connection entities, this is a simple conveyor belt type movment in a single direction
+	/// Movement is modulated by the visitor movement speed and node movement cost
+	/// </summary>
 	public class ConnectionMovement : MovementSystemExtensionBase
 	{
 		private readonly ComponentMatcherGroup<Connection, GraphNode, Visitors, MovementCost> _connectionMatcherGroup;

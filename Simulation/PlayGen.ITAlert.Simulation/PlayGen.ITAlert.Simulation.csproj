@@ -42,7 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetypes\Connection.cs" />
     <Compile Include="Archetypes\Item.cs" />
+    <Compile Include="Archetypes\Node.cs" />
+    <Compile Include="Archetypes\Subsystem.cs" />
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
@@ -73,6 +76,7 @@
     <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\Malware\MalwareVisibility.cs" />
     <Compile Include="Components\Malware\PropogationCounter.cs" />
+    <Compile Include="Components\Resources\BandwidthResource.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="Components\Tutorial\ActivationContinue.cs" />
     <Compile Include="Components\Tutorial\Highlight.cs" />
@@ -111,21 +115,18 @@
     <Compile Include="Systems\Malware\MutatingPropogator.cs" />
     <Compile Include="Systems\Malware\CloningPropogator.cs" />
     <Compile Include="Systems\Malware\BreedingPropogator.cs" />
-    <Compile Include="Systems\Malware\ConsumeBandwidthMalwareEffect.cs" />
+    <Compile Include="Systems\Malware\AdjacenetMalwareIncreaseMovementCostSystem.cs" />
     <Compile Include="Systems\Malware\IMalwarePropogator.cs" />
-    <Compile Include="Systems\Malware\MalwarePropogation.cs" />
+    <Compile Include="Systems\Malware\MalwarePropogationSystem.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
     <Compile Include="Systems\Planning\IntentSystem.cs" />
-    <Compile Include="Systems\Malware\ConsumeCPUMalwareEffect.cs" />
-    <Compile Include="Systems\Malware\ConsumeMemoryMalwareEffect.cs" />
     <Compile Include="Components\Enhacements\DatabaseEnhancement.cs" />
     <Compile Include="Components\Enhacements\AntivirusEnhancement.cs" />
     <Compile Include="Components\Activation\IActivatable.cs" />
     <Compile Include="Components\Activation\IActivation.cs" />
     <Compile Include="Components\Activation\TimedActivation.cs" />
-    <Compile Include="Systems\Malware\IMalwareEffect.cs" />
     <Compile Include="Components\Items\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateIntent.cs" />
     <Compile Include="Components\Resources\ConsumeCPU.cs" />
@@ -135,12 +136,11 @@
     <Compile Include="Components\Resources\CPUResource.cs" />
     <Compile Include="Components\Resources\MemoryResource.cs" />
     <Compile Include="Systems\Items\ItemActivationSystem.cs" />
-    <Compile Include="Systems\Items\ItemManagement.cs" />
-    <Compile Include="Systems\Malware\MalwareEffects.cs" />
+    <Compile Include="Systems\Items\ItemManagementSystem.cs" />
     <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
     <Compile Include="Systems\Resources\ResetMemoryEachTick.cs" />
     <Compile Include="Systems\Resources\ResetCPUEachTick.cs" />
-    <Compile Include="Systems\Resources\SubsystemResources.cs" />
+    <Compile Include="Systems\Resources\ResourcesSystem.cs" />
     <Compile Include="Systems\Resources\CPUReducesMovementSpeed.cs" />
     <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
     <Compile Include="Systems\Resources\ItemStorageConsumesMemoryEffect.cs" />
@@ -209,6 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
+    <Folder Include="Systems\Npc\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

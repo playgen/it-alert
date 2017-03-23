@@ -23,74 +23,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	/// </summary>
 	public static class GameEntities
 	{
+		// TODO: decomission this way of importing archetypes	
+
 		#region nodes
 
-		private static readonly Archetype Node = new Archetype("Node")
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<Visitors>(), 
-				new ComponentBinding<GraphNode>(), 
-				new ComponentBinding<ExitRoutes>(),
-				new ComponentBinding<MovementCost>(),
-			});
-
-		public static readonly Archetype Connection = new Archetype("Connection")
-			.Extends(Node)
-			.HasComponent(new ComponentBinding<Connection>());
-
-		public static readonly Archetype Subsystem = new Archetype("Subsystem")
-			.Extends(Node)
-			.HasComponent(new ComponentBinding<Subsystem>())
-			.HasComponent(new ComponentBinding<Name>())
-			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
-			.HasComponent(new ComponentBinding<ItemActivator>())
-			.HasComponent(new ComponentBinding<ItemStorage>()
-			{
-				ComponentTemplate = new ItemStorage()
-				{
-					Items = new ItemContainer[]
-					{
-						new ItemContainer()
-						{
-							Enabled = true,
-						},
-						new ItemContainer()
-						{
-							Enabled = true,
-						},
-						new ItemContainer()
-						{
-							Enabled = true,
-						},
-						new ItemContainer()
-						{
-							Enabled = true,
-						},
-					},
-				}
-			})
-			.HasComponent(new ComponentBinding<MemoryResource>()
-			{
-				ComponentTemplate = new MemoryResource()
-				{
-					Value = SimulationConstants.SubsystemInitialMemory,
-					Maximum = SimulationConstants.SubsystemMaxMemory,
-				}
-			})
-			.HasComponent(new ComponentBinding<CPUResource>()
-			{
-				ComponentTemplate = new CPUResource()
-				{
-					Value = SimulationConstants.SubsystemInitialCPU,
-					Maximum = SimulationConstants.SubsystemMaxCPU,
-				}
-			});
+		public static readonly Archetype Connection = Archetypes.Connection.Archetype;
+		public static readonly Archetype Subsystem = Archetypes.Subsystem.Archetype;
 
 		#endregion
 
 		#region enhancements
 
 		#region antivirus
+
+		// TODO: we should be able to modularise the enhancement and all of its required system/archetype config into a standalone assembly
 
 		public static readonly Archetype AntivirusWorkstation = new Archetype("AntivirusWorkstation")
 			.Extends(Subsystem)

@@ -57,7 +57,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 				&& itemTuple.Component2.Value.HasValue
 				&& _subsystemMatcher.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var subsystemTuple))
 			{
-				var activationTickModifier = (1 - (subsystemTuple.Component2.Value / (decimal) subsystemTuple.Component2.Maximum)) * CPURatioScalingFactor;
+				var activationTickModifier = (1 - (subsystemTuple.Component2.Value / (decimal) subsystemTuple.Component2.Maximum) * CPURatioScalingFactor);
 				itemTuple.Component1.ActivationTickModifier = RangeHelper.AssignWithinBounds(activationTickModifier, 0, Int32.MaxValue);
 			}
 		}

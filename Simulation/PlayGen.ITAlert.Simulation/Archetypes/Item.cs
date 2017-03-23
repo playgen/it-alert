@@ -11,6 +11,9 @@ using PlayGen.ITAlert.Simulation.Components.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Archetypes
 {
+	/// <summary>
+	/// Archetype base for item entities
+	/// </summary>
 	public static class Item
 	{
 		public static readonly Archetype Archetype = new Archetype("Item")

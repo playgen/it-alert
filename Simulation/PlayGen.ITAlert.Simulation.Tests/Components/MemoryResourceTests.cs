@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			var systems = new List<SystemConfiguration>()
 			{
 				new SystemConfiguration<ItemStorageSystem>(),
-				new SystemConfiguration<SubsystemResources>()
+				new SystemConfiguration<ResourcesSystem>()
 				{
 					ExtensionConfiguration = new SystemExtensionConfiguration[]
 					{

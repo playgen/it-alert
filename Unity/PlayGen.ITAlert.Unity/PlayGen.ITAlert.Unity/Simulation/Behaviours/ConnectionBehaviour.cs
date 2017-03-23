@@ -24,10 +24,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public Vector Position;
 
 		[SerializeField]
-		private Image _spriteRenderer;
+		private Image _connectionImage;
 
 		[SerializeField]
 		private RectTransform _rectTransform;
+
+		[SerializeField]
+		private Gradient _movementCostGradient;
 
 		#region Components
 
@@ -144,6 +147,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
+			var movementCostScaled = 1 - (1 / (float)_movementCost.Value);
+			_connectionImage.color = _movementCostGradient.Evaluate(movementCostScaled);
 		}
 
 		#endregion

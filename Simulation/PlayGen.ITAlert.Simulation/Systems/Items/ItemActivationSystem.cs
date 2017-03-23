@@ -15,19 +15,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemActivationSystem : ITickableSystem
 	{
-		private IntentSystem _intentSystem;
-
 		private readonly List<IItemActivationExtension> _itemActivationExtensions;
 		
 		private readonly ComponentMatcherGroup<Activation> _activationMatcher;
 
 		public ItemActivationSystem(IMatcherProvider matcherProvider, 
 			// TODO: remove zenject dependency when implicit optional collection paramters is implemented
-			[InjectOptional] List<IItemActivationExtension> itemActivationExtensions,
-			IntentSystem intentSystem) 
+			[InjectOptional] List<IItemActivationExtension> itemActivationExtensions) 
 		{
 			_itemActivationExtensions = itemActivationExtensions;
-			_intentSystem = intentSystem;
 			
 			_activationMatcher = matcherProvider.CreateMatcherGroup<Activation>();
 		}
