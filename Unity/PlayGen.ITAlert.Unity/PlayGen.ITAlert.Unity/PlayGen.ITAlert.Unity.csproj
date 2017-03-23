@@ -163,6 +163,7 @@
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
+    <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />
@@ -225,7 +226,7 @@
     <Compile Include="Simulation\Behaviours\GameOverBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\IEntityBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\ItemBehaviour.cs" />
-    <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
+    <Compile Include="Simulation\Behaviours\MalwareBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\PlayerBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\SubsystemBehaviour.cs" />
     <Compile Include="Simulation\Director.cs" />
