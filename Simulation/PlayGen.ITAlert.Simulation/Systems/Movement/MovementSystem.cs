@@ -37,6 +37,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			ExecuteMovementSystemAction(node.Id, system => system.AddVisitorToNode(node.Id, visitor.Id, 0, 0, 0));
 		}
 
+		public void AddVisitor(int nodeId, int visitorId)
+		{
+			ExecuteMovementSystemAction(nodeId, system => system.AddVisitorToNode(nodeId, visitorId, 0, 0, 0));
+		}
+
 		private void ValueOnVisitorTransition(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
 			ExecuteMovementSystemAction(nodeId, system => system.AddVisitorToNode(nodeId, visitorId, sourceId, initialPosition, currentTick));

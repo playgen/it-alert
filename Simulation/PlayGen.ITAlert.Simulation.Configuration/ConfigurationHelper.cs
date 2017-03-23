@@ -7,6 +7,7 @@ using Engine.Startup;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using Random = Engine.Util.Random;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {

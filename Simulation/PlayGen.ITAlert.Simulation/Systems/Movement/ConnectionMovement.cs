@@ -59,8 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public override void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			ComponentEntityTuple<Connection, GraphNode, Visitors, MovementCost> connectionTuple;
-			if (_connectionMatcherGroup.TryGetMatchingEntity(nodeId, out connectionTuple))
+			if (_connectionMatcherGroup.TryGetMatchingEntity(nodeId, out var connectionTuple))
 			{
 				var position = connectionTuple.Component2.EntrancePositions.ContainsKey(sourceId)
 					? connectionTuple.Component2.EntrancePositions[sourceId] + initialPosition

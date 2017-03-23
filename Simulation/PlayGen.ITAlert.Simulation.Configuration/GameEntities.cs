@@ -2,6 +2,7 @@
 using Engine.Archetypes;
 using Engine.Components;
 using Engine.Planning;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
@@ -74,23 +75,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		#region actors
 
-		private static readonly Archetype Actor = new Archetype("Actor")
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<CurrentLocation>(),
-				new ComponentBinding<Intents>(),
-				new ComponentBinding<VisitorPosition>(), 
-				new ComponentBinding<MovementSpeed>()
-				{
-					ComponentTemplate = new MovementSpeed()
-					{
-						Value = 1,
-					}
-				}, 
-			});
-
 		public static readonly Archetype Player = new Archetype("Player")
-			.Extends(Actor)
+			.Extends(Actor.Archetype)
 			.HasComponent(new ComponentBinding<Player>())
 			.HasComponent(new ComponentBinding<ConsumeCPU>()
 			{
@@ -112,43 +98,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				}
 			});
 
-		#region viruses
+		#region malware
 
-		private static readonly Archetype Virus = new Archetype("Virus")
-			.Extends(Actor)
-			.HasComponent(new ComponentBinding<Malware>())
-			.HasComponent(new ComponentBinding<MalwareVisibility>());
-
-		public static readonly Archetype CPUVirus = new Archetype("CPUVirus")
-			.Extends(Virus)
-			.HasComponent(new ComponentBinding<ConsumeCPU>()
-			{
-				ComponentTemplate = new ConsumeCPU()
-				{
-					Value = SimulationConstants.VirusCPUConsumedInitialValue,
-				}
-			});
-
-		public static readonly Archetype MemoryVirus = new Archetype("MemoryVirus")
-			.Extends(Virus)
-			.HasComponent(new ComponentBinding<ConsumeMemory>()
-			{
-				ComponentTemplate = new ConsumeMemory()
-				{
-					Value = SimulationConstants.VirusMemoryConsumedInitialValue,
-				}
-			});
-		// TODO: need a better way of overriding existing component binding or component template
-		// TODO: need a way of passing configuration to the archetype factory dyanmically
-		//		eg. initialize a virus with a specific genome from one archetype rahter than having one archetype per virus class
-		//.HasComponent(new ComponentBinding<MalwareGenome>()
-		//	{
-		//		ComponentTemplate = new MalwareGenome()
-		//		{
-		//			Value = SimulationConstants.MalwareGeneRed,
-		//		}
-		//	})
-		//;
+		public static readonly Archetype Malware = Archetypes.Malware.Archetype;
 
 		#endregion
 

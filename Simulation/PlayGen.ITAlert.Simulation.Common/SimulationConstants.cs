@@ -55,13 +55,11 @@
 
 		#region viruses
 
-		public const int VirusMemoryConsumedInitialValue = 0;
-		public const int VirusCPUConsumedInitialValue = 2;
+		public const int MalwareMemoryConsumption = 0;
+		public const int MalwareCPUConsumption = 2;
 
 		public const int VirusMemoryConsumedIncrementPerTick = 1;
 		public const int VirusCPUConsumedIncrementPerTick = 1;
-
-		public const string DefaultVirusArchetype = "Virus";
 
 		public const decimal TimedActivationTickModifier = 1m;
 		public const decimal CPUMovementSpeedReduction = 0.5m;
@@ -70,6 +68,8 @@
 		public const int MalwareGeneGreen = 0x2;
 		public const int MalwareGeneBlue = 0x4;
 
+		public const int MalwarePropogationInterval = 100;
+		public const int MalwarePropogationProbability = 75;
 
 		#endregion
 

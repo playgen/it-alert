@@ -47,12 +47,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnDeactivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Capture, CurrentLocation, Owner> itemTuple;
-			if (_captureMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_captureMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, Visitors> locationTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple))
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple))
 				{
 					// join the current locations list of visitors with all malware entities
 					var malwareVisitor = locationTuple.Component2.Values
@@ -65,7 +63,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					// TODO: probably need a better way of choosing the malware than selecting first, but this will do for now
 					if (malwareVisitor != null
 						&& itemTuple.Component3.Value.HasValue
-						&& malwareVisitor.Component2.VisibleTo.Contains(itemTuple.Component3.Value.Value))
+						&& malwareVisitor.Component2.All || malwareVisitor.Component2.VisibleTo.Contains(itemTuple.Component3.Value.Value))
 					{
 						itemTuple.Component1.CapturedGenome = malwareVisitor.Component1.Value;
 					}
