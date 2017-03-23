@@ -5,6 +5,7 @@ using System.Text;
 using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
@@ -19,12 +20,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		private readonly ComponentMatcherGroup<Scanner, CurrentLocation, Owner> _scannerMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, Visitors> _visitorsMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome, MalwareVisibility> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<Player, PlayerBitMask> _playerMatcherGroup;
 		
 		public ScannerBehaviour(IMatcherProvider matcherProvider)
 		{
 			_scannerMatcherGroup = matcherProvider.CreateMatcherGroup<Scanner, CurrentLocation, Owner>();
 			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, Visitors>();
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, PlayerBitMask>();
 		}
 
 		public void OnNotActive(int itemId, Activation activation)
@@ -44,12 +47,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 
 		public void OnDeactivating(int itemId, Activation activation)
 		{
-			ComponentEntityTuple<Scanner, CurrentLocation, Owner> itemTuple;
-			if (_scannerMatcherGroup.TryGetMatchingEntity(itemId, out itemTuple))
+			if (_scannerMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
-				ComponentEntityTuple<Subsystem, Visitors> locationTuple;
 				if (itemTuple.Component2.Value.HasValue
-					&&_visitorsMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out locationTuple))
+					&& _visitorsMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple)
+					&& _playerMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var playerTuple))
 				{
 					// join the current locations list of visitors with all malware entities
 					foreach (var malwareVisitor in locationTuple.Component2.Values
@@ -59,7 +61,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 							(o, i) => i))
 					{
 						// add the visible gene
-						malwareVisitor.Component2.VisibleTo.Add(itemTuple.Component3.Value.Value);
+						malwareVisitor.Component2.VisibleTo |= playerTuple.Component2.Value;
 					}
 				}
 				itemTuple.Component3.Value = null;

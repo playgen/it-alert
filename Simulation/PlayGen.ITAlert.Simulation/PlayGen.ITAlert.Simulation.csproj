@@ -47,6 +47,7 @@
     <Compile Include="Archetypes\Item.cs" />
     <Compile Include="Archetypes\Malware.cs" />
     <Compile Include="Archetypes\Node.cs" />
+    <Compile Include="Archetypes\Player.cs" />
     <Compile Include="Archetypes\Subsystem.cs" />
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\Malware\MalwareVisibility.cs" />
     <Compile Include="Components\Malware\PropogationCounter.cs" />
+    <Compile Include="Components\PlayerBitMask.cs" />
     <Compile Include="Components\Resources\BandwidthResource.cs" />
     <Compile Include="Components\Resources\IResource.cs" />
     <Compile Include="Components\Tutorial\ActivationContinue.cs" />
