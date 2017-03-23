@@ -7,6 +7,7 @@ using Engine.Commands;
 using Engine.Entities;
 using Engine.Lifecycle;
 using Engine.Serialization;
+using Engine.Systems;
 using GameWork.Core.Commands;
 using ModestTree;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
@@ -44,9 +45,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private readonly AutoResetEvent _terminateSignal = new AutoResetEvent(false);
 		private readonly AutoResetEvent _workerThreadExceptionSignal = new AutoResetEvent(false);
 
-		private int _tick;
-
-		public int Tick => _tick;
+		public int Tick => SimulationRoot?.ECS?.CurrentTick ?? 0;
 
 		/// <summary>
 		/// Simulation  Container
@@ -60,12 +59,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// <summary>
 		/// Tracked entities have their lifecycle managed by the simulation and will bbe created and destroyed as required
 		/// </summary>
-		private readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>();
+		private readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>(10000);
 
 		/// <summary>
 		/// Untracked entities do not have a 1:1 mapping with simulation entities and their lifecycle is managed manually
 		/// </summary>
-		private readonly List<UIEntity> UntrackedEntities = new List<UIEntity>();
+		private readonly List<UIEntity> UntrackedEntities = new List<UIEntity>(10000);
 
 
 		#region game objects
@@ -125,8 +124,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void ResetSimulation()
 		{
-			_tick = 0;
-
 			_messageSignal.Reset();
 			_updateSignal.Reset();
 			_updateCompleteSignal.Reset();
@@ -288,8 +285,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 					if (handle == 1)
 					{
-						_tick++;
-
 						TickMessage[] queuedMessages;
 
 						lock (_queueLock)
@@ -333,9 +328,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 									throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
 								}
 
-								uint crc;
-								var state = SimulationRoot.GetEntityState(out crc);
-								//System.IO.File.WriteAllText($"d:\\temp\\{_tick}.json", state);
+								uint crc = 0;
+								// var state = SimulationRoot.GetEntityState(out crc);
+								//System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.json", state);
 
 								if (tickMessage.CRC != crc)
 								{
@@ -377,9 +372,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			OnGameEnded(_endGameSystem.EndGameState);
 		}
 
+		private int _update;
+
 		public void Update()
 		{
 			UpdateScale();
+
 
 			if (_workerThreadExceptionSignal.WaitOne(0))
 			{
@@ -389,6 +387,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
+					if (++_update != SimulationRoot.ECS.CurrentTick)
+					{
+						Debug.LogWarning($"Update tick out of sync at {_update}");
+					}
 					UpdateEntityStates();
 				}
 				catch (Exception ex)
@@ -416,52 +418,46 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region entity management
 
-		private void CreateEntity(Entity entity)
+		private UIEntity CreateEntity(Entity entity)
 		{
 			var uiEntity = new UIEntity(entity, this);
 			TrackedEntities.Add(entity.Id, uiEntity);
+			return uiEntity;
 		}
 
 		private void UpdateEntityStates()
 		{
 			try
 			{
-				var entities = SimulationRoot.ECS.Entities;
+				var newEntites = 0;
 
-				var entitiesAdded = entities.Where(entity => TrackedEntities.ContainsKey(entity.Key) == false).ToArray();
-				foreach (var newEntity in entitiesAdded)
-				{
-					CreateEntity(newEntity.Value);
-					UIEntity newUiEntity;
-					if (TryGetEntity(newEntity.Key, out newUiEntity))
-					{
-						newUiEntity.EntityBehaviour?.Initialize(newEntity.Value, this);
-					}
-					else
-					{
-						throw new SimulationIntegrationException("New entity not present in dictionary");
-					}
-				}
-
-				foreach (var existingEntity in entities.Except(entitiesAdded).ToArray())
+				foreach (var entity in SimulationRoot.ECS.Entities)
 				{
 					UIEntity uiEntity;
-					if (TryGetEntity(existingEntity.Key, out uiEntity))
+					if (TryGetEntity(entity.Key, out uiEntity))
 					{
 						uiEntity.UpdateEntityState();
 					}
+					else
+					{
+						newEntites++;
+						var newUiEntity = CreateEntity(entity.Value);
+						newUiEntity.EntityBehaviour?.Initialize(entity.Value, this);
+					}
 				}
 
-				var entitiesRemoved = TrackedEntities.Keys.Except(entities.Select(k => k.Key)).ToArray();
-				foreach (var entityToRemove in entitiesRemoved)
-				{
-					UIEntity uiEntity;
-					if (TryGetEntity(entityToRemove, out uiEntity))
-					{
-						Destroy(uiEntity.GameObject);
-					}
-					TrackedEntities.Remove(entityToRemove);
-				}
+				Debug.Log($"New entities created in tick {_update}: {newEntites}");
+
+				//var entitiesRemoved = TrackedEntities.Keys.Except(entities.Select(k => k.Key)).ToArray();
+				//foreach (var entityToRemove in entitiesRemoved)
+				//{
+				//	UIEntity uiEntity;
+				//	if (TryGetEntity(entityToRemove, out uiEntity))
+				//	{
+				//		Destroy(uiEntity.GameObject);
+				//	}
+				//	TrackedEntities.Remove(entityToRemove);
+				//}
 
 				foreach (var untrackedEntity in UntrackedEntities)
 				{
@@ -470,6 +466,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ItemPanel.Update();
 
 				_updateCompleteSignal.Set();
+
+				Debug.Log("UpdateEntityStates");
+
 			}
 			catch (Exception exception)
 			{

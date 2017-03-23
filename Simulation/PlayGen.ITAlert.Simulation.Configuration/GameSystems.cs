@@ -186,6 +186,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			// TODO: need to find a good way to append systems from the scenario definition
 			new SystemConfiguration<TutorialSystem>(),
 			new SystemConfiguration<EndGameSystem>(),
+
+			new SystemConfiguration<MalwarePropogationSystem>(),
 		};
 	}
 }

@@ -101,8 +101,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public override void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick)
 		{
-			ComponentEntityTuple<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost> subsystemTuple;
-			if (_subsystemMatcherGroup.TryGetMatchingEntity(nodeId, out subsystemTuple))
+			if (_subsystemMatcherGroup.TryGetMatchingEntity(nodeId, out var subsystemTuple))
 			{
 				// determine entrance position
 				var direction = subsystemTuple.Component2.EntrancePositions.ContainsKey(sourceId)
@@ -113,10 +112,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 				AddVisitor(nodeId, subsystemTuple.Component3, visitorId, position, currentTick);
 
-				ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
-				IIntent visitorIntent;
-				if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple)
-					&& visitorTuple.Component4.TryPeek(out visitorIntent))
+				if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple)
+					&& visitorTuple.Component4.TryPeek(out var visitorIntent))
 				{
 					var moveIntent = visitorIntent as MoveIntent;
 					if (moveIntent != null && moveIntent.Destination == nodeId)

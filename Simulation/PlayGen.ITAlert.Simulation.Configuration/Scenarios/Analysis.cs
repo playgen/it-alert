@@ -34,32 +34,53 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			});
 
 		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
-			.Extends(GameEntities.CPUVirus)
+			.Extends(GameEntities.Malware)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneRed,
 				}
+			})
+			.HasComponent(new ComponentBinding<MalwareVisibility>()
+			{
+				ComponentTemplate = new MalwareVisibility()
+				{
+					All = true,
+				}
 			});
 
 		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
-			.Extends(GameEntities.CPUVirus)
+			.Extends(GameEntities.Malware)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneGreen,
 				}
+			})
+			.HasComponent(new ComponentBinding<MalwareVisibility>()
+			{
+				ComponentTemplate = new MalwareVisibility()
+				{
+					All = true,
+				}
 			});
 
 		private static readonly Archetype YellowTutorialVirus = new Archetype("YellowTutorialVirus")
-			.Extends(GameEntities.CPUVirus)
+			.Extends(GameEntities.Malware)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen,
+				}
+			})
+			.HasComponent(new ComponentBinding<MalwareVisibility>()
+			{
+				ComponentTemplate = new MalwareVisibility()
+				{
+					All = true,
 				}
 			});
 
@@ -129,6 +150,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = GameEntities.Player.Name
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+
+			configuration.RNGSeed = 897891658;
 
 			configuration.Archetypes.AddRange(new []
 			{

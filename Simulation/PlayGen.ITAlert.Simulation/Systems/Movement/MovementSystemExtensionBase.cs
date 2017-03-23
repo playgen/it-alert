@@ -29,8 +29,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		protected void AddVisitor(int nodeId, Visitors nodeVisitors, int visitorId, int position, int currentTick)
 		{
-			ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
-			if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
+			if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple))
 			{
 				nodeVisitors.Values.Add(visitorId);
 				visitorTuple.Component1.SetPosition(position, currentTick);

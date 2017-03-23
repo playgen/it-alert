@@ -42,8 +42,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetypes\Actor.cs" />
     <Compile Include="Archetypes\Connection.cs" />
     <Compile Include="Archetypes\Item.cs" />
+    <Compile Include="Archetypes\Malware.cs" />
     <Compile Include="Archetypes\Node.cs" />
     <Compile Include="Archetypes\Subsystem.cs" />
     <Compile Include="Commands\ActivateItemCommand.cs" />
