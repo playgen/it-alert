@@ -79,7 +79,7 @@
     <Compile Include="Components\Items\OutputItemContainer.cs" />
     <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\Malware\MalwareVisibility.cs" />
-    <Compile Include="Components\Malware\PropogationCounter.cs" />
+    <Compile Include="Components\Malware\MalwarePropogation.cs" />
     <Compile Include="Components\PlayerBitMask.cs" />
     <Compile Include="Components\Resources\BandwidthResource.cs" />
     <Compile Include="Components\Resources\IResource.cs" />

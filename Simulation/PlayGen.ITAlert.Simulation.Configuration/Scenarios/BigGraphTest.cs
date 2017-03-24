@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Archetypes;
 using Engine.Lifecycle;
 using Engine.Sequencing;
+using Engine.Systems;
+using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
@@ -13,12 +17,56 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
 
+		private static readonly Archetype RedVirus = new Archetype("RedVirus")
+			.Extends(GameEntities.Malware)
+			//.RemoveComponent<MalwarePropogation>()
+			//.HasComponent(new ComponentBinding<MalwareVisibility>()
+			//{
+			//	ComponentTemplate = new MalwareVisibility()
+			//	{
+			//		VisibleTo = MalwareVisibility.All,
+			//	}
+			//})
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+			{
+				ComponentTemplate = new MalwareGenome()
+				{
+					Value = SimulationConstants.MalwareGeneRed,
+				}
+			});
+
+		private static readonly Archetype GreenVirus = new Archetype("GreenVirus")
+			.Extends(GameEntities.Malware)
+			//.RemoveComponent<MalwarePropogation>()
+			//.HasComponent(new ComponentBinding<MalwareVisibility>()
+			//{
+			//	ComponentTemplate = new MalwareVisibility()
+			//	{
+			//		VisibleTo = MalwareVisibility.All,
+			//	}
+			//})
+			.HasComponent(new ComponentBinding<MalwareGenome>()
+			{
+				ComponentTemplate = new MalwareGenome()
+				{
+					Value = SimulationConstants.MalwareGeneGreen,
+				}
+			});
+
 		private static SimulationScenario GenerateScenario()
 		{
 			#region configuration
 
 			const int minPlayerCount = 1;
 			const int maxPlayerCount = 4;
+
+			/*
+			 * T - r       # - #
+			 * |   |       |   |
+			 * # - # - A - g - T
+			 *         | 
+			 *         # 
+			 */
 
 			var node00 = new NodeConfig()
 			{
@@ -57,7 +105,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "2 1",
 				X = 2,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				ArchetypeName = nameof(GameEntities.AntivirusWorkstation),
 			};
 
 			var node22 = new NodeConfig()
@@ -123,6 +171,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 
+			configuration.RNGSeed = 456980495;
+
+			configuration.Archetypes.AddRange(new[]
+			{
+				RedVirus,
+				GreenVirus,
+			});
+
 			#endregion
 
 			#region frames
@@ -130,17 +186,29 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			// ReSharper disable once UseObjectOrCollectionInitializer
 			var frames = new List<SimulationFrame>();
 
-			#region 1
+			var random = new Engine.Util.Random(894765213);
 
+			#region 1
+			
+			//T SelectCyclical<T>(T[] options, int i) => options[i % options.Length];
+			//int virusIndex = 0;
+			
 			frames.Add(// frame 1 - welcome
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						ScenarioHelpers.CreateNpcCommand(RedVirus.Name, node10.Id),
+						ScenarioHelpers.CreateNpcCommand(GreenVirus.Name, node31.Id),
+
 						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, node00.Id),
 						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, node41.Id),
-						ScenarioHelpers.GenerateTextAction(true, 
-							"Click continue when you are ready to end!")
+						//ScenarioHelpers.GenerateTextAction(true, 
+						//	"Click continue when you are ready to end!")
+					},
+					OnTickActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new ConditionalAction<Simulation, SimulationConfiguration>(ScenarioHelpers.CreateNpcAtRandomLocationCommand(new [] { RedVirus, GreenVirus }[random.Next(2)].Name, random), ScenarioHelpers.WaitForTicks(300))
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{

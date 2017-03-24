@@ -67,6 +67,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private readonly List<UIEntity> UntrackedEntities = new List<UIEntity>(10000);
 
 
+		private readonly List<int> DestroyedEntities = new List<int>(100);
+
 		#region game objects
 
 		[SerializeField]
@@ -128,9 +130,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_updateSignal.Reset();
 			_updateCompleteSignal.Reset();
 			ThreadWorkerException = null;
-
-
-
+			DestroyedEntities.Clear();
+			
 			_activePlayer = null;
 			foreach (var entity in TrackedEntities)
 			{
@@ -166,6 +167,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ResetSimulation();
 				SimulationRoot = simulationRoot;
 
+				SimulationRoot.ECS.EntityRegistry.EntityDestroyed += EntityRegistryOnEntityDestroyed;
+
 				CalculateNetworkOffset();
 
 				CreateInitialEntities();
@@ -186,6 +189,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Debug.LogError($"Error initializing Director: {ex}");
 				throw;
 			}
+		}
+
+		private void EntityRegistryOnEntityDestroyed(int i)
+		{
+			DestroyedEntities.Add(i);
 		}
 
 		private void CalculateNetworkOffset()
@@ -329,7 +337,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								}
 
 								uint crc = 0;
-								// var state = SimulationRoot.GetEntityState(out crc);
+								var state = SimulationRoot.GetEntityState(out crc);
 								//System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.json", state);
 
 								if (tickMessage.CRC != crc)
@@ -446,18 +454,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 				}
 
-				Debug.Log($"New entities created in tick {_update}: {newEntites}");
+				if (newEntites > 0)
+				{
+					Debug.Log($"New entities created in tick {_update}: {newEntites}");
+				}
 
-				//var entitiesRemoved = TrackedEntities.Keys.Except(entities.Select(k => k.Key)).ToArray();
-				//foreach (var entityToRemove in entitiesRemoved)
-				//{
-				//	UIEntity uiEntity;
-				//	if (TryGetEntity(entityToRemove, out uiEntity))
-				//	{
-				//		Destroy(uiEntity.GameObject);
-				//	}
-				//	TrackedEntities.Remove(entityToRemove);
-				//}
+				foreach (var entityToRemove in DestroyedEntities.ToArray())
+				{
+					if (TryGetEntity(entityToRemove, out var uiEntity))
+					{
+						Destroy(uiEntity.GameObject);
+					}
+					TrackedEntities.Remove(entityToRemove);
+				}
 
 				foreach (var untrackedEntity in UntrackedEntities)
 				{

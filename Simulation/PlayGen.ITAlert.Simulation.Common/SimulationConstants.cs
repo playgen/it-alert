@@ -69,7 +69,7 @@
 		public const int MalwareGeneBlue = 0x4;
 
 		public const int MalwarePropogationInterval = 100;
-		public const int MalwarePropogationProbability = 75;
+		public const int MalwarePropogationRoll = 75;
 
 		#endregion
 
@@ -96,5 +96,6 @@
 
 		#endregion
 
+		public const int MalwarePropogationIntervalVariation = 20;
 	}
 }

@@ -35,6 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
 			.Extends(GameEntities.Malware)
+			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
@@ -45,6 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
 			.Extends(GameEntities.Malware)
+			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()

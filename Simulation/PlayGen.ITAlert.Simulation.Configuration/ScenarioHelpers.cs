@@ -6,6 +6,7 @@ using Engine.Commands;
 using Engine.Entities;
 using Engine.Evaluators;
 using Engine.Lifecycle;
+using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Tutorial;
 using PlayGen.ITAlert.Simulation.Common;
@@ -82,6 +83,22 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					Archetype = archetype,
 					IdentifierType = IdentifierType.Logical,
 					SystemId = systemLogicalId
+				};
+				ecs.HandleCommand(createNpcCommand);
+			}, "Create NPC");
+		}
+
+		public static SimulationAction CreateNpcAtRandomLocationCommand(string archetype, Engine.Util.Random random)
+		{
+			int SelectNodeAtRandom(Simulation simulation, NodeConfig[] nodes) => nodes[random.Next(0, nodes.Length)].Id;
+
+			return new SimulationAction((ecs, config) =>
+			{
+				var createNpcCommand = new CreateNpcCommand()
+				{
+					Archetype = archetype,
+					IdentifierType = IdentifierType.Logical,
+					SystemId = SelectNodeAtRandom(ecs, config.NodeConfiguration.ToArray())
 				};
 				ecs.HandleCommand(createNpcCommand);
 			}, "Create NPC");
