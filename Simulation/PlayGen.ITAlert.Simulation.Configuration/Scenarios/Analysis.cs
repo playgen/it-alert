@@ -35,52 +35,41 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
 			.Extends(GameEntities.Malware)
+			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneRed,
 				}
-			})
-			.HasComponent(new ComponentBinding<MalwareVisibility>()
-			{
-				ComponentTemplate = new MalwareVisibility()
-				{
-					VisibleTo = MalwareVisibility.All,
-				}
 			});
 
 		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
 			.Extends(GameEntities.Malware)
+			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneGreen,
 				}
-			})
-			.HasComponent(new ComponentBinding<MalwareVisibility>()
-			{
-				ComponentTemplate = new MalwareVisibility()
-				{
-					VisibleTo = MalwareVisibility.All,
-				}
 			});
+			//.HasComponent(new ComponentBinding<MalwareVisibility>()
+			//{
+			//	ComponentTemplate = new MalwareVisibility()
+			//	{
+			//		VisibleTo = MalwareVisibility.All,
+			//	}
+			//});
 
 		private static readonly Archetype YellowTutorialVirus = new Archetype("YellowTutorialVirus")
 			.Extends(GameEntities.Malware)
+			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen,
-				}
-			})
-			.HasComponent(new ComponentBinding<MalwareVisibility>()
-			{
-				ComponentTemplate = new MalwareVisibility()
-				{
-					VisibleTo = MalwareVisibility.All,
 				}
 			});
 
@@ -201,7 +190,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
+					Evaluator = EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeLeft))
+						.And(EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeMiddle)))
+						.And(EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeRight))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						ScenarioHelpers.EndGame(EndGameState.Success),
