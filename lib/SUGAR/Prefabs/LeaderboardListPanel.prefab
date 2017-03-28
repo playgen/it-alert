@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 114191201838358980}
   - component: {fileID: 114470760257245636}
   - component: {fileID: 95037125211989930}
-  - component: {fileID: 114951924628727100}
+  - component: {fileID: 114358831699577672}
   m_Layer: 5
   m_Name: User
   m_TagString: Untagged
@@ -60,7 +60,6 @@ GameObject:
   - component: {fileID: 114445455217531018}
   - component: {fileID: 114408964287709494}
   - component: {fileID: 95630398923166296}
-  - component: {fileID: 114581409221742660}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -130,7 +129,7 @@ GameObject:
   - component: {fileID: 114202371950952274}
   - component: {fileID: 114418938003998788}
   - component: {fileID: 95818181301989342}
-  - component: {fileID: 114905597658559782}
+  - component: {fileID: 114759516545771720}
   m_Layer: 5
   m_Name: Close
   m_TagString: Untagged
@@ -168,7 +167,7 @@ GameObject:
   - component: {fileID: 114451861100768214}
   - component: {fileID: 114348504669790414}
   - component: {fileID: 95946126482235714}
-  - component: {fileID: 114507823727022036}
+  - component: {fileID: 114438736326045956}
   m_Layer: 5
   m_Name: Next
   m_TagString: Untagged
@@ -188,7 +187,7 @@ GameObject:
   - component: {fileID: 114812725734639250}
   - component: {fileID: 114864959306632630}
   - component: {fileID: 95189974579854028}
-  - component: {fileID: 114192206993429198}
+  - component: {fileID: 114258262267606104}
   m_Layer: 5
   m_Name: Combined
   m_TagString: Untagged
@@ -208,7 +207,7 @@ GameObject:
   - component: {fileID: 114771617456463420}
   - component: {fileID: 114332824302302966}
   - component: {fileID: 95895315582378792}
-  - component: {fileID: 114957565893215486}
+  - component: {fileID: 114972387230038952}
   m_Layer: 5
   m_Name: Previous
   m_TagString: Untagged
@@ -278,7 +277,7 @@ GameObject:
   - component: {fileID: 114524704642466560}
   - component: {fileID: 114549665136505202}
   - component: {fileID: 95811825195331054}
-  - component: {fileID: 114660266593282230}
+  - component: {fileID: 114370004201186232}
   m_Layer: 5
   m_Name: Group
   m_TagString: Untagged
@@ -298,7 +297,6 @@ GameObject:
   - component: {fileID: 114883663411218150}
   - component: {fileID: 114430117848730102}
   - component: {fileID: 95814962123788680}
-  - component: {fileID: 114270338990373098}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -318,7 +316,6 @@ GameObject:
   - component: {fileID: 114261905885362164}
   - component: {fileID: 114089002302304076}
   - component: {fileID: 95049879854199374}
-  - component: {fileID: 114353003709444192}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -355,7 +352,6 @@ GameObject:
   - component: {fileID: 114767704715946748}
   - component: {fileID: 114010757232123318}
   - component: {fileID: 95157666848753484}
-  - component: {fileID: 114301850631885990}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -375,7 +371,6 @@ GameObject:
   - component: {fileID: 114144572691659120}
   - component: {fileID: 114371826022126726}
   - component: {fileID: 95749064555812374}
-  - component: {fileID: 114031813737606100}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -483,7 +478,6 @@ GameObject:
   - component: {fileID: 114872300610045072}
   - component: {fileID: 114987651401925434}
   - component: {fileID: 95453151904751582}
-  - component: {fileID: 114226606071117152}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -622,7 +616,6 @@ GameObject:
   - component: {fileID: 114941600552058184}
   - component: {fileID: 114708775658037362}
   - component: {fileID: 95410550157105152}
-  - component: {fileID: 114250609693789888}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -693,7 +686,6 @@ GameObject:
   - component: {fileID: 114400907531254072}
   - component: {fileID: 114439147595922784}
   - component: {fileID: 95977716697872790}
-  - component: {fileID: 114792917958802220}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -713,7 +705,6 @@ GameObject:
   - component: {fileID: 114816213037940608}
   - component: {fileID: 114827515945131358}
   - component: {fileID: 95947641040133224}
-  - component: {fileID: 114521802697771390}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -750,7 +741,6 @@ GameObject:
   - component: {fileID: 114250657128292898}
   - component: {fileID: 114996912603134500}
   - component: {fileID: 95494818375714712}
-  - component: {fileID: 114164603914805946}
   m_Layer: 5
   m_Name: Leaderboard
   m_TagString: Untagged
@@ -1198,9 +1188,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011677326522}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1380705284, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
+  m_Script: {fileID: -1499588403, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _errorText: {fileID: 114000013848652632}
+  _closeButton: {fileID: 114418938003998788}
+  _signinButton: {fileID: 114131302460421024}
+  _leaderboardType: {fileID: 114000012244034512}
+  _userButton: {fileID: 114470760257245636}
+  _groupButton: {fileID: 114549665136505202}
+  _combinedButton: {fileID: 114864959306632630}
   _leaderboardButtons:
   - {fileID: 114827515945131358}
   - {fileID: 114439147595922784}
@@ -1212,16 +1209,9 @@ MonoBehaviour:
   - {fileID: 114430117848730102}
   - {fileID: 114408964287709494}
   - {fileID: 114996912603134500}
-  _leaderboardType: {fileID: 114000012244034512}
   _previousButton: {fileID: 114332824302302966}
   _nextButton: {fileID: 114348504669790414}
   _pageNumberText: {fileID: 114000010864099014}
-  _userButton: {fileID: 114470760257245636}
-  _groupButton: {fileID: 114549665136505202}
-  _combinedButton: {fileID: 114864959306632630}
-  _errorText: {fileID: 114000013848652632}
-  _closeButton: {fileID: 114418938003998788}
-  _signinButton: {fileID: 114131302460421024}
 --- !u!114 &114000012244034512
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1362,19 +1352,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Combined
---- !u!114 &114031813737606100
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1164046072750438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114032118838259282
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1610,19 +1587,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114164603914805946
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1880215617510280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114191201838358980
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1650,19 +1614,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114192206993429198
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012047557130}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 5
 --- !u!114 &114202371950952274
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1690,19 +1641,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114226606071117152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1375199635992582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114235672139951756
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1736,19 +1674,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Leaderboards
---- !u!114 &114250609693789888
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1686961211856176}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114250657128292898
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1776,6 +1701,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114258262267606104
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000012047557130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 2
+  m_AspectRatio: 5
 --- !u!114 &114261905885362164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1803,32 +1741,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114270338990373098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1031078176697614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
---- !u!114 &114301850631885990
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1141056572303880}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114332824302302966
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1944,19 +1856,32 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Close
---- !u!114 &114353003709444192
+--- !u!114 &114358831699577672
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1076539013703586}
+  m_GameObject: {fileID: 1000010333713716}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 2
-  m_AspectRatio: 8
+  m_AspectRatio: 5
+--- !u!114 &114370004201186232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000014000395398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 2
+  m_AspectRatio: 5
 --- !u!114 &114371826022126726
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2181,6 +2106,19 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &114438736326045956
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011806954922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 2
+  m_AspectRatio: 5
 --- !u!114 &114439147595922784
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2350,32 +2288,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Leaderboard_Name
---- !u!114 &114507823727022036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011806954922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 5
---- !u!114 &114521802697771390
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818734153505124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114524704642466560
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2457,19 +2369,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 2
   m_AspectRatio: 5
---- !u!114 &114581409221742660
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010361542150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114629400167400762
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2536,19 +2435,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Leaderboard_Name
---- !u!114 &114660266593282230
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000014000395398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 5
 --- !u!114 &114687344805243138
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2722,6 +2608,19 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 0.96
   m_Text: Leaderboard_Name
+--- !u!114 &114759516545771720
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011206324284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 2
+  m_AspectRatio: 5
 --- !u!114 &114767704715946748
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2803,19 +2702,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114792917958802220
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1799252345202650}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 8
 --- !u!114 &114812725734639250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3039,19 +2925,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114905597658559782
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011206324284}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 5
 --- !u!114 &114923808212564808
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3112,20 +2985,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114951924628727100
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010333713716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1254083943, guid: f70555f144d8491a825f0804e09c671c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_AspectMode: 2
-  m_AspectRatio: 5
---- !u!114 &114957565893215486
+--- !u!114 &114972387230038952
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -3486,8 +3346,8 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.4, y: 0.02}
-  m_AnchorMax: {x: 0.6, y: 0.11}
+  m_AnchorMin: {x: 0.35, y: 0.02}
+  m_AnchorMax: {x: 0.65, y: 0.11}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3523,11 +3383,11 @@ RectTransform:
   m_Father: {fileID: 224000013459657078}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.725, y: 0}
-  m_AnchorMax: {x: 0.925, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.675, y: 0}
+  m_AnchorMax: {x: 0.975, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &224000011512665614
 RectTransform:
   m_ObjectHideFlags: 1
@@ -3542,8 +3402,8 @@ RectTransform:
   m_Father: {fileID: 224000014194300532}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.4, y: 0}
-  m_AnchorMax: {x: 0.6, y: 1}
+  m_AnchorMin: {x: 0.35, y: 0}
+  m_AnchorMax: {x: 0.65, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3579,11 +3439,11 @@ RectTransform:
   m_Father: {fileID: 224000014194300532}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.075, y: 0}
-  m_AnchorMax: {x: 0.275, y: 1}
+  m_AnchorMin: {x: 0.025, y: 0}
+  m_AnchorMax: {x: 0.325, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224000012499811784
 RectTransform:
   m_ObjectHideFlags: 1
@@ -3688,11 +3548,11 @@ RectTransform:
   m_Father: {fileID: 224000013459657078}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.075, y: 0}
-  m_AnchorMax: {x: 0.275, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.025, y: 0}
+  m_AnchorMax: {x: 0.325, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!224 &224000013459657078
 RectTransform:
   m_ObjectHideFlags: 1
@@ -3728,7 +3588,7 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.02, y: 0.34}
+  m_AnchorMin: {x: 0.025, y: 0.34}
   m_AnchorMax: {x: 0.49, y: 0.43}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3747,11 +3607,11 @@ RectTransform:
   m_Father: {fileID: 224000014194300532}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.725, y: 0}
-  m_AnchorMax: {x: 0.925, y: 1}
+  m_AnchorMin: {x: 0.675, y: 0}
+  m_AnchorMax: {x: 0.975, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!224 &224000014194300532
 RectTransform:
   m_ObjectHideFlags: 1
@@ -3787,7 +3647,7 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.02, y: 0.54}
+  m_AnchorMin: {x: 0.025, y: 0.54}
   m_AnchorMax: {x: 0.49, y: 0.63}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3807,7 +3667,7 @@ RectTransform:
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51, y: 0.44}
-  m_AnchorMax: {x: 0.98, y: 0.53}
+  m_AnchorMax: {x: 0.975, y: 0.53}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3861,7 +3721,7 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.02, y: 0.74}
+  m_AnchorMin: {x: 0.025, y: 0.74}
   m_AnchorMax: {x: 0.49, y: 0.83}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3881,7 +3741,7 @@ RectTransform:
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51, y: 0.54}
-  m_AnchorMax: {x: 0.98, y: 0.63}
+  m_AnchorMax: {x: 0.975, y: 0.63}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3935,7 +3795,7 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.02, y: 0.64}
+  m_AnchorMin: {x: 0.025, y: 0.64}
   m_AnchorMax: {x: 0.49, y: 0.73}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -3990,7 +3850,7 @@ RectTransform:
   m_Father: {fileID: 224000012796968978}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.02, y: 0.44}
+  m_AnchorMin: {x: 0.025, y: 0.44}
   m_AnchorMax: {x: 0.49, y: 0.53}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
@@ -4082,7 +3942,7 @@ RectTransform:
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51, y: 0.34}
-  m_AnchorMax: {x: 0.98, y: 0.43}
+  m_AnchorMax: {x: 0.975, y: 0.43}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4155,7 +4015,7 @@ RectTransform:
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51, y: 0.74}
-  m_AnchorMax: {x: 0.98, y: 0.83}
+  m_AnchorMax: {x: 0.975, y: 0.83}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4211,7 +4071,7 @@ RectTransform:
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.51, y: 0.64}
-  m_AnchorMax: {x: 0.98, y: 0.73}
+  m_AnchorMax: {x: 0.975, y: 0.73}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}

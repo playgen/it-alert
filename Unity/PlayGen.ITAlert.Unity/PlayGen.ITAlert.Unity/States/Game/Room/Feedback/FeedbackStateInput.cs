@@ -8,6 +8,7 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
@@ -112,7 +113,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			PopulateFeedback(_photonClient.CurrentRoom.Players, _photonClient.CurrentRoom.Player);
 			_feedbackPanel.transform.parent.gameObject.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
 		}
 
 		protected override void OnExit()

@@ -7,6 +7,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
@@ -20,6 +21,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		private GameObject _scenarioItemPrefab;
 		private ButtonList _buttons;
 		private Button _backButton;
+
+        private bool _bestFitTick;
 
 		public event Action BackClickedEvent;
 
@@ -54,7 +57,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			_scenarioController.ScenarioListSuccessEvent += OnScenarioSuccess;
 			_scenarioController.GetScenarioList();
 			_scenarioPanel.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
+            _bestFitTick = true;
 		}
 
 		protected override void OnExit()
@@ -67,6 +71,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		protected override void OnTick(float deltaTime)
 		{
+            if (_bestFitTick)
+            {
+                _buttons.Buttons.BestFit();
+                _bestFitTick = false;
+            }
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
@@ -80,7 +89,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		private void SelectScenario(ScenarioInfo scenario)
 		{
 			CommandQueue.AddCommand(new SelectScenarioCommand(scenario));
-			LoadingUtility.ShowSpinner();
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnScenarioSuccess(ScenarioInfo[] scenarios)
