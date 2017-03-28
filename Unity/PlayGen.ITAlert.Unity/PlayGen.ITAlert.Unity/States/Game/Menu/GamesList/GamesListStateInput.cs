@@ -8,6 +8,7 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 {
@@ -23,7 +24,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private Button _backButton;
 		private Button _refreshButton;
 
-		public event Action JoinGameSuccessEvent;
+        private bool _bestFitTick;
+
+        public event Action JoinGameSuccessEvent;
 		public event Action BackClickedEvent;
 
 		public GamesListStateInput(Client photonClient, GamesListController gameListController)
@@ -49,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private void OnRefreshClick()
 		{
 			CommandQueue.AddCommand(new RefreshGamesListCommand());
-			LoadingUtility.ShowSpinner();
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnBackClick()
@@ -66,10 +69,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			_gameListController.GamesListSuccessEvent += OnGamesListSuccess;
 
 			_joinGamePanel.SetActive(true);
-			_buttons.BestFit();
-			OnRefreshClick();
-			LoadingUtility.ShowSpinner();
-		}
+			_buttons.Buttons.BestFit();
+            _bestFitTick = true;
+            OnRefreshClick();
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
+        }
 
 		protected override void OnExit()
 		{
@@ -83,7 +87,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            if (_bestFitTick)
+            {
+                _buttons.Buttons.BestFit();
+                _bestFitTick = false;
+            }
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
 			}
@@ -96,8 +105,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private void JoinGame(string name)
 		{
 			CommandQueue.AddCommand(new JoinGameCommand(name));
-			LoadingUtility.ShowSpinner();
-		}
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
+        }
 
 		private void OnJoinGameSuccess(ClientRoom clientRoom)
 		{
@@ -106,8 +115,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		private void OnGamesListSuccess(RoomInfo[] rooms)
 		{
-			LoadingUtility.HideSpinner();
-			foreach (Transform child in _gameListObject.transform)
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
+            foreach (Transform child in _gameListObject.transform)
 			{
 				GameObject.Destroy(child.gameObject);
 			}

@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 {
@@ -53,7 +54,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_quitButton.onClick.AddListener(OnQuitClick);
 
 			_menuPanel.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
 		}
 
 		protected override void OnExit()

@@ -73,7 +73,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			// CurrentRoom and messenger would have been destroyed by this point so no need to unsubscribe
 			_stateController.Terminate();
 
-			LoadingUtility.LoadingSpinner.StopSpinner();
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
 		}
 
 		protected override void OnTick(float deltaTime)

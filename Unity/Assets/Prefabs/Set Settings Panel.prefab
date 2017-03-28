@@ -58,18 +58,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1421199920507232}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -431881113, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Script: {fileID: 687688893, guid: 633f0a04a53ca124cbd076de4025a864, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _label: {fileID: 114113771532809976, guid: eed50b84274843e46a8c69b2e738c21f, type: 2}
   _horizontalLayout: {fileID: 114989573986987162, guid: 43520258070cee14f8c8a911b7bfe9f9,
     type: 2}
   _verticalLayout: {fileID: 114352546584869768, guid: ba49a92a55b442e4fbb34f0c5a6ef578,
     type: 2}
-  _dropdown: {fileID: 1152337951854376, guid: e6a2b29d8284c2d4d94bc6bf9c121ce4, type: 2}
-  _toggle: {fileID: 1720553176682264, guid: 11f61f881449732429d93afebe34c4f2, type: 2}
-  _slider: {fileID: 1694939868248054, guid: a398bea92236e144996ab3d79d5ee10b, type: 2}
-  _button: {fileID: 110478, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
+  _label: {fileID: 114113771532809976, guid: eed50b84274843e46a8c69b2e738c21f, type: 2}
+  _dropdown: {fileID: 114132202809136794, guid: e6a2b29d8284c2d4d94bc6bf9c121ce4,
+    type: 2}
+  _toggle: {fileID: 114290137210761754, guid: 11f61f881449732429d93afebe34c4f2, type: 2}
+  _slider: {fileID: 114029084379025326, guid: a398bea92236e144996ab3d79d5ee10b, type: 2}
+  _button: {fileID: 114987691712083668, guid: 0da3161ace13796439b93cf9e89ca0e0, type: 2}
+  _labelAnchor: 0
 --- !u!224 &224991992386991090
 RectTransform:
   m_ObjectHideFlags: 1
