@@ -74,11 +74,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (ItemContainer?.Item != null
 						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
+						var itemBehaviour = (ItemBehaviour) ItemEntity.EntityBehaviour;
 						if (ItemEntity.GameObject.activeSelf == false)
 						{
-							var itemBehaviour = (ItemBehaviour) ItemEntity.EntityBehaviour;
-							itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
 							ItemEntity.GameObject.SetActive(true);
+						}
+						if (itemBehaviour.Entity?.Id != item.EntityBehaviour.Entity.Id)
+						{
+							itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
 						}
 					}
 					else 

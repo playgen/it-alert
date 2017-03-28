@@ -102,6 +102,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			UpdateColour();
 			UpdateActivationTimer();
+			UpdateInventory();
+		}
+
+		private void UpdateInventory()
+		{
+			if ((_owner?.Value.HasValue ?? false)
+				&& _owner.Value.Value != (Director.Player?.Id ?? -1)
+				&& _currentLocation.Value.HasValue == false)
+			{
+				gameObject.SetActive(false);
+			}
+			else
+			{
+				gameObject.SetActive(true);
+			}
 		}
 
 		private void UpdateForegroundColour()
