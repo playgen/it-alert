@@ -85,14 +85,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private float _itemZ;
 
-		#endregion
+        private bool _beingClicked { get; set; }
+
+        #endregion
 
 
-		#region movement constants
+        #region movement constants
 
-		//private static float _connectionScaleCoefficient;
-		// TODO: read from sim constants
-		private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
+        //private static float _connectionScaleCoefficient;
+        // TODO: read from sim constants
+        private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
 		private const int SquareSideCount = 4;
 		private static readonly float PointsPerSide = (float) PathPointsInSubsystem / SquareSideCount;
 
@@ -357,10 +359,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
-		public void OnClick()
+		public void OnClickDown()
 		{
-			_blink.enabled = true;
+            _beingClicked = true;
 		}
 
-	}
+        public bool OnClickUp()
+        {
+            _blink.enabled = _beingClicked;
+            _beingClicked = false;
+            return _blink.enabled;
+        }
+
+        public void ClickReset()
+        {
+            _beingClicked = false;
+        }
+    }
 }
