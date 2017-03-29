@@ -180,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _interface: {fileID: 114000013210295108, guid: e29d7a7dd4a690245a2e6d8cf00df004,
     type: 2}
-  _positionCount: 0
+  _positionCount: 10
   _currentFilter: 0
 --- !u!114 &114000013496830746
 MonoBehaviour:
@@ -234,7 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MinFontSize: 2
-  MaxFontSize: 40
+  MaxFontSize: 48
 --- !u!114 &114520842463450850
 MonoBehaviour:
   m_ObjectHideFlags: 1

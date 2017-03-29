@@ -1531,25 +1531,20 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011669735270, guid: 991ef3e1f70851f458b55f5f7eae55a2,
-        type: 2}
-      propertyPath: _uiSpinner
-      value: 
-      objectReference: {fileID: 2012367504}
     - target: {fileID: 223000012450321626, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1408231525}
-    - target: {fileID: 114428720724121270, guid: 991ef3e1f70851f458b55f5f7eae55a2,
+    - target: {fileID: 114000011669735270, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
-      propertyPath: MaxFontSize
-      value: 48
-      objectReference: {fileID: 0}
+      propertyPath: _uiSpinner
+      value: 
+      objectReference: {fileID: 2012367504}
     - target: {fileID: 114000013496830746, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
       propertyPath: _allowAutoLogin
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 991ef3e1f70851f458b55f5f7eae55a2, type: 2}
