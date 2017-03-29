@@ -58,9 +58,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					ItemEntity.GameObject.SetActive(false);
 					//ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
 					ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
-
-					//ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
-				}
+                    ItemEntity.GameObject.GetComponent<ItemBehaviour>().StartPosition(ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
+                    //ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
+                }
 
 				_proxyItem = proxyItem;
 			}
@@ -146,17 +146,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, inventoryItemContainer, false);
 			_inventoryItem.ContainerBehaviour.ClickEnable = true;
-			_inventoryItem.ContainerBehaviour.CanCapture = true;
 			_inventoryItem.ContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
+            _inventoryItem.ContainerBehaviour.Drag += (ic, it) => InventoryItemContainerBehaviourOnDrag(it);
 
-			for (var i = 0; i < ItemCount; i++)
+            for (var i = 0; i < ItemCount; i++)
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
 				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				var containerIndex = i;
-				_systemItems[i].ContainerBehaviour.Click += ic => SystemContaineBehaviourOnClick(ic, containerIndex);
-			}
+				_systemItems[i].ContainerBehaviour.Click += ic => SystemContainerBehaviourOnClick(ic, containerIndex);
+                _systemItems[i].ContainerBehaviour.Drag += (ic, it) => SystemContainerBehaviourOnDrag(it, ic, containerIndex);
+            }
 		}
 
 		public void Update()
@@ -204,43 +205,37 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void SystemContaineBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
+		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
 		{
 			ItemBehaviour item;
-			switch (_inventoryItem.ContainerBehaviour.State)
-			{
-				case ContainerState.Capturing:
-					if (itemContainerBehaviour.TryGetItem(out item))
-					{
-						PlayerCommands.PickupItem(item.Id);
-					}
-					break;
-				case ContainerState.Releasing:
-					if (itemContainerBehaviour.TryGetItem(out item) == false
-						&& _inventoryItem.ContainerBehaviour.TryGetItem(out item))
-					{
-						PlayerCommands.DropItem(item.Id, containerIndex);
-					}
-					break;
-				default:
-					switch (itemContainerBehaviour.State)
-					{
-						case ContainerState.HasItem:
-							if (itemContainerBehaviour.TryGetItem(out item))
-							{
-								PlayerCommands.ActivateItem(item.Id);
-							}
-							break;
-					}
-					break;
-			}
+            if (itemContainerBehaviour.State == ContainerState.HasItem)
+            {
+                if (itemContainerBehaviour.TryGetItem(out item))
+                {
+                    PlayerCommands.ActivateItem(item.Id);
+                }
+            }
 		}
 
-		private void InventoryItemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+        private void SystemContainerBehaviourOnDrag(ItemBehaviour item, ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
+        {
+            ItemBehaviour containerItem;
+            if (itemContainerBehaviour.TryGetItem(out containerItem) == false
+                    && _inventoryItem.ContainerBehaviour.TryGetItem(out containerItem)
+                    && containerItem == item)
+            {
+                PlayerCommands.DropItem(item.Id, containerIndex);
+            }
+        }
+
+        private void InventoryItemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
 		{
 		}
 
+        private void InventoryItemContainerBehaviourOnDrag(ItemBehaviour item)
+        {
+            PlayerCommands.PickupItem(item.Id);
+        }
 
-
-	}
+    }
 }

@@ -9,8 +9,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	{
 		Disabled,
 		Empty,
-		Capturing,
 		Releasing,
 		HasItem,
+        Clicking,
+        Dragging
 	}
 }
