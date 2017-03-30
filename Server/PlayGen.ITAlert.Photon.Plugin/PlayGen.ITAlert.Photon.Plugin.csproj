@@ -107,6 +107,7 @@
     <Compile Include="RoomStates\Transitions\EventTransition.cs" />
     <Compile Include="RoomStates\Transitions\CombinedPlayersStateTransition.cs" />
     <Compile Include="RoomStates\Transitions\LifecycleStoppedTransition.cs" />
+    <Compile Include="SimulationExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Analytics\PlayGen.Photon.Analytics.csproj">

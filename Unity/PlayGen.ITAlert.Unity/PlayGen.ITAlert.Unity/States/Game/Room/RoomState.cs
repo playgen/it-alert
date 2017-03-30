@@ -42,6 +42,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnEnter()
 		{
+			LogProxy.Info("RoomState: OnEnter");
+
+
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.Error, ProcessErrorMessage);
 
 			_voiceController = new VoiceController(_photonClient);
@@ -66,7 +69,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		protected override void OnExit()
 		{
-			_director.ResetSimulation();
+			LogProxy.Info("RoomState: OnExit");
+
+
+			_director.StopWorker();
+			_director.ResetDirector();
 
 			_photonClient.CurrentRoom?.Leave();
 

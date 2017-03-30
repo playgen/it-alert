@@ -74,7 +74,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			}
 			catch (Exception exception)
 			{
-				Debug.LogError(exception);
+				LogProxy.Exception(exception);
 				OnException(exception);
 			}
 		}

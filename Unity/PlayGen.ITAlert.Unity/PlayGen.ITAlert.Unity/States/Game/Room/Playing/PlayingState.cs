@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -8,6 +9,8 @@ using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
+
+using Logger = PlayGen.Photon.Unity.Logger;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 {
@@ -32,19 +35,47 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		{
 			Logger.LogDebug("Entered " + StateName);
 
-			IsComplete = false;
-			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
-
-
+			LogProxy.Info("PlayingState: OnEnter");
 			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage()
 			{
-				PlayerPhotonId	= _photonClient.CurrentRoom.Player.PhotonId,
+				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId,
 			});
+
 		}
+
+		#region Overrides of State
+
+		protected override void OnInitialize()
+		{
+			LogProxy.Info("PlayingState: OnInitialize");
+			
+			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+
+			IsComplete = false;
+
+			base.OnInitialize();
+		}
+
+		#region Overrides of State
+
+		protected override void OnTerminate()
+		{
+			LogProxy.Info("PlayingState: OnTerminate");
+
+
+			_photonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+
+			base.OnTerminate();
+		}
+
+		#endregion
+
+		#endregion
 
 		protected override void OnExit()
 		{
-			_photonClient.CurrentRoom?.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
+			LogProxy.Info("PlayingState: OnExit");
+
 		}
 
 		private void ProcessSimulationStateMessage(Message message)
@@ -63,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 				return;
 			}
 
-			throw new Exception("Unhandled Simulation State Message: " + message);
+			//throw new Exception("Unhandled Simulation State Message: " + message);
 		}
 	}
 }

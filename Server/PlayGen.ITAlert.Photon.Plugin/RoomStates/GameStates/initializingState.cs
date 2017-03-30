@@ -58,6 +58,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 						PlayerConfiguration = _simulationLifecycleManager.ECSRoot.GetPlayerConfiguration(),
 						SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
 						ScenarioName = RoomSettings.GameScenario,
+						InstanceId = _simulationLifecycleManager.ECSRoot.InstanceId,
 					});
 				}
 				return;

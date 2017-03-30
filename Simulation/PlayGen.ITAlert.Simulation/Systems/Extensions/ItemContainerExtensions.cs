@@ -16,13 +16,23 @@ namespace PlayGen.ITAlert.Simulation.Systems.Extensions
 			return itemContainer != null;
 		}
 
-		public static bool TryGetEmptyContainer(this ItemStorage itemStorage, out ItemContainer itemContainer)
+		public static bool TryGetEmptyContainer(this ItemStorage itemStorage, out ItemContainer itemContainer, out int containerIndex)
 		{
-			itemContainer = itemStorage.Items.FirstOrDefault(ic => ic != null 
-				&& ic.GetType() == typeof(ItemContainer) 
-				&&  ic.Item.HasValue == false 
-				&& ic.Enabled);
-			return itemContainer != null;
+			for (var i = 0; i < itemStorage.Items.Length; i++)
+			{
+				containerIndex = i;
+				var ic = itemStorage.Items[i];
+				if (ic.GetType() == typeof(ItemContainer)
+					&& ic.Item.HasValue == false
+					&& ic.Enabled)
+				{
+					itemContainer = ic;
+					return true;
+				}
+			}
+			itemContainer = null;
+			containerIndex = -1;
+			return false;
 		}
 
 	}

@@ -29,22 +29,31 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				var nodeBehaviour = CurrentLocationEntity.EntityBehaviour as NodeBehaviour;
 				if (nodeBehaviour == null)
 				{
-					Debug.LogError($"EntityBehaviour for entity {Entity.Id} is not NodeBehaviour");
+					LogProxy.Error($"EntityBehaviour for entity {Entity.Id} is not NodeBehaviour");
 				}
 				if (transform.parent != CurrentLocationEntity.GameObject)
 				{
-					var scale = transform;
 					transform.SetParent(CurrentLocationEntity.GameObject.transform, true);
 				}
 				var visitorVectors = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
 				_rectTransform.anchoredPosition = new Vector3(visitorVectors.Position.x, visitorVectors.Position.y, transform.position.z);
-				_rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
+				//_rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
 			}
 			else
 			{
-				Debug.LogError($"Failed to load actor component(s) for UpdatePosition on entity {Entity.Id}");
+				LogProxy.Error($"Failed to load actor component(s) for UpdatePosition on entity {Entity.Id}");
 			}
 		}
+
+		#region Overrides of EntityBehaviour
+
+		public override void ResetEntity()
+		{
+			CurrentLocationEntity = null;
+			base.ResetEntity();
+		}
+
+		#endregion
 
 		protected override void OnInitialize()
 		{

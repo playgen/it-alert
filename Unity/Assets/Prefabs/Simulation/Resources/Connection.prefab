@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 114778590773528658}
   - component: {fileID: 222265957609184864}
   - component: {fileID: 114532947901074548}
+  - component: {fileID: 114218893117456716}
   m_Layer: 0
   m_Name: Connection
   m_TagString: Connection
@@ -29,6 +30,20 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 154514}
   m_IsPrefabParent: 1
+--- !u!114 &114218893117456716
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 154514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1241431896, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefaultAnimationRate: {x: -0.5, y: 0}
+  AnimationRate: {x: 0, y: 0}
+  _image: {fileID: 114532947901074548}
 --- !u!114 &114532947901074548
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -40,7 +55,7 @@ MonoBehaviour:
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 86033ee25d8a70849b8465f0c7ce9d6d, type: 2}
+  m_Material: {fileID: 2100000, guid: 9ff222636390c8e4f87647fff7e72a5d, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
@@ -114,6 +129,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 3
     m_NumAlphaKeys: 2
+  _animateConnectionUv: {fileID: 114218893117456716}
+  _angle: 0
 --- !u!222 &222265957609184864
 CanvasRenderer:
   m_ObjectHideFlags: 1

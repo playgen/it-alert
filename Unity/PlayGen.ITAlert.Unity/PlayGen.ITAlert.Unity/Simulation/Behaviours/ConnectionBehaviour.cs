@@ -32,6 +32,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Gradient _movementCostGradient;
 
+		[SerializeField]
+		private AnimateConnectionUV _animateConnectionUv;
+
 		#region Components
 
 		// required
@@ -44,6 +47,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
+		[SerializeField]
 		private float _angle;
 
 		#region Initialization
@@ -100,17 +104,41 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//get the angle between the locations
 			var v2 = tailPos - headPos;
 			_angle = Mathf.Atan2(v2.y, v2.x) * Mathf.Rad2Deg;
+
 			transform.eulerAngles = new Vector3(0, 0, _angle);
 
 			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
 			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
-			//Debug.Log($"Connection {gameObject.name}, angle: {_angle}, head: {_headPos.x},{_headPos.y}, tail {_tailPos.x},{_tailPos.y}");
+			//LogProxy.Info($"Connection {gameObject.name}, angle: {_angle}, head: {_headPos.x},{_headPos.y}, tail {_tailPos.x},{_tailPos.y}");
 			//scale and position the connection accordingly
 			var relativeWeight = UIConstants.ConnectionWidth; //(SimulationConstants.ConnectionMaxWeight + 1 - EntityState.RelativeWeight) * UIConstants.ConnectionWidth;
-			
-			rectTransform.anchoredPosition = new Vector3(midpoint.x, midpoint.y, connectionZ);
+
+			const float offset = 5f;
+
+			Vector2 edgeDirectionOffset;
+
+			switch ((int)_angle)
+			{
+				case 0:
+					edgeDirectionOffset = new Vector2(0, offset);
+					break;
+				case 90:
+					edgeDirectionOffset = new Vector2(offset, 0);
+					break;
+				case 180:
+					edgeDirectionOffset = new Vector2(0, -1 * offset);
+					break;
+				case -90:
+					edgeDirectionOffset = new Vector2(-1 * offset, 0);
+					break;
+				default:
+					edgeDirectionOffset = new Vector2(0, 0);
+					break;
+			}
+
+			rectTransform.anchoredPosition = new Vector3(midpoint.x + edgeDirectionOffset.x, midpoint.y + edgeDirectionOffset.y, connectionZ);
 			rectTransform.sizeDelta = new Vector2(length - connectionSquareSize, 8 * relativeWeight);
 
 		}
@@ -147,8 +175,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
+			UpdateConnectionCost();
+		}
+
+		private void UpdateConnectionCost()
+		{
 			var movementCostScaled = 1 - (1 / (float)_movementCost.Value);
-			_connectionImage.color = _movementCostGradient.Evaluate(movementCostScaled);
+			//_connectionImage.color = _movementCostGradient.Evaluate(movementCostScaled);
+			if (_animateConnectionUv != null)
+			{
+				_animateConnectionUv.AnimationRate = movementCostScaled * _animateConnectionUv.DefaultAnimationRate;
+			}
 		}
 
 		#endregion

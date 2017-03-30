@@ -153,7 +153,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				throw new EntityInitializationException($"Could not load all required components for Entity Id {Entity.Id}");
 			}
+		}
 
+		public override void ResetEntity()
+		{
+			_itemContainers.Clear();
 		}
 
 		private void CreateItemContainers()
@@ -163,6 +167,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
 				itemContainerObject.transform.SetParent(this.transform, false);
 				itemContainerObject.name = $"ItemContainer_{i}";
+
 				_itemContainers.Add(itemContainerObject);
 
 				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();

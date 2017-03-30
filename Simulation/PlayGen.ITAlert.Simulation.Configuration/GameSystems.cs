@@ -12,6 +12,7 @@ using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Malware;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Systems.Planning;
+using PlayGen.ITAlert.Simulation.Systems.Players;
 using PlayGen.ITAlert.Simulation.Systems.Resources;
 using PlayGen.ITAlert.Simulation.Systems.Tutorial;
 
@@ -27,7 +28,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			#region initialization
 
 			new SystemConfiguration<GraphSystem>(),
-			new SystemConfiguration<PlayerSystem>(),
+			new SystemConfiguration<PlayerSystem>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<IPlayerSystemBehaviour>()
+					{
+						Implementations = new SystemExtensionImplementation[]
+						{
+							new SystemExtensionConfiguration<IPlayerSystemBehaviour>.SystemExtensionImplementation<DropInventoryOnDisconnect>(), 
+						}
+					}
+				}
+			},
 
 			#endregion
 

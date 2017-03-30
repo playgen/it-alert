@@ -118,26 +118,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private ItemPanelContainer _inventoryItem;
 
-		private readonly ItemPanelContainer[] _systemItems;
+		private ItemPanelContainer[] _systemItems;
 		
-		private PlayerBehaviour _player;
-
 		private int _playerLocationLast = -1;
 
 		[SerializeField]
 		private Director _director;
 
-		public ItemPanel()
-		{
-			_systemItems = new ItemPanelContainer[ItemCount];
-		}
-
 		public void Initialize()
 		{
+			_systemItems = new ItemPanelContainer[ItemCount];
+
 			// get player entity item storage component
-			_player = _director.Player;
 			ItemStorage itemStorage;
-			if (_player.Entity.TryGetComponent(out itemStorage) == false)
+			if (_director.Player.Entity.TryGetComponent(out itemStorage) == false)
 			{
 				throw new SimulationIntegrationException("No item storage found on player");
 			}
@@ -159,16 +153,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		public void Update()
+		public void ExplicitUpdate()
 		{
-			if (_player == null)
+			LogProxy.Info($"ItemPanel ExplicitUpdate: Director Id {_director.InstanceId} player is null: {_director.Player}");
+
+			if (_director.Player == null)
 			{
-				throw new SimulationIntegrationException($"Player is unassigned");
+				throw new SimulationIntegrationException($"Director {_director.InstanceId} Player is unassigned");
 			}
 
 			// TODO: the following shouldnt be necessary when the container reference isnt changed
 			ItemStorage itemStorage;
-			if (_player.Entity.TryGetComponent(out itemStorage))
+			if (_director.Player.Entity.TryGetComponent(out itemStorage))
 			{
 				var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 				_inventoryItem.ItemContainer = inventoryItemContainer;
@@ -176,7 +172,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_inventoryItem.Update();
 			}
 
-			var currentLocation = _player.CurrentLocationEntity;
+			var currentLocation = _director.Player.CurrentLocationEntity;
 			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
 			{

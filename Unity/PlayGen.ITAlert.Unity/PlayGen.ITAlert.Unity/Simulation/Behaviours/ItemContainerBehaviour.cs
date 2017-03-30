@@ -146,7 +146,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnClick()
 		{
-			Debug.Log("ItemContainer OnClick");
+			LogProxy.Info("ItemContainer OnClick");
 
 			if (ClickEnable)
 			{

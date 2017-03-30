@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 						}
 						else
 						{
-							Debug.Log("Sugar Login Failed");
+							LogProxy.Info("Sugar Login Failed");
 						}
 					}
 				});

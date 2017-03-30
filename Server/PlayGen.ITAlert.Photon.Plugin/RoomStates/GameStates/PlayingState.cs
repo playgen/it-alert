@@ -71,24 +71,27 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			var playingMessage = message as PlayingMessage;
 			if (playingMessage != null)
 			{
-				var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
-				player.State = (int) ClientState.Playing;
-				PlayerManager.UpdatePlayer(player);
-
-				if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing 
-					&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
+				if (_simulationLifecycleManager.EngineState == EngineState.NotStarted)
 				{
-					if (_simulationLifecycleManager.TryStart())
+					var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
+					player.State = (int) ClientState.Playing;
+					PlayerManager.UpdatePlayer(player);
+
+					if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing
+						&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
 					{
-						_simulationLifecycleManager.Tick += OnTick;
-						_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
+						if (_simulationLifecycleManager.TryStart())
+						{
+							_simulationLifecycleManager.Tick += OnTick;
+							_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
+						}
+						else
+						{
+							throw new LifecycleException("Start lifecycle failed.");
+						}
 					}
-					else
-					{
-						throw new LifecycleException("Start lifecycle failed.");
-					}
+					return;
 				}
-				return;
 			}
 		}
 
@@ -125,6 +128,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			if (PlayerManager.Players.Count == 0)
 			{
 				Shutdown();
+			}
+			else
+			{
+				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr);
 			}
 			base.OnLeave(info);
 		}

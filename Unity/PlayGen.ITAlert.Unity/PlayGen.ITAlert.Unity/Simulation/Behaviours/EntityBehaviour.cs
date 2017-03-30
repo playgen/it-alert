@@ -86,28 +86,37 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// <summary>
 		/// Initialize the object from simulation state
 		/// </summary>
-	/// <param name="entity"></param>
+		/// <param name="entity"></param>
+		/// <param name="director"></param>
 		public void Initialize(Entity entity, Director director)
 		{
 			Entity = entity;
 			Director = director;
 			OnInitialize();
 			Initialized = true;
+
+			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
+
 		}
 
-		public void Uninitialize()
-		{
-			Initialized = false;
-			OnUninitialize();
-			Entity = null;
-		}
+		//public void Uninitialize()
+		//{
+		//	Initialized = false;
+		//	OnUninitialize();
+		//	Entity = null;
+		//}
 
 		/// <summary>
 		/// actions to perform on initialization
 		/// </summary>
 		protected abstract void OnInitialize();
 
-		protected virtual void OnUninitialize()
+		//protected virtual void OnUninitialize()
+		//{
+			
+		//}
+
+		public virtual void ResetEntity()
 		{
 			
 		}
@@ -115,6 +124,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public virtual void UpdateScale(Vector3 scale)
 		{
 			
+		}
+
+		public void OnDestroy()
+		{
+			LogProxy.Info($"EntityBehviour Destroy: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 		}
 
 		#endregion
