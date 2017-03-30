@@ -6,6 +6,8 @@ using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.Loading;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Error
 {
@@ -36,9 +38,9 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		{
 			_messageText.text = GameExceptionHandler.Exception?.ToString();
 			_panelVisibility.gameObject?.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
 
-			LoadingUtility.HideSpinner();
+			Loading.Stop();
 			GameExceptionHandler.ClearException();
 		}
 

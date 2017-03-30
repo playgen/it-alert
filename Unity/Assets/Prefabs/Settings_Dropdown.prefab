@@ -57,6 +57,7 @@ GameObject:
   - component: {fileID: 114615251088746124}
   - component: {fileID: 114132202809136794}
   - component: {fileID: 95064655022061026}
+  - component: {fileID: 114692903805416534}
   m_Layer: 5
   m_Name: Settings_Dropdown
   m_TagString: Untagged
@@ -629,6 +630,18 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.Toggle+ToggleEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
   m_IsOn: 1
+--- !u!114 &114692903805416534
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1152337951854376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 12469560, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _options: []
 --- !u!114 &114722739642248728
 MonoBehaviour:
   m_ObjectHideFlags: 1

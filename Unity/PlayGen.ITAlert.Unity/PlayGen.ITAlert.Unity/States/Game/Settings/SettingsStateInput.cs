@@ -1,9 +1,9 @@
 using System;
 using GameWork.Core.States.Tick.Input;
-using PlayGen.ITAlert.Unity.Settings;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Settings;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Settings
 {
@@ -29,23 +29,23 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_creator = _settingsPanel.GetComponentInChildren<SettingCreation>();
 			_creator.Wipe();
 			_creator.SetLabelAlignment(TextAnchor.MiddleLeft);
-			_creator.Custom<Text>("Display", SettingObjectType.Label, false);
+			_creator.Custom<Text>("Display", false);
 			_resolution = _creator.Resolution(960, 540);
 			_fullScreen = _creator.FullScreen();
-			_creator.Custom<Text>("Voice", SettingObjectType.Label, true);
-			_voiceEnabled = _creator.Custom<Toggle>("Voice Enabled", SettingObjectType.Toggle, true);
+			_creator.Custom<Text>("Voice", true);
+			_voiceEnabled = _creator.Custom<Toggle>("Voice Enabled", true);
 			_voiceEnabled.onValueChanged.AddListener(OnVoiceEnabledChanged);
 			_microphone = _creator.Volume("Microphone Volume");
 			_receive = _creator.Volume("Receive Volume");
 			_creator.AddToLayout(_creator.HorizontalLayout("Test Microphone", 8),
-			_creator.Custom<Button>("Test Microphone", SettingObjectType.Button, true));
-			_creator.Custom<Text>("Sound", SettingObjectType.Label, true);
+			_creator.Custom<Button>("Test Microphone", true));
+			_creator.Custom<Text>("Sound", true);
 			_music = _creator.Volume("Music Volume");
 			_sfx = _creator.Volume("SFX Volume");
 			var buttonLayout = _creator.HorizontalLayout("Buttons");
-			_cancel = _creator.Custom<Button>("Close", SettingObjectType.Button, true);
+			_cancel = _creator.Custom<Button>("Close", true);
 			_creator.AddToLayout(buttonLayout, _cancel);
-			_apply = _creator.Custom<Button>("Apply", SettingObjectType.Button, true);
+			_apply = _creator.Custom<Button>("Apply", true);
 			_creator.AddToLayout(buttonLayout, _apply);
 
 			if (PlayerPrefs.HasKey(_voiceEnabled.name))

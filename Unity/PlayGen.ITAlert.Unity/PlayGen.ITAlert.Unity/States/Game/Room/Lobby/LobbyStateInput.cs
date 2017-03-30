@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
-using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
@@ -12,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Logger = PlayGen.Photon.Unity.Logger;
 using Object = UnityEngine.Object;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
@@ -33,8 +33,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private bool _ready;
 		private int _lobbyPlayerMax;
 		private Button _backButton;
+        private bool _bestFitTick;
 
-		public event Action LeaveLobbyClickedEvent;
+        public event Action LeaveLobbyClickedEvent;
 
 		public LobbyStateInput(Client photonClient)
 		{
@@ -69,14 +70,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			_readyButton.gameObject.GetComponentInChildren<Text>().text = "READY";
 			_lobbyPanel.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
+            _bestFitTick = true;
 
-			_backButton.onClick.AddListener(OnBackButtonClick);
+            _backButton.onClick.AddListener(OnBackButtonClick);
 			_readyButton.onClick.AddListener(OnReadyButtonClick);
 			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
 
-			LoadingUtility.HideSpinner();
-		}
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
+        }
 
 		protected override void OnExit()
 		{
@@ -93,7 +95,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnTick(float deltaTime)
 		{
-			UpdateVoiceStatuses();
+            if (_bestFitTick)
+            {
+                _buttons.Buttons.BestFit();
+                _bestFitTick = false;
+            }
+            UpdateVoiceStatuses();
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackButtonClick();
@@ -109,8 +116,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			var currentlyReady = _photonClient.CurrentRoom.Player.State ==
 								(int) ITAlert.Photon.Players.ClientState.Ready;
 			CommandQueue.AddCommand(new ReadyPlayerCommand(!currentlyReady));
-			LoadingUtility.ShowSpinner();
-		}
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
+        }
 
 		private void OnBackButtonClick()
 		{
@@ -140,14 +147,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				? "Waiting"
 				: "Ready";
 
-			// todo give this a condition list that gets subtracted from as conditions are fulfilled
-			// so the spinner will remain active in a case where a player had it show for ready state change
-			// and some other state change, where at this point in code the ready state has returned so that
-			// condition is fulfilled but it should still remain active as we are still waiting on the other
-			// state to return.
-			LoadingUtility.HideSpinner();
+            // todo give this a condition list that gets subtracted from as conditions are fulfilled
+            // so the spinner will remain active in a case where a player had it show for ready state change
+            // and some other state change, where at this point in code the ready state has returned so that
+            // condition is fulfilled but it should still remain active as we are still waiting on the other
+            // state to return.
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
 
-			foreach (Transform child in _playerListObject.transform)
+            foreach (Transform child in _playerListObject.transform)
 			{
 				Object.Destroy(child.gameObject);
 			}
