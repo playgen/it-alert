@@ -7,6 +7,7 @@ using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
+using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
@@ -77,7 +78,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private void OnJoinGameClick()
 		{
 			JoinGameEvent?.Invoke();
-			LoadingUtility.ShowSpinner();
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnCreateGameClick()
@@ -106,7 +107,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		{
 			_photonClient.JoinedRoomEvent += OnJoinGameSuccess;
 			_mainMenuPanel.SetActive(true);
-			_buttons.BestFit();
+			_buttons.Buttons.BestFit();
 		}
 
 		protected override void OnExit()

@@ -30,6 +30,7 @@ GameObject:
   - component: {fileID: 22416516}
   - component: {fileID: 22247696}
   - component: {fileID: 11465384}
+  - component: {fileID: 114688406132090320}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -56,7 +57,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 3b7ad5d2de454d84aaff0d200d46192f, type: 3}
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -187,6 +188,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 2
   m_AspectRatio: 4
+--- !u!114 &114688406132090320
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 175604}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: 
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114987691712083668
 MonoBehaviour:
   m_ObjectHideFlags: 1
