@@ -23,29 +23,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		protected override void OnEnter()
 		{
 			Logger.LogDebug("Entered " + StateName);
-
-			_networkPhotonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 		}
 
 		protected override void OnExit()
 		{
-			_networkPhotonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
-
 		}
-		
-		private static void ProcessSimulationStateMessage(Message message)
-		{
-			var tickMessage = message as TickMessage;
-			if (tickMessage != null)
-			{
-				// TODO: reimplement
-				//var simulation = Serializer.DeserializeSimulation(tickMessage.SerializedSimulation);
-				//Director.UpdateSimulation(simulation);
-				//Director.Refresh();
-				return;
-			}
 
-			throw new Exception("Unhandled Simulation State Message: " + message);
-		}
 	}
 }

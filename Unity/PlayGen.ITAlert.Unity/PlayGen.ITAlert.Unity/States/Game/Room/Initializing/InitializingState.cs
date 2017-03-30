@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Engine.Serialization;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
@@ -38,7 +39,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		protected override void OnEnter()
 		{
-			Logger.LogDebug("Entered " + StateName); 
+			Logger.LogDebug("Entered " + StateName);
+			LogProxy.Info("InitializingState OnEnter");
 
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 			_photonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
@@ -50,6 +52,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		protected override void OnExit()
 		{
+			LogProxy.Info("InitializingState OnExit");
 			_photonClient.CurrentRoom.Messenger.Unsubscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
 		}
 		
@@ -58,6 +61,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			var initializedMessage = message as ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
 			if (initializedMessage != null)
 			{
+				LogProxy.Info("InitializingState: Received InitializedMessage");
+
 				SimulationScenario scenario;
 				if (string.IsNullOrEmpty(initializedMessage.PlayerConfiguration) 
 					|| string.IsNullOrEmpty(initializedMessage.ScenarioName)

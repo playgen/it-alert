@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			if (DebugLog)
 			{
-				Debug.Log(message);
+				LogProxy.Info(message);
 			}
 		}
 

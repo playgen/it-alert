@@ -104,7 +104,9 @@
     <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
     <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
     <Compile Include="Systems\Initialization\GraphSystem.cs" />
-    <Compile Include="Systems\Initialization\PlayerSystem.cs" />
+    <Compile Include="Systems\Players\DropInventoryOnDisconnect.cs" />
+    <Compile Include="Systems\Players\IPlayerSystemBehaviour.cs" />
+    <Compile Include="Systems\Players\PlayerSystem.cs" />
     <Compile Include="Systems\Items\CPUConsumptionIncreasesTimedActivationDurationExtension.cs" />
     <Compile Include="Systems\Items\TransferBehaviour.cs" />
     <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />

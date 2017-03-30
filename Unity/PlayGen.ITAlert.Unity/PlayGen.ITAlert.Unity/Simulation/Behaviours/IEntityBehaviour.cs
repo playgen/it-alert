@@ -15,8 +15,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		void Initialize(Entity entity, Director director);
 
-		void Uninitialize();
+		//void Uninitialize();
 
 		void UpdateScale(Vector3 scale);
+
+		void ResetEntity();
 	}
 }

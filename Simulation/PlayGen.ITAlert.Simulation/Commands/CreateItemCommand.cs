@@ -7,6 +7,7 @@ using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
@@ -28,16 +29,16 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	{
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
-		private readonly IEntityRegistry _entityRegistry;
+		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
-		private SimulationConfiguration _configuration;
+		private readonly SimulationConfiguration _configuration;
 
 		public CreateItemCommandHandler(IEntityFactoryProvider entityFactoryProvider, 
-			IEntityRegistry entityRegistry,
+			IMatcherProvider matcherProvider,
 			SimulationConfiguration configuration)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
-			_entityRegistry = entityRegistry;
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_configuration = configuration;
 		}
 
@@ -60,24 +61,17 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				default:
 					return false;
 			} 
-			Entity systemEntity;
-			ItemStorage itemStorage;
 			if (string.IsNullOrEmpty(command.Archetype) == false
-				&& _entityRegistry.TryGetEntityById(systemEntityId, out systemEntity)
-				&& systemEntity.TryGetComponent(out itemStorage))
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(systemEntityId, out var systemTuple)
+				&& _entityFactoryProvider.TryCreateItem(command.Archetype, systemEntityId, null, out var itemTuple))
 			{
-				ComponentEntityTuple<CurrentLocation, Owner> itemTuple;
-				if (_entityFactoryProvider.TryCreateItem(command.Archetype, systemEntityId, null, out itemTuple))
+				if (systemTuple.Component2.TryGetEmptyContainer(out var itemContainer, out var containerIndex) == false)
 				{
-					ItemContainer itemContainer;
-					if (itemStorage.TryGetEmptyContainer(out itemContainer) == false)
-					{
-						itemTuple.Entity.Dispose();
-						return false;
-					}
-					itemContainer.Item = itemTuple.Entity.Id;
-					return true;
+					itemTuple.Entity.Dispose();
+					return false;
 				}
+				itemContainer.Item = itemTuple.Entity.Id;
+				return true;
 			}
 			return false;
 

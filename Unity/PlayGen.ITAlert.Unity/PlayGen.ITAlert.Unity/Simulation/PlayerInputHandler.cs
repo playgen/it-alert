@@ -187,7 +187,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		//			//_selectedItem.OnClick(true);
 		//		}
 		//	}
-		//	// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
+		//	// LogProxy.Info(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
 		//	DragItem();
 		//}
 

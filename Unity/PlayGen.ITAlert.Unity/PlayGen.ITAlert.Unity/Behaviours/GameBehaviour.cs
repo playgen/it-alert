@@ -15,6 +15,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void Awake()
 		{
+			LogProxy.LogLevel = LogType.Warning;
+
 			GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
 
 			var stateControllerFactory = new StateControllerFactory();

@@ -18,6 +18,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		//public SimulationRules Rules { get; private set; }
 
+		public Guid? InstanceId { get; set; }
+
 		public SimulationConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
 			IEnumerable<EdgeConfig> edgeConfiguration,
 			IEnumerable<PlayerConfig> playerConfiguration,

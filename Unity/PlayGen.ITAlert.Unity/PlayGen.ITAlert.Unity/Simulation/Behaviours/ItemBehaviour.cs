@@ -66,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _activation))
 			{
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
-				Debug.Log($"Creating item type: {spriteName}");
+				LogProxy.Info($"Creating item type: {spriteName}");
 				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
 
@@ -213,7 +213,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnClick()
 		{
-			Debug.Log("Item OnClick");
+			LogProxy.Info("Item OnClick");
 
 			if (ClickEnable)
 			{

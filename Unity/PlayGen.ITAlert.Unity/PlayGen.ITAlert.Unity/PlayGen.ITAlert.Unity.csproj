@@ -162,7 +162,9 @@
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
+    <Compile Include="LogProxy.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
+    <Compile Include="Simulation\AnimateConnectionUV.cs" />
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />
     <Compile Include="Simulation\ContainerState.cs" />

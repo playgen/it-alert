@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Entities;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Systems.Initialization;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
+using Zenject;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Initialization
+namespace PlayGen.ITAlert.Simulation.Systems.Players
 {
 	public class PlayerSystem : IInitializingSystem
 	{
@@ -18,17 +19,19 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 		private readonly GraphSystem _graphSystem;
 		private readonly MovementSystem _movementSystem;
-
+		private readonly List<IPlayerSystemBehaviour> _playterSystemBehaviours;
 
 		public PlayerSystem(SimulationConfiguration configuration, 
 			IEntityFactoryProvider entityFactoryProvider,
 			GraphSystem graphSystem, 
-			MovementSystem movementSystem)
+			MovementSystem movementSystem,
+			[InjectOptional] List<IPlayerSystemBehaviour> playerSystemBehaviours)
 		{
 			_configuration = configuration;
 			_entityFactoryProvider = entityFactoryProvider;
 			_graphSystem = graphSystem;
 			_movementSystem = movementSystem;
+			_playterSystemBehaviours = playerSystemBehaviours;
 		}
 
 		#region Implementation of IInitializingSystem
@@ -58,8 +61,26 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 						continue;
 					}
 					player?.Dispose();
-					throw new SimulationException($"Could not craete player for id '{playerConfig.EntityId}'");
+					throw new SimulationException($"Could not create player for id '{playerConfig.EntityId}'");
 				}
+			}
+		}
+
+		public void PlayerDisconnected(int playerExternalId)
+		{
+			ExecuteBehaviourAction(psb => psb.OnPlayerDisconnected(playerExternalId));
+		}
+
+		public void PlayerJoined(int playerExternalId)
+		{
+			ExecuteBehaviourAction(psb => psb.OnPlayerJoined(playerExternalId));
+		}
+
+		private void ExecuteBehaviourAction(Action<IPlayerSystemBehaviour> action)
+		{
+			foreach (var behaviour in _playterSystemBehaviours)
+			{
+				action(behaviour);
 			}
 		}
 	}

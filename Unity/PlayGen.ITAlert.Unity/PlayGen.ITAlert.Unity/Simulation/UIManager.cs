@@ -48,7 +48,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					ShowFailure();
 					break;
 				default:
-					Debug.LogError("Director ended game with unknown state");
+					LogProxy.Error("Director ended game with unknown state");
 					break;
 			}
 		}

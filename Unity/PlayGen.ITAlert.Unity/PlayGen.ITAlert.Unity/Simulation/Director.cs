@@ -29,6 +29,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	// TODO: use zenject singleton container rather than statics
 	public sealed class Director : MonoBehaviour
 	{
+		
+
+		public string InstanceId => SimulationRoot.ToString();
+
 		public event Action<EndGameState> GameEnded;
 
 		public event Action Reset;
@@ -42,7 +46,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private readonly AutoResetEvent _messageSignal = new AutoResetEvent(false);
 		private readonly AutoResetEvent _updateSignal = new AutoResetEvent(false);
 		private readonly AutoResetEvent _updateCompleteSignal = new AutoResetEvent(false);
-		private readonly AutoResetEvent _terminateSignal = new AutoResetEvent(false);
+		private readonly ManualResetEvent _terminateSignal = new ManualResetEvent(false);
 		private readonly AutoResetEvent _workerThreadExceptionSignal = new AutoResetEvent(false);
 
 		public int Tick => SimulationRoot?.ECS?.CurrentTick ?? 0;
@@ -55,19 +59,22 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		// TODO: replace temporary implementation
 		private EndGameSystem _endGameSystem;
 
+		private const int DefaultntityCapacity = 1000;
 
 		/// <summary>
 		/// Tracked entities have their lifecycle managed by the simulation and will bbe created and destroyed as required
 		/// </summary>
-		private readonly Dictionary<int, UIEntity> TrackedEntities = new Dictionary<int, UIEntity>(10000);
+		private  Dictionary<int, UIEntity> _trackedEntities;
 
 		/// <summary>
 		/// Untracked entities do not have a 1:1 mapping with simulation entities and their lifecycle is managed manually
 		/// </summary>
-		private readonly List<UIEntity> UntrackedEntities = new List<UIEntity>(10000);
+		private List<UIEntity> _untrackedEntities;
 
 
-		private readonly List<int> DestroyedEntities = new List<int>(100);
+		private List<int> _destroyedEntities;
+
+		private readonly object _destroyedEntityLock = new object();
 
 		#region game objects
 
@@ -93,7 +100,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// </summary>
 		private PlayerBehaviour _activePlayer;
 
-		public PlayerBehaviour Player => _activePlayer;
+		public PlayerBehaviour Player
+		{
+			get
+			{
+				return _activePlayer;
+			}
+		}
 
 		public PlayerBehaviour[] Players { get; private set; }
 
@@ -107,93 +120,126 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void AddUntrackedEntity(UIEntity uiEntity)
 		{
-			UntrackedEntities.Add(uiEntity);
+			_untrackedEntities.Add(uiEntity);
 		}
 
 		public bool TryGetEntity(int id, out UIEntity uiEntity)
 		{
-			return TrackedEntities.TryGetValue(id, out uiEntity);
+			return _trackedEntities.TryGetValue(id, out uiEntity);
 		}
 
 		#region Initialization
 
 		public GameObject InstantiateEntity(string resourceString)
 		{
-			var gameObject = UnityEngine.Object.Instantiate(Resources.Load(resourceString)) as GameObject;
-			gameObject?.transform.SetParent(transform.Find("Canvas/Graph").transform, false);
-			return gameObject;
+			return UnityEngine.Object.Instantiate(Resources.Load(resourceString), transform.Find("Canvas/Graph").transform) as GameObject;
 		}
 
-		public void ResetSimulation()
+		public void ResetDirector()
 		{
+			LogProxy.Info("Director: ResetDirector");
+
+			if (SimulationRoot != null)
+			{
+				SimulationRoot.ECS.EntityRegistry.EntityDestroyed -= EntityRegistryOnEntityDestroyed;
+			}
+
 			_messageSignal.Reset();
 			_updateSignal.Reset();
 			_updateCompleteSignal.Reset();
+			_terminateSignal.Reset();
+
 			ThreadWorkerException = null;
-			DestroyedEntities.Clear();
 			
 			_activePlayer = null;
-			foreach (var entity in TrackedEntities)
+			if (_trackedEntities == null)
 			{
+				_trackedEntities = new Dictionary<int, UIEntity>(DefaultntityCapacity);
+			}
+			foreach (var entity in _trackedEntities)
+			{
+				entity.Value.EntityBehaviour.ResetEntity();
 				Destroy(entity.Value.GameObject);
 			}
-			TrackedEntities.Clear();
-			foreach (var entity in UntrackedEntities)
+			_trackedEntities.Clear();
+
+			if (_untrackedEntities == null)
 			{
+				_untrackedEntities = new List<UIEntity>(DefaultntityCapacity);
+			}
+			foreach (var entity in _untrackedEntities)
+			{
+				entity.EntityBehaviour.ResetEntity();
 				Destroy(entity.GameObject);
 			}
-			UntrackedEntities.Clear();
+			_untrackedEntities.Clear();
+
+			lock (_destroyedEntityLock)
+			{
+				if (_destroyedEntities == null)
+				{
+					_destroyedEntities = new List<int>(DefaultntityCapacity);
+				}
+				_destroyedEntities.Clear();
+			}
 
 			OnReset();
+
+			LogProxy.Info($"_trackedEntities: {_trackedEntities.Count}, UntrackedEntities: {_untrackedEntities.Count}");
 		}
 
 		public bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
 		{
 			try
 			{
+				SimulationRoot = simulationRoot;
+
+				LogProxy.Warning($"Initializing Director for simulation Instance {InstanceId}");
+
 				//TODO: get rid of this hacky sack
 				PlayerCommands.Director = this;
 
 				ItemPanel = transform.Find("Canvas/ItemPanel").GetComponent<ItemPanel>();
+				_queuedMessages = new Queue<TickMessage>();
+
+				ResetDirector();
+
+				// all of this must happen after reset
+
+				CalculateNetworkOffset();
+				CreateInitialEntities();
+				SetupPlayers(players, playerServerId);
+				// item panel must come after players
+				ItemPanel.Initialize();
+				ItemPanel.ExplicitUpdate();
+
+
+				SimulationRoot.ECS.EntityRegistry.EntityDestroyed += EntityRegistryOnEntityDestroyed;
+				if (SimulationRoot.ECS.TryGetSystem(out _endGameSystem) == false)
+				{
+					throw new SimulationIntegrationException("Could not locate end game system");
+				}
 
 				_updatethread = new Thread(ThreadWorker)
 				{
 					IsBackground = true,
 				};
 				_updatethread.Start();
-
-				_queuedMessages = new Queue<TickMessage>();
-
-				ResetSimulation();
-				SimulationRoot = simulationRoot;
-
-				SimulationRoot.ECS.EntityRegistry.EntityDestroyed += EntityRegistryOnEntityDestroyed;
-
-				CalculateNetworkOffset();
-
-				CreateInitialEntities();
-				SetupPlayers(players, playerServerId);
-				// item panel must come after players
-				ItemPanel.Initialize();
-				ItemPanel.Update();
-
-				if (SimulationRoot.ECS.TryGetSystem(out _endGameSystem) == false)
-				{
-					throw new SimulationIntegrationException("Could not locate end game system");
-				}
-
 				return true;
 			}
 			catch (Exception ex)
 			{
-				Debug.LogError($"Error initializing Director: {ex}");
+				LogProxy.Error($"Error initializing Director: {ex}");
 				throw;
 			}
 		}
 
 		private void EntityRegistryOnEntityDestroyed(int i)
 		{
-			DestroyedEntities.Add(i);
+			lock (_destroyedEntityLock)
+			{
+				_destroyedEntities.Add(i);
+			}
 		}
 
 		private void CalculateNetworkOffset()
@@ -235,22 +281,30 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SetupPlayers(List<Player> players, int playerServerId)
 		{
+			LogProxy.Info("Director: Setup Players");
 			foreach (var player in players)
 			{
 				try
 				{
+					LogProxy.Info($"Director: Setup Players: Player {player.PhotonId}");
+
 					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
 
 					UIEntity playerUiEntity;
-					if (TrackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
+					if (_trackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
 					{
-						var playerBehaviour = (PlayerBehaviour)playerUiEntity.EntityBehaviour;
+						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
 						if (player.PhotonId == playerServerId)
 						{
+							LogProxy.Info($"Selected active player with id {playerServerId}: entity {playerBehaviour.Entity.Id}");
 							_activePlayer = playerBehaviour;
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 						}
 						playerBehaviour.SetColor(player.Color);
+					}
+					else
+					{
+						LogProxy.Warning($"No player entity with id: {internalPlayer.EntityId}");
 					}
 				}
 				catch (Exception ex)
@@ -258,12 +312,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
 				}
 			}
+			if (_activePlayer == null)
+			{
+				throw new SimulationIntegrationException($"Error mapping actiove photon player '{playerServerId}'");
+			}
 		}
 
 
 		#endregion
 
-		#region State Update
+		#region State ExplicitUpdate
 
 		#region worker thread
 
@@ -277,18 +335,26 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void StopWorker()
 		{
+			LogProxy.Info("Director: Stop Worker");
 			_terminateSignal.Set();
+			_updateSignal.Reset();
+			_updateCompleteSignal.Set();
 		}
 
 		private void ThreadWorker()
 		{
+			int loop = 0;
+
 			while (true)
 			{
 				try
 				{
+					LogProxy.Info($"Director Worker: Loop {loop++}");
+
 					var handle = WaitHandle.WaitAny(new WaitHandle[] {_terminateSignal, _messageSignal});
 					if (handle == 0)
 					{
+						LogProxy.Warning("Director: Terminating thread worker.");
 						break;
 					}
 					if (handle == 1)
@@ -307,6 +373,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						{
 							var fastForward = i++ < queuedMessages.Length;
 							var tick = ConfigurationSerializer.Deserialize<Tick>(tickMessage.TickString);
+
+							LogProxy.Info($"Director Worker: Tick {tick.CurrentTick}");
+
 
 							// TODO: this should probably be pushed into the ECS
 							ICommandSystem commandSystem;
@@ -327,7 +396,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 							if (fastForward)
 							{
-								Debug.LogWarning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
+								LogProxy.Warning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
 							}
 							else
 							{
@@ -347,7 +416,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							}
 						}
 
-
 						_updateSignal.Set();
 						_updateCompleteSignal.WaitOne();
 
@@ -355,18 +423,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				catch (Exception ex)
 				{
-					Debug.LogError($"Simulation worker thread terminating due to error: {ex}");
+					LogProxy.Error($"Simulation worker thread terminating due to error: {ex}");
 					ThreadWorkerException = new SimulationIntegrationException($"Terminating simulation worker thread", ex);
 					_workerThreadExceptionSignal.Set();
 					break;
 				}
 			}
+			LogProxy.Info("Director: Thread Worker Terminated.");
+
 		}
 
 		public static SimulationIntegrationException ThreadWorkerException { get; set; }
 
 		public void UpdateSimulation(TickMessage tickMessage)
 		{
+			LogProxy.Info($"ExplicitUpdate Simulation");
 			lock (_queueLock)
 			{
 				_queuedMessages.Enqueue(tickMessage);
@@ -380,13 +451,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			OnGameEnded(_endGameSystem.EndGameState);
 		}
 
-		private int _update;
+		//private int _update;
 
 		public void Update()
 		{
 			UpdateScale();
-
-
+			
 			if (_workerThreadExceptionSignal.WaitOne(0))
 			{
 				OnExceptionEvent(ThreadWorkerException);
@@ -395,10 +465,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
-					if (++_update != SimulationRoot.ECS.CurrentTick)
-					{
-						Debug.LogWarning($"Update tick out of sync at {_update}");
-					}
+					//if (++_update != SimulationRoot.ECS.CurrentTick)
+					//{
+					//	LogProxy.Warning($"ExplicitUpdate tick out of sync at {_update}");
+					//}
 					UpdateEntityStates();
 				}
 				catch (Exception ex)
@@ -412,10 +482,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			if (_rectTransform.localScale != _scale)
 			{
-				Debug.LogWarning("Director: RectTransform scale updated");
+				LogProxy.Warning("Director: RectTransform scale updated");
 				_scale = _rectTransform.localScale;
 				CalculateNetworkOffset();
-				foreach (var entity in TrackedEntities.Values.Concat(UntrackedEntities))
+				foreach (var entity in _trackedEntities.Values.Concat(_untrackedEntities))
 				{
 					entity.EntityBehaviour.UpdateScale(_scale);
 				}
@@ -429,7 +499,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private UIEntity CreateEntity(Entity entity)
 		{
 			var uiEntity = new UIEntity(entity, this);
-			TrackedEntities.Add(entity.Id, uiEntity);
+			_trackedEntities.Add(entity.Id, uiEntity);
 			return uiEntity;
 		}
 
@@ -441,47 +511,87 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				foreach (var entity in SimulationRoot.ECS.Entities)
 				{
-					UIEntity uiEntity;
-					if (TryGetEntity(entity.Key, out uiEntity))
+					try
 					{
-						uiEntity.UpdateEntityState();
+						if (_terminateSignal.WaitOne(0))
+						{
+							LogProxy.Warning("Aborting UpdateEntityStates.");
+							return;
+						}
+
+						UIEntity uiEntity;
+						if (TryGetEntity(entity.Key, out uiEntity))
+						{
+							uiEntity.UpdateEntityState();
+						}
+						else
+						{
+							newEntites++;
+							var newUiEntity = CreateEntity(entity.Value);
+							newUiEntity.EntityBehaviour?.Initialize(entity.Value, this);
+						}
 					}
-					else
+					catch (Exception ex)
 					{
-						newEntites++;
-						var newUiEntity = CreateEntity(entity.Value);
-						newUiEntity.EntityBehaviour?.Initialize(entity.Value, this);
+						throw new SimulationIntegrationException($"Error updating entity {entity.Key}", ex);
 					}
 				}
 
-				if (newEntites > 0)
+				//if (newEntites > 0)
+				//{
+				//	LogProxy.Info($"New entities created in tick {_update}: {newEntites}");
+				//}
+
+				int[] destroyedEntities;
+
+				lock (_destroyedEntityLock)
 				{
-					Debug.Log($"New entities created in tick {_update}: {newEntites}");
+					destroyedEntities = _destroyedEntities.ToArray();
+					_destroyedEntities.Clear();
 				}
 
-				foreach (var entityToRemove in DestroyedEntities.ToArray())
+				foreach (var entityToRemove in destroyedEntities)
 				{
+					if (_terminateSignal.WaitOne(0))
+					{
+						LogProxy.Warning("Aborting UpdateEntityStates.");
+						return;
+					}
+
 					if (TryGetEntity(entityToRemove, out var uiEntity))
 					{
 						Destroy(uiEntity.GameObject);
 					}
-					TrackedEntities.Remove(entityToRemove);
+					_trackedEntities.Remove(entityToRemove);
 				}
 
-				foreach (var untrackedEntity in UntrackedEntities)
+				foreach (var untrackedEntity in _untrackedEntities)
 				{
+					if (_terminateSignal.WaitOne(0))
+					{
+						LogProxy.Warning("Aborting UpdateEntityStates.");
+						return;
+					}
+
 					untrackedEntity.UpdateEntityState();
 				}
-				ItemPanel.Update();
+				if (_terminateSignal.WaitOne(0))
+				{
+					return;
+				}
+
+				LogProxy.Info($"Director: Player is null: {Player == null}");
+				
+				ItemPanel.ExplicitUpdate();
 
 				_updateCompleteSignal.Set();
 
-				Debug.Log("UpdateEntityStates");
+				LogProxy.Info("UpdateEntityStates");
 
 			}
 			catch (Exception exception)
 			{
-				Debug.LogError($"Error updating Director state: {exception}");
+				LogProxy.Error($"Error updating Director {InstanceId} state: {exception}");
 				throw new SimulationIntegrationException("Error updating Director state", exception);
 			}
 		}

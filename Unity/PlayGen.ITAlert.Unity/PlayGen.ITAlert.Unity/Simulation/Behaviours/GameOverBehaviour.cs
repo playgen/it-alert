@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (_animationProgress < 1)
 			{
 				_animationProgress += Time.deltaTime;
-				//Debug.Log(_animationProgress);
+				//LogProxy.Info(_animationProgress);
 				_bigVirus.transform.localPosition = new Vector3(InitialOffset.x, Mathf.SmoothStep(InitialOffset.y, 0, _animationProgress));
 			}
 		}

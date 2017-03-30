@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_director = director;
 			if (TryInistantiateEntity(entityTypeName, name) == false)
 			{
-				Debug.LogWarning($"Unknown entity type '{entityTypeName}'");
+				LogProxy.Warning($"Unknown entity type '{entityTypeName}'");
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				var entityTypeName = entityTypeFlag.GetType().Name;
 				if (TryInistantiateEntity(entityTypeName, entity.Id.ToString()) == false)
 				{
-					Debug.LogWarning($"Unknown entity type '{entityTypeName}' on entity {entity.Id}");
+					LogProxy.Warning($"Unknown entity type '{entityTypeName}' on entity {entity.Id}");
 				}
 			}
 			else
