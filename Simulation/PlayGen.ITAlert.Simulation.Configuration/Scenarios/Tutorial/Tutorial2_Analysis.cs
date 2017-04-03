@@ -1,22 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Archetypes;
 using Engine.Evaluators;
 using Engine.Lifecycle;
 using Engine.Sequencing;
-using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Malware;
 using PlayGen.ITAlert.Simulation.Components.Tutorial;
+using PlayGen.ITAlert.Simulation.Scenario.Actions;
+using PlayGen.ITAlert.Simulation.Scenario.Configuration;
+using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
-namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
+namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 {
-	internal static class Analysis
+	// ReSharper disable once InconsistentNaming
+	internal static class Tutorial2_Analysis
 	{
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
@@ -80,8 +80,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		{
 			#region configuration
 
-			const int PlayerCountMin = 1;
-			const int PlayerCountMax = 2;
+			const int playerCountMin = 1;
+			const int playerCountMax = 1;
 
 			var nodeLeft = new NodeConfig()
 			{
@@ -115,7 +115,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				ArchetypeName = GameEntities.AntivirusWorkstation.Name,
 			};
 
-			var nodeConfigs = new NodeConfig[] { nodeLeft, nodeRight, nodeMiddle, nodeBottom };
+			var nodeConfigs = new NodeConfig[] { nodeLeft,
+				nodeRight,
+				nodeMiddle,
+				nodeBottom
+			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
@@ -131,13 +135,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 					ArchetypeName = GameEntities.Scanner.Name,
 					StartingLocation = nodeMiddle.Id,
 				}
-
 			};
-			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
-			{
-				StartingLocation = nodeRight.Id,
-				ArchetypeName = GameEntities.Player.Name
-			});
+
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 
 			configuration.RNGSeed = 897891658;
@@ -147,55 +146,64 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				TutorialScanner,
 				RedTutorialVirus,
 				GreenTutorialVirus,
+
 				YellowTutorialVirus,
 			});
 
 			#endregion
 
+			var scenario = new SimulationScenario()
+			{
+				Name = "Analysis",
+				Description = "Analysis",
+				MinPlayers = playerCountMin,
+				MaxPlayers = playerCountMax,
+				Configuration = configuration,
+
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Archetypes.Player.Archetype.Name, new [] { nodeRight.Id }),
+
+				// TODO: need a config driven specification for these
+				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
+			};
+
 			#region frames
 
-			// ReSharper disable once UseObjectOrCollectionInitializer
-			var frames = new List<SequenceFrame<Simulation, SimulationConfiguration>>();
-
-			// frame 1
-			frames.Add(
+			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.CreateNpcCommand(RedTutorialVirus.Name, nodeLeft.Id),
-						ScenarioHelpers.CreateNpcCommand(GreenTutorialVirus.Name, nodeMiddle.Id),
-						ScenarioHelpers.CreateNpcCommand(YellowTutorialVirus.Name, nodeRight.Id),
+						new CreateMalware(RedTutorialVirus.Name, nodeLeft.Id),
+						new CreateMalware(GreenTutorialVirus.Name, nodeMiddle.Id),
+						new CreateMalware(YellowTutorialVirus.Name, nodeRight.Id),
 
-						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, nodeRight.Id),
-						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, nodeMiddle.Id),
+						new CreateItem(GameEntities.Capture.Name, nodeRight.Id),
+						new CreateItem(GameEntities.Scanner.Name, nodeMiddle.Id),
 
-						ScenarioHelpers.GenerateTextAction(true,
-							"Welcome to IT Alert!", 
-							"You are a system administrator tasked with maintaining the network.",
+						new ShowText(true,
+							"In this scenario you will learn about Viruses and how to analyse them and produce antivirus", 
+							"",
 							"Let's get started..."),
 
 
 					},
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
+					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.HideTextAction,
+						new HideText(),
 					},
 				}
 			);
-			frames.Add(
+			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeLeft))
-						.And(EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeMiddle)))
-						.And(EvaluatorExtensions.Not(ScenarioHelpers.SystemIsInfected(nodeRight))),
+					Evaluator = EvaluatorExtensions.Not(new IsInfected()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.EndGame(EndGameState.Success),
+						new EndGame(EndGameState.Success),
 					},
 				}
 			);
@@ -203,19 +211,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 			configuration.LifeCycleConfiguration.TickInterval = 100;
 
-			return new SimulationScenario()
-			{
-				Name = "Analysis",
-				Description = "Analysis",
-				MinPlayers = PlayerCountMin,
-				MaxPlayers = PlayerCountMax,
-				Configuration = configuration,
-
-				CreatePlayerConfig = playerConfigFactory,
-
-				// TODO: need a config driven specification for these
-				Sequence = frames.ToArray(),
-			};
+			return Scenario;
 		}
 	}
 }

@@ -8,6 +8,9 @@ using Engine.Sequencing;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Malware;
+using PlayGen.ITAlert.Simulation.Scenario.Actions;
+using PlayGen.ITAlert.Simulation.Scenario.Configuration;
+using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
@@ -164,11 +167,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
-			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
-			{
-				StartingLocation = i,
-				ArchetypeName = nameof(GameEntities.Player)
-			});
+
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 
 			configuration.RNGSeed = 456980495;
@@ -181,11 +180,23 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 			#endregion
 
+			var scenario = new SimulationScenario()
+			{
+				Name = "BigGraphTest",
+				Description = "BigGraphTest",
+				MinPlayers = minPlayerCount,
+				MaxPlayers = maxPlayerCount,
+				Configuration = configuration,
+
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Archetypes.Player.Archetype.Name, nodeConfigs.Select(nc => nc.Id).ToArray()),
+
+				// TODO: need a config driven specification for these
+				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
+			};
+
 			#region frames
 
 			// ReSharper disable once UseObjectOrCollectionInitializer
-			var frames = new List<SimulationFrame>();
-
 			var random = new Engine.Util.Random(894765213);
 
 			#region 1
@@ -193,31 +204,31 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			//T SelectCyclical<T>(T[] options, int i) => options[i % options.Length];
 			//int virusIndex = 0;
 			
-			frames.Add(// frame 1 - welcome
+			scenario.Sequence.Add(// frame 1 - welcome
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.CreateNpcCommand(RedVirus.Name, node10.Id),
-						ScenarioHelpers.CreateNpcCommand(GreenVirus.Name, node31.Id),
+						new CreateMalware(RedVirus.Name, node10.Id),
+						new CreateMalware(GreenVirus.Name, node31.Id),
 
-						ScenarioHelpers.CreateItemCommand(GameEntities.Scanner.Name, node00.Id),
-						ScenarioHelpers.CreateItemCommand(GameEntities.Capture.Name, node41.Id),
+						new CreateItem(GameEntities.Scanner.Name, node00.Id),
+						new CreateItem(GameEntities.Capture.Name, node41.Id),
 						//ScenarioHelpers.GenerateTextAction(true, 
 						//	"Click continue when you are ready to end!")
 					},
 					OnTickActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ConditionalAction<Simulation, SimulationConfiguration>(ScenarioHelpers.CreateNpcAtRandomLocationCommand(new [] { RedVirus, GreenVirus }[random.Next(2)].Name, random), ScenarioHelpers.WaitForTicks(300))
+						//new ConditionalAction<Simulation, SimulationConfiguration>(new CreateNpcAtRandomLocationCommand(new [] { RedVirus, GreenVirus }[random.Next(2)].Name, random), new WaitForTicks(300))
 					},
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						ScenarioHelpers.HideTextAction,
-						ScenarioHelpers.EndGame(EndGameState.Success),
+						new HideText(),
+						new EndGame(EndGameState.Success),
 					},
 					// TODO: need a more polymorphic way of specifying evaluators
 					// c# 7 pattern match will be nice
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
+					Evaluator = new WaitForTutorialContinue(),
 				}
 			);
 
@@ -226,19 +237,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 
 			#endregion
 
-			return new SimulationScenario()
-			{
-				Name = "BigGraphTest",
-				Description = "BigGraphTest",
-				MinPlayers = minPlayerCount,
-				MaxPlayers = maxPlayerCount,
-				Configuration = configuration,
-
-				CreatePlayerConfig = playerConfigFactory,
-
-				// TODO: need a config driven specification for these
-				Sequence = frames.ToArray(),
-			};
+			return scenario;
 		}
 	}
 }
