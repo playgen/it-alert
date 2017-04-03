@@ -2,8 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Archetypes;
 using Engine.Lifecycle;
 using Engine.Sequencing;
+using PlayGen.ITAlert.Simulation.Scenario.Actions;
+using PlayGen.ITAlert.Simulation.Scenario.Configuration;
+using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
@@ -43,47 +47,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
-			var playerConfigFactory = new Func<int, PlayerConfig>(i => new PlayerConfig()
-			{
-				StartingLocation = i,
-				ArchetypeName = nameof(GameEntities.Player)
-			});
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
 
 			#endregion
 
-			#region frames
-
-			// ReSharper disable once UseObjectOrCollectionInitializer
-			var frames = new List<SimulationFrame>();
-
-			#region 1
-
-			frames.Add(// frame 1 - welcome
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.GenerateTextAction(true, 
-							"Click continue when you are ready to end!")
-					},
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-						ScenarioHelpers.HideTextAction,
-						ScenarioHelpers.EndGame(EndGameState.Success),
-					},
-					// TODO: need a more polymorphic way of specifying evaluators
-					// c# 7 pattern match will be nice
-					Evaluator = ScenarioHelpers.WaitForTutorialContinue,
-				}
-			);
-
-			#endregion
-
-
-			#endregion
-
-			return new SimulationScenario()
+			var scenario = new SimulationScenario()
 			{
 				Name = $"Test {width}x{height}",
 				Description = "Test",
@@ -91,11 +59,41 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				MaxPlayers = maxPlayerCount,
 				Configuration = configuration,
 
-				CreatePlayerConfig = playerConfigFactory,
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Archetypes.Player.Archetype.Name, nodeConfigs.Select(nc => nc.Id).ToArray()),
 
 				// TODO: need a config driven specification for these
-				Sequence = frames.ToArray(),
+				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>()
 			};
+
+			#region frames
+
+			// ReSharper disable once UseObjectOrCollectionInitializer
+			#region 1
+
+			scenario.Sequence.Add(// frame 1 - welcome
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new ShowText(true, 
+							"Click continue when you are ready to end!")
+					},
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new HideText(),
+						new EndGame(EndGameState.Success),
+					},
+					// TODO: need a more polymorphic way of specifying evaluators
+					// c# 7 pattern match will be nice
+					Evaluator =  new WaitForTutorialContinue(),
+				}
+			);
+
+			#endregion
+
+			#endregion
+
+			return scenario;
 		}
 	}
 }

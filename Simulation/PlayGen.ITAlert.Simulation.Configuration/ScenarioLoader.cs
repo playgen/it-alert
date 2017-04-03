@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Configuration;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios;
+using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -15,9 +16,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			// TODO: populate this from configuration
 			_scenarios = new[]
 			{
-				Introduction.Scenario,
+				Tutorial1_Introduction.Scenario,
+				Tutorial2_Analysis.Scenario,
 				BigGraphTest.Scenario,
-				Analysis.Scenario,
 			}
 			.Concat(GraphDemos.Scenarios)
 			.ToDictionary(k => k.Name, v => v);

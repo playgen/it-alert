@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{45775B35-274A-40CF-BFE3-AD08F594C99B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlayGen.ITAlert.Simulation.Scenario</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Simulation.Scenario</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Actions\CreateItem.cs" />
+    <Compile Include="Actions\CreateMalware.cs" />
+    <Compile Include="Actions\EndGame.cs" />
+    <Compile Include="Actions\HideText.cs" />
+    <Compile Include="Actions\SetCommandEnabled.cs" />
+    <Compile Include="Actions\ShowText.cs" />
+    <Compile Include="Configuration\StartingLocationSequencePlayerConfigFactory.cs" />
+    <Compile Include="Evaluators\Filters\IEntityFilter.cs" />
+    <Compile Include="Evaluators\GenomeIsCaptured.cs" />
+    <Compile Include="Evaluators\Filters\AntivirusGenomeFilter.cs" />
+    <Compile Include="Evaluators\ItemTypeIsActivated.cs" />
+    <Compile Include="Evaluators\ItemTypeIsInStorageAtLocation.cs" />
+    <Compile Include="Evaluators\ItemTypeIsInInventory.cs" />
+    <Compile Include="Evaluators\PlayerIsAtLocation.cs" />
+    <Compile Include="Evaluators\IsInfected.cs" />
+    <Compile Include="Evaluators\GenomeRevealedAtLocation.cs" />
+    <Compile Include="Evaluators\WaitForSeconds.cs" />
+    <Compile Include="Evaluators\WaitForTicks.cs" />
+    <Compile Include="Evaluators\WaitForTutorialContinue.cs" />
+    <Compile Include="Exceptions\ScenarioConfigurationException.cs" />
+    <Compile Include="Configuration\SimulationConfigurationExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
+      <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
+      <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
+      <Project>{819d263a-c6b4-4be6-92ce-a6f38b1cfe00}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

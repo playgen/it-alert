@@ -15,6 +15,11 @@
 		/// </summary>
 		public int ExternalId { get; set; }
 
+		/// <summary>
+		/// Logical Id, order in config
+		/// </summary>
+		public int Id { get; set; }
+
 		public string ArchetypeName { get; set; }
 
 		public string Name { get; set; }

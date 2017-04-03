@@ -54,7 +54,7 @@
     <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\CreateItemCommand.cs" />
-    <Compile Include="Commands\CreateNpcCommand.cs" />
+    <Compile Include="Commands\CreateMalwareCommand.cs" />
     <Compile Include="Commands\Tutorial\ContinueCommand.cs" />
     <Compile Include="Commands\Tutorial\HideTextCommand.cs" />
     <Compile Include="Commands\Tutorial\DisplayTextCommand.cs" />
@@ -88,6 +88,7 @@
     <Compile Include="Components\Tutorial\Text.cs" />
     <Compile Include="Components\Tutorial\TutorialState.cs" />
     <Compile Include="Configuration\EdgeConfig.cs" />
+    <Compile Include="Configuration\IPlayerConfigFactory.cs" />
     <Compile Include="Configuration\ItemConfig.cs" />
     <Compile Include="Configuration\NodeConfig.cs" />
     <Compile Include="Configuration\PlayerConfig.cs" />

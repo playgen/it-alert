@@ -9,7 +9,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class SimulationScenario : Scenario<Simulation, SimulationConfiguration>
 	{
-		public Func<int, PlayerConfig> CreatePlayerConfig { get; set; }
+		public IPlayerConfigFactory PlayerConfigFactory { get; set; }
 
 
 	}

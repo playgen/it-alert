@@ -6,6 +6,7 @@ using System.Text;
 using Engine.Serialization;
 using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios;
+using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Tests
 {
@@ -15,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Tests
 		[Test]
 		public void TestSerializeScenario()
 		{
-			var scenario = Introduction.Scenario;
+			var scenario = Tutorial1_Introduction.Scenario;
 
 			var json = ConfigurationSerializer.SerializeScenario(scenario);
 
