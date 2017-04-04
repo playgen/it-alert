@@ -91,7 +91,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 					scenario.Configuration.PlayerConfiguration = PhotonPlugin.PluginHost.GameActorsActive.Select((p, i) =>
 					{
 						var player = PlayerManager.Get(p.ActorNr);
-						var playerConfig = scenario.CreatePlayerConfig(i);
+						var playerConfig = scenario.PlayerConfigFactory.GetNextPlayerConfig(i);
 						playerConfig.ExternalId = player.PhotonId;
 						playerConfig.Name = player.Name;
 						playerConfig.Colour = "#" + player.Color;
