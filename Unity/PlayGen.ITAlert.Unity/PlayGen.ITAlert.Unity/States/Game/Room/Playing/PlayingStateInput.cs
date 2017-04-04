@@ -24,8 +24,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		protected override void OnEnter()
 		{
 			_gameContainer.SetActive(true);
-			LoadingUtility.HideSpinner();
-		}
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
+        }
 
 		protected override void OnExit()
 		{
