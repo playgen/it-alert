@@ -211,7 +211,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			configuration.LifeCycleConfiguration.TickInterval = 100;
 
-			return Scenario;
+			return scenario;
 		}
 	}
 }
