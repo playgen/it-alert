@@ -60,9 +60,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 
 		[SerializeField]
-		private Image _iconRenderer;
+		private Image _sprite;
+
 		[SerializeField]
-		private Image _filled;
+		private Image _glow;
 
 		[SerializeField]
 		private BlinkBehaviour _blink;
@@ -239,13 +240,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				_cpu.SetActive(true);
 				_memory.SetActive(true);
-				_nameText.enabled = false;
 			}
 			else
 			{
 				_cpu.SetActive(false);
 				_memory.SetActive(false);
-				_nameText.enabled = true;
 			}
 		}
 
@@ -267,19 +266,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void FadeInUpdate()
 		{
-			if (_filled.color.a < 1)
+			if (_sprite.color.a < 1)
 			{
-				_filled.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-				_iconRenderer.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+				_sprite.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
 			}
 		}
 
 		public void FadeOutUpdate()
 		{
-			if (_filled.color.a > 0)
+			if (_sprite.color.a > 0)
 			{
-				_filled.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
-				_iconRenderer.color += new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
+				_sprite.color -= new Color(0, 0, 0, Time.fixedDeltaTime * 0.5f);
 			}
 		}
 
