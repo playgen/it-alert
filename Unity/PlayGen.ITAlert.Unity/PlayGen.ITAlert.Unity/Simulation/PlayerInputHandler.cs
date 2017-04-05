@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
 	public class PlayerInputHandler : MonoBehaviour
 	{
 		private List<RaycastHit2D> _lastClicked = new List<RaycastHit2D>();
+
+		[SerializeField]
+		private Director _director;
 
 		#region Initialization 
 
@@ -22,14 +24,17 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void HandleInput()
 		{
-			if (Input.GetMouseButtonDown(0))
+			if (_director.Active)
 			{
-				OnClick(true);
-			}
+				if (Input.GetMouseButtonDown(0))
+				{
+					OnClick(true);
+				}
 
-			if (Input.GetMouseButtonUp(0))
-			{
-				OnClick(false);
+				if (Input.GetMouseButtonUp(0))
+				{
+					OnClick(false);
+				}
 			}
 		}
 

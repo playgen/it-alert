@@ -86,18 +86,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private float _itemZ;
 
-        private bool _beingClicked { get; set; }
+		private bool _beingClicked { get; set; }
 
-        #endregion
+		#endregion
 
 
-        #region movement constants
+		#region movement constants
 
-        //private static float _connectionScaleCoefficient;
-        // TODO: read from sim constants
-        private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
+		//private static float _connectionScaleCoefficient;
+		// TODO: read from sim constants
+		private static readonly int PathPointsInSubsystem = SimulationConstants.SubsystemPositions;
 		private const int SquareSideCount = 4;
-		private static readonly float PointsPerSide = (float) PathPointsInSubsystem / SquareSideCount;
+		private static readonly float PointsPerSide = (float)PathPointsInSubsystem / SquareSideCount;
 
 		#endregion
 
@@ -132,7 +132,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			DropCollider = GetComponent<BoxCollider2D>();
 
 			// TODO: these should probably be UIEntities
-			_itemZ = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>().position.z;
+			_itemZ = ((GameObject)Resources.Load("Item")).GetComponent<RectTransform>().position.z;
 		}
 
 		protected override void OnInitialize()
@@ -193,8 +193,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			var subsystemZ = ((GameObject)Resources.Load("Subsystem")).transform.position.z;
 
-			var relativeX = _coordinate2D.X - ((Director.NetworkDimensions.x -1) / 2);
-			var relativeY = _coordinate2D.Y - ((Director.NetworkDimensions.y -1) / 2);
+			var relativeX = _coordinate2D.X - ((Director.NetworkDimensions.x - 1) / 2);
+			var relativeY = _coordinate2D.Y - ((Director.NetworkDimensions.y - 1) / 2);
 
 			GetComponent<RectTransform>().anchoredPosition = new Vector3(relativeX * Director.SubsystemSpacing.x, -1 * relativeY * Director.SubsystemSpacing.y, subsystemZ);
 		}
@@ -217,7 +217,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			UpdateItemContainers();
 
 			UpdateResourceVisibility();
-		} 
+		}
 
 		private void ForEachItemContainer(Action<int, ItemContainer> action)
 		{
@@ -236,7 +236,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateResourceVisibility()
 		{
-			if (_visitors != null 
+			if (_visitors != null
 				&& Director.Player != null
 				&& _visitors.Values.Contains(Director.Player.Id))
 			{
@@ -350,7 +350,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private float GetOffsetPositionAlongSquare(int pathPoint, float scale)
 		{
 			pathPoint = pathPoint % PathPointsInSubsystem; // Wrap around
-			// Point along the perimeter as if it were a straight line.
+														   // Point along the perimeter as if it were a straight line.
 			var halfScale = scale / 2;
 			var progressAlongSide = pathPoint / PointsPerSide;
 			var offsetPositionAlong = (progressAlongSide + halfScale) % (SquareSideCount * scale);  // Offsets the position so that entry points are half way along each square side.
@@ -363,19 +363,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnClickDown()
 		{
-            _beingClicked = true;
+			_beingClicked = true;
+			_blink.enabled = _beingClicked;
 		}
 
-        public bool OnClickUp()
-        {
-            _blink.enabled = _beingClicked;
-            _beingClicked = false;
-            return _blink.enabled;
-        }
+		public bool OnClickUp()
+		{
+			var wasClicked = _beingClicked;
+			_beingClicked = false;
+			_blink.enabled = _beingClicked;
+			return wasClicked;
+		}
 
-        public void ClickReset()
-        {
-            _beingClicked = false;
-        }
-    }
+		public void ClickReset()
+		{
+			_beingClicked = false;
+		}
+	}
 }
