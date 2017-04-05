@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
 			var subsystemHits = hits.SingleOrDefault(d => d.collider.tag.Equals(Tags.Subsystem));
-			var itemHits = hits.SingleOrDefault(d => d.collider.tag.Equals(Tags.Item));
+			var itemHits = hits.Count(d => d.collider.tag.Equals(Tags.Item)) == 1 ? hits.Single(d => d.collider.tag.Equals(Tags.Item)) : default(RaycastHit2D);
 			var itemContainerHits = hits.SingleOrDefault(d => d.collider.tag.Equals(Tags.ItemContainer));
 
 			if (subsystemHits)
@@ -111,16 +111,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
         private void OnClickItemInContainer(RaycastHit2D itemHit, RaycastHit2D containerHit, bool down)
         {
             var item = itemHit.collider.GetComponent<ItemBehaviour>();
+            var itemdrag = itemHit.collider.GetComponent<ItemDragBehaviour>();
             var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
             if (down)
             {
-                item.OnClickDown();
+                if (container.OnClickDown())
+                {
+                    itemdrag.OnClickDown(containerHit);
+                }
                 _lastClicked.Add(itemHit);
                 _lastClicked.Add(containerHit);
             }
             else
             {
-                container.OnClickUp(item);
+                container.OnClickUp(item, itemdrag.OnClickUp());
             }
         }
 
@@ -146,7 +150,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
         private void ItemClickReset(RaycastHit2D itemHit)
         {
-            var item = itemHit.collider.GetComponent<ItemBehaviour>();
+            var item = itemHit.collider.GetComponent<ItemDragBehaviour>();
             item.ClickReset();
         }
 
