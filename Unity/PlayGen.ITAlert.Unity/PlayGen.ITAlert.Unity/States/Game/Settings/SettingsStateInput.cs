@@ -11,7 +11,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 	{
 		private GameObject _settingsPanel;
 		private SettingCreation _creator;
-		private Dropdown _resolution;
+	    private Dropdown _language;
+        private Dropdown _resolution;
 		private Toggle _fullScreen;
 		private Toggle _voiceEnabled;
 		private Slider _microphone;
@@ -30,7 +31,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_creator.Wipe();
 			_creator.SetLabelAlignment(TextAnchor.MiddleLeft);
 			_creator.Custom<Text>("Display", false);
-			_resolution = _creator.Resolution(960, 540);
+		    _language = _creator.Language(false);
+            _resolution = _creator.Resolution(960, 540);
 			_fullScreen = _creator.FullScreen();
 			_creator.Custom<Text>("Voice", true);
 			_voiceEnabled = _creator.Custom<Toggle>("Voice Enabled", true);
