@@ -46,7 +46,7 @@
     <Compile Include="Scenarios\GraphDemos.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial1_Introduction.cs" />
     <Compile Include="Scenarios\BigGraphTest.cs" />
-    <Compile Include="Scenarios\Tutorial\Tutorial3_MovementSpeed.cs" />
+    <Compile Include="Scenarios\Tutorial\Tutorial3_Bandwidth.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial4_Mutation.cs" />
   </ItemGroup>
   <ItemGroup>

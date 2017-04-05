@@ -51,8 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 				if (itemTuple.Component2.Value.HasValue
 					&& _locationMatcherGroup.TryGetMatchingEntity(itemTuple.Component2.Value.Value, out var locationTuple))
 				{
-					var combinedGenome = itemTuple.Component1.TargetGenome 
-						| locationTuple.Component2.Items.Where(ic => ic?.Item != null && ic.Item.Value != itemId)
+					var combinedGenome = itemTuple.Component1.TargetGenome | locationTuple.Component2.Items.Where(ic => ic?.Item != null && ic.Item.Value != itemId)
 							.Join(_antivirusMatcherGroup.MatchingEntities.Where(av => av.Component4.ActivationState == ActivationState.Active && (AllowSamePlayerActivation || av.Component3.Value != itemTuple.Component3.Value)),
 								k => k.Item.Value,
 								k => k.Entity.Id,
