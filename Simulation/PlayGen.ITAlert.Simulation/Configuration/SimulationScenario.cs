@@ -11,6 +11,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public IPlayerConfigFactory PlayerConfigFactory { get; set; }
 
+		public Dictionary<string, Dictionary<string, string>> Internationalization { get; set; }
 
 	}
 }

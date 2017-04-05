@@ -21,7 +21,7 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 				{
 					ComponentTemplate = new MovementSpeed()
 					{
-						Value = 1,
+						Value = 2,
 					}
 				},
 			});

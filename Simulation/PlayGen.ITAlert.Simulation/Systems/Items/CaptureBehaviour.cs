@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Components;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -71,10 +72,41 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 						&& itemTuple.Component3.Value.HasValue
 						&& (malwareVisitor.Component2.VisibleTo & playerTuple.Component2.Value) == playerTuple.Component2.Value)
 					{
-						itemTuple.Component1.CapturedGenome = malwareVisitor.Component1.Value;
+						// cyclical behaviour for capture on advanced genomes
+
+						do
+						{
+							int gene = 0;
+
+							switch (itemTuple.Component1.CapturedGenome)
+							{
+								case 0:
+									gene = SimulationConstants.MalwareGeneRed;
+									break;
+								case SimulationConstants.MalwareGeneRed:
+									gene = SimulationConstants.MalwareGeneGreen;
+									break;
+								case SimulationConstants.MalwareGeneGreen:
+									gene = SimulationConstants.MalwareGeneBlue;
+									break;
+								case SimulationConstants.MalwareGeneBlue:
+									gene = SimulationConstants.MalwareGeneRed;
+									break;
+							}
+
+							if (HasGene(malwareVisitor.Component1.Value, gene))
+							{
+								itemTuple.Component1.CapturedGenome = gene;
+							}
+						} while (itemTuple.Component1.CapturedGenome == 0);
 					}
 				}
 			}
+		}
+
+		private bool HasGene(int genome, int gene)
+		{
+			return (genome & gene) == gene;
 		}
 	}
 }
