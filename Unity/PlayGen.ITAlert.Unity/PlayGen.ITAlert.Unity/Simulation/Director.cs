@@ -51,6 +51,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public int Tick => SimulationRoot?.ECS?.CurrentTick ?? 0;
 
+		public bool Active => _terminateSignal.WaitOne(0) == false;
+
 		/// <summary>
 		/// Simulation  Container
 		/// </summary>

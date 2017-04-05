@@ -74,11 +74,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 					{
 						// cyclical behaviour for capture on advanced genomes
 
+						int gene = itemTuple.Component1.CapturedGenome;
 						do
 						{
-							int gene = 0;
 
-							switch (itemTuple.Component1.CapturedGenome)
+							switch (gene)
 							{
 								case 0:
 									gene = SimulationConstants.MalwareGeneRed;
@@ -98,7 +98,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 							{
 								itemTuple.Component1.CapturedGenome = gene;
 							}
-						} while (itemTuple.Component1.CapturedGenome == 0);
+						} while (HasGene(malwareVisitor.Component1.Value, gene) == false);
 					}
 				}
 			}
