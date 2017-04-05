@@ -52,12 +52,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool ClickEnable { get; set; }
 
-        private Vector2 _defaultPosition;
-        private Transform _parentCanvas;
-
-        private bool _beingClicked { get; set; }
-        private Vector2 _dragPosition { get; set; }
-
         #region Initialization
 
         protected override void OnInitialize()
@@ -87,12 +81,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-        public void StartPosition(Vector2 pos, Transform parent)
-        {
-            _defaultPosition = pos;
-            _parentCanvas = parent;
-        }
-
 		#endregion
 
 		#region Unity Update
@@ -103,12 +91,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
         {
-            if (_beingClicked)
-            {
-                var z = transform.position.z;
-                GetComponent<RectTransform>().anchoredPosition = ((Vector2)Input.mousePosition / ((transform.lossyScale.x/ transform.localScale.x) * _parentCanvas.transform.localScale.x)) - _dragPosition;
-                transform.position = new Vector3(transform.position.x, transform.position.y, z);
-            }
+            
 		}
 
 		#endregion
@@ -129,7 +112,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& _currentLocation.Value.HasValue == false)
 			{
 				gameObject.SetActive(false);
-                ClickReset();
             }
 			else
 			{
@@ -228,20 +210,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#region player interaction
 
 		public bool CanActivate => _activation.ActivationState == ActivationState.NotActive;
-
-        public void OnClickDown()
-        {
-            Debug.Log("Item OnClick");
-
-            _beingClicked = true;
-            _dragPosition = ((Vector2)Input.mousePosition / ((transform.lossyScale.x / transform.localScale.x) * _parentCanvas.transform.localScale.x)) - _defaultPosition;
-        }
-
-        public void ClickReset()
-        {
-            _beingClicked = false;
-            GetComponent<RectTransform>().anchoredPosition = _defaultPosition;
-        }
 
         #endregion
     }

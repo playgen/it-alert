@@ -127,24 +127,26 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
             }
         }
 
-        public void OnClickDown()
+        public bool OnClickDown()
         {
             _beingClicked = true;
+            return _itemContainer.CanRelease;
         }
 
-        public void OnClickUp(ItemBehaviour item = null)
+        public void OnClickUp(ItemBehaviour item = null, bool isDrag = false)
         {
-            if (_beingClicked)
+            if (_beingClicked && !isDrag)
             {
                 Debug.Log("ItemContainer OnClick");
 
                 Click?.Invoke(this);
-                _beingClicked = false;
             }
             else if (item && _itemContainer?.Item == null)
             {
+                item.gameObject.SetActive(false);
                 Drag?.Invoke(this, item);
             }
+            ClickReset();
         }
 
         public void ClickReset()
