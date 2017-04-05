@@ -47,11 +47,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#region public events
 
 		public event Action<ItemBehaviour> Click;
-		
+
 		#endregion
 
 		public bool ClickEnable { get; set; }
-		
+
 		#region Initialization
 
 		protected override void OnInitialize()
@@ -91,7 +91,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-//			_dragCount = Math.Max(0, --_dragCount);
+
 		}
 
 		#endregion
@@ -137,7 +137,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					var playerColour = ((PlayerBehaviour)owner.EntityBehaviour).PlayerColor;
 					_activationTimerImage.color = playerColour;
 					_backgroundSprite.color = playerColour;
-					
+
 					//TODO: extract item specific logic to subclasses
 					if (_antivirus != null)
 					{
@@ -149,11 +149,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					}
 				}
 			}
-			else 
+			else
 			{
 				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
 				_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
-				
+
 				//TODO: extract item specific logic to subclasses
 				if (_antivirus != null)
 				{
@@ -200,7 +200,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		}
 
 		#endregion
-		
+
 		private void TriggerHint()
 		{
 			//TODO: reimplement
@@ -211,15 +211,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool CanActivate => _activation.ActivationState == ActivationState.NotActive;
 
-		public void OnClick()
-		{
-			LogProxy.Info("Item OnClick");
-
-			if (ClickEnable)
-			{
-				Click?.Invoke(this);
-			}
-		}
 
 		#endregion
 	}

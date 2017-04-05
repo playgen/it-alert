@@ -14,6 +14,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public event Action<ItemContainerBehaviour> Click;
 
+		public event Action<ItemContainerBehaviour, ItemBehaviour> Drag;
+
 		public event Action<ContainerState> StateChanged;
 
 		#endregion
@@ -27,9 +29,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private BlinkBehaviour _blinkBehaviour;
 
-		#endregion
+		private bool _beingClicked { get; set; }
 
-		public bool CanCapture { get; set; }
+		#endregion
 
 		public bool ClickEnable { get; set; }
 
@@ -82,13 +84,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (_state != state)
 			{
 				_state = state;
-				_blinkBehaviour.enabled = state == ContainerState.Capturing || state == ContainerState.Releasing;
-				ClickEnable = CanCapture || state == ContainerState.HasItem || state == ContainerState.Empty;
-				_containerImage.color = state == ContainerState.Disabled 
+				ClickEnable = state == ContainerState.HasItem || state == ContainerState.Empty;
+				_containerImage.color = state == ContainerState.Disabled
 					? UIConstants.ItemContainerDisabledColor
 					: UIConstants.ItemContainerEnabledColor;
 
-					OnStateChanged(state);
+				OnStateChanged(state);
 			}
 		}
 
@@ -112,72 +113,45 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var hasItem = _itemContainer?.Item != null;
 			var isEnabled = _itemContainer?.Enabled == true;
 
-			switch (_state)
+			if (hasItem)
 			{
-				case ContainerState.Capturing:
-					if (hasItem)
-					{
-						Transition(ContainerState.HasItem);
-					}
-					break;
-				case ContainerState.Releasing:
-					if (!hasItem)
-					{
-						Transition(ContainerState.Empty);
-					}
-					break;
-				default:
-					if (hasItem)
-					{
-						Transition(ContainerState.HasItem);
-					}
-					else if (isEnabled)
-					{
-						Transition(ContainerState.Empty);
-					}
-					else
-					{
-						Transition(ContainerState.Disabled);
-					}
-					break;
+				Transition(ContainerState.HasItem);
 			}
-
+			else if (isEnabled)
+			{
+				Transition(ContainerState.Empty);
+			}
+			else
+			{
+				Transition(ContainerState.Disabled);
+			}
 		}
 
-		public void OnClick()
+		public bool OnClickDown()
 		{
-			LogProxy.Info("ItemContainer OnClick");
+			_beingClicked = true;
+			return _itemContainer.CanRelease;
+		}
 
-			if (ClickEnable)
+		public void OnClickUp(ItemBehaviour item = null, bool isDrag = false)
+		{
+			if (_beingClicked && !isDrag)
 			{
-				switch (_state)
-				{
-					case ContainerState.Empty:
-						if (CanCapture && (_itemContainer?.CanCapture() ?? false))
-						{
-							Transition(ContainerState.Capturing);
-						}
-						break;
-					case ContainerState.Capturing:
-						Transition(ContainerState.Empty);
-						break;
-					case ContainerState.Releasing:
-						Transition(ContainerState.HasItem);
-						break;
-					case ContainerState.Disabled:
-						break;
-					case ContainerState.HasItem:
-						if (CanCapture && (_itemContainer?.CanRelease ?? false))
-						{
-							Transition(ContainerState.Releasing);
-						}
-						break;
-				}
+				LogProxy.Info("ItemContainer OnClick");
 
 				Click?.Invoke(this);
-
 			}
+			else if (item && _itemContainer?.Item == null)
+			{
+				item.gameObject.SetActive(false);
+				Drag?.Invoke(this, item);
+			}
+			ClickReset();
+		}
 
+		public void ClickReset()
+		{
+			_beingClicked = false;
 		}
 
 		#endregion

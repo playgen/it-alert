@@ -184,6 +184,7 @@
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
+    <Compile Include="Simulation\Behaviours\ItemDragBehaviour.cs" />    
     <Compile Include="Simulation\AnimateConnectionUV.cs" />
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />
