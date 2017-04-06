@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224162543861751892}
   - component: {fileID: 222765574052762208}
   - component: {fileID: 114431713259464198}
+  - component: {fileID: 114048259277575866}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -102,7 +103,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224471220422473544}
   - component: {fileID: 222685762677647228}
-  - component: {fileID: 114483044343369706}
+  - component: {fileID: 114091059208939316}
+  - component: {fileID: 114270469106900026}
   m_Layer: 5
   m_Name: PageHeader
   m_TagString: Untagged
@@ -140,6 +142,7 @@ GameObject:
   - component: {fileID: 224870676545418780}
   - component: {fileID: 222423593892714788}
   - component: {fileID: 114086101189189420}
+  - component: {fileID: 114262434619425226}
   m_Layer: 5
   m_Name: PageText
   m_TagString: Untagged
@@ -194,6 +197,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114048259277575866
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1079135228989202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: FEEBACK_BUTTON_CONTINUE
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114086101189189420
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -226,9 +243,40 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Please rank the players performance in the following categories:
-
-    - Drag the player names into the columns -'
+  m_Text: Rank your teammates in each category
+--- !u!114 &114091059208939316
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470311031528944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: d2d22ca2cb8eadc4bbefa57c867abf73, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: d2d22ca2cb8eadc4bbefa57c867abf73, type: 3}
+    m_FontSize: 48
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 256
+    m_Alignment: 7
+    m_AlignByGeometry: 1
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Team Feedback
 --- !u!114 &114183636628408734
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -256,6 +304,34 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114262434619425226
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1500950739185344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: FEEDBACK_LABEL_INSTRUCTION
+  ToUpper: 0
+  LanguageOverride: 
+--- !u!114 &114270469106900026
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1470311031528944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: FEEDBACK_LABEL_TITLE
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114365035840674218
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,33 +433,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Continue
---- !u!114 &114483044343369706
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1470311031528944}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
-      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 658e1496db0eec445952179e88b0e96b, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 1
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
 --- !u!114 &114656895514516906
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -451,7 +500,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: please rank all players before proceeding
+  m_Text: Not all players have been ranked in category {0}
 --- !u!222 &222171418678153956
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -505,7 +554,7 @@ RectTransform:
   m_AnchorMin: {x: 0.35, y: 0}
   m_AnchorMax: {x: 0.65, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 34.351444, y: 0}
+  m_SizeDelta: {x: -62.38393, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224162543861751892
 RectTransform:
@@ -594,7 +643,7 @@ RectTransform:
   m_Father: {fileID: 224489901381677994}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.75}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}

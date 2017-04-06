@@ -9,6 +9,7 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
@@ -177,16 +178,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
 			}
 
-			foreach (var section in _evaluationSections)
+			for (int i = 0; i < _evaluationSections.Length; i++)
 			{
 				var sectionList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 
 				var headerObj = UnityEngine.Object.Instantiate(_entryPrefab, sectionList.transform, false);
 				headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-				headerObj.GetComponent<Text>().text = section;
+				headerObj.GetComponent<Text>().text = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (i + 1));
 
-				_playerRankings.Add(section, new List<string>());
-				_rankingObjects.Add(section, new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
+				_playerRankings.Add(_evaluationSections[i], new List<string>());
+				_rankingObjects.Add(_evaluationSections[i], new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
 
 				foreach (var player in players)
 				{
@@ -194,11 +195,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
 
 					var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, sectionList.transform, false);
-					_playerRankings[section].Add(null);
-					_rankingObjects[section].Add(
+					_playerRankings[_evaluationSections[i]].Add(null);
+					_rankingObjects[_evaluationSections[i]].Add(
 						new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(),
 							null));
-					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(section);
+					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(_evaluationSections[i]);
 				}
 			}
 			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
