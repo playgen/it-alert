@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Archetypes;
 using Engine.Configuration;
 using Engine.Startup;
 using Engine.Util;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using Random = Engine.Util.Random;
@@ -27,7 +29,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						Name = $"Subsystem {i + (j * width)}",
 						X = i,
 						Y = j,
-						ArchetypeName = nameof(GameEntities.Subsystem),
+						Archetype = SubsystemNode.Archetype,
 					});
 				}
 			}
@@ -62,11 +64,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.East, nextX, weight)
 						{
-							ArchetypeName = nameof(GameEntities.Connection)
+							ArchetypeName = ConnectionNode.Archetype,
 						});
 						edgeConfigs.Add(new EdgeConfig(nextX, EdgeDirection.West, thisId, weight)
 						{
-							ArchetypeName = nameof(GameEntities.Connection)
+							ArchetypeName = ConnectionNode.Archetype,
 						});
 					}
 					if (i < height - 1)
@@ -74,11 +76,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.South, nextY, weight)
 						{
-							ArchetypeName = nameof(GameEntities.Connection)
+							ArchetypeName = ConnectionNode.Archetype,
 						});
 						edgeConfigs.Add(new EdgeConfig(nextY, EdgeDirection.North, thisId, weight)
 						{
-							ArchetypeName = nameof(GameEntities.Connection)
+							ArchetypeName = ConnectionNode.Archetype,
 						});
 					}
 				}
@@ -108,11 +110,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.East, nextX.Id, weight)
 							{
-								ArchetypeName = nameof(GameEntities.Connection)
+								ArchetypeName = ConnectionNode.Archetype,
 							});
 							edgeConfigs.Add(new EdgeConfig(nextX.Id, EdgeDirection.West, currentNode.Id, weight)
 							{
-								ArchetypeName = nameof(GameEntities.Connection)
+								ArchetypeName = ConnectionNode.Archetype,
 							});
 						}
 
@@ -121,11 +123,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.South, nextY.Id, weight)
 							{
-								ArchetypeName = nameof(GameEntities.Connection)
+								ArchetypeName = ConnectionNode.Archetype,
 							});
 							edgeConfigs.Add(new EdgeConfig(nextY.Id, EdgeDirection.North, currentNode.Id, weight)
 							{
-								ArchetypeName = nameof(GameEntities.Connection)
+								ArchetypeName = ConnectionNode.Archetype,
 							});
 						}
 					}
@@ -175,7 +177,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					itemConfigs.Add(new ItemConfig()
 					{
 						StartingLocation = random.Next(0, nodeConfigs.Count),
-						ArchetypeName = item.Key,
+						Archetype = item.Key,
 					});
 				}
 			}
@@ -203,10 +205,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static SimulationConfiguration GenerateConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
 			IEnumerable<EdgeConfig> edgeConfiguration,
 			IEnumerable<PlayerConfig> playerConfiguration,
-			IEnumerable<ItemConfig> itemConfiguration)
+			IEnumerable<ItemConfig> itemConfiguration,
+			IEnumerable<Archetype> archetypes)
 		{
 			// the helper is fine here since archetype ordering doesnt matter
-			var archetypes = ArchetypeHelper.GetPublicStaticArchetypes(typeof(GameEntities));
 
 			// TODO: the order of these is really important
 			// TODO: so we need a smarter helper than we can use on archetypes
@@ -215,7 +217,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				edgeConfiguration?.ToList(),
 				playerConfiguration?.ToList(),
 				itemConfiguration?.ToList(),
-				archetypes,
+				archetypes.ToList(),
 				systems,
 				new LifeCycleConfiguration());
 			// TODO: implement ComponentDependency/SystemDependency attribute validation of configuration
@@ -223,14 +225,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			return configuration;
 		}
 
-		public static SimulationConfiguration GenerateConfiguration(int width, int height, List<PlayerConfig> playerConfigs, int items)
+		public static SimulationConfiguration GenerateConfiguration(int width, int height, List<PlayerConfig> playerConfigs, int items, List<Archetype> archetypes)
 		{
 			var nodeConfigs = GenerateGraphNodes(width, height);
 			var edgeConfigs = GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
 			var itemConfigs = GetRandomItems(nodeConfigs, items);
 
-			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs);
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, archetypes);
 			return configuration;
 		}
 	}

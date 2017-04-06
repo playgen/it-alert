@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Engine.Commands;
 using Engine.Components;
-using PlayGen.ITAlert.Simulation.Components.Activation;
+using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;

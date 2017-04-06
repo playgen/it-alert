@@ -9,6 +9,7 @@ using Engine.Testing;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Archetypes
 {
@@ -18,12 +19,12 @@ namespace PlayGen.ITAlert.Simulation.Tests.Archetypes
 		[Test]
 		public void TestComponentCreationViaArchetype()
 		{
-			var configuration = new ECSConfiguration(new List<Archetype>(){ GameEntities.AntivirusWorkstation }, null, null);
+			var configuration = new ECSConfiguration(new List<Archetype>(){ AntivirusWorkstation.Archetype }, null, null);
 
 			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
 
 			Entity entity;
-			ecs.TryCreateEntityFromArchetype(GameEntities.AntivirusWorkstation.Name, out entity);
+			ecs.TryCreateEntityFromArchetype(AntivirusWorkstation.Archetype, out entity);
 
 		}
 

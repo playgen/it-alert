@@ -36,7 +36,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigurationHelper.cs" />
-    <Compile Include="GameEntities.cs" />
     <Compile Include="GameSystems.cs" />
     <Compile Include="PlayerColours.cs" />
     <Compile Include="PlayerConfigFactory.cs" />
@@ -65,12 +64,48 @@
       <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
       <Name>Engine.Startup</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
+      <Project>{2A59AC2C-B3F4-4416-A74A-FA1B086A2F5B}</Project>
+      <Name>Engine.Systems.Activation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.RNG\Engine.Systems.RNG.csproj">
+      <Project>{291FBAA9-7900-460D-A841-A4B0F7DD5154}</Project>
+      <Name>Engine.Systems.RNG</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Archetypes\PlayGen.ITAlert.Simulation.Archetypes.csproj">
+      <Project>{ec170b34-006e-4e16-b3d4-c9f47040eb74}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Archetypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Antivirus\PlayGen.ITAlert.Simulation.Modules.Antivirus.csproj">
+      <Project>{c7cffbf9-3c24-4b6f-98af-b42d2308af67}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Antivirus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.GarbageDisposal\PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.csproj">
+      <Project>{6f7726b7-9a89-42d7-aaf7-9dfcacf36173}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.GarbageDisposal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Malware\PlayGen.ITAlert.Simulation.Modules.Malware.csproj">
+      <Project>{b03725f8-f6d3-4280-bec4-cfa9ef403c84}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Malware</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Resources\PlayGen.ITAlert.Simulation.Modules.Resources.csproj">
+      <Project>{6db29f2d-f16f-4680-a3c2-27080606cc9d}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Transfer\PlayGen.ITAlert.Simulation.Modules.Transfer.csproj">
+      <Project>{b7b8ade3-22cc-42b8-a9b1-ac13d158a5f8}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Transfer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Tutorial\PlayGen.ITAlert.Simulation.Modules.Tutorial.csproj">
+      <Project>{08f0ac02-3291-4a19-a7fa-0ff2a59cea90}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Tutorial</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario\PlayGen.ITAlert.Simulation.Scenario.csproj">
-      <Project>{45775b35-274a-40cf-bfe3-ad08f594c99b}</Project>
+      <Project>{45775B35-274A-40CF-BFE3-AD08F594C99B}</Project>
       <Name>PlayGen.ITAlert.Simulation.Scenario</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.UI\PlayGen.ITAlert.Simulation.UI.csproj">

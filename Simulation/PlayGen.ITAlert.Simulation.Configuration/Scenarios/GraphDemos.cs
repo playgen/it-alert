@@ -47,7 +47,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+
+			var archetypes = new List<Archetype>
+			{
+
+			};
+
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
 
 			#endregion
 

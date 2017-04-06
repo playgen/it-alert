@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Engine.Commands;
 using Engine.Components;
-using PlayGen.ITAlert.Simulation.Components.Activation;
+using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -36,14 +37,13 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryProcessCommand(ActivateItemCommand command)
 		{
-			ComponentEntityTuple<Item, Activation, CurrentLocation, Owner> itemTuple;
-			ComponentEntityTuple<Subsystem> subsystemTuple;
-			if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
-				&& itemTuple.Component2.ActivationState == ActivationState.NotActive
-				&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId)
+			if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
+				&& itemTuple.Component2.ActivationState == ActivationState.NotActive	// item is not active
+				&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId) // player can activate item
 				// TODO: should an item have to have a location to be activated?
-				&& itemTuple.Component3.Value.HasValue
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out subsystemTuple))
+				&& _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId && it.Component2.ActivationState != ActivationState.NotActive) == false	// player has no other active items
+				&& itemTuple.Component3.Value.HasValue	// item is on a subsystem
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
 			{
 				itemTuple.Component2.Activate();
 				itemTuple.Component4.Value = command.PlayerId;

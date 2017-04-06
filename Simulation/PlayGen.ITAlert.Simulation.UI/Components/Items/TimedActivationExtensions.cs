@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using PlayGen.ITAlert.Simulation.Components.Activation;
+using Engine.Systems.Activation.Components;
 
 namespace PlayGen.ITAlert.Simulation.UI.Components.Items
 {

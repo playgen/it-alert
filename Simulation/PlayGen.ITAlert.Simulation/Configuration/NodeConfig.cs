@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public NodeType Type { get; }
 
-		public string ArchetypeName { get; set; }
+		public string Archetype { get; set; }
 		
 		public int X { get; set; }
 		public int Y { get; set; }

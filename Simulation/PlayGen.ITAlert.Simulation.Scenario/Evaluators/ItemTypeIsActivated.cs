@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Components;
 using Engine.Evaluators;
-using PlayGen.ITAlert.Simulation.Components.Activation;
+using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Configuration;

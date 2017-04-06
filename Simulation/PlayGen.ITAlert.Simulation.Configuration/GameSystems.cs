@@ -3,18 +3,21 @@ using Engine.Commands;
 using Engine.Configuration;
 using Engine.Lifecycle;
 using Engine.Systems;
+using Engine.Systems.Activation;
+using Engine.Systems.RNG;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
-using PlayGen.ITAlert.Simulation.Commands.Tutorial;
-using PlayGen.ITAlert.Simulation.Systems.Enhancements;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
+using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems;
 using PlayGen.ITAlert.Simulation.Systems.Initialization;
 using PlayGen.ITAlert.Simulation.Systems.Items;
-using PlayGen.ITAlert.Simulation.Systems.Malware;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
-using PlayGen.ITAlert.Simulation.Systems.Planning;
 using PlayGen.ITAlert.Simulation.Systems.Players;
-using PlayGen.ITAlert.Simulation.Systems.Resources;
-using PlayGen.ITAlert.Simulation.Systems.Tutorial;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -135,30 +138,30 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#region item activation system
 
-			new SystemConfiguration<ItemActivationSystem>()
+			new SystemConfiguration<ActivationSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
 				{
-					new SystemExtensionConfiguration<IItemActivationExtension>()
+					new SystemExtensionConfiguration<IActivationExtension>()
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
 
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
 							// items
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
 							// enhancement actiovators
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<GarbageDisposalActivatorBehaviour>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<TransferBehaviour>(), 
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<GarbageDisposalActivatorBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TransferBehaviour>(), 
 
 							// TODO: need to find a good way to append extensions from the scenario definition
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
-							new SystemExtensionConfiguration<IItemActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
 						}
 					}
 				}
@@ -172,26 +175,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			// TODO: decide if the enhancement system should be responsible for manipulating the item storage of enhanced systems
 			// or if the item storage system should have an extension
-			new SystemConfiguration<EnhancementSystem>()
-			{
-				ExtensionConfiguration = new SystemExtensionConfiguration[]
-				{
-					// TODO: this kind of pattern might be getting a bit too verbose
-					// perhaps there should not be system extensions, or perhaps a subsystem of extension should be first class systems
-					// promoted systems could be processed according to interfaces implemented rather than being configured as an extension
-					new SystemExtensionConfiguration<IEnhancementSystemExtension>()
-					{
-						Implementations = new SystemExtensionImplementation[]	
-						{
-							// this very long winded call is necessary to enforce the extension implementation of the extension interface
-							// TODO: can the extension interface be inferred from the parent class?
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusEnhancementSystemExtension>(),
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<GarbageDisposalEnhancementSystemExtension>(),
-							new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<TransferEnhancementSystemExtension>(),
-						}
-					}
-				}
-			},
+			new SystemConfiguration<AntivirusEnhancementSystem>(),
+			new SystemConfiguration<GarbageDisposalEnhancementSystem>(),
+			new SystemConfiguration<TransferEnhancementSystem>(),
 
 			#endregion
 

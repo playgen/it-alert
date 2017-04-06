@@ -6,15 +6,16 @@ using Engine.Archetypes;
 using Engine.Configuration;
 using Engine.Entities;
 using NUnit.Framework;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Resources;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Resources.Components;
+using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Simulation.Systems.Items;
-using PlayGen.ITAlert.Simulation.Systems.Resources;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Components
 {
@@ -29,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 					X = 0,
 					Y = 0,
 					Name = "Node 0",
-					ArchetypeName = nameof(GameEntities.Subsystem)
+					Archetype = SubsystemNode.Archetype,
 				}
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
@@ -39,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				new ItemConfig()
 				{
 					StartingLocation = 0,
-					ArchetypeName = "Scanner",
+					Archetype = "Scanner",
 				}
 			};
 
@@ -64,8 +65,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 
 			var archetypes = new List<Archetype>()
 			{
-				GameEntities.Subsystem,
-				GameEntities.Scanner,
+				SubsystemNode.Archetype,
+				ScannerTool.Archetype,
 			};
 
 			var lifecycleConfig = new LifeCycleConfiguration();
