@@ -5,6 +5,7 @@ using Engine.Components;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators.Filters
 {

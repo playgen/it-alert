@@ -5,12 +5,16 @@ using Engine.Archetypes;
 using Engine.Evaluators;
 using Engine.Lifecycle;
 using Engine.Sequencing;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Malware;
-using PlayGen.ITAlert.Simulation.Components.Tutorial;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
@@ -26,8 +30,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 		#region scenario specific archetypes
 
-		private static readonly Archetype TutorialScanner = new Archetype("TutorialScanner")
-			.Extends(GameEntities.Scanner)
+		private static readonly Archetype TutorialScanner = new Archetype(nameof(TutorialScanner))
+			.Extends(ScannerTool.Archetype)
 			.HasComponent(new ComponentBinding<ActivationContinue>()
 			{
 				ComponentTemplate = new ActivationContinue()
@@ -36,25 +40,23 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				}
 			});
 
-		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
-			.Extends(GameEntities.Malware)
+		private static readonly Archetype RedTutorialAntivirus = new Archetype(nameof(RedTutorialAntivirus))
+			.Extends(AntivirusTool.Archetype)
+			.HasComponent(new ComponentBinding<Antivirus>()
+			{
+				ComponentTemplate = new Antivirus()
+				{ 
+					TargetGenome = SimulationConstants.MalwareGeneRed,
+				}
+			});
+		private static readonly Archetype RedTutorialVirus = new Archetype(nameof(RedTutorialVirus))
+			.Extends(Virus.Archetype)
 			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneRed,
-				}
-			});
-
-		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
-			.Extends(GameEntities.Malware)
-			.RemoveComponent<MalwarePropogation>()
-			.HasComponent(new ComponentBinding<MalwareGenome>()
-			{
-				ComponentTemplate = new MalwareGenome()
-				{
-					Value = SimulationConstants.MalwareGeneGreen,
 				}
 			});
 
@@ -68,6 +70,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			const int playerCount = 1;
 			const int singlePlayerId = 0;
 
+			var text = new Dictionary<string, Dictionary<string, string>>();
+
 			#region graph
 
 			var nodeLeft = new NodeConfig()
@@ -75,7 +79,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Left",
 				X = 0,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = SubsystemNode.Archetype,
 			};
 
 			var nodeRight = new NodeConfig()
@@ -83,7 +87,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Right",
 				X = 1,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = SubsystemNode.Archetype,
 			};
 
 			#endregion
@@ -98,37 +102,42 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			var itemConfigs = new ItemConfig[0];
 
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
+			var archetypes = new List<Archetype>
+			{
+				SubsystemNode.Archetype,
+				ConnectionNode.Archetype,
+				Player.Archetype,
+				TutorialScanner,
+				RedTutorialAntivirus,
+				RedTutorialVirus,
+			};
 
-			configuration.Archetypes.Add(TutorialScanner);
-			configuration.Archetypes.Add(RedTutorialVirus);
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
 
 			#endregion
 
 			var scenario = new SimulationScenario()
 			{
-				Name = "Introduction",
+				Name = "Tutorial1",
 				Description = "Introduction",
 				MinPlayers = playerCount,
 				MaxPlayers = playerCount,
 				Configuration = configuration,
 
-				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(nameof(GameEntities.Player), new[] { nodeRight.Id }),
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { nodeRight.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
 
 			#region frames
 
+			// 1
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
-						new ShowText(true,
-							"Welcome to IT Alert!", 
-							"You are a system administrator tasked with maintaining the network.",
-							"Let's get started...")
+						new ShowText(true, "Tutorial1_Frame1")
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -138,14 +147,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 2
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, 
-							"Try navigating to another system by clicking on it...")
+						new ShowText(false, "Tutorial1_Frame2")
 					},
 					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -154,14 +162,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 3
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, 
-							"Well done. Now you know how to move around the network!")
+						new ShowText(false, "Tutorial1_Frame3"),
 					},
 					Evaluator = new WaitForSeconds(3),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -170,7 +177,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 4
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
@@ -179,11 +186,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						// TODO: this should disable the cancapture flag of the inventory slot
 						new SetCommandEnabled<PickupItemCommand>(false),	
 						new SetCommandEnabled<ActivateItemCommand>(false),
-						new CreateItem(nameof(TutorialScanner), nodeRight.Id),
-						new ShowText(true, 
-							"The item that has just been spawned on the right is a scanner.",
-							"",
-							"The scanner reveals malware on a system when it is activated.")
+						new CreateItem(TutorialScanner, nodeRight.Id),
+						new ShowText(true, "Tutorial1_Frame4"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -192,54 +196,45 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 5
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, 
-							"To use items you must be located on the same system...")
+						new ShowText(false, "Tutorial1_Frame5"),
 					},
 					Evaluator = new PlayerIsAtLocation(nodeRight.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
-						//ScenarioHelpers.SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
-					// TODO: wait for tutorial currently must be the last evaluator in an AND check because the waithandle is reset after a successful read
 				}
 			);
-
+			// 6
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
-						new ShowText(false,
-							"When you are on the same system as available items they will appear in the tray at the bottom of your screen.",
-							"",
-							"Clicking the item on your tray will activate the item...")
+						new ShowText(false,"Tutorial1_Frame6"),
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					Evaluator = new ItemTypeIsActivated<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
 					},
 				}
 			);
-
+			// 7
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(nameof(RedTutorialVirus), nodeLeft.Id),
-						new ShowText(true,
-							"Malware has infected the Left system! You should investigate...",
-							"",
-							"You'll need to bring the scanner with you...")
+						new CreateMalware(RedTutorialVirus, nodeLeft.Id),
+						new ShowText(true, "Tutorial1_Frame7"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -248,17 +243,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 8
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<PickupItemCommand>(true),
-						new ShowText(false,
-							"To pick up an item you must click on your inventory slot, and then on the item you want to pick up.",
-							"",
-							"The inventory slot is on the right, indicated by the case.")
+						new ShowText(false, "Tutorial1_Frame8")
 					},
 					Evaluator = new ItemTypeIsInInventory<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -268,16 +260,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
+			// 9
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false,
-							"Now it is time to investigate.",
-							"",
-							"Make your way to the left system..")
+						new ShowText(false, "Tutorial1_Frame9"),
 					},
 					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -287,15 +276,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
-			// frame 11
+			// 10
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(true,
-							"You need to use the scanner tool to reveal the source of the problem."),
+						new ShowText(true, "Tutorial1_Frame10"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -304,18 +291,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
-			// frame 12
+			// 11
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<DropItemCommand>(true),
-						new ShowText(false,
-							"First you will have to install the item on the current system",
-							"",
-							"Select your inventory and then click on one of the item slots in the panel at the bottom of the screen.")
+						new ShowText(false, "Tutorial1_Frame11"),
 					},
 					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft.Id)
 						.And(new WaitForTutorialContinue()),
@@ -326,18 +309,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
-			// frame 13
+			// 12
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateItem(nameof(GameEntities.RedAntivirus), nodeRight.Id),
-						new ShowText(false,
-							"You have now revealed the source of the infection.",
-							"",
-							"We've provided you with the necessary antivirus, you'll have to figure out the rest on your own...")
+						new CreateItem(RedTutorialAntivirus, nodeRight.Id),
+						new ShowText(false, "Tutorial1_Frame12"),
 					},
 					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft.Id)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

@@ -42,51 +42,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Archetypes\Actor.cs" />
-    <Compile Include="Archetypes\Connection.cs" />
-    <Compile Include="Archetypes\Item.cs" />
-    <Compile Include="Archetypes\Malware.cs" />
-    <Compile Include="Archetypes\Node.cs" />
-    <Compile Include="Archetypes\Player.cs" />
-    <Compile Include="Archetypes\Subsystem.cs" />
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\CreateItemCommand.cs" />
     <Compile Include="Commands\CreateMalwareCommand.cs" />
-    <Compile Include="Commands\Tutorial\ContinueCommand.cs" />
-    <Compile Include="Commands\Tutorial\HideTextCommand.cs" />
-    <Compile Include="Commands\Tutorial\DisplayTextCommand.cs" />
-    <Compile Include="Components\Activation\ActivationState.cs" />
-    <Compile Include="Components\Activation\Activation.cs" />
-    <Compile Include="Components\Enhacements\TransferEnhancement.cs" />
-    <Compile Include="Components\Enhacements\GarbageDisposalEnhancement.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
     <Compile Include="Components\EntityTypes\Connection.cs" />
     <Compile Include="Components\EntityTypes\IEntityType.cs" />
     <Compile Include="Components\EntityTypes\NonUI.cs" />
-    <Compile Include="Components\EntityTypes\Malware.cs" />
     <Compile Include="Components\EntityTypes\Npc.cs" />
     <Compile Include="Components\EntityTypes\ScenarioText.cs" />
     <Compile Include="Components\EntityTypes\Subsystem.cs" />
     <Compile Include="Components\Items\ActivatorItemContainer.cs" />
     <Compile Include="Components\Items\IItemType.cs" />
     <Compile Include="Components\Items\InventoryItemContainer.cs" />
-    <Compile Include="Components\Items\ItemTypes.cs" />
     <Compile Include="Components\EntityTypes\Item.cs" />
     <Compile Include="Components\EntityTypes\Player.cs" />
     <Compile Include="Components\Items\OutputItemContainer.cs" />
     <Compile Include="Components\Items\TargetItemContainer.cs" />
-    <Compile Include="Components\Malware\MalwareVisibility.cs" />
-    <Compile Include="Components\Malware\MalwarePropogation.cs" />
     <Compile Include="Components\PlayerBitMask.cs" />
-    <Compile Include="Components\Resources\BandwidthResource.cs" />
-    <Compile Include="Components\Resources\IResource.cs" />
-    <Compile Include="Components\Tutorial\ActivationContinue.cs" />
-    <Compile Include="Components\Tutorial\Highlight.cs" />
-    <Compile Include="Components\Tutorial\Text.cs" />
-    <Compile Include="Components\Tutorial\TutorialState.cs" />
     <Compile Include="Configuration\EdgeConfig.cs" />
     <Compile Include="Configuration\IPlayerConfigFactory.cs" />
     <Compile Include="Configuration\ItemConfig.cs" />
@@ -98,64 +74,23 @@
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
-    <Compile Include="Systems\Enhancements\TransferEnhancementSystemExtension.cs" />
-    <Compile Include="Systems\Enhancements\GarbageDisposalEnhancementSystemExtension.cs" />
-    <Compile Include="Systems\Enhancements\AntivirusEnhancementSystemExtension.cs" />
-    <Compile Include="Systems\Enhancements\EnhancementSystem.cs" />
-    <Compile Include="Systems\Enhancements\IEnhancementSystemExtension.cs" />
-    <Compile Include="Systems\Extensions\ItemContainerExtensions.cs" />
+    <Compile Include="Components\Items\ItemContainerExtensions.cs" />
     <Compile Include="Systems\Initialization\GraphSystem.cs" />
     <Compile Include="Systems\Players\DropInventoryOnDisconnect.cs" />
     <Compile Include="Systems\Players\IPlayerSystemBehaviour.cs" />
     <Compile Include="Systems\Players\PlayerSystem.cs" />
-    <Compile Include="Systems\Items\CPUConsumptionIncreasesTimedActivationDurationExtension.cs" />
-    <Compile Include="Systems\Items\TransferBehaviour.cs" />
-    <Compile Include="Systems\Items\CoopMultiColourAntivirusBehaviour.cs" />
-    <Compile Include="Systems\Items\GarbageDisposalActivatorBehaviour.cs" />
-    <Compile Include="Systems\Items\CaptureBehaviour.cs" />
-    <Compile Include="Systems\Items\IItemActivationExtension.cs" />
     <Compile Include="Systems\Items\EntityFactoryExtensions.cs" />
     <Compile Include="Systems\Items\PlayerInventorySystem.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
     <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
-    <Compile Include="Systems\Items\AntivirusBehaviour.cs" />
-    <Compile Include="Systems\Items\AnalyserBehaviour.cs" />
-    <Compile Include="Systems\Items\ScannerBehaviour.cs" />
-    <Compile Include="Systems\Items\TimedActivationExtension.cs" />
-    <Compile Include="Systems\Malware\MutatingPropogator.cs" />
-    <Compile Include="Systems\Malware\CloningPropogator.cs" />
-    <Compile Include="Systems\Malware\BreedingPropogator.cs" />
-    <Compile Include="Systems\Malware\AdjacenetMalwareIncreaseMovementCostSystem.cs" />
-    <Compile Include="Systems\Malware\IMalwarePropogator.cs" />
-    <Compile Include="Systems\Malware\MalwarePropogationSystem.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
-    <Compile Include="Systems\Npc\NpcSystem.cs" />
     <Compile Include="Systems\Planning\IIntentHandler.cs" />
     <Compile Include="Systems\Planning\IntentSystem.cs" />
-    <Compile Include="Components\Enhacements\DatabaseEnhancement.cs" />
-    <Compile Include="Components\Enhacements\AntivirusEnhancement.cs" />
-    <Compile Include="Components\Activation\IActivatable.cs" />
-    <Compile Include="Components\Activation\IActivation.cs" />
-    <Compile Include="Components\Activation\TimedActivation.cs" />
     <Compile Include="Components\Items\IItemContainer.cs" />
     <Compile Include="Components\Intents\ActivateIntent.cs" />
-    <Compile Include="Components\Resources\ConsumeCPU.cs" />
     <Compile Include="Components\Items\ItemActivator.cs" />
-    <Compile Include="Components\Malware\MalwareGenome.cs" />
     <Compile Include="Components\Movement\Destination.cs" />
-    <Compile Include="Components\Resources\CPUResource.cs" />
-    <Compile Include="Components\Resources\MemoryResource.cs" />
-    <Compile Include="Systems\Items\ItemActivationSystem.cs" />
-    <Compile Include="Systems\Items\ItemManagementSystem.cs" />
-    <Compile Include="Systems\Resources\ISubsystemResourceEffect.cs" />
-    <Compile Include="Systems\Resources\ResetMemoryEachTick.cs" />
-    <Compile Include="Systems\Resources\ResetCPUEachTick.cs" />
-    <Compile Include="Systems\Resources\ResourcesSystem.cs" />
-    <Compile Include="Systems\Resources\CPUReducesMovementSpeed.cs" />
-    <Compile Include="Systems\Resources\VisitorsConsumeCPUEffect.cs" />
-    <Compile Include="Systems\Resources\ItemStorageConsumesMemoryEffect.cs" />
-    <Compile Include="Systems\Resources\VisitorsConsumeMemoryEffect.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />
     <Compile Include="Systems\Movement\IMovementSystemExtension.cs" />
     <Compile Include="Systems\Movement\ConnectionMovement.cs" />
@@ -171,7 +106,6 @@
     <Compile Include="Components\Items\Owner.cs" />
     <Compile Include="Components\Movement\VisitorPosition.cs" />
     <Compile Include="Components\Movement\Visitors.cs" />
-    <Compile Include="Components\Resources\ConsumeMemory.cs" />
     <Compile Include="Components\Items\ItemStorage.cs" />
     <Compile Include="Components\Intents\DisownItemIntent.cs" />
     <Compile Include="Components\Intents\InfectSystemIntent.cs" />
@@ -188,9 +122,6 @@
     <Compile Include="Layout\PathFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Exceptions\SimulationException.cs" />
-    <Compile Include="Systems\Tutorial\ContinueActivationExtension.cs" />
-    <Compile Include="Systems\Tutorial\ITutorialSystem.cs" />
-    <Compile Include="Systems\Tutorial\TutorialSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
@@ -213,15 +144,20 @@
       <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
       <Name>Engine.Startup</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
+      <Project>{2a59ac2c-b3f4-4416-a74a-fa1b086a2f5b}</Project>
+      <Name>Engine.Systems.Activation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.RNG\Engine.Systems.RNG.csproj">
+      <Project>{291fbaa9-7900-460d-a841-a4b0f7dd5154}</Project>
+      <Name>Engine.Systems.RNG</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Components\Npc\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

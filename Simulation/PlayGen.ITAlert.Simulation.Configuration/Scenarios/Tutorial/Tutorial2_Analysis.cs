@@ -5,9 +5,13 @@ using Engine.Archetypes;
 using Engine.Evaluators;
 using Engine.Lifecycle;
 using Engine.Sequencing;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Malware;
-using PlayGen.ITAlert.Simulation.Components.Tutorial;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
@@ -23,8 +27,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 		#region scenario specific archetypes
 
-		private static readonly Archetype TutorialScanner = new Archetype("TutorialScanner")
-			.Extends(GameEntities.Scanner)
+		private static readonly Archetype TutorialScanner = new Archetype(nameof(TutorialScanner))
+			.Extends(ScannerTool.Archetype)
 			.HasComponent(new ComponentBinding<ActivationContinue>()
 			{
 				ComponentTemplate = new ActivationContinue()
@@ -33,8 +37,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				}
 			});
 
-		private static readonly Archetype RedTutorialVirus = new Archetype("RedTutorialVirus")
-			.Extends(GameEntities.Malware)
+		private static readonly Archetype RedTutorialVirus = new Archetype(nameof(RedTutorialVirus))
+			.Extends(Virus.Archetype)
 			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
@@ -44,32 +48,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				}
 			});
 
-		private static readonly Archetype GreenTutorialVirus = new Archetype("GreenTutorialVirus")
-			.Extends(GameEntities.Malware)
+		private static readonly Archetype GreenTutorialVirus = new Archetype(nameof(GreenTutorialVirus))
+			.Extends(Virus.Archetype)
 			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
 					Value = SimulationConstants.MalwareGeneGreen,
-				}
-			});
-			//.HasComponent(new ComponentBinding<MalwareVisibility>()
-			//{
-			//	ComponentTemplate = new MalwareVisibility()
-			//	{
-			//		VisibleTo = MalwareVisibility.All,
-			//	}
-			//});
-
-		private static readonly Archetype YellowTutorialVirus = new Archetype("YellowTutorialVirus")
-			.Extends(GameEntities.Malware)
-			.RemoveComponent<MalwarePropogation>()
-			.HasComponent(new ComponentBinding<MalwareGenome>()
-			{
-				ComponentTemplate = new MalwareGenome()
-				{
-					Value = SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen,
 				}
 			});
 
@@ -88,7 +74,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Left",
 				X = 0,
 				Y = 0,
-				ArchetypeName = GameEntities.Subsystem.Name,
+				Archetype = SubsystemNode.Archetype,
 			};
 
 			var nodeMiddle = new NodeConfig()
@@ -96,7 +82,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Middle",
 				X = 1,
 				Y = 0,
-				ArchetypeName = GameEntities.Subsystem.Name,
+				Archetype = SubsystemNode.Archetype,
 			};
 
 			var nodeRight = new NodeConfig()
@@ -104,7 +90,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Right",
 				X = 2,
 				Y = 0,
-				ArchetypeName = GameEntities.GarbageDisposalWorkstation.Name,
+				Archetype = GarbageDisposalWorkstation.Archetype,
 			};
 
 			var nodeBottom = new NodeConfig()
@@ -112,7 +98,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Bottom",
 				X = 1,
 				Y = 1,
-				ArchetypeName = GameEntities.AntivirusWorkstation.Name,
+				Archetype = AntivirusWorkstation.Archetype,
 			};
 
 			var nodeConfigs = new NodeConfig[] { nodeLeft,
@@ -127,28 +113,30 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			{
 				new ItemConfig()
 				{
-					ArchetypeName = GameEntities.Capture.Name,
+					Archetype = TutorialScanner,
 					StartingLocation = nodeLeft.Id,
 				},
 				new ItemConfig()
 				{
-					ArchetypeName = GameEntities.Scanner.Name,
+					Archetype = ScannerTool.Archetype,
 					StartingLocation = nodeMiddle.Id,
 				}
 			};
 
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
-
-			configuration.RNGSeed = 897891658;
-
-			configuration.Archetypes.AddRange(new []
+			var archetypes = new List<Archetype>
 			{
+				SubsystemNode.Archetype,
+				ConnectionNode.Archetype,
+				Player.Archetype,
+
 				TutorialScanner,
 				RedTutorialVirus,
 				GreenTutorialVirus,
+			};
 
-				YellowTutorialVirus,
-			});
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
+
+			configuration.RNGSeed = 897891658;
 
 			#endregion
 
@@ -160,7 +148,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				MaxPlayers = playerCountMax,
 				Configuration = configuration,
 
-				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Archetypes.Player.Archetype.Name, new [] { nodeRight.Id }),
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new [] { nodeRight.Id }),
 
 				// TODO: need a config driven specification for these
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
@@ -175,10 +163,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new CreateMalware(RedTutorialVirus.Name, nodeLeft.Id),
 						new CreateMalware(GreenTutorialVirus.Name, nodeMiddle.Id),
-						new CreateMalware(YellowTutorialVirus.Name, nodeRight.Id),
 
-						new CreateItem(GameEntities.Capture.Name, nodeRight.Id),
-						new CreateItem(GameEntities.Scanner.Name, nodeMiddle.Id),
+						new CreateItem(CaptureTool.Archetype, nodeRight.Id),
+						new CreateItem(TutorialScanner, nodeMiddle.Id),
 
 						new ShowText(true,
 							"In this scenario you will learn about Viruses and how to analyse them and produce antivirus", 

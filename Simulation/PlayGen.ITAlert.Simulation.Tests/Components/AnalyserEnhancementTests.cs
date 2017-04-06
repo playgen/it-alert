@@ -10,6 +10,7 @@ using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Components
 {

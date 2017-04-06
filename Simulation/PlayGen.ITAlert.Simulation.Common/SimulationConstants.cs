@@ -47,6 +47,8 @@
 
 		public const int ItemDefaultActivationDuration = 20;
 
+		public const int AntivirusActivations = 3;
+
 		#endregion
 
 		#region actors

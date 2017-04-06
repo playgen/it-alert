@@ -5,14 +5,13 @@ using System.Text;
 using Engine.Archetypes;
 using Engine.Configuration;
 using Engine.Entities;
+using Engine.Systems;
 using Engine.Testing;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Systems.Enhancements;
-using PlayGen.ITAlert.Simulation.Systems.Items;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 {
@@ -37,19 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 
 			var systems = new List<SystemConfiguration>()
 			{
-				new SystemConfiguration<EnhancementSystem>()
-				{
-					ExtensionConfiguration = new SystemExtensionConfiguration[]
-					{
-						new SystemExtensionConfiguration<IEnhancementSystemExtension>()
-						{
-							Implementations = new SystemExtensionImplementation[]
-							{
-								new SystemExtensionConfiguration<IEnhancementSystemExtension>.SystemExtensionImplementation<AntivirusEnhancementSystemExtension>(), 
-							}
-						}
-					}
-				}
+				new SystemConfiguration<AntivirusEnhancementSystem>()
 			};
 
 			var configuration = new ECSConfiguration(archetypes, systems, null);
@@ -61,7 +48,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 			var component = entity.GetComponent<ItemStorage>();
 			Assert.That(component, Is.Not.Null);
 			Assert.That(component.Items.Length, Is.EqualTo(SimulationConstants.SubsystemMaxItems));
-			Assert.That(component.Items[AntivirusEnhancementSystemExtension.AnalysisTargetStorageLocation], Is.Not.Null);
+			Assert.That(component.Items[AntivirusEnhancementSystem.AnalysisTargetStorageLocation], Is.Not.Null);
 		}
 	}
 }

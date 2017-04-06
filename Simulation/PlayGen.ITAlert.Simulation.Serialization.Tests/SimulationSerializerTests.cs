@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Engine.Archetypes;
 using Engine.Serialization;
 using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -16,8 +17,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		public void TestSerializationRountrip()
 		{
 
-			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 2, 2, 1);
-
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 2, 2, 1, new List<Archetype>() {});
 
 			throw new NotImplementedException();
 			//var simBytes = serializer.SerializeSimulation(originalSimulation);
@@ -53,7 +53,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		public void TestMoveIntentSerialization()
 		{
 			
-			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1);
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1, new List<Archetype>());
 
 			throw new NotImplementedException();
 			//var player = originalSimulation.Players.Single();
@@ -79,7 +79,7 @@ namespace PlayGen.ITAlert.Simulation.Serialization.Tests
 		[Test]
 		public void TestInfectIntentSerialization()
 		{
-			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1);
+			var originalSimulation = SimulationHelper.GenerateSimulation(2, 2, 1, 0, 1, new List<Archetype>());
 			throw new NotImplementedException();
 			//originalSimulation.SpawnVirus(1);
 

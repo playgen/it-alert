@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Evaluators;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Systems.Tutorial;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 {

@@ -6,8 +6,12 @@ using Engine.Archetypes;
 using Engine.Lifecycle;
 using Engine.Sequencing;
 using Engine.Systems;
+using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Malware;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
@@ -20,16 +24,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
 
-		private static readonly Archetype RedVirus = new Archetype("RedVirus")
-			.Extends(GameEntities.Malware)
-			//.RemoveComponent<MalwarePropogation>()
-			//.HasComponent(new ComponentBinding<MalwareVisibility>()
-			//{
-			//	ComponentTemplate = new MalwareVisibility()
-			//	{
-			//		VisibleTo = MalwareVisibility.All,
-			//	}
-			//})
+		private static readonly Archetype RedVirus = new Archetype(nameof(RedVirus))
+			.Extends(Virus.Archetype)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
@@ -38,16 +34,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				}
 			});
 
-		private static readonly Archetype GreenVirus = new Archetype("GreenVirus")
-			.Extends(GameEntities.Malware)
-			//.RemoveComponent<MalwarePropogation>()
-			//.HasComponent(new ComponentBinding<MalwareVisibility>()
-			//{
-			//	ComponentTemplate = new MalwareVisibility()
-			//	{
-			//		VisibleTo = MalwareVisibility.All,
-			//	}
-			//})
+		private static readonly Archetype GreenVirus = new Archetype(nameof(GreenVirus))
+			.Extends(Virus.Archetype)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()
@@ -76,7 +64,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "0 0",
 				X = 0,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.TransferStation),
+				Archetype = TransferWorkstation.Archetype.Name,
 			};
 
 			var node10 = new NodeConfig()
@@ -84,7 +72,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "1 0",
 				X = 1,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = SubsystemNode.Archetype.Name,
 			};
 
 			var node01 = new NodeConfig()
@@ -92,7 +80,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "0 1",
 				X = 0,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node11 = new NodeConfig()
@@ -100,7 +88,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "1 1",
 				X = 1,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node21 = new NodeConfig()
@@ -108,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "2 1",
 				X = 2,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.AntivirusWorkstation),
+				Archetype = nameof(AntivirusWorkstation.Archetype.Name),
 			};
 
 			var node22 = new NodeConfig()
@@ -116,7 +104,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "2 2",
 				X = 2,
 				Y = 2,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node30 = new NodeConfig()
@@ -124,7 +112,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "3 0",
 				X = 3,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node31 = new NodeConfig()
@@ -132,7 +120,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "3 1",
 				X = 3,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node40 = new NodeConfig()
@@ -140,7 +128,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "4 0",
 				X = 4,
 				Y = 0,
-				ArchetypeName = nameof(GameEntities.Subsystem),
+				Archetype = nameof(SubsystemNode.Archetype.Name),
 			};
 
 			var node41 = new NodeConfig()
@@ -148,7 +136,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				Name = "4 1",
 				X = 4,
 				Y = 1,
-				ArchetypeName = nameof(GameEntities.TransferStation),
+				Archetype = nameof(TransferWorkstation.Archetype.Name),
 			};
 
 			var nodeConfigs = new NodeConfig[]
@@ -168,15 +156,16 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 			var itemConfigs = new ItemConfig[0];
 
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs);
-
-			configuration.RNGSeed = 456980495;
-
-			configuration.Archetypes.AddRange(new[]
+			var archetypes = new List<Archetype>
 			{
 				RedVirus,
 				GreenVirus,
-			});
+			};
+
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
+
+			configuration.RNGSeed = 456980495;
+
 
 			#endregion
 
@@ -212,8 +201,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 						new CreateMalware(RedVirus.Name, node10.Id),
 						new CreateMalware(GreenVirus.Name, node31.Id),
 
-						new CreateItem(GameEntities.Scanner.Name, node00.Id),
-						new CreateItem(GameEntities.Capture.Name, node41.Id),
+						new CreateItem(ScannerTool.Archetype.Name, node00.Id),
+						new CreateItem(CaptureTool.Archetype.Name, node41.Id),
 						//ScenarioHelpers.GenerateTextAction(true, 
 						//	"Click continue when you are ready to end!")
 					},

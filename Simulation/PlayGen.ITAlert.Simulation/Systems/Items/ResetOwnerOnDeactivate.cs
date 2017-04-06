@@ -4,16 +4,13 @@ using System.Linq;
 using System.Text;
 using Engine.Components;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Activation;
-using PlayGen.ITAlert.Simulation.Components.Common;
+using Engine.Systems.Activation;
+using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Simulation.Components.Malware;
-using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
-	public class ResetOwnerOnDeactivate : IItemActivationExtension
+	public class ResetOwnerOnDeactivate : IActivationExtension
 	{
 		private readonly ComponentMatcherGroup<Activation, Owner> _ownerActivationMatcherGroup;
 

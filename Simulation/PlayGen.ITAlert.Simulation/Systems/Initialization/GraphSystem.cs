@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 
 		public Entity CreateSystem(NodeConfig config)
 		{
-			if (_entityFactoryProvider.TryCreateEntityFromArchetype(config.ArchetypeName, out var subsystem))
+			if (_entityFactoryProvider.TryCreateEntityFromArchetype(config.Archetype, out var subsystem))
 			{
 				config.EntityId = subsystem.Id;
 
@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 			}
 			subsystem?.Dispose();
 
-			throw new SimulationException($"Could not create system for archetype '{config.ArchetypeName}'");
+			throw new SimulationException($"Could not create system for archetype '{config.Archetype}'");
 		}
 
 		public List<Entity> CreateConnections(Dictionary<int, Entity> subsystems, IEnumerable<EdgeConfig> edgeConfigs)
