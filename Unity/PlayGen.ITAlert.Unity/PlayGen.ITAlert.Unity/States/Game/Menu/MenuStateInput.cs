@@ -8,6 +8,7 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
@@ -125,7 +126,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_quickMatchButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
 			_joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
 			_createGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
-			_serverConnectionText.text = "Game Server: " + (_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? "Connected" : "Not Connected");
+			_serverConnectionText.text = Localization.Get("CONNECTION_LABEL") + " " + Localization.Get((_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? "CONNECTION_LABEL_CONNECTED" : "CONNECTION_LABEL_NOT_CONNECTED"));
 			_serverConnectionText.color = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? Color.green : Color.red;
 			if (SUGARManager.CurrentUser != null)
 			{
@@ -134,7 +135,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			}
 			else
 			{
-				_sugarConnectionText.text = "Not Signed In";
+				_sugarConnectionText.text = Localization.Get("SUGAR_LABEL_NOT_SIGNED_IN");
 				_sugarConnectionText.color = Color.red;
 			}
 		}

@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224661763153476570}
   - component: {fileID: 222883535891954782}
   - component: {fileID: 114033019744605804}
+  - component: {fileID: 114051721694775806}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -73,6 +74,7 @@ GameObject:
   - component: {fileID: 224603782624040584}
   - component: {fileID: 222800099779874892}
   - component: {fileID: 114941588560103974}
+  - component: {fileID: 114903060811900622}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -110,6 +112,7 @@ GameObject:
   - component: {fileID: 224312372409939140}
   - component: {fileID: 222927093934847902}
   - component: {fileID: 114683363760576992}
+  - component: {fileID: 114175266273075978}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -268,6 +271,34 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Continue
+--- !u!114 &114051721694775806
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1037277990415614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: PAUSE_BUTTON_CONTINUE
+  ToUpper: 0
+  LanguageOverride: 
+--- !u!114 &114175266273075978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1531174276036058}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: PAUSE_BUTTON_MENU
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114220001432358832
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -530,6 +561,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Quit
+--- !u!114 &114903060811900622
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1122982583799098}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: PAUSE_BUTTON_SETTINGS
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114917669969154384
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -663,7 +708,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.35}
   m_AnchorMax: {x: 1, y: 0.55}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 149.42899, y: 0}
+  m_SizeDelta: {x: 64.46332, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224016676668182430
 RectTransform:
@@ -701,7 +746,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.1}
   m_AnchorMax: {x: 1, y: 0.3}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 149.42902, y: 0}
+  m_SizeDelta: {x: 64.46335, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224305593278952010
 RectTransform:
@@ -791,8 +836,8 @@ RectTransform:
   m_Father: {fileID: 224918819100361038}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.44}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.54}
+  m_AnchorMax: {x: 1, y: 1.1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -813,7 +858,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.6}
   m_AnchorMax: {x: 1, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 149.42892, y: 0}
+  m_SizeDelta: {x: 64.46326, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224918819100361038
 RectTransform:

@@ -30,24 +30,24 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_creator = _settingsPanel.GetComponentInChildren<SettingCreation>();
 			_creator.Wipe();
 			_creator.SetLabelAlignment(TextAnchor.MiddleLeft);
-			_creator.Custom<Text>("Display", false);
-		    _language = _creator.Language(false);
-            _resolution = _creator.Resolution(960, 540);
-			_fullScreen = _creator.FullScreen();
-			_creator.Custom<Text>("Voice", true);
-			_voiceEnabled = _creator.Custom<Toggle>("Voice Enabled", true);
+			_creator.Custom<Text>("SETTINGS_LABEL_DISPLAY", false);
+		    _language = _creator.Language(false, true, "SETTINGS_LABEL_LANGUAGE");
+            _resolution = _creator.Resolution(960, 540, null, false, true, "SETTINGS_LABEL_RESOLUTION");
+			_fullScreen = _creator.FullScreen(true, "SETTINGS_LABEL_FULLSCREEN");
+			_creator.Custom<Text>("SETTINGS_LABEL_VOICE", true);
+			_voiceEnabled = _creator.Custom<Toggle>("SETTINGS_LABEL_VOICE_ENABLED", true);
 			_voiceEnabled.onValueChanged.AddListener(OnVoiceEnabledChanged);
-			_microphone = _creator.Volume("Microphone Volume");
-			_receive = _creator.Volume("Receive Volume");
-			_creator.AddToLayout(_creator.HorizontalLayout("Test Microphone", 8),
-			_creator.Custom<Button>("Test Microphone", true));
-			_creator.Custom<Text>("Sound", true);
-			_music = _creator.Volume("Music Volume");
-			_sfx = _creator.Volume("SFX Volume");
+			_microphone = _creator.Volume("SETTINGS_LABEL_MICROPHONE_VOLUME");
+			_receive = _creator.Volume("SETTINGS_LABEL_RECEIVE_VOLUME");
+			_creator.AddToLayout(_creator.HorizontalLayout("SETTINGS_BUTTON_TEST_MICROPHONE", 8),
+			_creator.Custom<Button>("SETTINGS_BUTTON_TEST_MICROPHONE", true));
+			_creator.Custom<Text>("SETTINGS_LABEL_SOUND", true);
+			_music = _creator.Volume("SETTINGS_LABEL_MUSIC_VOLUME");
+			_sfx = _creator.Volume("SETTINGS_LABEL_SFX_VOLUME");
 			var buttonLayout = _creator.HorizontalLayout("Buttons");
-			_cancel = _creator.Custom<Button>("Close", true);
+			_cancel = _creator.Custom<Button>("SETTINGS_BUTTON_CANCEL", true);
 			_creator.AddToLayout(buttonLayout, _cancel);
-			_apply = _creator.Custom<Button>("Apply", true);
+			_apply = _creator.Custom<Button>("SETTINGS_BUTTON_APPLY", true);
 			_creator.AddToLayout(buttonLayout, _apply);
 
 			if (PlayerPrefs.HasKey(_voiceEnabled.name))
