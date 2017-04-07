@@ -18,10 +18,10 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(SubsystemNode))
 			.Extends(Node.Archetype)
-			.HasComponent(new ComponentBinding<Components.EntityTypes.Subsystem>())
-			.HasComponent(new ComponentBinding<Name>())
-			.HasComponent(new ComponentBinding<Coordinate2DProperty>())
-			.HasComponent(new ComponentBinding<ItemActivator>())
+			.HasComponent<Components.EntityTypes.Subsystem>()
+			.HasComponent<Name>()
+			.HasComponent<Coordinate2DProperty>()
+			.HasComponent<ItemActivator>()
 			.HasComponent(new ComponentBinding<ItemStorage>()
 			{
 				ComponentTemplate = new ItemStorage()

@@ -11,7 +11,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public IPlayerConfigFactory PlayerConfigFactory { get; set; }
 
-		public Dictionary<string, Dictionary<string, string>> Internationalization { get; set; }
+		/// <summary>
+		/// Dictionary keyed by country-code, then by text key
+		/// </summary>
+		public Dictionary<string, Dictionary<string, string>> TextInternationalization { get; set; }
 
 	}
 }

@@ -1,8 +1,4 @@
-﻿using System.Security.Policy;
-using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Components.Items;
-
-namespace PlayGen.ITAlert.Simulation.Components
+﻿namespace PlayGen.ITAlert.Simulation.Components.Items
 {
 	public class ItemContainer : IItemContainer
 	{

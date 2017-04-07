@@ -13,6 +13,6 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(ConnectionNode))
 			.Extends(Node.Archetype)
-			.HasComponent(new ComponentBinding<Components.EntityTypes.Connection>());
+			.HasComponent<Components.EntityTypes.Connection>();
 	}
 }

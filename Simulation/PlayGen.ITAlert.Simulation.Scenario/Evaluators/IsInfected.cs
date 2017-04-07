@@ -9,48 +9,50 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
+using PlayGen.ITAlert.Simulation.Scenario.Evaluators.Filters;
 using PlayGen.ITAlert.Simulation.Scenario.Exceptions;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 {
 	public class IsInfected : IEvaluator<Simulation, SimulationConfiguration>
 	{
-
-		private readonly int? _nodeId;
-		private NodeConfig _node;
+		private EntityConfig _nodeEntityConfig;
 
 		private ComponentMatcherGroup<Visitors> _locationMatcherGroup;
 		private ComponentMatcherGroup<Malware> _malwareMatcherGroup;
+
+		private readonly IEntityFilter<Simulation, SimulationConfiguration> _filter;
+
 
 		/// <summary>
 		/// Evaluate if there is any malware present on the specified node, or anywhere if omitted
 		/// </summary>
 		/// <param name="nodeId">NodeConfig, Default: null (anywhere)</param>
-		public IsInfected(int? nodeId = null)
+		public IsInfected(EntityConfig nodeEntityConfig = null, IEntityFilter<Simulation, SimulationConfiguration> filter = null)
 		{
-			_nodeId = nodeId;
+			_nodeEntityConfig = nodeEntityConfig;
+			_filter = filter;
 		}
 		public void Initialize(Simulation ecs, SimulationConfiguration configuration)
 		{
-			if (_nodeId.HasValue && (configuration.TrySelectNode(_nodeId.Value, out _node) == false))
-			{
-				throw new ScenarioConfigurationException($"Node not found with id {_nodeId}");
-			}
 			_locationMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Visitors>();
 			_malwareMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Malware>();
+			_filter?.Initialize(ecs, configuration);
 		}
 
 		public bool Evaluate(Simulation ecs, SimulationConfiguration configuration)
 		{
-			if (_node == null)
+			if (_nodeEntityConfig == null)
 			{
 				return _locationMatcherGroup.MatchingEntities.Any(locationTuple =>
-					locationTuple.Component1.Values.Any(v => _malwareMatcherGroup.TryGetMatchingEntity(v, out var malwareTuple)));
+					locationTuple.Component1.Values.Any(v => _malwareMatcherGroup.TryGetMatchingEntity(v, out var malwareTuple)
+						&& (_filter == null || _filter.Evaluate(malwareTuple.Entity))));
 			}
 			else
 			{
-				return _locationMatcherGroup.TryGetMatchingEntity(_node.EntityId, out var locationTuple)
-					&& locationTuple.Component1.Values.Any(v => _malwareMatcherGroup.TryGetMatchingEntity(v, out var malwareTuple));
+				return _locationMatcherGroup.TryGetMatchingEntity(_nodeEntityConfig.EntityId, out var locationTuple)
+					&& locationTuple.Component1.Values.Any(v => _malwareMatcherGroup.TryGetMatchingEntity(v, out var malwareTuple)
+						&& (_filter == null || _filter.Evaluate(malwareTuple.Entity)));
 			}
 		}
 

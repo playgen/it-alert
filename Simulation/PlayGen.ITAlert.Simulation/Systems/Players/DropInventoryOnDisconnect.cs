@@ -10,7 +10,6 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Systems.Extensions;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Players
 {

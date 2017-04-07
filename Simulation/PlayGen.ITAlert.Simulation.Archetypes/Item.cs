@@ -14,14 +14,11 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 	/// </summary>
 	public static class Item
 	{
-		public static readonly Archetype Archetype = new Archetype("Item")
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<CurrentLocation>(),
-				new ComponentBinding<Owner>(),
-				new ComponentBinding<Components.EntityTypes.Item>(),
-				new ComponentBinding<Activation>(),
-			});
+		public static readonly Archetype Archetype = new Archetype(nameof(Item))
+			.HasComponent<CurrentLocation>()
+			.HasComponent<Owner>()
+			.HasComponent<Components.EntityTypes.Item>()
+			.HasComponent<Activation>();
 
 	}
 }

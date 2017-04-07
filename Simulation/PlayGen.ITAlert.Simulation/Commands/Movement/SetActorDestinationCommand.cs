@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 	{
 		public int PlayerId { get; set; }
 
-		public int DestinationId { get; set; }
+		public int DestinationEntityId { get; set; }
 	}
 
 	public class SetActorDestinationCommandHandler : CommandHandler<SetActorDestinationCommand>
@@ -42,9 +42,9 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 			ComponentEntityTuple<Player, Intents> playerTuple;
 			ComponentEntityTuple<Subsystem> subsystemTuple;
 			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationId, out subsystemTuple))
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationEntityId, out subsystemTuple))
 			{
-				playerTuple.Component2.Replace(new MoveIntent(command.DestinationId));
+				playerTuple.Component2.Replace(new MoveIntent(command.DestinationEntityId));
 				return true;
 			}
 			return false;

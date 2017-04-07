@@ -2,7 +2,7 @@
 
 namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Components
 {
-	public class AnalyserActivator : IItemType
+	public class Analyser : IItemType
 	{
 	}
 }

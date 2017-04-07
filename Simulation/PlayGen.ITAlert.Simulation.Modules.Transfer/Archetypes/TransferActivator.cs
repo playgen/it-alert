@@ -11,9 +11,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes
 {
 	public static class TransferActivator
 	{
-		public static readonly Archetype Archetype = new Archetype("TransferActivator")
+		public static readonly Archetype Archetype = new Archetype(nameof(TransferActivator))
 			.Extends(Item.Archetype)
-			.HasComponent(new ComponentBinding<Components.TransferActivator>())
+			.HasComponent<Components.TransferActivator>()
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()

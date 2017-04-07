@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Configuration
 
 			return new PlayerConfig()
 			{
-				ArchetypeName = _archetype,
+				Archetype = _archetype,
 				Id = index,
 				StartingLocation = startingLocation,
 			};

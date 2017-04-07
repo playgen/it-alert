@@ -11,19 +11,17 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 {
 	public static class Actor
 	{
-		public static readonly Archetype Archetype = new Archetype("Actor")
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<CurrentLocation>(),
-				new ComponentBinding<Intents>(),
-				new ComponentBinding<VisitorPosition>(),
-				new ComponentBinding<MovementSpeed>()
+		public static readonly Archetype Archetype = new Archetype(nameof(Actor))
+			.HasComponent<CurrentLocation>()
+			.HasComponent<Intents>()
+			.HasComponent<VisitorPosition>()
+			.HasComponent(new ComponentBinding<MovementSpeed>()
 				{
 					ComponentTemplate = new MovementSpeed()
 					{
 						Value = 2,
 					}
-				},
-			});
+				}
+			);
 	}
 }

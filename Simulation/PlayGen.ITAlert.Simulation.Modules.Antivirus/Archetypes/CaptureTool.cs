@@ -13,10 +13,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes
 {
 	public static class CaptureTool
 	{
-		public static Archetype Archetype = new Archetype(nameof(CaptureTool))
+		public static readonly Archetype Archetype = new Archetype(nameof(CaptureTool))
 			.Extends(Item.Archetype)
-			.HasComponent(new ComponentBinding<Capture>())
-			.HasComponent(new ComponentBinding<MalwareGenome>())
+			.HasComponent<Capture>()
+			.HasComponent<MalwareGenome>()
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()

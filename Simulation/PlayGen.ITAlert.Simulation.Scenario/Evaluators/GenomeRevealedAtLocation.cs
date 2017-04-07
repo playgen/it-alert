@@ -16,9 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 	public class GenomeRevealedAtLocation : IEvaluator<Simulation, SimulationConfiguration>
 	{
 		private readonly int _genome;
-
 		private readonly int _revealedTo;
-
 		private readonly int _nodeId;
 
 		private NodeConfig _node;
@@ -33,7 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// <param name="nodeId"></param>
 		/// <param name="genome">Genome bit flags. 0: Any genome</param>
 		/// <param name="revealedTo">Visibility bit flags. 0: Any player (or none)</param>
-		public GenomeRevealedAtLocation(int nodeId, int genome, int revealedTo)
+		public GenomeRevealedAtLocation(int nodeId, int genome = 0, int revealedTo = 0)
 		{
 			_genome = genome;
 			_revealedTo = revealedTo;

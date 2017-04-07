@@ -1,18 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Simulation.Components;
-using PlayGen.ITAlert.Simulation.Components.Items;
 
-namespace PlayGen.ITAlert.Simulation.Systems.Extensions
+namespace PlayGen.ITAlert.Simulation.Components.Items
 {
 	public static class ItemContainerExtensions
 	{
 		public static bool TryGetItemContainer<TItemContainer>(this ItemStorage itemStorage, out TItemContainer itemContainer)
 			where TItemContainer : ItemContainer
 		{
-			itemContainer = itemStorage.Items.OfType<TItemContainer>().FirstOrDefault();
+			var success = itemStorage.TryGetItemContainer(typeof(TItemContainer), out var baseItemContainer);
+			itemContainer = baseItemContainer as TItemContainer;
+			return success;
+		}
+
+		public static bool TryGetItemContainer(this ItemStorage itemStorage, Type itemContainerType, out ItemContainer itemContainer)
+		{
+			itemContainer = itemStorage.Items.FirstOrDefault(itemContainerType.IsInstanceOfType);
 			return itemContainer != null;
 		}
 
@@ -22,9 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Extensions
 			{
 				containerIndex = i;
 				var ic = itemStorage.Items[i];
-				if (ic.GetType() == typeof(ItemContainer)
-					&& ic.Item.HasValue == false
-					&& ic.Enabled)
+				if (ic.GetType() == typeof(ItemContainer) && ic.CanCapture())
 				{
 					itemContainer = ic;
 					return true;

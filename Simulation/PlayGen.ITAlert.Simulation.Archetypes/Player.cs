@@ -11,9 +11,9 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 {
 	public static class Player
 	{
-		public static readonly Archetype Archetype = new Archetype("Player")
+		public static readonly Archetype Archetype = new Archetype(nameof(Player))
 		.Extends(Actor.Archetype)
-		.HasComponent(new ComponentBinding<Components.EntityTypes.Player>())
+		.HasComponent<Components.EntityTypes.Player>()
 		.HasComponent(new ComponentBinding<ItemStorage>()
 		{
 			ComponentTemplate = new ItemStorage()
@@ -22,10 +22,10 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 				MaxItems = 1,
 				Items = new ItemContainer[]
 				{
-						new InventoryItemContainer(),
+					new InventoryItemContainer(),
 				}
 			}
 		})
-		.HasComponent(new ComponentBinding<PlayerBitMask>());
+		.HasComponent<PlayerBitMask>();
 	}
 }

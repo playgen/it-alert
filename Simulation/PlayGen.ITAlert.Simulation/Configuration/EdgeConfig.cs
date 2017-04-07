@@ -3,22 +3,13 @@ using PlayGen.ITAlert.Simulation.Common;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
-	public class EdgeConfig : IEquatable<EdgeConfig>
+	public class EdgeConfig : EntityConfig, IEquatable<EdgeConfig>
 	{
-		public int EntityId { get; set; }
-
 		public int Source { get; }
 		public EdgeDirection SourcePosition { get; }
-
 		public int Destination { get; }
-		//public EdgeDirection DestinationPosition { get; }
-
 		public int Weight { get; }
-
-		// TODO: calculate in graph layout pass
-		public int Length { get; set; }
-
-		public string ArchetypeName { get; set; }
+		public int Length { get; set; } // TODO: calculate in graph layout pass
 
 		public EdgeConfig(int source, EdgeDirection sourcePosition, int destination, int weight = 1, int length = 1){
 			Source = source;

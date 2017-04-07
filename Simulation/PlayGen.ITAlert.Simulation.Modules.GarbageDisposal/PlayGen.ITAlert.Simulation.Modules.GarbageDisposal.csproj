@@ -38,6 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Archetypes\GarbageDisposalActivator.cs" />
     <Compile Include="Archetypes\GarbageDisposalWorkstation.cs" />
     <Compile Include="Components\GarbageDisposalActivator.cs" />
     <Compile Include="Systems\GarbageDisposalActivatorBehaviour.cs" />

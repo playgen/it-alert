@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes
 	public static class TutorialText
 	{
 		public static Archetype Archetype = new Archetype(nameof(TutorialText))
-			.HasComponent(new ComponentBinding<ScenarioText>())
-		.HasComponent(new ComponentBinding<Text>());
+			.HasComponent<ScenarioText>()
+			.HasComponent<Text>();
 	}
 }

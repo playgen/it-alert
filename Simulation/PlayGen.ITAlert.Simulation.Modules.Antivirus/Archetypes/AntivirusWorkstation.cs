@@ -10,8 +10,8 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes
 {
 	public static class AntivirusWorkstation
 	{
-		public static Archetype Archetype = new Archetype(nameof(AntivirusWorkstation))
+		public static readonly Archetype Archetype = new Archetype(nameof(AntivirusWorkstation))
 			.Extends(SubsystemNode.Archetype)
-			.HasComponent(new ComponentBinding<AntivirusEnhancement>());
+			.HasComponent<AntivirusEnhancement>();
 	}
 }

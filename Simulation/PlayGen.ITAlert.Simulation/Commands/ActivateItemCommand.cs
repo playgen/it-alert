@@ -59,8 +59,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool IsDuplicate(ActivateItemCommand x, ActivateItemCommand other)
 		{
-			// player can only ever have one destination
-			return x.PlayerId == other.PlayerId && x.ItemId == other.ItemId;
+			return x.PlayerId == other.PlayerId 
+				&& x.ItemId == other.ItemId;
 		}
 
 		#endregion

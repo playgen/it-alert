@@ -68,7 +68,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 
 		public Entity CreateConnection(Dictionary<int, Entity> subsystems, EdgeConfig edgeConfig)
 		{
-			if (_entityFactoryProvider.TryCreateEntityFromArchetype(edgeConfig.ArchetypeName, out var connection))
+			if (_entityFactoryProvider.TryCreateEntityFromArchetype(edgeConfig.Archetype, out var connection))
 			{
 				var head = subsystems[edgeConfig.Source];
 				var tail = subsystems[edgeConfig.Destination];
@@ -85,7 +85,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 				return connection;
 			}
 			connection?.Dispose();
-			throw new SimulationException($"Could not create connection from archetype '{edgeConfig.ArchetypeName}'");
+			throw new SimulationException($"Could not create connection from archetype '{edgeConfig.Archetype}'");
 		}
 
 	}
