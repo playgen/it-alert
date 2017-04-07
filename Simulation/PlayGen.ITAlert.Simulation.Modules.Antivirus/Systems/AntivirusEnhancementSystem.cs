@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Enhacements;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 
@@ -16,23 +17,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 {
 	public class AntivirusEnhancementSystem : ISystem
 	{
-		#region activator acrchetype
-
-		public const string AnalyserActivatorArchetypeName = "AnalyserActivator";
-
-		public static readonly Archetype AnalysisActivator = new Archetype(AnalyserActivatorArchetypeName)
-			.Extends(Item.Archetype)
-			.HasComponent(new ComponentBinding<AnalyserActivator>())
-			.HasComponent(new ComponentBinding<TimedActivation>()
-			{
-				ComponentTemplate = new TimedActivation()
-				{
-					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-				}
-			});
-
-		#endregion
-
 		public const int AnalysisActivatorStorageLocation = 0;
 
 		public const int AnalysisTargetStorageLocation = 2;
@@ -68,10 +52,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 			itemStorage.Items[AnalysisTargetStorageLocation] = new AnalysisTargetItemContainer(_captureMatcherGroup);
 
-			ComponentEntityTuple<CurrentLocation, Owner> activatorEntityTuple;
-			if (_entityFactoryProvider.TryCreateItem(AnalyserActivatorArchetypeName, tuple.Entity.Id, null, out activatorEntityTuple) == false)
+			if (_entityFactoryProvider.TryCreateItem(AnalyserActivator.Archetype, tuple.Entity.Id, null, out var activatorEntityTuple) == false)
 			{
-				throw new SimulationException($"{AnalyserActivatorArchetypeName} archetype not registered");
+				throw new SimulationException($"{AnalyserActivator.Archetype} archetype not registered");
 			}
 			itemStorage.Items[AnalysisActivatorStorageLocation] = new AnalysisActivatorItemContainer()
 			{

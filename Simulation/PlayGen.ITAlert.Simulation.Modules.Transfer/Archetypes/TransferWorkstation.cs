@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(TransferWorkstation))
 			.Extends(SubsystemNode.Archetype)
-			.HasComponent(new ComponentBinding<TransferEnhancement>());
+			.HasComponent<TransferEnhancement>();
 
 	}
 }

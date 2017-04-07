@@ -11,7 +11,6 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Systems.Extensions;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 
 namespace PlayGen.ITAlert.Simulation.Commands
@@ -22,7 +21,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		public int SystemId { get; set; }
 
-		public IdentifierType IdentifierType { get; set; }
+		public Type ContainerType { get; set; }
 	}
 
 	public class CreateItemCommandHandler : CommandHandler<CreateItemCommand>
@@ -31,50 +30,35 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
-		private readonly SimulationConfiguration _configuration;
-
 		public CreateItemCommandHandler(IEntityFactoryProvider entityFactoryProvider, 
-			IMatcherProvider matcherProvider,
-			SimulationConfiguration configuration)
+			IMatcherProvider matcherProvider)
 		{
 			_entityFactoryProvider = entityFactoryProvider;
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
-			_configuration = configuration;
 		}
 
 		protected override bool TryProcessCommand(CreateItemCommand command)
 		{
-			int systemEntityId;
-			switch (command.IdentifierType)
-			{
-				case IdentifierType.Entity:
-					systemEntityId = command.SystemId;
-					break;
-				case IdentifierType.Logical:
-					var nodeConfig = _configuration.NodeConfiguration.SingleOrDefault(nc => nc.Id == command.SystemId);
-					if (nodeConfig == null)
-					{
-						return false;
-					}
-					systemEntityId = nodeConfig.EntityId;
-					break;
-				default:
-					return false;
-			} 
 			if (string.IsNullOrEmpty(command.Archetype) == false
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(systemEntityId, out var systemTuple)
-				&& _entityFactoryProvider.TryCreateItem(command.Archetype, systemEntityId, null, out var itemTuple))
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.SystemId, out var systemTuple)
+				&& _entityFactoryProvider.TryCreateItem(command.Archetype, command.SystemId, null, out var itemTuple))
 			{
-				if (systemTuple.Component2.TryGetEmptyContainer(out var itemContainer, out var containerIndex) == false)
+				if (command.ContainerType != null
+					&& systemTuple.Component2.TryGetItemContainer(command.ContainerType, out var itemContainer)
+					&& itemContainer.CanCapture(itemTuple.Entity.Id))
 				{
-					itemTuple.Entity.Dispose();
-					return false;
+					itemContainer.Item = itemTuple.Entity.Id;
+					return true;
 				}
-				itemContainer.Item = itemTuple.Entity.Id;
-				return true;
+				if (systemTuple.Component2.TryGetEmptyContainer(out var emptyItemContainer, out var containerIndex))
+				{
+					emptyItemContainer.Item = itemTuple.Entity.Id;
+					return true;
+				}
+				itemTuple.Entity.Dispose();
+				return false;
 			}
 			return false;
-
 		}
 	}
 }

@@ -21,6 +21,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 		private readonly MovementSystem _movementSystem;
 		private readonly List<IPlayerSystemBehaviour> _playterSystemBehaviours;
 
+		private int _playerId;
+
 		public PlayerSystem(SimulationConfiguration configuration, 
 			IEntityFactoryProvider entityFactoryProvider,
 			GraphSystem graphSystem, 
@@ -38,31 +40,38 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 
 		public void Initialize()
 		{
-			CreatePlayers(_graphSystem.Subsystems, _configuration.PlayerConfiguration);
+			CreatePlayers(_configuration.PlayerConfiguration);
 		}
 
 		#endregion
 		
-		private void CreatePlayers(Dictionary<int, Entity> subsystems, IEnumerable<PlayerConfig> playerConfigs)
+		private void CreatePlayers(IEnumerable<PlayerConfig> playerConfigs)
 		{
-			if (playerConfigs.Any())
+			foreach (var playerConfig in playerConfigs)
 			{
-				int playerId = 0;
+				CreatePlayer(playerConfig);
+			}
+		}
 
-				foreach (var playerConfig in playerConfigs)
-				{
-					if (_entityFactoryProvider.TryCreateEntityFromArchetype(playerConfig.ArchetypeName, out var player)
-						&& player.TryGetComponent<PlayerBitMask>(out var playerBitMask))
-					{
-						playerConfig.EntityId = player.Id;
-						var startingLocationId = playerConfig.StartingLocation ?? 0;
-						_movementSystem.AddVisitor(subsystems[startingLocationId], player);
-						playerBitMask.Value = 1 << playerId++;
-						continue;
-					}
-					player?.Dispose();
-					throw new SimulationException($"Could not create player for id '{playerConfig.EntityId}'");
-				}
+		public Entity CreatePlayer(PlayerConfig playerConfig)
+		{
+			if (_entityFactoryProvider.TryCreateEntityFromArchetype(playerConfig.Archetype, out var player)
+				&& player.TryGetComponent<PlayerBitMask>(out var playerBitMask))
+			{
+				playerConfig.EntityId = player.Id;
+				playerConfig.Id = _playerId;
+
+				var startingLocationId = playerConfig.StartingLocation ?? 0;
+				_movementSystem.AddVisitor(_graphSystem.Subsystems[startingLocationId], player);
+				playerBitMask.Value = 1 << _playerId;
+
+				_playerId++;
+				return player;
+			}
+			else
+			{
+				player?.Dispose();
+				throw new SimulationException($"Could not create player for id '{playerConfig.EntityId}'");
 			}
 		}
 

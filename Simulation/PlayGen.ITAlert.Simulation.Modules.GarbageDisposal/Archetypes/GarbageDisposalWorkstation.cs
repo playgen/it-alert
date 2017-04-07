@@ -10,8 +10,8 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Archetypes
 {
 	public static class GarbageDisposalWorkstation
 	{
-		public static Archetype Archetype = new Archetype(nameof(GarbageDisposalWorkstation))
+		public static readonly Archetype Archetype = new Archetype(nameof(GarbageDisposalWorkstation))
 			.Extends(SubsystemNode.Archetype)
-			.HasComponent(new ComponentBinding<GarbageDisposalEnhancement>());
+			.HasComponent<GarbageDisposalEnhancement>();
 	}
 }

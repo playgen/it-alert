@@ -13,19 +13,17 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int PlayerId { get; set; }
 
 		public int ItemId { get; set; }
-
-		public int LocationId { get; set; }
 	}
 
 	public class PickupItemCommandHandler : CommandHandler<PickupItemCommand>
 	{
-		private readonly ComponentMatcherGroup<Player, ItemStorage> _playerMatcherGroup;
+		private readonly ComponentMatcherGroup<Player, ItemStorage, CurrentLocation> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation, Activation> _itemMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
 		public PickupItemCommandHandler(IMatcherProvider matcherProvider)
 		{
-			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage>();
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation, Activation>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 		}
@@ -37,6 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& itemTuple.Component2.Value.HasValue == false
 				&& itemTuple.Component4.ActivationState == ActivationState.NotActive
 				&& itemTuple.Component3.Value.HasValue
+				&& itemTuple.Component3.Value == playerTuple.Component3.Value
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;

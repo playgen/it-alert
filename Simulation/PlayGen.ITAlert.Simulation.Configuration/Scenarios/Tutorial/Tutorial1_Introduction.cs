@@ -10,6 +10,7 @@ using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
@@ -28,47 +29,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
 
-		#region scenario specific archetypes
-
-		private static readonly Archetype TutorialScanner = new Archetype(nameof(TutorialScanner))
-			.Extends(ScannerTool.Archetype)
-			.HasComponent(new ComponentBinding<ActivationContinue>()
-			{
-				ComponentTemplate = new ActivationContinue()
-				{
-					ContinueOn = ActivationContinue.ActivationPhase.Deactivating,
-				}
-			});
-
-		private static readonly Archetype RedTutorialAntivirus = new Archetype(nameof(RedTutorialAntivirus))
-			.Extends(AntivirusTool.Archetype)
-			.HasComponent(new ComponentBinding<Antivirus>()
-			{
-				ComponentTemplate = new Antivirus()
-				{ 
-					TargetGenome = SimulationConstants.MalwareGeneRed,
-				}
-			});
-		private static readonly Archetype RedTutorialVirus = new Archetype(nameof(RedTutorialVirus))
-			.Extends(Virus.Archetype)
-			.RemoveComponent<MalwarePropogation>()
-			.HasComponent(new ComponentBinding<MalwareGenome>()
-			{
-				ComponentTemplate = new MalwareGenome()
-				{
-					Value = SimulationConstants.MalwareGeneRed,
-				}
-			});
-
-		#endregion
-
 		// TODO: this should be parameterized further and read from config
 		private static SimulationScenario GenerateScenario()
 		{
 			#region configuration
 
 			const int playerCount = 1;
-			const int singlePlayerId = 0;
 
 			var text = new Dictionary<string, Dictionary<string, string>>();
 
@@ -90,36 +56,36 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Archetype = SubsystemNode.Archetype,
 			};
 
-			#endregion
-
 			var nodeConfigs = new NodeConfig[]
 			{
 				nodeLeft,
 				nodeRight
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
+			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 
-			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
-			var itemConfigs = new ItemConfig[0];
+
+			#endregion
 
 			var archetypes = new List<Archetype>
 			{
 				SubsystemNode.Archetype,
 				ConnectionNode.Archetype,
 				Player.Archetype,
-				TutorialScanner,
-				RedTutorialAntivirus,
-				RedTutorialVirus,
+				ScannerTool.Archetype,
+				RedTutorialAntivirus.Archetype,
+				RedTutorialVirus.Archetype,
 			};
 
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
 
 			#endregion
 
 			var scenario = new SimulationScenario()
 			{
-				Name = "Tutorial1",
-				Description = "Introduction",
+				Key = "Tutorial1",
+				Name = "Tutorial1_Name",
+				Description = "Tutorial1_Description",
 				MinPlayers = playerCount,
 				MaxPlayers = playerCount,
 				Configuration = configuration,
@@ -137,7 +103,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
-						new ShowText(true, "Tutorial1_Frame1")
+						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -153,7 +119,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, "Tutorial1_Frame2")
+						new ShowText(false, $"{scenario.Key}_Frame2")
 					},
 					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -168,7 +134,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, "Tutorial1_Frame3"),
+						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
 					Evaluator = new WaitForSeconds(3),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -186,8 +152,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						// TODO: this should disable the cancapture flag of the inventory slot
 						new SetCommandEnabled<PickupItemCommand>(false),	
 						new SetCommandEnabled<ActivateItemCommand>(false),
-						new CreateItem(TutorialScanner, nodeRight.Id),
-						new ShowText(true, "Tutorial1_Frame4"),
+						new CreateItem(ScannerTool.Archetype, nodeRight),
+						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -202,7 +168,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, "Tutorial1_Frame5"),
+						new ShowText(false, $"{scenario.Key}_Frame5"),
 					},
 					Evaluator = new PlayerIsAtLocation(nodeRight.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -218,7 +184,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
-						new ShowText(false,"Tutorial1_Frame6"),
+						new ShowText(false, $"{scenario.Key}_Frame6"),
 					},
 					Evaluator = new ItemTypeIsActivated<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -233,8 +199,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(RedTutorialVirus, nodeLeft.Id),
-						new ShowText(true, "Tutorial1_Frame7"),
+						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
+						new ShowText(true, $"{scenario.Key}_Frame7"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -250,7 +216,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<PickupItemCommand>(true),
-						new ShowText(false, "Tutorial1_Frame8")
+						new ShowText(false, $"{scenario.Key}_Frame8")
 					},
 					Evaluator = new ItemTypeIsInInventory<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -266,7 +232,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, "Tutorial1_Frame9"),
+						new ShowText(false, $"{scenario.Key}_Frame9"),
 					},
 					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -282,7 +248,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(true, "Tutorial1_Frame10"),
+						new ShowText(true, $"{scenario.Key}_Frame10"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -298,7 +264,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<DropItemCommand>(true),
-						new ShowText(false, "Tutorial1_Frame11"),
+						new ShowText(false, $"{scenario.Key}_Frame11"),
 					},
 					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft.Id)
 						.And(new WaitForTutorialContinue()),
@@ -315,10 +281,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateItem(RedTutorialAntivirus, nodeRight.Id),
-						new ShowText(false, "Tutorial1_Frame12"),
+						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
+						new ShowText(false, $"{scenario.Key}_Frame12"),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft.Id)),
+					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

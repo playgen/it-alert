@@ -154,7 +154,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
-			var itemConfigs = new ItemConfig[0];
 
 			var archetypes = new List<Archetype>
 			{
@@ -162,7 +161,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				GreenVirus,
 			};
 
-			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, itemConfigs, archetypes);
+			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
 
 			configuration.RNGSeed = 456980495;
 
@@ -198,11 +197,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(RedVirus.Name, node10.Id),
-						new CreateMalware(GreenVirus.Name, node31.Id),
+						new CreateMalware(RedVirus.Name, node10),
+						new CreateMalware(GreenVirus.Name, node31),
 
-						new CreateItem(ScannerTool.Archetype.Name, node00.Id),
-						new CreateItem(CaptureTool.Archetype.Name, node41.Id),
+						new CreateItem(ScannerTool.Archetype.Name, node00),
+						new CreateItem(CaptureTool.Archetype.Name, node41),
 						//ScenarioHelpers.GenerateTextAction(true, 
 						//	"Click continue when you are ready to end!")
 					},

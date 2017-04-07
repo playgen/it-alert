@@ -39,10 +39,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalysisActivatorItemContainer.cs" />
+    <Compile Include="Archetypes\AnalyserActivator.cs" />
     <Compile Include="Archetypes\AntivirusTool.cs" />
     <Compile Include="Archetypes\AntivirusWorkstation.cs" />
     <Compile Include="Archetypes\CaptureTool.cs" />
-    <Compile Include="Components\AnalyserActivator.cs" />
+    <Compile Include="Components\Analyser.cs" />
     <Compile Include="Systems\AnalyserBehaviour.cs" />
     <Compile Include="Components\Antivirus.cs" />
     <Compile Include="Systems\AntivirusBehaviour.cs" />

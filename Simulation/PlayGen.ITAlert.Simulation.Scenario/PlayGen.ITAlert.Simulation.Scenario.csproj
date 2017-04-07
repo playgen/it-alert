@@ -38,6 +38,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\EnqueuePlayerCommand.cs" />
+    <Compile Include="Actions\CreatePlayer.cs" />
     <Compile Include="Actions\CreateItem.cs" />
     <Compile Include="Actions\CreateMalware.cs" />
     <Compile Include="Actions\EndGame.cs" />
@@ -45,6 +47,7 @@
     <Compile Include="Actions\SetCommandEnabled.cs" />
     <Compile Include="Actions\ShowText.cs" />
     <Compile Include="Configuration\StartingLocationSequencePlayerConfigFactory.cs" />
+    <Compile Include="Evaluators\Filters\ItemContainerTypeFilter.cs" />
     <Compile Include="Evaluators\Filters\IEntityFilter.cs" />
     <Compile Include="Evaluators\GenomeIsCaptured.cs" />
     <Compile Include="Evaluators\Filters\AntivirusGenomeFilter.cs" />

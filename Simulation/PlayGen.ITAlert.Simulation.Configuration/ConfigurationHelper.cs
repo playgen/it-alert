@@ -64,11 +64,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.East, nextX, weight)
 						{
-							ArchetypeName = ConnectionNode.Archetype,
+							Archetype = ConnectionNode.Archetype,
 						});
 						edgeConfigs.Add(new EdgeConfig(nextX, EdgeDirection.West, thisId, weight)
 						{
-							ArchetypeName = ConnectionNode.Archetype,
+							Archetype = ConnectionNode.Archetype,
 						});
 					}
 					if (i < height - 1)
@@ -76,11 +76,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.South, nextY, weight)
 						{
-							ArchetypeName = ConnectionNode.Archetype,
+							Archetype = ConnectionNode.Archetype,
 						});
 						edgeConfigs.Add(new EdgeConfig(nextY, EdgeDirection.North, thisId, weight)
 						{
-							ArchetypeName = ConnectionNode.Archetype,
+							Archetype = ConnectionNode.Archetype,
 						});
 					}
 				}
@@ -110,11 +110,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.East, nextX.Id, weight)
 							{
-								ArchetypeName = ConnectionNode.Archetype,
+								Archetype = ConnectionNode.Archetype,
 							});
 							edgeConfigs.Add(new EdgeConfig(nextX.Id, EdgeDirection.West, currentNode.Id, weight)
 							{
-								ArchetypeName = ConnectionNode.Archetype,
+								Archetype = ConnectionNode.Archetype,
 							});
 						}
 
@@ -123,11 +123,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						{
 							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.South, nextY.Id, weight)
 							{
-								ArchetypeName = ConnectionNode.Archetype,
+								Archetype = ConnectionNode.Archetype,
 							});
 							edgeConfigs.Add(new EdgeConfig(nextY.Id, EdgeDirection.North, currentNode.Id, weight)
 							{
-								ArchetypeName = ConnectionNode.Archetype,
+								Archetype = ConnectionNode.Archetype,
 							});
 						}
 					}
@@ -205,7 +205,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public static SimulationConfiguration GenerateConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
 			IEnumerable<EdgeConfig> edgeConfiguration,
 			IEnumerable<PlayerConfig> playerConfiguration,
-			IEnumerable<ItemConfig> itemConfiguration,
 			IEnumerable<Archetype> archetypes)
 		{
 			// the helper is fine here since archetype ordering doesnt matter
@@ -216,7 +215,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			var configuration = new SimulationConfiguration(nodeConfiguration?.ToList(),
 				edgeConfiguration?.ToList(),
 				playerConfiguration?.ToList(),
-				itemConfiguration?.ToList(),
 				archetypes.ToList(),
 				systems,
 				new LifeCycleConfiguration());
@@ -230,9 +228,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			var nodeConfigs = GenerateGraphNodes(width, height);
 			var edgeConfigs = GenerateFullyConnectedGridConfiguration(nodeConfigs.Max(nc => nc.X) + 1, nodeConfigs.Max(nc => nc.Y) + 1, 1);
 			SetPlayerConfigValues(nodeConfigs, playerConfigs);
-			var itemConfigs = GetRandomItems(nodeConfigs, items);
-
-			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, itemConfigs, archetypes);
+			var configuration = GenerateConfiguration(nodeConfigs, edgeConfigs, playerConfigs, archetypes);
 			return configuration;
 		}
 	}

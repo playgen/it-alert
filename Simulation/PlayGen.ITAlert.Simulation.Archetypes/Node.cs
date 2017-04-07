@@ -13,12 +13,9 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 	public static class Node
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(Node))
-			.HasComponents(new ComponentBinding[]
-			{
-				new ComponentBinding<Visitors>(),
-				new ComponentBinding<GraphNode>(),
-				new ComponentBinding<ExitRoutes>(),
-				new ComponentBinding<MovementCost>(),
-			});
+			.HasComponent<Visitors>()
+			.HasComponent<GraphNode>()
+			.HasComponent<ExitRoutes>()
+			.HasComponent<MovementCost>();
 	}
 }

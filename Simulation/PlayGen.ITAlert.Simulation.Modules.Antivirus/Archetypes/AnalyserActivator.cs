@@ -6,15 +6,14 @@ using Engine.Archetypes;
 using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes
 {
-	public static class ScannerTool
+	public static class AnalyserActivator
 	{
-		public static Archetype Archetype = new Archetype(nameof(ScannerTool))
+		public static readonly Archetype Archetype = new Archetype(nameof(AnalyserActivator))
 			.Extends(Item.Archetype)
-			.HasComponent(new ComponentBinding<Scanner>())
+			.HasComponent<Components.Analyser>()
 			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
 				ComponentTemplate = new TimedActivation()
@@ -22,5 +21,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes
 					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
 				}
 			});
+			
 	}
 }

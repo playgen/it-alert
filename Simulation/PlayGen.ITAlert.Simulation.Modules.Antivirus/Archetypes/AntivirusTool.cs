@@ -11,24 +11,23 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes
 {
 	public static class AntivirusTool
 	{
-		public static Archetype Archetype = new Archetype(nameof(AntivirusTool))
+		public static readonly Archetype Archetype = new Archetype(nameof(AntivirusTool))
 			.Extends(Item.Archetype)
-			.HasComponent(new ComponentBinding<Components.Antivirus>())
-		.HasComponent(new ComponentBinding<ConsumableActivation>()
-		{
-			ComponentTemplate = new ConsumableActivation()
+			.HasComponent<Components.Antivirus>()
+			.HasComponent(new ComponentBinding<ConsumableActivation>()
 			{
-				TotalActivations = SimulationConstants.AntivirusActivations,
-				ActivationsRemaining = SimulationConstants.AntivirusActivations,
-			}
-		})
-		.HasComponent(new ComponentBinding<TimedActivation>()
-		{
-			ComponentTemplate = new TimedActivation()
+				ComponentTemplate = new ConsumableActivation()
+				{
+					TotalActivations = SimulationConstants.AntivirusActivations,
+					ActivationsRemaining = SimulationConstants.AntivirusActivations,
+				}
+			})
+			.HasComponent(new ComponentBinding<TimedActivation>()
 			{
-				ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
-			}
-		})
-		.HasComponent(new ComponentBinding<Components.Antivirus>());
+				ComponentTemplate = new TimedActivation()
+				{
+					ActivationDuration = SimulationConstants.ItemDefaultActivationDuration,
+				}
+			});
 	}
 }

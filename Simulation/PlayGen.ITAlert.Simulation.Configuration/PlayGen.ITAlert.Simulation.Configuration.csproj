@@ -41,6 +41,10 @@
     <Compile Include="PlayerConfigFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioLoader.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\GreenTutorialAntivirus.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\GreenTutorialVirus.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\RedTutorialAntivirus.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\RedTutorialVirus.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial2_Analysis.cs" />
     <Compile Include="Scenarios\GraphDemos.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial1_Introduction.cs" />

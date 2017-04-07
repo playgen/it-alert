@@ -43,8 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ActivateItemCommand.cs" />
+    <Compile Include="Commands\ActivateItemTypeCommand.cs" />
+    <Compile Include="Commands\CreatePlayerCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
+    <Compile Include="Commands\PickupItemTypeCommand.cs" />
     <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\CreateItemCommand.cs" />
     <Compile Include="Commands\CreateMalwareCommand.cs" />
@@ -64,8 +67,8 @@
     <Compile Include="Components\Items\TargetItemContainer.cs" />
     <Compile Include="Components\PlayerBitMask.cs" />
     <Compile Include="Configuration\EdgeConfig.cs" />
+    <Compile Include="Configuration\EntityConfig.cs" />
     <Compile Include="Configuration\IPlayerConfigFactory.cs" />
-    <Compile Include="Configuration\ItemConfig.cs" />
     <Compile Include="Configuration\NodeConfig.cs" />
     <Compile Include="Configuration\PlayerConfig.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />

@@ -6,7 +6,6 @@ using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Components;
-using PlayGen.ITAlert.Simulation.Systems.Extensions;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 {
