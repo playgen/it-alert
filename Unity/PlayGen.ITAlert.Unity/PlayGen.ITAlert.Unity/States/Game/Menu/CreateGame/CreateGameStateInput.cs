@@ -25,9 +25,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		private Button _createGamePopupButton;
 		private Button _createGameCloseButton;
 
-        private bool _bestFitTick;
+		private bool _bestFitTick;
 
-        public CreateGameStateInput(Client photonClient, ScenarioController scenarioController)
+		public CreateGameStateInput(Client photonClient, ScenarioController scenarioController)
 		{
 			_photonClient = photonClient;
 			_scenarioController = scenarioController;
@@ -57,7 +57,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 				OpenOnEnded = true,
 				GameScenario = _scenarioController.Selected.Name
 			}));
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnBackClick()
@@ -70,13 +70,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			_createGameCloseButton.onClick.AddListener(OnBackClick);
 			_createGamePopupButton.onClick.AddListener(OnCreateClick);
 
-            PlayGen.Unity.Utilities.Loading.Loading.Stop();
+			PlayGen.Unity.Utilities.Loading.Loading.Stop();
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_createGamePanel.SetActive(true);
 			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields(_scenarioController.Selected);
-            _buttons.Buttons.BestFit();
-            _bestFitTick = true;
-        }
+			_buttons.Buttons.BestFit();
+			_bestFitTick = true;
+		}
 
 		protected override void OnExit()
 		{
@@ -89,12 +89,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnTick(float deltaTime)
 		{
-            if (_bestFitTick)
-            {
-                _buttons.Buttons.BestFit();
-                _bestFitTick = false;
-            }
-            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+			if (_bestFitTick)
+			{
+				_buttons.Buttons.BestFit();
+				_bestFitTick = false;
+			}
+			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
 			}
