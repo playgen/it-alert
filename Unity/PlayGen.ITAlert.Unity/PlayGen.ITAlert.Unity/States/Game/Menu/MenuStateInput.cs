@@ -79,7 +79,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private void OnJoinGameClick()
 		{
 			JoinGameEvent?.Invoke();
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnCreateGameClick()

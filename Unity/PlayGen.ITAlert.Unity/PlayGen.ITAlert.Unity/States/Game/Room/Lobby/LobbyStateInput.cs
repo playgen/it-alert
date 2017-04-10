@@ -144,9 +144,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private void UpdatePlayerList(List<Player> players)
 		{
 			_readyButton.gameObject.GetComponentInChildren<Text>().text =
-			    Localization.Get(_photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready
+				Localization.Get(_photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready
 				? "LOBBY_LABEL_WAITING"
-                : "LOBBY_BUTTON_READY");
+				: "LOBBY_BUTTON_READY");
 
 			// todo give this a condition list that gets subtracted from as conditions are fulfilled
 			// so the spinner will remain active in a case where a player had it show for ready state change
@@ -223,6 +223,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				// increment the offset
 				offset -= height;
 			}
+			_playerListObject.BestFit();
 		}
 
 		private void SetRoomMax(int currentRoomMaxPlayers)
