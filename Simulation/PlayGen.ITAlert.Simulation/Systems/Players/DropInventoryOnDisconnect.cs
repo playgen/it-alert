@@ -10,30 +10,31 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
+using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Players
 {
 	public class DropInventoryOnDisconnect : IPlayerSystemBehaviour
 	{
-		private readonly ComponentMatcherGroup<Player, CurrentLocation, ItemStorage> _playerMatcherGroup;
-
+		private readonly ComponentMatcherGroup<Player, ItemStorage, CurrentLocation> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
-
 		private readonly ComponentMatcherGroup<Connection, GraphNode> _connectionMatcherGroup;
+		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation> _itemMatcherGroup;
+
 
 		private readonly SimulationConfiguration _configuration;
 
-		private readonly CommandQueue _commandQueue;
+		// TODO: temporary workaround for circular dependency
+		// CommandQueue -> CommandSystem -> CreatePlayerCommandHandler -> Playersystem -> this
 
 		public DropInventoryOnDisconnect(SimulationConfiguration configuration, 
-			IMatcherProvider matcherProvider, 
-			CommandQueue commandQueue)
+			IMatcherProvider matcherProvider)
 		{
 			_configuration = configuration;
-			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, CurrentLocation, ItemStorage>();
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_connectionMatcherGroup = matcherProvider.CreateMatcherGroup<Connection, GraphNode>();
-			_commandQueue = commandQueue;
+			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation>();
 		}
 
 		#region Implementation of IPlayerSystemBehaviour
@@ -48,28 +49,45 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 			if (player != null)
 			{
 				if (_playerMatcherGroup.TryGetMatchingEntity(player.EntityId, out var playerTuple)
-					&& playerTuple.Component2.Value.HasValue
-					&& playerTuple.Component3.TryGetItemContainer<InventoryItemContainer>(out var inventoryItemContainer)
+					&& playerTuple.Component3.Value.HasValue
+					&& playerTuple.Component2.TryGetItemContainer<InventoryItemContainer>(out var inventoryItemContainer)
 					&& inventoryItemContainer.Item.HasValue)
 				{
-					if (_subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component2.Value.Value, out var subsystemTuple))
+					if (_subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple))
 					{
 						if (subsystemTuple.Component2.TryGetEmptyContainer(out var emptyContainer, out var containerIndex))
 						{
+							#region copied from DropItemCommandHandler
 							// TODO: this should be replaced with an intent based approach, the command handler should abstract through the intent as well
-							_commandQueue.EnqueueCommand(new DropItemCommand()
+
+								if (_itemMatcherGroup.TryGetMatchingEntity(inventoryItemContainer.Item.Value, out var itemTuple)
+								&& playerTuple.Component3.Value.HasValue
+								&& itemTuple.Component2.Value == playerTuple.Entity.Id)
 							{
-								ContainerId = containerIndex,
-								ItemId = inventoryItemContainer.Item.Value,
-								PlayerId = player.EntityId,
-							});
+								var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
+								var target = subsystemTuple.Component2.Items[containerIndex];
+								if (inventory != null
+									&& inventory.Item == itemTuple.Entity.Id
+									&& target != null
+									&& target.CanCapture(itemTuple.Entity.Id))
+								{
+									target.Item = itemTuple.Entity.Id;
+									itemTuple.Component3.Value = subsystemTuple.Entity.Id;
+									inventory.Item = null;
+									itemTuple.Component2.Value = null;
+								}
+
+							}
+
+							#endregion
+
 						}
 						else
 						{
 							// TODO: there are no available storage locations on the current system
 						}
 					}
-					else if (_connectionMatcherGroup.TryGetMatchingEntity(playerTuple.Component2.Value.Value, out var connectionTuple))
+					else if (_connectionMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var connectionTuple))
 					{
 						
 					}

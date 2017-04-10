@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
 using UnityEngine.UI;

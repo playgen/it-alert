@@ -7,26 +7,26 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 {
 	public class TransferBehaviour : IActivationExtension
 	{
 		public const string AnalysisOutputArchetypeName = "Antivirus";
 		
-		private readonly ComponentMatcherGroup<TransferActivator, CurrentLocation, Owner, Activation, TimedActivation> _transferActivatorMatcherGroup;
+		private readonly ComponentMatcherGroup<TransferActivator, CurrentLocation, Owner, Engine.Systems.Activation.Components.Activation, TimedActivation> _transferActivatorMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, TransferEnhancement, ItemStorage> _transferSystemMatcherGroup;
 		private readonly ComponentMatcherGroup<IItemType, CurrentLocation, Owner> _itemMatcherGroup;
-		private readonly ComponentMatcherGroup<IItemType, Activation> _itemActivationMatcherGroup;
+		private readonly ComponentMatcherGroup<IItemType, Engine.Systems.Activation.Components.Activation> _itemActivationMatcherGroup;
 
 		public TransferBehaviour(IMatcherProvider matcherProvider)
 		{
-			_transferActivatorMatcherGroup = matcherProvider.CreateMatcherGroup<TransferActivator, CurrentLocation, Owner, Activation, TimedActivation>();
+			_transferActivatorMatcherGroup = matcherProvider.CreateMatcherGroup<TransferActivator, CurrentLocation, Owner, Engine.Systems.Activation.Components.Activation, TimedActivation>();
 			_transferSystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, TransferEnhancement, ItemStorage>();
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<IItemType, CurrentLocation, Owner>();
-			_itemActivationMatcherGroup = matcherProvider.CreateMatcherGroup<IItemType, Activation>();
+			_itemActivationMatcherGroup = matcherProvider.CreateMatcherGroup<IItemType, Engine.Systems.Activation.Components.Activation>();
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_transferActivatorMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 			} 
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_transferActivatorMatcherGroup.TryGetMatchingEntity(itemId, out var localTransferActivatorTuple))
 			{
@@ -72,12 +72,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_transferActivatorMatcherGroup.TryGetMatchingEntity(itemId, out var localTransferActivatorTuple))
 			{

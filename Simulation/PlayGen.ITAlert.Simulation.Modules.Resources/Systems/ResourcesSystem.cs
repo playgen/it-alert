@@ -33,6 +33,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 
 		public void Initialize()
 		{
+
+		}
+
+		public static void InitializeArchetypes()
+		{
 			// TODO: investigate whether this is a good way to extend archetypes in modules
 			Item.Archetype.HasComponent(new ComponentBinding<ConsumeMemory>()
 			{

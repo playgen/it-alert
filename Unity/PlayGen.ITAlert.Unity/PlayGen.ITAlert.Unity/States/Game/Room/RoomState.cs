@@ -61,6 +61,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private void ProcessErrorMessage(Message message)
 		{
 			var errorMessage = message as ErrorMessage;
+			LogProxy.Error($"Received server error message: {errorMessage.Message}");
 			if (errorMessage != null)
 			{
 				throw new Exception(errorMessage.Message);

@@ -26,6 +26,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 
+
 		#region Overrides of CommandHandler<DropItemCommand>
 
 		public override IEqualityComparer<ICommand> Deduplicator => new DropItemCommandEqualityComparer();
@@ -41,14 +42,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryProcessCommand(DropItemCommand command)
 		{
-			ComponentEntityTuple<Player, ItemStorage, CurrentLocation> playerTuple;
-			ComponentEntityTuple<Item, Owner, CurrentLocation> itemTuple;
-			ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple;
-
-			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
-				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out itemTuple)
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& playerTuple.Component3.Value.HasValue
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out subsystemTuple)
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple)
 				&& itemTuple.Component2.Value == playerTuple.Entity.Id)
 			{
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;

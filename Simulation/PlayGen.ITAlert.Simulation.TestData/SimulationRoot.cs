@@ -10,12 +10,15 @@ namespace PlayGen.ITAlert.Simulation.Startup
 {
 	public class SimulationRoot : ECSRoot<Simulation, SimulationConfiguration>
 	{
-		public Guid InstanceId { get; }
+		public SimulationScenario Scenario { get; }
 
-		public SimulationRoot(Simulation ecs, SimulationConfiguration configuration, EntityStateSerializer entityStateSerializer)
+		public SimulationRoot(Simulation ecs, 
+			SimulationConfiguration configuration, 
+			EntityStateSerializer entityStateSerializer,
+			SimulationScenario scenario)
 			: base(ecs, configuration, entityStateSerializer)
 		{
-			InstanceId = configuration.InstanceId ?? Guid.NewGuid();
+			Scenario = scenario;
 		}
 
 		public string GetPlayerConfiguration()

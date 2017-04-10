@@ -1,6 +1,7 @@
 ﻿using Engine.Commands;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Common;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
@@ -26,7 +27,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			// TODO: possibly move this implementation into the tutorial system
 			Entity textEntity;
 			Text text;
-			if (_entityFactoryProvider.TryCreateEntityFromArchetype(SimulationConstants.TutorialTextArchetype, out textEntity)
+			if (_entityFactoryProvider.TryCreateEntityFromArchetype(TutorialText.Archetype, out textEntity)
 				&& textEntity.TryGetComponent(out text))
 			{
 				text.Value = command.Text;

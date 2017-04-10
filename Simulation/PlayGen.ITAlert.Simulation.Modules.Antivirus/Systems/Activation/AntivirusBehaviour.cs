@@ -1,13 +1,12 @@
 ﻿using System.Linq;
 using Engine.Components;
 using Engine.Systems.Activation;
-using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 {
 	public class AntivirusBehaviour : IActivationExtension
 	{
@@ -22,22 +21,22 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_antivirusMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{

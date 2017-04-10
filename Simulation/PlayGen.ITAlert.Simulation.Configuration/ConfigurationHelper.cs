@@ -166,42 +166,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			return playerConfigs;
 		}
 
-		public static List<ItemConfig> GenerateItemConfig(List<NodeConfig> nodeConfigs, Dictionary<string, int> items)
-		{
-			var random = new Random();
-			var itemConfigs = new List<ItemConfig>();
-			foreach (var item in items)
-			{
-				for (var i = 0; i < item.Value; i++)
-				{
-					itemConfigs.Add(new ItemConfig()
-					{
-						StartingLocation = random.Next(0, nodeConfigs.Count),
-						Archetype = item.Key,
-					});
-				}
-			}
-			return itemConfigs;
-		}
-
-		public static List<ItemConfig> GetRandomItems(List<NodeConfig> nodeConfigs, int total)
-		{
-			var random = new Random();
-
-			var enumMembers = ModuleLoader.GetTypesImplementing(typeof(IItemType)).Select(t => t.Name).ToArray();
-			var enumCounts = enumMembers.ToDictionary(k => k, v => 1);
-			var count = enumMembers.Length;
-
-			while (count < total)
-			{
-				var itemType = enumMembers[random.Next(0, enumMembers.Length)];
-				enumCounts[itemType]++;
-				count++;
-			}
-
-			return GenerateItemConfig(nodeConfigs, enumCounts);
-		}
-
 		public static SimulationConfiguration GenerateConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
 			IEnumerable<EdgeConfig> edgeConfiguration,
 			IEnumerable<PlayerConfig> playerConfiguration,

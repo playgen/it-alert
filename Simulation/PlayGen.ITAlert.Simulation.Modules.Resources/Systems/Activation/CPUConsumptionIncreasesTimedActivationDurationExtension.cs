@@ -1,5 +1,7 @@
 ﻿using System;
 using Engine.Components;
+using Engine.Systems.Activation;
+using Engine.Systems.Activation.Components;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -7,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation
 {
 	/// <summary>
 	/// This subsystem resource effect causes the value of the MovementSpeed component to be modulated accoring to the utilisation of the CPU Resource on that node
@@ -35,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 			_subsystemMatcher = matcherProvider.CreateMatcherGroup<Subsystem, CPUResource, MovementCost>();
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_timedActivationMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
@@ -43,11 +45,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 			}
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_timedActivationMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
@@ -58,7 +60,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 			}
 		}
 
-		public void OnDeactivating(int entityId, Activation activation)
+		public void OnDeactivating(int entityId, Engine.Systems.Activation.Components.Activation activation)
 		{
 
 		}

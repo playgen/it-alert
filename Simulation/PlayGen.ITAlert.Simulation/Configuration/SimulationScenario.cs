@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Engine.Configuration;
 using Engine.Sequencing;
+using PlayGen.ITAlert.Simulation.Scenario.Localization;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -14,7 +15,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		/// <summary>
 		/// Dictionary keyed by country-code, then by text key
 		/// </summary>
-		public Dictionary<string, Dictionary<string, string>> TextInternationalization { get; set; }
+		public LocalizationDictionary LocalizationDictionary { get; set; }
 
 	}
 }

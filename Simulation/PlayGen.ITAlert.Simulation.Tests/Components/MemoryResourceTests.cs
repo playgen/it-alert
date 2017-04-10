@@ -35,15 +35,6 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
-			var items = new[]
-			{
-				new ItemConfig()
-				{
-					StartingLocation = 0,
-					Archetype = "Scanner",
-				}
-			};
-
 			var systems = new List<SystemConfiguration>()
 			{
 				new SystemConfiguration<ItemStorageSystem>(),
@@ -70,8 +61,9 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 
 			var lifecycleConfig = new LifeCycleConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, null, null, items, archetypes, systems, lifecycleConfig);
-			var rootA = SimulationInstaller.CreateSimulationRoot(configuration);
+			var configuration = new SimulationConfiguration(nodeConfigs, null, null, archetypes, systems, lifecycleConfig);
+			var scenarioA = new SimulationScenario() {Configuration = configuration};
+			var rootA = SimulationInstaller.CreateSimulationRoot(scenarioA);
 			var ecsA = rootA.ECS;
 
 			MemoryResource memoryResourceA;
@@ -80,7 +72,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 
 			ecsA.Tick();
 
-			var rootB = SimulationInstaller.CreateSimulationRoot(configuration);
+			var scenarioB = new SimulationScenario() {Configuration = configuration};
+			var rootB = SimulationInstaller.CreateSimulationRoot(scenarioB);
 			var ecsB = rootB.ECS;
 
 			MemoryResource memoryResourceB;

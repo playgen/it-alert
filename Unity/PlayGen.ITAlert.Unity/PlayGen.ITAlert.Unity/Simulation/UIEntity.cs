@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		
 		public IEntityBehaviour EntityBehaviour => _entityBehaviour;
 
+		// ReSharper disable once FieldCanBeMadeReadOnly.Local
 		private Director _director;
 
 		private static readonly Dictionary<string, Func<GameObject, IEntityBehaviour>> BehaviourMappers = new Dictionary<string, Func<GameObject, IEntityBehaviour>>()

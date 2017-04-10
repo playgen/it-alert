@@ -1,13 +1,12 @@
 ﻿using Engine.Components;
 using Engine.Entities;
 using Engine.Systems.Activation;
-using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
 {
 	public class GarbageDisposalActivatorBehaviour : IActivationExtension
 	{
@@ -25,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
 
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
@@ -35,7 +34,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
 			}
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
@@ -54,12 +53,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
 
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_garbageDisposalMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{

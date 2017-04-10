@@ -4,6 +4,7 @@ using System.Linq;
 using Engine.Configuration;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial;
+using PlayGen.ITAlert.Simulation.Scenario;
 
 namespace PlayGen.ITAlert.Simulation.Configuration
 {
@@ -18,10 +19,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			{
 				Tutorial1_Introduction.Scenario,
 				Tutorial2_Analysis.Scenario,
-				BigGraphTest.Scenario,
+				Tutorial3_Bandwidth.Scenario,
+				Tutorial4_Mutation.Scenario,
 			}
-			.Concat(GraphDemos.Scenarios)
-			.ToDictionary(k => k.Name, v => v);
+			//.Concat(GraphDemos.Scenarios)
+			.ToDictionary(k => k.Key, v => v);
 		}
 
 		public bool TryGetScenario(string name, out SimulationScenario scenario)
@@ -31,13 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public ScenarioInfo[] GetScenarioInfo()
 		{
-			return _scenarios.Values.Select(s => new ScenarioInfo()
-			{
-				Name = s.Name,
-				Description = s.Description,
-				MaxPlayerCount = s.MaxPlayers,
-				MinPlayerCount = s.MinPlayers,
-			}).ToArray();
+			return _scenarios.Values.Select(s => s.ToScenarioInfo()).ToArray();
 		}
 
 	}

@@ -1,14 +1,13 @@
 ﻿using Engine.Components;
 using Engine.Entities;
 using Engine.Systems.Activation;
-using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 {
 	public class AnalyserBehaviour : IActivationExtension
 	{
@@ -34,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue
@@ -44,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			}
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
@@ -65,12 +64,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_analyserMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{

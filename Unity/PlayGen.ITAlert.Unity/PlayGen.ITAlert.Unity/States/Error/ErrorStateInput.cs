@@ -36,12 +36,20 @@ namespace PlayGen.ITAlert.Unity.States.Error
 		
 		protected override void OnEnter()
 		{
-			_messageText.text = GameExceptionHandler.Exception?.ToString().Substring(0, 10000);
-			_panelVisibility.gameObject?.SetActive(true);
-			_buttons.Buttons.BestFit();
+			try
+			{
+				var exceptionString = GameExceptionHandler.Exception?.ToString();
+				_messageText.text = exceptionString?.Substring(0, Math.Min(exceptionString.Length, 3000)) ?? string.Empty;
+				_panelVisibility.gameObject?.SetActive(true);
+				_buttons.Buttons.BestFit();
 
-			Loading.Stop();
-			GameExceptionHandler.ClearException();
+				Loading.Stop();
+				GameExceptionHandler.ClearException();
+			}
+			catch (Exception ex)
+			{ 
+				LogProxy.Error($"Error entering ErrorStateInput: {ex}");
+			}
 		}
 
 		protected override void OnExit()

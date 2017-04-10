@@ -63,6 +63,8 @@
     <Compile Include="Exceptions\ScenarioConfigurationException.cs" />
     <Compile Include="Configuration\SimulationConfigurationExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScenarioExtensions.cs" />
+    <Compile Include="ScenarioInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -89,6 +91,10 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Tutorial\PlayGen.ITAlert.Simulation.Modules.Tutorial.csproj">
       <Project>{08f0ac02-3291-4a19-a7fa-0ff2a59cea90}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Tutorial</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario.Localization\PlayGen.ITAlert.Simulation.Scenario.Localization.csproj">
+      <Project>{4208e474-d078-4f4d-93d6-a9f73d691373}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scenario.Localization</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>

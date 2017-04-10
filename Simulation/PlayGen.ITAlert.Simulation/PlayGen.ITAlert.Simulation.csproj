@@ -159,8 +159,14 @@
       <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario.Localization\PlayGen.ITAlert.Simulation.Scenario.Localization.csproj">
+      <Project>{4208E474-D078-4F4D-93D6-A9F73D691373}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scenario.Localization</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
-using PlayGen.ITAlert.Simulation.Components.Resources;
+using PlayGen.ITAlert.Simulation.Modules.Resources.Components;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
@@ -154,7 +154,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 			else
 			{
-				throw new EntityInitializationException($"Could not load all required components for Entity Id {Entity.Id}");
+				throw new EntityInitializationException($"Could not load all required components for Subsystem Entity Id {Entity.Id}");
 			}
 		}
 

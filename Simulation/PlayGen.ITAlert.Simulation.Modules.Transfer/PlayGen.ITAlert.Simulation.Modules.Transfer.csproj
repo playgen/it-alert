@@ -43,7 +43,7 @@
     <Compile Include="Components\TransferActivator.cs" />
     <Compile Include="Components\TransferEnhancement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\TransferBehaviour.cs" />
+    <Compile Include="Systems\Activation\TransferBehaviour.cs" />
     <Compile Include="Systems\TransferEnhancementSystem.cs" />
     <Compile Include="TransferActivatorTargetItemContainer.cs" />
     <Compile Include="TransferItemContainer.cs" />

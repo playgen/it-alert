@@ -6,18 +6,20 @@ using GameWork.Core.Commands.Interfaces;
 
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Controllers
 {
 	public class ScenarioController : ICommandAction
 	{
 		private readonly Client _photonClient;
-		private ScenarioInfo _selected;
-		public ScenarioInfo Selected => _selected;
+		private ScenarioInfo _selectedScenario;
+		public ScenarioInfo SelectedScenario => _selectedScenario;
 
 		public event Action ScenarioSelectedSuccessEvent;
 		public event Action QuickMatchSuccessEvent;
@@ -41,7 +43,27 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			var scenarios = _scenarioLoader.GetScenarioInfo();
 
+			foreach (var scenario in scenarios)
+			{
+				LocalizeScenario(scenario);
+			}
+
 			ScenarioListSuccessEvent?.Invoke(scenarios);
+		}
+
+		private void LocalizeScenario(ScenarioInfo scenarioInfo)
+		{
+			var language = Localization.SelectedLanguage.TwoLetterISOLanguageName;
+			if (scenarioInfo.LocalizationDictionary.TryGetLocalizedStringForKey(language,
+				scenarioInfo.Name, out var name))
+			{
+				scenarioInfo.Name = name;
+			}
+			if (scenarioInfo.LocalizationDictionary.TryGetLocalizedStringForKey(language,
+				scenarioInfo.Description, out var description))
+			{
+				scenarioInfo.Description = description;
+			}
 		}
 
 		public void SetQuickMatch(bool quick)
@@ -51,7 +73,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		public void SelectScenario(ScenarioInfo scenario)
 		{
-			_selected = scenario;
+			_selectedScenario = scenario;
 			if (_quickMatch)
 			{
 				QuickMatch();
@@ -67,12 +89,11 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			var roomSettings = new CreateRoomSettings
 			{
 				Name = Guid.NewGuid().ToString().Substring(0, 7),
-				MinPlayers = _selected.MinPlayerCount,
-				MaxPlayers = _selected.MaxPlayerCount,
+				MinPlayers = _selectedScenario.MinPlayerCount,
+				MaxPlayers = _selectedScenario.MaxPlayerCount,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
-				GameScenario = _selected.Name
-
+				GameScenario = _selectedScenario.Key
 			};
 			var rooms = _photonClient.ListRooms(ListRoomsFilters.Open);
 			rooms = rooms.Where(r => (string)r.customProperties[CustomRoomSettingKeys.GameScenario] == roomSettings.GameScenario).ToArray();

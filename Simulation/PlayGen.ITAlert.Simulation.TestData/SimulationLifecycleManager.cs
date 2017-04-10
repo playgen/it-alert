@@ -8,20 +8,22 @@ using PlayGen.ITAlert.Simulation.Configuration;
 
 namespace PlayGen.ITAlert.Simulation.Startup
 {
-	public sealed class SimulationLifecycleManager : LifecycleManager<Simulation, SimulationConfiguration, SimulationInstaller, SimulationRoot>
+	public sealed class SimulationLifecycleManager : LifecycleManager<Simulation, SimulationConfiguration, SimulationInstaller, SimulationRoot, SimulationScenario>
 	{
-		public SimulationLifecycleManager(Sequencer<Simulation, SimulationConfiguration> sequencer) : base(sequencer)
+		public SimulationLifecycleManager(SimulationScenario scenario,
+			Sequencer<Simulation, SimulationConfiguration, SimulationScenario> sequencer) 
+			: base(scenario, sequencer)
 		{
 		}
 
-		public static SimulationLifecycleManager Initialize(SimulationConfiguration configuration)
-		{
-			return Initialize<SimulationLifecycleManager>(configuration);
-		}
+		//public static SimulationLifecycleManager Initialize(SimulationConfiguration configuration)
+		//{
+		//	return Initialize<SimulationLifecycleManager>(configuration);
+		//}
 
 		public static SimulationLifecycleManager Initialize(SimulationScenario scenario)
 		{
-			return Initialize<SimulationLifecycleManager, SimulationScenario>(scenario);
+			return Initialize<SimulationLifecycleManager>(scenario);
 		}
 	}
 }
