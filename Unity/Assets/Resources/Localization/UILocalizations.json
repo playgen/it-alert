@@ -15,7 +15,7 @@
 {"Key":"CREATE_LABEL_NUM_PLAYERS","en-gb":"Max Players","nl":"Max Spelers"},
 {"Key":"CREATE_BUTTON_BACK","en-gb":"Back","nl":"Terug"},
 {"Key":"CREATE_BUTTON_CREATE","en-gb":"Create","nl":"Maken"},
-{"Key":"SCENARIO_LABEL_TITLE","en-gb":"Scenarios","nl":"Scenario's"},
+{"Key":"SCENARIO_LABEL_TITLE","en-gb":"Select Scenario","nl":"Selecteer Scenario"},
 {"Key":"SCENARIO_LABEL_SCENARIO_NAME","en-gb":"Scenario Name","nl":"Scenario Naam"},
 {"Key":"SCENARIO_LABEL_REQUIRED_PLAYERS","en-gb":"Players Required","nl":"Spelers Benodigd"},
 {"Key":"SCENARIO_LABEL_DESCRIPTION","en-gb":"Scenario Description","nl":"Scenario Beschrijving"},
