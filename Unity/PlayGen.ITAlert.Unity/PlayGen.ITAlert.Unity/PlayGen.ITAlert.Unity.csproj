@@ -40,6 +40,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Simulation\Engine.Lifecycle.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\simulation\Engine.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Newtonsoft.Json">
       <HintPath>..\..\..\bin\Simulation\Engine.Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -49,6 +53,12 @@
     <Reference Include="Engine.Startup, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\simulation\Engine.Startup.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Systems.Activation">
+      <HintPath>..\..\..\bin\simulation\Engine.Systems.Activation.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Systems.RNG">
+      <HintPath>..\..\..\bin\simulation\Engine.Systems.RNG.dll</HintPath>
     </Reference>
     <Reference Include="GameWork.Core.Commands">
       <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
@@ -88,11 +98,40 @@
     <Reference Include="PlayGen.ITAlert.Simulation">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Archetypes">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Archetypes.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Common">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Configuration">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Antivirus">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Antivirus.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.GarbageDisposal">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Malware">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Malware.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Resources">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Transfer">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Transfer.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Tutorial">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Tutorial.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scenario, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Scenario.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scenario.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Scenario.Localization.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Startup">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>
@@ -184,7 +223,7 @@
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
-    <Compile Include="Simulation\Behaviours\ItemDragBehaviour.cs" />    
+    <Compile Include="Simulation\Behaviours\ItemDragBehaviour.cs" />
     <Compile Include="Simulation\AnimateConnectionUV.cs" />
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />

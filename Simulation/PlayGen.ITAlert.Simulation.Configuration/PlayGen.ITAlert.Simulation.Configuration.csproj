@@ -108,6 +108,10 @@
       <Project>{08f0ac02-3291-4a19-a7fa-0ff2a59cea90}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Tutorial</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario.Localization\PlayGen.ITAlert.Simulation.Scenario.Localization.csproj">
+      <Project>{4208e474-d078-4f4d-93d6-a9f73d691373}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scenario.Localization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario\PlayGen.ITAlert.Simulation.Scenario.csproj">
       <Project>{45775B35-274A-40CF-BFE3-AD08F594C99B}</Project>
       <Name>PlayGen.ITAlert.Simulation.Scenario</Name>

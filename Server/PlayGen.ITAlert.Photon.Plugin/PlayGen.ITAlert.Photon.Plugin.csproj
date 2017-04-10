@@ -40,6 +40,10 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Engine.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\Engine.Common.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\simulation\Engine.Core.dll</HintPath>
@@ -48,12 +52,24 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Simulation\Engine.Lifecycle.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\Engine.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Serialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\simulation\Engine.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Engine.Startup">
       <HintPath>..\..\bin\Simulation\Engine.Startup.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Systems.Activation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\Engine.Systems.Activation.dll</HintPath>
+    </Reference>
+    <Reference Include="Engine.Systems.RNG, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\Engine.Systems.RNG.dll</HintPath>
     </Reference>
     <Reference Include="GameWork.Core.Commands">
       <HintPath>..\..\lib\GameWork\Core\GameWork.Core.Commands.dll</HintPath>
@@ -79,11 +95,47 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Archetypes, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Archetypes.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Common">
       <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Common.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Configuration">
       <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Antivirus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Antivirus.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.GarbageDisposal, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Malware, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Malware.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Resources, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Resources.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Transfer, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Transfer.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Modules.Tutorial, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Modules.Tutorial.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scenario, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Scenario.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scenario.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.Scenario.Localization.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Startup">
       <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>

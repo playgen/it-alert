@@ -13,10 +13,12 @@ using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
+using PlayGen.ITAlert.Simulation.Scenario.Localization;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
@@ -92,6 +94,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				AntivirusTool.Archetype,
 				RedTutorialVirus.Archetype,
 				GreenTutorialVirus.Archetype,
+				TutorialText.Archetype,
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
@@ -115,6 +118,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
 
+			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
+
 			#region frames
 
 			// 1
@@ -123,7 +128,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateItem(ScannerTool.Archetype, nodeRight.Id),
+						new CreateItem(ScannerTool.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame1"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
@@ -154,7 +159,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft.Id),
+						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
 					Evaluator = new GenomeRevealedAtLocation(nodeLeft.Id, SimulationConstants.MalwareGeneRed),
@@ -170,7 +175,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateItem(CaptureTool.Archetype, nodeBottom.Id),
+						new CreateItem(CaptureTool.Archetype, nodeBottom),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
@@ -278,7 +283,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame11"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus>(nodeBottom.Id),
+					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus>(nodeBottom),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -293,7 +298,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft.Id)),
+					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -306,7 +311,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(GreenTutorialVirus.Archetype, nodeTop.Id),
+						new CreateMalware(GreenTutorialVirus.Archetype, nodeTop),
 						new ShowText(false, $"{scenario.Key}_Frame13"),
 					},
 					Evaluator = new GenomeRevealedAtLocation(nodeTop.Id, SimulationConstants.MalwareGeneGreen),
@@ -324,7 +329,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame14"),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeTop.Id)),
+					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeTop)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

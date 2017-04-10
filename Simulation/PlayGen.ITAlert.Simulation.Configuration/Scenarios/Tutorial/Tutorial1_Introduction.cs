@@ -15,10 +15,12 @@ using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
+using PlayGen.ITAlert.Simulation.Scenario.Localization;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
@@ -75,6 +77,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				ScannerTool.Archetype,
 				RedTutorialAntivirus.Archetype,
 				RedTutorialVirus.Archetype,
+				TutorialText.Archetype,
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
@@ -93,6 +96,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { nodeRight.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
+
+			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
 			#region frames
 
@@ -266,7 +271,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<DropItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame11"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft.Id)
+					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft)
 						.And(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{

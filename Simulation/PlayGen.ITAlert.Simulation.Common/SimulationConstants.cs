@@ -70,8 +70,8 @@
 		public const int MalwareGeneGreen = 0x2;
 		public const int MalwareGeneBlue = 0x4;
 
-		public const int MalwarePropogationInterval = 100;
-		public const int MalwarePropogationRoll = 75;
+		public const int MalwarePropogationInterval = 300;
+		public const int MalwarePropogationRoll = 66;
 
 		#endregion
 
@@ -91,13 +91,6 @@
 
 		#endregion
 
-
-		#region tutorial
-
-		public const string TutorialTextArchetype = "TutorialText";
-
-		#endregion
-
-		public const int MalwarePropogationIntervalVariation = 20;
+		public const int MalwarePropogationIntervalVariation = 0;
 	}
 }

@@ -1,21 +1,22 @@
 ﻿using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Unity.Controllers;
 
 namespace PlayGen.ITAlert.Unity.Commands
 {
 	public class SelectScenarioCommand : ICommand<ScenarioController>
 	{
-		private readonly ScenarioInfo _scenario;
+		private readonly ScenarioInfo _scenarioInfo;
 
-		public SelectScenarioCommand(ScenarioInfo scen)
+		public SelectScenarioCommand(ScenarioInfo scenarioInfo)
 		{
-			_scenario = scen;
+			_scenarioInfo = scenarioInfo;
 		}
 
-		public void Execute(ScenarioController parameter)
+		public void Execute(ScenarioController scenarioController)
 		{
-			parameter.SelectScenario(_scenario);
+			scenarioController.SelectScenario(_scenarioInfo);
 		}
 	}
 }

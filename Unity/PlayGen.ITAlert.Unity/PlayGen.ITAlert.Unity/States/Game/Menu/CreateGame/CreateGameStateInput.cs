@@ -51,11 +51,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			CommandQueue.AddCommand(new CreateGameCommand(new CreateRoomSettings
 			{
 				Name = details.GameName,
-				MinPlayers = _scenarioController.Selected.MinPlayerCount,
+				MinPlayers = _scenarioController.SelectedScenario.MinPlayerCount,
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
-				GameScenario = _scenarioController.Selected.Name
+				GameScenario = _scenarioController.SelectedScenario.Name
 			}));
             PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
@@ -73,7 +73,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
             PlayGen.Unity.Utilities.Loading.Loading.Stop();
 			_photonClient.JoinedRoomEvent += OnJoinedRoom;
 			_createGamePanel.SetActive(true);
-			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields(_scenarioController.Selected);
+			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields(_scenarioController.SelectedScenario);
             _buttons.Buttons.BestFit();
             _bestFitTick = true;
         }

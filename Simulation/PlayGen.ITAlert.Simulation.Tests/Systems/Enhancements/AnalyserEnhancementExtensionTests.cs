@@ -40,7 +40,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Systems.Enhancements
 			};
 
 			var configuration = new ECSConfiguration(archetypes, systems, null);
-			var ecs = TestInstaller.CreatTestRoot(configuration).ECS;
+			var scenario = new TestScenario() {Configuration = configuration};
+			var ecs = TestInstaller.CreatTestRoot(scenario).ECS;
 
 			Entity entity;
 			Assert.That(ecs.TryCreateEntityFromArchetype("Test", out entity));

@@ -5,6 +5,7 @@ using System.Text;
 using Engine.Archetypes;
 using Engine.Components;
 using Engine.Configuration;
+using Engine.Testing;
 using NUnit.Framework;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -49,15 +50,6 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
-			var items = new[]
-			{
-				new ItemConfig()
-				{
-					StartingLocation = 0,
-					Archetype = testItem.Name,
-				}
-			};
-
 			var systems = new List<SystemConfiguration>()
 			{
 				new SystemConfiguration<ItemStorageSystem>(),
@@ -70,8 +62,10 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 			};
 
 			var lifecycleConfig = new LifeCycleConfiguration();
-			var configuration = new SimulationConfiguration(nodeConfigs, null, null, items, archetypes, systems, lifecycleConfig);
-			var rootA = SimulationInstaller.CreateSimulationRoot(configuration);
+			var configuration = new SimulationConfiguration(nodeConfigs, null, null, archetypes, systems, lifecycleConfig);
+			var scenario = new SimulationScenario() { Configuration = configuration };
+
+			var rootA = SimulationInstaller.CreateSimulationRoot(scenario);
 			var ecsA = rootA.ECS;
 
 			Owner ownerA;
@@ -79,7 +73,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 
 			ecsA.Tick();
 
-			var rootB = SimulationInstaller.CreateSimulationRoot(configuration);
+			var rootB = SimulationInstaller.CreateSimulationRoot(scenario);
 			var ecsB = rootB.ECS;
 
 			Owner ownerB;

@@ -1,8 +1,9 @@
 ﻿using System;
+using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
@@ -141,7 +142,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					//TODO: extract item specific logic to subclasses
 					if (_antivirus != null)
 					{
-						_foregroundSprite.color = _antivirus.GetColourForGenome();
+						_foregroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
 					}
 					else
 					{
@@ -157,7 +158,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				//TODO: extract item specific logic to subclasses
 				if (_antivirus != null)
 				{
-					_foregroundSprite.color = _antivirus.GetColourForGenome();
+					_foregroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
 				}
 				else
 				{
@@ -178,7 +179,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				else
 				{
 					_midgroundSprite.enabled = true;
-					_midgroundSprite.color = _capture.GetColourForGenome();
+					_midgroundSprite.color = _capture.CapturedGenome.GetColourForGenome();
 				}
 			}
 		}

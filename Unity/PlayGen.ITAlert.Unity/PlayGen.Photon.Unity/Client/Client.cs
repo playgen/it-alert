@@ -133,7 +133,7 @@ namespace PlayGen.Photon.Unity.Client
 
 		private void OnException(Exception exception)
 		{
-			ExceptionEvent(exception);
+			ExceptionEvent?.Invoke(exception);
 		}
 
 		private void OnLeftRoom()

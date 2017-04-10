@@ -16,8 +16,8 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 	public class ItemTypeIsInStorageAtLocation<TItemType> : ItemTypeIsInStorageAtLocation<TItemType, ItemContainer>
 		where TItemType : class, IItemType
 	{
-		public ItemTypeIsInStorageAtLocation(int nodeId, IEntityFilter<Simulation, SimulationConfiguration> itemFilter = null)
-			: base(nodeId, itemFilter)
+		public ItemTypeIsInStorageAtLocation(NodeConfig node, IEntityFilter<Simulation, SimulationConfiguration> itemFilter = null)
+			: base(node, itemFilter)
 		{
 		}
 	}
@@ -26,7 +26,6 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		where TItemType : class, IItemType
 		where TItemContainer : ItemContainer
 	{
-		private readonly int _nodeId;
 		private NodeConfig _node;
 		private readonly IEntityFilter<Simulation, SimulationConfiguration> _entityFilter;
 
@@ -38,18 +37,14 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// </summary>
 		/// <param name="nodeId">Storage location</param>
 		/// <param name="itemFilter">Optional entity filter for item</param>
-		public ItemTypeIsInStorageAtLocation(int nodeId, IEntityFilter<Simulation, SimulationConfiguration> itemFilter = null)
+		public ItemTypeIsInStorageAtLocation(NodeConfig node, IEntityFilter<Simulation, SimulationConfiguration> itemFilter = null)
 		{
-			_nodeId = nodeId;
+			_node = node;
 			_entityFilter = itemFilter;
 		}
 
 		public void Initialize(Simulation ecs, SimulationConfiguration configuration)
 		{
-			if (configuration.TrySelectNode(_nodeId, out _node) == false)
-			{
-				throw new ScenarioConfigurationException($"Node not found with id {_nodeId}");
-			}
 			_locationMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Components.EntityTypes.Subsystem, ItemStorage>();
 			_itemMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<TItemType>();
 			_entityFilter?.Initialize(ecs, configuration);

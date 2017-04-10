@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Engine.Components;
 using Engine.Systems.Activation;
-using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -11,7 +10,7 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 {
 	public class CaptureBehaviour : IActivationExtension
 	{
@@ -32,22 +31,22 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 
 		}
 
-		public void OnActivating(int itemId, Activation activation)
-		{
-			// do nothing
-		}
-
-		public void OnActive(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
+		{
+			// do nothing
+		}
+
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_captureMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{

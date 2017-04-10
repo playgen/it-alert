@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Configuration;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Utilities;
@@ -22,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		private ButtonList _buttons;
 		private Button _backButton;
 
-        private bool _bestFitTick;
+		private bool _bestFitTick;
 
 		public event Action BackClickedEvent;
 
@@ -58,7 +59,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			_scenarioController.GetScenarioList();
 			_scenarioPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
-            _bestFitTick = true;
+			_bestFitTick = true;
 		}
 
 		protected override void OnExit()
@@ -71,11 +72,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		protected override void OnTick(float deltaTime)
 		{
-            if (_bestFitTick)
-            {
-                _buttons.Buttons.BestFit();
-                _bestFitTick = false;
-            }
+			if (_bestFitTick)
+			{
+				_buttons.Buttons.BestFit();
+				_bestFitTick = false;
+			}
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
@@ -89,7 +90,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		private void SelectScenario(ScenarioInfo scenario)
 		{
 			CommandQueue.AddCommand(new SelectScenarioCommand(scenario));
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnScenarioSuccess(ScenarioInfo[] scenarios)
@@ -105,7 +106,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			{
 				var gameItem = UnityEngine.Object.Instantiate(_scenarioItemPrefab).transform;
 				gameItem.FindChild("Name").GetComponent<Text>().text = scenario.Name;
-				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
+				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount
 					? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
 					: scenario.MaxPlayerCount.ToString();
 				gameItem.FindChild("Players").GetComponent<Text>().text = players;

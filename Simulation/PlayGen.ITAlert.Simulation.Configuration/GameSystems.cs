@@ -8,10 +8,15 @@ using Engine.Systems.RNG;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation;
+using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
+using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems;
 using PlayGen.ITAlert.Simulation.Systems.Initialization;
@@ -28,9 +33,21 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	{
 		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
 		{
-			#region initialization
+			#region common
 
+			// graph systems
 			new SystemConfiguration<GraphSystem>(),
+			new SystemConfiguration<PathFindingSystem>(),
+			// game end
+			new SystemConfiguration<EndGameSystem>(),
+			// rng system
+			new SystemConfiguration<RNGSystem>(),
+
+			#endregion
+
+			#region players
+
+			// player system
 			new SystemConfiguration<PlayerSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -39,7 +56,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
-							new SystemExtensionConfiguration<IPlayerSystemBehaviour>.SystemExtensionImplementation<DropInventoryOnDisconnect>(), 
+							new SystemExtensionConfiguration<IPlayerSystemBehaviour>.SystemExtensionImplementation<DropInventoryOnDisconnect>(),
 						}
 					}
 				}
@@ -47,13 +64,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			new SystemConfiguration<RNGSystem>(),
-
 			#region resource system
 
 			// TODO: if the systems are tickable the order they are defined here is the order they will be ticked; we probably need to make this more explicit
 			new SystemConfiguration<ResourcesSystem>()
 			{
+				// TODO: could the fact the archetypes are static cause problems?
+				BindingInitialize = ResourcesSystem.InitializeArchetypes,
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
 				{
 					new SystemExtensionConfiguration<ISubsystemResourceEffect>()
@@ -72,9 +89,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			#region malware effects
+			#region malware systems
 
 			new SystemConfiguration<AdjacenetMalwareIncreaseMovementCostSystem>(),
+			new SystemConfiguration<MalwarePropogationSystem>(),
 
 			#endregion
 
@@ -108,19 +126,27 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							// TODO: some of these handlers should be encapsulated into the relevant system
 							// probably create a zenject installer
 
-							// movement
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(),
 							// tutorial
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DisplayTextCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ContinueCommandCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HideTextCommandHandler>(),
-							// entity creation - no system mapping yet
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateMAlwareCommandHandler>(),
-							// items
+							
+							// entity creation
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateMalwareCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreatePlayerCommandHandler>(),
+
+							// item management
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ActivateItemCommandHandler>(),
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ActivateItemTypeCommandHandler>(),
+
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemTypeCommandHandler>(),
+							
+							// movement
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(),
+
 							// testing
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HaltAndCatchFireCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<EndGameCommandHandler>(), 
@@ -132,11 +158,33 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
+			#region item storage
+
 			//new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<PlayerInventorySystem>(),
 
-			#region item activation system
+			#endregion
+
+			#region transfer system
+
+			new SystemConfiguration<TransferEnhancementSystem>(),
+
+			#endregion
+
+			#region antivirus system
+
+			new SystemConfiguration<AntivirusEnhancementSystem>(),
+
+			#endregion
+
+			#region garbage disposal
+
+			new SystemConfiguration<GarbageDisposalEnhancementSystem>(),
+
+			#endregion
+
+			#region activation systems
 
 			new SystemConfiguration<ActivationSystem>()
 			{
@@ -146,21 +194,26 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
-
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ConsumableActivationExtension>(), 
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
-							// items
+							
+							// malware
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
-							// enhancement actiovators
+							// antivirus
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
+							// garbage disposal
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<GarbageDisposalActivatorBehaviour>(),
+							// transfer
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TransferBehaviour>(), 
 
-							// TODO: need to find a good way to append extensions from the scenario definition
+							// tutorial
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
+
+							// reset owner - this must come last or anything that depends on knowing who the owner is in OnDeactivating will break
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
 						}
 					}
@@ -169,24 +222,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			// new SystemConfiguration<ItemManagementSystem>(),
-
-			#region enhancement system
-
-			// TODO: decide if the enhancement system should be responsible for manipulating the item storage of enhanced systems
-			// or if the item storage system should have an extension
-			new SystemConfiguration<AntivirusEnhancementSystem>(),
-			new SystemConfiguration<GarbageDisposalEnhancementSystem>(),
-			new SystemConfiguration<TransferEnhancementSystem>(),
-
-			#endregion
-
-			new SystemConfiguration<PathFindingSystem>(),
 			// TODO: need to find a good way to append systems from the scenario definition
 			new SystemConfiguration<TutorialSystem>(),
-			new SystemConfiguration<EndGameSystem>(),
-
-			new SystemConfiguration<MalwarePropogationSystem>(),
 		};
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Photon.Hive.Plugin;
+﻿using System;
+using Photon.Hive.Plugin;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -43,13 +44,20 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
-			// TODO: extract sugar controller from RoomState to subclass or via variable DI?
-			Analytics.StartMatch();
-			Analytics.AddMatchData("PlayerCount", PlayerManager.Players.Count);
+			try
+			{
+				// TODO: extract sugar controller from RoomState to subclass or via variable DI?
+				Analytics.StartMatch();
+				Analytics.AddMatchData("PlayerCount", PlayerManager.Players.Count);
 
-			_stateController = CreateStateController();
-			_stateController.Initialize();
-			_stateController.EnterState(InitializingState.StateName);
+				_stateController = CreateStateController();
+				_stateController.Initialize();
+				_stateController.EnterState(InitializingState.StateName);
+			}
+			catch (Exception ex)
+			{
+				_exceptionHandler.OnException(ex);
+			}
 		}
 
 		protected override void OnExit()

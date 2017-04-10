@@ -17,10 +17,12 @@ using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Simulation.Modules.Transfer;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators.Filters;
+using PlayGen.ITAlert.Simulation.Scenario.Localization;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
@@ -156,6 +158,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				VisibleRedTutorialVirus,
 				GreenTutorialAntivirus.Archetype,
 				VisibleGreenTutorialVirus,
+				TutorialText.Archetype,
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
@@ -175,6 +178,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
 
+			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
+			
 			#region frames
 
 			// 1
@@ -257,7 +262,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(true, $"{scenario.Key}_Frame5"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1.Id),
+					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
@@ -273,8 +278,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new SetCommandEnabled<PickupItemCommand>(false),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT2.Id, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))
-						.And(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1.Id, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneRed))),
+					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT2, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))
+						.And(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneRed))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<PickupItemCommand>(true),

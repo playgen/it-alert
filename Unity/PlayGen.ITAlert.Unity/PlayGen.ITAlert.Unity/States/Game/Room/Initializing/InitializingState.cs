@@ -74,7 +74,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 				{
 					scenario.Configuration.PlayerConfiguration = ConfigurationSerializer.Deserialize<List<PlayerConfig>>(initializedMessage.PlayerConfiguration);
 					// TODO: extract simulation initialization to somewhere else
-					var simulationRoot = SimulationInstaller.CreateSimulationRoot(scenario.Configuration);
+					var simulationRoot = SimulationInstaller.CreateSimulationRoot(scenario);
 					if (_director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 					{
 						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()

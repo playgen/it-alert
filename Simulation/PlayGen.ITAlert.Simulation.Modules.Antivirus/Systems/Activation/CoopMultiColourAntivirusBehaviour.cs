@@ -8,39 +8,39 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 {
 	public class CoopMultiColourAntivirusBehaviour : IActivationExtension
 	{
 		private const bool AllowSamePlayerActivation = false;
 
-		private readonly ComponentMatcherGroup<Components.Antivirus, CurrentLocation, Owner, Activation> _antivirusMatcherGroup;
+		private readonly ComponentMatcherGroup<Components.Antivirus, CurrentLocation, Owner, Engine.Systems.Activation.Components.Activation> _antivirusMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage, Visitors> _locationMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
 		
 		public CoopMultiColourAntivirusBehaviour(IMatcherProvider matcherProvider)
 		{
-			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Components.Antivirus, CurrentLocation, Owner, Activation>();
+			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Components.Antivirus, CurrentLocation, Owner, Engine.Systems.Activation.Components.Activation>();
 			_locationMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage, Visitors>();
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
 		}
 
-		public void OnNotActive(int itemId, Activation activation)
+		public void OnNotActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			
 		}
 
-		public void OnActivating(int itemId, Activation activation)
+		public void OnActivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 
 		}
 
-		public void OnActive(int itemId, Activation activation)
+		public void OnActive(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			// do nothing
 		}
 
-		public void OnDeactivating(int itemId, Activation activation)
+		public void OnDeactivating(int itemId, Engine.Systems.Activation.Components.Activation activation)
 		{
 			if (_antivirusMatcherGroup.TryGetMatchingEntity(itemId, out var itemTuple))
 			{
