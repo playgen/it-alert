@@ -42,7 +42,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
             _voiceEnabled.onValueChanged.AddListener(OnVoiceEnabledChanged);
             _device = _creator.Custom<Dropdown>("SETTINGS_LABEL_MICROPHONE_DEVICE", false, true, true, false);
             _device.AddOptions(Microphone.devices.ToList());
-            _device.interactable = _device.options.Count > 0;
+            _device.interactable = _device.options.Count > 1;
             _receive = _creator.Volume("SETTINGS_LABEL_RECEIVE_VOLUME");
             
             var buttonLayout = _creator.HorizontalLayout("Buttons");
@@ -102,8 +102,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
             {
                 voice.MicrophoneDevice = _device.options[_device.value].text;
             }
-            UnityEngine.Object.FindObjectOfType<PhotonVoiceRecorder>().MicrophoneDevice = _device.options[_device.value].text;
-
+            if (_device.options.Count > 0)
+            {
+                UnityEngine.Object.FindObjectOfType<PhotonVoiceRecorder>().MicrophoneDevice = _device.options[_device.value].text;
+            }
 
             OnExit();
             OnEnter();
@@ -120,7 +122,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
             {
                 _device.ClearOptions();
                 _device.AddOptions(Microphone.devices.ToList());
-                _device.interactable = _device.options.Count > 0;
+                _device.interactable = _device.options.Count > 1;
             }
             _creator.RebuildLayout();
         }
