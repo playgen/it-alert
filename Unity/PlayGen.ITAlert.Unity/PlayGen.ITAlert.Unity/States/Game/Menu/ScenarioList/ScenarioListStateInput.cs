@@ -11,126 +11,164 @@ using PlayGen.Unity.Utilities.BestFit;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
-	public class ScenarioListStateInput : TickStateInput
-	{
-		private readonly ScenarioController _scenarioController;
-		private readonly Client _photonClient;
+    public class ScenarioListStateInput : TickStateInput
+    {
+        private readonly ScenarioController _scenarioController;
+        private readonly Client _photonClient;
 
-		private GameObject _scenarioPanel;
-		private GameObject _scenarioListObject;
-		private GameObject _scenarioItemPrefab;
-		private ButtonList _buttons;
-		private Button _backButton;
+        private GameObject _scenarioPanel;
+        private GameObject _scenarioListObject;
+        private GameObject _scenarioItemPrefab;
+        private Button _backButton;
 
-		private bool _bestFitTick;
+        private GameObject _scenarioSelectPanel;
+        private Text _selectedName;
+        private Text _selectedDescription;
+        private Button _selectButton;
 
-		public event Action BackClickedEvent;
+        private bool _bestFitTick;
 
-		public ScenarioListStateInput(Client photonClient, ScenarioController scenarioController)
-		{
-			_photonClient = photonClient;
-			_scenarioController = scenarioController;
-		}
+        public event Action BackClickedEvent;
 
-		protected override void OnInitialize()
-		{
-			// Join Game Popup
-			_scenarioPanel = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer");
-			_buttons = new ButtonList("ScenarioContainer/ScenarioContainer/ButtonPanel");
+        public ScenarioListStateInput(Client photonClient, ScenarioController scenarioController)
+        {
+            _photonClient = photonClient;
+            _scenarioController = scenarioController;
+        }
 
-			_backButton = _buttons.GetButton("BackButtonContainer");
+        protected override void OnInitialize()
+        {
+            // Join Game Popup
+            _scenarioPanel = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer");
 
-			_scenarioListObject = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioListContainer/Viewport/Content");
-			_scenarioItemPrefab = Resources.Load("ScenarioItem") as GameObject;
+            _backButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/BackButtonContainer").GetComponent<Button>();
 
-		}
+            _scenarioSelectPanel = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected");
+            _selectedName = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Name").GetComponent<Text>();
+            _selectedDescription = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Description").GetComponent<Text>();
+            _selectButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/SelectButtonContainer").GetComponent<Button>();
 
-		private void OnBackClick()
-		{
-			BackClickedEvent?.Invoke();
-		}
+            _scenarioListObject = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioListContainer/Viewport/Content");
+            _scenarioItemPrefab = Resources.Load("ScenarioItem") as GameObject;
 
-		protected override void OnEnter()
-		{
-			_backButton.onClick.AddListener(OnBackClick);
+        }
 
-			_scenarioController.ScenarioListSuccessEvent += OnScenarioSuccess;
-			_scenarioController.GetScenarioList();
-			_scenarioPanel.SetActive(true);
-			_buttons.Buttons.BestFit();
-			_bestFitTick = true;
-		}
+        private void OnBackClick()
+        {
+            BackClickedEvent?.Invoke();
+        }
 
-		protected override void OnExit()
-		{
-			_backButton.onClick.RemoveListener(OnBackClick);
+        protected override void OnEnter()
+        {
+            _backButton.onClick.AddListener(OnBackClick);
 
-			_scenarioController.ScenarioListSuccessEvent -= OnScenarioSuccess;
-			_scenarioPanel.SetActive(false);
-		}
+            _scenarioPanel.SetActive(true);
+            _backButton.gameObject.BestFit();
+            _selectButton.gameObject.BestFit();
+            _selectedName.text = string.Empty;
+            _selectedDescription.text = string.Empty;
+            _selectButton.gameObject.SetActive(false);
+            _scenarioSelectPanel.SetActive(false);
+            _bestFitTick = true;
+            _scenarioController.ScenarioListSuccessEvent += OnScenarioSuccess;
+            _scenarioController.GetScenarioList();
+        }
 
-		protected override void OnTick(float deltaTime)
-		{
-			if (_bestFitTick)
-			{
-				_buttons.Buttons.BestFit();
-				_bestFitTick = false;
-			}
-			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
-			{
-				OnBackClick();
-			}
-			if (Input.GetKeyDown(KeyCode.Escape))
-			{
-				OnBackClick();
-			}
-		}
+        protected override void OnExit()
+        {
+            _backButton.onClick.RemoveListener(OnBackClick);
 
-		private void SelectScenario(ScenarioInfo scenario)
-		{
-			CommandQueue.AddCommand(new SelectScenarioCommand(scenario));
-			PlayGen.Unity.Utilities.Loading.Loading.Start();
-		}
+            _scenarioController.ScenarioListSuccessEvent -= OnScenarioSuccess;
+            _scenarioPanel.SetActive(false);
+        }
 
-		private void OnScenarioSuccess(ScenarioInfo[] scenarios)
-		{
-			foreach (Transform child in _scenarioListObject.transform)
-			{
-				GameObject.Destroy(child.gameObject);
-			}
-			var offset = 0.5f;
-			var height = _scenarioItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
-			// Populate Scenario list UI
-			foreach (var scenario in scenarios)
-			{
-				var gameItem = UnityEngine.Object.Instantiate(_scenarioItemPrefab).transform;
-				gameItem.FindChild("Name").GetComponent<Text>().text = scenario.Name;
-				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
-					? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
-					: scenario.MaxPlayerCount.ToString();
-				gameItem.FindChild("Players").GetComponent<Text>().text = players;
-				gameItem.FindChild("Description").GetComponent<Text>().text = scenario.Description;
-				gameItem.SetParent(_scenarioListObject.transform, false);
+        protected override void OnTick(float deltaTime)
+        {
+            if (_bestFitTick)
+            {
+                _backButton.gameObject.BestFit();
+                _selectButton.gameObject.BestFit();
+                _bestFitTick = false;
+            }
+            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+            {
+                OnBackClick();
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                OnBackClick();
+            }
+        }
 
-				// set anchors
-				var gameItemRect = gameItem.GetComponent<RectTransform>();
+        private void SelectScenario(ScenarioInfo scenario)
+        {
+            _selectedName.text = scenario.Name;
+            _selectedDescription.text = scenario.Description;
+            _scenarioSelectPanel.SetActive(true);
+            _selectButton.gameObject.SetActive(true);
+            _selectButton.gameObject.BestFit();
+            _selectButton.onClick.RemoveAllListeners();
+            _selectButton.onClick.AddListener(delegate { ConfirmScenario(scenario); });
+            _bestFitTick = true;
+        }
 
-				gameItemRect.pivot = new Vector2(0.5f, 1f);
-				gameItemRect.anchorMax = Vector2.one;
-				gameItemRect.anchorMin = new Vector2(0f, 1f);
+        private void SelectScenarioObject(Transform selected)
+        {
+            foreach (Transform child in _scenarioListObject.transform)
+            {
+                child.FindChild("Selected").GetComponent<Image>().enabled = selected == child;
+            }
+        }
 
-				gameItemRect.offsetMin = new Vector2(0f, offset - height);
-				gameItemRect.offsetMax = new Vector2(0f, offset);
+        private void ConfirmScenario(ScenarioInfo scenario)
+        {
+            CommandQueue.AddCommand(new SelectScenarioCommand(scenario));
+            PlayGen.Unity.Utilities.Loading.Loading.Start();
+        }
 
-				// increment the offset
-				offset -= height;
-				var thisScenario = scenario;
-				gameItem.FindChild("Select").GetComponent<Button>().onClick.AddListener(delegate { SelectScenario(thisScenario); });
-				_scenarioListObject.BestFit();
+        private void OnScenarioSuccess(ScenarioInfo[] scenarios)
+        {
+            foreach (Transform child in _scenarioListObject.transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+            var offset = 0.5f;
+            var height = _scenarioItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+            // Populate Scenario list UI
+            foreach (var scenario in scenarios)
+            {
+                var gameItem = UnityEngine.Object.Instantiate(_scenarioItemPrefab).transform;
+                gameItem.FindChild("Name").GetComponent<Text>().text = scenario.Name;
+                var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
+                    ? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
+                    : scenario.MaxPlayerCount.ToString();
+                gameItem.FindChild("Players").GetComponent<Text>().text = players;
+                gameItem.FindChild("Selected").GetComponent<Image>().enabled = false;
+                gameItem.SetParent(_scenarioListObject.transform, false);
 
-			}
-			// Set the content box to be the correct size for our elements
-			_scenarioListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
-		}
-	}
+                // set anchors
+                var gameItemRect = gameItem.GetComponent<RectTransform>();
+
+                gameItemRect.pivot = new Vector2(0.5f, 1f);
+                gameItemRect.anchorMax = Vector2.one;
+                gameItemRect.anchorMin = new Vector2(0f, 1f);
+
+                gameItemRect.offsetMin = new Vector2(0f, offset - height);
+                gameItemRect.offsetMax = new Vector2(0f, offset);
+
+                // increment the offset
+                offset -= height;
+                var thisScenario = scenario;
+                gameItem.GetComponent<Button>().onClick.AddListener(delegate { SelectScenario(thisScenario); });
+                gameItem.GetComponent<Button>().onClick.AddListener(delegate { SelectScenarioObject(gameItem); });
+                if (scenario == scenarios[0])
+                {
+                    gameItem.GetComponent<Button>().onClick.Invoke();
+                }
+            }
+            // Set the content box to be the correct size for our elements
+            _scenarioListObject.BestFit();
+            _scenarioListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+        }
+    }
 }
