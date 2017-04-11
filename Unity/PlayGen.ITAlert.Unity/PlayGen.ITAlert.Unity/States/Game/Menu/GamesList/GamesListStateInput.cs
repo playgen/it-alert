@@ -24,9 +24,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private Button _backButton;
 		private Button _refreshButton;
 
-        private bool _bestFitTick;
+		private bool _bestFitTick;
 
-        public event Action JoinGameSuccessEvent;
+		public event Action JoinGameSuccessEvent;
 		public event Action BackClickedEvent;
 
 		public GamesListStateInput(Client photonClient, GamesListController gameListController)
@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private void OnRefreshClick()
 		{
 			CommandQueue.AddCommand(new RefreshGamesListCommand());
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
 		private void OnBackClick()
@@ -70,10 +70,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 			_joinGamePanel.SetActive(true);
 			_buttons.Buttons.BestFit();
-            _bestFitTick = true;
-            OnRefreshClick();
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
-        }
+			_bestFitTick = true;
+			OnRefreshClick();
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
+		}
 
 		protected override void OnExit()
 		{
@@ -87,12 +87,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnTick(float deltaTime)
 		{
-            if (_bestFitTick)
-            {
-                _buttons.Buttons.BestFit();
-                _bestFitTick = false;
-            }
-            if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
+			if (_bestFitTick)
+			{
+				_buttons.Buttons.BestFit();
+				_bestFitTick = false;
+			}
+			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
 			}
@@ -105,8 +105,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private void JoinGame(string name)
 		{
 			CommandQueue.AddCommand(new JoinGameCommand(name));
-            PlayGen.Unity.Utilities.Loading.Loading.Start();
-        }
+			PlayGen.Unity.Utilities.Loading.Loading.Start();
+		}
 
 		private void OnJoinGameSuccess(ClientRoom clientRoom)
 		{
@@ -115,8 +115,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		private void OnGamesListSuccess(RoomInfo[] rooms)
 		{
-            PlayGen.Unity.Utilities.Loading.Loading.Stop();
-            foreach (Transform child in _gameListObject.transform)
+			PlayGen.Unity.Utilities.Loading.Loading.Stop();
+			foreach (Transform child in _gameListObject.transform)
 			{
 				GameObject.Destroy(child.gameObject);
 			}
@@ -166,6 +166,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			}
 			// Set the content box to be the correct size for our elements
 			_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+			_gameListObject.BestFit();
 		}
 	}
 }

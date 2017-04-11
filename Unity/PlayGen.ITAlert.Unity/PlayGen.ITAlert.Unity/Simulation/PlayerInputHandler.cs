@@ -44,25 +44,28 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 
-			var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
-			var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
-			var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
+			if (hits.Count(d => d.collider.tag.Equals(Tags.PauseScreen)) == 0)
+			{
+				var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
+				var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+				var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
 
-			if (subsystemHits.Length == 1)
-			{
-				OnClickSubsystem(subsystemHits[0], clickDown);
-			}
-			else if (itemHits.Length == 1 && itemContainerHits.Length == 1)
-			{
-				OnClickItemInContainer(itemHits[0], itemContainerHits[0], clickDown);
-			}
-			else if (itemContainerHits.Length == 1)
-			{
-				OnClickItemContainer(itemContainerHits[0], clickDown);
-			}
-			else if (itemHits.Length == 1)
-			{
-				OnClickItem(itemHits[0], clickDown);
+				if (subsystemHits.Length == 1)
+				{
+					OnClickSubsystem(subsystemHits[0], clickDown);
+				}
+				else if (itemHits.Length == 1 && itemContainerHits.Length == 1)
+				{
+					OnClickItemInContainer(itemHits[0], itemContainerHits[0], clickDown);
+				}
+				else if (itemContainerHits.Length == 1)
+				{
+					OnClickItemContainer(itemContainerHits[0], clickDown);
+				}
+				else if (itemHits.Length == 1)
+				{
+					OnClickItem(itemHits[0], clickDown);
+				}
 			}
 
 			if (!clickDown)
