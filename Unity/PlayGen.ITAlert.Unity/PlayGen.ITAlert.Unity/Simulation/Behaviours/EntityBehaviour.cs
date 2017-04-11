@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Entities;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
@@ -21,6 +22,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected Director Director { get; private set; }
 
+		private TutorialHighlight _tutorialHighlight;
+
 		/// <summary>
 		/// Id of this entity
 		/// </summary>
@@ -28,6 +31,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public string Name { get; set; }
 
+
+		[SerializeField]
+		private GameObject _highlight;
 
 		#region Unity Update
 
@@ -62,7 +68,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected virtual void OnUpdate()
 		{
-			
+		}
+
+		private void UpdateHighlight()
+		{
+			if (_tutorialHighlight != null && _highlight.activeSelf != _tutorialHighlight.Enabled)
+			{
+				_highlight.SetActive(_tutorialHighlight.Enabled);
+			}
 		}
 
 		#endregion
@@ -85,7 +98,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// <summary>
 		/// actions to perform when state has been updated
 		/// </summary>
-		protected abstract void OnStateUpdated();
+		protected virtual void OnStateUpdated()
+		{
+			UpdateHighlight();
+		}
 
 		/// <summary>
 		/// Initialize the object from simulation state
@@ -96,9 +112,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Entity = entity;
 			Director = director;
+			Entity.TryGetComponent(out _tutorialHighlight);
 			OnInitialize();
 			Initialized = true;
 
+			
 			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 
 		}

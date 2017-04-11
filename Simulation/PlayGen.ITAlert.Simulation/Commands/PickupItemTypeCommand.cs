@@ -7,6 +7,7 @@ using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Systems.Players;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
@@ -23,14 +24,16 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		private readonly ComponentMatcherGroup<Player, ItemStorage, CurrentLocation> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Item, Activation, CurrentLocation, Owner> _itemMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
+		private readonly PlayerSystem _playerSystem;
 
 		public override IEqualityComparer<ICommand> Deduplicator => new PickupItemTypeCommandqualityComparer();
 
-		public PickupItemTypeCommandHandler(IMatcherProvider matcherProvider)
+		public PickupItemTypeCommandHandler(IMatcherProvider matcherProvider, PlayerSystem playerSystem)
 		{
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Activation, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
+			_playerSystem = playerSystem; 
 		}
 
 		protected override bool TryProcessCommand(PickupItemTypeCommand command)
@@ -41,7 +44,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				return false;
 			}
 
-			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+			if (_playerSystem.TryGetPlayerEntityId(command.PlayerId, out var playerEntityId)
+				&& _playerMatcherGroup.TryGetMatchingEntity(playerEntityId, out var playerTuple)
 				&& playerTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple))
 			{
@@ -50,8 +54,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					if (_itemMatcherGroup.TryGetMatchingEntity(ic.Item.Value, out var itemTuple)
 						&& itemTuple.Entity.TryGetComponent(command.ItemType, out var itemComponent) // item is of correct type
 						&& itemTuple.Component2.ActivationState == ActivationState.NotActive // item is not active
-						&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId) // player can activate item
-						&& _itemMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId
+						&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == playerEntityId) // player can activate item
+						&& _itemMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == playerEntityId
 							&& it.Component2.ActivationState != ActivationState.NotActive) == false) // player has no other active items
 					{
 						var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;

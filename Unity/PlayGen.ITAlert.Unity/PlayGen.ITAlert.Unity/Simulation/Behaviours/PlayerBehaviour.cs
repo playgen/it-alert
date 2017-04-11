@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Simulation.Components.Player;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,6 +33,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private PlayerBitMask _playerBitMask;
 
+		private PlayerColour _playerColour;
+
 		public PlayerBitMask BitMask => _playerBitMask;
 
 		#region Initialization
@@ -45,15 +48,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			base.OnInitialize();
 			_trailRenderer.enabled = true;
 
-			if (Entity.TryGetComponent(out _playerBitMask) == false)
+			if (Entity.TryGetComponent(out _playerBitMask)
+				&& Entity.TryGetComponent(out _playerColour))
 			{
-				throw new SimulationIntegrationException("Player bitmask component missing");
+				SetColor(_playerColour.HexColour);
+			}
+			else { 
+				throw new SimulationIntegrationException("Mandatory Player components missing");
 			}
 		}
 
 		#endregion
 
-		public void SetColor(string colour)
+		private void SetColor(string colour)
 		{
 			if (colour.IndexOf("#", StringComparison.Ordinal) == -1)
 			{

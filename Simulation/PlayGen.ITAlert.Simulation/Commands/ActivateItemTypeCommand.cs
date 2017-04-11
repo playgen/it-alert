@@ -8,6 +8,7 @@ using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Systems.Players;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
@@ -26,14 +27,16 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		private readonly ComponentMatcherGroup<Item, Activation, CurrentLocation, Owner> _activationMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<Player, CurrentLocation> _playerMatcherGroup;
+		private readonly PlayerSystem _playerSystem;
 
 		public override IEqualityComparer<ICommand> Deduplicator => new ActivateItemTypeCommandqualityComparer();
 
-		public ActivateItemTypeCommandHandler(IMatcherProvider matcherProvider)
+		public ActivateItemTypeCommandHandler(IMatcherProvider matcherProvider, PlayerSystem playerSystem)
 		{
 			_activationMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Activation, CurrentLocation, Owner>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, CurrentLocation>();
+			_playerSystem = playerSystem;
 		}
 
 		protected override bool TryProcessCommand(ActivateItemTypeCommand command)
@@ -44,8 +47,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			{
 				return false;
 			}
-			if (command.PlayerId.HasValue && command.LocationEntityId.HasValue == false
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId.Value, out var playerTuple)
+			if (command.PlayerId.HasValue
+				&& _playerSystem.TryGetPlayerEntityId(command.PlayerId.Value, out var playerEntityId)
+				&& command.LocationEntityId.HasValue == false
+				&& _playerMatcherGroup.TryGetMatchingEntity(playerEntityId, out var playerTuple)
 				&& playerTuple.Component2.Value.HasValue)
 			{
 				command.LocationEntityId = playerTuple.Component2.Value;
@@ -56,15 +61,18 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			{
 				foreach(var ic in subsystemTuple.Component2.Items.Where(ic => ic?.Item != null))
 				{
-					if (_activationMatcherGroup.TryGetMatchingEntity(ic.Item.Value, out var itemTuple)
+					if (
+						_activationMatcherGroup.TryGetMatchingEntity(ic.Item.Value, out var itemTuple)
 						&& itemTuple.Entity.TryGetComponent(command.ItemType, out var itemComponent) // item is of correct type
 						&& itemTuple.Component2.ActivationState == ActivationState.NotActive // item is not active
-						&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId) // player can activate item
-						&& _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId
+						&& command.PlayerId.HasValue
+						&& _playerSystem.TryGetPlayerEntityId(command.PlayerId.Value, out playerEntityId)
+						&& (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == playerEntityId) // player can activate item
+						&& _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == playerEntityId
 							&& it.Component2.ActivationState != ActivationState.NotActive) == false) // player has no other active items
 					{
 						itemTuple.Component2.Activate();
-						itemTuple.Component4.Value = command.PlayerId;
+						itemTuple.Component4.Value = playerEntityId;
 						return true;
 					}
 				}

@@ -32,9 +32,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			}
 		}
 
-		public void AddVisitor(Entity node, Entity visitor)
+		public void AddVisitor(Entity node, Entity visitor, int initialPosition = 0)
 		{
-			ExecuteMovementSystemAction(node.Id, system => system.AddVisitorToNode(node.Id, visitor.Id, 0, 0, 0));
+			ExecuteMovementSystemAction(node.Id, system => system.AddVisitorToNode(node.Id, visitor.Id, 0, initialPosition, 0));
 		}
 
 		public void AddVisitor(int nodeId, int visitorId)

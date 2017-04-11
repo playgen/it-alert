@@ -15,6 +15,7 @@ using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Actions;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
@@ -47,7 +48,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Left",
 				X = 0,
 				Y = 0,
-				Archetype = SubsystemNode.Archetype,
+				Archetype = TutorialSubsystem.Archetype,
 			};
 
 			var nodeRight = new NodeConfig()
@@ -55,7 +56,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Name = "Right",
 				X = 1,
 				Y = 0,
-				Archetype = SubsystemNode.Archetype,
+				Archetype = TutorialSubsystem.Archetype,
 			};
 
 			var nodeConfigs = new NodeConfig[]
@@ -71,10 +72,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			var archetypes = new List<Archetype>
 			{
-				SubsystemNode.Archetype,
+				TutorialSubsystem.Archetype,
 				ConnectionNode.Archetype,
 				Player.Archetype,
-				ScannerTool.Archetype,
+				TutorialScanner.Archetype,
 				RedTutorialAntivirus.Archetype,
 				RedTutorialVirus.Archetype,
 				TutorialText.Archetype,
@@ -124,12 +125,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetHighlight(nodeLeft),
 						new ShowText(false, $"{scenario.Key}_Frame2")
 					},
 					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+						new ClearHighlight(),
 					},
 				}
 			);
@@ -157,13 +160,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						// TODO: this should disable the cancapture flag of the inventory slot
 						new SetCommandEnabled<PickupItemCommand>(false),	
 						new SetCommandEnabled<ActivateItemCommand>(false),
-						new CreateItem(ScannerTool.Archetype, nodeRight),
+						new CreateItem(TutorialScanner.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
 					Evaluator = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+						new ClearHighlight(),
 					},
 				}
 			);
@@ -287,6 +291,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
+					},
+					Evaluator = new ItemTypeIsInInventory<Antivirus>(),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new ClearHighlight(),
+					},
+				}
+			);
+			// 13
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
 					},
 					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

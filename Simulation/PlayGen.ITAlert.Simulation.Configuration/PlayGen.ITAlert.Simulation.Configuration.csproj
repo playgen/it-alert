@@ -41,6 +41,12 @@
     <Compile Include="PlayerConfigFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioLoader.cs" />
+    <Compile Include="Scenarios\SPL\SPL1.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\TutorialNPC.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\TutorialAntivirusWorkstation.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\TutorialSubsystem.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\TutorialCapture.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\TutorialScanner.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\GreenTutorialAntivirus.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\GreenTutorialVirus.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\RedTutorialAntivirus.cs" />
@@ -52,9 +58,7 @@
     <Compile Include="Scenarios\Tutorial\Tutorial3_Bandwidth.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial4_Mutation.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scenarios\SPL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>

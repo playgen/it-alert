@@ -73,6 +73,8 @@
 		public const int MalwarePropogationInterval = 300;
 		public const int MalwarePropogationRoll = 66;
 
+		public static decimal MalwareSpeed = 1;
+		
 		#endregion
 
 		#region players
@@ -80,12 +82,12 @@
 		/// <summary>
 		/// number of units to mvoe every tick
 		/// </summary>
-		public const int PlayerMaxSpeed = 4;
+		public const decimal PlayerMaxSpeed = 4;
 
 		/// <summary>
 		/// number of units to mvoe every tick
 		/// </summary>
-		public const int PlayerSpeed = 2;
+		public const decimal PlayerSpeed = 1.5m;
 
 		#endregion
 

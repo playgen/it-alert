@@ -102,7 +102,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 						var playerConfig = scenario.PlayerConfigFactory.GetNextPlayerConfig(i);
 						playerConfig.ExternalId = player.PhotonId;
 						playerConfig.Name = player.Name;
-						playerConfig.Colour = "#" + player.Color;
+						playerConfig.Colour = player.Color;
 						return playerConfig;
 					}).ToList();
 

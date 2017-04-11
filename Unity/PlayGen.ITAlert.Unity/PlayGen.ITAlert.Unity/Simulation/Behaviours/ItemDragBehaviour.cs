@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (_beingClicked)
 			{
-				if (!_item.CanActivate)
+				if (_item.CanActivate == false)
 				{
 					ClickReset();
 					return;
@@ -51,7 +51,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void OnClickDown(RaycastHit2D container)
 		{
 			LogProxy.Info("Item OnClick");
-
+			if (_item.CanActivate == false)
+			{
+				return;
+			}
 			_beingClicked = true;
 			_beingDragged = false;
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;

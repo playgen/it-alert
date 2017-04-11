@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Engine.Entities;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
-using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
 
@@ -30,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			//{ typeof(Subsystem).Name, go => go.GetComponent<EnhancementBehaviour>() },
 			{ nameof(Connection), go => go.GetComponent<ConnectionBehaviour>() },
 			{ nameof(Player), go => go.GetComponent<PlayerBehaviour>() },
-			{ nameof(Npc), go => go.GetComponent<NpcBehaviour>() },
+			{ nameof(NPC), go => go.GetComponent<NpcBehaviour>() },
 			{ nameof(Malware), go => go.GetComponent<MalwareBehaviour>() },
 			{ nameof(Item), go => go.GetComponent<ItemBehaviour>() },
 			{ nameof(ScenarioText), go => go.GetComponent<ScenarioTextBehaviour>() },

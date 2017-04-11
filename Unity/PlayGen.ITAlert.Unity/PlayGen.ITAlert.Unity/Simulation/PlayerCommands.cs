@@ -62,14 +62,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(continueCommand);
 		}
 
-
 		public static void Move(int subsystemId)
 		{
 			Log($"Request Move to subsystem: {subsystemId}");
 
 			var requestMovePlayerCommand = new SetActorDestinationCommand()
 			{
-				PlayerId = Director.Player.Id,
+				PlayerEntityId = Director.Player.Id,
 				DestinationEntityId = subsystemId,
 			};
 			IssueCommand(requestMovePlayerCommand);

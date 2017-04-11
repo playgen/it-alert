@@ -15,13 +15,6 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 			.HasComponent<CurrentLocation>()
 			.HasComponent<Intents>()
 			.HasComponent<VisitorPosition>()
-			.HasComponent(new ComponentBinding<MovementSpeed>()
-				{
-					ComponentTemplate = new MovementSpeed()
-					{
-						Value = 2,
-					}
-				}
-			);
+			.HasComponent<MovementSpeed>();
 	}
 }

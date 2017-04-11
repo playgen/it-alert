@@ -5,13 +5,16 @@ using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Intents;
+using PlayGen.ITAlert.Simulation.Systems.Players;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Movement
 {
 	[Deduplicate(DeduplicationPolicy.Replace)]
 	public class SetActorDestinationCommand : ICommand
 	{
-		public int PlayerId { get; set; }
+		public int? PlayerId { get; set; }
+
+		public int? PlayerEntityId { get; set; }
 
 		public int DestinationEntityId { get; set; }
 	}
@@ -23,26 +26,38 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 		private readonly ComponentMatcherGroup<Player, Intents> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 
+		private readonly PlayerSystem _playerSystem;
+
 		#region Overrides of CommandHandler<SetActorDestinationCommand>
 
 		public override IEqualityComparer<ICommand> Deduplicator => new SetActorDestinationCommandEqualityComparer();
 
 		#endregion
 
-		public SetActorDestinationCommandHandler(IMatcherProvider matcherProvider, IEntityRegistry entityRegistry)
+		public SetActorDestinationCommandHandler(IMatcherProvider matcherProvider, 
+			IEntityRegistry entityRegistry,
+			PlayerSystem playerSystem)
 		{
 			_entityRegistry = entityRegistry;
 
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, Intents>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
+			_playerSystem = playerSystem;
 		}
 
 		protected override bool TryProcessCommand(SetActorDestinationCommand command)
 		{
-			ComponentEntityTuple<Player, Intents> playerTuple;
-			ComponentEntityTuple<Subsystem> subsystemTuple;
-			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out playerTuple)
-				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationEntityId, out subsystemTuple))
+			int playerEntityId = -1;
+
+			if (command.PlayerEntityId.HasValue == false
+				&& (command.PlayerId.HasValue == false
+					|| _playerSystem.TryGetPlayerEntityId(command.PlayerId.Value, out playerEntityId) == false))
+			{
+				return false;
+			}
+
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerEntityId ?? playerEntityId, out var playerTuple)
+				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationEntityId, out var subsystemTuple))
 			{
 				playerTuple.Component2.Replace(new MoveIntent(command.DestinationEntityId));
 				return true;

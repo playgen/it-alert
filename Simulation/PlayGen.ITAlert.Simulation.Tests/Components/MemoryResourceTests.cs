@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 		[Test]
 		public void TestMemoryResourceTransmission()
 		{
-			var nodeConfigs = new[] { new NodeConfig()
+			var nodeConfigs = new List<NodeConfig> { new NodeConfig()
 				{
 					X = 0,
 					Y = 0,
