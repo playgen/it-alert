@@ -34,6 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private Button _sendButton;
 
 		public event Action<Dictionary<string, int[]>> PlayerRankingsCompleteEvent;
+		public event Action FeedbackSendClickedEvent;
 
 		public FeedbackStateInput(Client photonClient)
 		{
@@ -141,6 +142,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			}
 
 			PlayerRankingsCompleteEvent(playerRankedIdsBySection);
+			FeedbackSendClickedEvent?.Invoke();
 		}
 
 		private void PopulateFeedback(List<Player> players, Player current)
@@ -205,39 +207,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			_rankingImage.transform.SetAsLastSibling();
-			RebuildLayout();
-		}
-
-		private void RebuildLayout()
-		{
-			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) _feedbackPanel.transform);
-
-			var textObjs = _feedbackPanel.GetComponentsInChildren<Text>();
-			int smallestFontSize = 0;
-			foreach (var text in textObjs)
-			{
-				text.resizeTextForBestFit = true;
-				text.resizeTextMinSize = 1;
-				text.resizeTextMaxSize = 100;
-				text.cachedTextGenerator.Invalidate();
-				text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
-				text.resizeTextForBestFit = false;
-				var newSize = text.cachedTextGenerator.fontSizeUsedForBestFit;
-				var newSizeRescale = text.rectTransform.rect.size.x / text.cachedTextGenerator.rectExtents.size.x;
-				if (text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y < newSizeRescale)
-				{
-					newSizeRescale = text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y;
-				}
-				newSize = Mathf.FloorToInt(newSize * newSizeRescale);
-				if (newSize < smallestFontSize || smallestFontSize == 0)
-				{
-					smallestFontSize = newSize;
-				}
-			}
-			foreach (var text in textObjs)
-			{
-				text.fontSize = smallestFontSize;
-			}
+			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
+			_feedbackPanel.BestFit();
 		}
 	}
 }
