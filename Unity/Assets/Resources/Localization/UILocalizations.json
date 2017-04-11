@@ -72,4 +72,6 @@
 {"Key":"SETTINGS_LABEL_SOUND","en-gb":"Sound","nl":"Geluid"},
 {"Key":"SETTINGS_LABEL_MUSIC_VOLUME","en-gb":"Music Volume","nl":"Volume Muziek"},
 {"Key":"SETTINGS_LABEL_SFX_VOLUME","en-gb":"SFX Volume","nl":"Volume Effecten"},
-{"Key":"SETTINGS_LABEL_MICROPHONE_DEVICE","en-gb":"Microphone Device","nl":"XXXX"}]
+{"Key":"SETTINGS_LABEL_MICROPHONE_DEVICE","en-gb":"Microphone Device","nl":"XXXX"},
+{"Key":"GAME_COMPLETION_BUTTON_CONTINUE","en-gb":"Continue","nl":"Doorgaan"},
+{"Key":"GAME_COMPLETION_LABEL_TEAM_SCORE","en-gb":"Team Score:","nl":"XXXX"}]

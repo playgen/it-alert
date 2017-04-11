@@ -1,19 +1,33 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Photon.Unity.Client;
+
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 {
 	public class PlayingStateInput : TickStateInput
 	{
 		public event Action PauseClickedEvent;
+		public event Action EndGameContinueClickedEvent;
+		public event Action EndGameOnePlayerContinueClickedEvent;
 
 		private GameObject _gameContainer;
+		private Button _continueButton;
+
+		private readonly Client _photonClient;
+
+		public PlayingStateInput(Client photonClient)
+		{
+			_photonClient = photonClient;
+		}
 
 		protected override void OnInitialize()
 		{
 			_gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+			_continueButton = GameObjectUtilities.FindGameObject("Game/Canvas/End Screen/ContinueButtonContainer").GetComponent<Button>();
 		}
 
 		private void OnPauseClicked()
@@ -21,15 +35,29 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			PauseClickedEvent?.Invoke();
 		}
 
+		private void OnContinueClick()
+		{
+			if (_photonClient.CurrentRoom.Players.Count > 1)
+			{
+				EndGameContinueClickedEvent?.Invoke();
+			}
+			else
+			{
+				EndGameOnePlayerContinueClickedEvent?.Invoke();
+			}
+		}
+
 		protected override void OnEnter()
 		{
 			_gameContainer.SetActive(true);
-            PlayGen.Unity.Utilities.Loading.Loading.Stop();
-        }
+			_continueButton.onClick.AddListener(OnContinueClick);
+			PlayGen.Unity.Utilities.Loading.Loading.Stop();
+		}
 
 		protected override void OnExit()
 		{
 			_gameContainer.SetActive(false);
+			_continueButton.onClick.RemoveListener(OnContinueClick);
 		}
 
 		protected override void OnTick(float deltaTime)
