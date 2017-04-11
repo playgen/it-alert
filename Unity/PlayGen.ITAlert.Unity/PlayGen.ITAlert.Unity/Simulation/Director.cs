@@ -302,7 +302,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							_activePlayer = playerBehaviour;
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 						}
-						playerBehaviour.SetColor(player.Color);
 					}
 					else
 					{
@@ -392,7 +391,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							}
 							if (success != true)
 							{
-								throw new SimulationIntegrationException("Command application failed. This indicates that the client state is out of sync with the master.");
+								throw new SimulationIntegrationException($"Local Simulation failed to apply command(s).");
 							}
 							SimulationRoot.ECS.Tick();
 
@@ -409,8 +408,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 								uint crc = 0;
 								var state = SimulationRoot.GetEntityState(out crc);
-								//System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.json", state);
-
+#if LOG_ENTITYSTATE
+								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.json", state);
+#endif
 								if (tickMessage.CRC != crc)
 								{
 									throw new SimulationSynchronisationException($"Simulation out of sync at tick {SimulationRoot.ECS.CurrentTick}: Local CRC {crc} doest not match master {tickMessage.CRC}");
@@ -494,9 +494,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		#endregion
+#endregion
 
-		#region entity management
+#region entity management
 
 		private UIEntity CreateEntity(Entity entity)
 		{
@@ -598,9 +598,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		#endregion
+#endregion
 
-		#endregion
+#endregion
 
 		private void OnExceptionEvent(Exception obj)
 		{

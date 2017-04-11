@@ -122,13 +122,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			switch ((int)_angle)
 			{
 				case 0:
-					edgeDirectionOffset = new Vector2(0, offset);
+					edgeDirectionOffset = new Vector2(0, -1 * offset);
 					break;
 				case 90:
 					edgeDirectionOffset = new Vector2(offset, 0);
 					break;
 				case 180:
-					edgeDirectionOffset = new Vector2(0, -1 * offset);
+					edgeDirectionOffset = new Vector2(0, offset);
 					break;
 				case -90:
 					edgeDirectionOffset = new Vector2(-1 * offset, 0);
@@ -180,7 +180,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateConnectionCost()
 		{
-			var movementCostScaled = 1 - (1 / (float)_movementCost.Value);
+			var movementCostScaled = (1 / (float)_movementCost.Value);
 			//_connectionImage.color = _movementCostGradient.Evaluate(movementCostScaled);
 			if (_animateConnectionUv != null)
 			{

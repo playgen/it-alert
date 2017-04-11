@@ -18,12 +18,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			int? ownerId,
 			out ComponentEntityTuple<CurrentLocation, Owner> entityTuple)
 		{
-			Entity item;
-			CurrentLocation currentLocation;
-			Owner owner;
-			if (entityFactoryProvider.TryCreateEntityFromArchetype(archetype, out item)
-				&& item.TryGetComponent(out currentLocation)
-				&& item.TryGetComponent(out owner))
+			if (entityFactoryProvider.TryCreateEntityFromArchetype(archetype, out var item)
+				&& item.TryGetComponent<CurrentLocation>(out var currentLocation)
+				&& item.TryGetComponent<Owner>(out var owner))
 			{
 				currentLocation.Value = currentLocationId;
 				owner.Value = ownerId;

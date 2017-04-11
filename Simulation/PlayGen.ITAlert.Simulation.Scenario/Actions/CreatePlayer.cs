@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Actions
 		public CreatePlayer(string playerArchetype, 
 			EntityConfig nodeConfig, 
 			string name,
-			string colourHex = "#ffffff"
+			string colourHex = "ffffff"
 			)
 		{
 			Action = (ecs, config) =>

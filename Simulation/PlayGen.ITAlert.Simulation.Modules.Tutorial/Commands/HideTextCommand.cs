@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 {
+	[Deduplicate(DeduplicationPolicy.Discard)]
 	public class HideTextCommand : ICommand
 	{
 		public string Text { get; set; }

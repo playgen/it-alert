@@ -11,6 +11,7 @@ using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Actions;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;

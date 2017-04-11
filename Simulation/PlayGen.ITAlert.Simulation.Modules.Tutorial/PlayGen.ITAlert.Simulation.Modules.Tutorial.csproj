@@ -38,12 +38,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actions\SetHighlight.cs" />
+    <Compile Include="Actions\ClearHighlight.cs" />
+    <Compile Include="Actions\HideText.cs" />
+    <Compile Include="Actions\ShowText.cs" />
     <Compile Include="Archetypes\TutorialText.cs" />
+    <Compile Include="Commands\SetHighlightCommand.cs" />
     <Compile Include="Commands\ContinueCommand.cs" />
     <Compile Include="Commands\DisplayTextCommand.cs" />
     <Compile Include="Commands\HideTextCommand.cs" />
+    <Compile Include="Commands\ClearHighlightCommand.cs" />
     <Compile Include="Components\ActivationContinue.cs" />
-    <Compile Include="Components\Highlight.cs" />
+    <Compile Include="Components\TutorialHighlight.cs" />
     <Compile Include="Components\Text.cs" />
     <Compile Include="Components\TutorialState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

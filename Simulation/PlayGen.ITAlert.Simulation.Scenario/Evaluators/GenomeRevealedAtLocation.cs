@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// <param name="node"></param>
 		/// <param name="genome">Genome bit flags. 0: Any genome</param>
 		/// <param name="revealedTo">Visibility bit flags. 0: Any player (or none)</param>
-		public GenomeRevealedAtLocation(NodeConfig node, int genome = 0, int revealedTo = 0)
+		public GenomeRevealedAtLocation(NodeConfig node, int genome = 0, int revealedTo = 0x7fffffff)
 		{
 			_genome = genome;
 			_revealedTo = revealedTo;
@@ -51,11 +51,9 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		{
 			return ecs.Entities.TryGetValue(_node.EntityId, out var locationEntity)
 				&& locationEntity.TryGetComponent<Visitors>(out var visitors)
-				&& visitors.Values.Any(v => ecs.Entities.TryGetValue(v, out var visitorEntity)
-					&& visitorEntity.TryGetComponent<MalwareGenome>(out var malwareGenome)
-					&& (malwareGenome.Value & _genome) == _genome
-					&& visitorEntity.TryGetComponent<MalwareVisibility>(out var malwareVisibility)
-					&& (malwareVisibility.VisibleTo & _revealedTo) == _revealedTo);
+				&& visitors.Values.Any(v => _malwareMatcherGroup.TryGetMatchingEntity(v, out var visitorTuple)
+					&& (visitorTuple.Component1.Value & _genome) == _genome
+					&& (visitorTuple.Component2.VisibleTo & _revealedTo) == _revealedTo);
 		}
 
 		public void Dispose()

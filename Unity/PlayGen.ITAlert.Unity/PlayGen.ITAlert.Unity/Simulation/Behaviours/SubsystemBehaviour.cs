@@ -144,6 +144,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _coordinate2D)
 				&& Entity.TryGetComponent(out _visitors))
 			{
+				gameObject.name = $"{Name}_{_name.Value}";
 				Entity.TryGetComponent(out _itemStorage);
 
 				SetPosition();
@@ -204,6 +205,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#region State Update
 		protected override void OnStateUpdated()
 		{
+			base.OnStateUpdated();
 			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
 			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation();
 

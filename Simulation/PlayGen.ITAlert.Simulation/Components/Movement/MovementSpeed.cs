@@ -8,6 +8,6 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
 	public class MovementSpeed : IComponent
 	{
-		public int Value { get; set; }
+		public decimal Value { get; set; }
 	}
 }

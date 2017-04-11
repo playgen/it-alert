@@ -10,26 +10,26 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class SimulationConfiguration : ECSConfiguration
 	{
-		public IEnumerable<NodeConfig> NodeConfiguration { get; set; }
+		public List<NodeConfig> NodeConfiguration { get; set; }
 
-		public IEnumerable<EdgeConfig> EdgeConfiguration { get; set; }
+		public List<EdgeConfig> EdgeConfiguration { get; set; }
 
-		public IEnumerable<PlayerConfig> PlayerConfiguration { get; set; }
+		public List<PlayerConfig> PlayerConfiguration { get; set; }
 
 		//public SimulationRules Rules { get; private set; }
 
 
-		public SimulationConfiguration(IEnumerable<NodeConfig> nodeConfiguration,
-			IEnumerable<EdgeConfig> edgeConfiguration,
-			IEnumerable<PlayerConfig> playerConfiguration,
+		public SimulationConfiguration(List<NodeConfig> nodeConfiguration,
+			List<EdgeConfig> edgeConfiguration,
+			List<PlayerConfig> playerConfiguration,
 			List<Archetype> archetypes,
 			List<SystemConfiguration> systems, 
 			LifeCycleConfiguration lifeCycleConfiguration) 
 			: base (archetypes, systems, lifeCycleConfiguration)
 		{
-			NodeConfiguration = nodeConfiguration ?? new NodeConfig[0];
-			EdgeConfiguration = edgeConfiguration ?? new EdgeConfig[0];
-			PlayerConfiguration = playerConfiguration ?? new PlayerConfig[0];
+			NodeConfiguration = nodeConfiguration ?? new List<NodeConfig>();
+			EdgeConfiguration = edgeConfiguration ?? new List<EdgeConfig>();
+			PlayerConfiguration = playerConfiguration ?? new List<PlayerConfig>();
 		}
 
 

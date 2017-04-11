@@ -6,6 +6,7 @@ using Engine.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes
 {
@@ -13,6 +14,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(GreenTutorialAntivirus))
 			.Extends(AntivirusTool.Archetype)
+			.HasComponent(new ComponentBinding<TutorialHighlight>()
+			{
+				ComponentTemplate = new TutorialHighlight()
+				{
+					Enabled = true,
+				}
+			})
 			.HasComponent(new ComponentBinding<Antivirus>()
 			{
 				ComponentTemplate = new Antivirus()
@@ -22,3 +30,4 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes
 			});
 	}
 }
+

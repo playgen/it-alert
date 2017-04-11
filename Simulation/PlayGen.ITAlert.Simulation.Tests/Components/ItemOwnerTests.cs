@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Components
 				.HasComponent(new ComponentBinding<Scanner>())
 				.HasComponent(new ComponentBinding<Owner>());
 
-			var nodeConfigs = new NodeConfig[] { new NodeConfig()
+			var nodeConfigs = new List<NodeConfig> { new NodeConfig()
 				{
 					X = 0,
 					Y = 0,

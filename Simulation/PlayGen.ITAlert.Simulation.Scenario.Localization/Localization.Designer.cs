@@ -61,12 +61,11 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Localization {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [{&quot;Key&quot;:&quot;Tutorial_Label&quot;,&quot;en-gb&quot;:&quot;Tutorial&quot;,&quot;nl&quot;:&quot;&quot;},
-        ///{&quot;Key&quot;:&quot;Tutorial_Label_Continue&quot;,&quot;en-gb&quot;:&quot;Continue&quot;,&quot;nl&quot;:&quot;&quot;},
-        ///{&quot;Key&quot;:&quot;Tutorial1_Name&quot;,&quot;en-gb&quot;:&quot;Movement&quot;,&quot;nl&quot;:&quot;&quot;},
-        ///{&quot;Key&quot;:&quot;Tutorial1_Description&quot;,&quot;en-gb&quot;:&quot;This will introduce you to movement around the network and how to use tools.&quot;,&quot;nl&quot;:&quot;&quot;},
-        ///{&quot;Key&quot;:&quot;Tutorial1_Frame1&quot;,&quot;en-gb&quot;:&quot;Welcome to IT Alert!\nYou are a system administrator tasked with keeping your network healthy.\nLet&apos;s get started...&quot;,&quot;nl&quot;:&quot;&quot;},
-        ///{&quot;Key&quot;:&quot;Tutorial1_Frame2&quot;,&quot;en-gb&quot;:&quot;Your locatio [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to [{&quot;Key&quot;:&quot;Tutorial_Label&quot;,&quot;en-gb&quot;:&quot;Tutorial&quot;,&quot;nl&quot;:&quot;Tutorial&quot;},
+        ///{&quot;Key&quot;:&quot;Tutorial_Label_Continue&quot;,&quot;en-gb&quot;:&quot;Continue&quot;,&quot;nl&quot;:&quot;Doorgaan&quot;},
+        ///{&quot;Key&quot;:&quot;Tutorial1_Name&quot;,&quot;en-gb&quot;:&quot;Tutorial 1\nMovement&quot;,&quot;nl&quot;:&quot;Tutorial 1\nBewegen&quot;},
+        ///{&quot;Key&quot;:&quot;Tutorial1_Description&quot;,&quot;en-gb&quot;:&quot;This will introduce you to movement around the network and how to use tools.&quot;,&quot;nl&quot;:&quot;Dit scenario legt uit hoe je kunt bewegen in het netwerk en hoe je gereedschap kunt gebruiken.&quot;},
+        ///{&quot;Key&quot;:&quot;Tutorial1_Frame1&quot;,&quot;en-gb&quot;:&quot;Welcome to IT Alert!\nYou are a sys [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ScenarioLocalization {
             get {

@@ -4,6 +4,7 @@ using Engine.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 
@@ -11,8 +12,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 {
 	public class AnalyserBehaviour : IActivationExtension
 	{
-		public const string AnalysisOutputArchetypeName = "Antivirus";
-
 		/// <summary>
 		/// should the sample be consumed by the analysis process
 		/// </summary>
@@ -82,11 +81,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 					&& locationTuple.Component2.TryGetItemContainer<AnalysisOutputItemContainer>(out var analysisOutputItemContainer)
 					&& analysisOutputItemContainer.Item.HasValue == false)
 				{
-					if (_entityFactoryProvider.TryCreateItem(AnalysisOutputArchetypeName, locationTuple.Entity.Id, null, out var antivirusEntityTuple)
-						&& antivirusEntityTuple.Entity.TryGetComponent<Components.Antivirus>(out var antivirus))
+					if (_entityFactoryProvider.TryCreateItem(AntivirusTool.Archetype, locationTuple.Entity.Id, null, out var antivirusTuple)
+						&& antivirusTuple.Entity.TryGetComponent<Components.Antivirus>(out var antivirus))
 					{
 						antivirus.TargetGenome = captureTuple.Component1.CapturedGenome;
-						analysisOutputItemContainer.Item = antivirusEntityTuple.Entity.Id;
+						analysisOutputItemContainer.Item = antivirusTuple.Entity.Id;
 
 						if (ConsumeSample)
 						{
@@ -95,7 +94,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 					}
 					else
 					{
-						antivirusEntityTuple.Entity.Dispose();
+						antivirusTuple.Entity.Dispose();
 					}
 					analysisTargetItemContainer.Locked = false;
 				}

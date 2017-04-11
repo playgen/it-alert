@@ -13,6 +13,8 @@ using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Systems.Activation;
+using PlayGen.ITAlert.Simulation.Modules.Malware.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems;
@@ -130,6 +132,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DisplayTextCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ContinueCommandCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HideTextCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetHighlightCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ClearHighlightCommandHandler>(), 
 							
 							// entity creation
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<CreateMalwareCommandHandler>(),
@@ -141,6 +145,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ActivateItemTypeCommandHandler>(),
 
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemTypeCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemTypeCommandHandler>(),
 							
@@ -194,7 +199,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ConsumableActivationExtension>(), 
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
 							
@@ -214,7 +218,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
 
 							// reset owner - this must come last or anything that depends on knowing who the owner is in OnDeactivating will break
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(), 
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(),
+
+							// do consumable behaviour last
+							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ConsumableActivationExtension>(), 
 						}
 					}
 				}

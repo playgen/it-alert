@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
-namespace PlayGen.ITAlert.Simulation.Scenario.Actions
+namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Actions
 {
 	public class ShowText : SimulationAction
 	{

@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				var visitorVectors = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
 				_rectTransform.anchoredPosition = new Vector3(visitorVectors.Position.x, visitorVectors.Position.y, transform.position.z);
-				//_rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
+				_rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
 			}
 			else
 			{

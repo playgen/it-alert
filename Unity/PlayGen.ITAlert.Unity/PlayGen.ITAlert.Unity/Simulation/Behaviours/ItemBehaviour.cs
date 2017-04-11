@@ -26,6 +26,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		[SerializeField]
 		private Image _backgroundSprite;
+
+
 		#endregion
 
 		#region components
@@ -74,6 +76,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				Entity.TryGetComponent(out _timedActivation);
 				Entity.TryGetComponent(out _antivirus);
 				Entity.TryGetComponent(out _capture);
+
 				UpdateColour();
 			}
 			else
@@ -84,23 +87,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
-		#region Unity Update
-
-		protected override void OnFixedUpdate()
-		{
-		}
-
-		protected override void OnUpdate()
-		{
-
-		}
-
-		#endregion
-
 		#region State Update
 
 		protected override void OnStateUpdated()
 		{
+			base.OnStateUpdated();
 			UpdateColour();
 			UpdateActivationTimer();
 			UpdateInventory();
@@ -201,12 +192,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		}
 
 		#endregion
-
-		private void TriggerHint()
-		{
-			//TODO: reimplement
-			//UIManager.instance.DisplayHint(GetComponent<SVGRenderer>().vectorGraphics, _hintText);
-		}
 
 		#region player interaction
 

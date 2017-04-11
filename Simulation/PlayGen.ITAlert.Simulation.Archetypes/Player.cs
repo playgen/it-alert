@@ -6,6 +6,8 @@ using Engine.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Components.Player;
 
 namespace PlayGen.ITAlert.Simulation.Archetypes
 {
@@ -14,6 +16,16 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 		public static readonly Archetype Archetype = new Archetype(nameof(Player))
 		.Extends(Actor.Archetype)
 		.HasComponent<Components.EntityTypes.Player>()
+		.HasComponent<PlayerColour>()
+		.HasComponent<PlayerBitMask>()
+		.HasComponent(new ComponentBinding<MovementSpeed>()
+			{
+				ComponentTemplate = new MovementSpeed()
+				{
+					Value = SimulationConstants.PlayerSpeed,
+				}
+			}
+		)
 		.HasComponent(new ComponentBinding<ItemStorage>()
 		{
 			ComponentTemplate = new ItemStorage()
@@ -25,7 +37,6 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 					new InventoryItemContainer(),
 				}
 			}
-		})
-		.HasComponent<PlayerBitMask>();
+		});
 	}
 }
