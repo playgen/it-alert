@@ -17,7 +17,6 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 	{
 		private readonly int _genome;
 		private readonly int _revealedTo;
-		private readonly int _nodeId;
 
 		private NodeConfig _node;
 
@@ -28,21 +27,21 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// <summary>
 		/// Evaluate whether there is an entity with the specified genome at the specified location that has been revealed to the specified players
 		/// </summary>
-		/// <param name="nodeId"></param>
+		/// <param name="node"></param>
 		/// <param name="genome">Genome bit flags. 0: Any genome</param>
 		/// <param name="revealedTo">Visibility bit flags. 0: Any player (or none)</param>
-		public GenomeRevealedAtLocation(int nodeId, int genome = 0, int revealedTo = 0)
+		public GenomeRevealedAtLocation(NodeConfig node, int genome = 0, int revealedTo = 0)
 		{
 			_genome = genome;
 			_revealedTo = revealedTo;
-			_nodeId = nodeId;
+			_node = node;
 		}
 
 		public void Initialize(Simulation ecs, SimulationConfiguration configuration)
 		{
-			if (configuration.TrySelectNode(_nodeId, out _node) == false)
+			if (configuration.TrySelectNode(_node.Id, out _node) == false)
 			{
-				throw new ScenarioConfigurationException($"Node not found with id {_nodeId}");
+				throw new ScenarioConfigurationException($"Node not found with id {_node.Id}");
 			}
 			_visitorsMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Visitors>();
 			_malwareMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<MalwareGenome, MalwareVisibility>();

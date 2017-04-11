@@ -71,7 +71,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Archetype = AntivirusWorkstation.Archetype,
 			};
 
-			var nodeConfigs = new NodeConfig[] { nodeLeft,
+			var nodeConfigs = new NodeConfig[] {
+				nodeLeft,
 				nodeRight,
 				nodeTop,
 				nodeBottom
@@ -162,7 +163,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
-					Evaluator = new GenomeRevealedAtLocation(nodeLeft.Id, SimulationConstants.MalwareGeneRed),
+					Evaluator = new GenomeRevealedAtLocation(nodeLeft, SimulationConstants.MalwareGeneRed),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -314,7 +315,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(GreenTutorialVirus.Archetype, nodeTop),
 						new ShowText(false, $"{scenario.Key}_Frame13"),
 					},
-					Evaluator = new GenomeRevealedAtLocation(nodeTop.Id, SimulationConstants.MalwareGeneGreen),
+					Evaluator = new GenomeRevealedAtLocation(nodeTop, SimulationConstants.MalwareGeneGreen),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

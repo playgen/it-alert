@@ -75,6 +75,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		public void UpdateState()
 		{
+			if (gameObject.activeInHierarchy == false)
+			{
+				gameObject.SetActive(true);
+			}
 			OnStateUpdated();
 		}
 

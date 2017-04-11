@@ -253,11 +253,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(true, $"{scenario.Key}_Frame10"),
+						new SetCommandEnabled<DropItemCommand>(true),
+						new ShowText(false, $"{scenario.Key}_Frame10"),
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new HideText(),
 					},
 				}
@@ -268,14 +270,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<DropItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame11"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft)
-						.And(new WaitForTutorialContinue()),
+					Evaluator = new GenomeRevealedAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new HideText(),
 					},
 				}
@@ -286,8 +285,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
 						new ShowText(false, $"{scenario.Key}_Frame12"),
+						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
 					},
 					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -297,7 +296,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
 			#endregion
 
 			return scenario;
