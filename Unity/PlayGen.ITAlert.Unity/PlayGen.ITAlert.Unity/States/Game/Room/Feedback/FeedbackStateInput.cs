@@ -17,8 +17,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
 	public class FeedbackStateInput : TickStateInput
 	{
-		private readonly string[] _evaluationSections = new[] {"Cooperation", "Leadership", "Communication"};
-
 		private readonly Dictionary<string, List<string>> _playerRankings = new Dictionary<string, List<string>>();
 
 		private readonly Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>> _rankingObjects
@@ -190,35 +188,54 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				playerSlot.GetComponent<Image>().enabled = false;
 			}
 
-			for (int i = 0; i < _evaluationSections.Length; i++)
+			bool sectionFound = true;
+			int sectionCount = 1;
+			while (sectionFound)
 			{
+				if (!Localization.HasKey("FEEDBACK_LABEL_CATEGORY_" + (sectionCount)))
+				{
+					sectionFound = false;
+					continue;
+				}
+				var sectionName = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (sectionCount));
+				sectionCount++;
 				var sectionList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 
 				var headerObj = UnityEngine.Object.Instantiate(_entryPrefab, sectionList.transform, false);
 				headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-				headerObj.GetComponent<Text>().text = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (i + 1));
-			    Object.Destroy(headerObj.GetComponent<FeedbackDragBehaviour>());
+				headerObj.GetComponent<Text>().text = sectionName;
+				Object.Destroy(headerObj.GetComponent<FeedbackDragBehaviour>());
 
-				_playerRankings.Add(_evaluationSections[i], new List<string>());
-				_rankingObjects.Add(_evaluationSections[i], new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
+				_playerRankings.Add(sectionName, new List<string>());
+				_rankingObjects.Add(sectionName, new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
 
 				//foreach (var player in players)
 				for (int j = 0; j < 6; j++)
 				{
 					var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, sectionList.transform, false);
-					_playerRankings[_evaluationSections[i]].Add(null);
-					_rankingObjects[_evaluationSections[i]].Add(
+					_playerRankings[sectionName].Add(null);
+					_rankingObjects[sectionName].Add(
 						new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(),
 							null));
-					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(_evaluationSections[i]);
+					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(sectionName);
 				}
 			}
 			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
+			if (_error.activeSelf)
+			{
+				SetErrorText();
+			}
 			_rankingImage.transform.SetAsLastSibling();
 			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
 			_feedbackPanel.BestFit();
 			_bestFitDelay = true;
+		}
+
+		private void SetErrorText()
+		{
+			var firstUnfilled = _playerRankings.First(rank => rank.Value.Count(r => r != null) != _photonClient.CurrentRoom.Players.Count - 1).Key;
+			_error.GetComponent<Text>().text = Localization.GetAndFormat("FEEDBACK_LABEL_ERROR", false, firstUnfilled);
 		}
 
 		protected override void OnTick(float deltaTime)

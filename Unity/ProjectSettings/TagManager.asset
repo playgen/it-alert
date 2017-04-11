@@ -13,6 +13,7 @@ TagManager:
   - PhotonVoicePlayer
   - Loading
   - ItemContainer
+  - Pause
   layers:
   - Default
   - TransparentFX
@@ -58,4 +59,7 @@ TagManager:
     locked: 0
   - name: ActivePlayer
     uniqueID: 3521603293
+    locked: 0
+  - name: UI
+    uniqueID: 623175611
     locked: 0

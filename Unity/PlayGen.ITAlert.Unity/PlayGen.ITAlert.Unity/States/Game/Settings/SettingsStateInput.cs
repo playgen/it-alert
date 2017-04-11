@@ -98,12 +98,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
             {
                 voice.GetComponent<AudioSource>().volume = volume;
             }
-            foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
-            {
-                voice.MicrophoneDevice = _device.options[_device.value].text;
-            }
             if (_device.options.Count > 0)
             {
+                foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
+                {
+                    voice.MicrophoneDevice = _device.options[_device.value].text;
+                }
                 UnityEngine.Object.FindObjectOfType<PhotonVoiceRecorder>().MicrophoneDevice = _device.options[_device.value].text;
             }
 
