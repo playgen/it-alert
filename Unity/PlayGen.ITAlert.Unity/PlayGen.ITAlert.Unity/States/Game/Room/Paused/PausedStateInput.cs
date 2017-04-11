@@ -1,6 +1,7 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
 
+using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		private Button _continueButton;
 		private Button _settingsButton;
 
+		private GameObject _gameContainer;
+		private CanvasGroup _canvasGroup;
+
 		protected override void OnInitialize()
 		{
 			// Main Menu
@@ -30,10 +34,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
 			_quitButton = _buttons.GetButton("QuitButtonContainer");
 
+			_gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+			_canvasGroup = _gameContainer.GetComponent<CanvasGroup>();
 		}
 
 		private void OnContinueClick()
 		{
+			GameVisible();
 			ContinueClickedEvent?.Invoke();
 		}
 
@@ -44,6 +51,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 		private void OnQuitClick()
 		{
+			GameVisible();
 			QuitClickedEvent?.Invoke();
 		}
 
@@ -55,6 +63,24 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 			_menuPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
+
+			_gameContainer.SetActive(true);
+			_canvasGroup.alpha = 0.1f;
+			_canvasGroup.blocksRaycasts = false;
+			foreach (var trail in _gameContainer.GetComponentsInChildren<TrailRenderer>())
+			{
+				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.25f);
+				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.125f);
+			}
+			foreach (var blink in _gameContainer.GetComponentsInChildren<BlinkBehaviour>())
+			{
+				blink.enabled = false;
+				var image = blink.GetComponent<Image>();
+				if (image != null)
+				{
+					image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
+				}
+			}
 		}
 
 		protected override void OnExit()
@@ -64,6 +90,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_quitButton.onClick.RemoveListener(OnQuitClick);
 
 			_menuPanel.SetActive(false);
+		}
+
+		private void GameVisible()
+		{
+			_gameContainer.SetActive(false);
+			_canvasGroup.alpha = 1;
+			_canvasGroup.blocksRaycasts = true;
+			foreach (var trail in _gameContainer.GetComponentsInChildren<TrailRenderer>())
+			{
+				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 1);
+				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.875f);
+			}
+			foreach (var blink in _gameContainer.GetComponentsInChildren<BlinkBehaviour>())
+			{
+				blink.enabled = true;
+			}
 		}
 
 		protected override void OnTick(float deltaTime)

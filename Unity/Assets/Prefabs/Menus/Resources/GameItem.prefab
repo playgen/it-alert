@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 224347163106837936}
   - component: {fileID: 222641375514162208}
   - component: {fileID: 114749290179597564}
+  - component: {fileID: 114277375053714108}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -230,6 +231,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: L33t H4ck3rz
+--- !u!114 &114277375053714108
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1572755905708522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Key: JOIN_BUTTON_JOIN
+  ToUpper: 0
+  LanguageOverride: 
 --- !u!114 &114423114138291468
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -49,7 +49,11 @@ namespace PlayGen.Photon.Unity.Client.Voice
 			PhotonVoiceSettings.Instance.AutoConnect = true;
 
 			_gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
-			_rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
+
+            var volume = PlayerPrefs.GetInt("Voice Enabled") == 1 ? PlayerPrefs.GetFloat("Voice Volume") : 0;
+            _gameObject.GetComponent<AudioSource>().volume = volume;
+
+            _rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
 
 			_rec.enabled = true;
 		}

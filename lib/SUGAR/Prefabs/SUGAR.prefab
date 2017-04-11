@@ -80,10 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 106238491, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interface: {fileID: 114000011335328718, guid: da1b3e420bd0de7438fc02f71340f4d4,
-    type: 2}
-  _achievementPopup: {fileID: 114000013413874684, guid: 30bf371ff31e0bc429751b3218cfa999,
-    type: 2}
+  _interface: {fileID: 0}
+  _achievementPopup: {fileID: 0}
   _notificationCheckRate: 2.5
 --- !u!114 &114000011156416006
 MonoBehaviour:
@@ -143,8 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: -1070070240, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interface: {fileID: 114000012229610962, guid: be736ad3ec565d9488b29626d58f6d30,
-    type: 2}
+  _interface: {fileID: 0}
   _currentActorType: 1
 --- !u!114 &114000012885612516
 MonoBehaviour:
@@ -178,8 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 1493326051, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interface: {fileID: 114000013210295108, guid: e29d7a7dd4a690245a2e6d8cf00df004,
-    type: 2}
+  _interface: {fileID: 0}
   _positionCount: 10
   _currentFilter: 0
 --- !u!114 &114000013496830746
@@ -193,8 +189,7 @@ MonoBehaviour:
   m_Script: {fileID: -89677467, guid: 5b801fbd95fb39b4e862ebb1ac6bb015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _accountInterface: {fileID: 114000014259607728, guid: bb12776c4b045cc45ab0ef3d57d1d79d,
-    type: 2}
+  _accountInterface: {fileID: 0}
   _allowAutoLogin: 1
   _allowRegister: 0
   _defaultSourceToken: SUGAR
@@ -268,7 +263,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011383437524}
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 1
@@ -277,7 +272,8 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_SortingLayerID: 1238663097
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 623175611
   m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!224 &224000013773299334

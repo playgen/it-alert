@@ -11,5 +11,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public const string Enhancement = "Enhancement";
 		public const string Connection = "Connection";
 		public const string ItemContainer = "ItemContainer";
+		public const string PauseScreen = "Pause";
 	}
 }

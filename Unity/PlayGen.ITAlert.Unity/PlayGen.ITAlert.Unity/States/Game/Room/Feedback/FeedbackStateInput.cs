@@ -9,13 +9,14 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
+
+using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
 	public class FeedbackStateInput : TickStateInput
 	{
-		private readonly string[] _evaluationSections = new[] {"Cooperation", "Leadership", "Communication"};
-
 		private readonly Dictionary<string, List<string>> _playerRankings = new Dictionary<string, List<string>>();
 
 		private readonly Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>> _rankingObjects
@@ -32,7 +33,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private GameObject _error;
 		private Button _sendButton;
 
+		private bool _bestFitDelay;
+
 		public event Action<Dictionary<string, int[]>> PlayerRankingsCompleteEvent;
+		public event Action FeedbackSendClickedEvent;
 
 		public FeedbackStateInput(Client photonClient)
 		{
@@ -88,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 			}
 			drag.transform.SetParent(slot.transform, false);
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			return true;
 		}
@@ -140,6 +144,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			}
 
 			PlayerRankingsCompleteEvent(playerRankedIdsBySection);
+			FeedbackSendClickedEvent?.Invoke();
 		}
 
 		private void PopulateFeedback(List<Player> players, Player current)
@@ -177,65 +182,69 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
 			}
 
-			foreach (var section in _evaluationSections)
+			for (int i = playerList.transform.childCount; i <= 6; i++)
 			{
+				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
+				playerSlot.GetComponent<Image>().enabled = false;
+			}
+
+			bool sectionFound = true;
+			int sectionCount = 1;
+			while (sectionFound)
+			{
+				if (!Localization.HasKey("FEEDBACK_LABEL_CATEGORY_" + (sectionCount)))
+				{
+					sectionFound = false;
+					continue;
+				}
+				var sectionName = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (sectionCount));
+				sectionCount++;
 				var sectionList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 
 				var headerObj = UnityEngine.Object.Instantiate(_entryPrefab, sectionList.transform, false);
 				headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-				headerObj.GetComponent<Text>().text = section;
+				headerObj.GetComponent<Text>().text = sectionName;
+				Object.Destroy(headerObj.GetComponent<FeedbackDragBehaviour>());
 
-				_playerRankings.Add(section, new List<string>());
-				_rankingObjects.Add(section, new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
+				_playerRankings.Add(sectionName, new List<string>());
+				_rankingObjects.Add(sectionName, new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
 
-				foreach (var player in players)
+				//foreach (var player in players)
+				for (int j = 0; j < 6; j++)
 				{
-					var color = new Color();
-					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
-
 					var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, sectionList.transform, false);
-					_playerRankings[section].Add(null);
-					_rankingObjects[section].Add(
+					_playerRankings[sectionName].Add(null);
+					_rankingObjects[sectionName].Add(
 						new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(),
 							null));
-					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(section);
+					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(sectionName);
 				}
 			}
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
+			if (_error.activeSelf)
+			{
+				SetErrorText();
+			}
 			_rankingImage.transform.SetAsLastSibling();
-			RebuildLayout();
+			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
+			_feedbackPanel.BestFit();
+			_bestFitDelay = true;
 		}
 
-		private void RebuildLayout()
+		private void SetErrorText()
 		{
-			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) _feedbackPanel.transform);
+			var firstUnfilled = _playerRankings.First(rank => rank.Value.Count(r => r != null) != _photonClient.CurrentRoom.Players.Count - 1).Key;
+			_error.GetComponent<Text>().text = Localization.GetAndFormat("FEEDBACK_LABEL_ERROR", false, firstUnfilled);
+		}
 
-			var textObjs = _feedbackPanel.GetComponentsInChildren<Text>();
-			int smallestFontSize = 0;
-			foreach (var text in textObjs)
+		protected override void OnTick(float deltaTime)
+		{
+			if (_bestFitDelay)
 			{
-				text.resizeTextForBestFit = true;
-				text.resizeTextMinSize = 1;
-				text.resizeTextMaxSize = 100;
-				text.cachedTextGenerator.Invalidate();
-				text.cachedTextGenerator.Populate(text.text, text.GetGenerationSettings(text.rectTransform.rect.size));
-				text.resizeTextForBestFit = false;
-				var newSize = text.cachedTextGenerator.fontSizeUsedForBestFit;
-				var newSizeRescale = text.rectTransform.rect.size.x / text.cachedTextGenerator.rectExtents.size.x;
-				if (text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y < newSizeRescale)
-				{
-					newSizeRescale = text.rectTransform.rect.size.y / text.cachedTextGenerator.rectExtents.size.y;
-				}
-				newSize = Mathf.FloorToInt(newSize * newSizeRescale);
-				if (newSize < smallestFontSize || smallestFontSize == 0)
-				{
-					smallestFontSize = newSize;
-				}
-			}
-			foreach (var text in textObjs)
-			{
-				text.fontSize = smallestFontSize;
+				LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
+				_feedbackPanel.BestFit();
+				_bestFitDelay = false;
 			}
 		}
 	}

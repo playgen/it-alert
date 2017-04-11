@@ -2,6 +2,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.Unity.Utilities.Localization;
+
 using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -25,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			errorMsg.text = msg;
 
 			_popupBehaviour.ClearContent();
-			_popupBehaviour.SetPopup("Error", new[] {new PopupBehaviour.Output("OK", null)}, PopupClosed);
+			_popupBehaviour.SetPopup(Localization.Get("ERROR_LABEL_TITLE"), new[] {new PopupBehaviour.Output(Localization.Get("ERROR_BUTTON_CLOSE"), null)}, PopupClosed);
 			_popupBehaviour.SetContent(errorPanel.GetComponent<RectTransform>());
 
 			_popupPanel.gameObject.SetActive(true);
@@ -56,11 +58,11 @@ namespace PlayGen.ITAlert.Unity.Controllers
 				colorPanel.name = "ColorPickerContentPanel";
 				_popupBehaviour.ClearContent();
 				colorPanel.GetComponent<ColorPickerBehaviour>().GenerateColorPicker(selectedColors);
-				_popupBehaviour.SetPopup("Change Player Colour",
+				_popupBehaviour.SetPopup(Localization.Get("COLOUR_PICKER_LABEL_TITLE"),
 					new[]
 					{
-						new PopupBehaviour.Output("Cancel", null),
-						new PopupBehaviour.Output("Set Colour", () => ColorCallback(callback))
+						new PopupBehaviour.Output(Localization.Get("COLOUR_PICKER_BUTTON_CANCEL"), null),
+						new PopupBehaviour.Output(Localization.Get("COLOUR_PICKER_BUTTON_SELECT"), () => ColorCallback(callback))
 					},
 					PopupClosed
 				);

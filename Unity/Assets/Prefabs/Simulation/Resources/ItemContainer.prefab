@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 61412664257241872}
   - component: {fileID: 222178140086631602}
   - component: {fileID: 114575736751371360}
-  - component: {fileID: 114604362683052832}
   - component: {fileID: 114628759932271392}
   m_Layer: 0
   m_Name: ItemContainer
@@ -68,26 +67,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerImage: {fileID: 114628759932271392}
-  _blinkBehaviour: {fileID: 114604362683052832}
---- !u!114 &114604362683052832
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1552276304146820}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1027073101, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _image: {fileID: 114628759932271392}
-  _interval: 0.4
-  _curve:
-    serializedVersion: 2
-    m_Curve: []
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  _blinkBehaviour: {fileID: 0}
 --- !u!114 &114628759932271392
 MonoBehaviour:
   m_ObjectHideFlags: 1
