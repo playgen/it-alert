@@ -1291,7 +1291,7 @@ GameObject:
   - component: {fileID: 377655893}
   - component: {fileID: 377655895}
   - component: {fileID: 377655894}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LoadingBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1748,26 +1748,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 223000012450321626, guid: 991ef3e1f70851f458b55f5f7eae55a2,
-        type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 1408231525}
     - target: {fileID: 114000011669735270, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
       propertyPath: _uiSpinner
       value: 
       objectReference: {fileID: 2012367504}
-    - target: {fileID: 114000013496830746, guid: 991ef3e1f70851f458b55f5f7eae55a2,
+    - target: {fileID: 223000012450321626, guid: 991ef3e1f70851f458b55f5f7eae55a2,
         type: 2}
-      propertyPath: _allowAutoLogin
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114428720724121270, guid: 991ef3e1f70851f458b55f5f7eae55a2,
-        type: 2}
-      propertyPath: MaxFontSize
-      value: 48
-      objectReference: {fileID: 0}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1408231525}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 991ef3e1f70851f458b55f5f7eae55a2, type: 2}
   m_IsPrefabParent: 0
@@ -1931,7 +1921,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1238663097
+  m_SortingLayerID: 623175611
   m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &638677831
@@ -3344,7 +3334,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1238663097
+  m_SortingLayerID: 623175611
   m_SortingOrder: 5
   m_TargetDisplay: 0
 --- !u!224 &928128082
@@ -4212,7 +4202,7 @@ GameObject:
   - component: {fileID: 1210103485}
   - component: {fileID: 1210103484}
   - component: {fileID: 1210103488}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Loading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4273,7 +4263,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1238663097
+  m_SortingLayerID: 623175611
   m_SortingOrder: 6
   m_TargetDisplay: 0
 --- !u!224 &1210103487
@@ -4364,7 +4354,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 1238663097
+  m_SortingLayerID: 623175611
   m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!224 &1228136358
@@ -4595,6 +4585,36 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224085829995395426, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: -62.386932
+      objectReference: {fileID: 0}
+    - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -122.423065
+      objectReference: {fileID: 0}
+    - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 244.84613
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0580bfdd6f95be247a026bff45e954cd, type: 2}
@@ -5907,7 +5927,7 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 1
   m_Camera: {fileID: 1408231525}
-  m_PlaneDistance: 200
+  m_PlaneDistance: 2000
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
@@ -5982,7 +6002,7 @@ GameObject:
   - component: {fileID: 2012367503}
   - component: {fileID: 2012367506}
   - component: {fileID: 2012367504}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LoadingContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

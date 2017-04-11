@@ -32,6 +32,13 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private void Update()
 		{
 			_stateController.Tick(Time.deltaTime);
+			if (Application.platform == RuntimePlatform.WindowsEditor)
+			{
+				if (Input.GetKeyDown(KeyCode.Insert))
+				{
+					Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+				}
+			}
 		}
 
 		private void OnApplicationQuit()
