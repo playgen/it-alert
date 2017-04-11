@@ -45,6 +45,7 @@
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\ActivateItemTypeCommand.cs" />
     <Compile Include="Commands\CreatePlayerCommand.cs" />
+    <Compile Include="Commands\MoveItemCommand.cs" />
     <Compile Include="Commands\Movement\SetActorDestinationCommand.cs" />
     <Compile Include="Commands\DropItemCommand.cs" />
     <Compile Include="Commands\PickupItemTypeCommand.cs" />

@@ -48,7 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="TextFile1.txt" />
     <None Include="Download.ps1" />
     <Content Include="ScenarioLocalization.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

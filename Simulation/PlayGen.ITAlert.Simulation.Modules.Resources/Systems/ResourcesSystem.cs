@@ -39,6 +39,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 		public static void InitializeArchetypes()
 		{
 			// TODO: investigate whether this is a good way to extend archetypes in modules
+			// this is a shit way to do it - since object references are persisted anything that inherits from a modified archetype is not updated
 			Item.Archetype.HasComponent(new ComponentBinding<ConsumeMemory>()
 			{
 				ComponentTemplate = new ConsumeMemory()
@@ -56,7 +57,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 					Value = SimulationConstants.ActorCPUConsumption,
 				}
 			});
-
 			SubsystemNode.Archetype.HasComponent(new ComponentBinding<MemoryResource>()
 				{
 					ComponentTemplate = new MemoryResource()
@@ -73,6 +73,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 						Maximum = SimulationConstants.SubsystemMaxCPU,
 					}
 				});
+
 		}
 	}
 }

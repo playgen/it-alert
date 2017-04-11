@@ -112,3 +112,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 *.orig.meta
 *.7z
 Demo/
+!Tools/**/*.dll

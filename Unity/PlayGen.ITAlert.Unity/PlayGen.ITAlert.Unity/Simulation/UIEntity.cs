@@ -70,6 +70,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			if (BehaviourMappers.TryGetValue(entityTypeName, out behaviourMapper))
 			{
 				_gameObject = _director.InstantiateEntity(entityTypeName);
+				_gameObject.SetActive(false);
 				_gameObject.name = id == null ? entityTypeName : $"[{id}]_{entityTypeName}";
 				_entityBehaviour = behaviourMapper(GameObject);
 				_entityBehaviour.Name = _gameObject.name;
