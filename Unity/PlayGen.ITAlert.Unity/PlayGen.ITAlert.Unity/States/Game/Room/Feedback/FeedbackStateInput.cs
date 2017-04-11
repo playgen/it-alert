@@ -11,6 +11,8 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 
+using Object = UnityEngine.Object;
+
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {
 	public class FeedbackStateInput : TickStateInput
@@ -32,6 +34,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private GameObject _rankingImage;
 		private GameObject _error;
 		private Button _sendButton;
+
+		private bool _bestFitDelay;
 
 		public event Action<Dictionary<string, int[]>> PlayerRankingsCompleteEvent;
 		public event Action FeedbackSendClickedEvent;
@@ -90,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 			}
 			drag.transform.SetParent(slot.transform, false);
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			return true;
 		}
@@ -180,6 +184,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
 			}
 
+			for (int i = playerList.transform.childCount; i <= 6; i++)
+			{
+				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
+				playerSlot.GetComponent<Image>().enabled = false;
+			}
+
 			for (int i = 0; i < _evaluationSections.Length; i++)
 			{
 				var sectionList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
@@ -187,15 +197,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				var headerObj = UnityEngine.Object.Instantiate(_entryPrefab, sectionList.transform, false);
 				headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 				headerObj.GetComponent<Text>().text = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (i + 1));
+			    Object.Destroy(headerObj.GetComponent<FeedbackDragBehaviour>());
 
 				_playerRankings.Add(_evaluationSections[i], new List<string>());
 				_rankingObjects.Add(_evaluationSections[i], new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
 
-				foreach (var player in players)
+				//foreach (var player in players)
+				for (int j = 0; j < 6; j++)
 				{
-					var color = new Color();
-					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
-
 					var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, sectionList.transform, false);
 					_playerRankings[_evaluationSections[i]].Add(null);
 					_rankingObjects[_evaluationSections[i]].Add(
@@ -204,11 +213,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(_evaluationSections[i]);
 				}
 			}
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.All(r => r != null));
+			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			_rankingImage.transform.SetAsLastSibling();
 			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
 			_feedbackPanel.BestFit();
+			_bestFitDelay = true;
+		}
+
+		protected override void OnTick(float deltaTime)
+		{
+			if (_bestFitDelay)
+			{
+				LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
+				_feedbackPanel.BestFit();
+				_bestFitDelay = false;
+			}
 		}
 	}
 }
