@@ -54,6 +54,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(pickupItemCommand);
 		}
 
+		public static void MoveItem(int itemId, int sourceContainerIndex, int destinationContainerIndex)
+		{
+			Log($"Request MoveItem item: {itemId}");
+			var moveItemCommand = new MoveItemCommand()
+			{
+				PlayerId = Director.Player.Id,
+				ItemId = itemId,
+				SourceContainerId = sourceContainerIndex,
+				DestinationContainerId = destinationContainerIndex,
+				SystemEntityId = Director.Player.CurrentLocationEntity.Id,
+			};
+			IssueCommand(moveItemCommand);
+		}
+
 		public static void Continue()
 		{
 			Log($"Request tutorial continue");
@@ -88,7 +102,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(activateItemCommand);
 		}
 
-		public static void HaltAndFire()
+		public static void HaltAndCatchFire()
 		{
 			Log("Halt and Fire");
 

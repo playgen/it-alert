@@ -39,6 +39,14 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			}
 		}
 
+		protected override void OnTick(float deltaTime)
+		{
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				Application.Quit();
+			}
+		}
+
 		protected override void OnExit()
 		{
 			SUGARManager.Account.Hide();

@@ -231,8 +231,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#region player interaction
 
 		public bool CanActivate => _activation.ActivationState == ActivationState.NotActive;
-
-
 		#endregion
 	}
 }
