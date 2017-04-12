@@ -44,14 +44,10 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			var scenarios = _scenarioLoader.GetScenarioInfo();
 
-			if (CommandLineUtility.CustomArgs.ContainsKey("scenarios") && CommandLineUtility.CustomArgs["scenarios"].Any())
+			if (CommandLineUtility.CustomArgs.ContainsKey("scenarios"))
 			{
-				var keys = CommandLineUtility.CustomArgs["scenarios"].Split(';').Where(s => !string.IsNullOrEmpty(s)).ToList();
-				var filtered = scenarios.Where(s => keys.Any(k => s.Key.StartsWith(k))).ToArray();
-				if (filtered.Length > 0)
-				{
-					scenarios = filtered;
-				}
+			    var keys = CommandLineUtility.CustomArgs["scenarios"].Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+			    scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.ToLower()))).ToArray();
 			}
 
 			foreach (var scenario in scenarios)
