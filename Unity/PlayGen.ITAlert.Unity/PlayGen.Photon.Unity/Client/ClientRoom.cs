@@ -48,7 +48,10 @@ namespace PlayGen.Photon.Unity.Client
 			Logger.PlayerPhotonId = photonClientWrapper.Player.ID;
 			Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
 
-			_voiceClient = new VoiceClient();
+			if (VoiceSettings.Instance.Enabled)
+			{
+				_voiceClient = new VoiceClient();
+			}
 
 			Players = new List<Player>();
 
@@ -102,7 +105,7 @@ namespace PlayGen.Photon.Unity.Client
 			{
 				Messenger.Unsubscribe((int)Channels.Players, ProcessPlayersMessage);
 
-				_voiceClient.Dispose();
+				_voiceClient?.Dispose();
 				_photonClientWrapper.EventRecievedEvent -= OnRecievedEvent;
 
 				_isDisposed = true;

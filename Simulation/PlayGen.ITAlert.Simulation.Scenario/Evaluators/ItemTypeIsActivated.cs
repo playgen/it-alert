@@ -18,8 +18,8 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		where TItemType : class, IItemType
 	{
 		private readonly int? _nodeId;
-
-		private NodeConfig _node;
+		private readonly ActivationState _activationState;
+		private EntityConfig _entityConfig;
 		private readonly IEntityFilter<Simulation, SimulationConfiguration> _filter;
 
 		private ComponentMatcherGroup<TItemType, Activation, CurrentLocation> _itemMatcherGroup;
@@ -29,18 +29,17 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// </summary>
 		/// <param name="nodeId"></param>
 		/// <param name="filter"></param>
-		public ItemTypeIsActivated(int? nodeId = null, IEntityFilter<Simulation, SimulationConfiguration> filter = null)
+		public ItemTypeIsActivated(EntityConfig entityConfig = null, 
+			ActivationState activationState = ActivationState.Active,
+			IEntityFilter<Simulation, SimulationConfiguration> filter = null)
 		{
-			_nodeId = nodeId;
+			_entityConfig = entityConfig;
+			_activationState = activationState;
 			_filter = filter;
 		}
 
 		public void Initialize(Simulation ecs, SimulationConfiguration configuration)
 		{
-			if (_nodeId.HasValue && (configuration.TrySelectNode(_nodeId.Value, out _node) == false))
-			{
-				throw new ScenarioConfigurationException($"Node not found with id {_nodeId}");
-			}
 			_itemMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<TItemType, Activation, CurrentLocation>();
 			_filter?.Initialize(ecs, configuration);
 		}
@@ -48,8 +47,8 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		public bool Evaluate(Simulation ecs, SimulationConfiguration configuration)
 		{
 			return _itemMatcherGroup.MatchingEntities.Any(itemTuple =>
-				itemTuple.Component2.ActivationState == ActivationState.Active
-				&& (_node == null || itemTuple.Component3.Value == _node.EntityId)
+				itemTuple.Component2.ActivationState == _activationState
+				&& (_entityConfig == null || itemTuple.Component3.Value == _entityConfig.EntityId)
 				&& (_filter == null || _filter.Evaluate(itemTuple.Entity)));
 		}
 

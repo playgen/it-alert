@@ -17,10 +17,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		public abstract int[] NodeIds { get; }
 
 		protected ComponentMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents> VisitorMatcherGroup;
+
+		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
 		
 		protected MovementSystemExtensionBase(IMatcherProvider matcherProvider)
 		{
 			VisitorMatcherGroup = matcherProvider.CreateMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents>();
+			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
 		}
 
 		public abstract void MoveVisitors(int currentTick);
@@ -34,12 +37,32 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 				nodeVisitors.Values.Add(visitorId);
 				visitorTuple.Component1.SetPosition(position, currentTick);
 				visitorTuple.Component2.Value = nodeId;
+				visitorTuple.Entity.EntityDisposing += EntityOnEntityDisposing;
 			}
 		}
 
-		public void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, int visitorId, CurrentLocation visitorLocation)
+		private void EntityOnEntityDisposing(Entity entity)
 		{
-			nodeVisitors.Values.Remove(visitorId);
+			RemoveVisitorFromNode(entity.Id);
+		}
+
+		private void RemoveVisitorFromNode(int visitorId)
+		{
+			if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple))
+			{
+				if (visitorTuple.Component2.Value.HasValue
+					&& _visitorsMatcherGroup.TryGetMatchingEntity(visitorTuple.Component2.Value.Value, out var visitorsTuple))
+				{
+					RemoveVisitorFromNode(visitorsTuple.Entity.Id, visitorsTuple.Component1, visitorTuple.Entity, visitorTuple.Component2);
+				}
+			}
+		}
+
+		public void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, Entity visitor, CurrentLocation visitorLocation)
+		{
+			nodeVisitors.Values.Remove(visitor.Id);
+			visitorLocation.Value = null;
+			visitor.EntityDisposed -= EntityOnEntityDisposing;
 		}
 
 		protected void OnVisitorTransition(int nodeId, int visitorId, int sourceId, int initialposition, int currenttick)

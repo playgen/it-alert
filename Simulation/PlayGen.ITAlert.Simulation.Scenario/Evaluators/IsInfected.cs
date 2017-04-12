@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 {
 	public class IsInfected : IEvaluator<Simulation, SimulationConfiguration>
 	{
-		private EntityConfig _nodeEntityConfig;
+		private readonly EntityConfig _nodeEntityConfig;
 
 		private ComponentMatcherGroup<Visitors> _locationMatcherGroup;
 		private ComponentMatcherGroup<Malware> _malwareMatcherGroup;
@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		/// <summary>
 		/// Evaluate if there is any malware present on the specified node, or anywhere if omitted
 		/// </summary>
-		/// <param name="nodeId">NodeConfig, Default: null (anywhere)</param>
+		/// <param name="nodeEntityConfig">NodeConfig, Default: null (anywhere)</param>
 		public IsInfected(EntityConfig nodeEntityConfig = null, IEntityFilter<Simulation, SimulationConfiguration> filter = null)
 		{
 			_nodeEntityConfig = nodeEntityConfig;

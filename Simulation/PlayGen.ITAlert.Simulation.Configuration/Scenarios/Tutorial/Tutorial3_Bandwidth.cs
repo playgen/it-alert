@@ -34,26 +34,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
 
-		private static readonly Archetype VisibleRedTutorialVirus = new Archetype(nameof(VisibleRedTutorialVirus))
-			.Extends(RedTutorialVirus.Archetype)
-			.HasComponent(new ComponentBinding<MalwareVisibility>()
-			{
-				ComponentTemplate = new MalwareVisibility()
-				{
-					VisibleTo = MalwareVisibility.All,
-				}
-			});
-
-		private static readonly Archetype VisibleGreenTutorialVirus = new Archetype(nameof(VisibleGreenTutorialVirus))
-			.Extends(GreenTutorialVirus.Archetype)
-			.HasComponent(new ComponentBinding<MalwareVisibility>()
-			{
-				ComponentTemplate = new MalwareVisibility()
-				{
-					VisibleTo = MalwareVisibility.All,
-				}
-			});
-
 		// TODO: this should be parameterized further and read from config
 		private static SimulationScenario GenerateScenario()
 		{
@@ -157,9 +137,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				TutorialNPC.Archetype,
 				ScannerTool.Archetype,
 				RedTutorialAntivirus.Archetype,
-				VisibleRedTutorialVirus,
+				VisibleRedTutorialVirus.Archetype,
 				GreenTutorialAntivirus.Archetype,
-				VisibleGreenTutorialVirus,
+				VisibleGreenTutorialVirus.Archetype,
 				TutorialText.Archetype,
 			};
 
@@ -190,12 +170,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(VisibleRedTutorialVirus, node10),
-						new CreateMalware(VisibleRedTutorialVirus, node01),
-						new CreateMalware(VisibleRedTutorialVirus, node11),
-						new CreateMalware(VisibleGreenTutorialVirus, node21),
-						new CreateMalware(VisibleGreenTutorialVirus, node30),
-						new CreateMalware(VisibleGreenTutorialVirus, node31),
+						new CreateMalware(VisibleRedTutorialVirus.Archetype, node10),
+						new CreateMalware(VisibleRedTutorialVirus.Archetype, node01),
+						new CreateMalware(VisibleRedTutorialVirus.Archetype, node11),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node21),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node30),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node31),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
 					Evaluator = new WaitForTutorialContinue(),
@@ -298,7 +278,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(true, $"{scenario.Key}_Frame7"),
+						new ShowText(false, $"{scenario.Key}_Frame7"),
 					},
 					Evaluator = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -436,6 +416,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				}
 			);
 
+			#endregion
+
 			// 14
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -448,23 +430,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(node21)),
-					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-					},
-				}
-			);
-
-			#endregion
-
-			// 15
-			scenario.Sequence.Add(
-				new SimulationFrame()
-				{
-					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
-					{
-					},
-					Evaluator = new IsInfected(),
+					Evaluator = EvaluatorExtensions.Not(new IsInfected()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

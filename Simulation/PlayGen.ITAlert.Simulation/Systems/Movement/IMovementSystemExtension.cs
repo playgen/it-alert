@@ -22,6 +22,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		void AddVisitorToNode(int nodeId, int visitorId, int sourceId, int initialPosition, int currentTick);
 
-		void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, int visitorId, CurrentLocation visitorLocation);
+		void RemoveVisitorFromNode(int nodeId, Visitors nodeVisitors, Entity visitor, CurrentLocation visitorLocation);
 	}
 }

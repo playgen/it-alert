@@ -44,7 +44,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 						{
 							var overflow = Math.Max((int)nextPosition - exitNode.Value, 0);
 
-							RemoveVisitorFromNode(connectionTuple.Entity.Id, connectionTuple.Component3, visitorTuple.Entity.Id, visitorTuple.Component2);
+							RemoveVisitorFromNode(connectionTuple.Entity.Id, connectionTuple.Component3, visitorTuple.Entity, visitorTuple.Component2);
 
 							OnVisitorTransition(exitNode.Key, visitorId, connectionTuple.Entity.Id, overflow, currentTick);
 						}
