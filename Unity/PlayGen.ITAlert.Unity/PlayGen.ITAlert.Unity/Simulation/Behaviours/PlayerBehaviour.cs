@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Components;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Player;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
@@ -37,6 +39,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public PlayerBitMask BitMask => _playerBitMask;
 
+		private Destination _destination;
+
+		public int? DestinationSystemId => _destination.Value;
+
 		#region Initialization
 
 		public void Awake()
@@ -49,7 +55,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_trailRenderer.enabled = true;
 
 			if (Entity.TryGetComponent(out _playerBitMask)
-				&& Entity.TryGetComponent(out _playerColour))
+				&& Entity.TryGetComponent(out _playerColour)
+				&& Entity.TryGetComponent(out _destination))
 			{
 				SetColor(_playerColour.HexColour);
 			}

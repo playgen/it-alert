@@ -214,11 +214,25 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_nameText.text = _name.Value;
 			}
 
-			//_iconRenderer.color = Color.white;
-
 			UpdateItemContainers();
-
 			UpdateResourceVisibility();
+			UpdateDestination();
+		}
+
+		private void UpdateDestination()
+		{
+			if (Director.Player != null
+				&& Director.Player.DestinationSystemId == Entity.Id
+				&& _blink.enabled == false)
+			{
+				_blink.enabled = true;
+			}
+			else if (Director.Player != null
+				&& Director.Player.DestinationSystemId != Entity.Id
+				&& _blink.enabled)
+			{
+				_blink.enabled = false;
+			}
 		}
 
 		private void ForEachItemContainer(Action<int, ItemContainer> action)

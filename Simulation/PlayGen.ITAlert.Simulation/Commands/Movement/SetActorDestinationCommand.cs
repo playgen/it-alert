@@ -4,7 +4,7 @@ using Engine.Components;
 using Engine.Entities;
 using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
-using PlayGen.ITAlert.Simulation.Components.Intents;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Systems.Players;
 
 namespace PlayGen.ITAlert.Simulation.Commands.Movement
@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 	{
 		private readonly IEntityRegistry _entityRegistry;
 
-		private readonly ComponentMatcherGroup<Player, Intents> _playerMatcherGroup;
+		private readonly ComponentMatcherGroup<Player, Destination> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 
 		private readonly PlayerSystem _playerSystem;
@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 		{
 			_entityRegistry = entityRegistry;
 
-			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, Intents>();
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, Destination>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
 			_playerSystem = playerSystem;
 		}
@@ -59,7 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerEntityId ?? playerEntityId, out var playerTuple)
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.DestinationEntityId, out var subsystemTuple))
 			{
-				playerTuple.Component2.Replace(new MoveIntent(command.DestinationEntityId));
+				playerTuple.Component2.Value = command.DestinationEntityId;
 				return true;
 			}
 			return false;

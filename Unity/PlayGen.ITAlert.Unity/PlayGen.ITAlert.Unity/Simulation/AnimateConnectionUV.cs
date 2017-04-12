@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PlayGen.ITAlert.Simulation.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,7 +31,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		void LateUpdate()
 		{
-			uvOffset += (AnimationRate * Time.deltaTime);
+			uvOffset += ((float)SimulationConstants.PlayerSpeed *  AnimationRate * Time.deltaTime);
 			if (_image.enabled)
 			{
 				_image.materialForRendering.mainTextureOffset = uvOffset;
