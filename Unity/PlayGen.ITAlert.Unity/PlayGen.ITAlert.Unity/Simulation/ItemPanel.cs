@@ -35,12 +35,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			private readonly Vector2 InventoryItemOffset = new Vector2(0.5f, 0.5f);
 
-
-			public ItemPanelContainer(Director director, GameObject gameObject, ItemContainer itemContainer = null, bool proxyItem = true)
+			public ItemPanelContainer(Director director, GameObject gameObject, int containerIndex, ItemContainer itemContainer = null, bool proxyItem = true)
 			{
 				_director = director;
 				GameObject = gameObject;
 				ContainerBehaviour = gameObject.GetComponent<ItemContainerBehaviour>();
+				ContainerBehaviour.ContainerIndex = containerIndex;
 				_itemTransform = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>();
 
 				ItemContainer = itemContainer;
@@ -49,51 +49,51 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					ContainerBehaviour.Initialize(ItemContainer, _director);
 				}
 
-			    ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
-			    director.AddUntrackedEntity(ItemEntity);
-			    ItemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
-			    ItemEntity.GameObject.SetActive(false);
-			    //ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
-			    ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
-			    ItemEntity.GameObject.AddComponent<ItemDragBehaviour>();
-			    ItemEntity.GameObject.GetComponent<ItemDragBehaviour>().StartPosition(ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
-			    //ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
+				ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
+				director.AddUntrackedEntity(ItemEntity);
+				ItemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
+				ItemEntity.GameObject.SetActive(false);
+				//ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
+				ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
+				ItemEntity.GameObject.AddComponent<ItemDragBehaviour>();
+				ItemEntity.GameObject.GetComponent<ItemDragBehaviour>().StartPosition(ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
+				//ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
 
-                _proxyItem = proxyItem;
+				_proxyItem = proxyItem;
 			}
 
 			public void Update()
 			{
 				ContainerBehaviour.Initialize(ItemContainer, _director);
 				UIEntity item;
-			    if (ItemContainer?.Item != null
-			        && _director.TryGetEntity(ItemContainer.Item.Value, out item))
-			    {
-			        var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
-			        if (ItemEntity.GameObject.activeSelf == false)
-			        {
-			            ItemEntity.GameObject.SetActive(true);
-			        }
-			        if (itemBehaviour.Entity?.Id != item.EntityBehaviour.Entity.Id)
-			        {
-			            itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
-			        }
-			    }
-			    else
-			    {
-			        if (ItemEntity.GameObject.activeSelf)
-			        {
-			            ItemEntity.GameObject.SetActive(false);
-			        }
-			    }
-                if (!_proxyItem)
+				if (ItemContainer?.Item != null
+					&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
+				{
+					var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
+					if (ItemEntity.GameObject.activeSelf == false)
+					{
+						ItemEntity.GameObject.SetActive(true);
+					}
+					if (itemBehaviour.Entity?.Id != item.EntityBehaviour.Entity.Id)
+					{
+						itemBehaviour.Initialize(item.EntityBehaviour.Entity, _director);
+					}
+				}
+				else
+				{
+					if (ItemEntity.GameObject.activeSelf)
+					{
+						ItemEntity.GameObject.SetActive(false);
+					}
+				}
+				if (!_proxyItem)
 				{
 					//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
 					if (ItemContainer?.Item != null
 						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{
-                        item.GameObject.SetActive(false);
-                    }					
+						item.GameObject.SetActive(false);
+					}					
 				}
 				ContainerBehaviour.Update();
 			}
@@ -125,20 +125,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var inventoryGameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory");
 			var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 
-			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, inventoryItemContainer, false);
+			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, -1, inventoryItemContainer, false);
 			_inventoryItem.ContainerBehaviour.ClickEnable = true;
 			_inventoryItem.ContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
-            _inventoryItem.ContainerBehaviour.Drag += (ic, it) => InventoryItemContainerBehaviourOnDrag(it);
+			_inventoryItem.ContainerBehaviour.Drag += (ic, it, sin) => InventoryItemContainerBehaviourOnDrag(it);
 
-            for (var i = 0; i < ItemCount; i++)
+			for (var i = 0; i < ItemCount; i++)
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
-				_systemItems[i] = new ItemPanelContainer(_director, gameObject);
-				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				var containerIndex = i;
+				_systemItems[i] = new ItemPanelContainer(_director, gameObject, containerIndex);
+				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += ic => SystemContainerBehaviourOnClick(ic, containerIndex);
-                _systemItems[i].ContainerBehaviour.Drag += (ic, it) => SystemContainerBehaviourOnDrag(it, ic, containerIndex);
-            }
+				_systemItems[i].ContainerBehaviour.Drag += (ic, it, sin) => SystemContainerBehaviourOnDrag(it, ic, containerIndex, sin);
+			}
 		}
 
 		public void ExplicitUpdate()
@@ -191,35 +191,41 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
 		{
 			ItemBehaviour item;
-            if (itemContainerBehaviour.State == ContainerState.HasItem)
-            {
-                if (itemContainerBehaviour.TryGetItem(out item))
-                {
-                    PlayerCommands.ActivateItem(item.Id);
-                }
-            }
+			if (itemContainerBehaviour.State == ContainerState.HasItem)
+			{
+				if (itemContainerBehaviour.TryGetItem(out item))
+				{
+					PlayerCommands.ActivateItem(item.Id);
+				}
+			}
 		}
 
-        private void SystemContainerBehaviourOnDrag(ItemBehaviour item, ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
-        {
-            ItemBehaviour containerItem;
-            if (itemContainerBehaviour.TryGetItem(out containerItem) == false
-                    && _inventoryItem.ContainerBehaviour.TryGetItem(out containerItem)
-                    && containerItem.Id == item.Id)
-            {
-                PlayerCommands.DropItem(item.Id, containerIndex);
-                item.GetComponent<ItemDragBehaviour>().ClickReset();
-            }
-        }
+		private void SystemContainerBehaviourOnDrag(ItemBehaviour item, ItemContainerBehaviour itemContainerBehaviour, int destContainerIndex, int sourceContainerIndex)
+		{
+			ItemBehaviour containerItem;
+			if (itemContainerBehaviour.TryGetItem(out containerItem) == false
+					&& _inventoryItem.ContainerBehaviour.TryGetItem(out containerItem)
+					&& containerItem.Id == item.Id)
+			{
+				PlayerCommands.DropItem(item.Id, destContainerIndex);
+				item.GetComponent<ItemDragBehaviour>().ClickReset();
+			}
+			else if (itemContainerBehaviour.TryGetItem(out containerItem) == false
+					 && _inventoryItem.ContainerBehaviour != itemContainerBehaviour)
+			{
+				PlayerCommands.MoveItem(item.Id, sourceContainerIndex, destContainerIndex);
+				item.GetComponent<ItemDragBehaviour>().ClickReset();
+			}
+		}
 
-        private void InventoryItemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+		private void InventoryItemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
 		{
 		}
 
-        private void InventoryItemContainerBehaviourOnDrag(ItemBehaviour item)
-        {
-            PlayerCommands.PickupItem(item.Id);
-        }
+		private void InventoryItemContainerBehaviourOnDrag(ItemBehaviour item)
+		{
+			PlayerCommands.PickupItem(item.Id);
+		}
 
-    }
+	}
 }
