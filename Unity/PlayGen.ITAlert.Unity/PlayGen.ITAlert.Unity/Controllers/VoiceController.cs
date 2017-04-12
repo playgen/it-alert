@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			try
 			{
-				if (_photonClient.CurrentRoom.Players.Count > 1)
+				if (VoiceClient != null && _photonClient.CurrentRoom.Players.Count > 1)
 				{
 					if (Input.GetKey(KeyCode.Tab))
 					{

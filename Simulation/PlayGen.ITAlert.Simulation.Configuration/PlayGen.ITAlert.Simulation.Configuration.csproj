@@ -51,6 +51,8 @@
     <Compile Include="Scenarios\Tutorial\Archetypes\GreenTutorialVirus.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\RedTutorialAntivirus.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\RedTutorialVirus.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\VisibleGreenTutorialVirus.cs" />
+    <Compile Include="Scenarios\Tutorial\Archetypes\VisibleRedTutorialVirus.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial2_Analysis.cs" />
     <Compile Include="Scenarios\GraphDemos.cs" />
     <Compile Include="Scenarios\Tutorial\Tutorial1_Introduction.cs" />

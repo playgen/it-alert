@@ -34,7 +34,6 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		{
 			foreach (var subsystemTuple in _subsystemMatcherGroup.MatchingEntities)
 			{
-
 				foreach (var visitorId in subsystemTuple.Component3.Values.ToArray())
 				{
 					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
@@ -80,7 +79,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 							{
 								var overflow = Math.Max((int)nextPosition - exitPosition, 0);
 
-								RemoveVisitorFromNode(subsystemTuple.Entity.Id, subsystemTuple.Component3, visitorTuple.Entity.Id, visitorTuple.Component2);
+								RemoveVisitorFromNode(subsystemTuple.Entity.Id, subsystemTuple.Component3, visitorTuple.Entity, visitorTuple.Component2);
 
 								//exitNode.GetComponent<IMovementSystemExtension>().AddVisitor(visitor, Entity, overflow, currentTick);
 								OnVisitorTransition(exitNode.Value, visitorId, subsystemTuple.Entity.Id, overflow, currentTick);
