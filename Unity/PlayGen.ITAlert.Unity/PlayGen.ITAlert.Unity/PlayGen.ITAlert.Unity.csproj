@@ -153,11 +153,11 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Unity">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Settings">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Settings.dll</HintPath>
