@@ -43,6 +43,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private TimedActivation _timedActivation;
 
 		private Antivirus _antivirus;
+		private ConsumableActivation _consumableActivation;
 		private Capture _capture;
 
 		#endregion
@@ -62,6 +63,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_antivirus = null;
 			_capture = null;
 			_timedActivation = null;
+			_consumableActivation = null;
 
 			if (Entity.TryGetComponent(out _itemType)
 				&& Entity.TryGetComponent(out _currentLocation)
@@ -76,8 +78,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				Entity.TryGetComponent(out _timedActivation);
 				Entity.TryGetComponent(out _antivirus);
 				Entity.TryGetComponent(out _capture);
+				Entity.TryGetComponent(out _consumableActivation);
 
 				UpdateColour();
+
+				_midgroundSprite.enabled = false;
+				_midgroundSprite.type = Image.Type.Simple;
+				_midgroundSprite.gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
+				
+				//TODO: extract item specific logic to subclasses
+				InitializeAntivirus();
+				InitializeCapture();
 			}
 			else
 			{
@@ -93,6 +104,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			base.OnStateUpdated();
 			UpdateColour();
+
+			//TODO: extract item specific logic to subclasses
+			UpdateAntivirus();
+			UpdateCapture();
+
 			UpdateActivationTimer();
 			UpdateInventory();
 		}
@@ -129,39 +145,58 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					var playerColour = ((PlayerBehaviour)owner.EntityBehaviour).PlayerColor;
 					_activationTimerImage.color = playerColour;
 					_backgroundSprite.color = playerColour;
-
-					//TODO: extract item specific logic to subclasses
-					if (_antivirus != null)
-					{
-						_foregroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
-					}
-					else
-					{
-						_foregroundSprite.color = playerColour;
-					}
+					_foregroundSprite.color = playerColour;
 				}
 			}
 			else
 			{
 				_activationTimerImage.color = new Color(1f, 1f, 1f, 0.7f);
 				_backgroundSprite.color = new Color(1f, 1f, 1f, 1f);
-
-				//TODO: extract item specific logic to subclasses
-				if (_antivirus != null)
-				{
-					_foregroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
-				}
-				else
-				{
-					_foregroundSprite.color = new Color(1f, 1f, 1f, 1f);
-				}
+				_foregroundSprite.color = new Color(1f, 1f, 1f, 1f);
 			}
+		}
 
-			if (_capture == null)
+		private void InitializeAntivirus()
+		{
+			if (_antivirus != null)
 			{
-				_midgroundSprite.enabled = false;
+				_midgroundSprite.sprite = Resources.Load<Sprite>("antivirus-full");
+				_midgroundSprite.gameObject.transform.localScale = _foregroundSprite.gameObject.transform.localScale;
+				if (_consumableActivation != null)
+				{
+					_midgroundSprite.type = Image.Type.Simple;
+					_midgroundSprite.fillMethod = Image.FillMethod.Vertical;
+				}
+				_midgroundSprite.enabled = true;
+				UpdateAntivirus();
 			}
-			else
+		}
+
+		private void UpdateAntivirus()
+		{
+			if (_antivirus != null)
+			{
+				_midgroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
+				if (_consumableActivation != null)
+				{
+					_midgroundSprite.fillAmount = (float)_consumableActivation.TotalActivations / _consumableActivation.TotalActivations;
+				}
+			}
+		}
+
+		private void InitializeCapture()
+		{
+			if (_capture != null)
+			{
+				_midgroundSprite.sprite = Resources.Load<Sprite>("virus");
+				_midgroundSprite.enabled = true;
+				UpdateCapture();
+			}
+		}
+
+		private void UpdateCapture()
+		{
+			if (_capture != null)
 			{
 				if (_capture.CapturedGenome == 0)
 				{
