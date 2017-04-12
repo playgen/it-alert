@@ -43,6 +43,8 @@
     <Compile Include="Actions\CreateItem.cs" />
     <Compile Include="Actions\CreateMalware.cs" />
     <Compile Include="Actions\EndGame.cs" />
+    <Compile Include="Actions\NodeSequence.cs" />
+    <Compile Include="Actions\NodeSequenceAction.cs" />
     <Compile Include="Actions\SetDestination.cs" />
     <Compile Include="Actions\SetCommandEnabled.cs" />
     <Compile Include="Configuration\StartingLocationSequencePlayerConfigFactory.cs" />
@@ -54,9 +56,11 @@
     <Compile Include="Evaluators\ItemTypeIsActivated.cs" />
     <Compile Include="Evaluators\ItemTypeIsInStorageAtLocation.cs" />
     <Compile Include="Evaluators\ItemTypeIsInInventory.cs" />
+    <Compile Include="Evaluators\EntityDestroyed.cs" />
     <Compile Include="Evaluators\PlayerIsAtLocation.cs" />
     <Compile Include="Evaluators\IsInfected.cs" />
     <Compile Include="Evaluators\GenomeRevealedAtLocation.cs" />
+    <Compile Include="Evaluators\WaitForTimer.cs" />
     <Compile Include="Evaluators\WaitForSeconds.cs" />
     <Compile Include="Evaluators\WaitForTicks.cs" />
     <Compile Include="Evaluators\WaitForTutorialContinue.cs" />
@@ -75,6 +79,10 @@
     <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
       <Project>{2A59AC2C-B3F4-4416-A74A-FA1B086A2F5B}</Project>
       <Name>Engine.Systems.Activation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Timing\Engine.Systems.Timing.csproj">
+      <Project>{E9B71CB8-BD98-4501-A79B-50930F6B8DD6}</Project>
+      <Name>Engine.Systems.Timing</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
       <Project>{819d263a-c6b4-4be6-92ce-a6f38b1cfe00}</Project>

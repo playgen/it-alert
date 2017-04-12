@@ -35,8 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 				foreach (var visitorId in connectionTuple.Component3.Values.ToArray())
 				{
-					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
-					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
+					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple))
 					{
 						var nextPosition = visitorTuple.Component1.PositionDecimal + (visitorTuple.Component3.Value / connectionTuple.Component4.Value);
 

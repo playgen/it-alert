@@ -7,7 +7,6 @@ using Engine.Planning;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
-using PlayGen.ITAlert.Simulation.Components.Intents;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
@@ -36,8 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			{
 				foreach (var visitorId in subsystemTuple.Component3.Values.ToArray())
 				{
-					ComponentEntityTuple<VisitorPosition, CurrentLocation, MovementSpeed, Intents> visitorTuple;
-					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out visitorTuple))
+					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple))
 					{
 						int? exitNode = null;
 
@@ -45,20 +43,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 						// TODO: extract this into the intent system?
 
-						IIntent visitorIntent;
-						if (visitorTuple.Component4.TryPeek(out visitorIntent))
+						if (visitorTuple.Component4.Value.HasValue)
 						{
-							var moveIntent = visitorIntent as MoveIntent;
-							if (moveIntent != null)
+							if (visitorTuple.Component4.Value.Value == subsystemTuple.Entity.Id)
 							{
-								if (moveIntent.Destination == subsystemTuple.Entity.Id)
-								{
-									visitorTuple.Component4.Pop();
-								}
-								else
-								{
-									exitNode = subsystemTuple.Component4[moveIntent.Destination];
-								}
+								visitorTuple.Component4.Value = null;
+							}
+							else
+							{
+								exitNode = subsystemTuple.Component4[visitorTuple.Component4.Value.Value];
 							}
 						}
 
@@ -112,12 +105,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 				AddVisitor(nodeId, subsystemTuple.Component3, visitorId, position, currentTick);
 
 				if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple)
-					&& visitorTuple.Component4.TryPeek(out var visitorIntent))
+					&& visitorTuple.Component4.Value.HasValue)
 				{
-					var moveIntent = visitorIntent as MoveIntent;
-					if (moveIntent != null && moveIntent.Destination == nodeId)
+					if (visitorTuple.Component4.Value == nodeId)
 					{
-						visitorTuple.Component4.Pop();
+						visitorTuple.Component4.Value = null;
 					}
 				}
 			}

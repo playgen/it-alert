@@ -16,13 +16,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public abstract int[] NodeIds { get; }
 
-		protected ComponentMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents> VisitorMatcherGroup;
+		protected ComponentMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Destination> VisitorMatcherGroup;
 
 		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
 		
 		protected MovementSystemExtensionBase(IMatcherProvider matcherProvider)
 		{
-			VisitorMatcherGroup = matcherProvider.CreateMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Intents>();
+			VisitorMatcherGroup = matcherProvider.CreateMatcherGroup<VisitorPosition, CurrentLocation, MovementSpeed, Destination>();
 			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
 		}
 

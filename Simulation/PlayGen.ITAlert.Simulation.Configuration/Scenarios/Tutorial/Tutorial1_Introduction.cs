@@ -39,13 +39,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			const int playerCount = 1;
 
-			var text = new Dictionary<string, Dictionary<string, string>>();
-
 			#region graph
 
 			var nodeLeft = new NodeConfig()
 			{
-				Name = "Left",
+				Name = "00",
 				X = 0,
 				Y = 0,
 				Archetype = TutorialSubsystem.Archetype,
@@ -53,7 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			var nodeRight = new NodeConfig()
 			{
-				Name = "Right",
+				Name = "10",
 				X = 1,
 				Y = 0,
 				Archetype = TutorialSubsystem.Archetype,
@@ -66,7 +64,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
-
 
 			#endregion
 
@@ -82,6 +79,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
+			configuration.RNGSeed = 282581594;
 
 			#endregion
 
@@ -97,7 +95,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { nodeRight.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-
 			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
 			#region frames
@@ -111,7 +108,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -125,14 +122,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetHighlight(nodeLeft),
 						new ShowText(false, $"{scenario.Key}_Frame2")
 					},
-					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
-						new ClearHighlight(),
 					},
 				}
 			);
@@ -144,7 +139,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
-					Evaluator = new WaitForSeconds(3),
+					ExitCondition = new WaitForSeconds(3),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -163,7 +158,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialScanner.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -177,9 +172,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(false, $"{scenario.Key}_Frame5"),
+						new ShowText(true, $"{scenario.Key}_Frame5"),
 					},
-					Evaluator = new PlayerIsAtLocation(nodeRight.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeRight.Id).And(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -195,7 +190,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<ActivateItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame6"),
 					},
-					Evaluator = new ItemTypeIsActivated<Scanner>(),
+					ExitCondition = new ItemTypeIsActivated<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -211,7 +206,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(true, $"{scenario.Key}_Frame7"),
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -227,7 +222,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<PickupItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame8")
 					},
-					Evaluator = new ItemTypeIsInInventory<Scanner>(),
+					ExitCondition = new ItemTypeIsInInventory<Scanner>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -243,7 +238,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame9"),
 					},
-					Evaluator = new PlayerIsAtLocation(nodeLeft.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft.Id),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
@@ -260,7 +255,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<DropItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame10"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
+					ExitCondition = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(true),
@@ -276,7 +271,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame11"),
 					},
-					Evaluator = new GenomeRevealedAtLocation(nodeLeft),
+					ExitCondition = new GenomeRevealedAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -292,7 +287,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
 					},
-					Evaluator = new ItemTypeIsInInventory<Antivirus>(),
+					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new ClearHighlight(),
@@ -306,7 +301,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

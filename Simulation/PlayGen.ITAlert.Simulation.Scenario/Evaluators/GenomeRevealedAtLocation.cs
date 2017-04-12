@@ -33,7 +33,8 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 		public GenomeRevealedAtLocation(NodeConfig node, int genome = 0, int revealedTo = 0x7fffffff)
 		{
 			_genome = genome;
-			_revealedTo = revealedTo;
+			_revealedTo = revealedTo
+				;
 			_node = node;
 		}
 
