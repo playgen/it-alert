@@ -11,8 +11,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	{
 		private Vector2 _defaultPosition;
 		private Camera _camera;
+	    private RectTransform _rectTransform;
 
-		private bool _beingClicked { get; set; }
+        private bool _beingClicked { get; set; }
 		private bool _beingDragged { get; set; }
 		private Vector2 _dragPosition { get; set; }
 		private RaycastHit2D _dragContainer { get; set; }
@@ -47,7 +48,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			_defaultPosition = pos;
 			_camera = parent.GetComponent<Canvas>().worldCamera;
-		}
+		    _rectTransform = GetComponent<RectTransform>();
+        }
 
 		private void Update()
 		{
@@ -60,7 +62,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					return;
 				}
 				var z = transform.position.z;
-				GetComponent<RectTransform>().anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
+			    _rectTransform.anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
 				transform.position = new Vector3(transform.position.x, transform.position.y, z);
 				if (!Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Contains(_dragContainer))
 				{
