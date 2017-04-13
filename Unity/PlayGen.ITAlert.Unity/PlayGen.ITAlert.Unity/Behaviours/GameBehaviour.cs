@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void Awake()
 		{
-			LogProxy.LogLevel = LogType.Warning;
+			LogProxy.LogLevel = LogType.Log;
 
 			GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
 

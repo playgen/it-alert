@@ -350,8 +350,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
-					LogProxy.Info($"Director Worker: Loop {loop++}");
-
 					var handle = WaitHandle.WaitAny(new WaitHandle[] {_terminateSignal, _messageSignal});
 					if (handle == 0)
 					{
@@ -374,8 +372,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						{
 							var fastForward = i++ < queuedMessages.Length;
 							var tick = ConfigurationSerializer.Deserialize<Tick>(tickMessage.TickString);
-
-							LogProxy.Info($"Director Worker: Tick {tick.CurrentTick}");
 
 
 							// TODO: this should probably be pushed into the ECS
@@ -581,14 +577,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					return;
 				}
-
-				LogProxy.Info($"Director: Player is null: {Player == null}");
 				
 				ItemPanel.ExplicitUpdate();
 
 				_updateCompleteSignal.Set();
-
-				LogProxy.Info("UpdateEntityStates");
 
 			}
 			catch (Exception exception)

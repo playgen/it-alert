@@ -40,18 +40,22 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private void BeginDrag()
 		{
 			_beingDragged = true;
-			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _rectTransform.anchoredPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, Input.mousePosition, _camera, out _dragPosition);
             _parent = transform.parent;
 			transform.SetParent(transform.parent.parent.parent.parent, false);
-			transform.position = (Vector2) Input.mousePosition - _dragPosition;
-			transform.SetAsLastSibling();
+            Vector2 newPosition;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out newPosition);
+		    transform.localPosition = newPosition - _dragPosition;
+            transform.SetAsLastSibling();
 		}
 
 		private void Update()
 		{
 			if (_beingDragged)
 			{
-			    _rectTransform.anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
+			    Vector2 newPosition;
+			    RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out newPosition);
+			    transform.localPosition = newPosition - _dragPosition;
             }
 		}
 

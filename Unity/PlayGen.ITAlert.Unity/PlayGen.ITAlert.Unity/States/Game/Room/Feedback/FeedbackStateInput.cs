@@ -161,7 +161,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			//To-Do: Get the list of evaluation criteria from somewhere
 
-			//players = players.Where(p => p.PhotonId != current.PhotonId).ToList();
+			players = players.Where(p => p.PhotonId != current.PhotonId).ToList();
 
 			var playerList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 			var emptySlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
@@ -171,7 +171,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			foreach (var player in players)
 			{
 				var color = new Color();
-				ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				ColorUtility.TryParseHtmlString(player.Color, out color);
 
 				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
 				playerSlot.GetComponent<Image>().enabled = false;
