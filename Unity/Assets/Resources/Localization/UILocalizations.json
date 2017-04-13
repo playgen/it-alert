@@ -63,7 +63,7 @@
 {"Key":"SETTINGS_BUTTON_APPLY","en-gb":"Apply","nl":"Toepassen"},
 {"Key":"SETTINGS_BUTTON_CANCEL","en-gb":"Close","nl":"Sluiten"},
 {"Key":"SETTINGS_BUTTON_SAVE","en-gb":"Save","nl":"Bewaren"},
-{"Key":"SETTINGS_LABEL_DISPLAY","en-gb":"DIsplay","nl":"Scherm"},
+{"Key":"SETTINGS_LABEL_DISPLAY","en-gb":"Display","nl":"Scherm"},
 {"Key":"SETTINGS_LABEL_VOICE","en-gb":"Voice","nl":"Spraak"},
 {"Key":"SETTINGS_LABEL_VOICE_ENABLED","en-gb":"Voice Enabled","nl":"Geluid Ingeschakeld"},
 {"Key":"SETTINGS_LABEL_MICROPHONE_VOLUME","en-gb":"Microphone Volume","nl":"Volume Microfoon"},
@@ -72,6 +72,7 @@
 {"Key":"SETTINGS_LABEL_SOUND","en-gb":"Sound","nl":"Geluid"},
 {"Key":"SETTINGS_LABEL_MUSIC_VOLUME","en-gb":"Music Volume","nl":"Volume Muziek"},
 {"Key":"SETTINGS_LABEL_SFX_VOLUME","en-gb":"SFX Volume","nl":"Volume Effecten"},
-{"Key":"SETTINGS_LABEL_MICROPHONE_DEVICE","en-gb":"Microphone Device","nl":"XXXX"},
+{"Key":"SETTINGS_LABEL_MICROPHONE_DEVICE","en-gb":"Microphone Device","nl":"Microfoon"},
 {"Key":"GAME_COMPLETION_BUTTON_CONTINUE","en-gb":"Continue","nl":"Doorgaan"},
-{"Key":"GAME_COMPLETION_LABEL_TEAM_SCORE","en-gb":"Team Score:","nl":"XXXX"}]
+{"Key":"GAME_COMPLETION_LABEL_TEAM_SCORE","en-gb":"Team Score:","nl":"Team Score:"},
+{"Key":"GAME_COMPLETION_NEUTRAL","en-gb":"Game Over","nl":"Game Over"}]

@@ -14,11 +14,15 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private Transform _parent;
 		private Vector2 _dragPosition;
 		private FeedbackStateInput _input;
+	    private Camera _camera;
+        private RectTransform _rectTransform;
 
-		private void Start()
+        private void Start()
 		{
 			_parent = transform.parent;
-			var trigger = GetComponent<EventTrigger>();
+		    _camera = GetComponentInParent<Canvas>().worldCamera;
+            _rectTransform = GetComponent<RectTransform>();
+            var trigger = GetComponent<EventTrigger>();
 			trigger.triggers.Clear();
 			var drag = new EventTrigger.Entry {eventID = EventTriggerType.PointerDown};
 			drag.callback.AddListener(data => { BeginDrag(); });
@@ -36,8 +40,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private void BeginDrag()
 		{
 			_beingDragged = true;
-			_dragPosition = Input.mousePosition - transform.position;
-			_parent = transform.parent;
+			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _rectTransform.anchoredPosition;
+            _parent = transform.parent;
 			transform.SetParent(transform.parent.parent.parent.parent, false);
 			transform.position = (Vector2) Input.mousePosition - _dragPosition;
 			transform.SetAsLastSibling();
@@ -47,8 +51,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		{
 			if (_beingDragged)
 			{
-				transform.position = (Vector2) Input.mousePosition - _dragPosition;
-			}
+			    _rectTransform.anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
+            }
 		}
 
 		private void EndDrag()
