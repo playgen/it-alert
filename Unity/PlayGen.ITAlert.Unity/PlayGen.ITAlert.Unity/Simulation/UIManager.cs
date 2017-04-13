@@ -27,6 +27,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private GameObject _failureOverlay;
 
 		[SerializeField]
+		private GameObject _neutralOverlay;
+
+		[SerializeField]
 		private GameObject _endGameOverlay;
 
 		[SerializeField]
@@ -50,10 +53,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			switch (endGameState)
 			{
 				case EndGameState.Success:
-					ShowEndScreen(true);
+					ShowEndScreen(_successOverlay);
 					break;
 				case EndGameState.Failure:
-					ShowEndScreen(false);
+					ShowEndScreen(_failureOverlay);
+					break;
+				case EndGameState.Neutral:
+					ShowEndScreen(_neutralOverlay);
 					break;
 				default:
 					LogProxy.Error("Director ended game with unknown state");
@@ -77,16 +83,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
-		public void ShowEndScreen(bool success)
+		public void ShowEndScreen(GameObject endScreen)
 		{
-			if (success)
-			{
-				_successOverlay.SetActive(true);
-			}
-			else
-			{
-				_failureOverlay.SetActive(true);
-			}
+			endScreen.SetActive(true);
 			_endGameOverlay.SetActive(true);
 			_timerText.transform.parent.gameObject.SetActive(false);
 			_itemPanel.SetActive(false);
@@ -97,6 +96,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			_successOverlay.SetActive(false);
 			_failureOverlay.SetActive(false);
+			_neutralOverlay.SetActive(false);
 			_endGameOverlay.SetActive(false);
 			_timerText.transform.parent.gameObject.SetActive(true);
 			_itemPanel.SetActive(true);
