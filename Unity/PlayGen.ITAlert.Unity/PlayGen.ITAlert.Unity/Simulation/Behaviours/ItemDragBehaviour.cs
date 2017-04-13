@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
         private bool _beingClicked { get; set; }
 		private bool _beingDragged { get; set; }
 		private Vector2 _dragPosition { get; set; }
-		private RaycastHit2D _dragContainer { get; set; }
+		private GameObject _dragContainer { get; set; }
 		private ItemBehaviour _item { get; set; }
 
 		private void Start()
@@ -64,7 +64,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				var z = transform.position.z;
 			    _rectTransform.anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
 				transform.position = new Vector3(transform.position.x, transform.position.y, z);
-				if (!Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Contains(_dragContainer))
+			    var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Select(h => h.collider.gameObject).ToList();
+                if (!hits.Contains(_dragContainer))
 				{
 					_beingDragged = true;
 				}
@@ -81,7 +82,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_beingClicked = true;
 			_beingDragged = false;
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;
-			_dragContainer = container;
+			_dragContainer = container.collider.gameObject;
 			transform.SetAsLastSibling();
 		}
 

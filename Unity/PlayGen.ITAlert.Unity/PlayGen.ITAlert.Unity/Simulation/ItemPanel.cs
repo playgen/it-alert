@@ -208,13 +208,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					&& containerItem.Id == item.Id)
 			{
 				PlayerCommands.DropItem(item.Id, destContainerIndex);
-				item.GetComponent<ItemDragBehaviour>().ClickReset();
 			}
 			else if (itemContainerBehaviour.TryGetItem(out containerItem) == false
 					 && _inventoryItem.ContainerBehaviour != itemContainerBehaviour)
 			{
 				PlayerCommands.MoveItem(item.Id, sourceContainerIndex, destContainerIndex);
-				item.GetComponent<ItemDragBehaviour>().ClickReset();
 			}
 		}
 
