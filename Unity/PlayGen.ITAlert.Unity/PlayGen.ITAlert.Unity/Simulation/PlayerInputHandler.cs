@@ -163,6 +163,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
+				var itemsPreviouslyHit = _lastClicked.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+
+				if (itemsPreviouslyHit.Length == 1)
+				{
+					OnClickItemInContainer(itemsPreviouslyHit[0], containerHit, false);
+					return;
+				}
 				container.OnClickUp();
 				if (_lastClicked.Contains(containerHit))
 				{
