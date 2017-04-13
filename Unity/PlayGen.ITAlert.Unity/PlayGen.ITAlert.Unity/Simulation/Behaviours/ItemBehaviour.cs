@@ -137,7 +137,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void UpdateColour()
 		{
-			if (_owner?.Value.HasValue ?? false)
+			if ((_owner?.Value.HasValue ?? false)
+                && _activation.ActivationState == ActivationState.Active)
 			{
 				UIEntity owner;
 				if (Director.TryGetEntity(_owner.Value.Value, out owner))

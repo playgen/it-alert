@@ -13,7 +13,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HostType: 2
   Protocol: 0
-  ServerAddress: 127.0.0.1
+  ServerAddress: italert.playgen.com
   ServerPort: 5055
   AppID: a4f87584-1a6d-4a41-a208-9b3efb93f4c4
   VoiceAppID: e94874f7-99e5-4ed7-8746-8679109f941f

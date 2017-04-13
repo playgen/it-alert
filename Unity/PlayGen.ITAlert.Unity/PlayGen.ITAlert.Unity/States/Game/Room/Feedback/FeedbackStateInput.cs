@@ -92,7 +92,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 			}
 			drag.transform.SetParent(slot.transform, false);
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
+			// TODO: temporarily disable for release
+			//_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			return true;
 		}
@@ -161,7 +162,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			//To-Do: Get the list of evaluation criteria from somewhere
 
-			//players = players.Where(p => p.PhotonId != current.PhotonId).ToList();
+			players = players.Where(p => p.PhotonId != current.PhotonId).ToList();
 
 			var playerList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 			var emptySlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
@@ -171,7 +172,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			foreach (var player in players)
 			{
 				var color = new Color();
-				ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+				ColorUtility.TryParseHtmlString(player.Color, out color);
 
 				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
 				playerSlot.GetComponent<Image>().enabled = false;
@@ -220,7 +221,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(sectionName);
 				}
 			}
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
+			// TODO: temporarily disable for release
+			//_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			if (_error.activeSelf)
 			{

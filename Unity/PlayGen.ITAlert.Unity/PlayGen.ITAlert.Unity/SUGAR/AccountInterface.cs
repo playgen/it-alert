@@ -43,6 +43,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
         private void DoBestFitFurtherDelay()
         {
             GetComponentsInChildren<Button>(true).Select(t => t.gameObject).Where(t => t.activeSelf).BestFit();
+            GetComponentsInChildren<Text>().Where(t => !t.GetComponentsInParent<Button>(true).Any() && !t.GetComponentsInParent<InputField>(true).Any()).BestFit();
         }
     }
 }

@@ -53,6 +53,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (Director.SimulationRoot.Scenario.LocalizationDictionary.TryGetLocalizedStringForKey(language,
 				_textComponent.Value, out var value))
 			{
+				if (string.IsNullOrEmpty(value))
+				{
+					Director.SimulationRoot.Scenario.LocalizationDictionary.TryGetLocalizedStringForKey(
+						Director.SimulationRoot.Scenario.LocalizationDictionary.DefaultLocale,
+						_textComponent.Value, out value);
+				}
 				_text.text = value;
 			}
 			else
