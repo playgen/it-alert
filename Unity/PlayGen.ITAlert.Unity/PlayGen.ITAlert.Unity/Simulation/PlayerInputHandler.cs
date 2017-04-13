@@ -105,10 +105,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					PlayerCommands.Move(subsystem.Id);
 				}
-				if (_lastClicked.Contains(subsystemHit))
-				{
-					_lastClicked.Remove(subsystemHit);
-				}
 			}
 		}
 
@@ -117,10 +113,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			if (!down)
 			{
 				ItemClickReset(itemHit);
-				if (_lastClicked.Contains(itemHit))
-				{
-					_lastClicked.Remove(itemHit);
-				}
 			}
 		}
 
@@ -142,14 +134,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				var onClickValues = itemdrag.OnClickUp();
 				container.OnClickUp(item, onClickValues.Key, onClickValues.Value);
-				if (_lastClicked.Contains(itemHit))
-				{
-					_lastClicked.Remove(itemHit);
-				}
-				if (_lastClicked.Contains(containerHit))
-				{
-					_lastClicked.Remove(containerHit);
-				}
 			}
 		}
 
@@ -163,11 +147,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				container.OnClickUp();
-				if (_lastClicked.Contains(containerHit))
+				var itemsPreviouslyHit = _lastClicked.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+
+				if (itemsPreviouslyHit.Length == 1)
 				{
-					_lastClicked.Remove(containerHit);
+					OnClickItemInContainer(itemsPreviouslyHit[0], containerHit, false);
+					return;
 				}
+				container.OnClickUp();
 			}
 		}
 
