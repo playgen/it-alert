@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Unity.Behaviours;
@@ -23,6 +25,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 		private GameObject _gameContainer;
 		private CanvasGroup _canvasGroup;
+		private Dictionary<BlinkBehaviour, bool> _blinkPauseToggle = new Dictionary<BlinkBehaviour, bool>();
 
 		protected override void OnInitialize()
 		{
@@ -72,12 +75,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.25f);
 				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.125f);
 			}
+			_blinkPauseToggle.Clear();
 			foreach (var blink in _gameContainer.GetComponentsInChildren<BlinkBehaviour>())
 			{
-				blink.enabled = false;
 				var image = blink.GetComponent<Image>();
 				if (image != null)
 				{
+					_blinkPauseToggle.Add(blink, blink.enabled);
+					blink.enabled = false;
 					image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
 				}
 			}
@@ -102,9 +107,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 1);
 				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.875f);
 			}
-			foreach (var blink in _gameContainer.GetComponentsInChildren<BlinkBehaviour>())
+			foreach (var blink in _blinkPauseToggle.Keys)
 			{
-				blink.enabled = true;
+				blink.enabled = _blinkPauseToggle[blink];
 			}
 		}
 

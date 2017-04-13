@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 	}
 
-	public class MoveItemCommandCommandHandler : CommandHandler<MoveItemCommand>
+	public class MoveItemCommandHandler : CommandHandler<MoveItemCommand>
 	{
 
 		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation> _itemMatcherGroup;
@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		#endregion
 
-		public MoveItemCommandCommandHandler(IMatcherProvider matcherProvider)
+		public MoveItemCommandHandler(IMatcherProvider matcherProvider)
 		{
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();

@@ -10,6 +10,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	/// </summary>
 	public abstract class EntityBehaviour : MonoBehaviour, IEntityBehaviour
 	{
+        public event Action StateUpdated;
+
 		/// <summary>
 		/// Has initialization been performed yet, prevents unity update methods from proceeding
 		/// </summary>
@@ -101,14 +103,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected virtual void OnStateUpdated()
 		{
 			UpdateHighlight();
-		}
+            StateUpdated?.Invoke();
+        }
 
-		/// <summary>
-		/// Initialize the object from simulation state
-		/// </summary>
-		/// <param name="entity"></param>
-		/// <param name="director"></param>
-		public void Initialize(Entity entity, Director director)
+        /// <summary>
+        /// Initialize the object from simulation state
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="director"></param>
+        public void Initialize(Entity entity, Director director)
 		{
 			Entity = entity;
 			Director = director;

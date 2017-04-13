@@ -11,6 +11,7 @@ using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;
+using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -42,6 +43,12 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		public void GetScenarioList()
 		{
 			var scenarios = _scenarioLoader.GetScenarioInfo();
+
+			if (CommandLineUtility.CustomArgs.ContainsKey("scenarios"))
+			{
+			    var keys = CommandLineUtility.CustomArgs["scenarios"].Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+			    scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.ToLower()))).ToArray();
+			}
 
 			foreach (var scenario in scenarios)
 			{
