@@ -96,13 +96,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 				SimulationScenario scenario;
 				if (_scenarioLoader.TryGetScenario(RoomSettings.GameScenario, out scenario))
 				{
-					scenario.Configuration.PlayerConfiguration = PhotonPlugin.PluginHost.GameActorsActive.Select((p, i) =>
+					scenario.Configuration.PlayerConfiguration = PlayerManager.Players.Select((p, i) =>
 					{
-						var player = PlayerManager.Get(p.ActorNr);
 						var playerConfig = scenario.PlayerConfigFactory.GetNextPlayerConfig(i);
-						playerConfig.ExternalId = player.PhotonId;
-						playerConfig.Name = player.Name;
-						playerConfig.Colour = player.Color;
+						playerConfig.ExternalId = p.PhotonId;
+						playerConfig.Name = p.Name;
+						playerConfig.Colour = p.Color;
 						return playerConfig;
 					}).ToList();
 

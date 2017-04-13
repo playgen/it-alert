@@ -9,8 +9,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 	public static class GreenVirus
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(GreenVirus))
-			.Extends(VisibleGreenTutorialVirus.Archetype)
-			.RemoveComponent<MalwarePropogation>()
+			.Extends(Virus.Archetype)
 			.HasComponent(new ComponentBinding<MalwareGenome>()
 			{
 				ComponentTemplate = new MalwareGenome()

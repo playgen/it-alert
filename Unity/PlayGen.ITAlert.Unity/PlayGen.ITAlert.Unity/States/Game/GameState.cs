@@ -38,6 +38,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		protected override void OnEnter()
 		{
+			_photonClient?.Dispose();
 			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());
 			_photonClient.ExceptionEvent += OnClientException;
 			_photonClient.ConnectedEvent += OnConnected;

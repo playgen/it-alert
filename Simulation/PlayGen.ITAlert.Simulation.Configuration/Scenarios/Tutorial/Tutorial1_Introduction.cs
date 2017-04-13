@@ -203,10 +203,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<PickupItemCommand>(true),
 						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(true, $"{scenario.Key}_Frame7"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInInventory<Scanner>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -219,7 +220,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<PickupItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame8")
 					},
 					ExitCondition = new ItemTypeIsInInventory<Scanner>(),
@@ -270,10 +270,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new ShowText(false, $"{scenario.Key}_Frame11"),
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 					ExitCondition = new GenomeRevealedAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new HideText(),
 					},
 				}
@@ -286,10 +288,28 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
+						new SetCommandEnabled<ActivateItemCommand>(false),
+					},
+					ExitCondition = new PlayerIsAtLocation(nodeLeft),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new ClearHighlight(),
+					},
+				}
+			);
+			// 13
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new ClearHighlight(),
 					},
 				}

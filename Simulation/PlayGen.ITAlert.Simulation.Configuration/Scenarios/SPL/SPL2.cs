@@ -37,84 +37,33 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			#region graph
 
-			var node00 = new NodeConfig()
-			{
-				Name = "AV00",
-				X = 0,
-				Y = 0,
-				Archetype = AntivirusWorkstation.Archetype,
-			};
-			var node10 = new NodeConfig()
-			{
-				Name = "10",
-				X = 1,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node20 = new NodeConfig()
-			{
-				Name = "20",
-				X = 2,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node01 = new NodeConfig()
-			{
-				Name = "01",
-				X = 0,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node11 = new NodeConfig()
-			{
-				Name = "11",
-				X = 1,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node21 = new NodeConfig()
-			{
-				Name = "21",
-				X = 2,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node02 = new NodeConfig()
-			{
-				Name = "02",
-				X = 0,
-				Y = 2,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node12 = new NodeConfig()
-			{
-				Name = "12",
-				X = 1,
-				Y = 2,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node22 = new NodeConfig()
-			{
-				Name = "22",
-				X = 2,
-				Y = 2,
-				Archetype = SubsystemNode.Archetype,
-			};
+			var node00 = new NodeConfig(0, 0, AntivirusWorkstation.Archetype, "Antivirus");
+			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
+			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
+
+			var node01 = new NodeConfig(0, 1, SubsystemNode.Archetype);
+			var node11 = new NodeConfig(1, 1, SubsystemNode.Archetype);
+			var node21 = new NodeConfig(2, 1, SubsystemNode.Archetype);
+
+			var node02 = new NodeConfig(0, 2, SubsystemNode.Archetype);
+			var node12 = new NodeConfig(1, 2, SubsystemNode.Archetype);
+			var node22 = new NodeConfig(2, 2, SubsystemNode.Archetype);
 
 			var nodeConfigs = new NodeConfig[]
 			{
 				node00,
 				node10,
 				node20,
+
 				node01,
 				node11,
 				node21,
+
 				node02,
 				node12,
 				node22,
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
-
 
 			var connection0001 = new EdgeConfig(node00.Id, EdgeDirection.South, node01.Id, ConnectionNode.Archetype);
 			var connection0100 = connection0001.Reciprocate();
@@ -130,6 +79,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			var connection1112 = new EdgeConfig(node11.Id, EdgeDirection.South, node12.Id, ConnectionNode.Archetype);
 			var connection1211 = connection1112.Reciprocate();
+
+			var connection2122 = new EdgeConfig(node21.Id, EdgeDirection.South, node22.Id, ConnectionNode.Archetype);
+			var connection2221 = connection2122.Reciprocate();
 
 			var connection0111 = new EdgeConfig(node01.Id, EdgeDirection.East, node11.Id, ConnectionNode.Archetype);
 			var connection1101 = connection0111.Reciprocate();
@@ -150,6 +102,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				connection0201,
 				connection1112,
 				connection1211,
+				connection2122,
+				connection2221,
 				connection0111,
 				connection1101,
 				connection1121,
