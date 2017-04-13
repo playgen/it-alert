@@ -71,6 +71,7 @@
     <Compile Include="Components\Player\PlayerColour.cs" />
     <Compile Include="Components\Player\PlayerBitMask.cs" />
     <Compile Include="Configuration\EdgeConfig.cs" />
+    <Compile Include="Configuration\EdgeConfigExtensions.cs" />
     <Compile Include="Configuration\EntityConfig.cs" />
     <Compile Include="Configuration\IPlayerConfigFactory.cs" />
     <Compile Include="Configuration\NodeConfig.cs" />

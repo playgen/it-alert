@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Tests
 
 		public void TestHashCode(int source, int destination, int code)
 		{
-			var edge = new EdgeConfig(source, EdgeDirection.South, destination);
+			var edge = new EdgeConfig(source, EdgeDirection.South, destination, null);
 			Assert.AreEqual(code, edge.GetHashCode());
 
 			var edges = new HashSet<EdgeConfig> {edge};

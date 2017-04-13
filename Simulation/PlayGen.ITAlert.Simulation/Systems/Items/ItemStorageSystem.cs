@@ -12,16 +12,32 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 {
 	public class ItemStorageSystem : ISystem
 	{
-		private readonly ComponentMatcherGroup<ItemStorage> _itemStorageMatcher;
+		private readonly ComponentMatcherGroup<ItemStorage> _itemStorageMatcherGroup;
 
+		private readonly ComponentMatcherGroup<IItemType> _itemMatcherGroup;
+		
 		public ItemStorageSystem(IMatcherProvider matcherProvider)
 			
 		{
-			_itemStorageMatcher = matcherProvider.CreateMatcherGroup<ItemStorage>();
-			_itemStorageMatcher.MatchingEntityAdded += ItemStorageMatcherOnMatchingEntityAdded;
+			_itemStorageMatcherGroup = matcherProvider.CreateMatcherGroup<ItemStorage>();
+			_itemStorageMatcherGroup.MatchingEntityAdded += ItemStorage_EntityAdded;
+
+			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<IItemType>();
+			_itemMatcherGroup.MatchingEntityRemoved += ItemMatcher_EntityRemoved;
 		}
 
-		private void ItemStorageMatcherOnMatchingEntityAdded(ComponentEntityTuple<ItemStorage> tuple)
+		private void ItemMatcher_EntityRemoved(Entity entity)
+		{
+			foreach (var itemStorageTuple in _itemStorageMatcherGroup.MatchingEntities)
+			{
+				foreach (var itemContainer in itemStorageTuple.Component1.Items.Where(ic => ic != null && ic.Item == entity.Id))
+				{
+					itemContainer.Item = null;
+				}
+			}
+		}
+
+		private void ItemStorage_EntityAdded(ComponentEntityTuple<ItemStorage> tuple)
 		{
 			InitializeItemContainers(tuple.Component1);
 		}

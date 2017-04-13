@@ -164,7 +164,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_midgroundSprite.gameObject.transform.localScale = _foregroundSprite.gameObject.transform.localScale;
 				if (_consumableActivation != null)
 				{
-					_midgroundSprite.type = Image.Type.Simple;
+					_midgroundSprite.type = Image.Type.Filled;
 					_midgroundSprite.fillMethod = Image.FillMethod.Vertical;
 				}
 				_midgroundSprite.enabled = true;
@@ -179,7 +179,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_midgroundSprite.color = _antivirus.TargetGenome.GetColourForGenome();
 				if (_consumableActivation != null)
 				{
-					_midgroundSprite.fillAmount = (float)_consumableActivation.TotalActivations / _consumableActivation.TotalActivations;
+					_midgroundSprite.fillAmount = (float)_consumableActivation.ActivationsRemaining / _consumableActivation.TotalActivations;
 				}
 			}
 		}

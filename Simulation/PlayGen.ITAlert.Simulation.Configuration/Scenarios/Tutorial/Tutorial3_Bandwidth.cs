@@ -205,7 +205,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(GreenTutorialAntivirus.Archetype, nodeT1),
 						new ShowText(false, $"{scenario.Key}_Frame3")
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeT1.Id)
+					ExitCondition = new PlayerIsAtLocation(nodeT1)
 						.And(new ItemTypeIsInInventory<Antivirus>(filter: new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -283,8 +283,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-			#region Malware behaviour
 			
+			#region NPC behaviour
 			// 8
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -304,7 +304,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
 			// 9
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -312,7 +311,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new PlayerIsAtLocation(node30.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node30, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -323,7 +322,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
 			// 10
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -348,7 +346,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
 			// 11
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -356,7 +353,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new PlayerIsAtLocation(node31.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node31, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -367,7 +364,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-			
 			// 12
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -392,7 +388,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
 			// 13
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -400,7 +395,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new PlayerIsAtLocation(node21.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node21, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -411,9 +406,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
-
-			#endregion
-
 			// 14
 			scenario.Sequence.Add(
 				new SimulationFrame()
@@ -430,6 +422,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+					},
+				}
+			);
+			#endregion
+			// 15
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new WaitForTicks(10),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
 						new EndGame(EndGameState.Success),
 					},
 				}

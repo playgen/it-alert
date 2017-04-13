@@ -6,6 +6,7 @@ using Engine.Components;
 using Engine.Evaluators;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
+using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
@@ -14,22 +15,22 @@ using PlayGen.ITAlert.Simulation.Systems.Players;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 {
-	public class PlayerIsAtLocation : IEvaluator<Simulation, SimulationConfiguration>
+	public class PlayerDestinarionIs : IEvaluator<Simulation, SimulationConfiguration>
 	{
 		private readonly int _playerId;
 
 		private NodeConfig _nodeConfig;
 
-		private ComponentMatcherGroup<Player, CurrentLocation> _playerMatcherGroup;
+		private ComponentMatcherGroup<Player, Destination> _playerMatcherGroup;
 
 		private PlayerSystem _playerSystem;
 
 		/// <summary>
 		/// 
 		/// </summary>
-		/// <param name="nodeId"></param>
+		/// <param name="nodeConfig"></param>
 		/// <param name="playerId"></param>
-		public PlayerIsAtLocation(NodeConfig nodeConfig, int playerId = 0)
+		public PlayerDestinarionIs(NodeConfig nodeConfig, int playerId = 0)
 		{
 			_nodeConfig = nodeConfig;
 			_playerId = playerId;
@@ -42,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Evaluators
 				throw new SimulationException("Unable to get PlayerSystem for Evaluation");
 			}
 
-			_playerMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Player, CurrentLocation>();
+			_playerMatcherGroup = ecs.MatcherProvider.CreateMatcherGroup<Player, Destination>();
 		}
 
 		public bool Evaluate(Simulation ecs, SimulationConfiguration configuration)
