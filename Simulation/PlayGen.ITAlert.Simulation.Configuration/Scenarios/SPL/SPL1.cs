@@ -37,49 +37,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			#region graph
 
-			var node00 = new NodeConfig()
-			{
-				Name = "AV00",
-				X = 0,
-				Y = 0,
-				Archetype = AntivirusWorkstation.Archetype,
-			};
-			var node10 = new NodeConfig()
-			{
-				Name = "10",
-				X = 1,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node20 = new NodeConfig()
-			{
-				Name = "20",
-				X = 2,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node01 = new NodeConfig()
-			{
-				Name = "01",
-				X = 0,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node11 = new NodeConfig()
-			{
-				Name = "11",
-				X = 1,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			var node21 = new NodeConfig()
-			{
-				Name = "21",
-				X = 2,
-				Y = 1,
-				Archetype = SubsystemNode.Archetype,
-			};
-			
+			var node00 = new NodeConfig(0, 0, AntivirusWorkstation.Archetype, "Antivirus");
+			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
+			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
+			var node01 = new NodeConfig(0, 1, SubsystemNode.Archetype);
+			var node11 = new NodeConfig(1, 0, SubsystemNode.Archetype);
+			var node21 = new NodeConfig(2, 1, SubsystemNode.Archetype);
 			var nodeConfigs = new NodeConfig[]
 			{
 				node00,
@@ -92,7 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
 			var connection0010 = new EdgeConfig(node00.Id, EdgeDirection.East, node10.Id, ConnectionNode.Archetype);
-			var connection1000 = connection0010;
+			var connection1000 = connection0010.Reciprocate();
 
 			var connection1020 = new EdgeConfig(node10.Id, EdgeDirection.East, node20.Id, ConnectionNode.Archetype);
 			var connection2010 = connection1020.Reciprocate();

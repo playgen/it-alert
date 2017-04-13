@@ -39,8 +39,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			});
 
 			PlayerManager.ChangeAllState((int)ClientState.NotReady);
+			PlayerManager.PlayerLeft += PlayerManagerOnPlayerLeft;
 			PlayerManager.PlayersUpdated += TryStartGame;
 			RoomSettings.MinPlayersChangedEvent += TryStartGame;
+		}
+
+		private void PlayerManagerOnPlayerLeft(int i)
+		{
+			PlayerManager.ChangeAllState((int)ClientState.NotReady);
 		}
 
 		protected override void OnExit()

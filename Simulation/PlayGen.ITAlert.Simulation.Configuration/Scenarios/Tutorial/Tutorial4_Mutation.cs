@@ -242,7 +242,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialCapture.Archetype, node11),
 						new ShowText(false, $"{scenario.Key}_Frame5")
 					},
-					ExitCondition = new ItemTypeIsActivated<Capture>(activationState: ActivationState.Deactivating),
+					ExitCondition = new PlayerIsAtLocation(node10).And(new ItemTypeIsActivated<Capture>(activationState: ActivationState.Deactivating)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
