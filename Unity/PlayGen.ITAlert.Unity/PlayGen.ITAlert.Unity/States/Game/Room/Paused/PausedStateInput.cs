@@ -75,15 +75,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.25f);
 				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.125f);
 			}
-			_blinkPauseToggle.Clear();
 			foreach (var blink in _gameContainer.GetComponentsInChildren<BlinkBehaviour>())
 			{
 				var image = blink.GetComponent<Image>();
 				if (image != null)
 				{
-					_blinkPauseToggle.Add(blink, blink.enabled);
-					blink.enabled = false;
-					image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
+                    if (!_blinkPauseToggle.ContainsKey(blink))
+                    {
+                        _blinkPauseToggle.Add(blink, blink.enabled);
+                        blink.enabled = false;
+                        image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
+                    }
 				}
 			}
 		}
@@ -111,7 +113,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			{
 				blink.enabled = _blinkPauseToggle[blink];
 			}
-		}
+		    _blinkPauseToggle.Clear();
+        }
 
 		protected override void OnTick(float deltaTime)
 		{
