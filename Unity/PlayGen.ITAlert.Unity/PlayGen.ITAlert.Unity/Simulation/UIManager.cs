@@ -21,10 +21,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private GameObject _itemPanel;
 
 		[SerializeField]
-		private GameObject _successOverlay;
+		private GameObject _endGameSuccessOverlay;
 
 		[SerializeField]
-		private GameObject _failureOverlay;
+		private GameObject _endGameNeutralOverlay;
+
+		[SerializeField]
+		private GameObject _endGameFailureOverlay;
 
 		[SerializeField]
 		private GameObject _endGameOverlay;
@@ -50,15 +53,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			switch (endGameState)
 			{
 				case EndGameState.Success:
-					ShowEndScreen(true);
+					_endGameSuccessOverlay.SetActive(true);
+					break;
+				case EndGameState.Neutral:
+					_endGameNeutralOverlay.SetActive(true);
 					break;
 				case EndGameState.Failure:
-					ShowEndScreen(false);
+					_endGameFailureOverlay.SetActive(true);
 					break;
 				default:
 					LogProxy.Error("Director ended game with unknown state");
-					break;
+					return;
 			}
+			_endGameOverlay.SetActive(true);
+			_timerText.transform.parent.gameObject.SetActive(false);
+			_itemPanel.SetActive(false);
 		}
 
 		private void FixedUpdate()
@@ -77,26 +86,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#endregion
 
-		public void ShowEndScreen(bool success)
-		{
-			if (success)
-			{
-				_successOverlay.SetActive(true);
-			}
-			else
-			{
-				_failureOverlay.SetActive(true);
-			}
-			_endGameOverlay.SetActive(true);
-			_timerText.transform.parent.gameObject.SetActive(false);
-			_itemPanel.SetActive(false);
-			//_endGameOverlay.transform.Find("Team Score/Score").GetComponent<Text>().text = ;
-		}
-
 		public void Reset()
 		{
-			_successOverlay.SetActive(false);
-			_failureOverlay.SetActive(false);
+			_endGameSuccessOverlay.SetActive(false);
+			_endGameNeutralOverlay.SetActive(false);
+			_endGameFailureOverlay.SetActive(false);
 			_endGameOverlay.SetActive(false);
 			_timerText.transform.parent.gameObject.SetActive(true);
 			_itemPanel.SetActive(true);

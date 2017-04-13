@@ -57,6 +57,7 @@
     <Compile Include="Evaluators\ItemTypeIsInStorageAtLocation.cs" />
     <Compile Include="Evaluators\ItemTypeIsInInventory.cs" />
     <Compile Include="Evaluators\EntityDestroyed.cs" />
+    <Compile Include="Evaluators\PlayerDestinarionIs.cs" />
     <Compile Include="Evaluators\PlayerIsAtLocation.cs" />
     <Compile Include="Evaluators\IsInfected.cs" />
     <Compile Include="Evaluators\GenomeRevealedAtLocation.cs" />

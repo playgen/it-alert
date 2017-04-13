@@ -15,6 +15,8 @@ namespace PlayGen.ITAlert.Simulation.Tests
 	[TestFixture]
 	public class PathFinderTests
 	{
+		private const string DummyConnectionARchetypeName = null;
+
 		public static TestCaseData[] PathTestCases =
 		{
 			new TestCaseData(
@@ -27,7 +29,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				},
 				new List<EdgeConfig>()
 				{
-					new EdgeConfig(0, EdgeDirection.East, 1)
+					new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName)
 				},
 				1,
 				0,
@@ -45,7 +47,7 @@ namespace PlayGen.ITAlert.Simulation.Tests
 					},
 					new List<EdgeConfig>()
 					{
-						new EdgeConfig(0, EdgeDirection.East, 1)
+						new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName)
 					},
 					0,
 					1,
@@ -69,10 +71,10 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				},
 				new List<EdgeConfig>()
 				{
-					new EdgeConfig(0, EdgeDirection.East, 1),
-					new EdgeConfig(0, EdgeDirection.South, 2),
-					new EdgeConfig(1, EdgeDirection.South, 3),
-					new EdgeConfig(2, EdgeDirection.East, 3),
+					new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName),
+					new EdgeConfig(0, EdgeDirection.South, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.South, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(2, EdgeDirection.East, 3, DummyConnectionARchetypeName),
 				},
 				0,
 				3,
@@ -97,17 +99,17 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				},
 				new List<EdgeConfig>()
 				{
-					new EdgeConfig(0, EdgeDirection.East, 1),
-					new EdgeConfig(1, EdgeDirection.West, 0),
+					new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.West, 0, DummyConnectionARchetypeName),
 
-					new EdgeConfig(0, EdgeDirection.South, 2),
-					new EdgeConfig(2, EdgeDirection.North, 0),
+					new EdgeConfig(0, EdgeDirection.South, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(2, EdgeDirection.North, 0, DummyConnectionARchetypeName),
 
-					new EdgeConfig(1, EdgeDirection.South, 3),
-					new EdgeConfig(3, EdgeDirection.North, 1),
+					new EdgeConfig(1, EdgeDirection.South, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.North, 1, DummyConnectionARchetypeName),
 
-					new EdgeConfig(2, EdgeDirection.East, 3),
-					new EdgeConfig(3, EdgeDirection.West, 2),
+					new EdgeConfig(2, EdgeDirection.East, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.West, 2, DummyConnectionARchetypeName),
 				},
 				0,
 				3,
@@ -158,34 +160,34 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				new List<EdgeConfig>()
 				{
 					// top row
-					new EdgeConfig(0, EdgeDirection.East, 1),
-					new EdgeConfig(1, EdgeDirection.West, 0),
-					new EdgeConfig(1, EdgeDirection.East, 4),
-					new EdgeConfig(4, EdgeDirection.West, 1),
+					new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.West, 0, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.East, 4, DummyConnectionARchetypeName),
+					new EdgeConfig(4, EdgeDirection.West, 1, DummyConnectionARchetypeName),
 					// middle row
-					new EdgeConfig(2, EdgeDirection.East, 3),
-					new EdgeConfig(3, EdgeDirection.West, 2),
-					new EdgeConfig(3, EdgeDirection.East, 5),
-					new EdgeConfig(5, EdgeDirection.West, 3),
+					new EdgeConfig(2, EdgeDirection.East, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.West, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.East, 5, DummyConnectionARchetypeName),
+					new EdgeConfig(5, EdgeDirection.West, 3, DummyConnectionARchetypeName),
 					// bottom row
-					new EdgeConfig(6, EdgeDirection.East, 7),
-					new EdgeConfig(7, EdgeDirection.West, 6),
-					new EdgeConfig(7, EdgeDirection.East, 8),
-					new EdgeConfig(8, EdgeDirection.West, 7),
+					new EdgeConfig(6, EdgeDirection.East, 7, DummyConnectionARchetypeName),
+					new EdgeConfig(7, EdgeDirection.West, 6, DummyConnectionARchetypeName),
+					new EdgeConfig(7, EdgeDirection.East, 8, DummyConnectionARchetypeName),
+					new EdgeConfig(8, EdgeDirection.West, 7, DummyConnectionARchetypeName),
 					// top to middle
-					new EdgeConfig(0, EdgeDirection.South, 2),
-					new EdgeConfig(2, EdgeDirection.North, 0),
-					new EdgeConfig(1, EdgeDirection.South, 3),
-					new EdgeConfig(3, EdgeDirection.North, 1),
-					new EdgeConfig(4, EdgeDirection.South, 5),
-					new EdgeConfig(5, EdgeDirection.North, 4),
+					new EdgeConfig(0, EdgeDirection.South, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(2, EdgeDirection.North, 0, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.South, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.North, 1, DummyConnectionARchetypeName),
+					new EdgeConfig(4, EdgeDirection.South, 5, DummyConnectionARchetypeName),
+					new EdgeConfig(5, EdgeDirection.North, 4, DummyConnectionARchetypeName),
 					// middle to bottom
-					new EdgeConfig(2, EdgeDirection.South, 6),
-					new EdgeConfig(6, EdgeDirection.North, 2),
-					new EdgeConfig(3, EdgeDirection.South, 7),
-					new EdgeConfig(7, EdgeDirection.North, 3),
-					new EdgeConfig(5, EdgeDirection.South, 8),
-					new EdgeConfig(8, EdgeDirection.North, 5),
+					new EdgeConfig(2, EdgeDirection.South, 6, DummyConnectionARchetypeName),
+					new EdgeConfig(6, EdgeDirection.North, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(3, EdgeDirection.South, 7, DummyConnectionARchetypeName),
+					new EdgeConfig(7, EdgeDirection.North, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(5, EdgeDirection.South, 8, DummyConnectionARchetypeName),
+					new EdgeConfig(8, EdgeDirection.North, 5, DummyConnectionARchetypeName),
 				},
 				0,
 				8,
@@ -214,12 +216,12 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				new List<EdgeConfig>()
 				{
 					// middle row
-					new EdgeConfig(2, EdgeDirection.East, 1, 2),
-					new EdgeConfig(3, EdgeDirection.East, 4, 3),
+					new EdgeConfig(2, EdgeDirection.East, 1, DummyConnectionARchetypeName, 2),
+					new EdgeConfig(3, EdgeDirection.East, 4, DummyConnectionARchetypeName, 3),
 
-					new EdgeConfig(0, EdgeDirection.South, 2),
-					new EdgeConfig(2, EdgeDirection.South, 3),
-					new EdgeConfig(1, EdgeDirection.South, 4),
+					new EdgeConfig(0, EdgeDirection.South, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(2, EdgeDirection.South, 3, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.South, 4, DummyConnectionARchetypeName),
 				},
 				0,
 				4,
@@ -254,18 +256,18 @@ namespace PlayGen.ITAlert.Simulation.Tests
 				new List<EdgeConfig>()
 				{
 					// top row
-					new EdgeConfig(0, EdgeDirection.East, 1),
-					new EdgeConfig(1, EdgeDirection.East, 4),
+					new EdgeConfig(0, EdgeDirection.East, 1, DummyConnectionARchetypeName),
+					new EdgeConfig(1, EdgeDirection.East, 4, DummyConnectionARchetypeName),
 					// middle row
-					new EdgeConfig(3, EdgeDirection.West, 2),
-					new EdgeConfig(5, EdgeDirection.West, 3),
+					new EdgeConfig(3, EdgeDirection.West, 2, DummyConnectionARchetypeName),
+					new EdgeConfig(5, EdgeDirection.West, 3, DummyConnectionARchetypeName),
 					// bottom row
-					new EdgeConfig(6, EdgeDirection.East, 7),
-					new EdgeConfig(7, EdgeDirection.East, 8),
+					new EdgeConfig(6, EdgeDirection.East, 7, DummyConnectionARchetypeName),
+					new EdgeConfig(7, EdgeDirection.East, 8, DummyConnectionARchetypeName),
 					// top to middle
-					new EdgeConfig(4, EdgeDirection.South, 5),
+					new EdgeConfig(4, EdgeDirection.South, 5, DummyConnectionARchetypeName),
 					// middle to bottom
-					new EdgeConfig(2, EdgeDirection.South, 6),
+					new EdgeConfig(2, EdgeDirection.South, 6, DummyConnectionARchetypeName),
 				},
 				0,
 				6,

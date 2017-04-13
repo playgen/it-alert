@@ -88,7 +88,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				if (!_proxyItem)
 				{
-					//TODO: the followingl line is only necessary because the serializer isnt merging components properties when therse are object references
+					//TODO: the following line is only necessary because the serializer isnt merging components properties when therse are object references
 					if (ItemContainer?.Item != null
 						&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 					{

@@ -8,7 +8,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 {
 	public static class GreenVirus
 	{
-		public static readonly Archetype Archetype = new Archetype(nameof(RedVirus))
+		public static readonly Archetype Archetype = new Archetype(nameof(GreenVirus))
 			.Extends(VisibleGreenTutorialVirus.Archetype)
 			.RemoveComponent<MalwarePropogation>()
 			.HasComponent(new ComponentBinding<MalwareGenome>()
@@ -23,9 +23,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 				ComponentTemplate = new MalwarePropogation()
 				{
 					TicksRemaining = 100,
-					Interval = 150,
-					IntervalVariation = 30,
-					RollThreshold = 66,
+					Interval = 300,
+					IntervalVariation = 50,
+					RollThreshold = 0,
 				}
 			});
 	}

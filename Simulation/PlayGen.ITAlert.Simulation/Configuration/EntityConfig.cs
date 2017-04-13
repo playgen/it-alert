@@ -19,6 +19,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		/// </summary>
 		public int EntityId { get; set; }
 		
-		public virtual string Archetype { get; set; }
+		public string Archetype { get; set; }
 	}
 }

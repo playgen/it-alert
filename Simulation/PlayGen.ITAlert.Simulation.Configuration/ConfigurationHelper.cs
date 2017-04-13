@@ -62,26 +62,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 					if (j < width - 1)
 					{
-						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.East, nextX, weight)
-						{
-							Archetype = ConnectionNode.Archetype,
-						});
-						edgeConfigs.Add(new EdgeConfig(nextX, EdgeDirection.West, thisId, weight)
-						{
-							Archetype = ConnectionNode.Archetype,
-						});
+						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.East, nextX, ConnectionNode.Archetype, weight));
+						edgeConfigs.Add(new EdgeConfig(nextX, EdgeDirection.West, thisId, ConnectionNode.Archetype, weight));
 					}
 					if (i < height - 1)
 					{
 
-						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.South, nextY, weight)
-						{
-							Archetype = ConnectionNode.Archetype,
-						});
-						edgeConfigs.Add(new EdgeConfig(nextY, EdgeDirection.North, thisId, weight)
-						{
-							Archetype = ConnectionNode.Archetype,
-						});
+						edgeConfigs.Add(new EdgeConfig(thisId, EdgeDirection.South, nextY, ConnectionNode.Archetype, weight));
+						edgeConfigs.Add(new EdgeConfig(nextY, EdgeDirection.North, thisId, ConnectionNode.Archetype, weight));
 					}
 				}
 			}
@@ -108,27 +96,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						NodeConfig nextX;
 						if (nodesByCoordinate.TryGetValue(new {x = j + 1, y = i}, out nextX))
 						{
-							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.East, nextX.Id, weight)
-							{
-								Archetype = ConnectionNode.Archetype,
-							});
-							edgeConfigs.Add(new EdgeConfig(nextX.Id, EdgeDirection.West, currentNode.Id, weight)
-							{
-								Archetype = ConnectionNode.Archetype,
-							});
+							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.East, nextX.Id, ConnectionNode.Archetype, weight));
+							edgeConfigs.Add(new EdgeConfig(nextX.Id, EdgeDirection.West, currentNode.Id, ConnectionNode.Archetype, weight));
 						}
 
 						NodeConfig nextY;
 						if (nodesByCoordinate.TryGetValue(new { x = j, y = i + 1 }, out nextY))
 						{
-							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.South, nextY.Id, weight)
-							{
-								Archetype = ConnectionNode.Archetype,
-							});
-							edgeConfigs.Add(new EdgeConfig(nextY.Id, EdgeDirection.North, currentNode.Id, weight)
-							{
-								Archetype = ConnectionNode.Archetype,
-							});
+							edgeConfigs.Add(new EdgeConfig(currentNode.Id, EdgeDirection.South, nextY.Id, ConnectionNode.Archetype, weight));
+							edgeConfigs.Add(new EdgeConfig(nextY.Id, EdgeDirection.North, currentNode.Id, ConnectionNode.Archetype, weight));
 						}
 					}
 				}

@@ -11,12 +11,18 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public int Weight { get; }
 		public int Length { get; set; } // TODO: calculate in graph layout pass
 
-		public EdgeConfig(int source, EdgeDirection sourcePosition, int destination, int weight = 1, int length = 1){
+		public EdgeConfig(int source, EdgeDirection sourcePosition, int destination, string archetypeName, int weight = 1, int length = 1){
 			Source = source;
 			SourcePosition = sourcePosition;
 			Destination = destination;
 			Weight = weight;
 			Length = length;
+			Archetype = archetypeName;
+		}
+
+		public EdgeConfig(NodeConfig source, EdgeDirection sourcePosition, NodeConfig destination, string archetypeName, int weight = 1, int length = 1)
+			: this (source.Id, sourcePosition, destination.Id, archetypeName, weight, length)
+		{
 		}
 
 		public bool Equals(EdgeConfig other)

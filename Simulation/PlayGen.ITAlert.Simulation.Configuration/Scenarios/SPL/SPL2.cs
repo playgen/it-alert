@@ -116,27 +116,28 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
 
-			var connection0001 = new EdgeConfig(node00.Id, EdgeDirection.South, node01.Id) { Archetype = ConnectionNode.Archetype };
-			var connection0100 = new EdgeConfig(node01.Id, EdgeDirection.North, node00.Id) { Archetype = ConnectionNode.Archetype };
+			var connection0001 = new EdgeConfig(node00.Id, EdgeDirection.South, node01.Id, ConnectionNode.Archetype);
+			var connection0100 = connection0001.Reciprocate();
 
-			var connection1011 = new EdgeConfig(node10.Id, EdgeDirection.South, node11.Id) { Archetype = ConnectionNode.Archetype };
-			var connection1110 = new EdgeConfig(node11.Id, EdgeDirection.North, node10.Id) { Archetype = ConnectionNode.Archetype };
+			var connection1011 = new EdgeConfig(node10.Id, EdgeDirection.South, node11.Id, ConnectionNode.Archetype);
+			var connection1110 = connection1011.Reciprocate();
 
-			var connection2021 = new EdgeConfig(node20.Id, EdgeDirection.South, node21.Id) { Archetype = ConnectionNode.Archetype };
-			var connection2120 = new EdgeConfig(node21.Id, EdgeDirection.North, node20.Id) { Archetype = ConnectionNode.Archetype };
+			var connection2021 = new EdgeConfig(node20.Id, EdgeDirection.South, node21.Id, ConnectionNode.Archetype);
+			var connection2120 = connection2021.Reciprocate();
 
-			var connection0102 = new EdgeConfig(node01.Id, EdgeDirection.South, node02.Id) { Archetype = ConnectionNode.Archetype };
-			var connection0201 = new EdgeConfig(node02.Id, EdgeDirection.North, node01.Id) { Archetype = ConnectionNode.Archetype };
+			var connection0102 = new EdgeConfig(node01.Id, EdgeDirection.South, node02.Id, ConnectionNode.Archetype);
+			var connection0201 = connection0102.Reciprocate();
 
-			var connection1112 = new EdgeConfig(node11.Id, EdgeDirection.South, node12.Id) { Archetype = ConnectionNode.Archetype };
-			var connection1211 = new EdgeConfig(node12.Id, EdgeDirection.North, node11.Id) { Archetype = ConnectionNode.Archetype };
+			var connection1112 = new EdgeConfig(node11.Id, EdgeDirection.South, node12.Id, ConnectionNode.Archetype);
+			var connection1211 = connection1112.Reciprocate();
 
-			var connection0111 = new EdgeConfig(node01.Id, EdgeDirection.East, node11.Id) { Archetype = ConnectionNode.Archetype };
-			var connection1101 = new EdgeConfig(node11.Id, EdgeDirection.West, node01.Id) { Archetype = ConnectionNode.Archetype };
+			var connection0111 = new EdgeConfig(node01.Id, EdgeDirection.East, node11.Id, ConnectionNode.Archetype);
+			var connection1101 = connection0111.Reciprocate();
 
-			var connection1121 = new EdgeConfig(node11.Id, EdgeDirection.East, node21.Id) { Archetype = ConnectionNode.Archetype };
-			var connection2111 = new EdgeConfig(node21.Id, EdgeDirection.West, node11.Id) { Archetype = ConnectionNode.Archetype };
-			
+			var connection1121 = new EdgeConfig(node11.Id, EdgeDirection.East, node21.Id, ConnectionNode.Archetype);
+			var connection2111 = connection1121.Reciprocate();
+
+
 			var edgeConfigs = new EdgeConfig[]
 			{
 				connection0001,
@@ -257,7 +258,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 					ExitCondition = new WaitForTimer(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new EndGame(EndGameState.Success),
+						new EndGame(EndGameState.Neutral),
 					},
 				}
 			);

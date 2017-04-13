@@ -124,7 +124,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame2")
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeLeft.Id),
+					ExitCondition = new PlayerDestinarionIs(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -139,7 +139,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
-					ExitCondition = new WaitForSeconds(3),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -174,7 +174,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(true, $"{scenario.Key}_Frame5"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeRight.Id).And(new WaitForTutorialContinue()),
+					ExitCondition = new PlayerIsAtLocation(nodeRight).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -238,7 +238,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame9"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeLeft.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
@@ -305,6 +305,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+					},
+				}
+			);
+			// 14
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new WaitForTicks(10),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
 						new EndGame(EndGameState.Success),
 					},
 				}

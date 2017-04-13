@@ -93,7 +93,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				AnalyserActivator.Archetype,
 				AntivirusTool.Archetype,
 				RedTutorialVirus.Archetype,
-				GreenTutorialVirus.Archetype,
+				VisibleGreenTutorialVirus.Archetype,
 				TutorialText.Archetype,
 			};
 
@@ -180,7 +180,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialCapture.Archetype, nodeAntivirus),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInInventory<Capture>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -195,7 +195,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame5"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeAntivirus.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeAntivirus).Or(new ItemTypeIsInInventory<Capture>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -210,7 +210,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame6"),
 					},
-					ExitCondition = EvaluatorExtensions.Not(new ItemTypeIsInInventory<Scanner>()),
+					ExitCondition = EvaluatorExtensions.Not(new ItemTypeIsInInventory<Scanner>()).Or(new ItemTypeIsInInventory<Capture>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -241,7 +241,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame8"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeLeft.Id),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft).Or(new GenomeIsCaptured(SimulationConstants.MalwareGeneRed)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -271,7 +271,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame10"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeAntivirus.Id).And(new ItemTypeIsInInventory<Capture>()),
+					ExitCondition = new PlayerIsAtLocation(nodeAntivirus).And(new ItemTypeIsInInventory<Capture>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -308,16 +308,19 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
+
 			// 13
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(GreenTutorialVirus.Archetype, nodeMiddle),
-						new ShowText(false, $"{scenario.Key}_Frame13"),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, nodeLeft),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, nodeMiddle),
+						new CreateMalware(VisibleGreenTutorialVirus.Archetype, nodeRight),
+						new ShowText(true, $"{scenario.Key}_Frame13"),
 					},
-					ExitCondition = new GenomeRevealedAtLocation(nodeMiddle, SimulationConstants.MalwareGeneGreen),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -332,14 +335,43 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame14"),
 					},
-					ExitCondition = EvaluatorExtensions.Not(new IsInfected(nodeMiddle)),
+					ExitCondition = new EntityDisposed<Malware>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+					},
+				}
+			);
+			// 15
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new ShowText(false, $"{scenario.Key}_Frame15"),
+					},
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected()),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new HideText(),
+					},
+				}
+			);
+			// 16
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new WaitForTicks(10),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
 						new EndGame(EndGameState.Success),
 					},
 				}
 			);
+
 
 			#endregion
 
