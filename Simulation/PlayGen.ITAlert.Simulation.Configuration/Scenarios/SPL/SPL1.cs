@@ -41,7 +41,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
 			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
 			var node01 = new NodeConfig(0, 1, SubsystemNode.Archetype);
-			var node11 = new NodeConfig(1, 0, SubsystemNode.Archetype);
+			var node11 = new NodeConfig(1, 1, SubsystemNode.Archetype);
 			var node21 = new NodeConfig(2, 1, SubsystemNode.Archetype);
 			var nodeConfigs = new NodeConfig[]
 			{
