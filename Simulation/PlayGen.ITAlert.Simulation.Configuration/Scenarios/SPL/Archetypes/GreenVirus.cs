@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 			{
 				ComponentTemplate = new MalwareGenome()
 				{
-					Value = SimulationConstants.MalwareGeneRed,
+					Value = SimulationConstants.MalwareGeneGreen,
 				}
 			})
 			.HasComponent(new ComponentBinding<MalwarePropogation>()
@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 					TicksRemaining = 100,
 					Interval = 300,
 					IntervalVariation = 50,
-					RollThreshold = 0,
+					RollThreshold = 20,
 				}
 			});
 	}
