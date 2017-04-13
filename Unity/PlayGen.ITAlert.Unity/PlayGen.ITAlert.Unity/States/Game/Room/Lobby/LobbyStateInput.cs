@@ -13,6 +13,7 @@ using Logger = PlayGen.Photon.Unity.Logger;
 using Object = UnityEngine.Object;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
+using PlayGen.ITAlert.Photon.Common;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
@@ -67,7 +68,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
 
 			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
-			SetRoomName(_photonClient.CurrentRoom.RoomInfo.name);
+			SetRoomName(_photonClient.CurrentRoom.RoomInfo.name + " - " + _photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario]);
 
 			_readyButton.gameObject.GetComponentInChildren<Text>().text = Localization.Get("LOBBY_BUTTON_READY");
 			_lobbyPanel.SetActive(true);

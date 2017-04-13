@@ -72,24 +72,29 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		public void OnClickDown(RaycastHit2D container)
+		public bool OnClickDown(RaycastHit2D container)
 		{
 			LogProxy.Info("Item OnClick");
 			if (_item.CanActivate == false)
 			{
-				return;
+				return false;
 			}
 			_beingClicked = true;
 			_beingDragged = false;
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;
 			_dragContainer = container.collider.gameObject;
 			transform.SetAsLastSibling();
+            return true;
 		}
 
-		public KeyValuePair<int, bool> OnClickUp()
+		public KeyValuePair<int?, bool> OnClickUp()
 		{
-			return new KeyValuePair<int, bool>(_dragContainer.transform.GetComponent<ItemContainerBehaviour>().ContainerIndex, _beingDragged);
-		}
+            if (_dragContainer != null && _dragContainer.GetComponent<ItemContainerBehaviour>() != null)
+            {
+                return new KeyValuePair<int?, bool>(_dragContainer.GetComponent<ItemContainerBehaviour>().ContainerIndex, _beingDragged);
+            }
+		    return new KeyValuePair<int?, bool>(null, _beingDragged);
+        }
 
 		public void ClickReset()
 		{

@@ -37,13 +37,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private void OnContinueClick()
 		{
-			//if (_photonClient.CurrentRoom.Players.Count > 1)
+			if (_photonClient.CurrentRoom.Players.Count > 1)
 			{
 				EndGameContinueClickedEvent?.Invoke();
 			}
-			//else
+			else
 			{
-				//EndGameOnePlayerContinueClickedEvent?.Invoke();
+				EndGameOnePlayerContinueClickedEvent?.Invoke();
 			}
 		}
 
