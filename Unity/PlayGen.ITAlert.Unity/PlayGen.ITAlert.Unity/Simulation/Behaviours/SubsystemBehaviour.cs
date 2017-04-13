@@ -383,6 +383,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_blink.enabled = _beingClicked;
 		}
 
+		protected override void OnUpdate()
+		{
+			if (_beingClicked && !Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Select(r => r.collider).Contains(DropCollider))
+			{
+				ClickReset();
+			}
+		}
+
 		public bool OnClickUp()
 		{
 			var wasClicked = _beingClicked;
@@ -393,7 +401,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void ClickReset()
 		{
-			_beingClicked = false;
+			OnClickUp();
 		}
 	}
 }

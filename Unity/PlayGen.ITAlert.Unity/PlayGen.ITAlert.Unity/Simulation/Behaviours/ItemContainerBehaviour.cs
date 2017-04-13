@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public event Action<ItemContainerBehaviour> Click;
 
-		public event Action<ItemContainerBehaviour, ItemBehaviour> Drag;
+		public event Action<ItemContainerBehaviour, ItemBehaviour, int> Drag;
 
 		public event Action<ContainerState> StateChanged;
 
@@ -35,6 +35,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		#endregion
 
 		public bool ClickEnable { get; set; }
+
+		public int ContainerIndex { get; set; }
 
 		// TODO: push this down int othe item containers
 
@@ -134,7 +136,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			return _itemContainer.CanRelease;
 		}
 
-		public void OnClickUp(ItemBehaviour item = null, bool isDrag = false)
+		public void OnClickUp(ItemBehaviour item = null, int? sourceContainerIndex = null, bool isDrag = false)
 		{
 			if (_beingClicked && !isDrag)
 			{
@@ -142,10 +144,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 				Click?.Invoke(this);
 			}
-			else if (item && _itemContainer?.Item == null)
+			else if (item != null && sourceContainerIndex != null && _itemContainer?.Item == null)
 			{
 				item.gameObject.SetActive(false);
-				Drag?.Invoke(this, item);
+				Drag?.Invoke(this, item, sourceContainerIndex.Value);
 			}
 			ClickReset();
 		}

@@ -21,6 +21,26 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void Start()
 		{
 			_item = GetComponent<ItemBehaviour>();
+			if (_item)
+			{
+				_item.StateUpdated += PositionReset;
+			}
+		}
+
+		private void OnEnable()
+		{
+			if (_item)
+			{
+				_item.StateUpdated += PositionReset;
+			}
+		}
+
+		private void OnDisable()
+		{
+			if (_item)
+			{
+				_item.StateUpdated -= PositionReset;
+			}
 		}
 
 		public void StartPosition(Vector2 pos, Transform parent)
@@ -36,6 +56,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (_item.CanActivate == false)
 				{
 					ClickReset();
+                    PositionReset();
 					return;
 				}
 				var z = transform.position.z;
@@ -62,15 +83,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			transform.SetAsLastSibling();
 		}
 
-		public bool OnClickUp()
+		public KeyValuePair<int, bool> OnClickUp()
 		{
-			return _beingDragged;
+			return new KeyValuePair<int, bool>(_dragContainer.transform.GetComponent<ItemContainerBehaviour>().ContainerIndex, _beingDragged);
 		}
 
 		public void ClickReset()
 		{
 			_beingClicked = false;
 			_beingDragged = false;
+		}
+
+		public void PositionReset()
+		{
 			GetComponent<RectTransform>().anchoredPosition = _defaultPosition;
 		}
 	}
