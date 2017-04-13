@@ -1,4 +1,6 @@
-﻿using Engine.Lifecycle;
+﻿using System;
+using Engine.Lifecycle;
+using Engine.Systems.Timing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -68,7 +70,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SetTimer()
 		{
-			_timerText.text = _director.Tick.ToString("d5");
+			_timerText.text = _director.SimulationRoot.ECS.TryGetSystem<TimerSystem>(out var timerSystem)
+				? $"{timerSystem.Current.Minutes:00}.{timerSystem.Current.Seconds:00}"
+				: _director.Tick.ToString("d5");
 		}
 
 		#endregion

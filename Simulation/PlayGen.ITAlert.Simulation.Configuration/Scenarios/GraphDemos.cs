@@ -90,7 +90,7 @@
 //					},
 //					// TODO: need a more polymorphic way of specifying evaluators
 //					// c# 7 pattern match will be nice
-//					Evaluator =  new WaitForTutorialContinue(),
+//					ExitCondition =  new WaitForTutorialContinue(),
 //				}
 //			);
 

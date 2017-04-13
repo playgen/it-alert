@@ -6,10 +6,6 @@ using Engine.Entities;
 using Engine.Planning;
 using Engine.Systems;
 using Engine.Util;
-using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.Common;
-using PlayGen.ITAlert.Simulation.Components.Intents;
-using PlayGen.ITAlert.Simulation.Components.Movement;
 using Zenject;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
@@ -74,22 +70,5 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			}
 			action(movementSystemExtension);
 		}
-
-		#region command/movement logic
-
-		// TODO: decide if this is where these really belong
-
-		public static bool TrySetDestination(Entity actor, Entity destination)
-		{
-			Intents visitorIntents;
-			if (actor.TryGetComponent(out visitorIntents))
-			{
-				visitorIntents.Replace(new MoveIntent(destination.Id));
-				return true;
-			}
-			return false;
-		}
-
-		#endregion
 	}
 }

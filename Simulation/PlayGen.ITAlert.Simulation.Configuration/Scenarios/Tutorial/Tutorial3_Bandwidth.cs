@@ -39,10 +39,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 		{
 			#region configuration
 
-			const int playerCount = 1;
-
-			var text = new Dictionary<string, Dictionary<string, string>>();
-
 			#region graph
 
 			var nodeT1 = new NodeConfig()
@@ -144,6 +140,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
+			configuration.RNGSeed = 477359007;
 
 			#endregion
 
@@ -152,14 +149,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				Key = "Tutorial3",
 				Name = "Tutorial3_Name",
 				Description = "Tutorial3_Description",
-				MinPlayers = playerCount,
-				MaxPlayers = playerCount,
+				MinPlayers = 1,
+				MaxPlayers = 1,
 				Configuration = configuration,
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node40.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-
 			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 			
 			#region frames
@@ -178,7 +174,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node31),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -193,7 +189,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(true, $"{scenario.Key}_Frame2")
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -209,7 +205,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(GreenTutorialAntivirus.Archetype, nodeT1),
 						new ShowText(false, $"{scenario.Key}_Frame3")
 					},
-					Evaluator = new PlayerIsAtLocation(nodeT1.Id)
+					ExitCondition = new PlayerIsAtLocation(nodeT1.Id)
 						.And(new ItemTypeIsInInventory<Antivirus>(filter: new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -230,7 +226,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague"),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					Evaluator = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -248,7 +244,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(false, $"{scenario.Key}_Frame5"),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1),
+					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
@@ -263,7 +259,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new SetCommandEnabled<PickupItemCommand>(false),
 					},
-					Evaluator = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT2, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))
+					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT2, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))
 						.And(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneRed))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
@@ -280,7 +276,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame7"),
 					},
-					Evaluator = new WaitForTicks(1),
+					ExitCondition = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(true),
@@ -296,7 +292,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = new WaitForTicks(20),
+					ExitCondition = new WaitForTicks(20),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
@@ -316,7 +312,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = new PlayerIsAtLocation(node30.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node30.Id, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -340,7 +336,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(node30)),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node30)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
@@ -360,7 +356,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = new PlayerIsAtLocation(node31.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node31.Id, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -384,7 +380,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected(node31)),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node31)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
@@ -404,7 +400,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					Evaluator = new PlayerIsAtLocation(node21.Id, 1),
+					ExitCondition = new PlayerIsAtLocation(node21.Id, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new DropItemTypeCommand()
@@ -430,7 +426,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					Evaluator = EvaluatorExtensions.Not(new IsInfected()),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

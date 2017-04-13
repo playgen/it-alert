@@ -268,7 +268,7 @@ Canvas:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000011383437524}
   m_Enabled: 1
-  serializedVersion: 3
+  serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 1
@@ -277,8 +277,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 623175611
+  m_SortingLayerID: 1238663097
   m_SortingOrder: 4
   m_TargetDisplay: 0
 --- !u!224 &224000013773299334

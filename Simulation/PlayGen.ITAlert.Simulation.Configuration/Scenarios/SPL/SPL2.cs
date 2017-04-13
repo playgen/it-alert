@@ -4,7 +4,6 @@ using Engine.Evaluators;
 using Engine.Lifecycle;
 using Engine.Sequencing;
 using Engine.Systems.Timing.Actions;
-using Engine.Systems.Timing.Evaluators;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
@@ -19,13 +18,14 @@ using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario.Evaluators;
+using PlayGen.ITAlert.Simulation.Scenario.Evaluators.Filters;
 using PlayGen.ITAlert.Simulation.Scenario.Localization;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 {
 	// ReSharper disable once InconsistentNaming
-	internal static class SPL1
+	internal static class SPL2
 	{
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
@@ -79,7 +79,28 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				Y = 1,
 				Archetype = SubsystemNode.Archetype,
 			};
-			
+			var node02 = new NodeConfig()
+			{
+				Name = "02",
+				X = 0,
+				Y = 2,
+				Archetype = SubsystemNode.Archetype,
+			};
+			var node12 = new NodeConfig()
+			{
+				Name = "12",
+				X = 1,
+				Y = 2,
+				Archetype = SubsystemNode.Archetype,
+			};
+			var node22 = new NodeConfig()
+			{
+				Name = "22",
+				X = 2,
+				Y = 2,
+				Archetype = SubsystemNode.Archetype,
+			};
+
 			var nodeConfigs = new NodeConfig[]
 			{
 				node00,
@@ -88,41 +109,50 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				node01,
 				node11,
 				node21,
+				node02,
+				node12,
+				node22,
 			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
-			var connection0010 = new EdgeConfig(node00.Id, EdgeDirection.East, node10.Id) { Archetype = ConnectionNode.Archetype };
-			var connection1000 = new EdgeConfig(node10.Id, EdgeDirection.West, node00.Id) { Archetype = ConnectionNode.Archetype };
-
-			var connection1020 = new EdgeConfig(node10.Id, EdgeDirection.East, node20.Id) { Archetype = ConnectionNode.Archetype };
-			var connection2010 = new EdgeConfig(node20.Id, EdgeDirection.West, node10.Id) { Archetype = ConnectionNode.Archetype };
 
 			var connection0001 = new EdgeConfig(node00.Id, EdgeDirection.South, node01.Id) { Archetype = ConnectionNode.Archetype };
 			var connection0100 = new EdgeConfig(node01.Id, EdgeDirection.North, node00.Id) { Archetype = ConnectionNode.Archetype };
+
+			var connection1011 = new EdgeConfig(node10.Id, EdgeDirection.South, node11.Id) { Archetype = ConnectionNode.Archetype };
+			var connection1110 = new EdgeConfig(node11.Id, EdgeDirection.North, node10.Id) { Archetype = ConnectionNode.Archetype };
+
+			var connection2021 = new EdgeConfig(node20.Id, EdgeDirection.South, node21.Id) { Archetype = ConnectionNode.Archetype };
+			var connection2120 = new EdgeConfig(node21.Id, EdgeDirection.North, node20.Id) { Archetype = ConnectionNode.Archetype };
+
+			var connection0102 = new EdgeConfig(node01.Id, EdgeDirection.South, node02.Id) { Archetype = ConnectionNode.Archetype };
+			var connection0201 = new EdgeConfig(node02.Id, EdgeDirection.North, node01.Id) { Archetype = ConnectionNode.Archetype };
+
+			var connection1112 = new EdgeConfig(node11.Id, EdgeDirection.South, node12.Id) { Archetype = ConnectionNode.Archetype };
+			var connection1211 = new EdgeConfig(node12.Id, EdgeDirection.North, node11.Id) { Archetype = ConnectionNode.Archetype };
 
 			var connection0111 = new EdgeConfig(node01.Id, EdgeDirection.East, node11.Id) { Archetype = ConnectionNode.Archetype };
 			var connection1101 = new EdgeConfig(node11.Id, EdgeDirection.West, node01.Id) { Archetype = ConnectionNode.Archetype };
 
 			var connection1121 = new EdgeConfig(node11.Id, EdgeDirection.East, node21.Id) { Archetype = ConnectionNode.Archetype };
 			var connection2111 = new EdgeConfig(node21.Id, EdgeDirection.West, node11.Id) { Archetype = ConnectionNode.Archetype };
-
-			var connection2021 = new EdgeConfig(node20.Id, EdgeDirection.South, node21.Id) { Archetype = ConnectionNode.Archetype };
-			var connection2120 = new EdgeConfig(node21.Id, EdgeDirection.North, node20.Id) { Archetype = ConnectionNode.Archetype };
-
+			
 			var edgeConfigs = new EdgeConfig[]
 			{
-				connection0010,
-				connection1000,
-				connection1020,
-				connection2010,
 				connection0001,
 				connection0100,
+				connection1011,
+				connection1110,
+				connection2021,
+				connection2120,
+				connection0102,
+				connection0201,
+				connection1112,
+				connection1211,
 				connection0111,
 				connection1101,
 				connection1121,
 				connection2111,
-				connection2021,
-				connection2120,
 			};
 
 			#endregion
@@ -138,6 +168,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				CaptureTool.Archetype,
 				AntivirusTool.Archetype,
 				RedVirus.Archetype,
+				GreenVirus.Archetype,
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs, edgeConfigs, null, archetypes);
@@ -147,30 +178,46 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			var scenario = new SimulationScenario()
 			{
-				Key = "SPL1",
-				Name = "SPL Scenario 1",
-				Description = "Scenario 1",
+				Key = "SPL2",
+				Name = "SPL Scenario 2",
+				Description = "Scenario 2",
 				MinPlayers = 1,
 				MaxPlayers = 4,
 				TimeLimitSeconds = 600, // 10 minutes
 				Configuration = configuration,
 
-				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node01.Id, node21.Id }),
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node11.Id, node02.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
 			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
-			var spawnSequence = new NodeSequence(new[]
+			var redSpawnSequence = new NodeSequence(new[]
 			{
 				// offset by one vs config
+				node10,
+				node21,
+				node20,
+				node02,
+				node02,
+				node20,
+				node10,
+				node21,
 				node00,
+			});
+
+			var greenSpawnSequence = new NodeSequence(new[]
+			{
+				// offset by one vs config
+				node02,
+				node02,
 				node20,
 				node10,
 				node00,
-				node20,
 				node01,
+				node00,
 				node10,
 				node01,
+				node20,
 			});
 
 			#region frames
@@ -182,15 +229,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetTimer<Simulation, SimulationConfiguration>(scenario.TimeLimitSeconds.Value),
-						new CreateItem(ScannerTool.Archetype, node10),
-						new CreateItem(ScannerTool.Archetype, node20),
-						new CreateItem(CaptureTool.Archetype, node10),
-						new CreateItem(CaptureTool.Archetype, node10),
+						new CreateItem(ScannerTool.Archetype, node01),
+						new CreateItem(ScannerTool.Archetype, node21),
+						new CreateItem(CaptureTool.Archetype, node02),
 					},
 					ExitCondition = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(RedVirus.Archetype, node01)
+						new CreateMalware(RedVirus.Archetype, node00),
+						new CreateMalware(GreenVirus.Archetype, node20),
 					},
 				}
 			);
@@ -204,7 +251,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 					},
 					OnTickActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(spawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)), new EntityDisposed<Malware>()),
+						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(redSpawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)), new EntityDisposed<Malware>(new MalwareGenomeFilter(SimulationConstants.MalwareGeneRed))),
+						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(greenSpawnSequence, ec => new CreateMalware(GreenVirus.Archetype, ec)), new EntityDisposed<Malware>(new MalwareGenomeFilter(SimulationConstants.MalwareGeneGreen))),
 					},
 					ExitCondition = new WaitForTimer(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

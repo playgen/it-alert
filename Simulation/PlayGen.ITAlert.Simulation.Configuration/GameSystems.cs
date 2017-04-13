@@ -5,6 +5,8 @@ using Engine.Lifecycle;
 using Engine.Systems;
 using Engine.Systems.Activation;
 using Engine.Systems.RNG;
+using Engine.Systems.Timing;
+using Engine.Systems.Timing.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
@@ -113,6 +115,24 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
+			#region timer
+
+			new SystemConfiguration<TimerSystem>(),
+			//{
+			//	ExtensionConfiguration = new SystemExtensionConfiguration[]
+			//	{
+			//		new SystemExtensionConfiguration<ITimerExtension>()
+			//		{
+			//			Implementations = new SystemExtensionImplementation[]
+			//			{
+			//				new SystemExtensionConfiguration<ITimerExtension>.SystemExtensionImplementation<EndGameOnCompleteExtension>(), 
+			//			}
+			//		}, 
+			//	}
+			//},
+
+			#endregion
+
 			#region command system
 
 			// TODO: this has now become mandatory so I need a better way of specifying the configuration such that I can find the CommandSystem config entry and append to it
@@ -152,6 +172,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							
 							// movement
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetActorDestinationCommandHandler>(),
+
+							// timer
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetTimerCommandHandler>(), 
 
 							// testing
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HaltAndCatchFireCommandHandler>(),

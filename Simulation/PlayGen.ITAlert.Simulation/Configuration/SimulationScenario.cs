@@ -17,5 +17,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		/// </summary>
 		public LocalizationDictionary LocalizationDictionary { get; set; }
 
+		public int? TimeLimitSeconds { get; set; }
 	}
 }
