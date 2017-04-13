@@ -48,7 +48,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 						.Join(_malwareMatcherGroup.MatchingEntities,
 							k => k,
 							k => k.Entity.Id,
-							(o, i) => i))
+							(o, i) => i).ToArray())
 					{
 						if ((malwareVisitor.Component1.Value & itemTuple.Component1.TargetGenome) == malwareVisitor.Component1.Value)
 						{

@@ -41,6 +41,10 @@
     <Compile Include="PlayerConfigFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScenarioLoader.cs" />
+    <Compile Include="Scenarios\SPL\Archetypes\RedVirus.cs" />
+    <Compile Include="Scenarios\SPL\Archetypes\GreenVirus.cs" />
+    <Compile Include="Scenarios\SPL\SPL3.cs" />
+    <Compile Include="Scenarios\SPL\SPL2.cs" />
     <Compile Include="Scenarios\SPL\SPL1.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\TutorialNPC.cs" />
     <Compile Include="Scenarios\Tutorial\Archetypes\TutorialAntivirusWorkstation.cs" />
@@ -81,6 +85,10 @@
     <ProjectReference Include="..\Engine\Engine.Systems.RNG\Engine.Systems.RNG.csproj">
       <Project>{291FBAA9-7900-460D-A841-A4B0F7DD5154}</Project>
       <Name>Engine.Systems.RNG</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Timing\Engine.Systems.Timing.csproj">
+      <Project>{E9B71CB8-BD98-4501-A79B-50930F6B8DD6}</Project>
+      <Name>Engine.Systems.Timing</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Archetypes\PlayGen.ITAlert.Simulation.Archetypes.csproj">
       <Project>{ec170b34-006e-4e16-b3d4-c9f47040eb74}</Project>

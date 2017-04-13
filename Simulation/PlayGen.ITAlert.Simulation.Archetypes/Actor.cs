@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 	{
 		public static readonly Archetype Archetype = new Archetype(nameof(Actor))
 			.HasComponent<CurrentLocation>()
-			.HasComponent<Intents>()
+			.HasComponent<Destination>()
 			.HasComponent<VisitorPosition>()
 			.HasComponent<MovementSpeed>();
 	}

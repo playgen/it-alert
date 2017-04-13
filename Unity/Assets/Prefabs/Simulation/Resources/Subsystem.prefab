@@ -652,7 +652,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _image: {fileID: 114300050959162016}
-  _interval: 0.04
+  _interval: 1
   _curve:
     serializedVersion: 2
     m_Curve:

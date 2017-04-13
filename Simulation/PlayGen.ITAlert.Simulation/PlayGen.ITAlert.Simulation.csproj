@@ -92,10 +92,7 @@
     <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
-    <Compile Include="Systems\Planning\IIntentHandler.cs" />
-    <Compile Include="Systems\Planning\IntentSystem.cs" />
     <Compile Include="Components\Items\IItemContainer.cs" />
-    <Compile Include="Components\Intents\ActivateIntent.cs" />
     <Compile Include="Components\Items\ItemActivator.cs" />
     <Compile Include="Components\Movement\Destination.cs" />
     <Compile Include="Systems\Movement\SubsystemMovement.cs" />
@@ -114,10 +111,6 @@
     <Compile Include="Components\Movement\VisitorPosition.cs" />
     <Compile Include="Components\Movement\Visitors.cs" />
     <Compile Include="Components\Items\ItemStorage.cs" />
-    <Compile Include="Components\Intents\DisownItemIntent.cs" />
-    <Compile Include="Components\Intents\InfectSystemIntent.cs" />
-    <Compile Include="Components\Intents\MoveIntent.cs" />
-    <Compile Include="Components\Intents\PickUpItemIntent.cs" />
     <Compile Include="Components\Items\ItemContainer.cs" />
     <Compile Include="Simulation.cs" />
     <Compile Include="Layout\GraphValidator.cs" />
