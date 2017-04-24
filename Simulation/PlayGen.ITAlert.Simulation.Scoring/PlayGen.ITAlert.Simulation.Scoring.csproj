@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EC170B34-006E-4E16-B3D4-C9F47040EB74}</ProjectGuid>
+    <ProjectGuid>{787EACF9-FC52-4306-A929-98720E07B9DB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PlayGen.ITAlert.Simulation.Archetypes</RootNamespace>
-    <AssemblyName>PlayGen.ITAlert.Simulation.Archetypes</AssemblyName>
+    <RootNamespace>PlayGen.ITAlert.Scoring</RootNamespace>
+    <AssemblyName>PlayGen.ITAlert.Scoring</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -38,39 +38,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
-    <Compile Include="ConnectionNode.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Components\Score.cs" />
+    <Compile Include="EventHandlers\PlayerScoringEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubsystemNode.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
-      <Project>{c3e9dd6e-3807-4290-a857-a4e9d47cf7e1}</Project>
-      <Name>Engine.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
-      <Project>{2a59ac2c-b3f4-4416-a74a-fa1b086a2f5b}</Project>
-      <Name>Engine.Systems.Activation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{819d263a-c6b4-4be6-92ce-a6f38b1cfe00}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
-      <Project>{787eacf9-fc52-4306-a929-98720e07b9db}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
+    <ProjectReference Include="..\Engine\Engine.Systems.Scoring\Engine.Systems.Scoring.csproj">
+      <Project>{1cf978cd-c529-4b6b-a294-5c12b1fb87c1}</Project>
+      <Name>Engine.Systems.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -53,7 +53,7 @@
     <Compile Include="Components\Text.cs" />
     <Compile Include="Components\TutorialState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\ContinueActivationExtension.cs" />
+    <Compile Include="Systems\ContinueSystem.cs" />
     <Compile Include="Systems\ITutorialSystem.cs" />
     <Compile Include="Systems\TutorialSystem.cs" />
   </ItemGroup>

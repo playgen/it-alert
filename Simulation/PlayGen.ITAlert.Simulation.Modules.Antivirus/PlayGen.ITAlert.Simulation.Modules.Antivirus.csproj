@@ -44,17 +44,22 @@
     <Compile Include="Archetypes\AntivirusWorkstation.cs" />
     <Compile Include="Archetypes\CaptureTool.cs" />
     <Compile Include="Components\Analyser.cs" />
-    <Compile Include="Systems\Activation\AnalyserBehaviour.cs" />
+    <Compile Include="Events\CaptureActivationEvent.cs" />
+    <Compile Include="Events\AnalyserActivationEvent.cs" />
+    <Compile Include="Events\AntivirusActivationEvent.cs" />
+    <Compile Include="Scoring\AnalyserActivationScoringEventHandler.cs" />
+    <Compile Include="Scoring\AntivirusActivationScoringEventHandler.cs" />
+    <Compile Include="Systems\Activation\AnalyserSystem.cs" />
     <Compile Include="Components\Antivirus.cs" />
-    <Compile Include="Systems\Activation\AntivirusBehaviour.cs" />
+    <Compile Include="Systems\Activation\AntivirusSystem.cs" />
     <Compile Include="Components\AntivirusEnhancement.cs" />
     <Compile Include="Components\Capture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnalysisOutputItemContainer.cs" />
     <Compile Include="AnalysisTargetItemContainer.cs" />
     <Compile Include="Systems\AntivirusEnhancementSystem.cs" />
-    <Compile Include="Systems\Activation\CaptureBehaviour.cs" />
-    <Compile Include="Systems\Activation\CoopMultiColourAntivirusBehaviour.cs" />
+    <Compile Include="Systems\Activation\CaptureSystem.cs" />
+    <Compile Include="Systems\Activation\CoopMultiColourAntivirusSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
@@ -68,6 +73,10 @@
     <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
       <Project>{2a59ac2c-b3f4-4416-a74a-fa1b086a2f5b}</Project>
       <Name>Engine.Systems.Activation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Scoring\Engine.Systems.Scoring.csproj">
+      <Project>{1cf978cd-c529-4b6b-a294-5c12b1fb87c1}</Project>
+      <Name>Engine.Systems.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Systems\Engine.Systems.csproj">
       <Project>{c0a56319-4423-4722-b068-e9165e2c4246}</Project>
@@ -84,6 +93,10 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Malware\PlayGen.ITAlert.Simulation.Modules.Malware.csproj">
       <Project>{b03725f8-f6d3-4280-bec4-cfa9ef403c84}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Malware</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
+      <Project>{787EACF9-FC52-4306-A929-98720E07B9DB}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>

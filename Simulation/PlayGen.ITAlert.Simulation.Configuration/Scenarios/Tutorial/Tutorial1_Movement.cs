@@ -27,7 +27,7 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 {
 	// ReSharper disable once InconsistentNaming
-	internal static class Tutorial1_Introduction
+	internal static class Tutorial1_Movement
 	{
 		private static SimulationScenario _scenario;
 		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
@@ -172,9 +172,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ShowText(true, $"{scenario.Key}_Frame5"),
+						new ShowText(false, $"{scenario.Key}_Frame5"),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeRight).Or(new WaitForTutorialContinue()),
+					ExitCondition = new PlayerIsAtLocation(nodeRight),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

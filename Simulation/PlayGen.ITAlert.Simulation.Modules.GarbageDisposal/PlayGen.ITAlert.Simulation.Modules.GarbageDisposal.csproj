@@ -41,7 +41,7 @@
     <Compile Include="Archetypes\GarbageDisposalActivator.cs" />
     <Compile Include="Archetypes\GarbageDisposalWorkstation.cs" />
     <Compile Include="Components\GarbageDisposalActivator.cs" />
-    <Compile Include="Systems\Activation\GarbageDisposalActivatorBehaviour.cs" />
+    <Compile Include="Systems\Activation\GarbageDisposalSystem.cs" />
     <Compile Include="Components\GarbageDisposalEnhancement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Systems\GarbageDisposalEnhancementSystem.cs" />

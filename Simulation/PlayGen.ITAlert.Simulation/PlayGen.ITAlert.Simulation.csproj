@@ -90,7 +90,7 @@
     <Compile Include="Systems\Items\EntityFactoryExtensions.cs" />
     <Compile Include="Systems\Items\PlayerInventorySystem.cs" />
     <Compile Include="Systems\Items\ItemStorageSystem.cs" />
-    <Compile Include="Systems\Items\ResetOwnerOnDeactivate.cs" />
+    <Compile Include="Systems\Items\ResetOwnerOnDeactivationSystem.cs" />
     <Compile Include="Systems\Movement\MovementException.cs" />
     <Compile Include="Systems\Movement\PathFindingSystem.cs" />
     <Compile Include="Components\Items\IItemContainer.cs" />
@@ -164,6 +164,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

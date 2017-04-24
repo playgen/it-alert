@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Tests
 		[Test]
 		public void TestSerializeScenario()
 		{
-			var scenario = Tutorial1_Introduction.Scenario;
+			var scenario = Tutorial1_Movement.Scenario;
 
 			var json = ConfigurationSerializer.SerializeScenario(scenario);
 

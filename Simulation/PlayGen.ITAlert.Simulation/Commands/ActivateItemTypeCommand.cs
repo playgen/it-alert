@@ -71,7 +71,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 						&& _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == playerEntityId
 							&& it.Component2.ActivationState != ActivationState.NotActive) == false) // player has no other active items
 					{
-						itemTuple.Component2.Activate();
+						itemTuple.Component2.SetState(ActivationState.Activating);
 						itemTuple.Component4.Value = playerEntityId;
 						return true;
 					}
