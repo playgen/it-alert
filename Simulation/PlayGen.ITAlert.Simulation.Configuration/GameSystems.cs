@@ -118,18 +118,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			#region timer
 
 			new SystemConfiguration<TimerSystem>(),
-			//{
-			//	ExtensionConfiguration = new SystemExtensionConfiguration[]
-			//	{
-			//		new SystemExtensionConfiguration<ITimerExtension>()
-			//		{
-			//			Implementations = new SystemExtensionImplementation[]
-			//			{
-			//				new SystemExtensionConfiguration<ITimerExtension>.SystemExtensionImplementation<EndGameOnCompleteExtension>(), 
-			//			}
-			//		}, 
-			//	}
-			//},
 
 			#endregion
 
@@ -187,11 +175,18 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			#region item storage
+			#region item systems
 
 			//new SystemConfiguration<IntentSystem>(),
 			new SystemConfiguration<ItemStorageSystem>(),
 			new SystemConfiguration<PlayerInventorySystem>(),
+
+			#region activation systems
+
+			new SystemConfiguration<ActivationSystem>(),
+
+			new SystemConfiguration<CPUConsumptionIncreasesTimedActivationDurationSystem>(),
+			new SystemConfiguration<TimedActivationsystem>(),
 
 			#endregion
 
@@ -199,11 +194,24 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			new SystemConfiguration<TransferEnhancementSystem>(),
 
+			new SystemConfiguration<TransferSystem>(),
+
 			#endregion
 
-			#region antivirus system
+			#region antivirus systems
 
 			new SystemConfiguration<AntivirusEnhancementSystem>(),
+
+			new SystemConfiguration<CoopMultiColourAntivirusSystem>(),
+			new SystemConfiguration<AntivirusSystem>(),
+			new SystemConfiguration<AnalyserSystem>(),
+			new SystemConfiguration<CaptureSystem>(),
+
+			#endregion
+
+			#region malware systems
+
+			new SystemConfiguration<ScannerSystem>(),
 
 			#endregion
 
@@ -211,45 +219,24 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			new SystemConfiguration<GarbageDisposalEnhancementSystem>(),
 
+			new SystemConfiguration<GarbageDisposalSystem>(),
+
+			#endregion
+
+			#region tutorial systems
+
+			new SystemConfiguration<ContinueSystem>(),
+
 			#endregion
 
 			#region activation systems
 
-			new SystemConfiguration<ActivationSystem>()
-			{
-				ExtensionConfiguration = new SystemExtensionConfiguration[]
-				{
-					new SystemExtensionConfiguration<IActivationExtension>()
-					{
-						Implementations = new SystemExtensionImplementation[]
-						{
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CPUConsumptionIncreasesTimedActivationDurationExtension>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TimedActivationExtension>(),
-							
-							// malware
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ScannerBehaviour>(),
-							// antivirus
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AnalyserBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<AntivirusBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CaptureBehaviour>(),
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<CoopMultiColourAntivirusBehaviour>(),
-							// garbage disposal
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<GarbageDisposalActivatorBehaviour>(),
-							// transfer
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<TransferBehaviour>(), 
+			new SystemConfiguration<ResetOwnerOnDeactivationSystem>(),
 
-							// tutorial
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ContinueActivationExtension>(),
+			// consumables needs to be last
+			new SystemConfiguration<ConsumableActivationSystem>(),
 
-							// reset owner - this must come last or anything that depends on knowing who the owner is in OnDeactivating will break
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ResetOwnerOnDeactivate>(),
-
-							// do consumable behaviour last
-							new SystemExtensionConfiguration<IActivationExtension>.SystemExtensionImplementation<ConsumableActivationExtension>(), 
-						}
-					}
-				}
-			},
+			#endregion
 
 			#endregion
 

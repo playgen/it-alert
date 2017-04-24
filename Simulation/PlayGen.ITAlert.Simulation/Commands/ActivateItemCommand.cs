@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& itemTuple.Component3.Value.HasValue	// item is on a subsystem
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
 			{
-				itemTuple.Component2.Activate();
+				itemTuple.Component2.SetState(ActivationState.Activating);
 				itemTuple.Component4.Value = command.PlayerId;
 				return true;
 			}

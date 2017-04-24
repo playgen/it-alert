@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Archetypes;
+using PlayGen.ITAlert.Scoring;
+using PlayGen.ITAlert.Scoring.Components;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -18,6 +20,7 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 		.HasComponent<Components.EntityTypes.Player>()
 		.HasComponent<PlayerColour>()
 		.HasComponent<PlayerBitMask>()
+		.HasComponent<Score>()
 		.HasComponent(new ComponentBinding<MovementSpeed>()
 			{
 				ComponentTemplate = new MovementSpeed()

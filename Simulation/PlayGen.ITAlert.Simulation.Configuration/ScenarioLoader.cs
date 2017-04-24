@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			// TODO: populate this from configuration
 			_scenarios = new[]
 			{
-				Tutorial1_Introduction.Scenario,
+				Tutorial1_Movement.Scenario,
 				Tutorial2_Analysis.Scenario,
 				Tutorial3_Bandwidth.Scenario,
 				Tutorial4_Mutation.Scenario,
