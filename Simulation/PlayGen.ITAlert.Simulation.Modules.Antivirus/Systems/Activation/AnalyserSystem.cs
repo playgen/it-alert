@@ -49,19 +49,19 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
-						OnNotActive(match);
+						OnNotActive(match, currentTick);
 						break;
 					case ActivationState.Activating:
-						OnActivating(match);
+						OnActivating(match, currentTick);
 						break;
 					case ActivationState.Deactivating:
-						OnDeactivating(match);
+						OnDeactivating(match, currentTick);
 						break;
 				}
 			}
 		}
 
-		private void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple)
+		private void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& entityTuple.Component4.Value.HasValue)
@@ -70,7 +70,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 			}
 		}
 
-		private void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple)
+		private void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var locationTuple)
@@ -83,10 +83,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 			}
 			else
 			{
-				entityTuple.Component1.SetState(ActivationState.NotActive);
+				entityTuple.Component1.SetState(ActivationState.NotActive, currentTick);
 				var @event = new AnalyserActivationEvent()
 				{
-					PlayerEnttityId = entityTuple.Component4.Value,
+					PlayerEntityId = entityTuple.Component4.Value.Value,
 					ActivationResult = AnalyserActivationEvent.AnalyserActivationResult.NoSamplePresent,
 					LocationEntityId = entityTuple.Component3.Value,
 				};
@@ -94,7 +94,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 			}
 		}
 
-		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple)
+		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var locationTuple)
@@ -106,7 +106,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 			{
 				var @event = new AnalyserActivationEvent()
 				{
-					PlayerEnttityId = entityTuple.Component4.Value,
+					PlayerEntityId = entityTuple.Component4.Value.Value,
 					LocationEntityId = entityTuple.Component3.Value,
 				};
 
@@ -139,6 +139,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 				}
 				_eventSystem.Publish(@event);
 			}
+		}
+
+		public void Dispose()
+		{
+			_analyserMatcherGroup?.Dispose();
+			_subsystemMatcherGroup?.Dispose();
+			_captureMatcherGroup?.Dispose();
 		}
 	}
 }

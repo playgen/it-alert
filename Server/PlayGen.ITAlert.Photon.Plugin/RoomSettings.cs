@@ -50,7 +50,21 @@ namespace PlayGen.ITAlert.Photon.Plugin
 					PhotonPlugin.PluginHost.GameProperties[CustomRoomSettingKeys.GameScenario] = value;
 				}
 			}
+		}
 
+		public string GameName
+		{
+			get
+			{
+				return PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, string>(CustomRoomSettingKeys.GameName);
+			}
+			set
+			{
+				if (GameScenario != value)
+				{
+					PhotonPlugin.PluginHost.GameProperties[CustomRoomSettingKeys.GameName] = value;
+				}
+			}
 		}
 
 		public RoomSettings(PluginBase photonPlugin) : base(photonPlugin)

@@ -28,5 +28,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems
 				}
 			}
 		}
+
+		public void Dispose()
+		{
+			_continueMatcherGroup?.Dispose();
+			_tutorialSystem?.Dispose();
+		}
 	}
 }

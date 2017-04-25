@@ -76,9 +76,11 @@
     <Compile Include="Configuration\IPlayerConfigFactory.cs" />
     <Compile Include="Configuration\NodeConfig.cs" />
     <Compile Include="Configuration\PlayerConfig.cs" />
+    <Compile Include="Configuration\ScenarioInfo.cs" />
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationScenario.cs" />
     <Compile Include="Evaluators\SimulationEvaluator.cs" />
+    <Compile Include="Events\PlayerEvent.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
@@ -165,9 +167,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

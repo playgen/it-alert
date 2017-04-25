@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Engine.Commands;
 using Engine.Configuration;
+using Engine.Events;
 using Engine.Lifecycle;
 using Engine.Systems;
 using Engine.Systems.Activation;
@@ -46,6 +47,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			new SystemConfiguration<EndGameSystem>(),
 			// rng system
 			new SystemConfiguration<RNGSystem>(),
+			// events
+			new SystemConfiguration<EventSystem>(),
 
 			#endregion
 
@@ -182,11 +185,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			new SystemConfiguration<PlayerInventorySystem>(),
 
 			#region activation systems
-
+			// cpu timed activatiojn before timed
+			new SystemConfiguration<CPUConsumptionIncreasesTimedActivationDurationSystem>(),
+			// timed activation needs to come before activation
+			new SystemConfiguration<TimedActivationsystem>(),
 			new SystemConfiguration<ActivationSystem>(),
 
-			new SystemConfiguration<CPUConsumptionIncreasesTimedActivationDurationSystem>(),
-			new SystemConfiguration<TimedActivationsystem>(),
 
 			#endregion
 

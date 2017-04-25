@@ -75,5 +75,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 				});
 
 		}
+
+		public void Dispose()
+		{
+			// nothing to dispose
+		}
 	}
 }

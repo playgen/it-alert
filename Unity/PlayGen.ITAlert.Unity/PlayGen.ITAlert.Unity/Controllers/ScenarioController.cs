@@ -95,7 +95,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			var roomSettings = new CreateRoomSettings
 			{
-				Name = Guid.NewGuid().ToString().Substring(0, 7),
+				Name = $"QUICK-{Guid.NewGuid().ToString().Substring(0, 4)}",
 				MinPlayers = _selectedScenario.MinPlayerCount,
 				MaxPlayers = _selectedScenario.MaxPlayerCount,
 				CloseOnStarted = true,

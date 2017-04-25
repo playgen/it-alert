@@ -105,5 +105,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 				action(behaviour);
 			}
 		}
+
+		public void Dispose()
+		{
+			// nothing to dispose
+		}
 	}
 }

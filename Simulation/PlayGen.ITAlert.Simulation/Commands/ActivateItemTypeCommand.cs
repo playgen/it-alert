@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerSystem = playerSystem;
 		}
 
-		protected override bool TryProcessCommand(ActivateItemTypeCommand command)
+		protected override bool TryProcessCommand(ActivateItemTypeCommand command, int currentTick)
 		{
 			if (command.ItemType == null 
 				|| typeof(IItemType).IsAssignableFrom(command.ItemType) == false
@@ -71,7 +71,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 						&& _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == playerEntityId
 							&& it.Component2.ActivationState != ActivationState.NotActive) == false) // player has no other active items
 					{
-						itemTuple.Component2.SetState(ActivationState.Activating);
+						itemTuple.Component2.SetState(ActivationState.Activating, currentTick);
 						itemTuple.Component4.Value = playerEntityId;
 						return true;
 					}

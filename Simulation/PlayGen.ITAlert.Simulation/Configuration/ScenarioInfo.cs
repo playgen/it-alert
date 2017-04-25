@@ -1,6 +1,6 @@
 ﻿using PlayGen.ITAlert.Simulation.Scenario.Localization;
 
-namespace PlayGen.ITAlert.Simulation.Scenario
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class ScenarioInfo
 	{

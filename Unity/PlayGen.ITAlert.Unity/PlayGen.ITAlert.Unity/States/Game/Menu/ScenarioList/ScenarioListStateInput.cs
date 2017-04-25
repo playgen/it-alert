@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Configuration;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;

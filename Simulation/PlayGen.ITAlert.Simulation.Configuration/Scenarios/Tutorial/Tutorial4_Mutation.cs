@@ -29,13 +29,20 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 {
 	// ReSharper disable once InconsistentNaming
-	public static class Tutorial4_Mutation
+	public class Tutorial4_Mutation : ScenarioFactory
 	{
-		private static SimulationScenario _scenario;
-		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
+		public Tutorial4_Mutation()
+			: base(key: "Tutorial4",
+				nameToken: "Tutorial4_Name",
+				descriptionToken: "Tutorial4_Description",
+				minPlayers: 1,
+				maxPlayers: 1)
+		{
+
+		}
 
 		// TODO: this should be parameterized further and read from config
-		private static SimulationScenario GenerateScenario()
+		public override SimulationScenario GenerateScenario()
 		{
 			#region configuration
 
@@ -147,19 +154,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			
 			#endregion
 
-			var scenario = new SimulationScenario()
+			var scenario = new SimulationScenario(ScenarioInfo)
 			{
-				Key = "Tutorial4",
-				Name = "Tutorial4_Name",
-				Description = "Tutorial4_Description",
-				MinPlayers = 1,
-				MaxPlayers = 1,
 				Configuration = configuration,
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] {node21.Id}),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
 			#region frames
 

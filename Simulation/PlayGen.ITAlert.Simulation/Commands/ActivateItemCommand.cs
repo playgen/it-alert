@@ -35,7 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
 		}
 
-		protected override bool TryProcessCommand(ActivateItemCommand command)
+		protected override bool TryProcessCommand(ActivateItemCommand command, int currentTick)
 		{
 			if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& itemTuple.Component2.ActivationState == ActivationState.NotActive	// item is not active
@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				&& itemTuple.Component3.Value.HasValue	// item is on a subsystem
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
 			{
-				itemTuple.Component2.SetState(ActivationState.Activating);
+				itemTuple.Component2.SetState(ActivationState.Activating, currentTick);
 				itemTuple.Component4.Value = command.PlayerId;
 				return true;
 			}

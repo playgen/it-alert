@@ -27,17 +27,22 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 {
 	// ReSharper disable once InconsistentNaming
-	internal static class Tutorial1_Movement
+	internal class Tutorial1_Movement : ScenarioFactory
 	{
-		private static SimulationScenario _scenario;
-		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
+		public Tutorial1_Movement()
+			: base(key: "Tutorial1",
+				nameToken: "Tutorial1_Name",
+				descriptionToken: "Tutorial1_Description",
+				minPlayers: 1,
+				maxPlayers: 1)
+		{
+
+		}
 
 		// TODO: this should be parameterized further and read from config
-		private static SimulationScenario GenerateScenario()
+		public override SimulationScenario GenerateScenario()
 		{
 			#region configuration
-
-			const int playerCount = 1;
 
 			#region graph
 
@@ -83,19 +88,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			#endregion
 
-			var scenario = new SimulationScenario()
+			var scenario = new SimulationScenario(ScenarioInfo)
 			{
-				Key = "Tutorial1",
-				Name = "Tutorial1_Name",
-				Description = "Tutorial1_Description",
-				MinPlayers = playerCount,
-				MaxPlayers = playerCount,
 				Configuration = configuration,
-
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { nodeRight.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
 			#region frames
 
@@ -288,12 +286,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
-						new SetCommandEnabled<ActivateItemCommand>(false),
 					},
 					ExitCondition = new PlayerIsAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ClearHighlight(),
 					},
 				}
 			);
@@ -303,13 +299,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<ActivateItemCommand>(true),
-						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new ClearHighlight(),
 					},
 				}

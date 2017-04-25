@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 
 				var @event = new AntivirusActivationEvent()
 				{
-					PlayerEnttityId = entityTuple.Component4.Value,
+					PlayerEntityId = entityTuple.Component4.Value.Value,
 					LocationEntityId = locationTuple.Entity.Id,
 					Uses = entityTuple.Component5.ActivationsRemaining - 1,
 				};
@@ -86,6 +86,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 				_eventSystem.Publish(@event);
 			}
 			entityTuple.Component4.Value = null;
+		}
+
+		public void Dispose()
+		{
+			_antivirusMatcherGroup?.Dispose();
+			_visitorsMatcherGroup?.Dispose();
+			_malwareMatcherGroup?.Dispose();
 		}
 	}
 }

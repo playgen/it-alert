@@ -383,7 +383,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							var success = true;
 							foreach (var command in tick.CommandQueue)
 							{
-								success &= commandSystem.TryHandleCommand(command);
+								success &= commandSystem.TryHandleCommand(command, tick.CurrentTick);
 							}
 							if (success != true)
 							{

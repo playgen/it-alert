@@ -45,6 +45,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private ItemContainer _itemContainer;
 
+		public bool CanRelease => _itemContainer.CanRelease;
+
 		public string SpriteOverride { private get; set; }
 
 		#region initialization
@@ -133,7 +135,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public bool OnClickDown()
 		{
 			_beingClicked = true;
-			return _itemContainer.CanRelease;
+			return true;
 		}
 
 		public void OnClickUp(ItemBehaviour item = null, int? sourceContainerIndex = null, bool isDrag = false)

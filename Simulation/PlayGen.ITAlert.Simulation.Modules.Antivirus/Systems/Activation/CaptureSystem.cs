@@ -67,7 +67,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 
 				var @event = new CaptureActivationEvent()
 				{
-					PlayerEnttityId = playerTuple.Entity.Id,
+					PlayerEntityId = playerTuple.Entity.Id,
 					LocationEntityId = locationTuple.Entity.Id,
 				};
 
@@ -118,6 +118,14 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 		private bool HasGene(int genome, int gene)
 		{
 			return (genome & gene) == gene;
+		}
+
+		public void Dispose()
+		{
+			_captureMatcherGroup?.Dispose();
+			_subsystemMatcherGroup?.Dispose();
+			_malwareMatcherGroup?.Dispose();
+			_playerMatcherGroup?.Dispose();
 		}
 	}
 }

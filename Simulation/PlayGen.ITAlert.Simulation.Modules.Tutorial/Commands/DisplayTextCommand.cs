@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 
-		protected override bool TryProcessCommand(DisplayTextCommand command)
+		protected override bool TryProcessCommand(DisplayTextCommand command, int currentTick)
 		{
 			// TODO: possibly move this implementation into the tutorial system
 			Entity textEntity;

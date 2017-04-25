@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using Engine.Events;
 using Engine.Systems.Scoring;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 {
-	public class CaptureActivationEvent : Event
+	public class CaptureActivationEvent : PlayerEvent
 	{
 		public enum CaptureActivationResult
 		{
@@ -15,8 +16,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 			NoVirusPresent,
 			SampleCaptured,
 		}
-
-		public int? PlayerEnttityId { get; set; }
 
 		public CaptureActivationResult ActivationResult { get; set; }
 

@@ -190,10 +190,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
 		{
-			ItemBehaviour item;
 			if (itemContainerBehaviour.State == ContainerState.HasItem)
 			{
-				if (itemContainerBehaviour.TryGetItem(out item))
+				if (itemContainerBehaviour.TryGetItem(out var item))
 				{
 					PlayerCommands.ActivateItem(item.Id);
 				}

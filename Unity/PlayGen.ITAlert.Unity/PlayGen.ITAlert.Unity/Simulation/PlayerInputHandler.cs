@@ -143,11 +143,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				var onClickValues = itemdrag.OnClickUp();
-                if (onClickValues.Key != null)
-                {
-                    container.OnClickUp(item, onClickValues.Key.Value, onClickValues.Value);
-                }
+				if (itemdrag.OnClickUp(out var containerIndex, out var dragged))
+				{
+					container.OnClickUp(item, containerIndex, dragged);
+				}
 			}
 		}
 

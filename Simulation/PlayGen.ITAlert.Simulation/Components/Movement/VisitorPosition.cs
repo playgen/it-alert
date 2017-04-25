@@ -10,7 +10,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Movement
 {
 	public class VisitorPosition : IComponent
 	{
-		public int CurrentTick { get; private set; }
+		public int CurrentTick { get; private set; } = -1;
 
 		//[DefaultValue(-1f)]
 		public decimal PositionDecimal { get; set; }

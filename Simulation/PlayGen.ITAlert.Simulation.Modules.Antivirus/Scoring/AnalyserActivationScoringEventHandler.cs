@@ -31,8 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Scoring
 
 		protected override void HandleEvent(AnalyserActivationEvent @event)
 		{
-			if (@event.PlayerEnttityId.HasValue
-				&& PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEnttityId.Value, out var playerTuple))
+			if (PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEntityId, out var playerTuple))
 			{
 				var avWorkstationInfected = _malwareMatcherGroup.MatchingEntities.Any(mw => mw.Component2.Value == @event.LocationEntityId);
 				var malwareByGenome = _malwareMatcherGroup.MatchingEntities.GroupBy(mw => mw.Component1.Value);

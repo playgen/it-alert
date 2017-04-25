@@ -41,7 +41,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 						if (nextPosition >= exitNode.Value)
 						{
-							var overflow = Math.Max((int)nextPosition - exitNode.Value, 0);
+							// overflow disabled to prevent transitioning around the system when entering behind the junction
+							var overflow = 0; //Math.Max((int)nextPosition - exitNode.Value, 0);
 
 							RemoveVisitorFromNode(connectionTuple.Entity.Id, connectionTuple.Component3, visitorTuple.Entity, visitorTuple.Component2);
 

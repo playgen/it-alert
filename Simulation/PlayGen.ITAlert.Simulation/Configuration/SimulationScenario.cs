@@ -18,5 +18,20 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public LocalizationDictionary LocalizationDictionary { get; set; }
 
 		public int? TimeLimitSeconds { get; set; }
+
+		public SimulationScenario()
+		{
+			
+		}
+
+		public SimulationScenario(ScenarioInfo scenarioInfo)
+		{
+			Key = scenarioInfo.Key;
+			Name = scenarioInfo.Name;
+			Description = scenarioInfo.Description;
+			MinPlayers = scenarioInfo.MinPlayerCount;
+			MaxPlayers = scenarioInfo.MaxPlayerCount;
+			LocalizationDictionary = scenarioInfo.LocalizationDictionary;
+		}
 	}
 }

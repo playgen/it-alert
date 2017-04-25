@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Engine.Archetypes;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
@@ -43,6 +44,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems
 		public void SetContinue()
 		{
 			_continue.Set();
-		}	
+		}
+
+		public void Dispose()
+		{
+			((IDisposable) _continue)?.Dispose();
+		}
 	}
 }

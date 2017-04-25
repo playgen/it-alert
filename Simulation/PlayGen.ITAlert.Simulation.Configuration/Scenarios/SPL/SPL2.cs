@@ -25,13 +25,21 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 {
 	// ReSharper disable once InconsistentNaming
-	internal static class SPL2
+	internal class SPL2 : ScenarioFactory
 	{
-		private static SimulationScenario _scenario;
-		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
+		public SPL2()
+			: base(key: "SPL2",
+				nameToken: "SPL Scenario 2",
+				descriptionToken: "SPL Scenario 2",
+				minPlayers: 1,
+				maxPlayers: 4)
+		{
+
+		}
+
 
 		// TODO: this should be parameterized further and read from config
-		private static SimulationScenario GenerateScenario()
+		public override SimulationScenario GenerateScenario()
 		{
 			#region configuration
 
@@ -131,20 +139,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			#endregion
 
-			var scenario = new SimulationScenario()
+			var scenario = new SimulationScenario(ScenarioInfo)
 			{
-				Key = "SPL2",
-				Name = "SPL Scenario 2",
-				Description = "Scenario 2",
-				MinPlayers = 1,
-				MaxPlayers = 4,
 				TimeLimitSeconds = 600, // 10 minutes
 				Configuration = configuration,
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node11.Id, node02.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 
 			var redSpawnSequence = new NodeSequence(new[]
 			{

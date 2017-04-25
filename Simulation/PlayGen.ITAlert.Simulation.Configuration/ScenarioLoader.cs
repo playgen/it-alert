@@ -11,33 +11,38 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class ScenarioLoader
 	{
-		private readonly Dictionary<string, SimulationScenario> _scenarios;
+		private readonly Dictionary<string, ScenarioFactory> _scenarios;
 
 		public ScenarioLoader()
 		{
 			// TODO: populate this from configuration
-			_scenarios = new[]
+			_scenarios = new ScenarioFactory[]
 			{
-				Tutorial1_Movement.Scenario,
-				Tutorial2_Analysis.Scenario,
-				Tutorial3_Bandwidth.Scenario,
-				Tutorial4_Mutation.Scenario,
-				SPL1.Scenario,
-				SPL2.Scenario,
-				SPL3.Scenario,
+				new Tutorial1_Movement(),
+				new Tutorial2_Analysis(),
+				new Tutorial3_Bandwidth(),
+				new Tutorial4_Mutation(),
+				new SPL1(),
+				new SPL2(),
+				new SPL3(),
 			}
-			//.Concat(GraphDemos.Scenarios)
-			.ToDictionary(k => k.Key, v => v);
+			.ToDictionary(k => k.ScenarioInfo.Key, v => v);
 		}
 
 		public bool TryGetScenario(string name, out SimulationScenario scenario)
 		{
-			return _scenarios.TryGetValue(name, out scenario);
+			if (_scenarios.TryGetValue(name, out var scenarioFactory))
+			{
+				scenario = scenarioFactory.GenerateScenario();
+				return true;
+			}
+			scenario = null;
+			return false;
 		}
 
 		public ScenarioInfo[] GetScenarioInfo()
 		{
-			return _scenarios.Values.Select(s => s.ToScenarioInfo()).ToArray();
+			return _scenarios.Values.Select(sf => sf.ScenarioInfo).ToArray();
 		}
 
 	}

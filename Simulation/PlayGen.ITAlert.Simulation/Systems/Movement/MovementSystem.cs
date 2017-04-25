@@ -70,5 +70,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			}
 			action(movementSystemExtension);
 		}
+
+		public void Dispose()
+		{
+			// nothing to dispose
+		}
 	}
 }
