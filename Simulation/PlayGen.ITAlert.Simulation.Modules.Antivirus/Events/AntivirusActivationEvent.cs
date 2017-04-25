@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using Engine.Events;
 using Engine.Systems.Scoring;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 {
-	public class AntivirusActivationEvent : Event
+	public class AntivirusActivationEvent : PlayerEvent
 	{
 		public enum AntivirusActivationResult
 		{
@@ -17,8 +18,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 			SoloExtermination,
 			CoopExtermination,
 		}
-
-		public int? PlayerEnttityId { get; set; }
 
 		public AntivirusActivationResult ActivationResult { get; set; }
 

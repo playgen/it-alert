@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerSystem = playerSystem;
 		}
 
-		protected override bool TryProcessCommand(CreatePlayerCommand command)
+		protected override bool TryProcessCommand(CreatePlayerCommand command, int currentTick)
 		{
 			if (command.PlayerConfig == null) return false;
 

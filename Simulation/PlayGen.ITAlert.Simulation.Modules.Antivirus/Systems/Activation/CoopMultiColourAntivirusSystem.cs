@@ -41,13 +41,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 				switch (activation.ActivationState)
 				{
 					case ActivationState.Deactivating:
-						OnDeactivating(match);
+						OnDeactivating(match, currentTick);
 						break;
 				}
 			}
 		}
 
-		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Components.Antivirus, CurrentLocation, Owner> itemTuple)
+		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Components.Antivirus, CurrentLocation, Owner> itemTuple, int currentTick)
 		{
 			if (itemTuple.Component3.Value.HasValue
 				&& _locationMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var locationTuple))
@@ -82,12 +82,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 
 							foreach (var antivirus in activeAntivirus)
 							{
-								antivirus.Component1.SetState(ActivationState.NotActive);
+								antivirus.Component1.SetState(ActivationState.NotActive, currentTick);
 							}
 
 							var @event = new AntivirusActivationEvent()
 							{
-								PlayerEnttityId = itemTuple.Component4.Value,
+								PlayerEntityId = itemTuple.Component4.Value.Value,
 								ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
 								LocationEntityId = locationTuple.Entity.Id,
 							};
@@ -96,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 							foreach (var otherPlayer in otherPlayerIds)
 							{
 								@event = new AntivirusActivationEvent() {
-									PlayerEnttityId = otherPlayer,
+									PlayerEntityId = otherPlayer.Value,
 									ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
 									LocationEntityId = locationTuple.Entity.Id,
 								};
@@ -108,6 +108,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 				}
 			}
 			itemTuple.Component4.Value = null;
+		}
+
+		public void Dispose()
+		{
+			_antivirusMatcherGroup?.Dispose();
+			_locationMatcherGroup?.Dispose();
+			_malwareMatcherGroup?.Dispose();
 		}
 	}
 }

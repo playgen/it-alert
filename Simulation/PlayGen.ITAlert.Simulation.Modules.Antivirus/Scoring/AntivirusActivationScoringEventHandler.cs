@@ -18,8 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Scoring
 
 		protected override void HandleEvent(AntivirusActivationEvent @event)
 		{
-			if (@event.PlayerEnttityId.HasValue
-				&& PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEnttityId.Value,
+			if (PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEntityId,
 					out var playerTuple))
 			{
 				switch (@event.ActivationResult)

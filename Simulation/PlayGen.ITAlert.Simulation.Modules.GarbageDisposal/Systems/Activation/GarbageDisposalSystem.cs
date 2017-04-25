@@ -37,19 +37,19 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
-						OnNotActive(match);
+						OnNotActive(match, currentTick);
 						break;
 					case ActivationState.Activating:
-						OnActivating(match);
+						OnActivating(match, currentTick);
 						break;
 					case ActivationState.Deactivating:
-						OnDeactivating(match);
+						OnDeactivating(match, currentTick);
 						break;
 				}
 			}
 		}
 
-		private void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple)
+		private void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& entityTuple.Component4.Value.HasValue)
@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
 			}
 		}
 
-		private void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple)
+		private void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var locationTuple)
@@ -69,11 +69,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
 			}
 			else
 			{
-				entityTuple.Component1.SetState(ActivationState.NotActive);
+				entityTuple.Component1.SetState(ActivationState.NotActive, currentTick);
 			}
 		}
 
-		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple)
+		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, GarbageDisposalActivator, CurrentLocation, Owner> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var locationTuple)
@@ -84,6 +84,14 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
 				targetItemContainer.Locked = false;
 				targetItemTuple.Entity.Dispose();
 			}
+		}
+
+		public void Dispose()
+		{
+			_garbageDisposalMatcherGroup?.Dispose();
+			_subsystemMatcherGroup?.Dispose();
+			_itemMatcherGroup?.Dispose();
+			_eventSystem?.Dispose();
 		}
 	}
 }

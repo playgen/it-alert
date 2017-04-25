@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_textMatcher = matcherProvider.CreateMatcherGroup<Text>();
 		}
 
-		protected override bool TryProcessCommand(HideTextCommand command)
+		protected override bool TryProcessCommand(HideTextCommand command, int currentTick)
 		{
 			ComponentEntityTuple<Text> tuple;
 			if (command.TextEntityId.HasValue

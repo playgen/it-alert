@@ -42,22 +42,22 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
-						OnNotActive(match);
+						OnNotActive(match, currentTick);
 						break;
 					case ActivationState.Activating:
-						OnActivating(match);
+						OnActivating(match, currentTick);
 						break;
 					case ActivationState.Active:
-						OnActive(match);
+						OnActive(match, currentTick);
 						break;
 					case ActivationState.Deactivating:
-						OnDeactivating(match);
+						OnDeactivating(match, currentTick);
 						break;
 				}
 			}
 		}
 
-		public void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple)
+		public void OnNotActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& entityTuple.Component4.Value.HasValue)
@@ -66,7 +66,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 			} 
 		}
 
-		public void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple)
+		public void OnActivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue // TODO: this should never fail so might be able to remove it
 				&& _transferSystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var localTransferSystemTuple)
@@ -83,23 +83,23 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 				{
 					localTransferItemContainer.Locked = true;
 					remoterTransferItemContainer.Locked = true;
-					remoteTransferActivatorTuple.Component1.SetState(ActivationState.Active);
+					remoteTransferActivatorTuple.Component1.SetState(ActivationState.Active, currentTick);
 					// TODO: find a better way of doing this
 					remoteTransferActivatorTuple.Component5.Synchronized = true;
 					remoteTransferActivatorTuple.Component5.ActivationTicksRemaining = remoteTransferActivatorTuple.Component5.ActivationDuration;
 				}
 				else
 				{
-					entityTuple.Component1.SetState(ActivationState.NotActive);
+					entityTuple.Component1.SetState(ActivationState.NotActive, currentTick);
 				}
 			}
 			else
 			{
-				entityTuple.Component1.SetState(ActivationState.NotActive);
+				entityTuple.Component1.SetState(ActivationState.NotActive, currentTick);
 			}
 		}
 
-		public void OnActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple)
+		public void OnActive(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue // TODO: this should never fail so might be able to remove it
 				&& _transferSystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value,
@@ -121,11 +121,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 		}
 
 
-		public void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple)
+		public void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, TransferActivator, CurrentLocation, Owner, TimedActivation> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
-				&& _transferSystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var localTransferSystemTuple)
-				&& entityTuple.Component4.Value.HasValue)
+				&& _transferSystemMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var localTransferSystemTuple) // get the subsystem with the transfer activator
+				&& entityTuple.Component4.Value.HasValue) // transfer activator is owned
 			{
 				var otherTransferSystemTuple = _transferSystemMatcherGroup.MatchingEntities.SingleOrDefault(t => t.Entity.Id != localTransferSystemTuple.Entity.Id);
 
@@ -138,34 +138,35 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 				{
 					var @event = new TransferActivationEvent()
 					{
-						PlayerEnttityId = entityTuple.Component4.Value,
+						PlayerEntityId = entityTuple.Component4.Value.Value,
 						LocationEntityId = entityTuple.Component3.Value,
 					};
 
 					localTransferItemContainer.Locked = false;
 					remoteTransferItemContainer.Locked = false;
-					remoteTransferActivatorTuple.Component1.SetState(ActivationState.NotActive);
+					remoteTransferActivatorTuple.Component1.SetState(ActivationState.NotActive, currentTick);
 					remoteTransferActivatorTuple.Component5.Synchronized = false;
 
+					// local transfer push
 					ComponentEntityTuple<IItemType, CurrentLocation, Owner> localTransferItemTuple = null;
-					ComponentEntityTuple<IItemType, CurrentLocation, Owner> remoteTransferItemTuple = null;
-
 					var push = false;
 
 					if (localTransferItemContainer.Item.HasValue
-						&& _itemMatcherGroup.TryGetMatchingEntity(localTransferItemContainer.Item.Value, out localTransferItemTuple))
+						&& _itemMatcherGroup.TryGetMatchingEntity(localTransferItemContainer.Item.Value, out localTransferItemTuple))	// get local item
 					{
 						@event.LocalItemEntityId = localTransferItemContainer.Item;
 						push = true;
 
 						if (_itemActivationMatcherGroup.TryGetMatchingEntity(localTransferItemTuple.Entity.Id, out var localTransferItemActivationTuple))
 						{
-							localTransferItemActivationTuple.Component2.SetState(ActivationState.NotActive);
+							localTransferItemActivationTuple.Component2.SetState(ActivationState.NotActive, currentTick);
 						}
-						entityTuple.Component3.Value = remoteTransferActivatorTuple.Component3.Value;
-						entityTuple.Component4.Value = null;
+						localTransferItemTuple.Component2.Value = remoteTransferActivatorTuple.Component3.Value;
+						localTransferItemTuple.Component3.Value = null;
 					}
 
+					// remote transfer pull
+					ComponentEntityTuple<IItemType, CurrentLocation, Owner> remoteTransferItemTuple = null;
 					var pull = false;
 
 					if (remoteTransferItemContainer.Item.HasValue
@@ -176,12 +177,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 
 						if (_itemActivationMatcherGroup.TryGetMatchingEntity(remoteTransferItemTuple.Entity.Id, out var remoteTransferItemActivationTuple))
 						{
-							remoteTransferItemActivationTuple.Component2.SetState(ActivationState.NotActive);
+							remoteTransferItemActivationTuple.Component2.SetState(ActivationState.NotActive, currentTick);
 						}
 						remoteTransferItemTuple.Component2.Value = entityTuple.Component3.Value;
 						remoteTransferItemTuple.Component3.Value = null;
 					}
 
+					// event handling
 					@event.ActivationResult = (push && pull)
 						? TransferActivationEvent.TransferActivationResult.SwappedItems
 						: push
@@ -195,6 +197,14 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation
 					remoteTransferItemContainer.Item = localTransferItemTuple?.Entity.Id;
 				}
 			}
+		}
+
+		public void Dispose()
+		{
+			_transferActivatorMatcherGroup?.Dispose();
+			_transferSystemMatcherGroup?.Dispose();
+			_itemMatcherGroup?.Dispose();
+			_itemActivationMatcherGroup?.Dispose();
 		}
 	}
 }

@@ -88,5 +88,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Initialization
 			throw new SimulationException($"Could not create connection from archetype '{edgeConfig.Archetype}'");
 		}
 
+		public void Dispose()
+		{
+			// nothing to dispose
+		}
 	}
 }

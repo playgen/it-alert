@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Events;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Events
 {
-	public class TransferActivationEvent : Event
+	public class TransferActivationEvent : PlayerEvent
 	{
 		public enum TransferActivationResult
 		{
@@ -16,8 +17,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Events
 			PushedItem,
 			SwappedItems,
 		}
-
-		public int? PlayerEnttityId { get; set; }
 
 		public TransferActivationResult ActivationResult { get; set; }
 

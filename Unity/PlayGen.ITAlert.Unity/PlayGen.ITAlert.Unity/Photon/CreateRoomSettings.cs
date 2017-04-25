@@ -34,7 +34,8 @@ namespace PlayGen.ITAlert.Unity.Photon
 				{ CustomRoomSettingKeys.MinPlayers, MinPlayers },
 				{ CustomRoomSettingKeys.CloseOnStarted, CloseOnStarted },
 				{ CustomRoomSettingKeys.OpenOnEnded, OpenOnEnded },
-				{ CustomRoomSettingKeys.GameScenario, GameScenario }
+				{ CustomRoomSettingKeys.GameScenario, GameScenario },
+				{ CustomRoomSettingKeys.GameName, Name },
 			};
 		}
 	}

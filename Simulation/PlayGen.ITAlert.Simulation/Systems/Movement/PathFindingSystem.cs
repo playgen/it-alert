@@ -32,5 +32,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 			PathFinder.GenerateRoutes(subsystems, connections);
 		}
+
+		public void Dispose()
+		{
+			_subsystemMatcherGroup?.Dispose();
+			_connectionMatcherGroup?.Dispose();
+		}
 	}
 }

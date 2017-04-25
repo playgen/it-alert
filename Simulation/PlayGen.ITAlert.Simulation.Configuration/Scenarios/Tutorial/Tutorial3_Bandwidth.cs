@@ -29,13 +29,20 @@ using PlayGen.ITAlert.Simulation.Sequencing;
 namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 {
 	// ReSharper disable once InconsistentNaming
-	public static class Tutorial3_Bandwidth
+	public class Tutorial3_Bandwidth : ScenarioFactory
 	{
-		private static SimulationScenario _scenario;
-		public static SimulationScenario Scenario => _scenario ?? (_scenario = GenerateScenario());
+		public Tutorial3_Bandwidth()
+			: base(key: "Tutorial3",
+				nameToken: "Tutorial3_Name",
+				descriptionToken: "Tutorial3_Description",
+				minPlayers: 1,
+				maxPlayers: 1)
+		{
+
+		}
 
 		// TODO: this should be parameterized further and read from config
-		private static SimulationScenario GenerateScenario()
+		public override SimulationScenario GenerateScenario()
 		{
 			#region configuration
 
@@ -144,19 +151,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			#endregion
 
-			var scenario = new SimulationScenario()
+			var scenario = new SimulationScenario(ScenarioInfo)
 			{
-				Key = "Tutorial3",
-				Name = "Tutorial3_Name",
-				Description = "Tutorial3_Description",
-				MinPlayers = 1,
-				MaxPlayers = 1,
 				Configuration = configuration,
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node40.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 			};
-			scenario.LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(scenario.Key);
 			
 			#region frames
 
@@ -334,7 +335,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node30)),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node30)).And(new WaitForTicks(1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
@@ -376,7 +377,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
 					},
-					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node31)),
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node31)).And(new WaitForTicks(1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()

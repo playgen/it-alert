@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerSystem = playerSystem; 
 		}
 
-		protected override bool TryProcessCommand(DropItemTypeCommand command)
+		protected override bool TryProcessCommand(DropItemTypeCommand command, int currentTick)
 		{
 			if (command.ItemType == null
 				|| typeof(IItemType).IsAssignableFrom(command.ItemType) == false)

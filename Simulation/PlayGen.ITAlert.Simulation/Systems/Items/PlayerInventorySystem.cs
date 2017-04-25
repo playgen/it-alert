@@ -32,5 +32,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 				playerTuple.Component3.Items[0].Enabled = subsystems.Contains(playerTuple.Component2.Value.Value);
 			}
 		}
+
+		public void Dispose()
+		{
+			_playerMatcher?.Dispose();
+			_subsystemMatcher?.Dispose();
+		}
 	}
 }

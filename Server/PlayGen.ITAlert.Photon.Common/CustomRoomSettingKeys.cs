@@ -9,5 +9,7 @@
 		public const string OpenOnEnded = "OpenOnEnded";
 
 		public const string GameScenario = "GameScenario";
+
+		public const string GameName = "GameName";
 	}
 }

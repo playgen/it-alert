@@ -10,6 +10,8 @@
 		/// </summary>
 		public int ExternalId { get; set; }
 
+		public string GlobalIdentifier { get; set; }
+
 		public string Name { get; set; }
 
 		public string Colour { get; set; }

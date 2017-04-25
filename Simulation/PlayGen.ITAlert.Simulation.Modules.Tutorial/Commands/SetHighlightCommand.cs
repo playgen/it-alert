@@ -28,7 +28,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_highlightMatcherGroup = matcherProvider.CreateMatcherGroup<TutorialHighlight>();
 		}
 
-		protected override bool TryProcessCommand(SetHighlightCommand command)
+		protected override bool TryProcessCommand(SetHighlightCommand command, int currentTick)
 		{
 			if (_highlightMatcherGroup.TryGetMatchingEntity(command.EntityId, out var highlightTuple))
 			{

@@ -61,13 +61,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					PositionReset();
 					return;
 				}
-				var z = transform.position.z;
-				_rectTransform.anchoredPosition = ((Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
-				transform.position = new Vector3(transform.position.x, transform.position.y, z);
-				var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Select(h => h.collider.gameObject).ToList();
-				if (!hits.Contains(_dragContainer))
+				if (_beingClicked && _dragContainer.GetComponent<ItemContainerBehaviour>().CanRelease)
 				{
-					_beingDragged = true;
+					var z = transform.position.z;
+					_rectTransform.anchoredPosition = ((Vector2) _camera.ScreenToWorldPoint(Input.mousePosition) /
+														(transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
+					transform.position = new Vector3(transform.position.x, transform.position.y, z);
+					var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero)
+						.Select(h => h.collider.gameObject)
+						.ToList();
+					if (!hits.Contains(_dragContainer))
+					{
+						_beingDragged = true;
+					}
 				}
 			}
 		}
@@ -84,17 +90,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;
 			_dragContainer = container.collider.gameObject;
 			transform.SetAsLastSibling();
-            return true;
+			return true;
 		}
 
-		public KeyValuePair<int?, bool> OnClickUp()
+		public bool OnClickUp(out int containerIndex, out bool dragged)
 		{
-            if (_dragContainer != null && _dragContainer.GetComponent<ItemContainerBehaviour>() != null)
-            {
-                return new KeyValuePair<int?, bool>(_dragContainer.GetComponent<ItemContainerBehaviour>().ContainerIndex, _beingDragged);
-            }
-		    return new KeyValuePair<int?, bool>(null, _beingDragged);
-        }
+			var containerIndexzNullable = _dragContainer?.GetComponent<ItemContainerBehaviour>()?.ContainerIndex;
+			dragged = _beingDragged;
+			containerIndex = containerIndexzNullable ?? -1;
+			return containerIndexzNullable.HasValue;
+		}
 
 		public void ClickReset()
 		{

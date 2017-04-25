@@ -69,5 +69,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation
 				entityTuple.Component2.ActivationTickModifier = RangeHelper.AssignWithinBounds(activationTickModifier, 0, Int32.MaxValue);
 			}
 		}
+
+		public void Dispose()
+		{
+			_subsystemMatcher?.Dispose();
+			_timedActivationMatcherGroup?.Dispose();
+		}
 	}
 }

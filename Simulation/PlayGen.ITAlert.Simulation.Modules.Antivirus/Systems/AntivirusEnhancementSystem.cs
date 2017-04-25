@@ -62,6 +62,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			};
 			itemStorage.Items[AnalysisOutputStorageLocation] = new AnalysisOutputItemContainer();
 		}
+
+		public void Dispose()
+		{
+			_captureMatcherGroup?.Dispose();
+		}
 	}
 
 }

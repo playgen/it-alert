@@ -45,7 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Commands.Movement
 			_playerSystem = playerSystem;
 		}
 
-		protected override bool TryProcessCommand(SetActorDestinationCommand command)
+		protected override bool TryProcessCommand(SetActorDestinationCommand command, int currentTick)
 		{
 			int playerEntityId = -1;
 

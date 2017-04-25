@@ -54,5 +54,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 				Item = activatorEntityTuple.Entity.Id,
 			};
 		}
+
+		public void Dispose()
+		{
+			_transferMatcherGroup?.Dispose();
+		}
 	}
 }

@@ -56,5 +56,11 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 			}
 
 		}
+
+		public void Dispose()
+		{
+			_itemStorageMatcherGroup?.Dispose();
+			_itemMatcherGroup?.Dispose();
+		}
 	}
 }

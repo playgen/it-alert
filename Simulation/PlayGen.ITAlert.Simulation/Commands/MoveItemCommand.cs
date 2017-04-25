@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 		}
 
-		protected override bool TryProcessCommand(MoveItemCommand command)
+		protected override bool TryProcessCommand(MoveItemCommand command, int currentTick)
 		{
 			if (_itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.SystemEntityId, out var subsystemTuple)

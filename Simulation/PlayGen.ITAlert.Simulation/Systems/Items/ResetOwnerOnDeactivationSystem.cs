@@ -38,5 +38,10 @@ namespace PlayGen.ITAlert.Simulation.Systems.Items
 		{
 			entityTuple.Component2.Value = null;
 		}
+
+		public void Dispose()
+		{
+			_ownerActivationMatcherGroup?.Dispose();
+		}
 	}
 }

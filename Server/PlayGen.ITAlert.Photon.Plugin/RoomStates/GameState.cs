@@ -4,6 +4,7 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
+using Engine.Configuration;
 using Engine.Lifecycle;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
@@ -11,6 +12,7 @@ using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Logging;
 using PlayGen.Photon.Analytics;
 using PlayGen.Photon.Common.Extensions;
 
@@ -96,10 +98,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 				SimulationScenario scenario;
 				if (_scenarioLoader.TryGetScenario(RoomSettings.GameScenario, out scenario))
 				{
+					// add the database event logger
+					scenario.Configuration.Systems.Add(new SystemConfiguration<DatabaseEventLogger>());
+					scenario.Configuration.GameName = RoomSettings.GameName;
 					scenario.Configuration.PlayerConfiguration = PlayerManager.Players.Select((p, i) =>
 					{
 						var playerConfig = scenario.PlayerConfigFactory.GetNextPlayerConfig(i);
 						playerConfig.ExternalId = p.PhotonId;
+						playerConfig.GlobalIdentifier = p.Name;
 						playerConfig.Name = p.Name;
 						playerConfig.Colour = p.Color;
 						return playerConfig;

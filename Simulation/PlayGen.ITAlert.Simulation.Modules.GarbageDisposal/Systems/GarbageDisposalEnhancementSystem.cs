@@ -67,6 +67,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
 				throw new SimulationException($"{GarbageDisposalActivatorArchetypeName} archetype not registered");
 			}
 		}
+
+		public void Dispose()
+		{
+			// nothing to dispose
+		}
 	}
 
 	#region custom containers
