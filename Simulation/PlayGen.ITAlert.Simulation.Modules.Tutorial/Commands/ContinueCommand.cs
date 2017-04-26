@@ -17,10 +17,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_tutorialSystem = tutorialSystem;
 		}
 
-		protected override bool TryProcessCommand(ContinueCommand command, int currentTick)
+		protected override bool TryHandleCommand(ContinueCommand command, int currentTick, bool handlerEnabled)
 		{
 			_tutorialSystem.SetContinue();
 			return true;
 		}
 	}
+
+
 }

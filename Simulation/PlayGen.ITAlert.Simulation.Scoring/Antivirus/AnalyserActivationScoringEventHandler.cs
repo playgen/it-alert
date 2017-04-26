@@ -1,32 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Engine.Components;
 using Engine.Events;
-using Engine.Systems.Scoring;
-using PlayGen.ITAlert.Scoring.Components;
-using PlayGen.ITAlert.Scoring.EventHandlers;
-using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Components.Common;
-using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Scoring
+namespace PlayGen.ITAlert.Scoring.Antivirus
 {
 	public class AnalyserActivationScoringEventHandler : PlayerScoringEventHandler<AnalyserActivationEvent>
 	{
-
 		private readonly ComponentMatcherGroup<MalwareGenome, CurrentLocation> _malwareMatcherGroup;
 
-		private readonly ComponentMatcherGroup<Components.Antivirus> _antivirusMatcherGroup;
+		private readonly ComponentMatcherGroup<Simulation.Modules.Antivirus.Components.Antivirus> _antivirusMatcherGroup;
 
 		public AnalyserActivationScoringEventHandler(EventSystem eventSystem, IMatcherProvider matcherProvider)
 			: base (eventSystem, matcherProvider)
 		{
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, CurrentLocation>();
-			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Components.Antivirus>();
+			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Simulation.Modules.Antivirus.Components.Antivirus>();
 		}
 
 		protected override void HandleEvent(AnalyserActivationEvent @event)
@@ -73,6 +66,13 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Scoring
 						break;
 				}
 			}
+		}
+
+		public override void Dispose()
+		{
+			_malwareMatcherGroup?.Dispose();
+			_antivirusMatcherGroup?.Dispose();
+			base.Dispose();
 		}
 	}
 }

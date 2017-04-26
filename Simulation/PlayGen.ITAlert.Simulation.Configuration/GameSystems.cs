@@ -6,22 +6,19 @@ using Engine.Lifecycle;
 using Engine.Systems;
 using Engine.Systems.Activation;
 using Engine.Systems.RNG;
+using Engine.Systems.Scoring;
 using Engine.Systems.Timing;
 using Engine.Systems.Timing.Commands;
+using PlayGen.ITAlert.Scoring;
+using PlayGen.ITAlert.Scoring.Antivirus;
+using PlayGen.ITAlert.Scoring.Malware;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
-using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
-using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
-using PlayGen.ITAlert.Simulation.Modules.Malware.Systems.Activation;
-using PlayGen.ITAlert.Simulation.Modules.Malware.Systems.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
-using PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems;
-using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems.Activation;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems;
 using PlayGen.ITAlert.Simulation.Systems.Initialization;
@@ -36,7 +33,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 	/// </summary>
 	public static class GameSystems
 	{
-		public static List<SystemConfiguration> Systems = new List<SystemConfiguration>()
+		public static List<SystemConfiguration> Systems => new List<SystemConfiguration>()
 		{
 			#region common
 
@@ -244,8 +241,29 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#endregion
 
-			// TODO: need to find a good way to append systems from the scenario definition
 			new SystemConfiguration<TutorialSystem>(),
+
+			#region scoring
+
+			new SystemConfiguration<PlayerScoringSystem>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<IScoringExtension>()
+					{
+						Implementations = new SystemExtensionImplementation[]
+						{
+							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<AntivirusActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<AnalyserActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<CaptureActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<MalwarePropogationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<ScannerActivationScoringEventHandler>(),
+						}
+					}
+				}
+			}
+
+			#endregion
 		};
 	}
 }

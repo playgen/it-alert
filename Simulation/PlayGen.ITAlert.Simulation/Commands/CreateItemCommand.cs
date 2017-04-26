@@ -37,9 +37,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 		}
 
-		protected override bool TryProcessCommand(CreateItemCommand command, int currentTick)
+		protected override bool TryHandleCommand(CreateItemCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (string.IsNullOrEmpty(command.Archetype) == false
+			if (handlerEnabled
+				&& string.IsNullOrEmpty(command.Archetype) == false
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(command.SystemId, out var systemTuple)
 				&& _entityFactoryProvider.TryCreateItem(command.Archetype, command.SystemId, null, out var itemTuple))
 			{

@@ -87,6 +87,10 @@
       <Project>{291FBAA9-7900-460D-A841-A4B0F7DD5154}</Project>
       <Name>Engine.Systems.RNG</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Systems.Scoring\Engine.Systems.Scoring.csproj">
+      <Project>{1CF978CD-C529-4B6B-A294-5C12B1FB87C1}</Project>
+      <Name>Engine.Systems.Scoring</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Systems.Timing\Engine.Systems.Timing.csproj">
       <Project>{E9B71CB8-BD98-4501-A79B-50930F6B8DD6}</Project>
       <Name>Engine.Systems.Timing</Name>
@@ -130,6 +134,10 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario\PlayGen.ITAlert.Simulation.Scenario.csproj">
       <Project>{45775B35-274A-40CF-BFE3-AD08F594C99B}</Project>
       <Name>PlayGen.ITAlert.Simulation.Scenario</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
+      <Project>{787EACF9-FC52-4306-A929-98720E07B9DB}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.UI\PlayGen.ITAlert.Simulation.UI.csproj">
       <Project>{503b216a-3070-4211-ab66-6b975246cb57}</Project>

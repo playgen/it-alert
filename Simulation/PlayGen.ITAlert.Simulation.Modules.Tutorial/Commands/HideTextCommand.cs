@@ -22,22 +22,24 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_textMatcher = matcherProvider.CreateMatcherGroup<Text>();
 		}
 
-		protected override bool TryProcessCommand(HideTextCommand command, int currentTick)
+		protected override bool TryHandleCommand(HideTextCommand command, int currentTick, bool handlerEnabled)
 		{
-			ComponentEntityTuple<Text> tuple;
-			if (command.TextEntityId.HasValue
-				&& _textMatcher.TryGetMatchingEntity(command.TextEntityId.Value, out tuple))
+			if (handlerEnabled)
 			{
-				tuple.Entity.Dispose();
-				return true;
-			}
-			else
-			{
-				foreach (var textTuple in _textMatcher.MatchingEntities.ToArray())
+				if (command.TextEntityId.HasValue
+					&& _textMatcher.TryGetMatchingEntity(command.TextEntityId.Value, out var tuple))
 				{
-					textTuple.Entity.Dispose();
+					tuple.Entity.Dispose();
+					return true;
 				}
-				return true;
+				else
+				{
+					foreach (var textTuple in _textMatcher.MatchingEntities.ToArray())
+					{
+						textTuple.Entity.Dispose();
+					}
+					return true;
+				}
 			}
 			return false;
 		}

@@ -18,7 +18,7 @@ using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-	public class PlayingState : RoomState
+	public class PlayingState : RoomState, IDisposable
 	{
 		public const string StateName = nameof(PlayingState);
 
@@ -134,6 +134,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr);
 			}
 			base.OnLeave(info);
+		}
+
+		public void Dispose()
+		{
+			_simulationLifecycleManager?.Dispose();
 		}
 	}
 }

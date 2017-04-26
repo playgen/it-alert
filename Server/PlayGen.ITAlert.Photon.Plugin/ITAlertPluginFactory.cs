@@ -24,7 +24,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 					break;
 
 				default:
-					plugin = new PluginBase();
+						plugin = new PluginBase();
 					break;
 			}
 

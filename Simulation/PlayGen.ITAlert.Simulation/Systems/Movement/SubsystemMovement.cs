@@ -70,7 +70,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 								|| (exitAfterTop && nextPositionAfterTop && nextPositionAfterExit)
 								|| (exitAfterTop == false & nextPositionAfterExit))
 							{
-								var overflow = Math.Max((int)nextPosition - exitPosition, 0);
+								var overflow = 0; // Math.Max((int)nextPosition - exitPosition, 0);
 
 								RemoveVisitorFromNode(subsystemTuple.Entity.Id, subsystemTuple.Component3, visitorTuple.Entity, visitorTuple.Component2);
 
@@ -80,11 +80,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 							else
 							{
 								visitorTuple.Component1.SetPosition(nextPosition, currentTick);
+								visitorTuple.Component2.Tick();
 							}
 						}
 						else
 						{
 							visitorTuple.Component1.SetPosition(nextPosition, currentTick);
+							visitorTuple.Component2.Tick();
 						}
 					}
 				}

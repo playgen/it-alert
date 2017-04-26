@@ -1,6 +1,6 @@
 ﻿using Engine.Components;
 
-namespace PlayGen.ITAlert.Scoring.Components
+namespace PlayGen.ITAlert.Simulation.Components.Scoring
 {
     public class Score : IComponent
     {

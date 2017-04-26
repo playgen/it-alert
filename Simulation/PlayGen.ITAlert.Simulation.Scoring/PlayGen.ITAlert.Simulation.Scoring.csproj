@@ -36,11 +36,22 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Zenject, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Engine\lib\Zenject\Zenject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\Score.cs" />
-    <Compile Include="EventHandlers\PlayerScoringEventHandler.cs" />
+    <Compile Include="Antivirus\CaptureActivationScoringEventHandler.cs" />
+    <Compile Include="Antivirus\AnalyserActivationScoringEventHandler.cs" />
+    <Compile Include="Antivirus\AntivirusActivationScoringEventHandler.cs" />
+    <Compile Include="PlayerScoringEventHandler.cs" />
+    <Compile Include="Malware\MalwarePropogationScoringEventHandler.cs" />
+    <Compile Include="PlayerScoringSystem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Malware\ScannerActivationScoringEventHandler.cs" />
+    <Compile Include="Transfer\TransferTimedPickupScoring.cs" />
+    <Compile Include="Transfer\TransferActivationScoringEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
@@ -50,6 +61,22 @@
     <ProjectReference Include="..\Engine\Engine.Systems.Scoring\Engine.Systems.Scoring.csproj">
       <Project>{1cf978cd-c529-4b6b-a294-5c12b1fb87c1}</Project>
       <Name>Engine.Systems.Scoring</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Antivirus\PlayGen.ITAlert.Simulation.Modules.Antivirus.csproj">
+      <Project>{c7cffbf9-3c24-4b6f-98af-b42d2308af67}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Antivirus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Malware\PlayGen.ITAlert.Simulation.Modules.Malware.csproj">
+      <Project>{b03725f8-f6d3-4280-bec4-cfa9ef403c84}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Malware</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Transfer\PlayGen.ITAlert.Simulation.Modules.Transfer.csproj">
+      <Project>{b7b8ade3-22cc-42b8-a9b1-ac13d158a5f8}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Transfer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Tutorial\PlayGen.ITAlert.Simulation.Modules.Tutorial.csproj">
+      <Project>{08f0ac02-3291-4a19-a7fa-0ff2a59cea90}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Modules.Tutorial</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>

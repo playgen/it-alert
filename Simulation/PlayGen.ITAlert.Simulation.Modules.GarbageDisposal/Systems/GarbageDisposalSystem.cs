@@ -1,15 +1,13 @@
 ﻿using Engine.Components;
-using Engine.Entities;
 using Engine.Events;
 using Engine.Systems;
-using Engine.Systems.Activation;
 using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems.Activation
+namespace PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems
 {
 	public class GarbageDisposalSystem : ITickableSystem
 	{

@@ -39,9 +39,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerSystem = playerSystem;
 		}
 
-		protected override bool TryProcessCommand(ActivateItemTypeCommand command, int currentTick)
+		protected override bool TryHandleCommand(ActivateItemTypeCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (command.ItemType == null 
+			if (handlerEnabled
+				&& command.ItemType == null 
 				|| typeof(IItemType).IsAssignableFrom(command.ItemType) == false
 				|| (command.PlayerId.HasValue == false && command.LocationEntityId.HasValue == false))
 			{

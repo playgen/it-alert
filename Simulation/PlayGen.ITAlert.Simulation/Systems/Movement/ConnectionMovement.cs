@@ -51,6 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 						else
 						{
 							visitorTuple.Component1.SetPosition(nextPosition, currentTick);
+							visitorTuple.Component2.Tick();
 						}
 					}
 				}

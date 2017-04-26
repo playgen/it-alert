@@ -2,7 +2,6 @@
 using Engine.Components;
 using Engine.Events;
 using Engine.Systems;
-using Engine.Systems.Activation;
 using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -10,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 {
 	public class AntivirusSystem : ITickableSystem
 	{

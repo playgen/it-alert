@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Engine.Components;
+﻿using Engine.Components;
 using Engine.Events;
 using Engine.Systems.Scoring;
-using PlayGen.ITAlert.Scoring.Components;
+using PlayGen.ITAlert.Simulation.Components.Scoring;
 
-namespace PlayGen.ITAlert.Scoring.EventHandlers
+namespace PlayGen.ITAlert.Scoring
 {
 	public abstract class PlayerScoringEventHandler<TEvent> : ScoringEventHandler<TEvent>
 		where TEvent : class, IEvent

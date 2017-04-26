@@ -48,7 +48,7 @@
     <Compile Include="Components\IResource.cs" />
     <Compile Include="Components\MemoryResource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Systems\Activation\CPUConsumptionIncreasesTimedActivationDurationSystem.cs" />
+    <Compile Include="Systems\CPUConsumptionIncreasesTimedActivationDurationSystem.cs" />
     <Compile Include="Systems\CPUReducesMovementSpeed.cs" />
     <Compile Include="Systems\ISubsystemResourceEffect.cs" />
     <Compile Include="Systems\ItemStorageConsumesMemoryEffect.cs" />

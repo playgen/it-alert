@@ -1,7 +1,6 @@
 ﻿using System;
 using Engine.Components;
 using Engine.Systems;
-using Engine.Systems.Activation;
 using Engine.Systems.Activation.Components;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Common;
@@ -10,7 +9,7 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems.Activation
+namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 {
 	/// <summary>
 	/// This subsystem resource effect causes the value of the MovementSpeed component to be modulated accoring to the utilisation of the CPU Resource on that node

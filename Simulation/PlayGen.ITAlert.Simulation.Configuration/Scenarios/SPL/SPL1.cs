@@ -7,7 +7,6 @@ using Engine.Systems.Timing.Actions;
 using Engine.Systems.Timing.Evaluators;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
