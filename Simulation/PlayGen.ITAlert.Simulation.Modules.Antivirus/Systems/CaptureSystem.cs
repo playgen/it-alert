@@ -2,10 +2,8 @@
 using Engine.Components;
 using Engine.Events;
 using Engine.Systems;
-using Engine.Systems.Activation;
 using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -15,7 +13,7 @@ using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
+namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 {
 	public class CaptureSystem : ITickableSystem
 	{
@@ -77,11 +75,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 					&& (malwareVisitor.Component2.VisibleTo & playerTuple.Component2.Value) == playerTuple.Component2.Value)
 				{
 					// cyclical behaviour for capture on advanced genomes
-
 					int gene = entityTuple.Component2.CapturedGenome;
 					do
 					{
-
 						switch (gene)
 						{
 							case 0:
@@ -104,7 +100,17 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems.Activation
 						}
 					} while (HasGene(malwareVisitor.Component1.Value, gene) == false);
 
-					@event.ActivationResult = CaptureActivationEvent.CaptureActivationResult.SampleCaptured;
+					var genes = new []
+						{
+							SimulationConstants.MalwareGeneRed,
+							SimulationConstants.MalwareGeneGreen,
+							SimulationConstants.MalwareGeneBlue
+						}
+						.Count(g => HasGene(malwareVisitor.Component1.Value, g));
+
+					@event.ActivationResult = genes > 1 
+						? CaptureActivationEvent.CaptureActivationResult.ComplexGenomeCaptured
+						: CaptureActivationEvent.CaptureActivationResult.SimpleGenomeCaptured;
 				}
 				else
 				{

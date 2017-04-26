@@ -23,9 +23,12 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerSystem = playerSystem;
 		}
 
-		protected override bool TryProcessCommand(CreatePlayerCommand command, int currentTick)
+		protected override bool TryHandleCommand(CreatePlayerCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (command.PlayerConfig == null) return false;
+			if (command.PlayerConfig == null || handlerEnabled == false)
+			{
+				return false;
+			}
 
 			var player = _playerSystem.CreatePlayer(command.PlayerConfig);
 			return player != null;

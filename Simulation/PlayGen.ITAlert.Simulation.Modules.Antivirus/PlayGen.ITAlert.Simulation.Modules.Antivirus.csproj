@@ -47,19 +47,17 @@
     <Compile Include="Events\CaptureActivationEvent.cs" />
     <Compile Include="Events\AnalyserActivationEvent.cs" />
     <Compile Include="Events\AntivirusActivationEvent.cs" />
-    <Compile Include="Scoring\AnalyserActivationScoringEventHandler.cs" />
-    <Compile Include="Scoring\AntivirusActivationScoringEventHandler.cs" />
-    <Compile Include="Systems\Activation\AnalyserSystem.cs" />
+    <Compile Include="Systems\AnalyserSystem.cs" />
     <Compile Include="Components\Antivirus.cs" />
-    <Compile Include="Systems\Activation\AntivirusSystem.cs" />
+    <Compile Include="Systems\AntivirusSystem.cs" />
     <Compile Include="Components\AntivirusEnhancement.cs" />
     <Compile Include="Components\Capture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AnalysisOutputItemContainer.cs" />
     <Compile Include="AnalysisTargetItemContainer.cs" />
     <Compile Include="Systems\AntivirusEnhancementSystem.cs" />
-    <Compile Include="Systems\Activation\CaptureSystem.cs" />
-    <Compile Include="Systems\Activation\CoopMultiColourAntivirusSystem.cs" />
+    <Compile Include="Systems\CaptureSystem.cs" />
+    <Compile Include="Systems\CoopMultiColourAntivirusSystem.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
@@ -93,10 +91,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Malware\PlayGen.ITAlert.Simulation.Modules.Malware.csproj">
       <Project>{b03725f8-f6d3-4280-bec4-cfa9ef403c84}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Malware</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
-      <Project>{787EACF9-FC52-4306-A929-98720E07B9DB}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>

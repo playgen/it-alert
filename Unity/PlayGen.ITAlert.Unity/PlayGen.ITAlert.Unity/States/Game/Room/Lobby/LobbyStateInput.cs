@@ -115,8 +115,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private void OnReadyButtonClick()
 		{
-			var currentlyReady = _photonClient.CurrentRoom.Player.State ==
-								(int) ITAlert.Photon.Players.ClientState.Ready;
+			var currentlyReady = _photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready;
 			CommandQueue.AddCommand(new ReadyPlayerCommand(!currentlyReady));
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}

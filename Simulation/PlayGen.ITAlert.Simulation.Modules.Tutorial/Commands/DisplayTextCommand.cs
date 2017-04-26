@@ -22,19 +22,19 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_entityFactoryProvider = entityFactoryProvider;
 		}
 
-		protected override bool TryProcessCommand(DisplayTextCommand command, int currentTick)
+		protected override bool TryHandleCommand(DisplayTextCommand command, int currentTick, bool handlerEnabled)
 		{
-			// TODO: possibly move this implementation into the tutorial system
-			Entity textEntity;
-			Text text;
-			if (_entityFactoryProvider.TryCreateEntityFromArchetype(TutorialText.Archetype, out textEntity)
-				&& textEntity.TryGetComponent(out text))
+			if (handlerEnabled)
 			{
-				text.Value = command.Text;
-				text.ShowContinue = command.Continue;
-				return true;
+				if (_entityFactoryProvider.TryCreateEntityFromArchetype(TutorialText.Archetype, out var textEntity)
+					&& textEntity.TryGetComponent<Text>(out var text))
+				{
+					text.Value = command.Text;
+					text.ShowContinue = command.Continue;
+					return true;
+				}
+				textEntity?.Dispose();
 			}
-			textEntity?.Dispose();
 			return false;
 		}
 	}

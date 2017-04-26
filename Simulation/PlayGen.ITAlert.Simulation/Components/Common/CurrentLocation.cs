@@ -4,7 +4,26 @@ namespace PlayGen.ITAlert.Simulation.Components.Common
 {
 	public class CurrentLocation : IComponent
 	{
-		// TODO: this probably needs to be nullable
-		public int? Value { get; set; }
+		private int? _value;
+
+		public int? Value
+		{
+			get => _value;
+			set
+			{
+				if (value != _value)
+				{
+					TicksAtLocation = 0;
+				}
+				_value = value;
+			}
+		}
+
+		public int TicksAtLocation { get; private set; }
+
+		public void Tick()
+		{
+			TicksAtLocation++;
+		}
 	}
 }

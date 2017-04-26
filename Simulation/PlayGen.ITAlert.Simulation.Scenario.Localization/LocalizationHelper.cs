@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Engine.Serialization;
-using Newtonsoft.Json;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Localization
 {

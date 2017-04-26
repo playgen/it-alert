@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands
 			_highlightMatcherGroup = matcherProvider.CreateMatcherGroup<TutorialHighlight>();
 		}
 
-		protected override bool TryProcessCommand(ClearHighlightCommand command, int currentTick)
+		protected override bool TryHandleCommand(ClearHighlightCommand command, int currentTick, bool handlerEnabled)
 		{
 			foreach(var highlight in _highlightMatcherGroup.MatchingEntities.Where(h => h.Component1.Enabled))
 			{

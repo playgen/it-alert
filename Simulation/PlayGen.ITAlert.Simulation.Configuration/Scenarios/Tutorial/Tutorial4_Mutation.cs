@@ -9,7 +9,6 @@ using Engine.Sequencing;
 using Engine.Systems.Activation.Components;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;

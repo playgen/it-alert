@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Sequencing;
 

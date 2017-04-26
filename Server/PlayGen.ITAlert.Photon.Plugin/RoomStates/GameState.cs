@@ -18,7 +18,7 @@ using PlayGen.Photon.Common.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-	public class GameState : RoomState
+	public class GameState : RoomState, IDisposable
 	{
 		public const string StateName = nameof(GameState);
 
@@ -32,11 +32,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private readonly ExceptionHandler _exceptionHandler;
 
-		public GameState(PluginBase photonPlugin, 
-			Messenger messenger, 
-			PlayerManager playerManager, 
-			RoomSettings roomSettings, 
-			AnalyticsServiceManager analytics, 
+		public GameState(PluginBase photonPlugin,
+			Messenger messenger,
+			PlayerManager playerManager,
+			RoomSettings roomSettings,
+			AnalyticsServiceManager analytics,
 			ExceptionHandler exceptionHandler)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
@@ -65,14 +65,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		protected override void OnExit()
 		{
 			_stateController.Terminate();
-			//_simulation.Dispose();
 
 			Analytics.EndMatch();
 
 			if (RoomSettings.OpenOnEnded)
 			{
 				RoomSettings.IsOpen = true;
-			    RoomSettings.IsVisible = true;
+				RoomSettings.IsVisible = true;
 			}
 		}
 
@@ -139,7 +138,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			var lifecycleCompleteTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Complete);
 			//lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
 			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
-			
+
 			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
@@ -149,6 +148,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			controller.SetParent(ParentStateController);
 
 			return controller;
+		}
+
+		public void Dispose()
+		{
+			_stateController?.Dispose();
 		}
 	}
 }

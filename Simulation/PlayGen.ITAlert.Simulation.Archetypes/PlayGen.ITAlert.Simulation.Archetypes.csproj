@@ -63,10 +63,6 @@
       <Project>{819d263a-c6b4-4be6-92ce-a6f38b1cfe00}</Project>
       <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
-      <Project>{787eacf9-fc52-4306-a929-98720e07b9db}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>

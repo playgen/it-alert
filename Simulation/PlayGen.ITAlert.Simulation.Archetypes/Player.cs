@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Archetypes;
-using PlayGen.ITAlert.Scoring;
-using PlayGen.ITAlert.Scoring.Components;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Player;
+using PlayGen.ITAlert.Simulation.Components.Scoring;
 
 namespace PlayGen.ITAlert.Simulation.Archetypes
 {
