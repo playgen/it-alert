@@ -200,7 +200,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<PickupItemCommand>(true),
 						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(true, $"{scenario.Key}_Frame7"),
 					},
@@ -217,6 +216,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<PickupItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame8")
 					},
 					ExitCondition = new ItemTypeIsInInventory<Scanner>(),
@@ -284,11 +284,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
+						new SetCommandEnabled<ActivateItemCommand>(false),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
 					},
-					ExitCondition = new PlayerIsAtLocation(nodeLeft),
+					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new ClearHighlight(),
 					},
 				}
 			);
@@ -299,10 +301,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
+					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus>(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ClearHighlight(),
+						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 				}
 			);
@@ -327,7 +330,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new WaitForTicks(10),
+					ExitCondition = new WaitForTicks(5),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EndGame(EndGameState.Success),

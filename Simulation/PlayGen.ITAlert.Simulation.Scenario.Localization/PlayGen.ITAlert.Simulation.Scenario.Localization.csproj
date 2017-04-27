@@ -32,10 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Localization.Designer.cs">
@@ -53,10 +49,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Newtonsoft.Json\Engine.Newtonsoft.Json.csproj">
-      <Project>{7f39c40c-9acd-42b1-ae6f-470a759e98ce}</Project>
-      <Name>Engine.Newtonsoft.Json</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
       <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
       <Name>Engine.Serialization</Name>

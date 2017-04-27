@@ -30,25 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
-      <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>
-      <Name>Engine.Serialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
-      <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
-      <Name>Engine.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

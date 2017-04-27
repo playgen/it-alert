@@ -22,5 +22,7 @@
 		PlayState,
 
 		Feedback,
+
+		UiEvent,
 	}
 }

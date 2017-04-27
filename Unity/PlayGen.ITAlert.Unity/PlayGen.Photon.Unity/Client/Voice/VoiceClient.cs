@@ -43,17 +43,17 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 		public VoiceClient()
 		{
-			PhotonVoiceSettings.Instance.VoiceDetection = true;
+			PhotonVoiceSettings.Instance.VoiceDetection = false;
 			PhotonVoiceSettings.Instance.AutoTransmit = false;
 			PhotonVoiceSettings.Instance.AutoDisconnect = true;
 			PhotonVoiceSettings.Instance.AutoConnect = true;
 
 			_gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
 
-            var volume = PlayerPrefs.GetInt("Voice Enabled") == 1 ? PlayerPrefs.GetFloat("Voice Volume") : 0;
-            _gameObject.GetComponent<AudioSource>().volume = volume;
+			var volume = PlayerPrefs.GetInt("Voice Enabled") == 1 ? PlayerPrefs.GetFloat("Voice Volume") : 0;
+			_gameObject.GetComponent<AudioSource>().volume = volume;
 
-            _rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
+			_rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
 
 			_rec.enabled = true;
 		}
@@ -65,7 +65,8 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 		public void Dispose()
 		{
-			if (_isDisposed) return;
+			if (_isDisposed)
+				return;
 
 			_rec.enabled = false;
 			Object.Destroy(_gameObject);
@@ -82,7 +83,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 		{
 			VoicePlayers.Remove(id);
 		}
-		
+
 		public void StartTransmission()
 		{
 			if (!PhotonNetwork.connected)

@@ -47,7 +47,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.Error, ProcessErrorMessage);
 
-			_voiceController = new VoiceController(_photonClient);
+			_voiceController = new VoiceController(_photonClient, _director);
 
 			_stateController = _controllerFactory.Create();
 			_stateController.Initialize();

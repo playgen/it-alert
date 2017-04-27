@@ -5,7 +5,7 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 
-namespace PlayGen.ITAlert.Scoring.Antivirus
+namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 {
 	public class AntivirusActivationScoringEventHandler : PlayerScoringEventHandler<AntivirusActivationEvent>
 	{

@@ -30,12 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\Items\ResourceExtensions.cs" />
@@ -59,10 +54,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Resources\PlayGen.ITAlert.Simulation.Modules.Resources.csproj">
       <Project>{6db29f2d-f16f-4680-a3c2-27080606cc9d}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
-      <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
-      <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

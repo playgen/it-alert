@@ -35,12 +35,7 @@
       <HintPath>..\packages\NUnit.3.6.0\lib\net35\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="Zenject, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Engine\lib\Zenject\Zenject.dll</HintPath>
@@ -99,10 +94,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Resources\PlayGen.ITAlert.Simulation.Modules.Resources.csproj">
       <Project>{6DB29F2D-F16F-4680-A3C2-27080606CC9D}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Resources</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Serialization\PlayGen.ITAlert.Simulation.Serialization.csproj">
-      <Project>{D5D14E17-C9D5-4AB2-AB74-96F95B50614F}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Serialization</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>

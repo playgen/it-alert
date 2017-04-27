@@ -136,17 +136,9 @@
       <Project>{7F39C40C-9ACD-42B1-AE6F-470A759E98CE}</Project>
       <Name>Engine.Newtonsoft.Json</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Serialization\Engine.Serialization.csproj">
-      <Project>{6719ceee-ea1d-48cc-a301-89a0e47bc3ad}</Project>
-      <Name>Engine.Serialization</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
-      <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
-      <Name>Engine.Startup</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
       <Project>{2a59ac2c-b3f4-4416-a74a-fa1b086a2f5b}</Project>

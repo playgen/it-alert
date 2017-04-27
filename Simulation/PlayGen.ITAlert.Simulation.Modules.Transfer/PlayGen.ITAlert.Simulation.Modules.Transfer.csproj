@@ -32,10 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archetypes\TransferActivator.cs" />
@@ -50,10 +46,6 @@
     <Compile Include="TransferItemContainer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.Common\Engine.Common.csproj">
-      <Project>{c3e9dd6e-3807-4290-a857-a4e9d47cf7e1}</Project>
-      <Name>Engine.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
@@ -61,10 +53,6 @@
     <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
       <Project>{2a59ac2c-b3f4-4416-a74a-fa1b086a2f5b}</Project>
       <Name>Engine.Systems.Activation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Systems\Engine.Systems.csproj">
-      <Project>{c0a56319-4423-4722-b068-e9165e2c4246}</Project>
-      <Name>Engine.Systems</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Archetypes\PlayGen.ITAlert.Simulation.Archetypes.csproj">
       <Project>{ec170b34-006e-4e16-b3d4-c9f47040eb74}</Project>

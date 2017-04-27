@@ -70,5 +70,19 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			VisitorTransition?.Invoke(nodeId, visitorId, sourceId, initialposition, currenttick);
 		}
 
+		protected virtual void Dispose(bool disposing)
+		{
+			if (disposing)
+			{
+				VisitorMatcherGroup?.Dispose();
+				_visitorsMatcherGroup?.Dispose();
+			}
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
 	}
 }

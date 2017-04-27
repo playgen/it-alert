@@ -3,24 +3,23 @@ using Engine.Commands;
 using Engine.Configuration;
 using Engine.Events;
 using Engine.Lifecycle;
-using Engine.Systems;
 using Engine.Systems.Activation;
 using Engine.Systems.RNG;
-using Engine.Systems.Scoring;
 using Engine.Systems.Timing;
 using Engine.Systems.Timing.Commands;
-using PlayGen.ITAlert.Scoring;
-using PlayGen.ITAlert.Scoring.Antivirus;
-using PlayGen.ITAlert.Scoring.Malware;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
-using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Components;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Resources.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Systems;
+using PlayGen.ITAlert.Simulation.Scoring.Player;
+using PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus;
+using PlayGen.ITAlert.Simulation.Scoring.Player.Malware;
+using PlayGen.ITAlert.Simulation.Scoring.Player.Transfer;
+using PlayGen.ITAlert.Simulation.Scoring.Team;
 using PlayGen.ITAlert.Simulation.Systems.Initialization;
 using PlayGen.ITAlert.Simulation.Systems.Items;
 using PlayGen.ITAlert.Simulation.Systems.Movement;
@@ -249,15 +248,31 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
 				{
-					new SystemExtensionConfiguration<IScoringExtension>()
+					new SystemExtensionConfiguration<IPlayerScoringExtension>()
 					{
 						Implementations = new SystemExtensionImplementation[]
 						{
-							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<AntivirusActivationScoringEventHandler>(),
-							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<AnalyserActivationScoringEventHandler>(),
-							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<CaptureActivationScoringEventHandler>(),
-							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<MalwarePropogationScoringEventHandler>(),
-							new SystemExtensionConfiguration<IScoringExtension>.SystemExtensionImplementation<ScannerActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<AntivirusActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<AnalyserActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<CaptureActivationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<MalwarePropogationScoringEventHandler>(),
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<ScannerActivationScoringEventHandler>(),
+
+							new SystemExtensionConfiguration<IPlayerScoringExtension>.SystemExtensionImplementation<TransferTimedPickupScoring>(),
+						}
+					}
+				}
+			},
+
+			new SystemConfiguration<TeamScoringSystem>()
+			{
+				ExtensionConfiguration = new SystemExtensionConfiguration[]
+				{
+					new SystemExtensionConfiguration<ITeamScoringExtension>()
+					{
+						Implementations = new SystemExtensionImplementation[]
+						{
+							new SystemExtensionConfiguration<ITeamScoringExtension>.SystemExtensionImplementation<NetworkHealthTeamScoringExtension>(),
 						}
 					}
 				}

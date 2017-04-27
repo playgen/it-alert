@@ -1,6 +1,5 @@
 ﻿using Engine.Commands;
 using Engine.Entities;
-using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 

@@ -57,56 +57,56 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private LobbyState CreateLobbyState(Client photonClient)
 		{
 			var lobbyController = new LobbyController(_photonClient);
-			var input = new LobbyStateInput(photonClient);
-			var state = new LobbyState(input, lobbyController, photonClient);
+			var lobbyStateInput = new LobbyStateInput(photonClient);
+			var lobbyState = new LobbyState(lobbyStateInput, lobbyController, photonClient);
 
 			var initializingTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(InitializingMessage), InitializingState.StateName);
 			var toMenuStateTransition = new OnEventTransition(MenuState.StateName);
 
 			photonClient.LeftRoomEvent += toMenuStateTransition.ChangeState;
 
-			state.AddTransitions(initializingTransition, toMenuStateTransition);
+			lobbyState.AddTransitions(initializingTransition, toMenuStateTransition);
 
-			return state;
+			return lobbyState;
 		}
 
 		private PausedState CreatePausedState(Client photonClient)
 		{
-			var input = new PausedStateInput();
-			var state = new PausedState(input, photonClient);
+			var pausedStateInput = new PausedStateInput();
+			var pausedState = new PausedState(pausedStateInput, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toPlayingStateTransition = new OnEventTransition(PlayingState.StateName);
 			var toSettingsStateTransition = new OnEventTransition(SettingsState.StateName);
 			var quitTransition = new OnEventTransition(MenuState.StateName);
 
-			input.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
-			input.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
-			input.QuitClickedEvent += quitTransition.ChangeState;
-			input.QuitClickedEvent += photonClient.CurrentRoom.Leave;
+			pausedStateInput.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
+			pausedStateInput.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
+			pausedStateInput.QuitClickedEvent += quitTransition.ChangeState;
+			pausedStateInput.QuitClickedEvent += photonClient.CurrentRoom.Leave;
 
-			state.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
+			pausedState.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
 
-			return state;
+			return pausedState;
 		}
 
 		private PlayingState CreatePlayingState(Client photonClient)
 		{
-			var input = new PlayingStateInput(_photonClient);
-			var state = new PlayingState(_director, input, photonClient);
+			var playingStateInput = new PlayingStateInput(_photonClient);
+			var playingState = new PlayingState(_director, playingStateInput, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toFeedbackTransition = new OnEventTransition(FeedbackState.StateName);
 			var toMenuTransition = new OnEventTransition(MenuState.StateName);
 			var toPauseTransition = new OnEventTransition(PausedState.StateName);
 
-			input.PauseClickedEvent += toPauseTransition.ChangeState;
-			input.EndGameContinueClickedEvent += toFeedbackTransition.ChangeState;
-			input.EndGameOnePlayerContinueClickedEvent += toMenuTransition.ChangeState;
+			playingStateInput.PauseClickedEvent += toPauseTransition.ChangeState;
+			playingStateInput.EndGameContinueClickedEvent += toFeedbackTransition.ChangeState;
+			playingStateInput.EndGameOnePlayerContinueClickedEvent += toMenuTransition.ChangeState;
 
-			state.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toMenuTransition);
+			playingState.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toMenuTransition);
 
-			return state;
+			return playingState;
 		}
 
 		private InitializingState CreateInitializingState(Client photonClient)

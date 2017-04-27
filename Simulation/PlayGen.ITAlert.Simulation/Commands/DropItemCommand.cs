@@ -45,7 +45,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryHandleCommand(DropItemCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+			if (handlerEnabled
+				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& playerTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple)

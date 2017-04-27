@@ -3,23 +3,22 @@ using System.Linq;
 using Engine.Components;
 using Engine.Events;
 using PlayGen.ITAlert.Simulation.Components.Common;
-using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Scoring.Antivirus
+namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 {
 	public class AnalyserActivationScoringEventHandler : PlayerScoringEventHandler<AnalyserActivationEvent>
 	{
 		private readonly ComponentMatcherGroup<MalwareGenome, CurrentLocation> _malwareMatcherGroup;
 
-		private readonly ComponentMatcherGroup<Simulation.Modules.Antivirus.Components.Antivirus> _antivirusMatcherGroup;
+		private readonly ComponentMatcherGroup<ITAlert.Simulation.Modules.Antivirus.Components.Antivirus> _antivirusMatcherGroup;
 
 		public AnalyserActivationScoringEventHandler(EventSystem eventSystem, IMatcherProvider matcherProvider)
 			: base (eventSystem, matcherProvider)
 		{
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, CurrentLocation>();
-			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Simulation.Modules.Antivirus.Components.Antivirus>();
+			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<ITAlert.Simulation.Modules.Antivirus.Components.Antivirus>();
 		}
 
 		protected override void HandleEvent(AnalyserActivationEvent @event)

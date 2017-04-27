@@ -71,14 +71,6 @@
       <Project>{DC88053B-F802-47E1-9BE4-A7E9F795858D}</Project>
       <Name>Engine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Lifecycle\Engine.Lifecycle.csproj">
-      <Project>{4421783e-7c1b-47bc-b26c-fc7b0653d706}</Project>
-      <Name>Engine.Lifecycle</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
-      <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
-      <Name>Engine.Startup</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Systems.Activation\Engine.Systems.Activation.csproj">
       <Project>{2A59AC2C-B3F4-4416-A74A-FA1B086A2F5B}</Project>
       <Name>Engine.Systems.Activation</Name>
@@ -86,10 +78,6 @@
     <ProjectReference Include="..\Engine\Engine.Systems.RNG\Engine.Systems.RNG.csproj">
       <Project>{291FBAA9-7900-460D-A841-A4B0F7DD5154}</Project>
       <Name>Engine.Systems.RNG</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Engine\Engine.Systems.Scoring\Engine.Systems.Scoring.csproj">
-      <Project>{1CF978CD-C529-4B6B-A294-5C12B1FB87C1}</Project>
-      <Name>Engine.Systems.Scoring</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Systems.Timing\Engine.Systems.Timing.csproj">
       <Project>{E9B71CB8-BD98-4501-A79B-50930F6B8DD6}</Project>
@@ -138,10 +126,6 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scoring\PlayGen.ITAlert.Simulation.Scoring.csproj">
       <Project>{787EACF9-FC52-4306-A929-98720E07B9DB}</Project>
       <Name>PlayGen.ITAlert.Simulation.Scoring</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.UI\PlayGen.ITAlert.Simulation.UI.csproj">
-      <Project>{503b216a-3070-4211-ab66-6b975246cb57}</Project>
-      <Name>PlayGen.ITAlert.Simulation.UI</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>

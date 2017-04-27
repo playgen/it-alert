@@ -26,5 +26,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 				subsystemTuple.Component3.Value = subsystemTuple.Component2.Value * SimulationConstants.CPUMovementSpeedReduction;
 			}
 		}
+
+		public void Dispose()
+		{
+			_subsystemMatcher?.Dispose();
+		}
 	}
 }
