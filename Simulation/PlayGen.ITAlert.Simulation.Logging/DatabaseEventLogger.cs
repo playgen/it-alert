@@ -14,6 +14,7 @@ using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Events;
+using Event = Engine.Events.Event;
 
 namespace PlayGen.ITAlert.Simulation.Logging
 {
@@ -118,6 +119,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 
 		private void StopQueueWorker()
 		{
+			_eventQueueWait.Set();
 			_eventQueueTerminate.Set();
 			_queueWorkerThread.Join(30000);
 		}
@@ -139,6 +141,9 @@ namespace PlayGen.ITAlert.Simulation.Logging
 				case PlayerEvent p:
 					LogPlayerEvent(p);
 					break;
+				default:
+					LogEvent(@event);
+					break;
 			}
 		}
 
@@ -149,7 +154,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 				var playerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.EntityId == playerEvent.PlayerEntityId);
 				if (playerConfig != null)
 				{
-					var @event = new Engine.Logging.Database.Model.Event()
+					var logEvent = new Engine.Logging.Database.Model.Event()
 					{
 						EventCode = playerEvent.GetType().Name,
 						EventId = playerEvent.Sequence,
@@ -159,8 +164,29 @@ namespace PlayGen.ITAlert.Simulation.Logging
 						PlayerId = playerConfig.Id,
 					};
 
-					_context.InstanceEvents.Add(@event);
+					_context.InstanceEvents.Add(logEvent);
 				}
+			}
+			catch (Exception ex)
+			{
+				// TODO: log
+
+			}
+		}
+
+		private void LogEvent(IEvent @event)
+		{
+			try
+			{
+				var logEvent = new Engine.Logging.Database.Model.Event() {
+					EventCode = @event.GetType().Name,
+					EventId = @event.Sequence,
+					Game = _game,
+					Tick = @event.Tick,
+					Data = ConfigurationSerializer.Serialize(@event),
+				};
+
+				_context.InstanceEvents.Add(logEvent);
 			}
 			catch (Exception ex)
 			{

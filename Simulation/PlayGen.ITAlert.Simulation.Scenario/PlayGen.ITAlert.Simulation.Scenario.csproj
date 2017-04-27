@@ -32,10 +32,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Actions\EnqueuePlayerCommand.cs" />
@@ -83,10 +79,6 @@
     <ProjectReference Include="..\Engine\Engine.Systems.Timing\Engine.Systems.Timing.csproj">
       <Project>{E9B71CB8-BD98-4501-A79B-50930F6B8DD6}</Project>
       <Name>Engine.Systems.Timing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{819d263a-c6b4-4be6-92ce-a6f38b1cfe00}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Antivirus\PlayGen.ITAlert.Simulation.Modules.Antivirus.csproj">
       <Project>{c7cffbf9-3c24-4b6f-98af-b42d2308af67}</Project>

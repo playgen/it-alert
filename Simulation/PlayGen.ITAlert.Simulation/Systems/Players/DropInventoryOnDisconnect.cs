@@ -51,8 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 				if (_playerMatcherGroup.TryGetMatchingEntity(player.EntityId, out var playerTuple)
 					&& playerTuple.Component3.Value.HasValue
 					&& playerTuple.Component2.TryGetItemContainer<InventoryItemContainer>(out var inventoryItemContainer)
-					&& inventoryItemContainer.Item.HasValue
-					)
+					&& inventoryItemContainer.Item.HasValue)
 				{
 					if (_subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple))
 					{
@@ -107,5 +106,13 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 		}
 
 		#endregion
+
+		public void Dispose()
+		{
+			_playerMatcherGroup?.Dispose();
+			_subsystemMatcherGroup?.Dispose();
+			_connectionMatcherGroup?.Dispose();
+			_itemMatcherGroup?.Dispose();
+		}
 	}
 }

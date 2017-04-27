@@ -1,5 +1,7 @@
 ﻿using System;
+using PlayGen.ITAlert.Photon.Messages.Game.UI;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
@@ -9,12 +11,14 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	public class VoiceController
 	{
 		private readonly Client _photonClient;
+		private readonly Director _director;
 
-		private VoiceClient VoiceClient => _photonClient.CurrentRoom.VoiceClient;
+		private VoiceClient VoiceClient => _photonClient?.CurrentRoom?.VoiceClient;
 
-		public VoiceController(Client photonClient)
+		public VoiceController(Client photonClient, Director director)
 		{
 			_photonClient = photonClient;
+			_director = director;
 		}
 
 		/// <summary>
@@ -27,16 +31,34 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			{
 				if (VoiceClient != null && _photonClient.CurrentRoom.Players.Count > 1)
 				{
-					if (Input.GetKey(KeyCode.Tab))
+					if (Input.GetKeyDown(KeyCode.Tab))
 					{
-						if (!VoiceClient.IsTransmitting)
+						if (!VoiceClient?.IsTransmitting ?? false)
 						{
 							VoiceClient.StartTransmission();
+							LogProxy.Warning($"Starting voice transmission");
+							if (_director?.Player != null)
+							{
+								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceActivatedMessage()
+								{
+									PlayerId = _director.Player.Id,
+								});
+							}
 						}
 					}
-					else if (VoiceClient.IsTransmitting)
+					if (Input.GetKeyUp(KeyCode.Tab))
 					{
-						VoiceClient.StopTransmission();
+						if (VoiceClient?.IsTransmitting ?? false)
+						{
+							VoiceClient.StopTransmission();
+							if (_director?.Player != null)
+							{
+								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceDeactivatedMessage()
+								{
+									PlayerId = _director.Player.Id,
+								});
+							}
+						}
 					}
 				}
 			}

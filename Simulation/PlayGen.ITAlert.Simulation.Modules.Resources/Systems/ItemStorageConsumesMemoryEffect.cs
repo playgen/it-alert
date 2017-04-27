@@ -36,5 +36,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 				subsystemTuple.Component3.Value = RangeHelper.AssignWithinBounds(sum, 0, subsystemTuple.Component3.Maximum);
 			}
 		}
+
+		public void Dispose()
+		{
+			_subsystemMatcher?.Dispose();
+			_itemMatcher?.Dispose();
+		}
 	}
 }

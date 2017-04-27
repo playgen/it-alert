@@ -116,8 +116,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private void OnReadyButtonClick()
 		{
 			var currentlyReady = _photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready;
-			CommandQueue.AddCommand(new ReadyPlayerCommand(!currentlyReady));
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
+			CommandQueue.AddCommand(new ReadyPlayerCommand(!currentlyReady));
 		}
 
 		private void OnBackButtonClick()
@@ -170,8 +170,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			{
 				var playerItem = Object.Instantiate(_playerItemPrefab).transform;
 
-				Color color;
-				ColorUtility.TryParseHtmlString(player.Color, out color);
+				ColorUtility.TryParseHtmlString(player.Color, out var color);
 				if (color == Color.white)
 				{
 					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
@@ -263,6 +262,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private void OnPlayersChanged(List<Player> players)
 		{
 			UpdatePlayerList(players);
+
+			if (players.All(player => player.State == (int) ITAlert.Photon.Players.ClientState.Ready))
+			{
+				PlayGen.Unity.Utilities.Loading.Loading.Start();
+			}
+			else
+			{
+				PlayGen.Unity.Utilities.Loading.Loading.Stop();
+			}
+
 			SetPlayerColors(players);
 		}
 	}

@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Zenject">
       <HintPath>..\..\lib\Zenject\Zenject.dll</HintPath>
@@ -61,14 +60,6 @@
     <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
       <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
       <Name>Engine.Startup</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Common\PlayGen.ITAlert.Simulation.Common.csproj">
-      <Project>{819D263A-C6B4-4BE6-92CE-A6F38B1CFE00}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Configuration\PlayGen.ITAlert.Simulation.Configuration.csproj">
-      <Project>{79FA84E4-8380-4298-A823-3C0976D527EF}</Project>
-      <Name>PlayGen.ITAlert.Simulation.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>

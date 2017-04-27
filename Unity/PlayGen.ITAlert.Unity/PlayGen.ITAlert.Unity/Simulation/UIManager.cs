@@ -1,6 +1,8 @@
 ﻿using System;
 using Engine.Lifecycle;
 using Engine.Systems.Timing;
+using PlayGen.ITAlert.Simulation.Configuration;
+using PlayGen.ITAlert.Simulation.Scoring.Team;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +37,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		[SerializeField]
 		private Director _director;
 
+		[SerializeField]
+		private GameObject _teamSCoreOverlay;
+
+		[SerializeField]
+		private Text _teamScoreText;
+
 		#endregion
 
 		private void Start()
@@ -66,6 +74,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					return;
 			}
 			_endGameOverlay.SetActive(true);
+
+			if (_director.SimulationRoot.Scenario.Scoring != SimulationScenario.ScoringMode.None)
+			{
+				_teamSCoreOverlay.SetActive(true);
+				if (_director.SimulationRoot.ECS.TryGetSystem<TeamScoringSystem>(out var teamScoringSystem))
+				{
+					_teamScoreText.text = teamScoringSystem.CumulativeScore.ToString("d5");
+				}
+			}
 			_timerText.transform.parent.gameObject.SetActive(false);
 			_itemPanel.SetActive(false);
 		}
@@ -81,7 +98,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			_timerText.text = _director.SimulationRoot.ECS.TryGetSystem<TimerSystem>(out var timerSystem)
 				&& timerSystem.Enabled
-				? $"{timerSystem.Current.Minutes:00}.{timerSystem.Current.Seconds:00}"
+				? $"{timerSystem.Current.Minutes:00}:{timerSystem.Current.Seconds:00}"
 				: _director.Tick.ToString("d5");
 		}
 
@@ -96,6 +113,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_timerText.transform.parent.gameObject.SetActive(true);
 			_itemPanel.SetActive(true);
 			_timerText.text = 0.ToString("d5");
+			_teamSCoreOverlay.SetActive(false);
+			_teamScoreText.text = 0.ToString("d5");
 		}
 	}
 }

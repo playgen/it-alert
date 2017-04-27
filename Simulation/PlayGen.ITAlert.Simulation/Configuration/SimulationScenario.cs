@@ -10,6 +10,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	public class SimulationScenario : Scenario<Simulation, SimulationConfiguration>
 	{
+		public enum ScoringMode
+		{
+			None = 0,
+			Team,
+			Player,
+			Full,
+		}
+
 		public IPlayerConfigFactory PlayerConfigFactory { get; set; }
 
 		/// <summary>
@@ -18,6 +26,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 		public LocalizationDictionary LocalizationDictionary { get; set; }
 
 		public int? TimeLimitSeconds { get; set; }
+
+		public ScoringMode Scoring { get; set; }
 
 		public SimulationScenario()
 		{

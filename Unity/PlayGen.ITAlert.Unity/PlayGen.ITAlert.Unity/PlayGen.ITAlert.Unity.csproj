@@ -60,6 +60,10 @@
     <Reference Include="Engine.Systems.RNG">
       <HintPath>..\..\..\bin\simulation\Engine.Systems.RNG.dll</HintPath>
     </Reference>
+    <Reference Include="Engine.Systems.Scoring, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\simulation\Engine.Systems.Scoring.dll</HintPath>
+    </Reference>
     <Reference Include="Engine.Systems.Timing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Simulation\Engine.Systems.Timing.dll</HintPath>
@@ -136,6 +140,9 @@
     <Reference Include="PlayGen.ITAlert.Simulation.Scenario.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Scenario.Localization.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scoring">
+      <HintPath>..\..\..\bin\simulation\PlayGen.ITAlert.Simulation.Scoring.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Simulation.Startup">
       <HintPath>..\..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>

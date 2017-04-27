@@ -343,7 +343,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new WaitForTicks(10),
+					ExitCondition = new WaitForTicks(5),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new EndGame(EndGameState.Success),

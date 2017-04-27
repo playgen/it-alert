@@ -7,19 +7,12 @@ using Engine.Commands;
 using Engine.Entities;
 using Engine.Lifecycle;
 using Engine.Serialization;
-using Engine.Systems;
-using GameWork.Core.Commands;
-using ModestTree;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
-using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
-using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {

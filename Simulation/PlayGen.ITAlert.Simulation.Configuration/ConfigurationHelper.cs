@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using Engine.Archetypes;
 using Engine.Configuration;
-using Engine.Startup;
 using Engine.Util;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Common;

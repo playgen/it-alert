@@ -2,7 +2,7 @@
 using Engine.Events;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Events;
 
-namespace PlayGen.ITAlert.Scoring.Transfer
+namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 {
 	public class TransferActivationScoringEventHandler : PlayerScoringEventHandler<TransferActivationEvent>
 	{

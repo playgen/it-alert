@@ -43,11 +43,13 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Simulation\Engine.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Game\Commands\PlayStateCommandMessage.cs" />
+    <Compile Include="Game\UI\PlayerVoiceDeactivatedMessage.cs" />
+    <Compile Include="Game\UI\PlayerVoiceActivatedMessage.cs" />
+    <Compile Include="Game\UI\UIEventMessage.cs" />
     <Compile Include="ITAlertChannel.cs" />
     <Compile Include="Feedback\PlayerFeedbackMessage.cs" />
     <Compile Include="Game\Commands\StartGameMessage.cs" />

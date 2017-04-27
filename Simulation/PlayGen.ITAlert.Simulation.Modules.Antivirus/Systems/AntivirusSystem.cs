@@ -13,7 +13,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 {
 	public class AntivirusSystem : ITickableSystem
 	{
-		private readonly ComponentMatcherGroup<Engine.Systems.Activation.Components.Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> _antivirusMatcherGroup;
+		private readonly ComponentMatcherGroup<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> _antivirusMatcherGroup;
 		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
 		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
 
@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 		public AntivirusSystem(IMatcherProvider matcherProvider,
 			EventSystem eventSystem)
 		{
-			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Engine.Systems.Activation.Components.Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation>();
+			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation>();
 			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
 			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
 
@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			}
 		}
 
-		private void OnDeactivating(ComponentEntityTuple<Engine.Systems.Activation.Components.Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> entityTuple)
+		private void OnDeactivating(ComponentEntityTuple<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> entityTuple)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&&_visitorsMatcherGroup.TryGetMatchingEntity(entityTuple.Component3.Value.Value, out var locationTuple))
@@ -84,7 +84,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 				_eventSystem.Publish(@event);
 			}
-			entityTuple.Component4.Value = null;
 		}
 
 		public void Dispose()

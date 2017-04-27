@@ -25,5 +25,10 @@ namespace PlayGen.ITAlert.Simulation.Modules.Resources.Systems
 				subsystemTuple.Component2.Value = 0;
 			}
 		}
+
+		public void Dispose()
+		{
+			_subsystemMatcher?.Dispose();
+		}
 	}
 }

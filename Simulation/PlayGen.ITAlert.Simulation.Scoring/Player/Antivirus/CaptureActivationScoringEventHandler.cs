@@ -1,14 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Engine.Components;
 using Engine.Events;
-using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
-using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 
-namespace PlayGen.ITAlert.Scoring.Antivirus
+namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 {
 	public class CaptureActivationScoringEventHandler : PlayerScoringEventHandler<CaptureActivationEvent>
 	{

@@ -48,10 +48,10 @@ namespace PlayGen.Photon.Unity.Client
 			Logger.PlayerPhotonId = photonClientWrapper.Player.ID;
 			Messenger.Subscribe((int)Channels.Players, ProcessPlayersMessage);
 
-			if (VoiceSettings.Instance.Enabled)
-			{
+			//if (VoiceSettings.Instance.Enabled)
+			//{
 				_voiceClient = new VoiceClient();
-			}
+			//}
 
 			Players = new List<Player>();
 

@@ -2,9 +2,7 @@
 using Engine.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Commands.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
-using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 

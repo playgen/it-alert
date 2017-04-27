@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Commands;
+using Engine.Events;
 using Engine.Lifecycle;
 using Engine.Serialization;
 using Photon.Hive.Plugin;
@@ -8,10 +9,12 @@ using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
+using PlayGen.ITAlert.Photon.Messages.Game.UI;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
+using PlayGen.ITAlert.Photon.Plugin.Events;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.Photon.Analytics;
@@ -41,14 +44,51 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 			Messenger.Subscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 			Messenger.Subscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
+			Messenger.Subscribe((int)ITAlertChannel.UiEvent, ProcessUiEventMessage);
 
 			Messenger.SendAllMessage(new PlayingMessage());
+		}
+
+		private void ProcessUiEventMessage(Message message)
+		{
+			var uiEventMessage = message as UIEventMessage;
+			if (uiEventMessage != null)
+			{
+				switch (uiEventMessage)
+				{
+					case PlayerVoiceActivatedMessage pva:
+						PublishSimulationEvent(new PlayerVoiceEvent()
+						{
+							Mode = PlayerVoiceEvent.Signal.Activated,
+							PlayerEntityId = pva.PlayerId,
+						});
+						break;
+
+					case PlayerVoiceDeactivatedMessage pvd:
+						PublishSimulationEvent(new PlayerVoiceEvent() {
+							Mode = PlayerVoiceEvent.Signal.Deactivated,
+							PlayerEntityId = pvd.PlayerId,
+						});
+						break;
+				}
+
+			}
+		}
+
+		private void PublishSimulationEvent(IEvent @event)
+		{
+			if (_simulationLifecycleManager.ECSRoot.ECS.TryGetSystem<EventSystem>(out var eventSystem))
+			{
+				eventSystem.Publish(@event);
+			}
 		}
 
 		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)ITAlertChannel.SimulationCommand, ProcessSimulationCommandMessage);
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
+			Messenger.Unsubscribe((int)ITAlertChannel.UiEvent, ProcessUiEventMessage);
+
 			Shutdown();
 		}
 

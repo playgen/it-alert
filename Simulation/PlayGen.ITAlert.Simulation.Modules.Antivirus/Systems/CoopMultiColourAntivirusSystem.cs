@@ -106,7 +106,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 						
 				}
 			}
-			itemTuple.Component4.Value = null;
 		}
 
 		public void Dispose()
