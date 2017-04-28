@@ -14,9 +14,9 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
-using PlayGen.ITAlert.Photon.Plugin.Events;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
+using PlayGen.ITAlert.Simulation.UI.Events;
 using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
@@ -89,10 +89,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 			Messenger.Unsubscribe((int)ITAlertChannel.UiEvent, ProcessUiEventMessage);
 
-			Shutdown();
+			Shutdown(false);
 		}
 
-		private void Shutdown()
+		private void Shutdown(bool dispose)
 		{
 			switch (_simulationLifecycleManager.EngineState)
 			{
@@ -103,7 +103,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 			_simulationLifecycleManager.Tick -= OnTick;
 			_simulationLifecycleManager.TryStop();
-			_simulationLifecycleManager.Dispose();
+
+			if (dispose)
+			{
+				_simulationLifecycleManager.Dispose();
+			}
 		}
 
 		private void ProcessGameStateMessage(Message message)
@@ -167,7 +171,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		{
 			if (PlayerManager.Players.Count == 0)
 			{
-				Shutdown();
+				Shutdown(true);
 			}
 			else
 			{

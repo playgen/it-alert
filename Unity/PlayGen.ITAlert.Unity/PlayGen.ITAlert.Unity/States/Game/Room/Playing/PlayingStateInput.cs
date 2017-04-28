@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 
@@ -18,10 +19,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		private Button _continueButton;
 
 		private readonly Client _photonClient;
+		private readonly Director _director;
 
-		public PlayingStateInput(Client photonClient)
+		public PlayingStateInput(Client photonClient, Director director)
 		{
 			_photonClient = photonClient;
+			_director = director;
 		}
 
 		protected override void OnInitialize()
@@ -37,7 +40,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private void OnContinueClick()
 		{
-			if (_photonClient.CurrentRoom.Players.Count > 1)
+			if (_director.Players.Count > 1)
 			{
 				EndGameContinueClickedEvent?.Invoke();
 			}

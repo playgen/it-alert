@@ -25,6 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				new SPL1(),
 				new SPL2(),
 				new SPL3(),
+				new Dev1(), 
 			}
 			.ToDictionary(k => k.ScenarioInfo.Key, v => v);
 		}

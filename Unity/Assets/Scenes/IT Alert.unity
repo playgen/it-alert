@@ -2006,11 +2006,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: d2d22ca2cb8eadc4bbefa57c867abf73, type: 3}
-    m_FontSize: 300
+    m_FontSize: 250
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 300
+    m_MaxSize: 250
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -3131,11 +3131,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: d2d22ca2cb8eadc4bbefa57c867abf73, type: 3}
-    m_FontSize: 300
+    m_FontSize: 250
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 300
+    m_MaxSize: 250
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -4484,7 +4484,7 @@ Prefab:
     - target: {fileID: 224085829995395426, guid: 0580bfdd6f95be247a026bff45e954cd,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: -62.386932
+      value: -62.392864
       objectReference: {fileID: 0}
     - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
         type: 2}
@@ -4504,12 +4504,16 @@ Prefab:
     - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -122.423065
+      value: -122.38609
       objectReference: {fileID: 0}
     - target: {fileID: 224166110850634504, guid: 0580bfdd6f95be247a026bff45e954cd,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 244.84613
+      value: 244.77219
+      objectReference: {fileID: 0}
+    - target: {fileID: 1676490320195754, guid: 0580bfdd6f95be247a026bff45e954cd, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0580bfdd6f95be247a026bff45e954cd, type: 2}
@@ -6213,11 +6217,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 12800000, guid: d2d22ca2cb8eadc4bbefa57c867abf73, type: 3}
-    m_FontSize: 300
+    m_FontSize: 250
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 0
-    m_MaxSize: 300
+    m_MaxSize: 250
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1

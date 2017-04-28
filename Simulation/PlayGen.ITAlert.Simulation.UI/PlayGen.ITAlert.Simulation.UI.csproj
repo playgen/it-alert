@@ -35,6 +35,8 @@
   <ItemGroup>
     <Compile Include="Components\Items\ResourceExtensions.cs" />
     <Compile Include="Components\Items\TimedActivationExtensions.cs" />
+    <Compile Include="Events\PlayerFeedbackEvent.cs" />
+    <Compile Include="Events\PlayerVoiceEvent.cs" />
     <Compile Include="MalwareColour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,6 +56,10 @@
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Modules.Resources\PlayGen.ITAlert.Simulation.Modules.Resources.csproj">
       <Project>{6db29f2d-f16f-4680-a3c2-27080606cc9d}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Resources</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
+      <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
+      <Name>PlayGen.ITAlert.Simulation</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

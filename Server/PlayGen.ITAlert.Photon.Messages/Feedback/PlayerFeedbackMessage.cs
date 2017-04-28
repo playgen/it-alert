@@ -9,6 +9,6 @@ namespace PlayGen.ITAlert.Photon.Messages.Feedback
 
 		public int PlayerPhotonId { get; set; }
 
-		public Dictionary<string, int[]> RankedPlayerPhotonIdBySection { get; set; }
+		public Dictionary<int, int[]> RankedPlayerPhotonIdBySection { get; set; }
 	}
 }
