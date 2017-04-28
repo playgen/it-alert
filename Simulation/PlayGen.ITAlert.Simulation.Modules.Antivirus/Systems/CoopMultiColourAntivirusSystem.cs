@@ -77,7 +77,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 					{
 						if ((malwareVisitor.Component1.Value & combinedGenome) == malwareVisitor.Component1.Value)
 						{
-							malwareVisitor.Entity.Dispose();
 
 							foreach (var antivirus in activeAntivirus)
 							{
@@ -89,6 +88,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 								PlayerEntityId = itemTuple.Component4.Value.Value,
 								ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
 								LocationEntityId = locationTuple.Entity.Id,
+								GenomeEradicated = malwareVisitor.Component1.Value,
 							};
 							_eventSystem.Publish(@event);
 
@@ -98,9 +98,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 									PlayerEntityId = otherPlayer.Value,
 									ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
 									LocationEntityId = locationTuple.Entity.Id,
+									GenomeEradicated = malwareVisitor.Component1.Value,
 								};
 								_eventSystem.Publish(@event);
 							}
+
+							malwareVisitor.Entity.Dispose();
 						}
 					}
 						

@@ -115,7 +115,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			foreach (var status in VoiceClient.TransmittingStatuses)
 			{
-				_playerVoiceIcons[status.Key].enabled = status.Value;
+				if (_playerVoiceIcons.ContainsKey(status.Key))
+				{
+					_playerVoiceIcons[status.Key].enabled = status.Value;
+				}
 			}
 		}
 	}

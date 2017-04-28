@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 		/// <summary>
 		/// should the sample be consumed by the analysis process
 		/// </summary>
-		private const bool ConsumeSample = false;
+		private const bool ConsumeSample = true;
 		
 		private readonly ComponentMatcherGroup<Engine.Systems.Activation.Components.Activation, Analyser, CurrentLocation, Owner> _analyserMatcherGroup;
 		private readonly ComponentMatcherGroup<Subsystem, ItemStorage> _subsystemMatcherGroup;
@@ -111,8 +111,6 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 				if (analysisOutputItemContainer.Item.HasValue == false)
 				{
-					_eventSystem.Publish(@event);
-
 					if (_entityFactoryProvider.TryCreateItem(AntivirusTool.Archetype, locationTuple.Entity.Id, null, out var antivirusTuple)
 						&& antivirusTuple.Entity.TryGetComponent<Components.Antivirus>(out var antivirus))
 					{

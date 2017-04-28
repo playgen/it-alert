@@ -21,16 +21,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 		private readonly ComponentMatcherGroup<Connection, GraphNode> _connectionMatcherGroup;
 		private readonly ComponentMatcherGroup<Item, Owner, CurrentLocation> _itemMatcherGroup;
 
-
-		private readonly SimulationConfiguration _configuration;
-
-		// TODO: temporary workaround for circular dependency
-		// CommandQueue -> CommandSystem -> CreatePlayerCommandHandler -> Playersystem -> this
-
-		public DropInventoryOnDisconnect(SimulationConfiguration configuration, 
-			IMatcherProvider matcherProvider)
+		public DropInventoryOnDisconnect(IMatcherProvider matcherProvider)
 		{
-			_configuration = configuration;
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
 			_connectionMatcherGroup = matcherProvider.CreateMatcherGroup<Connection, GraphNode>();
@@ -43,34 +35,26 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 		{
 		}
 
-		public void OnPlayerDisconnected(int playerExternalId)
+		public void OnPlayerDisconnected(int playerEntityId)
 		{
-			var player = _configuration.PlayerConfiguration.SingleOrDefault(p => p.ExternalId == playerExternalId);
-			if (player != null)
+			if (_playerMatcherGroup.TryGetMatchingEntity(playerEntityId, out var playerTuple)
+				&& playerTuple.Component3.Value.HasValue
+				&& playerTuple.Component2.TryGetItemContainer<InventoryItemContainer>(out var inventoryItemContainer)
+				&& inventoryItemContainer.Item.HasValue)
 			{
-				if (_playerMatcherGroup.TryGetMatchingEntity(player.EntityId, out var playerTuple)
-					&& playerTuple.Component3.Value.HasValue
-					&& playerTuple.Component2.TryGetItemContainer<InventoryItemContainer>(out var inventoryItemContainer)
-					&& inventoryItemContainer.Item.HasValue)
+				if (_subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple))
 				{
-					if (_subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple))
+					if (TryHandleDisconectOnSubsystem(subsystemTuple, playerTuple, inventoryItemContainer) == false)
 					{
-						if (TryHandleDisconectOnSubsystem(subsystemTuple, playerTuple, inventoryItemContainer) == false)
-						{
 							
-						}
 					}
-					else if (_connectionMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var connectionTuple))
-					{
+				}
+				else if (_connectionMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var connectionTuple))
+				{
 						
-					}
-
 				}
 
-
 			}
-
-			// do nothing
 		}
 
 		private bool TryHandleDisconectOnSubsystem(ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple,

@@ -22,8 +22,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 	// TODO: use zenject singleton container rather than statics
 	public sealed class Director : MonoBehaviour
 	{
-		
-
 		public string InstanceId => SimulationRoot.ToString();
 
 		public event Action<EndGameState> GameEnded;
@@ -95,13 +93,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		/// </summary>
 		private PlayerBehaviour _activePlayer;
 
-		public PlayerBehaviour Player
-		{
-			get
-			{
-				return _activePlayer;
-			}
-		}
+		public PlayerBehaviour Player => _activePlayer;
 
 		public PlayerBehaviour[] Players { get; private set; }
 
@@ -294,6 +286,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							LogProxy.Info($"Selected active player with id {playerServerId}: entity {playerBehaviour.Entity.Id}");
 							_activePlayer = playerBehaviour;
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
+							if (player.ExternalId.HasValue)
+							{
+								playerBehaviour.PhotonPlayerId = player.ExternalId.Value;
+							}
 						}
 					}
 					else
@@ -398,7 +394,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								uint crc = 0;
 								var state = SimulationRoot.GetEntityState(out crc);
 #if LOG_ENTITYSTATE
-								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.json", state);
+								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.{Player.PhotonPlayerId}.json", state);
 #endif
 								if (tickMessage.CRC != crc)
 								{

@@ -72,9 +72,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 				{
 					if ((malwareVisitor.Component1.Value & entityTuple.Component2.TargetGenome) == malwareVisitor.Component1.Value)
 					{
-						malwareVisitor.Entity.Dispose();
-
+						@event.GenomeEradicated = malwareVisitor.Component1.Value;
 						@event.ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination;
+						malwareVisitor.Entity.Dispose();
 					}
 					else
 					{

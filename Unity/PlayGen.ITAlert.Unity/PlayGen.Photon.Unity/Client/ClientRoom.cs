@@ -124,8 +124,8 @@ namespace PlayGen.Photon.Unity.Client
 
 				if (player == null)
 				{
-					throw new PhotonClientException($"The current player with Id: {PhotonNetwork.player.ID} " +
-													$"is not in the server's player list for this room.");
+					return;
+					//throw new PhotonClientException($"The current player with Id: {PhotonNetwork.player.ID} " + $"is not in the server's player list for this room.");
 				}
 
 				Players.Remove(player);

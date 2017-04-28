@@ -10,6 +10,7 @@ using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Archetypes;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Components;
 using PlayGen.ITAlert.Simulation.Modules.Transfer.Archetypes;
@@ -198,6 +199,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node30.Id, node02.Id, node32.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
+
+				Scoring = SimulationScenario.ScoringMode.Full,
 			};
 
 			var redSpawnSequence = new NodeSequence(new[]
@@ -267,8 +270,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 					},
 					OnTickActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(redSpawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)), new EntityDisposed<Malware>(new MalwareGenomeFilter(SimulationConstants.MalwareGeneRed))),
-						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(greenSpawnSequence, ec => new CreateMalware(GreenVirus.Archetype, ec)), new EntityDisposed<Malware>(new MalwareGenomeFilter(SimulationConstants.MalwareGeneGreen))),
+						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(redSpawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)),
+							new OnEvent<AntivirusActivationEvent>(aae => (aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
+																		|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination)
+																		&& aae.GenomeEradicated == SimulationConstants.MalwareGeneRed)),
+						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(greenSpawnSequence, ec => new CreateMalware(GreenVirus.Archetype, ec)),
+							new OnEvent<AntivirusActivationEvent>(aae => (aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
+																		|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination)
+																		&& aae.GenomeEradicated == SimulationConstants.MalwareGeneGreen)),
+
 					},
 					ExitCondition = new WaitForTimer(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

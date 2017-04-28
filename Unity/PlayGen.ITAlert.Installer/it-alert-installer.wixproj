@@ -25,7 +25,7 @@
     <Compile Include="source.wxs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Unity\Unity.csproj">
+    <ProjectReference Include="..\Unity.csproj">
       <Name>IT-Alert</Name>
       <Project>{C1023420-5EAE-419C-85C5-5AB9C24C5095}</Project>
       <Private>True</Private>
