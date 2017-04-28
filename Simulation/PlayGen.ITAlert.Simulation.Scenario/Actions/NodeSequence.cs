@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Actions
 			public bool MoveNext()
 			{
 				_currentIndex = _cyclical
-					? _currentIndex + 1 % _sequence.Length
+					? (_currentIndex + 1) % _sequence.Length
 					: _currentIndex + 1;
 
 				if (_currentIndex >= _sequence.Length)

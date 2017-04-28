@@ -60,6 +60,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						Implementations = new SystemExtensionImplementation[]
 						{
 							new SystemExtensionConfiguration<IPlayerSystemBehaviour>.SystemExtensionImplementation<DropInventoryOnDisconnect>(),
+							new SystemExtensionConfiguration<IPlayerSystemBehaviour>.SystemExtensionImplementation<DisposePlayerOnDisconnect>(),
 						}
 					}
 				}
@@ -166,6 +167,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							// testing
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HaltAndCatchFireCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<EndGameCommandHandler>(), 
+							
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PlayerDisconnectedCommandHandler>(), 
+
 						}
 
 					}

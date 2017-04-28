@@ -90,12 +90,18 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 
 		public void PlayerDisconnected(int playerExternalId)
 		{
-			ExecuteBehaviourAction(psb => psb.OnPlayerDisconnected(playerExternalId));
+			if (TryGetPlayerEntityId(playerExternalId, out var playerEntityId))
+			{
+				ExecuteBehaviourAction(psb => psb.OnPlayerDisconnected(playerEntityId));
+			}
 		}
 
 		public void PlayerJoined(int playerExternalId)
 		{
-			ExecuteBehaviourAction(psb => psb.OnPlayerJoined(playerExternalId));
+			if (TryGetPlayerEntityId(playerExternalId, out var playerEntityId))
+			{
+				ExecuteBehaviourAction(psb => psb.OnPlayerJoined(playerEntityId));
+			}
 		}
 
 		private void ExecuteBehaviourAction(Action<IPlayerSystemBehaviour> action)

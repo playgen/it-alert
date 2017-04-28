@@ -40,13 +40,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_director = director;
 				GameObject = gameObject;
 				ContainerBehaviour = gameObject.GetComponent<ItemContainerBehaviour>();
-				ContainerBehaviour.ContainerIndex = containerIndex;
 				_itemTransform = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>();
 
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
 				{
-					ContainerBehaviour.Initialize(ItemContainer, _director);
+					ContainerBehaviour.Initialize(ItemContainer, _director, containerIndex);
 				}
 
 				ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);

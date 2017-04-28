@@ -8,9 +8,9 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 {
 	public interface IPlayerSystemBehaviour : ISystemExtension
 	{
-		void OnPlayerJoined(int playerExternalId);
+		void OnPlayerJoined(int playerEntityId);
 
-		void OnPlayerDisconnected(int playerExternalId);
+		void OnPlayerDisconnected(int playerEntityId);
 
 	}
 }

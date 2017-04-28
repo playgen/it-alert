@@ -71,7 +71,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
 				var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
 
-				if (subsystemHits.Length == 1)
+				if (subsystemHits.Length == 1 && itemHits.Length == 1 && itemContainerHits.Length == 1)
+				{
+					OnClickItemInContainer(itemHits[0], itemContainerHits[0], clickDown);
+				}
+				else if (subsystemHits.Length == 1)
 				{
 					OnClickSubsystem(subsystemHits[0], clickDown);
 				}
@@ -134,7 +138,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				if (container.OnClickDown())
 				{
-					if (itemdrag.OnClickDown(containerHit))
+					if (itemdrag?.OnClickDown(containerHit) ?? true)
 					{
 						_lastClicked.Add(itemHit);
 					}
@@ -143,7 +147,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				if (itemdrag.OnClickUp(out var containerIndex, out var dragged))
+				if (itemdrag == null)
+				{
+					container.OnClickUp(item, container.ContainerIndex, false);
+				}
+				else if (itemdrag.OnClickUp(out var containerIndex, out var dragged))
 				{
 					container.OnClickUp(item, containerIndex, dragged);
 				}
@@ -181,8 +189,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void ItemClickReset(RaycastHit2D itemHit)
 		{
 			var item = itemHit.collider.GetComponent<ItemDragBehaviour>();
-			item.ClickReset();
-			item.PositionReset();
+			item?.ClickReset();
+			item?.PositionReset();
 		}
 
 		private void ItemContainerClickReset(RaycastHit2D containerHit)

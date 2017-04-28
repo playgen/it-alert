@@ -43,6 +43,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public int? DestinationSystemId => _destination.Value;
 
+		public int PhotonPlayerId { get; set; }
+
 		#region Initialization
 
 		public void Awake()

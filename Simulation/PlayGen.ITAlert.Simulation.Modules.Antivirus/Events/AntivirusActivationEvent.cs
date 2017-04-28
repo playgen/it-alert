@@ -23,6 +23,8 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 		public int LocationEntityId { get; set; }
 
 		public int Uses { get; set; }
+
+		public int GenomeEradicated { get; set; }
 	}
 
 

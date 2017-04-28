@@ -44,6 +44,7 @@
     <Compile Include="Actions\SetDestination.cs" />
     <Compile Include="Actions\SetCommandEnabled.cs" />
     <Compile Include="Configuration\StartingLocationSequencePlayerConfigFactory.cs" />
+    <Compile Include="Evaluators\OnEvent.cs" />
     <Compile Include="Evaluators\Filters\MalwareGenomeFilter.cs" />
     <Compile Include="Evaluators\Filters\ItemContainerTypeFilter.cs" />
     <Compile Include="Evaluators\Filters\IEntityFilter.cs" />

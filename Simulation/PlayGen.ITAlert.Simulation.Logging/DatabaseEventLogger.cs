@@ -80,6 +80,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 		{
 			while (true)
 			{
+				IEvent[] queuedEvents;
 				try
 				{
 					var handle = WaitHandle.WaitAny(new WaitHandle[]
@@ -93,7 +94,6 @@ namespace PlayGen.ITAlert.Simulation.Logging
 					}
 					if (handle == 1)
 					{
-						IEvent[] queuedEvents;
 
 						lock (_eventQueueLock)
 						{

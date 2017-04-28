@@ -29,6 +29,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		public event Action JoinGameSuccessEvent;
 		public event Action BackClickedEvent;
 
+		private const float AutomaticRefreshInterval = 1;
+		private float _timeSinceLastRefresh;
+
 		public GamesListStateInput(Client photonClient, GamesListController gameListController)
 		{
 			_photonClient = photonClient;
@@ -53,6 +56,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		{
 			CommandQueue.AddCommand(new RefreshGamesListCommand());
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
+			_timeSinceLastRefresh = 0;
 		}
 
 		private void OnBackClick()
@@ -99,6 +103,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnBackClick();
+			}
+
+			_timeSinceLastRefresh += deltaTime;
+			if (_timeSinceLastRefresh > AutomaticRefreshInterval)
+			{
+				OnRefreshClick();
 			}
 		}
 

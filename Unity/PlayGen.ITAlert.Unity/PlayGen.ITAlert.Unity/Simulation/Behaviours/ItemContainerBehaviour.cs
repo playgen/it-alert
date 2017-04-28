@@ -36,7 +36,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool ClickEnable { get; set; }
 
-		public int ContainerIndex { get; set; }
+		public int ContainerIndex { get; private set; }
 
 		// TODO: push this down int othe item containers
 
@@ -56,12 +56,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//Canvas.ForceUpdateCanvases();
 		}
 
-		public void Initialize(ItemContainer itemContainer, Director director)
+		public void Initialize(ItemContainer itemContainer, Director director, int? containerIndex = null)
 		{
 			Director = director;
 			if (itemContainer != _itemContainer)
 			{
 				_itemContainer = itemContainer;
+				if (containerIndex.HasValue)
+				{
+					ContainerIndex = containerIndex.Value;
+				}
 
 				var itemContainerTypeName = itemContainer?.GetType().Name.ToLowerInvariant();
 				var sprite = String.IsNullOrEmpty(SpriteOverride)

@@ -26,6 +26,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			new Vector2(-30, 130),
 		};
 
+		private readonly Vector2[] _itemContainerColliderOffsets = new Vector2[4]
+		{
+			new Vector2(130, -130),
+			new Vector2(-130, -130),
+			new Vector2(130, 130),
+			new Vector2(-130, 130),
+		};
+
 		private readonly Vector2[] _itemContainerOffsets = new Vector2[4]
 		{
 			new Vector2(0, 1),
@@ -171,14 +179,28 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
 				itemContainerObject.transform.SetParent(this.transform, false);
 				itemContainerObject.name = $"ItemContainer_{i}";
+				itemContainerObject.GetComponent<BoxCollider2D>().offset = _itemContainerColliderOffsets[i];
 
 				_itemContainers.Add(itemContainerObject);
 
 				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
-				itemContainerBehaviour.Initialize(itemContainer, Director);
+				itemContainerBehaviour.Initialize(itemContainer, Director, i);
+				itemContainerBehaviour.Click += SystemContainerBehaviourOnClick;
 				SetItemPosition(i, _itemContainers[i]);
 
 			});
+		}
+
+		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
+		{
+			if (Director.Player.CurrentLocationEntity.Id == Entity.Id
+				&& itemContainerBehaviour.State == ContainerState.HasItem)
+			{
+				if (itemContainerBehaviour.TryGetItem(out var item))
+				{
+					PlayerCommands.ActivateItem(item.Id);
+				}
+			}
 		}
 
 		private void SetItemPosition(int index, GameObject go)
@@ -188,6 +210,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			rectTransform.anchorMax = _itemContainerOffsets[index];
 			rectTransform.pivot = _itemContainerPivots[index];
 			rectTransform.anchoredPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
+			go.GetComponent<BoxCollider2D>().offset = _itemContainerColliderOffsets[index];
 		}
 
 		private void SetPosition()
