@@ -14,6 +14,8 @@ using MySql.Data.Entity;
 using MySql.Data.MySqlClient;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Events;
+using PlayGen.ITAlert.Simulation.Logging.Models;
+using PlayGen.ITAlert.Simulation.UI.Events;
 using Event = Engine.Events.Event;
 
 namespace PlayGen.ITAlert.Simulation.Logging
@@ -24,7 +26,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 		private readonly EventSystem _eventSystem;
 
 		private DbConnection _connection;
-		private EventLogContext _context;
+		private ITAlertLoggingContext _context;
 
 		private GameInstance _game;
 		private IDisposable _subscription;
@@ -50,7 +52,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 			DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
 
 			_connection = new MySqlConnection(connectionString);
-			_context = new EventLogContext(_connection, true);
+			_context = new ITAlertLoggingContext(_connection, true);
 			_context.Database.CreateIfNotExists();
 			
 			CreateGame();
@@ -138,12 +140,41 @@ namespace PlayGen.ITAlert.Simulation.Logging
 		{
 			switch (@event)
 			{
+				case PlayerFeedbackEvent pf:
+					LogPlayerFeedback(pf);
+					break;
 				case PlayerEvent p:
 					LogPlayerEvent(p);
 					break;
 				default:
 					LogEvent(@event);
 					break;
+			}
+		}
+
+		private void LogPlayerFeedback(PlayerFeedbackEvent playerFeedbackEvent)
+		{
+			try
+			{
+				var playerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.ExternalId == playerFeedbackEvent.PlayerExternalId);
+				var rankedPlayerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.ExternalId == playerFeedbackEvent.PlayerExternalId);
+				if (playerConfig != null && rankedPlayerConfig != null)
+				{
+					var playerFeedback = new PlayerFeedback() {
+						Game = _game,
+						PlayerId = playerConfig.Id,
+						RankedPlayerId = rankedPlayerConfig.Id,
+						RankingCategory0 = playerFeedbackEvent.PlayerRankings[0],
+						RankingCategory1 = playerFeedbackEvent.PlayerRankings[1],
+						RankingCategory2 = playerFeedbackEvent.PlayerRankings[2],
+					};
+					_context.PlayerFeedback.Add(playerFeedback);
+				}
+			}
+			catch (Exception ex)
+			{
+				// TODO: log
+
 			}
 		}
 

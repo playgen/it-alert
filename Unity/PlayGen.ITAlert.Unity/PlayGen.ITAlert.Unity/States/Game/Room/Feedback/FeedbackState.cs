@@ -12,10 +12,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		private readonly Client _photonClient;
 
-		public override string Name
-		{
-			get { return StateName; }
-		}
+		public override string Name => StateName;
 
 		public FeedbackState(FeedbackStateInput input, Client photonClient) : base(input)
 		{
@@ -28,7 +25,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			Logger.LogDebug("Entered " + StateName);
 		}
 
-		private void OnPlayerRankingsComplete(Dictionary<string, int[]> rankedPlayerPhotonIdBySection)
+		private void OnPlayerRankingsComplete(Dictionary<int, int[]> rankedPlayerPhotonIdBySection)
 		{
 			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayerFeedbackMessage()
 			{

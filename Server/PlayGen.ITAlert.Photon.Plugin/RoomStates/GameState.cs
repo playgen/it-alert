@@ -139,7 +139,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			//lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
 			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
 
-			var feedbackState = new FeedbackState(PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
+			var feedbackState = new FeedbackState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);

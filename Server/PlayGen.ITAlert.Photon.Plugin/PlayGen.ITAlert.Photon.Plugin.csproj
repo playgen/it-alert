@@ -167,11 +167,13 @@
     <Reference Include="PlayGen.ITAlert.Simulation.Startup">
       <HintPath>..\..\bin\Simulation\PlayGen.ITAlert.Simulation.Startup.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.UI">
+      <HintPath>..\..\bin\simulation\PlayGen.ITAlert.Simulation.UI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\PlayerVoiceEvent.cs" />
     <Compile Include="ITAlertExceptionHandler.cs" />
     <Compile Include="ITAlertPluginFactory.cs" />
     <Compile Include="ITAlertMessageSerializationHandler.cs" />

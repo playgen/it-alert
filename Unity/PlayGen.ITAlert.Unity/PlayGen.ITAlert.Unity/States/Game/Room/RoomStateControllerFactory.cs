@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		public StateControllerBase ParentStateController { private get; set; }
 
-		private Director _director;
+		private readonly Director _director;
 
 		public RoomStateControllerFactory(Director director, Client photonClient)
 		{
@@ -92,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private PlayingState CreatePlayingState(Client photonClient)
 		{
-			var playingStateInput = new PlayingStateInput(_photonClient);
+			var playingStateInput = new PlayingStateInput(_photonClient, _director);
 			var playingState = new PlayingState(_director, playingStateInput, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
@@ -135,9 +135,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return state;
 		}
 
-		private static FeedbackState CreateFeedbackState(Client photonClient)
+		private FeedbackState CreateFeedbackState(Client photonClient)
 		{
-			var input = new FeedbackStateInput(photonClient);
+			var input = new FeedbackStateInput(photonClient, _director);
 			var state = new FeedbackState(input, photonClient);
 
 			var onLobbyStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(LobbyMessage), LobbyState.StateName);

@@ -95,8 +95,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public PlayerBehaviour Player => _activePlayer;
 
-		public PlayerBehaviour[] Players { get; private set; }
-
+		public List<Player> Players { get; private set; }
+		
 		#endregion
 		
 		#region item panel
@@ -180,6 +180,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			try
 			{
 				SimulationRoot = simulationRoot;
+				Players = players;
 
 				LogProxy.Warning($"Initializing Director for simulation Instance {InstanceId}");
 

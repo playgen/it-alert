@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseEventLogger.cs" />
+    <Compile Include="ITAlertContext.cs" />
+    <Compile Include="Models\PlayerFeedback.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +65,10 @@
       <Project>{6719CEEE-EA1D-48CC-A301-89A0E47BC3AD}</Project>
       <Name>Engine.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.UI\PlayGen.ITAlert.Simulation.UI.csproj">
+      <Project>{503b216a-3070-4211-ab66-6b975246cb57}</Project>
+      <Name>PlayGen.ITAlert.Simulation.UI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189CC-C80B-4310-9B3A-7F9080AB4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
@@ -72,5 +78,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
