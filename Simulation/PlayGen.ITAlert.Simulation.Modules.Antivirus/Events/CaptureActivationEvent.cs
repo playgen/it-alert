@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 {
-	public class CaptureActivationEvent : PlayerEvent
+	public class CaptureActivationEvent : Event, IPlayerEvent, ISubsystemEvent
 	{
 		public enum CaptureActivationResult
 		{
@@ -19,6 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 
 		public CaptureActivationResult ActivationResult { get; set; }
 
-		public int LocationEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
+		public int PlayerEntityId { get; set; }
 	}
 }

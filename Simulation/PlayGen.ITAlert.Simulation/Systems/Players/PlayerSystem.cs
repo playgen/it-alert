@@ -75,6 +75,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Players
 				_movementSystem.AddVisitor(_graphSystem.Subsystems[startingLocationId], player);
 				playerBitMask.Value = 1 << _playerId;
 				playerColour.HexColour = playerConfig.Colour;
+				playerColour.PlayerGlyph = playerConfig.Glyph;
 
 				_playerEntityMapping.Add(_playerId, player.Id);
 

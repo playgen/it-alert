@@ -164,11 +164,11 @@
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Unity">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Settings">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Settings.dll</HintPath>
@@ -217,7 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviours\BlinkBehaviour.cs" />
-    <Compile Include="Behaviours\ColorPickerBehaviour.cs" />
+    <Compile Include="Behaviours\ColourPickerBehaviour.cs" />
     <Compile Include="Behaviours\GameBehaviour.cs" />
     <Compile Include="Behaviours\CreateGamePopupBehaviour.cs" />
     <Compile Include="Behaviours\FeedbackDragBehaviour.cs" />
@@ -321,7 +321,6 @@
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\CameraSizingUtility.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
-    <Compile Include="Utilities\PopupUtility.cs" />
     <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +333,10 @@
       <Project>{ea15d7ac-fa66-44ad-a8bc-01f8dcfcf4b6}</Project>
       <Name>PlayGen.Photon.Unity</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\UnityEngine.UI.Extensions.ColorPicker\UnityEngine.UI.Extensions.ColorPicker.csproj">
+      <Project>{381a26db-0f7f-47bd-860f-3b9917fe4d5d}</Project>
+      <Name>UnityEngine.UI.Extensions.ColorPicker</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

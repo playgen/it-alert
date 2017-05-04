@@ -82,7 +82,8 @@
     <Compile Include="Configuration\SimulationConfiguration.cs" />
     <Compile Include="Configuration\SimulationScenario.cs" />
     <Compile Include="Evaluators\SimulationEvaluator.cs" />
-    <Compile Include="Events\PlayerEvent.cs" />
+    <Compile Include="Events\IPlayerEvent.cs" />
+    <Compile Include="Events\ISubsystemEvent.cs" />
     <Compile Include="Layout\PathFindingException.cs" />
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />

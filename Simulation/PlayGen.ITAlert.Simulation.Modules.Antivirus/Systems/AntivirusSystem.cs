@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 				var @event = new AntivirusActivationEvent()
 				{
 					PlayerEntityId = entityTuple.Component4.Value.Value,
-					LocationEntityId = locationTuple.Entity.Id,
+					SubsystemEntityId = locationTuple.Entity.Id,
 					Uses = entityTuple.Component5.ActivationsRemaining - 1,
 				};
 

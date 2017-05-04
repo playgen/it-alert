@@ -55,14 +55,14 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				var @event = new DropItemEvent()
 				{
 					PlayerEntityId = playerTuple.Entity.Id,
-					ItemId = itemTuple.Entity.Id,
+					//ItemId = itemTuple.Entity.Id,
 					ItemType = itemTuple.Component4.GetType().Name,
 				};
 
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
 				var target = subsystemTuple.Component2.Items[command.ContainerId];
 
-				@event.DestinationContainerType = target.GetType().Name;
+				@event.TargetContainerType = target.GetType().Name;
 
 				if (handlerEnabled)
 				{
@@ -109,7 +109,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		}
 	}
 
-	public class DropItemEvent : PlayerEvent
+	public class DropItemEvent : Event, IPlayerEvent, ISubsystemEvent
 	{
 		public enum ActivationResult
 		{
@@ -121,10 +121,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		public ActivationResult Result { get; set; }
 
-		public int ItemId { get; set; }
-
 		public string ItemType { get; set; }
 
-		public string DestinationContainerType { get; set; }
+		public string TargetContainerType { get; set; }
+		public int PlayerEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
 	}
 }

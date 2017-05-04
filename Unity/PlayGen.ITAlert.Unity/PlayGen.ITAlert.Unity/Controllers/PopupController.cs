@@ -2,9 +2,9 @@
 using UnityEngine;
 using System.Collections.Generic;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.Photon.Players;
+using PlayGen.Photon.Unity.Client;
 using PlayGen.Unity.Utilities.Localization;
-
-using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.Controllers
 {
@@ -12,52 +12,60 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	{
 		private readonly GameObject _popupPanel;
 		private readonly PopupBehaviour _popupBehaviour;
+		private readonly Client _photonClient;
 
-		public PopupController()
+		private ColourPickerBehaviour _colourPickerBehaviour;
+
+		public PopupController(Client photonClient)
 		{
 			_popupPanel = GameObject.Find("PopupContainer").transform.GetChild(0).gameObject;
 			_popupBehaviour = _popupPanel.GetComponent<PopupBehaviour>();
+			_photonClient = photonClient;
 		}
 
-		public void ShowErrorPopup(string msg)
+		//public void ShowErrorPopup(string msg)
+		//{
+		//	// Show error on popup
+		//	var errorPanel = UnityEngine.Object.Instantiate(Resources.Load("ErrorContentPanel")) as GameObject;
+		//	var errorMsg = errorPanel.transform.GetChild(1).GetComponent<UnityEngine.UI.Text>();
+		//	errorMsg.text = msg;
+
+		//	_popupBehaviour.ClearContent();
+		//	_popupBehaviour.SetPopup(Localization.Get("ERROR_LABEL_TITLE"), new[] {new PopupBehaviour.Output(Localization.Get("ERROR_BUTTON_CLOSE"), null)}, PopupClosed);
+		//	_popupBehaviour.SetContent(errorPanel.GetComponent<RectTransform>());
+
+		//	_popupPanel.gameObject.SetActive(true);
+		//}
+
+		//public void ShowLoadingPopup( /*UnityAction cancelAction = null*/)
+		//{
+		//	// Show the loading popup along with a button to cancel
+		//	var loadingPanel = UnityEngine.Object.Instantiate(Resources.Load("LoadingContentPanel")) as GameObject;
+
+		//	_popupBehaviour.ClearContent();
+		//	_popupBehaviour.SetPopup("", null, PopupClosed);
+		//	_popupBehaviour.SetContent(loadingPanel.GetComponent<RectTransform>());
+
+		//	_popupPanel.gameObject.SetActive(true);
+		//}
+
+		//public void HideLoadingPopup()
+		//{
+		//	PopupClosed();
+		//}
+
+		public void ShowColorPickerPopup(Action<PlayerColour> callback, IEnumerable<Player> players, Player currentPlayer)
 		{
-			// Show error on popup
-			var errorPanel = Object.Instantiate(Resources.Load("ErrorContentPanel")) as GameObject;
-			var errorMsg = errorPanel.transform.GetChild(1).GetComponent<UnityEngine.UI.Text>();
-			errorMsg.text = msg;
-
-			_popupBehaviour.ClearContent();
-			_popupBehaviour.SetPopup(Localization.Get("ERROR_LABEL_TITLE"), new[] {new PopupBehaviour.Output(Localization.Get("ERROR_BUTTON_CLOSE"), null)}, PopupClosed);
-			_popupBehaviour.SetContent(errorPanel.GetComponent<RectTransform>());
-
-			_popupPanel.gameObject.SetActive(true);
-		}
-
-		public void ShowLoadingPopup( /*UnityAction cancelAction = null*/)
-		{
-			// Show the loading popup along with a button to cancel
-			var loadingPanel = Object.Instantiate(Resources.Load("LoadingContentPanel")) as GameObject;
-
-			_popupBehaviour.ClearContent();
-			_popupBehaviour.SetPopup("", null, PopupClosed);
-			_popupBehaviour.SetContent(loadingPanel.GetComponent<RectTransform>());
-
-			_popupPanel.gameObject.SetActive(true);
-		}
-
-		public void HideLoadingPopup()
-		{
-			PopupClosed();
-		}
-
-		public void ShowColorPickerPopup(Action<Color> callback, List<Color> selectedColors)
-		{
-			var colorPanel = Object.Instantiate(Resources.Load("ColorPickerContentPanel")) as GameObject;
+			var colorPanel = UnityEngine.Object.Instantiate(Resources.Load("ColorPickerContentPanel")) as GameObject;
 			if (colorPanel != null)
 			{
 				colorPanel.name = "ColorPickerContentPanel";
 				_popupBehaviour.ClearContent();
-				colorPanel.GetComponent<ColorPickerBehaviour>().GenerateColorPicker(selectedColors);
+
+				_colourPickerBehaviour = colorPanel.GetComponent<ColourPickerBehaviour>();
+				_colourPickerBehaviour.GenerateColorPicker(players, currentPlayer);
+
+				_photonClient.CurrentRoom.PlayerListUpdatedEvent += _colourPickerBehaviour.UpdateSelectedGlyphs;
 				_popupBehaviour.SetPopup(Localization.Get("COLOUR_PICKER_LABEL_TITLE"),
 					new[]
 					{
@@ -72,15 +80,16 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			_popupPanel.gameObject.SetActive(true);
 		}
 
-		private void ColorCallback(Action<Color> callback)
+		private void ColorCallback(Action<PlayerColour> callback)
 		{
 			//get the selected color from the color picker behaviour
-			var color = GameObject.Find("ColorPickerContentPanel").GetComponent<ColorPickerBehaviour>().GetColor();
-			callback(color);
+			var playerColour = GameObject.Find("ColorPickerContentPanel").GetComponent<ColourPickerBehaviour>().GetPlayerColour();
+			callback(playerColour);
 		}
 
 		private void PopupClosed()
 		{
+			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= _colourPickerBehaviour.UpdateSelectedGlyphs;
 			_popupPanel.gameObject.SetActive(false);
 		}
 	}

@@ -19,7 +19,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 
 		protected override void HandleEvent(AntivirusActivationEvent @event)
 		{
-			var onAvWorkstation = _antivirusWorkstationMatcherGroup.MatchingEntityKeys.Contains(@event.LocationEntityId);
+			var onAvWorkstation = _antivirusWorkstationMatcherGroup.MatchingEntityKeys.Contains(@event.SubsystemEntityId);
 
 			var resourceManagementModifier = 0;
 			var systematicityModifier = 0;

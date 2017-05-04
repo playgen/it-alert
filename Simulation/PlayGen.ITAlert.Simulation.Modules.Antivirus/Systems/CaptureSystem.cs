@@ -66,7 +66,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 				var @event = new CaptureActivationEvent()
 				{
 					PlayerEntityId = playerTuple.Entity.Id,
-					LocationEntityId = locationTuple.Entity.Id,
+					SubsystemEntityId = locationTuple.Entity.Id,
 				};
 
 				// TODO: probably need a better way of choosing the malware than selecting first, but this will do for now

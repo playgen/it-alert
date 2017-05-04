@@ -13,13 +13,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomStateInput : TickStateInput
 	{
-		private const string PlayerChatPrefabName = "PlayerChatEntry";
+		private class PlayerVoiceItem
+		{
+			public GameObject GameObject { get; set; }
+
+			public Image VoiceIcon { get; set; }
+
+			public Image PlayerGlyph { get; set; }
+
+			public Text NameText { get; set; }
+		}
+
+		private readonly Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
 
 		private readonly Client _photonClient;
 		private GameObject _chatPanel;
 		private GameObject _playerChatItemPrefab;
-		private Dictionary<int, string> _playerColors;
-		private Dictionary<int, Image> _playerVoiceIcons;
 
 		public Director Director { get; private set; }
 
@@ -27,17 +36,24 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			_photonClient = photonClient;
 			Director = GameObjectUtilities.FindGameObject("Game").GetComponent<Director>();
+			_playerVoiceItems = new Dictionary<int, PlayerVoiceItem>();
 		}
 
 		protected override void OnInitialize()
 		{
 			_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
-			_playerChatItemPrefab = Resources.Load(PlayerChatPrefabName) as GameObject;
+			_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
 		}
 
 		protected override void OnEnter()
 		{
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent += InitializePlayers;
+			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
+
+			foreach (var playerVoiceItem in _playerVoiceItems.Values)
+			{
+				UnityEngine.Object.Destroy(playerVoiceItem.GameObject);
+			}
+			_playerVoiceItems.Clear();
 		}
 
 		protected override void OnExit()
@@ -53,71 +69,58 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void InitializePlayers(List<Player> players)
+		private void PlayersUpdated(List<Player> players)
 		{
-			SetPlayerColors(players);
-			PopulateChatPanel(players);
-		}
-
-		private void PopulateChatPanel(ICollection<Player> players)
-		{
-			foreach (Transform child in _chatPanel.transform)
-			{
-				if (child.name.StartsWith(PlayerChatPrefabName))
-				{
-					Object.Destroy(child.gameObject);
-				}
-			}
-
-			if (players.Count == 1)
-			{
-				_chatPanel.SetActive(false);
-				return;
-			}
-			_chatPanel.SetActive(true);
-
-			_playerVoiceIcons = new Dictionary<int, Image>();
+			_chatPanel.SetActive(players.Count > 1);
 
 			foreach (var player in players)
 			{
-				var playerItem = Object.Instantiate(_playerChatItemPrefab).transform;
-
-				Color color;
-				ColorUtility.TryParseHtmlString(player.Color, out color);
-				if (color == Color.white)
+				if (_playerVoiceItems.TryGetValue(player.PhotonId, out var playerVoiceItem) == false)
 				{
-					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+					var playerItem = Object.Instantiate(_playerChatItemPrefab);
+
+
+					var nameText = playerItem.transform.FindChild("Name").GetComponent<Text>();
+					nameText.text = player.Name;
+
+					var soundIcon = playerItem.transform.FindChild("SoundIcon").GetComponent<Image>();
+
+					var playerGlyph = playerItem.transform.FindChild("Glyph").GetComponent<Image>();
+
+					playerItem.transform.SetParent(_chatPanel.transform, false);
+
+					playerVoiceItem = new PlayerVoiceItem()
+					{
+						GameObject = playerItem,
+						VoiceIcon = soundIcon,
+						PlayerGlyph = playerGlyph,
+						NameText = nameText,
+					};
+
+					_playerVoiceItems.Add(player.PhotonId, playerVoiceItem);
 				}
-
-				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
-				nameText.text = player.Name;
-				nameText.color = color;
-
-				var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
-				soundIcon.color = nameText.color;
-				_playerVoiceIcons[player.PhotonId] = soundIcon;
-
-				playerItem.SetParent(_chatPanel.transform, false);
+				UpdatePlayerVoiceItem(player, playerVoiceItem);
 			}
 		}
 
-		private void SetPlayerColors(ICollection<Player> players)
+		private void UpdatePlayerVoiceItem(Player player, PlayerVoiceItem playerVoiceItem)
 		{
-			_playerColors = new Dictionary<int, string>();
-
-			foreach (var player in players)
+			if (ColorUtility.TryParseHtmlString(player.Colour, out var colour))
 			{
-				_playerColors.Add(player.PhotonId, player.Color);
+				playerVoiceItem.NameText.color = colour;
+				playerVoiceItem.VoiceIcon.color = colour;
+				playerVoiceItem.PlayerGlyph.color = colour;
 			}
+			playerVoiceItem.PlayerGlyph.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
 		}
 
 		private void UpdateChatPanel()
 		{
 			foreach (var status in VoiceClient.TransmittingStatuses)
 			{
-				if (_playerVoiceIcons.ContainsKey(status.Key))
+				if (_playerVoiceItems.TryGetValue(status.Key, out var playerVoiceItem))
 				{
-					_playerVoiceIcons[status.Key].enabled = status.Value;
+					playerVoiceItem.VoiceIcon.enabled = status.Value;
 				}
 			}
 		}

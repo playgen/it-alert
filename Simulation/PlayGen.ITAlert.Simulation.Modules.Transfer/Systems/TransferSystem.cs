@@ -138,7 +138,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 					var @event = new TransferActivationEvent()
 					{
 						PlayerEntityId = entityTuple.Component4.Value.Value,
-						LocationEntityId = entityTuple.Component3.Value,
+						SubsystemEntityId = entityTuple.Component3.Value.Value,
 					};
 
 					localTransferItemContainer.Locked = false;

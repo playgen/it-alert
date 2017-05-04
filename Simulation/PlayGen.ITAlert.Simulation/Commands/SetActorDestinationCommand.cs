@@ -96,7 +96,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		#endregion
 	}
 
-	public class SetActorDestinationEvent : PlayerEvent
+	public class SetActorDestinationEvent : Event, IPlayerEvent
 	{
 		public enum CommandResult
 		{
@@ -108,5 +108,6 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public CommandResult Result { get; set; }
 
 		public int DestinationEntityId { get; set; }
+		public int PlayerEntityId { get; set; }
 	}
 }

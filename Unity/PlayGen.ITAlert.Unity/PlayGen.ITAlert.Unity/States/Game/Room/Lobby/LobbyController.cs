@@ -1,5 +1,6 @@
 ﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Photon.Messages.Game.Commands;
+using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
@@ -32,10 +33,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_photonClient.CurrentRoom.UpdatePlayer(player);
 		}
 
-		public void SetColor(string colorHex)
+		public void SetPlayerColour(PlayerColour playerColour)
 		{
 			var player = _photonClient.CurrentRoom.Player;
-			player.Color = colorHex;
+			player.Colour = playerColour.Colour;
+			player.Glyph = playerColour.Glyph;
 			_photonClient.CurrentRoom.UpdatePlayer(player);
 		}
 

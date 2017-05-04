@@ -16,6 +16,8 @@
 
 		public string Colour { get; set; }
 
+		public string Glyph { get; set; }
+
 		public int? StartingLocation { get; set; }
 	}
 }

@@ -43,7 +43,10 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\PlayerExtensions.cs" />
     <Compile Include="Extensions\StateExtensions.cs" />
+    <Compile Include="ITAlertPlayer.cs" />
+    <Compile Include="PlayerColour.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientState.cs" />
   </ItemGroup>

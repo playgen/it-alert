@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Events
 {
-	public class TransferActivationEvent : PlayerEvent
+	public class TransferActivationEvent : Event, IPlayerEvent, ISubsystemEvent
 	{
 		public enum TransferActivationResult
 		{
@@ -20,10 +20,11 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Events
 
 		public TransferActivationResult ActivationResult { get; set; }
 
-		public int? LocationEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
 
 		public int? LocalItemEntityId { get; set; }
 
 		public int? RemoteItemEntityId { get; set; }
+		public int PlayerEntityId { get; set; }
 	}
 }
