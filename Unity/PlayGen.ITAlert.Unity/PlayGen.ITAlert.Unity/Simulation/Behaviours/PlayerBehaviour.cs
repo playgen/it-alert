@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public int? DestinationSystemId => _destination.Value;
 
-		public int PhotonPlayerId { get; set; }
+		public int PhotonId { get; set; }
 
 		#region Initialization
 
@@ -61,10 +61,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _destination))
 			{
 				SetColor(_playerColour.HexColour);
+				SetGlyph(_playerColour.PlayerGlyph);
 			}
 			else { 
 				throw new SimulationIntegrationException("Mandatory Player components missing");
 			}
+		}
+
+		private void SetGlyph(string playerGlyph)
+		{
+			_image.sprite = Resources.Load<Sprite>($"playerglyph_{playerGlyph}");
 		}
 
 		#endregion

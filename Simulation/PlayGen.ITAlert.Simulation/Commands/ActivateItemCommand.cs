@@ -99,7 +99,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		#endregion
 	}
 
-	public class ActivateItemEvent : PlayerEvent
+	public class ActivateItemEvent : Event, IPlayerEvent, ISubsystemEvent
 	{
 		public enum ActivationResult
 		{
@@ -116,5 +116,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int ItemId { get; set; }
 
 		public string ItemType { get; set; }
+
+		public int PlayerEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
 	}
 }

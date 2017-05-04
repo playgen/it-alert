@@ -143,8 +143,8 @@ namespace PlayGen.ITAlert.Simulation.Logging
 				case PlayerFeedbackEvent pf:
 					LogPlayerFeedback(pf);
 					break;
-				case PlayerEvent p:
-					LogPlayerEvent(p);
+				case IPlayerEvent pe:
+					LogPlayerEvent(pe);
 					break;
 				default:
 					LogEvent(@event);
@@ -157,18 +157,22 @@ namespace PlayGen.ITAlert.Simulation.Logging
 			try
 			{
 				var playerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.ExternalId == playerFeedbackEvent.PlayerExternalId);
-				var rankedPlayerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.ExternalId == playerFeedbackEvent.PlayerExternalId);
+				var rankedPlayerConfig = _scenario.Configuration.PlayerConfiguration.SingleOrDefault(pc => pc.ExternalId == playerFeedbackEvent.RankedPlayerExternalId);
 				if (playerConfig != null && rankedPlayerConfig != null)
 				{
-					var playerFeedback = new PlayerFeedback() {
-						Game = _game,
-						PlayerId = playerConfig.Id,
-						RankedPlayerId = rankedPlayerConfig.Id,
-						RankingCategory0 = playerFeedbackEvent.PlayerRankings[0],
-						RankingCategory1 = playerFeedbackEvent.PlayerRankings[1],
-						RankingCategory2 = playerFeedbackEvent.PlayerRankings[2],
-					};
-					_context.PlayerFeedback.Add(playerFeedback);
+					var player = _context.InstancePlayers.Find(_game.Id, playerConfig.Id);
+					var rankedPlayer = _context.InstancePlayers.Find(_game.Id, rankedPlayerConfig.Id);
+					if (player != null && rankedPlayer != null)
+					{
+						var playerFeedback = new PlayerFeedback() {
+							Player = player,
+							RankedPlayer = rankedPlayer,
+							LeadershipRank = playerFeedbackEvent.PlayerRankings[0],
+							CommunicationRank = playerFeedbackEvent.PlayerRankings[1],
+							CooperationRank = playerFeedbackEvent.PlayerRankings[2],
+						};
+						_context.PlayerFeedback.Add(playerFeedback);
+					}
 				}
 			}
 			catch (Exception ex)
@@ -178,7 +182,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 			}
 		}
 
-		private void LogPlayerEvent(PlayerEvent playerEvent)
+		private void LogPlayerEvent(IPlayerEvent playerEvent)
 		{
 			try
 			{
@@ -233,7 +237,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 				var player = new Player()
 				{
 					Game = _game,
-					PlayerId = playerConfig.Id,
+					Id = playerConfig.Id,
 					PlayerIdentifier = playerConfig.GlobalIdentifier,
 				};
 				_context.InstancePlayers.Add(player);

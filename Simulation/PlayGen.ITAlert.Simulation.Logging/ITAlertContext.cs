@@ -28,18 +28,16 @@ namespace PlayGen.ITAlert.Simulation.Logging
 			base.OnModelCreating(builder);
 
 			builder.Entity<PlayerFeedback>()
-				.HasKey(pf => new
-				{
-					pf.GameId,
-					pf.PlayerId
-				});
+				.ToTable("PlayerFeedback");
 
 			builder.Entity<PlayerFeedback>()
-				.HasRequired(pf => pf.Game);
+				.HasKey(pf => pf.Id);
 
 			builder.Entity<PlayerFeedback>()
 				.HasRequired(pf => pf.Player);
 
+			builder.Entity<PlayerFeedback>()
+				.HasRequired(pf => pf.RankedPlayer);
 		}
 	}
 }

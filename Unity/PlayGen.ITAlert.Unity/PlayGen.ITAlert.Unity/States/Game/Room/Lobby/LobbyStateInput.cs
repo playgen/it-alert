@@ -9,18 +9,17 @@ using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
-using Logger = PlayGen.Photon.Unity.Logger;
-using Object = UnityEngine.Object;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.ITAlert.Photon.Common;
+using PlayGen.ITAlert.Unity.Controllers;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyStateInput : TickStateInput
 	{
 		private readonly Client _photonClient;
-		private readonly List<Color> _playerColors = new List<Color>();
+		private List<Player> _players;
 
 		private GameObject _lobbyPanel;
 		private ButtonList _buttons;
@@ -39,9 +38,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		public event Action LeaveLobbyClickedEvent;
 
+		private readonly PopupController _popupController;
+
 		public LobbyStateInput(Client photonClient)
 		{
 			_photonClient = photonClient;
+			_popupController = new PopupController(_photonClient);
 		}
 
 		protected override void OnInitialize()
@@ -128,12 +130,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private void OnColorChangeButtonClick()
 		{
 			// Get the selected colors list from the client
-			PopupUtility.ShowColorPicker(ColorPicked, _playerColors);
+			_popupController.ShowColorPickerPopup(PlayerColourChanged, _players, _players.Single(p => p.PhotonId == _photonClient.CurrentRoom.Player.PhotonId));
 		}
 
-		private void ColorPicked(Color pickedColor)
+		private void PlayerColourChanged(PlayerColour playerColour)
 		{
-			CommandQueue.AddCommand(new ChangePlayerColorCommand(ColorUtility.ToHtmlStringRGB(pickedColor)));
+			CommandQueue.AddCommand(new ChangePlayerColorCommand(playerColour));
 		}
 		
 		private void SetRoomName(string name)
@@ -143,6 +145,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		
 		private void UpdatePlayerList(List<Player> players)
 		{
+			_players = players;
+
 			_readyButton.gameObject.GetComponentInChildren<Text>().text =
 				Localization.Get(_photonClient.CurrentRoom.Player.State == (int) ITAlert.Photon.Players.ClientState.Ready
 				? "LOBBY_LABEL_WAITING"
@@ -157,7 +161,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			foreach (Transform child in _playerListObject.transform)
 			{
-				Object.Destroy(child.gameObject);
+				UnityEngine.Object.Destroy(child.gameObject);
 			}
 
 			var offset = 0f;
@@ -168,13 +172,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			foreach (var player in players)
 			{
-				var playerItem = Object.Instantiate(_playerItemPrefab).transform;
+				var playerItem = UnityEngine.Object.Instantiate(_playerItemPrefab).transform;
 
-				ColorUtility.TryParseHtmlString(player.Color, out var color);
+				ColorUtility.TryParseHtmlString(player.Colour, out var color);
 				if (color == Color.white)
 				{
-					ColorUtility.TryParseHtmlString("#" + player.Color, out color);
+					ColorUtility.TryParseHtmlString("#" + player.Colour, out color);
 				}
+
+				var glyphImage = playerItem.FindChild("Glyph").GetComponent<Image>();
+				glyphImage.color = color;
+				glyphImage.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
 
 				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
 				nameText.text = player.Name;
@@ -206,7 +214,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			for (var i = players.Count; i < _lobbyPlayerMax; i++)
 			{
-				var playerSpace = Object.Instantiate(_playerSpacePrefab).transform;
+				var playerSpace = UnityEngine.Object.Instantiate(_playerSpacePrefab).transform;
 				playerSpace.SetParent(_playerListObject.transform, false);
 
 				// set anchors
@@ -228,24 +236,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private void SetRoomMax(int currentRoomMaxPlayers)
 		{
 			_lobbyPlayerMax = currentRoomMaxPlayers;
-		}
-
-		private void SetPlayerColors(List<Player> players)
-		{
-			_playerColors.Clear();
-
-			Color color;
-			foreach (var colorString in players.Select(p => p.Color))
-			{
-				if (ColorUtility.TryParseHtmlString(colorString, out color))
-				{
-					_playerColors.Add(color);
-				}
-				else
-				{
-					Logger.LogError($"Couldn't parse {colorString} to {typeof(Color)}");
-				}
-			}
 		}
 
 		private void UpdateVoiceStatuses()
@@ -271,8 +261,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			{
 				PlayGen.Unity.Utilities.Loading.Loading.Stop();
 			}
-
-			SetPlayerColors(players);
 		}
 	}
 }

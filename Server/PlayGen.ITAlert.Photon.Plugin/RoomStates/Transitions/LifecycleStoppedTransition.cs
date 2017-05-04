@@ -15,7 +15,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 			_toStateName = toStateName;
 		}
 
-		public void OnLifecycleExit(ExitCode exitCode)
+		public void OnLifecycleStopped(ExitCode exitCode)
 		{
 			if (_requiredExitCodes.Contains(exitCode))
 			{

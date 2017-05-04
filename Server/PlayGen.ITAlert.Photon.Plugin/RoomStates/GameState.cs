@@ -106,7 +106,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 						playerConfig.ExternalId = p.PhotonId;
 						playerConfig.GlobalIdentifier = p.Name;
 						playerConfig.Name = p.Name;
-						playerConfig.Colour = p.Color;
+						playerConfig.Colour = p.Colour;
+						playerConfig.Glyph = p.Glyph;
 						return playerConfig;
 					}).ToList();
 
@@ -126,8 +127,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var lifecycleManager = InitializeSimulationRoot();
 			lifecycleManager.Exception += _exceptionHandler.OnException;
-			//lifecycleStoppedErrorTransition.OnLifecycleExit(ExitCode.Error);
-			lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleExit;
+			lifecycleManager.Stopped += lifecycleStoppedErrorTransition.OnLifecycleStopped;
 
 			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
@@ -136,7 +136,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var lifecycleCompleteTransition = new LifecycleStoppedTransition(FeedbackState.StateName, ExitCode.Complete);
-			//lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleExit;
+			lifecycleManager.Stopped += lifecycleCompleteTransition.OnLifecycleStopped;
 			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
 
 			var feedbackState = new FeedbackState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);

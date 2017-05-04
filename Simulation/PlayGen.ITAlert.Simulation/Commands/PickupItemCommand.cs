@@ -73,12 +73,13 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		}
 	}
 
-	public class PickupItemEvent : PlayerEvent
+	public class PickupItemEvent : Event, IPlayerEvent, ISubsystemEvent
 	{
 		public enum ActivationResult
 		{
 			Error = 0,
 			Success,
+			Failure_NotOwner,
 			Failure_ItemActive,
 			Failure_PlayerHasInventory,
 			Failure_CommandDisabled,
@@ -89,5 +90,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		public int ItemId { get; set; }
 
 		public string ItemType { get; set; }
+		public int PlayerEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
 	}
 }

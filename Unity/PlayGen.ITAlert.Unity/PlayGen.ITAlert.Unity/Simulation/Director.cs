@@ -289,7 +289,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 							if (player.ExternalId.HasValue)
 							{
-								playerBehaviour.PhotonPlayerId = player.ExternalId.Value;
+								playerBehaviour.PhotonId = player.ExternalId.Value;
 							}
 						}
 					}
@@ -395,7 +395,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								uint crc = 0;
 								var state = SimulationRoot.GetEntityState(out crc);
 #if LOG_ENTITYSTATE
-								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.{Player.PhotonPlayerId}.json", state);
+								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.{Player.PhotonId}.json", state);
 #endif
 								if (tickMessage.CRC != crc)
 								{

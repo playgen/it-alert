@@ -14,6 +14,8 @@
 
 		Playing,
 
+		Feedback,
+
 		FeedbackSent
 	}
 }

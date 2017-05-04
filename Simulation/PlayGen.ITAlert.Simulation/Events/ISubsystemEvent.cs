@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using Engine.Events;
 
 namespace PlayGen.ITAlert.Simulation.Events
 {
-	public abstract class PlayerEvent : Event
+	public interface ISubsystemEvent : IEvent
 	{
-		public int PlayerEntityId { get; set; }
+		int SubsystemEntityId { get; set; }
 	}
 }

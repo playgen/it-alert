@@ -87,7 +87,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 							{
 								PlayerEntityId = itemTuple.Component4.Value.Value,
 								ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
-								LocationEntityId = locationTuple.Entity.Id,
+								SubsystemEntityId = locationTuple.Entity.Id,
 								GenomeEradicated = malwareVisitor.Component1.Value,
 							};
 							_eventSystem.Publish(@event);
@@ -97,7 +97,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 								@event = new AntivirusActivationEvent() {
 									PlayerEntityId = otherPlayer.Value,
 									ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination,
-									LocationEntityId = locationTuple.Entity.Id,
+									SubsystemEntityId = locationTuple.Entity.Id,
 									GenomeEradicated = malwareVisitor.Component1.Value,
 								};
 								_eventSystem.Publish(@event);

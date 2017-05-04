@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private readonly Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>> _rankingObjects
 			= new Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>>();
 
-		private readonly Client _photonClient;
+		//private readonly Client _photonClient;
 
 		private GameObject _feedbackPanel;
 		private GameObject _columnPrefab;
@@ -40,10 +40,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		public event Action FeedbackSendClickedEvent;
 
 		private readonly Director _director;
+		private bool RankingsComplete => _playerRankings.All(rank => rank.Value.Count(r => r != null) == _director.Players.Count - 1);
 
 		public FeedbackStateInput(Client photonClient, Director director)
 		{
-			_photonClient = photonClient;
+			//_photonClient = photonClient;
 			_director = director;
 		}
 
@@ -96,7 +97,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 			}
 			drag.transform.SetParent(slot.transform, false);
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
+			_buttons.GetButton("SendButtonContainer").interactable = RankingsComplete;
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			return true;
 		}
@@ -119,7 +120,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		{
 			_sendButton.onClick.AddListener(OnSendClick);
 
-			PopulateFeedback(_director.Players, _photonClient.CurrentRoom.Player);
+			PopulateFeedback(_director.Players, _director.Player.PhotonId);
 			_feedbackPanel.transform.parent.gameObject.SetActive(true);
 			_buttons.Buttons.BestFit();
 			_sendButton.gameObject.SetActive(true);
@@ -152,7 +153,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			FeedbackSendClickedEvent?.Invoke();
 		}
 
-		private void PopulateFeedback(List<Player> players, Player current)
+		private void PopulateFeedback(List<Player> players, int currentplayerPhotonId)
 		{
 			foreach (Transform child in _feedbackPanel.transform)
 			{
@@ -166,7 +167,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			//To-Do: Get the list of evaluation criteria from somewhere
 
-			players = players.Where(p => p.PhotonId != current.PhotonId).ToList();
+			players = players.Where(p => p.ExternalId != currentplayerPhotonId).ToList();
 
 			var playerList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 			var emptySlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
@@ -175,15 +176,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			foreach (var player in players)
 			{
-				var color = new Color();
-				ColorUtility.TryParseHtmlString(player.Color, out color);
+				var colour = new Color();
+				ColorUtility.TryParseHtmlString(player.Colour, out colour);
 
 				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
 				//playerSlot.GetComponent<Image>().enabled = false;
 
 				var playerObj = UnityEngine.Object.Instantiate(_entryPrefab, playerSlot.transform, false);
 				playerObj.GetComponent<Text>().text = player.Name;
-				playerObj.GetComponent<Text>().color = color;
+				playerObj.GetComponent<Text>().color = colour;
 				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
 			}
 
@@ -236,7 +237,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(sectionName);
 				}
 			}
-			_buttons.GetButton("SendButtonContainer").interactable = _playerRankings.All(rank => rank.Value.Count(r => r != null) == _photonClient.CurrentRoom.Players.Count - 1);
+			_buttons.GetButton("SendButtonContainer").interactable = RankingsComplete;
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			if (_error.activeSelf)
 			{
@@ -250,7 +251,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		private void SetErrorText()
 		{
-			var firstUnfilled = _playerRankings.First(rank => rank.Value.Count(r => r != null) != _photonClient.CurrentRoom.Players.Count - 1).Key;
+			var firstUnfilled = _playerRankings.First(rank => rank.Value.Count(r => r != null) != _director.Players.Count - 1).Key;
 			_error.GetComponent<Text>().text = Localization.GetAndFormat("FEEDBACK_LABEL_ERROR", false, firstUnfilled);
 		}
 

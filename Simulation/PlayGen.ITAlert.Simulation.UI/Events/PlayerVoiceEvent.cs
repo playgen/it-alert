@@ -1,8 +1,9 @@
-﻿using PlayGen.ITAlert.Simulation.Events;
+﻿using Engine.Events;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.UI.Events
 {
-	public class PlayerVoiceEvent : PlayerEvent
+	public class PlayerVoiceEvent : Event, IPlayerEvent
 	{
 		public enum Signal
 		{
@@ -12,5 +13,6 @@ namespace PlayGen.ITAlert.Simulation.UI.Events
 		}
 
 		public Signal Mode { get; set; }
+		public int PlayerEntityId { get; set; }
 	}
 }

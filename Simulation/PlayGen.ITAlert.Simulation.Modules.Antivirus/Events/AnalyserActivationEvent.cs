@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 {
-	public class AnalyserActivationEvent : PlayerEvent
+	public class AnalyserActivationEvent : Event, IPlayerEvent
 	{
 		public enum AnalyserActivationResult
 		{
@@ -22,5 +22,8 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 		public int? LocationEntityId { get; set; }
 
 		public int GenomeProduced { get; set; }
+
+		public int PlayerEntityId { get; set; }
+
 	}
 }
