@@ -1,4 +1,5 @@
 ﻿using Photon.Hive.Plugin;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Analytics;
@@ -6,7 +7,7 @@ using PlayGen.Photon.Messages.Error;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-	public class ErrorState : RoomState
+	public class ErrorState : ITAlertRoomState
 	{
 		public const string StateName = nameof(ErrorState);
 
@@ -16,7 +17,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public ErrorState(PluginBase photonPlugin, 
 			Messenger messenger, 
-			PlayerManager playerManager, 
+			ITAlertPlayerManager playerManager, 
 			RoomSettings roomSettings,
 			AnalyticsServiceManager analytics,
 			ExceptionHandler exceptionHandler)

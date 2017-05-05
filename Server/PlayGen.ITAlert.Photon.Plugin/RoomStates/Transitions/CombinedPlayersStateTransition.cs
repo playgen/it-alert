@@ -17,7 +17,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions
 			_toStateName = toStateName;
 		}
 
-		public void OnPlayersStateChange(List<Player> players)
+		public void OnPlayersStateChange(List<ITAlertPlayer> players)
 		{
 			if (players.GetCombinedStates() == _combinedClientState)
 			{

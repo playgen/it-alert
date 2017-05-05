@@ -1,4 +1,5 @@
 ﻿using Photon.Hive.Plugin;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using PlayGen.Photon.Analytics;
@@ -10,7 +11,7 @@ using PlayGen.Photon.SUGAR;
 namespace PlayGen.ITAlert.Photon.Plugin
 {
 	// ReSharper disable once InconsistentNaming
-	public class ITAlertRoomStateControllerFactory : IRoomStateControllerFactory
+	public class ITAlertRoomStateControllerFactory : IRoomStateControllerFactory<ITAlertRoomStateController, ITAlertRoomState, ITAlertPlayerManager, ITAlertPlayer>
 	{
 		/// <summary>
 		/// This is where it all begins!
@@ -19,7 +20,10 @@ namespace PlayGen.ITAlert.Photon.Plugin
 		/// <param name="messenger"></param>
 		/// <param name="playerManager"></param>
 		/// <returns></returns>
-		public RoomStateController Create(PluginBase photonPlugin, Messenger messenger, PlayerManager playerManager, ExceptionHandler exceptionHandler)
+		public ITAlertRoomStateController Create(PluginBase photonPlugin, 
+			Messenger messenger, 
+			ITAlertPlayerManager playerManager, 
+			ExceptionHandler exceptionHandler)
 		{
 			var sugarAnalytics = new AnalyticsServiceAdapter();
 			var analytics = new AnalyticsServiceManager(sugarAnalytics);
@@ -37,7 +41,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			gameState.AddTransitions(exceptionTransition);
 
 			var errorState = new ErrorState(photonPlugin, messenger, playerManager, roomSettings, analytics, exceptionHandler);
-			var controller = new RoomStateController(lobbyState, gameState, errorState);
+			var controller = new ITAlertRoomStateController(lobbyState, gameState, errorState);
 
 			gameState.ParentStateController = controller;
 			

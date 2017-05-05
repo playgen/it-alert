@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 			{
 				// this should match assembly qualified class name from config
 				case RoomControllerPlugin.PluginName:
-					plugin = new RoomControllerPlugin(new ITAlertMessageSerializationHandler(), 
+					plugin = new ITAlertRoomControllerPlugin(new ITAlertMessageSerializationHandler(), 
 						new ITAlertRoomStateControllerFactory(), 
 						new ITAlertExceptionHandler());
 					break;

@@ -3,20 +3,21 @@ using PlayGen.Photon.Analytics;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using NLog;
+using PlayGen.ITAlert.Photon.Players;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-	public abstract class RoomState : PlayGen.Photon.Plugin.States.RoomState
+	// ReSharper disable once InconsistentNaming
+	public abstract class ITAlertRoomState : PlayGen.Photon.Plugin.States.RoomState<ITAlertPlayerManager, ITAlertPlayer>
 	{
 		protected readonly AnalyticsServiceManager Analytics;
 		protected readonly RoomSettings RoomSettings;
 
 		private readonly Logger _logger;
-
-
-		protected RoomState(PluginBase photonPlugin,
+		
+		protected ITAlertRoomState(PluginBase photonPlugin,
 			Messenger messenger,
-			PlayerManager playerManager,
+			ITAlertPlayerManager playerManager,
 			RoomSettings roomSettings,
 			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager)

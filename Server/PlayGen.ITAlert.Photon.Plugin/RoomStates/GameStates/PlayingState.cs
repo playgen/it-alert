@@ -21,7 +21,7 @@ using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-	public class PlayingState : RoomState, IDisposable
+	public class PlayingState : ITAlertRoomState, IDisposable
 	{
 		public const string StateName = nameof(PlayingState);
 
@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, 
 			PluginBase photonPlugin, 
 			Messenger messenger,
-			PlayerManager playerManager,
+			ITAlertPlayerManager playerManager,
 			RoomSettings roomSettings, 
 			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)

@@ -9,7 +9,7 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 	{
 		private static readonly Random Random = new Random();
 
-		public static PlayerColour GetUnusedGlyph(this IEnumerable<Player> players)
+		public static PlayerColour GetUnusedGlyph(this IEnumerable<ITAlertPlayer> players)
 		{
 			var usedGlyphs = players.Select(p => p.Glyph);
 			var playerColour = new PlayerColour()
