@@ -12,7 +12,7 @@ using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-	public class LobbyState : RoomState
+	public class LobbyState : ITAlertRoomState
 	{
 		public const string StateName = "Lobby";     
 
@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		public LobbyState(PluginBase photonPlugin, 
 			Messenger messenger, 
-			PlayerManager playerManager, 
+			ITAlertPlayerManager playerManager, 
 			RoomSettings roomSettings,
 			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)

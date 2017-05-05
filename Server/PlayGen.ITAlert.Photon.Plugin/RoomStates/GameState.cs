@@ -18,23 +18,22 @@ using PlayGen.Photon.Common.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
-	public class GameState : RoomState, IDisposable
+	public class GameState : ITAlertRoomState, IDisposable
 	{
 		public const string StateName = nameof(GameState);
-
-		private RoomStateController _stateController;
-
 		public override string Name => StateName;
 
-		public RoomStateController ParentStateController { private get; set; }
+		public ITAlertRoomStateController ParentStateController { private get; set; }
 
+
+		private ITAlertRoomStateController _stateController;
 		private readonly ScenarioLoader _scenarioLoader;
 
 		private readonly ExceptionHandler _exceptionHandler;
 
 		public GameState(PluginBase photonPlugin,
 			Messenger messenger,
-			PlayerManager playerManager,
+			ITAlertPlayerManager playerManager,
 			RoomSettings roomSettings,
 			AnalyticsServiceManager analytics,
 			ExceptionHandler exceptionHandler)
@@ -119,7 +118,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			throw new SimulationException($"Could not load scenario");
 		}
 
-		private RoomStateController CreateStateController()
+		private ITAlertRoomStateController CreateStateController()
 		{
 			// TODO: handle the lifecyclemanager changestate event in the case of error -> kick players back to lobby.
 			var lifecycleStoppedErrorTransition = new LifecycleStoppedTransition(ErrorState.StateName,
@@ -131,7 +130,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 			var initializingState = new InitializingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
 			var initializedTransition = new CombinedPlayersStateTransition(ClientState.Initialized, PlayingState.StateName);
-			initializingState.PlayerInitializedEvent += initializedTransition.OnPlayersStateChange;
+			initializingState.PlayersInitialized += initializedTransition.OnPlayersStateChange;
 			initializingState.AddTransitions(initializedTransition, lifecycleStoppedErrorTransition);
 
 			var playingState = new PlayingState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
@@ -144,7 +143,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);
 
-			var controller = new RoomStateController(initializingState, playingState, feedbackState);
+			var controller = new ITAlertRoomStateController(initializingState, playingState, feedbackState);
 			controller.SetParent(ParentStateController);
 
 			return controller;

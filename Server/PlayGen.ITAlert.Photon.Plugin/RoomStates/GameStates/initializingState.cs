@@ -13,7 +13,7 @@ using PlayGen.Photon.Analytics;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-	public class InitializingState : RoomState
+	public class InitializingState : ITAlertRoomState
 	{
 		public const string StateName = nameof(InitializingState);
 
@@ -21,12 +21,12 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 	
 		public override string Name => StateName;
 
-		public event Action<List<Player>> PlayerInitializedEvent;
+		public event Action<List<ITAlertPlayer>> PlayersInitialized;
 
 		public InitializingState(SimulationLifecycleManager simulationLifecycleManager, 
 			PluginBase photonPlugin, 
 			Messenger messenger,
-			PlayerManager playerManager,
+			ITAlertPlayerManager playerManager,
 			RoomSettings roomSettings, 
 			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
@@ -75,9 +75,14 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				player.State = (int) ClientState.Initialized;
 				PlayerManager.UpdatePlayer(player);
 
-				PlayerInitializedEvent?.Invoke(PlayerManager.Players);
+				OnPlayerInitialized(PlayerManager.Players);
 				return;
 			}
+		}
+
+		protected virtual void OnPlayerInitialized(List<ITAlertPlayer> players)
+		{
+			PlayersInitialized?.Invoke(players);
 		}
 	}
 }

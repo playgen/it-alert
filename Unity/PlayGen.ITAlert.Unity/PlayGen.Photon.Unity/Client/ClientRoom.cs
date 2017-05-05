@@ -72,14 +72,6 @@ namespace PlayGen.Photon.Unity.Client
 			_photonClientWrapper.LeaveRoom();
 		}
 
-		public void UpdatePlayer(Player player)
-		{
-			Messenger.SendMessage(new UpdatePlayerMessage
-			{
-				Player = player
-			});
-		}
-
 		public void OnRecievedEvent(byte eventCode, object content, int senderId)
 		{
 			if (eventCode == (byte)Photon.Messaging.EventCode.Message)

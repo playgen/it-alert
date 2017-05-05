@@ -16,20 +16,20 @@ using PlayGen.Photon.Plugin;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
-	public class FeedbackState : RoomState
+	public class FeedbackState : ITAlertRoomState
 	{
 		public const string StateName = nameof(FeedbackState);
 
 		public override string Name => StateName;
 
-		public event Action<List<Player>> PlayerFeedbackSentEvent;
+		public event Action<List<ITAlertPlayer>> PlayerFeedbackSentEvent;
 
 		private readonly SimulationLifecycleManager _simulationLifecycleManager;
 
 		public FeedbackState(SimulationLifecycleManager simulationLifecycleManager, 
 			PluginBase photonPlugin, 
 			Messenger messenger, 
-			PlayerManager playerManager,
+			ITAlertPlayerManager playerManager,
 			RoomSettings roomSettings, 
 			AnalyticsServiceManager analytics) 
 			: base(photonPlugin, 
