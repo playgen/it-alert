@@ -5,6 +5,7 @@ using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
 
 using PlayGen.ITAlert.Photon.Common;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -18,7 +19,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 {
 	public class ScenarioController : ICommandAction
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private ScenarioInfo _selectedScenario;
 		public ScenarioInfo SelectedScenario => _selectedScenario;
 
@@ -31,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		private bool _quickMatch;
 
-		public ScenarioController(Client photonClient, CreateGameController createGameController)
+		public ScenarioController(ITAlertPhotonClient photonClient, CreateGameController createGameController)
 		{
 			_photonClient = photonClient;
 			_scenarioLoader = new ScenarioLoader();
@@ -115,7 +116,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			}
 		}
 
-		private void OnJoinedRoom(ClientRoom room)
+		private void OnJoinedRoom(ClientRoom<ITAlertPlayer> room)
 		{
 			QuickMatchSuccessEvent?.Invoke();
 		}

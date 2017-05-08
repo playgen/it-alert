@@ -3,10 +3,13 @@ using GameWork.Unity.Engine.Components;
 using PlayGen.Photon.Messaging.Interfaces;
 using UnityEngine;
 using ExitGames.Client.Photon;
+using PlayGen.Photon.Players;
 
 namespace PlayGen.Photon.Unity.Client
 {
-	public class Client : IDisposable
+	public abstract class Client<TClientRoom, TPlayer> : IDisposable
+		where TClientRoom : ClientRoom<TPlayer>
+		where TPlayer : Player
 	{
 		private readonly PhotonClientWrapper _photonClientWrapper;
 		private readonly IMessageSerializationHandler _messageSerializationHandler;
@@ -16,16 +19,16 @@ namespace PlayGen.Photon.Unity.Client
 		private bool _isDisposed;
 		private ClientState _lastState;
 
-		public event Action<ClientRoom> JoinedRoomEvent;
+		public event Action<ClientRoom<TPlayer>> JoinedRoomEvent;
 		public event Action LeftRoomEvent;
 		public event Action<Exception> ExceptionEvent;
 		public event Action DisconnectedEvent;
 		public event Action ConnectedEvent;
 
 		public ClientState ClientState { get; private set; }
-		public ClientRoom CurrentRoom { get; private set; }
-		
-		public Client(string gamePlugin, string gameVersion, IMessageSerializationHandler messageSerializationHandler)
+		public ClientRoom<TPlayer> CurrentRoom { get; private set; }
+
+		protected Client(string gamePlugin, string gameVersion, IMessageSerializationHandler messageSerializationHandler)
 		{
 			ClientState = ClientState.Disconnected;
 
@@ -110,6 +113,10 @@ namespace PlayGen.Photon.Unity.Client
 			DisconnectedEvent?.Invoke();
 		}
 
+		protected abstract TClientRoom CreateClientRoom(PhotonClientWrapper photonClientWrapper,
+			IMessageSerializationHandler messageSerializationHandler,
+			Action<ClientRoom<TPlayer>> initializedCallback);
+
 		/// <summary>
 		/// Callback for when photon recieves the notification that the player has entered a room
 		/// </summary>
@@ -118,7 +125,7 @@ namespace PlayGen.Photon.Unity.Client
 			Debug.Log($"PlayGen.Photon.Unity::Client::JoinedRoom");
 
 			CurrentRoom?.Dispose();
-			CurrentRoom = new ClientRoom(_photonClientWrapper, _messageSerializationHandler, OnRoomInitialized);
+			CurrentRoom = CreateClientRoom(_photonClientWrapper, _messageSerializationHandler, OnRoomInitialized);
 			CurrentRoom.ExceptionEvent += OnException;
 		}
 
@@ -126,7 +133,7 @@ namespace PlayGen.Photon.Unity.Client
 		/// Callback for when room is fully initialized
 		/// </summary>
 		/// <param name="room"></param>
-		private void OnRoomInitialized(ClientRoom room)
+		private void OnRoomInitialized(ClientRoom<TPlayer> room)
 		{
 			JoinedRoomEvent?.Invoke(CurrentRoom);
 		}

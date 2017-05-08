@@ -6,9 +6,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {
 	public class CreateGameController : ICommandAction
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
-		public CreateGameController(Client photonClient)
+		public CreateGameController(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 		}

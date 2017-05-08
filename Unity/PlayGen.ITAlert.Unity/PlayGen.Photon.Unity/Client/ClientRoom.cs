@@ -2,6 +2,9 @@
 using System.Linq;
 using PlayGen.Photon.Messaging;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Messages;
 using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Unity.Client.Voice;
@@ -15,11 +18,12 @@ namespace PlayGen.Photon.Unity.Client
 	/// <summary>
 	/// Can only exist within a Client
 	/// </summary>
-	public class ClientRoom : IDisposable
+	public class ClientRoom<TPlayer> : IDisposable
+		where TPlayer : Player
 	{
 		private readonly PhotonClientWrapper _photonClientWrapper;
 		private readonly VoiceClient _voiceClient;
-		private readonly ClientRoomInitializedCallback _initializedCallback;
+		private readonly Action<ClientRoom<TPlayer>> _initializedCallback;
 
 		private bool _isDisposed;
 		private bool _isInitialized;
@@ -29,16 +33,14 @@ namespace PlayGen.Photon.Unity.Client
 		public VoiceClient VoiceClient => _voiceClient;
 		public PhotonPlayer[] ListCurrentRoomPlayers => _photonClientWrapper.ListCurrentRoomPlayers;
 		public bool IsMasterClient => _photonClientWrapper.IsMasterClient;
-		public List<Player> Players { get; private set; }
-		public Player Player { get; private set; }
+		public List<TPlayer> Players { get; private set; }
+		public TPlayer Player { get; private set; }
 
-		public event Action<List<Player>> PlayerListUpdatedEvent;
+		public event Action<List<TPlayer>> PlayerListUpdatedEvent;
 		public event Action<Exception> ExceptionEvent;
-		public delegate void ClientRoomInitializedCallback(ClientRoom clientRoom);
-
 		public ClientRoom(PhotonClientWrapper photonClientWrapper, 
 			IMessageSerializationHandler messageSerializationHandler,
-			ClientRoomInitializedCallback initializedCallback)
+			Action<ClientRoom<TPlayer>> initializedCallback)
 		{
 			_photonClientWrapper = photonClientWrapper;
 			_initializedCallback = initializedCallback;
@@ -53,7 +55,7 @@ namespace PlayGen.Photon.Unity.Client
 				_voiceClient = new VoiceClient();
 			//}
 
-			Players = new List<Player>();
+			Players = new List<TPlayer>();
 
 			_photonClientWrapper.EventRecievedEvent += OnRecievedEvent;
 
@@ -106,18 +108,33 @@ namespace PlayGen.Photon.Unity.Client
 
 		private void ProcessPlayersMessage(Message message)
 		{
-			var listedPlayersMessage = message as ListedPlayersMessage;
+			var listedPlayersMessage = message as ListPlayersMessage<TPlayer>;
 			if (listedPlayersMessage != null)
 			{
 				Players = listedPlayersMessage.Players;
 
 				// Position this player as the first player in the list
-				var player = Players.SingleOrDefault(p => p.PhotonId == PhotonNetwork.player.ID);
+				var playerId = PhotonNetwork.player.ID;
+
+				TPlayer player = null;
+				//var player = Players.SingleOrDefault(p => p.PhotonId == playerId);
+				var playerIds = Players.Select(p => p.PhotonId).ToArray();
+
+				foreach (var p in Players)
+				{
+					if (p.PhotonId == playerId)
+					{
+						player = p;
+						break;
+					}
+				}
 
 				if (player == null)
 				{
-					return;
-					//throw new PhotonClientException($"The current player with Id: {PhotonNetwork.player.ID} " + $"is not in the server's player list for this room.");
+					//return;
+					var playerIdsString = playerIds.Aggregate(new StringBuilder(), (sb, pid) => sb.Append($"{pid},"),
+						sb => sb.ToString());
+					throw new PhotonClientException($"The current player with Id: {playerId} " + $"is not in the player list for this room: {playerIdsString}");
 				}
 
 				Players.Remove(player);

@@ -11,7 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ExitGames.Client.Photon;
-using UnityEditor;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 using Hashtable = ExitGames.Client.Photon.Hashtable;

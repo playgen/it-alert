@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
@@ -22,13 +23,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 
 		private readonly Director _director;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		public override string Name => StateName;
 
 		private readonly ScenarioLoader _scenarioLoader;
 
-		public InitializingState(Director director, InitializingStateInput input, Client photonClient)
+		public InitializingState(Director director, InitializingStateInput input, ITAlertPhotonClient photonClient)
 			: base (input)
 		{
 			_director = director;

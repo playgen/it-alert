@@ -1,5 +1,7 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 
@@ -16,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private TickStateController _stateController;
 		
 
-		public MenuState(Client photonClient)
+		public MenuState(ITAlertPhotonClient photonClient)
 		{
 			_controllerFactory = new MenuStateControllerFactory(photonClient);
 		}

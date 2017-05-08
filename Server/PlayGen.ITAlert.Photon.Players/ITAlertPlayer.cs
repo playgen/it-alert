@@ -2,12 +2,9 @@
 
 namespace PlayGen.ITAlert.Photon.Players
 {
+	// ReSharper disable once InconsistentNaming
 	public class ITAlertPlayer : Player
 	{
-		public int PhotonId { get; set; }
-
-		public int? ExternalId { get; set; }
-
 		public string Colour { get; set; }
 
 		public string Glyph { get; set; }

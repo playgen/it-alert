@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
@@ -42,7 +44,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private readonly Director _director;
 		private bool RankingsComplete => _playerRankings.All(rank => rank.Value.Count(r => r != null) == _director.Players.Count - 1);
 
-		public FeedbackStateInput(Client photonClient, Director director)
+		public FeedbackStateInput(ITAlertPhotonClient photonClient, Director director)
 		{
 			//_photonClient = photonClient;
 			_director = director;
@@ -153,7 +155,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			FeedbackSendClickedEvent?.Invoke();
 		}
 
-		private void PopulateFeedback(List<Player> players, int currentplayerPhotonId)
+		private void PopulateFeedback(List<ITAlertPlayer> players, int currentplayerPhotonId)
 		{
 			foreach (Transform child in _feedbackPanel.transform)
 			{

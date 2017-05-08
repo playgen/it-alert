@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
@@ -37,7 +38,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private Player _currentPlayer;
 
-		public void UpdateSelectedGlyphs(IEnumerable<Player> players)
+		public void UpdateSelectedGlyphs(IEnumerable<ITAlertPlayer> players)
 		{
 			var playersByGlyph = players.ToDictionary(k => k.Glyph, v => v);
 			foreach (var playerGlyph in _playerGlyphs)
@@ -91,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			}
 		}
 
-		public void GenerateColorPicker(IEnumerable<Player> players, Player currentPlayer)
+		public void GenerateColorPicker(IEnumerable<ITAlertPlayer> players, ITAlertPlayer currentPlayer)
 		{
 			_currentPlayer = currentPlayer;
 			

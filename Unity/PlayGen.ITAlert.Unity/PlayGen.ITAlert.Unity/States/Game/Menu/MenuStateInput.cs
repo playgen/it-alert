@@ -1,7 +1,9 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
@@ -20,7 +22,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		public event Action SettingsClickedEvent;
 		public event Action JoinGameSuccessEvent;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private readonly ScenarioController _controller;
 
 		private GameObject _mainMenuPanel;
@@ -34,7 +36,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private Text _sugarConnectionText;
 
 
-		public MenuStateInput(Client photonClient, ScenarioController controller)
+		public MenuStateInput(ITAlertPhotonClient photonClient, ScenarioController controller)
 		{
 			_photonClient = photonClient;
 			_controller = controller;
@@ -71,7 +73,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_settingsButton.onClick.RemoveListener(OnSettingsClick);
 		}
 
-		private void OnJoinGameSuccess(ClientRoom clientRoom)
+		private void OnJoinGameSuccess(ClientRoom<ITAlertPlayer> clientRoom)
 		{
 			JoinGameSuccessEvent?.Invoke();
 		}

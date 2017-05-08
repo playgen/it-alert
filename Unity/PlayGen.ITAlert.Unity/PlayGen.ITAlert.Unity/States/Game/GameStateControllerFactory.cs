@@ -1,5 +1,7 @@
 ﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room;
@@ -12,7 +14,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 	{
 		public StateControllerBase ParentStateController { get; set; }
 
-		public TickStateController Create(Client photonClient)
+		public TickStateController Create(ITAlertPhotonClient photonClient)
 		{
 			// Loading
 			var loadingState = new LoadingState(new LoadingStateInput());

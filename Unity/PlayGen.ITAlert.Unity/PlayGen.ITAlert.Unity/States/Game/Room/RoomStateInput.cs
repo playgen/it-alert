@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
@@ -26,13 +28,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private readonly Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private GameObject _chatPanel;
 		private GameObject _playerChatItemPrefab;
 
 		public Director Director { get; private set; }
 
-		public RoomStateInput(Client photonClient)
+		public RoomStateInput(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 			Director = GameObjectUtilities.FindGameObject("Game").GetComponent<Director>();
@@ -69,7 +71,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void PlayersUpdated(List<Player> players)
+		private void PlayersUpdated(List<ITAlertPlayer> players)
 		{
 			_chatPanel.SetActive(players.Count > 1);
 
@@ -103,7 +105,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void UpdatePlayerVoiceItem(Player player, PlayerVoiceItem playerVoiceItem)
+		private void UpdatePlayerVoiceItem(ITAlertPlayer player, PlayerVoiceItem playerVoiceItem)
 		{
 			if (ColorUtility.TryParseHtmlString(player.Colour, out var colour))
 			{

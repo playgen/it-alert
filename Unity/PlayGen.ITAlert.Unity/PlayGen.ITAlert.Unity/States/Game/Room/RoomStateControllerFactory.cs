@@ -3,7 +3,7 @@ using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
-using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
@@ -13,19 +13,18 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
 using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.States.Game.Settings;
 using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
 	public class RoomStateControllerFactory
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		public StateControllerBase ParentStateController { private get; set; }
 
 		private readonly Director _director;
 
-		public RoomStateControllerFactory(Director director, Client photonClient)
+		public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient)
 		{
 			_director = director;
 			_photonClient = photonClient;
@@ -54,7 +53,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		}
 		
 
-		private LobbyState CreateLobbyState(Client photonClient)
+		private LobbyState CreateLobbyState(ITAlertPhotonClient photonClient)
 		{
 			var lobbyController = new LobbyController(_photonClient);
 			var lobbyStateInput = new LobbyStateInput(photonClient);
@@ -70,7 +69,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return lobbyState;
 		}
 
-		private PausedState CreatePausedState(Client photonClient)
+		private PausedState CreatePausedState(ITAlertPhotonClient photonClient)
 		{
 			var pausedStateInput = new PausedStateInput();
 			var pausedState = new PausedState(pausedStateInput, photonClient);
@@ -90,7 +89,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return pausedState;
 		}
 
-		private PlayingState CreatePlayingState(Client photonClient)
+		private PlayingState CreatePlayingState(ITAlertPhotonClient photonClient)
 		{
 			var playingStateInput = new PlayingStateInput(_photonClient, _director);
 			var playingState = new PlayingState(_director, playingStateInput, photonClient);
@@ -109,7 +108,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return playingState;
 		}
 
-		private InitializingState CreateInitializingState(Client photonClient)
+		private InitializingState CreateInitializingState(ITAlertPhotonClient photonClient)
 		{
 			var input = new InitializingStateInput();
 			var state = new InitializingState(_director, input, photonClient);
@@ -120,7 +119,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return state;
 		}
 
-		private SettingsState CreateSettingsState(Client photonClient)
+		private SettingsState CreateSettingsState(ITAlertPhotonClient photonClient)
 		{
 			var input = new SettingsStateInput();
 			var state = new SettingsState(input);
@@ -135,7 +134,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			return state;
 		}
 
-		private FeedbackState CreateFeedbackState(Client photonClient)
+		private FeedbackState CreateFeedbackState(ITAlertPhotonClient photonClient)
 		{
 			var input = new FeedbackStateInput(photonClient, _director);
 			var state = new FeedbackState(input, photonClient);

@@ -1,7 +1,9 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.Unity.Utilities.Localization;
@@ -12,11 +14,11 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	{
 		private readonly GameObject _popupPanel;
 		private readonly PopupBehaviour _popupBehaviour;
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		private ColourPickerBehaviour _colourPickerBehaviour;
 
-		public PopupController(Client photonClient)
+		public PopupController(ITAlertPhotonClient photonClient)
 		{
 			_popupPanel = GameObject.Find("PopupContainer").transform.GetChild(0).gameObject;
 			_popupBehaviour = _popupPanel.GetComponent<PopupBehaviour>();
@@ -54,7 +56,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		//	PopupClosed();
 		//}
 
-		public void ShowColorPickerPopup(Action<PlayerColour> callback, IEnumerable<Player> players, Player currentPlayer)
+		public void ShowColorPickerPopup(Action<PlayerColour> callback, IEnumerable<ITAlertPlayer> players, ITAlertPlayer currentPlayer)
 		{
 			var colorPanel = UnityEngine.Object.Instantiate(Resources.Load("ColorPickerContentPanel")) as GameObject;
 			if (colorPanel != null)

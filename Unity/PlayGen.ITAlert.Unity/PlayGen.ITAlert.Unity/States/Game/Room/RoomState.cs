@@ -4,6 +4,7 @@ using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.Utilities;
@@ -19,14 +20,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public override string Name => StateName;
 		
 		private readonly RoomStateControllerFactory _controllerFactory;
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		private TickStateController _stateController;
 		private VoiceController _voiceController;
 
 		private readonly Director _director;
 
-		public RoomState(RoomStateInput roomStateInput, Client photonClient) 
+		public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient) 
 			: base(roomStateInput)
 		{
 			_director = roomStateInput.Director;
