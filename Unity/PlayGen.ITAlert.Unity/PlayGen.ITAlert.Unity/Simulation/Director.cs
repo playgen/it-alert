@@ -293,6 +293,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								playerBehaviour.PhotonId = player.ExternalId.Value;
 							}
 						}
+						else
+						{
+							playerBehaviour.DisableTrail();
+						}
 					}
 					else
 					{

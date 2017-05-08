@@ -25,6 +25,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private readonly Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>> _rankingObjects
 			= new Dictionary<string, List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>>();
 
+		private List<ITAlertPlayer> _players;
+
 		//private readonly Client _photonClient;
 
 		private GameObject _feedbackPanel;
@@ -140,7 +142,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			var playerRankings = new Dictionary<int, int[]>();
 
-			foreach (var player in _director.Players)
+			foreach (var player in _players)
 			{
 				var playerRanking = new int[_playerRankings.Count];
 				var i = 0;
@@ -169,14 +171,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			//To-Do: Get the list of evaluation criteria from somewhere
 
-			players = players.Where(p => p.ExternalId != currentplayerPhotonId).ToList();
+			_players = players.Where(p => p.ExternalId != currentplayerPhotonId).ToList();
 
 			var playerList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 			var emptySlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
 			emptySlot.GetComponent<Image>().enabled = false;
 			emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 
-			foreach (var player in players)
+			foreach (var player in _players)
 			{
 				var colour = new Color();
 				ColorUtility.TryParseHtmlString(player.Colour, out colour);
@@ -200,7 +202,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			var emptyRank = UnityEngine.Object.Instantiate(_slotPrefab, rankList.transform, false);
 			emptyRank.GetComponent<Image>().enabled = false;
 			emptyRank.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-			for (int i = 0; i <= 6; i++)
+			for (int i = 0; i < 6; i++)
 			{ 
 				var rankSlot = UnityEngine.Object.Instantiate(_slotPrefab, rankList.transform, false);
 				var rankObj = UnityEngine.Object.Instantiate(_entryPrefab, rankSlot.transform, false);

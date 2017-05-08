@@ -114,6 +114,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				playerVoiceItem.PlayerGlyph.color = colour;
 			}
 			playerVoiceItem.PlayerGlyph.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
+			if (playerVoiceItem.NameText.text != player.Name)
+			{
+				playerVoiceItem.NameText.text = player.Name;
+			}
 		}
 
 		private void UpdateChatPanel()

@@ -342,7 +342,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			// Position on square perimeter
 			// Top Left = (-1, -1), Bottom Right = (1, 1)
-			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width;
+			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width - 18;
 			var halfSide = sideLength / 2;
 			//var step = sideLength / PointsPerSide * 2;
 			var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;
