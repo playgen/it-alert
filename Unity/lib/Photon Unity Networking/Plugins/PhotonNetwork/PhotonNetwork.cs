@@ -58,9 +58,26 @@ public static class PhotonNetwork
 	/// <summary>Path to the PhotonServerSettings file (used by PhotonEditor).</summary>
 	internal const string serverSettingsAssetPath = "Assets/Photon Unity Networking/Resources/" + PhotonNetwork.serverSettingsAssetFile + ".asset";
 
+	private static ServerSettings _serverSettings;
 
 	/// <summary>Serialized server settings, written by the Setup Wizard for use in ConnectUsingSettings.</summary>
-	public static ServerSettings PhotonServerSettings = (ServerSettings)Resources.Load(PhotonNetwork.serverSettingsAssetFile, typeof(ServerSettings));
+	public static ServerSettings PhotonServerSettings
+	{
+		get
+		{
+			if (_serverSettings == null)
+			{
+				_serverSettings = (ServerSettings) Resources.Load(PhotonNetwork.serverSettingsAssetFile, typeof(ServerSettings));
+				InitializeNetworkPeer();
+			}
+			return _serverSettings;
+		}
+		set
+		{
+			_serverSettings = value;
+			InitializeNetworkPeer();
+		}
+	} 
 
 	/// <summary>Currently used server address (no matter if master or game server).</summary>
 	public static string ServerAddress { get { return (networkingPeer != null) ? networkingPeer.ServerAddress : "<not connected>"; } }
@@ -1119,10 +1136,7 @@ public static class PhotonNetwork
 
 
 		// Set up the NetworkingPeer and use protocol of PhotonServerSettings
-		ConnectionProtocol protocol = PhotonNetwork.PhotonServerSettings.Protocol;
-		networkingPeer = new NetworkingPeer(string.Empty, protocol);
-		networkingPeer.QuickResendAttempts = 2;
-		networkingPeer.SentCountAllowance = 7;
+
 
 
 		#if UNITY_XBOXONE
@@ -1136,16 +1150,26 @@ public static class PhotonNetwork
 		networkingPeer.EncryptionMode = EncryptionMode.DatagramEncryption;
 		#endif
 
-		if (UsePreciseTimer)
-		{
-			Debug.Log("Using Stopwatch as precision timer for PUN.");
-			startupStopwatch = new Stopwatch();
-			startupStopwatch.Start();
-			networkingPeer.LocalMsTimestampDelegate = () => (int)startupStopwatch.ElapsedMilliseconds;
-		}
+		//if (UsePreciseTimer)
+		//{
+		//	Debug.Log("Using Stopwatch as precision timer for PUN.");
+		//	startupStopwatch = new Stopwatch();
+		//	startupStopwatch.Start();
+		//	networkingPeer.LocalMsTimestampDelegate = () => (int)startupStopwatch.ElapsedMilliseconds;
+		//}
 
 		// Local player
 		CustomTypes.Register();
+	}
+
+	private static void InitializeNetworkPeer()
+	{
+		ConnectionProtocol protocol = PhotonNetwork.PhotonServerSettings.Protocol;
+		networkingPeer = new NetworkingPeer(string.Empty, protocol)
+		{
+			QuickResendAttempts = 2,
+			SentCountAllowance = 7
+		};
 	}
 
 	/// <summary>

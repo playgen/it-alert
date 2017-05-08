@@ -108,10 +108,10 @@ namespace PlayGen.Photon.Unity.Client
 
 		private void ProcessPlayersMessage(Message message)
 		{
-			var listedPlayersMessage = message as ListPlayersMessage<TPlayer>;
+			var listedPlayersMessage = message as ListPlayersMessage;
 			if (listedPlayersMessage != null)
 			{
-				Players = listedPlayersMessage.Players;
+				Players = listedPlayersMessage.Players.Cast<TPlayer>().ToList();
 
 				// Position this player as the first player in the list
 				var playerId = PhotonNetwork.player.ID;

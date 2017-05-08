@@ -87,9 +87,12 @@
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\..\..\bin\Simulation\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\..\lib\GameWork\Engine\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.ITAlert.Photon.Common">
       <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Common.dll</HintPath>
@@ -152,15 +155,15 @@
     </Reference>
     <Reference Include="PlayGen.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Photon.Messaging">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messaging.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Photon.Players">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Players.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
@@ -236,6 +239,7 @@
     <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="Photon\ITAlertClientRoom.cs" />
     <Compile Include="Photon\ITAlertPhotonClient.cs" />
+    <Compile Include="Photon\PhotonConfigLoader.cs" />
     <Compile Include="Simulation\Behaviours\ItemDragBehaviour.cs" />
     <Compile Include="Simulation\AnimateConnectionUV.cs" />
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
@@ -329,12 +333,12 @@
     <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">
       <Project>{5252e94a-df1c-4ceb-a3fb-e8d6ed4fa9da}</Project>
       <Name>PhotonDependencies</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\PlayGen.Photon.Unity\PlayGen.Photon.Unity.csproj">
       <Project>{ea15d7ac-fa66-44ad-a8bc-01f8dcfcf4b6}</Project>
       <Name>PlayGen.Photon.Unity</Name>
-      <Private>False</Private>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\UnityEngine.UI.Extensions.ColorPicker\UnityEngine.UI.Extensions.ColorPicker.csproj">
       <Project>{381a26db-0f7f-47bd-860f-3b9917fe4d5d}</Project>

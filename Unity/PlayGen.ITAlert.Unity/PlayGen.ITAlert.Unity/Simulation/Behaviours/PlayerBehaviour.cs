@@ -68,6 +68,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
+		public void DisableTrail()
+		{
+			_trailRenderer.enabled = false;
+		}
+
 		private void SetGlyph(string playerGlyph)
 		{
 			_image.sprite = Resources.Load<Sprite>($"playerglyph_{playerGlyph}");
