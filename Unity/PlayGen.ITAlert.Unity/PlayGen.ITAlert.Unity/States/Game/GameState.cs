@@ -1,6 +1,8 @@
 ﻿using System;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
@@ -18,7 +20,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		private readonly GameStateControllerFactory _stateControllerFactory;
 
-		private Client _photonClient;
+		private ITAlertPhotonClient _photonClient;
 		private TickStateController _stateController;
 
 		public override string Name => StateName;
@@ -39,7 +41,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		protected override void OnEnter()
 		{
 			_photonClient?.Dispose();
-			_photonClient = new Client(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());
+			_photonClient = new ITAlertPhotonClient(GamePlugin, GameVersion, new ITAlertMessageSerializationHandler());
 			_photonClient.ExceptionEvent += OnClientException;
 			_photonClient.ConnectedEvent += OnConnected;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
@@ -15,10 +16,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {
 	public class MenuStateControllerFactory
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		public StateControllerBase ParentStateController { private get; set; }
 
-		public MenuStateControllerFactory(Client photonClient)
+		public MenuStateControllerFactory(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 		}
@@ -46,7 +47,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			return stateController;
 		}
 
-		private MainMenuState CreateMainMenuState(Client photonClient, ScenarioController scenarioController)
+		private MainMenuState CreateMainMenuState(ITAlertPhotonClient photonClient, ScenarioController scenarioController)
 		{
 			var input = new MenuStateInput(photonClient, scenarioController);
 			var state = new MainMenuState(input);
@@ -69,7 +70,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			return state;
 		}
 
-		private ScenarioListState CreateScenarioListState(Client client, ScenarioController scenarioController)
+		private ScenarioListState CreateScenarioListState(ITAlertPhotonClient client, ScenarioController scenarioController)
 		{
 			var input = new ScenarioListStateInput(client, scenarioController);
 			var state = new ScenarioListState(input, scenarioController);
@@ -87,7 +88,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			return state;
 		}
 
-		private GamesListState CreateGameListState(Client client)
+		private GamesListState CreateGameListState(ITAlertPhotonClient client)
 		{
 			var gamesListController = new GamesListController(client);
 			var joinGameController = new JoinGameController(_photonClient);
@@ -106,7 +107,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			return state;
 		}
 
-		private static CreateGameState CreateCreateGameState(Client client, CreateGameController createGameController, ScenarioController scenarioController)
+		private static CreateGameState CreateCreateGameState(ITAlertPhotonClient client, CreateGameController createGameController, ScenarioController scenarioController)
 		{
 			var input = new CreateGameStateInput(client, scenarioController);
 			var state = new CreateGameState(input, createGameController);

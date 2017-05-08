@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
@@ -17,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		public event Action BackClickedEvent;
 		public event Action JoinedRoomEvent;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private readonly ScenarioController _scenarioController;
 
 		private GameObject _createGamePanel;
@@ -27,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		private bool _bestFitTick;
 
-		public CreateGameStateInput(Client photonClient, ScenarioController scenarioController)
+		public CreateGameStateInput(ITAlertPhotonClient photonClient, ScenarioController scenarioController)
 		{
 			_photonClient = photonClient;
 			_scenarioController = scenarioController;
@@ -104,7 +105,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			}
 		}
 
-		private void OnJoinedRoom(ClientRoom room)
+		private void OnJoinedRoom(ClientRoom<ITAlertPlayer> room)
 		{
 			JoinedRoomEvent?.Invoke();
 		}

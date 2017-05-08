@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -16,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 	public class ScenarioListStateInput : TickStateInput
 	{
 		private readonly ScenarioController _scenarioController;
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		private GameObject _scenarioPanel;
 		private GameObject _scenarioListObject;
@@ -32,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		public event Action BackClickedEvent;
 
-		public ScenarioListStateInput(Client photonClient, ScenarioController scenarioController)
+		public ScenarioListStateInput(ITAlertPhotonClient photonClient, ScenarioController scenarioController)
 		{
 			_photonClient = photonClient;
 			_scenarioController = scenarioController;

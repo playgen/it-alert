@@ -1,6 +1,7 @@
 ﻿using System;
 using PlayGen.ITAlert.Photon.Messages.Game.UI;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
@@ -10,12 +11,12 @@ namespace PlayGen.ITAlert.Unity.Controllers
 {
 	public class VoiceController
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private readonly Director _director;
 
 		private VoiceClient VoiceClient => _photonClient?.CurrentRoom?.VoiceClient;
 
-		public VoiceController(Client photonClient, Director director)
+		public VoiceController(ITAlertPhotonClient photonClient, Director director)
 		{
 			_photonClient = photonClient;
 			_director = director;

@@ -1,5 +1,9 @@
-﻿using GameWork.Core.Commands.Interfaces;
+﻿using ExitGames.Client.Photon.Voice;
+using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Photon.Messages.Game.Commands;
+using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 
@@ -7,9 +11,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyController : ICommandAction
 	{
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		
-		public LobbyController(Client photonClient)
+		public LobbyController(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 		}
@@ -23,14 +27,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		{
 			var player = _photonClient.CurrentRoom.Player;
 			player.State = (int)ITAlert.Photon.Players.ClientState.Ready;
-			_photonClient.CurrentRoom.UpdatePlayer(player);
+			SendPlayerUpdate(player);
 		}
 		
 		public void UnreadyPlayer()
 		{
 			var player = _photonClient.CurrentRoom.Player;
 			player.State = (int)ITAlert.Photon.Players.ClientState.NotReady;
-			_photonClient.CurrentRoom.UpdatePlayer(player);
+			SendPlayerUpdate(player);
 		}
 
 		public void SetPlayerColour(PlayerColour playerColour)
@@ -38,7 +42,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			var player = _photonClient.CurrentRoom.Player;
 			player.Colour = playerColour.Colour;
 			player.Glyph = playerColour.Glyph;
-			_photonClient.CurrentRoom.UpdatePlayer(player);
+			SendPlayerUpdate(player);
+		}
+
+		private void SendPlayerUpdate(ITAlertPlayer player)
+		{
+			_photonClient.CurrentRoom.Messenger.SendMessage(new UpdatePlayerMessage<ITAlertPlayer>
+			{
+				Player = player
+			});
 		}
 
 		public void StartGame(bool forceStart, bool closeRoom = true)

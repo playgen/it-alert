@@ -1,4 +1,5 @@
 ﻿using GameWork.Core.Commands.Interfaces;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.Photon.Players;

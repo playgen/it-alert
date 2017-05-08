@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
@@ -18,10 +19,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		private GameObject _gameContainer;
 		private Button _continueButton;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		private readonly Director _director;
 
-		public PlayingStateInput(Client photonClient, Director director)
+		public PlayingStateInput(ITAlertPhotonClient photonClient, Director director)
 		{
 			_photonClient = photonClient;
 			_director = director;

@@ -12,14 +12,16 @@ using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.ITAlert.Photon.Common;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Controllers;
+using PlayGen.ITAlert.Unity.Photon;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
 	public class LobbyStateInput : TickStateInput
 	{
-		private readonly Client _photonClient;
-		private List<Player> _players;
+		private readonly ITAlertPhotonClient _photonClient;
+		private List<ITAlertPlayer> _players;
 
 		private GameObject _lobbyPanel;
 		private ButtonList _buttons;
@@ -40,7 +42,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private readonly PopupController _popupController;
 
-		public LobbyStateInput(Client photonClient)
+		public LobbyStateInput(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 			_popupController = new PopupController(_photonClient);
@@ -143,7 +145,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_roomNameObject.GetComponent<Text>().text = name;
 		}
 		
-		private void UpdatePlayerList(List<Player> players)
+		private void UpdatePlayerList(List<ITAlertPlayer> players)
 		{
 			_players = players;
 
@@ -249,7 +251,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			}
 		}
 
-		private void OnPlayersChanged(List<Player> players)
+		private void OnPlayersChanged(List<ITAlertPlayer> players)
 		{
 			UpdatePlayerList(players);
 

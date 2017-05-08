@@ -2,7 +2,9 @@
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Photon.Common;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
@@ -15,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 	public class GamesListStateInput : TickStateInput
 	{
 		private readonly GamesListController _gameListController;
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		private GameObject _joinGamePanel;
 		private GameObject _gameListObject;
@@ -32,7 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private const float AutomaticRefreshInterval = 1;
 		private float _timeSinceLastRefresh;
 
-		public GamesListStateInput(Client photonClient, GamesListController gameListController)
+		public GamesListStateInput(ITAlertPhotonClient photonClient, GamesListController gameListController)
 		{
 			_photonClient = photonClient;
 			_gameListController = gameListController;
@@ -118,7 +120,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
 
-		private void OnJoinGameSuccess(ClientRoom clientRoom)
+		private void OnJoinGameSuccess(ClientRoom<ITAlertPlayer> clientRoom)
 		{
 			JoinGameSuccessEvent();
 		}

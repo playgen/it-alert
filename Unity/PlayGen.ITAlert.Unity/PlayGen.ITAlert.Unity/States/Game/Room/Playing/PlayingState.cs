@@ -5,6 +5,7 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Interfaces;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
@@ -21,11 +22,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private readonly Director _director;
 
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 		
 		public bool IsComplete { get; private set; }
 
-		public PlayingState(Director director, PlayingStateInput input, Client photonClient) : base(input)
+		public PlayingState(Director director, PlayingStateInput input, ITAlertPhotonClient photonClient) : base(input)
 		{
 			_director = director;
 			_photonClient = photonClient;

@@ -1,8 +1,10 @@
 ﻿using System;
 using Engine.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 
@@ -25,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		public static Client PhotonClient { get; set; }
+		public static ITAlertPhotonClient PhotonClient { get; set; }
 
 		public static Director Director { get; set; }
 

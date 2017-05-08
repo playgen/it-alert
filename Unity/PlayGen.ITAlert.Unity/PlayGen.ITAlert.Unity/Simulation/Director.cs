@@ -8,6 +8,7 @@ using Engine.Entities;
 using Engine.Lifecycle;
 using Engine.Serialization;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
@@ -95,7 +96,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public PlayerBehaviour Player => _activePlayer;
 
-		public List<Player> Players { get; private set; }
+		public List<ITAlertPlayer> Players { get; private set; }
 		
 		#endregion
 		
@@ -175,7 +176,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			LogProxy.Info($"_trackedEntities: {_trackedEntities.Count}, UntrackedEntities: {_untrackedEntities.Count}");
 		}
 
-		public bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<Player> players)
+		public bool Initialize(SimulationRoot simulationRoot, int playerServerId, List<ITAlertPlayer> players)
 		{
 			try
 			{
@@ -267,7 +268,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void SetupPlayers(List<Player> players, int playerServerId)
+		private void SetupPlayers(List<ITAlertPlayer> players, int playerServerId)
 		{
 			LogProxy.Info("Director: Setup Players");
 			foreach (var player in players)

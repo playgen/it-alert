@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Commands;
+using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.Photon.Messages.Players;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
@@ -15,11 +18,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		public override string Name => StateName;
 
 		private readonly LobbyController _controller;
-		private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		public event Action GameStartedEvent;
 		
-		public LobbyState(LobbyStateInput input, LobbyController controller, Client photonClient)
+		public LobbyState(LobbyStateInput input, LobbyController controller, ITAlertPhotonClient photonClient)
 			: base(input)
 		{
 			input.LeaveLobbyClickedEvent += LeaveLobby;
@@ -74,14 +77,21 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		}
 
 		// ReSharper disable once InconsistentNaming
-		private void UpdateThisPlayerFromSUGAR(List<Player> players)
+		private void UpdateThisPlayerFromSUGAR(List<ITAlertPlayer> players)
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= UpdateThisPlayerFromSUGAR;
 
 			var player = _photonClient.CurrentRoom.Player;
 			player.ExternalId = SUGARManager.CurrentUser.Id;
 			player.Name = SUGARManager.CurrentUser.Name;
-			_photonClient.CurrentRoom.UpdatePlayer(player);
+			SendPlayerUpdate(player);
+		}
+
+		private void SendPlayerUpdate(ITAlertPlayer player)
+		{
+			_photonClient.CurrentRoom.Messenger.SendMessage(new UpdatePlayerMessage<ITAlertPlayer> {
+				Player = player
+			});
 		}
 
 		protected virtual void OnGameStartedEvent()

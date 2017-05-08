@@ -37,6 +37,9 @@
     <Reference Include="Photon3Unity3D">
       <HintPath>..\..\lib\Photon3Unity3D.dll</HintPath>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Players">
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Players.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.Photon.Messages">
       <HintPath>..\..\..\bin\Server\PlayGen.Photon.Messages.dll</HintPath>
     </Reference>

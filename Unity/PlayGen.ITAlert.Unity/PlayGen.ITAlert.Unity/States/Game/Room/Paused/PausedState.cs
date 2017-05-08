@@ -2,6 +2,7 @@
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
@@ -13,9 +14,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		public const string StateName = "Paused";
 		public override string Name => StateName;
 		
-		private readonly Client _networkPhotonClient;
+		private readonly ITAlertPhotonClient _networkPhotonClient;
 
-		public PausedState(TickStateInput input, Client networkPhotonClient) : base(input)
+		public PausedState(TickStateInput input, ITAlertPhotonClient networkPhotonClient) : base(input)
 		{
 			_networkPhotonClient = networkPhotonClient;
 		}
