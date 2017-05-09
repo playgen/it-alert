@@ -45,10 +45,10 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			var scenarios = _scenarioLoader.GetScenarioInfo();
 
-			if (CommandLineUtility.CustomArgs.ContainsKey("scenarios"))
+			if (CommandLineUtility.CustomArgs.ContainsKey("sessionid"))
 			{
-			    var keys = CommandLineUtility.CustomArgs["scenarios"].Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-			    scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.ToLower()))).ToArray();
+				var keys = CommandLineUtility.CustomArgs["sessionid"].Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
+				scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.Trim().ToLower()))).ToArray();
 			}
 
 			foreach (var scenario in scenarios)
@@ -94,8 +94,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		public void QuickMatch()
 		{
-			var roomSettings = new CreateRoomSettings
-			{
+			var roomSettings = new CreateRoomSettings {
 				Name = $"QUICK-{Guid.NewGuid().ToString().Substring(0, 4)}",
 				MinPlayers = _selectedScenario.MinPlayerCount,
 				MaxPlayers = _selectedScenario.MaxPlayerCount,
