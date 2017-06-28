@@ -103,7 +103,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 					{
 						var playerConfig = scenario.PlayerConfigFactory.GetNextPlayerConfig(i);
 						playerConfig.ExternalId = p.PhotonId;
-						playerConfig.GlobalIdentifier = p.Name;
+						playerConfig.Identifiers.Add(Identifiers.SUGAR, p.Name);
+						if (string.IsNullOrEmpty(p.RageClassId) == false)
+						{
+							playerConfig.Identifiers.Add(Identifiers.RAGE_CLASS, p.RageClassId);
+						}
 						playerConfig.Name = p.Name;
 						playerConfig.Colour = p.Colour;
 						playerConfig.Glyph = p.Glyph;

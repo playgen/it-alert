@@ -195,7 +195,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			var scenario = new SimulationScenario(ScenarioInfo)
 			{
 				Configuration = configuration,
-				TimeLimitSeconds = 600,
+				TimeLimitSeconds = 480, // 8 minutes
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node30.Id, node02.Id, node32.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),

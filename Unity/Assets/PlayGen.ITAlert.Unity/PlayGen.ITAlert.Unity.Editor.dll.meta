@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 493032b336eef1e4d8a12df3e6ba8661
-timeCreated: 1491843640
+timeCreated: 1497955974
 licenseType: Free
 PluginImporter:
   serializedVersion: 2
@@ -15,7 +15,6 @@ PluginImporter:
       second:
         enabled: 0
         settings:
-          Exclude Android: 1
           Exclude Editor: 0
           Exclude Linux: 1
           Exclude Linux64: 1
@@ -23,14 +22,9 @@ PluginImporter:
           Exclude OSXIntel: 1
           Exclude OSXIntel64: 1
           Exclude OSXUniversal: 1
-          Exclude SamsungTV: 1
-          Exclude Tizen: 1
           Exclude WebGL: 1
           Exclude Win: 1
           Exclude Win64: 1
-          Exclude WindowsStoreApps: 1
-          Exclude iOS: 1
-          Exclude tvOS: 1
     data:
       first:
         '': Editor
@@ -39,13 +33,6 @@ PluginImporter:
         settings:
           CPU: AnyCPU
           OS: AnyOS
-    data:
-      first:
-        Android: Android
-      second:
-        enabled: 0
-        settings:
-          CPU: ARMv7
     data:
       first:
         Any: 
@@ -73,13 +60,6 @@ PluginImporter:
         enabled: 0
         settings:
           CPU: AnyCPU
-    data:
-      first:
-        Samsung TV: SamsungTV
-      second:
-        enabled: 0
-        settings:
-          STV_MODEL: STANDARD_15
     data:
       first:
         Standalone: Linux
@@ -143,26 +123,6 @@ PluginImporter:
         enabled: 0
         settings:
           CPU: AnyCPU
-          DontProcess: False
-          PlaceholderPath: 
-          SDK: AnySDK
-          ScriptingBackend: AnyScriptingBackend
-    data:
-      first:
-        iPhone: iOS
-      second:
-        enabled: 0
-        settings:
-          CompileFlags: 
-          FrameworkDependencies: 
-    data:
-      first:
-        tvOS: tvOS
-      second:
-        enabled: 0
-        settings:
-          CompileFlags: 
-          FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

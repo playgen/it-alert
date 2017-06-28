@@ -75,6 +75,7 @@
     <Compile Include="Configuration\EdgeConfig.cs" />
     <Compile Include="Configuration\EdgeConfigExtensions.cs" />
     <Compile Include="Configuration\EntityConfig.cs" />
+    <Compile Include="Configuration\Identifiers.cs" />
     <Compile Include="Configuration\IPlayerConfigFactory.cs" />
     <Compile Include="Configuration\NodeConfig.cs" />
     <Compile Include="Configuration\PlayerConfig.cs" />
