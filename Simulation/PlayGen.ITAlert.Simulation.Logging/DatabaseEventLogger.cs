@@ -238,9 +238,30 @@ namespace PlayGen.ITAlert.Simulation.Logging
 				{
 					Game = _game,
 					Id = playerConfig.Id,
-					PlayerIdentifier = playerConfig.GlobalIdentifier,
 				};
 				_context.InstancePlayers.Add(player);
+
+				if (playerConfig.Identifiers.TryGetValue(Identifiers.SUGAR, out var sugarId))
+				{
+					var sugarIdentifier = new PlayerIdentifier()
+					{
+						GameId = player.GameId,
+						PlayerId = player.Id,
+						IdentifierType = Identifiers.SUGAR,
+						Identifier = sugarId,
+					};
+					_context.InstancePlayerIdentifiers.Add(sugarIdentifier);
+				}
+				if (playerConfig.Identifiers.TryGetValue(Identifiers.RAGE_CLASS, out var rageClassId))
+				{
+					var sugarIdentifier = new PlayerIdentifier() {
+						GameId = player.GameId,
+						PlayerId = player.Id,
+						IdentifierType = Identifiers.RAGE_CLASS,
+						Identifier = rageClassId,
+					};
+					_context.InstancePlayerIdentifiers.Add(sugarIdentifier);
+				}
 			}
 			_context.SaveChanges();
 		}

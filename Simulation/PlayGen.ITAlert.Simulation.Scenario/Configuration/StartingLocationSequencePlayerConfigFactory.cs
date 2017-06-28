@@ -26,6 +26,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Configuration
 			{
 				Archetype = _archetype,
 				Id = index,
+				Identifiers = new Dictionary<string, string>(),
 				StartingLocation = startingLocation,
 			};
 		}

@@ -1,4 +1,6 @@
-﻿namespace PlayGen.ITAlert.Simulation.Configuration
+﻿using System.Collections.Generic;
+
+namespace PlayGen.ITAlert.Simulation.Configuration
 {
 	/// <summary>
 	/// 
@@ -10,7 +12,7 @@
 		/// </summary>
 		public int ExternalId { get; set; }
 
-		public string GlobalIdentifier { get; set; }
+		public Dictionary<string,string> Identifiers { get; set; }
 
 		public string Name { get; set; }
 

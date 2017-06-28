@@ -8,5 +8,7 @@ namespace PlayGen.ITAlert.Photon.Players
 		public string Colour { get; set; }
 
 		public string Glyph { get; set; }
+
+		public string RageClassId { get; set; }
 	}
 }

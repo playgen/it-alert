@@ -45,6 +45,10 @@
     <Compile Include="Scenarios\ScenarioFactory.cs" />
     <Compile Include="Scenarios\SPL\Archetypes\RedVirus.cs" />
     <Compile Include="Scenarios\SPL\Archetypes\GreenVirus.cs" />
+    <Compile Include="Scenarios\SPL\SPL1_35.cs" />
+    <Compile Include="Scenarios\SPL\SPL1_50.cs" />
+    <Compile Include="Scenarios\SPL\SPL1_65.cs" />
+    <Compile Include="Scenarios\SPL\SPL1_80.cs" />
     <Compile Include="Scenarios\SPL\SPL3.cs" />
     <Compile Include="Scenarios\SPL\SPL2.cs" />
     <Compile Include="Scenarios\SPL\SPL1.cs" />
