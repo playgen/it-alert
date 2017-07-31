@@ -54,6 +54,7 @@
     <Compile Include="Commands\PickupItemCommand.cs" />
     <Compile Include="Commands\CreateItemCommand.cs" />
     <Compile Include="Commands\CreateMalwareCommand.cs" />
+    <Compile Include="Commands\SetPlayerMovementSpeedCommand.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
     <Compile Include="Components\EntityTypes\Connection.cs" />
     <Compile Include="Components\EntityTypes\IEntityType.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Sequencing\SimulationFrame.cs" />
     <Compile Include="Components\Items\ItemContainerExtensions.cs" />
     <Compile Include="Systems\Initialization\GraphSystem.cs" />
+    <Compile Include="Systems\Movement\MovementSpeedSystem.cs" />
     <Compile Include="Systems\Players\DisposePlayerOnDisconnect.cs" />
     <Compile Include="Systems\Players\DropInventoryOnDisconnect.cs" />
     <Compile Include="Systems\Players\IPlayerSystemBehaviour.cs" />

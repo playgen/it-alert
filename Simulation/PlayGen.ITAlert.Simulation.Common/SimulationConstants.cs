@@ -87,7 +87,7 @@
 		/// <summary>
 		/// number of units to mvoe every tick
 		/// </summary>
-		public const decimal PlayerSpeed = 1.5m;
+		public const decimal PlayerSpeed = 2.4m;
 
 		#endregion
 

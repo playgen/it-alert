@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Unity.Editor
 		public void Start()
 		{
 #if UNITY_EDITOR
-			Debug.Log("Ading callback for editor state change");
+			LogProxy.Info("Ading callback for editor state change");
 			EditorApplication.playmodeStateChanged += PlaymodeStateChanged;
 #endif
 		}
