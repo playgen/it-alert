@@ -2,6 +2,7 @@
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Debug;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
@@ -46,6 +47,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			_photonClient.ConnectedEvent += OnConnected;
 
 			PlayerCommands.PhotonClient = _photonClient;
+			DebugCommands.PhotonClient = _photonClient;
 
 			_stateController = _stateControllerFactory.Create(_photonClient);
 			_stateController.Initialize();

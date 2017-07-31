@@ -19,11 +19,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 	{
 		private readonly ComponentMatcherGroup<Connection, GraphNode, Visitors, MovementCost> _connectionMatcherGroup;
 
+		private readonly MovementSpeedSystem _movementSpeedSystem;
+
 		public override int[] NodeIds => _connectionMatcherGroup.MatchingEntityKeys;
 
-		public ConnectionMovement(IMatcherProvider matcherProvider)
+		public ConnectionMovement(IMatcherProvider matcherProvider, MovementSpeedSystem movementSpeedSystem)
 			: base (matcherProvider)
 		{
+			_movementSpeedSystem = movementSpeedSystem;
 			_connectionMatcherGroup = matcherProvider.CreateMatcherGroup<Connection, GraphNode, Visitors, MovementCost>();
 		}
 
@@ -37,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 				{
 					if (VisitorMatcherGroup.TryGetMatchingEntity(visitorId, out var visitorTuple))
 					{
-						var nextPosition = visitorTuple.Component1.PositionDecimal + (visitorTuple.Component3.Value / connectionTuple.Component4.Value);
+						var nextPosition = visitorTuple.Component1.PositionDecimal + (_movementSpeedSystem.GetMovementSpeed(visitorTuple.Component3) / connectionTuple.Component4.Value);
 
 						if (nextPosition >= exitNode.Value)
 						{

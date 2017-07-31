@@ -123,7 +123,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		{
 			if (Input.GetKeyDown(KeyCode.Escape))
 			{
-				OnQuitClick();
+				//OnQuitClick();
 			}
 			_quickMatchButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
 			_joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;

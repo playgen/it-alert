@@ -20,11 +20,15 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 	{
 		private readonly ComponentMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost> _subsystemMatcherGroup;
 
+		private readonly MovementSpeedSystem _movementSpeedSystem;
+
 		public override int[] NodeIds => _subsystemMatcherGroup.MatchingEntityKeys;
 
-		public SubsystemMovement(IMatcherProvider matcherProvider)
+		public SubsystemMovement(IMatcherProvider matcherProvider, MovementSpeedSystem movementSpeedSystem)
 			: base (matcherProvider)
 		{
+			_movementSpeedSystem = movementSpeedSystem;
+
 			// TODO: this is a good example where creating arbitrarily larger n-tuples might not be the best option
 			// the flag components will never be used in the tuple but consume one valuable slot
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, GraphNode, Visitors, ExitRoutes, MovementCost>();
@@ -57,7 +61,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 						#endregion
 
-						var nextPosition = (visitorTuple.Component1.PositionDecimal + visitorTuple.Component3.Value / Math.Max(1, subsystemTuple.Component5.Value)) % SimulationConstants.SubsystemPositions;
+						var nextPosition = (visitorTuple.Component1.PositionDecimal + _movementSpeedSystem.GetMovementSpeed(visitorTuple.Component3) / Math.Max(1, subsystemTuple.Component5.Value)) % SimulationConstants.SubsystemPositions;
 
 						if (exitNode != null)
 						{

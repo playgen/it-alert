@@ -233,6 +233,8 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
+    <Compile Include="Debug\DebugCommands.cs" />
+    <Compile Include="Debug\DebugInterface.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="LogProxy.cs" />

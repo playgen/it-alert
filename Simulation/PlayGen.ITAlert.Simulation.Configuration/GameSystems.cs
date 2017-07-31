@@ -102,6 +102,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 			#region movement system
 
+			new SystemConfiguration<MovementSpeedSystem>(),
+
 			new SystemConfiguration<MovementSystem>()
 			{
 				ExtensionConfiguration = new SystemExtensionConfiguration[]
@@ -168,7 +170,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HaltAndCatchFireCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<EndGameCommandHandler>(), 
 							
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PlayerDisconnectedCommandHandler>(), 
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PlayerDisconnectedCommandHandler>(),
+
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetPlayerMovementSpeedCommandHandler>(),
 
 						}
 
