@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 			{
 				containerIndex = i;
 				var ic = itemStorage.Items[i];
-				if (ic.GetType() == typeof(ItemContainer) && ic.CanCapture())
+				if (ic.GetType() == typeof(ItemContainer) && ic.Item == null)
 				{
 					itemContainer = ic;
 					return true;

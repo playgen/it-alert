@@ -10,7 +10,9 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 		bool Enabled { get; }
 
-		bool CanCapture(int? itemId = null);
+		bool CanCapture(int itemId);
+
+		bool CanContain(int itemId);
 
 		bool CanRelease { get; }
 	}
