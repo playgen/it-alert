@@ -56,7 +56,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					&& _itemMatcherGroup.TryGetMatchingEntity(inventory.Item.Value, out var inventoryItemTuple)
 					&& inventoryItemTuple.Entity.TryGetComponent(command.ItemType, out var itemTypeComponent)
 					&& target != null
-					&& target.CanCapture(inventory.Item))
+					&& target.CanCapture(inventory.Item.Value))
 				{
 					target.Item = inventoryItemTuple.Entity.Id;
 					inventoryItemTuple.Component3.Value = subsystemTuple.Entity.Id;

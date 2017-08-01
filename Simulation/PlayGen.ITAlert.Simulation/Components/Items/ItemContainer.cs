@@ -10,8 +10,13 @@
 		/// Inidicate that the item container is currently enabled
 		/// </summary>
 		public virtual bool Enabled { get; set; }
+		
+		public virtual bool CanCapture(int itemId)
+		{
+			return Enabled && Item.HasValue == false && CanContain(itemId);
+		}
 
-		public virtual bool CanCapture(int? itemId = null) => Enabled && Item.HasValue == false;
+		public virtual bool CanContain(int itemId) => true;
 
 		public virtual bool CanRelease => Enabled && Item.HasValue;
 	}

@@ -13,10 +13,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus
 			_captureMatcherGroup = captureMatcherGroup;
 		}
 
-		public override bool CanCapture(int? itemId = null)
+		public override bool CanContain(int itemId)
 		{
-			ComponentEntityTuple<Capture> captureEntity;
-			return itemId.HasValue && _captureMatcherGroup.TryGetMatchingEntity(itemId.Value, out captureEntity);
+			return _captureMatcherGroup.TryGetMatchingEntity(itemId, out var captureEntity) && base.CanContain(itemId);
 		}
 	}
 }
