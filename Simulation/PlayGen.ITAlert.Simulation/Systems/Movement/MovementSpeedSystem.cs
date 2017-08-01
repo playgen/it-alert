@@ -14,11 +14,19 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// <summary>
 		/// 
 		/// </summary>
-		public decimal PlayerSpeedOffset { get; set; }
+		public Dictionary<MovementOffsetCategory, decimal> SpeedOffsets { get; set; } = new Dictionary<MovementOffsetCategory, decimal>();
 
 		public decimal GetMovementSpeed(MovementSpeed movementSpeed)
 		{
-			return movementSpeed.Value + PlayerSpeedOffset;
+			var offsetSpeed = movementSpeed.Value;
+			foreach (MovementOffsetCategory cat in Enum.GetValues(typeof(MovementOffsetCategory)))
+			{
+				if ((movementSpeed.Category & cat) != 0 && SpeedOffsets.TryGetValue(cat, out var delta))
+				{
+					offsetSpeed += delta;
+				}
+			}
+			return offsetSpeed < 0.1m ? 0.1m : offsetSpeed;
 		}
 
 		public void Dispose()

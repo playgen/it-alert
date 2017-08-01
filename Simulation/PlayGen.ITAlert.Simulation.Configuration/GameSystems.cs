@@ -172,7 +172,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PlayerDisconnectedCommandHandler>(),
 
-							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetPlayerMovementSpeedCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetMovementSpeedCommandHandler>(),
 
 						}
 
