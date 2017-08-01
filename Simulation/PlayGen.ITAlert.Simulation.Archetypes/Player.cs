@@ -24,6 +24,7 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 				ComponentTemplate = new MovementSpeed()
 				{
 					Value = SimulationConstants.PlayerSpeed,
+					Category = MovementOffsetCategory.Player
 				}
 			}
 		)
