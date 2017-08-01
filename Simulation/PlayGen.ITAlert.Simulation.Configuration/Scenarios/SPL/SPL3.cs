@@ -49,16 +49,16 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			var node00 = new NodeConfig(0, 0, SubsystemNode.Archetype);
 			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
-			var node20 = new NodeConfig(2, 0, TransferWorkstation.Archetype);
+			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
 			var node30 = new NodeConfig(3, 0, SubsystemNode.Archetype);
 
-			var node01 = new NodeConfig(0, 1, SubsystemNode.Archetype);
+			var node01 = new NodeConfig(0, 1, TransferWorkstation.Archetype);
 			var node11 = new NodeConfig(1, 1, AntivirusWorkstation.Archetype);
 			var node21 = new NodeConfig(2, 1, SubsystemNode.Archetype);
-			var node31 = new NodeConfig(3, 1, SubsystemNode.Archetype);
+			var node31 = new NodeConfig(3, 1, TransferWorkstation.Archetype);
 
 			var node02 = new NodeConfig(0, 2, SubsystemNode.Archetype);
-			var node12 = new NodeConfig(1, 2, TransferWorkstation.Archetype);
+			var node12 = new NodeConfig(1, 2, SubsystemNode.Archetype);
 			var node22 = new NodeConfig(2, 2, SubsystemNode.Archetype);
 			var node32 = new NodeConfig(3, 2, SubsystemNode.Archetype);
 

@@ -191,6 +191,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 						new CreateItem(ScannerTool.Archetype, node01),
 						new CreateItem(ScannerTool.Archetype, node21),
 						new CreateItem(CaptureTool.Archetype, node02),
+						new CreateItem(CaptureTool.Archetype, node22),
 					},
 					ExitCondition = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

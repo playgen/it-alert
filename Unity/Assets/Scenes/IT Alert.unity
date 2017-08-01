@@ -261,7 +261,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 511.94183, y: -45.89479}
+  m_AnchoredPosition: {x: 511.94177, y: -45.89479}
   m_SizeDelta: {x: 287.15833, y: 71.78958}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &46922256
@@ -1181,65 +1181,6 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1422427222526030, guid: 5d73e92957402b042899e5895ce84136, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 250
-      objectReference: {fileID: 0}
-    - target: {fileID: 114346970176047186, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_FontData.m_MaxSize
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 114346970176047186, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_FontData.m_FontSize
-      value: 13
-      objectReference: {fileID: 0}
-    - target: {fileID: 114346970176047186, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_FontData.m_MinSize
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 114346970176047186, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_FontData.m_Alignment
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_Pivot.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224983992177153206, guid: 5d73e92957402b042899e5895ce84136,
-        type: 2}
-      propertyPath: m_Pivot.y
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5d73e92957402b042899e5895ce84136, type: 2}

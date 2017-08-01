@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			public Text NameText { get; set; }
 		}
 
-		private readonly Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
+		private Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
 
 		private readonly ITAlertPhotonClient _photonClient;
 		private GameObject _chatPanel;
@@ -51,9 +51,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
 
-			foreach (var playerVoiceItem in _playerVoiceItems.Values)
+			foreach (var playerVoiceItem in _chatPanel.transform)
 			{
-				UnityEngine.Object.Destroy(playerVoiceItem.GameObject);
+				if (((Transform)playerVoiceItem).gameObject.name != "PushToTalk")
+				{
+					UnityEngine.Object.Destroy(((Transform)playerVoiceItem).gameObject);
+				}
 			}
 			_playerVoiceItems.Clear();
 		}
@@ -103,6 +106,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				}
 				UpdatePlayerVoiceItem(player, playerVoiceItem);
 			}
+			foreach (var playerVoiceItem in _playerVoiceItems)
+			{
+				if (players.All(p => p.PhotonId != playerVoiceItem.Key))
+				{
+					UnityEngine.Object.Destroy(playerVoiceItem.Value.GameObject);
+				}
+			}
+			_playerVoiceItems = _playerVoiceItems.Where(p => p.Value.GameObject != null).ToDictionary(p => p.Key, p => p.Value);
 		}
 
 		private void UpdatePlayerVoiceItem(ITAlertPlayer player, PlayerVoiceItem playerVoiceItem)
