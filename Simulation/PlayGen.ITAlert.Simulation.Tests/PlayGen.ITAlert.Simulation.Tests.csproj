@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ActorTests.cs" />
     <Compile Include="Archetypes\AnalysisTests.cs" />
+    <Compile Include="Commands\SwapSubsystemItemCommandTests.cs" />
     <Compile Include="Components\ItemStorageTests.cs" />
     <Compile Include="Components\ItemActivatorTests.cs" />
     <Compile Include="Components\AnalyserEnhancementTests.cs" />
@@ -62,6 +63,10 @@
     <ProjectReference Include="..\Engine\Engine.Core\Engine.Core.csproj">
       <Project>{dc88053b-f802-47e1-9be4-a7e9f795858d}</Project>
       <Name>Engine.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Engine\Engine.Lifecycle\Engine.Lifecycle.csproj">
+      <Project>{4421783E-7C1B-47BC-B26C-FC7B0653D706}</Project>
+      <Name>Engine.Lifecycle</Name>
     </ProjectReference>
     <ProjectReference Include="..\Engine\Engine.Startup\Engine.Startup.csproj">
       <Project>{92dac07e-8a7a-466b-b778-daf781a993f4}</Project>
@@ -95,6 +100,14 @@
       <Project>{6DB29F2D-F16F-4680-A3C2-27080606CC9D}</Project>
       <Name>PlayGen.ITAlert.Simulation.Modules.Resources</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario.Localization\PlayGen.ITAlert.Simulation.Scenario.Localization.csproj">
+      <Project>{4208e474-d078-4f4d-93d6-a9f73d691373}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scenario.Localization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlayGen.ITAlert.Simulation.Scenario\PlayGen.ITAlert.Simulation.Scenario.csproj">
+      <Project>{45775B35-274A-40CF-BFE3-AD08F594C99B}</Project>
+      <Name>PlayGen.ITAlert.Simulation.Scenario</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlayGen.ITAlert.Simulation\PlayGen.ITAlert.Simulation.csproj">
       <Project>{354189cc-c80b-4310-9b3a-7f9080ab4502}</Project>
       <Name>PlayGen.ITAlert.Simulation</Name>
@@ -110,9 +123,7 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
