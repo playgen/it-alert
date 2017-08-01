@@ -63,7 +63,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public void Update()
 			{
-				ContainerBehaviour.Initialize(ItemContainer, _director);
+				ContainerBehaviour.TryUpdate(ItemContainer);
+
 				UIEntity item;
 				if (ItemContainer?.Item != null
 					&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
@@ -132,11 +133,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			for (var i = 0; i < ItemCount; i++)
 			{
 				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
+
 				var containerIndex = i;
 				_systemItems[i] = new ItemPanelContainer(_director, gameObject, containerIndex);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
 				_systemItems[i].ContainerBehaviour.Click += ic => SystemContainerBehaviourOnClick(ic, containerIndex);
 				_systemItems[i].ContainerBehaviour.Drag += (ic, it, sin) => SystemContainerBehaviourOnDrag(it, ic, containerIndex, sin);
+
+				gameObject.GetComponent<ItemContainerBehaviour>().Initialize(_director, i);
 			}
 		}
 
@@ -207,10 +211,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				PlayerCommands.DropItem(item.Id, destContainerIndex);
 			}
-			else if (itemContainerBehaviour.TryGetItem(out containerItem) == false
-					 && _inventoryItem.ContainerBehaviour != itemContainerBehaviour)
+			else if (_inventoryItem.ContainerBehaviour != itemContainerBehaviour)
 			{
-				PlayerCommands.MoveItem(item.Id, sourceContainerIndex, destContainerIndex);
+				if (itemContainerBehaviour.TryGetItem(out containerItem))
+				{
+					PlayerCommands.SwapSubsystemItem(item.Id, sourceContainerIndex, containerItem.Id, destContainerIndex);
+				}
+				else
+				{
+					PlayerCommands.MoveItem(item.Id, sourceContainerIndex, destContainerIndex);
+				}
 			}
 		}
 
