@@ -17,6 +17,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 	{
 		public int PlayerId { get; set; }
 
+		public int SubsystemId { get; set; }
+
 		public int FromItemId { get; set; }
 
 		public int? ToItemId { get; set; }
@@ -61,7 +63,9 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				// Player must be on a subsystem
 				&& playerTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value,
-					out var subsystemTuple))
+					out var subsystemTuple)
+				// Must be same subsystem as when command was issued
+				&& subsystemTuple.Entity.Id == command.SubsystemId)
 			{
 				// No one must own either item
 				if (fromItemTuple.Component2.Value == null && toItemTuple?.Component2.Value == null)
@@ -71,17 +75,21 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 					// Items must still be in same locations as when the command was issued
 					if (fromContainer.Item == command.FromItemId
-						&& toContainer.Item == command.ToItemId)
-					{
+						&& toContainer.Item == command.ToItemId
+						// Must be enabled
+						&& fromContainer.Enabled
+						&& toContainer.Enabled
+						// Must be able to release items
+						&& (fromContainer.CanRelease || fromContainer.Item == null)
+						&& (toContainer.CanRelease || toContainer.Item == null)
 						// Containers must be able to accept items
-						if (toContainer.CanContain(command.FromItemId)
-							&& (!command.ToItemId.HasValue || fromContainer.CanContain(command.ToItemId.Value)))
-						{
-							toContainer.Item = command.FromItemId;
-							fromContainer.Item = command.ToItemId;
+						&& toContainer.CanContain(command.FromItemId) 
+						&& (!command.ToItemId.HasValue || fromContainer.CanContain(command.ToItemId.Value)))
+					{
+						toContainer.Item = command.FromItemId;
+						fromContainer.Item = command.ToItemId;
 
-							return true;
-						}
+						return true;
 					}
 				}
 			}

@@ -14,6 +14,7 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial.Archetypes;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Archetypes;
 using PlayGen.ITAlert.Simulation.Scenario.Actions;
 using PlayGen.ITAlert.Simulation.Scenario.Configuration;
 using PlayGen.ITAlert.Simulation.Startup;
@@ -23,6 +24,138 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 {
 	public class SwapSubsystemItemCommandTests
 	{
+		[Test]
+		public void CantSwapUnreleasableWithReleasableItem()
+		{
+			// Arrange
+			const string testName = "CantSwapUnreleasableWithReleasableItem";
+
+			var nodeConfigs = new[]
+			{
+				new NodeConfig(
+					0,
+					0,
+					AntivirusWorkstation.Archetype),
+
+				new NodeConfig(
+					0,
+					1,
+					SubsystemNode.Archetype),
+			};
+
+			SetupScenario(testName, out var lifecycleManager, nodeConfigs);
+
+			CreatePlayer(testName,
+				nodeConfigs[0],
+				lifecycleManager,
+				out var player);
+
+			CreateItem(TutorialScanner.Archetype.Name,
+				nodeConfigs[0],
+				lifecycleManager,
+				out var item2,
+				out var item2ContainerIndex,
+				out var item2Container);
+
+			GetSubsystemItemStorage(nodeConfigs[0],
+				lifecycleManager,
+				out var subsystem1ItemStorage);
+
+			var item1ContainerIndex = 0;
+			var item1Id = subsystem1ItemStorage.Component2.Items[item1ContainerIndex].Item;
+
+			// Assert items are in correct locatioons
+			Assert.NotNull(subsystem1ItemStorage.Component2.Items[0].Item);
+			Assert.NotNull(subsystem1ItemStorage.Component2.Items[1].Item);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[0].Item.Value, item1Id);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[1].Item.Value, item2.Entity.Id);
+
+			// Act
+			var swapCommand = new SwapSubsystemItemCommand
+			{
+				PlayerId = player.Entity.Id,
+				SubsystemId = nodeConfigs[0].EntityId,
+				FromItemId = item2.Entity.Id,
+				FromContainerIndex = item2ContainerIndex,
+				ToItemId = item1Id.Value,
+				ToContainerIndex = item1ContainerIndex
+			};
+
+			lifecycleManager.ECSRoot.ECS.EnqueueCommand(swapCommand);
+
+			lifecycleManager.ECSRoot.ECS.Tick();
+
+			// Assert items are still in original locations
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[0].Item.Value, item1Id);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[1].Item.Value, item2.Entity.Id);
+		}
+
+		[Test]
+		public void CantSwapReleasableWithUnreleasableItem()
+		{
+			// Arrange
+			const string testName = "CantSwapReleasableWithUnreleasableItem";
+
+			var nodeConfigs = new []
+			{
+				new NodeConfig(
+					0,
+					0,
+					AntivirusWorkstation.Archetype),
+
+				new NodeConfig(
+					0,
+					1,
+					SubsystemNode.Archetype),
+			};
+
+			SetupScenario(testName, out var lifecycleManager, nodeConfigs);
+
+			CreatePlayer(testName,
+				nodeConfigs[0],
+				lifecycleManager,
+				out var player);
+
+			CreateItem(TutorialScanner.Archetype.Name,
+				nodeConfigs[0],
+				lifecycleManager,
+				out var item2,
+				out var item2ContainerIndex,
+				out var item2Container);
+
+			GetSubsystemItemStorage(nodeConfigs[0],
+				lifecycleManager,
+				out var subsystem1ItemStorage);
+
+			var item1ContainerIndex = 0;
+			var item1Id = subsystem1ItemStorage.Component2.Items[item1ContainerIndex].Item;
+
+			// Assert items are in correct locatioons
+			Assert.NotNull(subsystem1ItemStorage.Component2.Items[0].Item);
+			Assert.NotNull(subsystem1ItemStorage.Component2.Items[1].Item);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[0].Item.Value, item1Id);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[1].Item.Value, item2.Entity.Id);
+
+			// Act
+			var swapCommand = new SwapSubsystemItemCommand
+			{
+				PlayerId = player.Entity.Id,
+				SubsystemId = nodeConfigs[0].EntityId,
+				FromItemId = item1Id.Value,
+				FromContainerIndex = item1ContainerIndex,
+				ToItemId = item2.Entity.Id,
+				ToContainerIndex = item2ContainerIndex
+			};
+
+			lifecycleManager.ECSRoot.ECS.EnqueueCommand(swapCommand);
+
+			lifecycleManager.ECSRoot.ECS.Tick();
+
+			// Assert items are still in original locations
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[0].Item.Value, item1Id);
+			Assert.AreEqual(subsystem1ItemStorage.Component2.Items[1].Item.Value, item2.Entity.Id);
+		}
+
 		[Test]
 		public void CantSwapOnAnotherSystem()
 		{
@@ -75,6 +208,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 			var swapCommand = new SwapSubsystemItemCommand
 			{
 				PlayerId = player.Entity.Id,
+				SubsystemId = nodeConfigs[0].EntityId,
 				FromItemId = item1.Entity.Id,
 				FromContainerIndex = item1ContainerIndex,
 				ToItemId = item2.Entity.Id,
@@ -136,6 +270,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 			var swapCommand = new SwapSubsystemItemCommand
 			{
 				PlayerId = player.Entity.Id,
+				SubsystemId = nodeConfigs[0].EntityId,
 				FromItemId = item1.Entity.Id,
 				FromContainerIndex = item1ContainerIndex,
 				ToItemId = null,
@@ -190,6 +325,7 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 			var swapCommand = new SwapSubsystemItemCommand
 			{
 				PlayerId = player.Entity.Id,
+				SubsystemId = nodeConfigs[0].EntityId,
 				FromItemId = item1.Entity.Id,
 				FromContainerIndex = item1ContainerIndex,
 				ToItemId = item2.Entity.Id,
@@ -207,30 +343,8 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 
 		#region Helpers
 
-		public void SetupScenario(string name, out SimulationLifecycleManager lifecycleManager, out NodeConfig[] nodeConfigs)
+		public void SetupScenario(string name, out SimulationLifecycleManager lifecycleManager, NodeConfig[] nodeConfigs)
 		{
-			// Arrange
-			var nodeLeft = new NodeConfig()
-			{
-				Name = "00",
-				X = 0,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-
-			var nodeRight = new NodeConfig()
-			{
-				Name = "10",
-				X = 1,
-				Y = 0,
-				Archetype = SubsystemNode.Archetype,
-			};
-
-			nodeConfigs = new NodeConfig[]
-			{
-				nodeLeft,
-				nodeRight
-			};
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
 
@@ -240,6 +354,9 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 				ConnectionNode.Archetype,
 				Player.Archetype,
 				TutorialScanner.Archetype,
+				AntivirusWorkstation.Archetype,
+				AnalyserActivator.Archetype,
+				AntivirusTool.Archetype,
 			};
 
 			var configuration = ConfigurationHelper.GenerateConfiguration(nodeConfigs,
@@ -264,6 +381,34 @@ namespace PlayGen.ITAlert.Simulation.Tests.Commands
 			};
 
 			lifecycleManager = SimulationLifecycleManager.Initialize(scenario);
+		}
+
+		public void SetupScenario(string name, out SimulationLifecycleManager lifecycleManager, out NodeConfig[] nodeConfigs)
+		{
+			// Arrange
+			var nodeLeft = new NodeConfig
+			{
+				Name = "00",
+				X = 0,
+				Y = 0,
+				Archetype = SubsystemNode.Archetype,
+			};
+
+			var nodeRight = new NodeConfig()
+			{
+				Name = "10",
+				X = 1,
+				Y = 0,
+				Archetype = SubsystemNode.Archetype,
+			};
+
+			nodeConfigs = new []
+			{
+				nodeLeft,
+				nodeRight
+			};
+
+			SetupScenario(name, out lifecycleManager, nodeConfigs);
 		}
 
 		private bool GetSubsystemItemStorage(EntityConfig node, SimulationLifecycleManager lifecycleManager, out ComponentEntityTuple<Subsystem, ItemStorage> subsystemTuple)
