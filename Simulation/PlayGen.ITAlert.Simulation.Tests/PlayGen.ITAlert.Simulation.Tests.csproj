@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="ActorTests.cs" />
     <Compile Include="Archetypes\AnalysisTests.cs" />
+    <Compile Include="Commands\SwapInventoryItemCommandTests.cs" />
     <Compile Include="Commands\SwapSubsystemItemCommandTests.cs" />
     <Compile Include="Components\ItemStorageTests.cs" />
     <Compile Include="Components\ItemActivatorTests.cs" />

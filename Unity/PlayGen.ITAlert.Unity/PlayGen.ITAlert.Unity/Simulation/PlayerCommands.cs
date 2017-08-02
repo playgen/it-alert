@@ -131,5 +131,19 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			};
 			IssueCommand(command);
 		}
+
+		public static void SwapInventoryItem(int subsystemItemid, int subsystemContainerId, int inventoryItemId)
+		{
+			Log($"Request SwapInventoryItem fromItem: {inventoryItemId} to: {subsystemItemid}");
+			var command = new SwapInventoryItemCommand
+			{
+								PlayerId = Director.Player.Id,
+								SubsystemId = Director.Player.CurrentLocationEntity.Id,
+								SubsystemItemId = subsystemItemid,
+								ContainerId = subsystemContainerId,
+								InventoryItemId = inventoryItemId,
+							};
+			IssueCommand(command);
+		}
 	}
 }

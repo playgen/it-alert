@@ -128,7 +128,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_inventoryItem = new ItemPanelContainer(_director, inventoryGameObject, -1, inventoryItemContainer, false);
 			_inventoryItem.ContainerBehaviour.ClickEnable = true;
 			_inventoryItem.ContainerBehaviour.Click += InventoryItemContainerBehaviourOnClick;
-			_inventoryItem.ContainerBehaviour.Drag += (ic, it, sin) => InventoryItemContainerBehaviourOnDrag(it);
+			_inventoryItem.ContainerBehaviour.Drag += (ic, it, sin) => InventoryItemContainerBehaviourOnDrag(it, sin);
 
 			for (var i = 0; i < ItemCount; i++)
 			{
@@ -204,16 +204,21 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SystemContainerBehaviourOnDrag(ItemBehaviour item, ItemContainerBehaviour itemContainerBehaviour, int destContainerIndex, int sourceContainerIndex)
 		{
-			ItemBehaviour containerItem;
-			if (itemContainerBehaviour.TryGetItem(out containerItem) == false
-					&& _inventoryItem.ContainerBehaviour.TryGetItem(out containerItem)
-					&& containerItem.Id == item.Id)
+			if (_inventoryItem.ContainerBehaviour.TryGetItem(out var inventoryItem)
+					&& inventoryItem.Id == item.Id)
 			{
-				PlayerCommands.DropItem(item.Id, destContainerIndex);
+				if (itemContainerBehaviour.TryGetItem(out var containerItem) == false)
+				{
+					PlayerCommands.DropItem(item.Id, destContainerIndex);
+				}
+				else
+				{
+					PlayerCommands.SwapInventoryItem(containerItem.Id, destContainerIndex, inventoryItem.Id);
+				}
 			}
 			else if (_inventoryItem.ContainerBehaviour != itemContainerBehaviour)
 			{
-				if (itemContainerBehaviour.TryGetItem(out containerItem))
+				if (itemContainerBehaviour.TryGetItem(out var containerItem))
 				{
 					PlayerCommands.SwapSubsystemItem(item.Id, sourceContainerIndex, containerItem.Id, destContainerIndex);
 				}
@@ -228,9 +233,16 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 		}
 
-		private void InventoryItemContainerBehaviourOnDrag(ItemBehaviour item)
+		private void InventoryItemContainerBehaviourOnDrag(ItemBehaviour item, int sourceContainerIndex)
 		{
-			PlayerCommands.PickupItem(item.Id);
+			if (_inventoryItem.ContainerBehaviour.TryGetItem(out var inventoryItem))
+			{
+				PlayerCommands.SwapInventoryItem(item.Id, sourceContainerIndex, inventoryItem.Id);
+			}
+			else
+			{
+				PlayerCommands.PickupItem(item.Id);
+			}
 		}
 
 	}

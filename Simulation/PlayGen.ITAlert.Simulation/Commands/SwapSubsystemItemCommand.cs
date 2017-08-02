@@ -46,6 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_itemMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Owner, CurrentLocation, IItemType>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem, ItemStorage>();
+			_eventSystem = eventSystem;
 		}
 
 		protected override bool TryHandleCommand(SwapSubsystemItemCommand command, int currentTick, bool handlerEnabled)
