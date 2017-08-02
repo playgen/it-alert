@@ -12,10 +12,5 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 		public override bool CanRelease => Locked == false;
 
 		public bool Locked { get; set; }
-
-		public override bool CanCapture(int? itemId = null)
-		{
-			return Item.HasValue == false;
-		}
 	}
 }

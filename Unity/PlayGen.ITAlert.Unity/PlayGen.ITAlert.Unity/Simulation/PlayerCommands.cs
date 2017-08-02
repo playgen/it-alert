@@ -116,5 +116,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				Command = command
 			});
 		}
+
+		public static void SwapSubsystemItem(int fromItemid, int fromContainerId, int toItemId, int toContainerId)
+		{
+			Log($"Request SwapSubsystemItem fromItem: {fromItemid} to: {toItemId}");
+			var command = new SwapSubsystemItemCommand
+			{
+				PlayerId = Director.Player.Id,
+				SubsystemId = Director.Player.CurrentLocationEntity.Id,
+				FromItemId = fromItemid,
+				FromContainerIndex= fromContainerId,
+				ToItemId = toItemId,
+				ToContainerIndex = toContainerId
+			};
+			IssueCommand(command);
+		}
 	}
 }

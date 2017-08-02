@@ -55,6 +55,7 @@
     <Compile Include="Commands\CreateItemCommand.cs" />
     <Compile Include="Commands\CreateMalwareCommand.cs" />
     <Compile Include="Commands\SetMovementSpeedCommand.cs" />
+    <Compile Include="Commands\SwapSubsystemItemCommand.cs" />
     <Compile Include="Components\Enhacements\ISubsystemEnhancement.cs" />
     <Compile Include="Components\EntityTypes\Connection.cs" />
     <Compile Include="Components\EntityTypes\IEntityType.cs" />

@@ -30,13 +30,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private BlinkBehaviour _blinkBehaviour;
 
+		private int? _containerIndex;
+
 		private bool _beingClicked { get; set; }
 
 		#endregion
 
 		public bool ClickEnable { get; set; }
 
-		public int ContainerIndex { get; private set; }
+		public int ContainerIndex => _containerIndex.Value;
 
 		// TODO: push this down int othe item containers
 
@@ -50,31 +52,49 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public string SpriteOverride { private get; set; }
 
 		#region initialization
-
+		
 		public void Start()
 		{
 			//Canvas.ForceUpdateCanvases();
 		}
 
-		public void Initialize(ItemContainer itemContainer, Director director, int? containerIndex = null)
+		public void Initialize(Director director, int containerIndex)
 		{
 			Director = director;
+			_containerIndex = containerIndex;
+		}
+
+		public void Initialize(ItemContainer itemContainer, Director director, int containerIndex)
+		{
+			_itemContainer = itemContainer;
+			Director = director;
+			_containerIndex = containerIndex;
+
+			UpdateImage();
+		}
+
+		public bool TryUpdate(ItemContainer itemContainer)
+		{
 			if (itemContainer != _itemContainer)
 			{
 				_itemContainer = itemContainer;
-				if (containerIndex.HasValue)
-				{
-					ContainerIndex = containerIndex.Value;
-				}
+				UpdateImage();
 
-				var itemContainerTypeName = itemContainer?.GetType().Name.ToLowerInvariant();
-				var sprite = String.IsNullOrEmpty(SpriteOverride)
-					? string.IsNullOrEmpty(itemContainerTypeName)
-						? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
-						: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
-					: Resources.Load<Sprite>(SpriteOverride);
-				_containerImage.sprite = sprite;
+				return true;
 			}
+
+			return false;
+		}
+
+		private void UpdateImage()
+		{
+			var itemContainerTypeName = _itemContainer?.GetType().Name.ToLowerInvariant();
+			var sprite = String.IsNullOrEmpty(SpriteOverride)
+				? string.IsNullOrEmpty(itemContainerTypeName)
+					? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
+					: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
+				: Resources.Load<Sprite>(SpriteOverride);
+			_containerImage.sprite = sprite;
 		}
 
 		//public void Uninitialize()
@@ -150,7 +170,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 				Click?.Invoke(this);
 			}
-			else if (item != null && sourceContainerIndex != null && _itemContainer?.Item == null)
+			else if (item != null && sourceContainerIndex != null)
 			{
 				item.gameObject.SetActive(false);
 				Drag?.Invoke(this, item, sourceContainerIndex.Value);

@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.Simulation.Components.Items
 
 		public override bool CanRelease => true;
 
-		public override bool CanCapture(int? itemId = null)
+		public override bool CanCapture(int itemId)
 		{
 			return false;
 		}

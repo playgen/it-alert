@@ -63,41 +63,34 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				var target = subsystemTuple.Component2.Items[command.ContainerId];
 
 				@event.TargetContainerType = target.GetType().Name;
-
-				if (handlerEnabled)
+				
+				if (inventory != null
+					&& inventory.Item == itemTuple.Entity.Id
+					&& target != null
+					&& target.CanCapture(itemTuple.Entity.Id))
 				{
-					if (inventory != null
-						&& inventory.Item == itemTuple.Entity.Id
-						&& target != null
-						&& target.CanCapture(itemTuple.Entity.Id))
-					{
-						target.Item = itemTuple.Entity.Id;
-						itemTuple.Component3.Value = subsystemTuple.Entity.Id;
-						inventory.Item = null;
-						itemTuple.Component2.Value = null;
+					target.Item = itemTuple.Entity.Id;
+					itemTuple.Component3.Value = subsystemTuple.Entity.Id;
+					inventory.Item = null;
+					itemTuple.Component2.Value = null;
 
-						@event.Result = DropItemEvent.ActivationResult.Success;
-						_eventSystem.Publish(@event);
+					@event.Result = DropItemEvent.ActivationResult.Success;
+					_eventSystem.Publish(@event);
 
-						return true;
-					}
-					else
-					{
-						@event.Result = DropItemEvent.ActivationResult.Failure_DestinationCannotCapture;
-					}
+					return true;
 				}
 				else
 				{
-					@event.Result = DropItemEvent.ActivationResult.Failure_CommandDisabled;
+					@event.Result = DropItemEvent.ActivationResult.Failure_DestinationCannotCapture;
+					_eventSystem.Publish(@event);
 				}
-				_eventSystem.Publish(@event);
 			}
 			return false;
 		}
 
 		public class DropItemCommandEqualityComparer : CommandEqualityComparer<DropItemCommand>
 		{
-			#region Overrides of CommandEqualityComparer<SetActorDestinationCommand>
+			#region Overrides of CommandEqualityComparer<DropItemCopmmand>
 
 			protected override bool IsDuplicate(DropItemCommand x, DropItemCommand other)
 			{
