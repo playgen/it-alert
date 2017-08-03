@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -63,6 +64,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_continueButton.onClick.AddListener(OnContinueClick);
 			_settingsButton.onClick.AddListener(OnSettingsClick);
 			_quitButton.onClick.AddListener(OnQuitClick);
+			GameObjectUtilities.Find("Game/Canvas").GetComponent<PlayerInputHandler>().ClearClicks();
 
 			_menuPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
