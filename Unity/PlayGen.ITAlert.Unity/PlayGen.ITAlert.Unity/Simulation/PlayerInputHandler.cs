@@ -39,28 +39,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		}
 
 		#region Clicks
-
 		private void OnClick(bool clickDown)
 		{
 			if (clickDown)
 			{
-				foreach (var clicked in _lastClicked)
-				{
-					switch (clicked.collider.tag)
-					{
-						case Tags.Subsystem:
-							SubsystemClickReset(clicked);
-							break;
-						case Tags.Item:
-							ItemClickReset(clicked);
-							break;
-						case Tags.ItemContainer:
-							ItemContainerClickReset(clicked);
-							break;
-					}
-
-				}
-				_lastClicked.Clear();
+				ClearClicks();
 			}
 
 			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
@@ -79,9 +62,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					OnClickSubsystem(subsystemHits[0], clickDown);
 				}
-				else if (itemHits.Length == 1 && itemContainerHits.Length == 1)
+				else if (itemHits.Length > 0 && itemContainerHits.Length == 1)
 				{
-					OnClickItemInContainer(itemHits[0], itemContainerHits[0], clickDown);
+					foreach (var item in itemHits)
+					{
+						OnClickItemInContainer(item, itemContainerHits[0], clickDown);
+					}
 				}
 				else if (itemContainerHits.Length == 1)
 				{
@@ -91,25 +77,31 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			if (!clickDown)
 			{
-				foreach (var clicked in _lastClicked)
-				{
-					switch (clicked.collider.tag)
-					{
-						case Tags.Subsystem:
-							SubsystemClickReset(clicked);
-							break;
-						case Tags.Item:
-							ItemClickReset(clicked);
-							break;
-						case Tags.ItemContainer:
-							ItemContainerClickReset(clicked);
-							break;
-					}
-
-				}
-				_lastClicked.Clear();
+				ClearClicks();
 			}
 		}
+
+		public void ClearClicks()
+		{
+			foreach (var clicked in _lastClicked)
+			{
+				switch (clicked.collider.tag)
+				{
+					case Tags.Subsystem:
+						SubsystemClickReset(clicked);
+						break;
+					case Tags.Item:
+						ItemClickReset(clicked);
+						break;
+					case Tags.ItemContainer:
+						ItemContainerClickReset(clicked);
+						break;
+				}
+
+			}
+			_lastClicked.Clear();
+		}
+
 
 		private void OnClickSubsystem(RaycastHit2D subsystemHit, bool down)
 		{
@@ -147,11 +139,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				if (itemdrag == null)
+				if (itemdrag == null && _lastClicked.Any(d => d.collider.name.Equals(itemHit.transform.gameObject.name)))
 				{
 					container.OnClickUp(item, container.ContainerIndex, false);
 				}
-				else if (itemdrag.OnClickUp(out var containerIndex, out var dragged))
+				else if (itemdrag != null && itemdrag.OnClickUp(out var containerIndex, out var dragged))
 				{
 					container.OnClickUp(item, containerIndex, dragged);
 				}

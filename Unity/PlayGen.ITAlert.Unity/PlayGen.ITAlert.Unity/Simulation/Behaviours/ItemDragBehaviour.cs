@@ -105,6 +105,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			_beingClicked = false;
 			_beingDragged = false;
+			_dragContainer = null;
+			_dragPosition = Vector2.zero;
 		}
 
 		public void PositionReset()
