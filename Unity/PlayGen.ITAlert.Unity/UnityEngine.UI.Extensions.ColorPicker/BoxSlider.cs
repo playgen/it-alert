@@ -123,35 +123,9 @@ namespace UnityEngine.UI.Extensions
         protected BoxSlider()
         { }
 
-#if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (WholeNumbers)
-            {
-                m_MinValue = Mathf.Round(m_MinValue);
-                m_MaxValue = Mathf.Round(m_MaxValue);
-            }
-            UpdateCachedReferences();
-            SetX(m_ValueX, false);
-            SetY(m_ValueY, false);
-            // Update rects since other things might affect them even if value didn't change.
-            UpdateVisuals();
-
-            var prefabType = UnityEditor.PrefabUtility.GetPrefabType(this);
-            if (prefabType != UnityEditor.PrefabType.Prefab && !Application.isPlaying)
-                CanvasUpdateRegistry.RegisterCanvasElementForLayoutRebuild(this);
-        }
-
-#endif // if UNITY_EDITOR
-
         public virtual void Rebuild(CanvasUpdate executing)
         {
-#if UNITY_EDITOR
-            if (executing == CanvasUpdate.Prelayout)
-                OnValueChanged.Invoke(ValueX, ValueY);
-#endif
+
         }
 
         public void LayoutComplete()
@@ -275,11 +249,6 @@ namespace UnityEngine.UI.Extensions
         // Force-update the slider. Useful if you've changed the properties and want it to update visually.
         private void UpdateVisuals()
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-                UpdateCachedReferences();
-#endif
-
             m_Tracker.Clear();
 
 

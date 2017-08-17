@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PlayGen.Unity.Editor.Settings">
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Editor.Settings.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
     </Reference>

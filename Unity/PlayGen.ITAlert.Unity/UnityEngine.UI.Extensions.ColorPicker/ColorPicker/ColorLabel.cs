@@ -45,14 +45,6 @@ public class ColorLabel : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        label = GetComponent<Text>();
-        UpdateValue();
-    }
-#endif
-
     private void ColorChanged(Color color)
     {
         UpdateValue();

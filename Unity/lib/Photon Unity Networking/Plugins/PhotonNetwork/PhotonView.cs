@@ -12,11 +12,6 @@ using UnityEngine;
 using System.Reflection;
 using System.Collections.Generic;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
-
-
 public enum ViewSynchronization { Off, ReliableDeltaCompressed, Unreliable, UnreliableOnChange }
 public enum OnSerializeTransform { OnlyPosition, OnlyRotation, OnlyScale, PositionAndRotation, All }
 public enum OnSerializeRigidBody { OnlyVelocity, OnlyAngularVelocity, All }
@@ -52,14 +47,6 @@ public enum OwnershipOption
 [AddComponentMenu("Photon Networking/Photon View &v")]
 public class PhotonView : Photon.MonoBehaviour
 {
-    #if UNITY_EDITOR
-    [ContextMenu("Open PUN Wizard")]
-    void OpenPunWizard()
-    {
-        EditorApplication.ExecuteMenuItem("Window/Photon Unity Networking");
-    }
-    #endif
-
     public int ownerId;
 
     public int group = 0;
@@ -132,14 +119,6 @@ public class PhotonView : Photon.MonoBehaviour
 
     public List<Component> ObservedComponents;
     Dictionary<Component, MethodInfo> m_OnSerializeMethodInfos = new Dictionary<Component, MethodInfo>(3);
-
-#if UNITY_EDITOR
-    // Suppressing compiler warning "this variable is never used". Only used in the CustomEditor, only in Editor
-    #pragma warning disable 0414
-    [SerializeField]
-    bool ObservedComponentsFoldoutOpen = true;
-    #pragma warning restore 0414
-#endif
 
     [SerializeField]
     private int viewIdField = 0;
@@ -302,10 +281,6 @@ public class PhotonView : Photon.MonoBehaviour
         {
             bool wasInList = PhotonNetwork.networkingPeer.LocalCleanPhotonView(this);
             bool loading = false;
-
-            #if !UNITY_5 || UNITY_5_0 || UNITY_5_1
-            loading = Application.isLoadingLevel;
-            #endif
 
             if (wasInList && !loading && this.instantiationId > 0 && !PhotonHandler.AppQuits && PhotonNetwork.logLevel >= PhotonLogLevel.Informational)
             {

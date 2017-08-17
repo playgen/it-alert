@@ -62,21 +62,6 @@ namespace UnityEngine.UI.Extensions.ColorPicker
                 DestroyImmediate(image.texture);
         }
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            image = GetComponent<RawImage>();
-            if (image)
-            {
-                RegenerateTexture();
-            }
-            else
-            {
-                Debug.LogWarning("Missing RawImage on object [" + name + "]");
-            }
-        }
-#endif
-
         private void ColorChanged(Color newColor)
         {
             switch (type)

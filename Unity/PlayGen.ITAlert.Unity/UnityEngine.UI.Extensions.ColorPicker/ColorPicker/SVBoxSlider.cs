@@ -56,14 +56,6 @@ namespace UnityEngine.UI.Extensions.ColorPicker
                 DestroyImmediate(image.texture);
         }
 
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            image = GetComponent<RawImage>();
-            RegenerateSVTexture();
-        }
-#endif
-
         private void SliderChanged(float saturation, float value)
         {
             if (listen)

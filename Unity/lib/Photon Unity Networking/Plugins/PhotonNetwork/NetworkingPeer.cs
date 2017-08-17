@@ -466,13 +466,6 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	/// <returns>NameServer Address (with prefix and port).</returns>
 	private string GetNameServerAddress()
 	{
-		#if RHTTP
-		if (currentProtocol == ConnectionProtocol.RHttp)
-		{
-			return NameServerHttp;
-		}
-		#endif
-
 		ConnectionProtocol currentProtocol = this.TransportProtocol;
 		int protocolPort = 0;
 		ProtocolToNameServerPort.TryGetValue(currentProtocol, out protocolPort);
@@ -661,28 +654,15 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 					Debug.LogWarning("Using WebSocket to connect NameServer (AuthMode is AuthOnceWss).");
 				}
 				protocolOverride = ConnectionProtocol.WebSocketSecure;
-				#if UNITY_XBOXONE
-				this.SocketImplementation = typeof(SocketWebTcp);
-				#endif
 			}
 		}
 
-		#if UNITY_WEBGL
-		if (this.TransportProtocol != ConnectionProtocol.WebSocket && this.TransportProtocol != ConnectionProtocol.WebSocketSecure)
+		if (!Application.isEditor && (Application.platform == RuntimePlatform.WSAPlayerARM || Application.platform == RuntimePlatform.WSAPlayerX86 || Application.platform == RuntimePlatform.WSAPlayerX64))
 		{
-			Debug.Log("WebGL only supports WebSocket protocol. Overriding PhotonServerSettings.");
-			protocolOverride = ConnectionProtocol.WebSocketSecure;
-			this.SocketImplementation = typeof(SocketWebTcp);
+			// this automatically uses a separate assembly-file with Win8-style Socket usage (not possible in Editor)
+			Debug.LogWarning("Using PingWindowsStore");
+			PhotonHandler.PingImplementation = typeof(PingWindowsStore);    // but for ping, we have to set the implementation explicitly to Win 8 Store/Phone
 		}
-		#endif
-
-
-
-		#if !UNITY_EDITOR && (UNITY_WINRT)
-		// this automatically uses a separate assembly-file with Win8-style Socket usage (not possible in Editor)
-		Debug.LogWarning("Using PingWindowsStore");
-		PhotonHandler.PingImplementation = typeof(PingWindowsStore);    // but for ping, we have to set the implementation explicitly to Win 8 Store/Phone
-		#endif
 
 
 		#pragma warning disable 0162    // the library variant defines if we should use PUN's SocketUdp variant (at all)
@@ -3815,9 +3795,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		// no need to send OnSerialize messages while being alone (these are not buffered anyway)
 		if (this.mActors.Count <= 1)
 		{
-			#if !PHOTON_DEVELOP
 			return;
-			#endif
 		}
 
 
@@ -3890,9 +3868,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
 		// we got updates to send. every group is send it's own message and unreliable and reliable are split as well
 		RaiseEventOptions options = new RaiseEventOptions();
-		#if PHOTON_DEVELOP
-		options.Receivers = ReceiverGroup.All;
-		#endif
+
 
 		foreach (int groupId in this.dataPerGroupReliable.Keys)
 		{

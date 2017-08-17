@@ -20,10 +20,6 @@
 /// \brief Useful GUI elements for PUN.
 #pragma warning restore 1587
 
-#if UNITY_5 && !UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2
-#define UNITY_MIN_5_3
-#endif
-
 using System;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
@@ -462,31 +458,6 @@ namespace Photon
                 return pvCache;
             }
         }
-
-        #if !UNITY_MIN_5_3
-        /// <summary>
-        /// This property is only here to notify developers when they use the outdated value.
-        /// </summary>
-        /// <remarks>
-        /// If Unity 5.x logs a compiler warning "Use the new keyword if hiding was intended" or
-        /// "The new keyword is not required", you may suffer from an Editor issue.
-        /// Try to modify networkView with a if-def condition:
-        ///
-        /// #if UNITY_EDITOR
-        /// new
-        /// #endif
-        /// public PhotonView networkView
-        /// </remarks>
-        [Obsolete("Use a photonView")]
-        public new PhotonView networkView
-        {
-            get
-            {
-                Debug.LogWarning("Why are you still using networkView? should be PhotonView?");
-                return PhotonView.Get(this);
-            }
-        }
-        #endif
     }
 
 
@@ -1231,115 +1202,12 @@ public class PhotonStream
     }
 }
 
-
-#if UNITY_5_0 || !UNITY_5
-/// <summary>Empty implementation of the upcoming HelpURL of Unity 5.1. This one is only for compatibility of attributes.</summary>
-/// <remarks>http://feedback.unity3d.com/suggestions/override-component-documentation-slash-help-link</remarks>
-public class HelpURL : Attribute
-{
-    public HelpURL(string url)
-    {
-    }
-}
-#endif
-
-
-#if !UNITY_MIN_5_3
-// in Unity 5.3 and up, we have to use a SceneManager. This section re-implements it for older Unity versions
-
-#if UNITY_EDITOR
-namespace UnityEditor.SceneManagement
-{
-    /// <summary>Minimal implementation of the EditorSceneManager for older Unity, up to v5.2.</summary>
-    public class EditorSceneManager
-    {
-        public static int loadedSceneCount
-        {
-            get { return string.IsNullOrEmpty(UnityEditor.EditorApplication.currentScene) ? -1 : 1; }
-        }
-
-        public static void OpenScene(string name)
-        {
-            UnityEditor.EditorApplication.OpenScene(name);
-        }
-
-        public static void SaveOpenScenes()
-        {
-            UnityEditor.EditorApplication.SaveScene();
-        }
-
-        public static void SaveCurrentModifiedScenesIfUserWantsTo()
-        {
-            UnityEditor.EditorApplication.SaveCurrentSceneIfUserWantsTo();
-        }
-    }
-}
-#endif
-
-namespace UnityEngine.SceneManagement
-{
-    /// <summary>Minimal implementation of the SceneManager for older Unity, up to v5.2.</summary>
-    public class SceneManager
-    {
-        public static void LoadScene(string name)
-        {
-            Application.LoadLevel(name);
-        }
-
-        public static void LoadScene(int buildIndex)
-        {
-            Application.LoadLevel(buildIndex);
-        }
-    }
-}
-
-#endif
-
-
 public class SceneManagerHelper
 {
-    public static string ActiveSceneName
-    {
-        get
-        {
-            #if UNITY_MIN_5_3
-            UnityEngine.SceneManagement.Scene s = UnityEngine.SceneManagement.SceneManager.GetActiveScene();
-            return s.name;
-            #else
-            return Application.loadedLevelName;
-            #endif
-        }
-    }
+	public static string ActiveSceneName => UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 
-    public static int ActiveSceneBuildIndex
-    {
-        get
-        {
-            #if UNITY_MIN_5_3
-            return UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
-            #else
-            return Application.loadedLevel;
-            #endif
-        }
-    }
-
-
-#if UNITY_EDITOR
-    public static string EditorActiveSceneName
-    {
-        get
-        {
-            #if UNITY_MIN_5_3
-            return UnityEditor.SceneManagement.EditorSceneManager.GetActiveScene().name;
-            #else
-            return System.IO.Path.GetFileNameWithoutExtension(UnityEditor.EditorApplication.currentScene);
-            #endif
-        }
-    }
-#endif
+	public static int ActiveSceneBuildIndex => UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
 }
-
-
 /// <summary>Reads an operation response of a WebRpc and provides convenient access to most common values.</summary>
 /// <remarks>
 /// See method PhotonNetwork.WebRpc.<br/>

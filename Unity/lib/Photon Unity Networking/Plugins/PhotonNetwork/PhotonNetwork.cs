@@ -15,12 +15,6 @@ using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 
-#if UNITY_EDITOR
-using UnityEditor;
-using System.IO;
-#endif
-
-
 /// <summary>
 /// The main class to use the PhotonNetwork plugin.
 /// This class is static.
@@ -1097,35 +1091,6 @@ public static class PhotonNetwork
 	/// </summary>
 	static PhotonNetwork()
 	{
-		#if UNITY_EDITOR
-		if (PhotonServerSettings == null)
-		{
-			// create PhotonServerSettings
-			CreateSettings();
-		}
-
-		if (!EditorApplication.isPlaying && !EditorApplication.isPlayingOrWillChangePlaymode)
-		{
-			//Debug.Log(string.Format("PhotonNetwork.ctor() Not playing {0} {1}", UnityEditor.EditorApplication.isPlaying, UnityEditor.EditorApplication.isPlayingOrWillChangePlaymode));
-			return;
-		}
-
-		// This can happen when you recompile a script IN play made
-		// This helps to surpress some errors, but will not fix breaking
-		PhotonHandler[] photonHandlers = GameObject.FindObjectsOfType(typeof(PhotonHandler)) as PhotonHandler[];
-		if (photonHandlers != null && photonHandlers.Length > 0)
-		{
-			Debug.LogWarning("Unity recompiled. Connection gets closed and replaced. You can connect as 'new' client.");
-			foreach (PhotonHandler photonHandler in photonHandlers)
-			{
-				//Debug.Log("Handler: " + photonHandler + " photonHandler.gameObject: " + photonHandler.gameObject);
-				photonHandler.gameObject.hideFlags = 0;
-				GameObject.DestroyImmediate(photonHandler.gameObject);
-				Component.DestroyImmediate(photonHandler);
-			}
-		}
-		#endif
-
 		Application.runInBackground = true;
 
 		// Set up a MonoBehaviour to run Photon, and hide it
@@ -1139,16 +1104,17 @@ public static class PhotonNetwork
 
 
 
-		#if UNITY_XBOXONE
-		Debug.Log("UNITY_XBOXONE is defined: Using AuthMode 'AuthOnceWss' and EncryptionMode 'DatagramEncryption'.");
-		if (!PhotonPeer.NativeDatagramEncrypt)
+		if (Application.platform == RuntimePlatform.XboxOne)
 		{
-			Debug.LogError("XB1 builds need a Photon3Unity3d.dll which uses the native PhotonEncryptorPlugin. This dll does not!");
-		}
+			Debug.Log("UNITY_XBOXONE is defined: Using AuthMode 'AuthOnceWss' and EncryptionMode 'DatagramEncryption'.");
+			if (!PhotonPeer.NativeDatagramEncrypt)
+			{
+				Debug.LogError("XB1 builds need a Photon3Unity3d.dll which uses the native PhotonEncryptorPlugin. This dll does not!");
+			}
 
-		networkingPeer.AuthMode = AuthModeOption.AuthOnceWss;
-		networkingPeer.EncryptionMode = EncryptionMode.DatagramEncryption;
-		#endif
+			networkingPeer.AuthMode = AuthModeOption.AuthOnceWss;
+			networkingPeer.EncryptionMode = EncryptionMode.DatagramEncryption;
+		}
 
 		//if (UsePreciseTimer)
 		//{
@@ -3170,74 +3136,4 @@ public static class PhotonNetwork
 	{
 		return networkingPeer.WebRpc(name, parameters);
 	}
-
-
-#if UNITY_EDITOR
-	[Conditional("UNITY_EDITOR")]
-	public static void CreateSettings()
-	{
-		PhotonNetwork.PhotonServerSettings = (ServerSettings)Resources.Load(PhotonNetwork.serverSettingsAssetFile, typeof(ServerSettings));
-		if (PhotonNetwork.PhotonServerSettings != null)
-		{
-			return;
-		}
-
-		// find out if ServerSettings can be instantiated (existing script check)
-		ScriptableObject serverSettingTest = ScriptableObject.CreateInstance("ServerSettings");
-		if (serverSettingTest == null)
-		{
-			Debug.LogError("missing settings script");
-			return;
-		}
-		UnityEngine.Object.DestroyImmediate(serverSettingTest);
-
-
-		// if still not loaded, create one
-		if (PhotonNetwork.PhotonServerSettings == null)
-		{
-			string settingsPath = Path.GetDirectoryName(PhotonNetwork.serverSettingsAssetPath);
-			if (!Directory.Exists(settingsPath))
-			{
-				Directory.CreateDirectory(settingsPath);
-				AssetDatabase.ImportAsset(settingsPath);
-			}
-
-			PhotonNetwork.PhotonServerSettings = (ServerSettings)ScriptableObject.CreateInstance("ServerSettings");
-			if (PhotonNetwork.PhotonServerSettings != null)
-			{
-				AssetDatabase.CreateAsset(PhotonNetwork.PhotonServerSettings, PhotonNetwork.serverSettingsAssetPath);
-			}
-			else
-			{
-				Debug.LogError("PUN failed creating a settings file. ScriptableObject.CreateInstance(\"ServerSettings\") returned null. Will try again later.");
-			}
-		}
-	}
-
-
-	/// <summary>
-	/// Internally used by Editor scripts, called on Hierarchy change (includes scene save) to remove surplus hidden PhotonHandlers.
-	/// </summary>
-	public static void InternalCleanPhotonMonoFromSceneIfStuck()
-	{
-		PhotonHandler[] photonHandlers = GameObject.FindObjectsOfType(typeof(PhotonHandler)) as PhotonHandler[];
-		if (photonHandlers != null && photonHandlers.Length > 0)
-		{
-			Debug.Log("Cleaning up hidden PhotonHandler instances in scene. Please save it. This is not an issue.");
-			foreach (PhotonHandler photonHandler in photonHandlers)
-			{
-				// Debug.Log("Removing Handler: " + photonHandler + " photonHandler.gameObject: " + photonHandler.gameObject);
-				photonHandler.gameObject.hideFlags = 0;
-
-				if (photonHandler.gameObject != null && photonHandler.gameObject.name == "PhotonMono")
-				{
-					GameObject.DestroyImmediate(photonHandler.gameObject);
-				}
-
-				Component.DestroyImmediate(photonHandler);
-			}
-		}
-	}
-#endif
-
 }

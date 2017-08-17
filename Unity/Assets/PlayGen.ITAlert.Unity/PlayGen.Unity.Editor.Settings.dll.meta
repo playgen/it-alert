@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: f5ba7983031f88048b81ba50fd70019b
-timeCreated: 1493805621
+guid: 3814ade65c632694e9ba9e210e4b57f9
+timeCreated: 1502890793
 licenseType: Free
 PluginImporter:
   serializedVersion: 2
@@ -16,7 +16,7 @@ PluginImporter:
         enabled: 0
         settings:
           Exclude Android: 1
-          Exclude Editor: 1
+          Exclude Editor: 0
           Exclude Linux: 1
           Exclude Linux64: 1
           Exclude LinuxUniversal: 1
@@ -56,7 +56,7 @@ PluginImporter:
       first:
         Editor: Editor
       second:
-        enabled: 0
+        enabled: 1
         settings:
           DefaultValueInitialized: true
     data:

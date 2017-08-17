@@ -4,10 +4,6 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-#if UNITY_5 && (!UNITY_5_0 && !UNITY_5_1 && !UNITY_5_2 && !UNITY_5_3) || UNITY_6
-#define UNITY_MIN_5_4
-#endif
-
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -56,9 +52,6 @@ internal class PhotonHandler : Photon.MonoBehaviour
         PhotonHandler.StartFallbackSendAckThread();
     }
 
-
-    #if UNITY_MIN_5_4
-
     protected void Start()
     {
         UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
@@ -67,18 +60,6 @@ internal class PhotonHandler : Photon.MonoBehaviour
             PhotonNetwork.networkingPeer.SetLevelInPropsIfSynced(SceneManagerHelper.ActiveSceneName);
         };
     }
-    
-    #else
-    
-    /// <summary>Called by Unity after a new level was loaded.</summary>
-    protected void OnLevelWasLoaded(int level)
-    {
-        PhotonNetwork.networkingPeer.NewSceneLoaded();
-        PhotonNetwork.networkingPeer.SetLevelInPropsIfSynced(SceneManagerHelper.ActiveSceneName);
-    }
-
-    #endif
-
 
     /// <summary>Called by Unity when the application is closed. Disconnects.</summary>
     protected void OnApplicationQuit()
@@ -189,22 +170,24 @@ internal class PhotonHandler : Photon.MonoBehaviour
 
     public static void StartFallbackSendAckThread()
     {
-#if !UNITY_WEBGL
-        if (sendThreadShouldRun)
-        {
-            return;
-        }
+		if (Application.platform == RuntimePlatform.WebGLPlayer)
+		{
+			if (sendThreadShouldRun)
+			{
+				return;
+			}
 
-        sendThreadShouldRun = true;
-        SupportClassPun.CallInBackground(FallbackSendAckThread);   // thread will call this every 100ms until method returns false
-#endif
+			sendThreadShouldRun = true;
+			SupportClassPun.CallInBackground(FallbackSendAckThread);   // thread will call this every 100ms until method returns false
+		}
     }
 
     public static void StopFallbackSendAckThread()
     {
-#if !UNITY_WEBGL
-        sendThreadShouldRun = false;
-#endif
+		if (Application.platform == RuntimePlatform.WebGLPlayer)
+		{
+			sendThreadShouldRun = false;
+		}
     }
 
     public static bool FallbackSendAckThread()

@@ -59,14 +59,6 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
 
     #endregion
 
-    #region Properties
-
-#if PHOTON_DEVELOP
-    public PhotonAnimatorView ReceivingSender;
-#endif
-
-    #endregion
-
     #region Members
 
     private Animator m_Animator;
@@ -521,13 +513,6 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
         }
         else
         {
-#if PHOTON_DEVELOP
-            if( ReceivingSender != null )
-            {
-                ReceivingSender.OnPhotonSerializeView( stream, info );
-            }
-            else
-#endif
             {
                 if (stream.PeekNext() is byte[])
                 {

@@ -105,19 +105,4 @@ public class InRoomTime : MonoBehaviour
             //Debug.Log("Got prop for roomStartTimestamp: " + roomStartTimestamp);
         }
     }
-
-
-#if GUI_ENABLED
-
-    public Rect TextPos = new Rect(0, 150, 200, 300); // default gui position. inspector overrides this!
-
-    public void OnGUI()
-    {
-        // simple gui for output
-        GUILayout.BeginArea(TextPos);
-        GUILayout.Label(string.Format("RoomTime: {0:0.000}", RoomTime));
-        GUILayout.Label(string.Format("RoomTimestamp: {0:0.000}", RoomTimestamp));
-        GUILayout.EndArea();
-    }
-#endif
 }
