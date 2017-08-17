@@ -158,12 +158,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1089667499552194}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SETTINGS_LABEL_TITLE
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114565798803625218
 MonoBehaviour:
   m_ObjectHideFlags: 1

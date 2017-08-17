@@ -529,12 +529,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1453518701163648}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SCENARIO_BUTTON_BACK
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114145430474517606
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -584,12 +584,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1164063552198892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SCENARIO_BUTTON_SELECT
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114290396348363482
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -598,12 +598,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1010156917036670}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SCENARIO_LABEL_REQUIRED_PLAYERS
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114300020923274928
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1042,12 +1042,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1259306649596934}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SCENARIO_LABEL_TITLE
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114811134540834026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1122,12 +1122,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1048275653964446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1952341525, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SCENARIO_LABEL_SCENARIO_NAME
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114967825063678310
 MonoBehaviour:
   m_ObjectHideFlags: 1

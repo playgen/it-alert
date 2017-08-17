@@ -218,15 +218,6 @@ public class PhotonPingManager
         yield return null;
     }
 
-#if UNITY_WINRT && !UNITY_EDITOR
-
-    public static string ResolveHost(string hostName)
-    {
-        return hostName;
-    }
-
-#else
-
     /// <summary>
     /// Attempts to resolve a hostname into an IP string or returns empty string if that fails.
     /// </summary>
@@ -238,6 +229,11 @@ public class PhotonPingManager
     /// <returns>IP string or empty string if resolution fails</returns>
     public static string ResolveHost(string hostName)
     {
+		if (!Application.isEditor && (Application.platform == RuntimePlatform.WSAPlayerARM || Application.platform == RuntimePlatform.WSAPlayerX86 || Application.platform == RuntimePlatform.WSAPlayerX64))
+		{
+			return hostName;
+		}
+
         string ipv4Address = string.Empty;
 
         try
@@ -278,5 +274,4 @@ public class PhotonPingManager
 
         return ipv4Address;
     }
-#endif
 }

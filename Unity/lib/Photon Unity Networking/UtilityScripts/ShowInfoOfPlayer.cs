@@ -19,12 +19,8 @@ public class ShowInfoOfPlayer : Photon.MonoBehaviour
     {
         if (font == null)
         {
-            #if UNITY_3_5
-            font = (Font)FindObjectsOfTypeIncludingAssets(typeof(Font))[0];
-            #else
-            font = (Font)Resources.FindObjectsOfTypeAll(typeof(Font))[0];
-            #endif
-            Debug.LogWarning("No font defined. Found font: " + font);
+			font = (Font)Resources.FindObjectsOfTypeAll(typeof(Font))[0];
+			Debug.LogWarning("No font defined. Found font: " + font);
         }
 
         if (tm == null)
