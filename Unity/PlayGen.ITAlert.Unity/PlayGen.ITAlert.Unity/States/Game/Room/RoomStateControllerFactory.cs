@@ -71,8 +71,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private PausedState CreatePausedState(ITAlertPhotonClient photonClient)
 		{
-			var pausedStateInput = new PausedStateInput();
-			var pausedState = new PausedState(pausedStateInput, photonClient);
+			var pausedStateInput = new PausedStateInput(_director);
+			var pausedState = new PausedState(_director, pausedStateInput, photonClient);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toPlayingStateTransition = new OnEventTransition(PlayingState.StateName);

@@ -3,6 +3,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
 using PlayGen.Photon.Unity.Client;
@@ -16,8 +17,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		
 		private readonly ITAlertPhotonClient _networkPhotonClient;
 
-		public PausedState(TickStateInput input, ITAlertPhotonClient networkPhotonClient) : base(input)
+		private readonly Director _director;
+
+		public PausedState(Director director, TickStateInput input, ITAlertPhotonClient networkPhotonClient) : base(input)
 		{
+			_director = director;
 			_networkPhotonClient = networkPhotonClient;
 		}
 

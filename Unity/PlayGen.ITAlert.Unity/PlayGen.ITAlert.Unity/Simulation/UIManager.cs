@@ -3,6 +3,9 @@ using Engine.Lifecycle;
 using Engine.Systems.Timing;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;
+using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Utilities;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -85,6 +88,27 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			_timerText.transform.parent.gameObject.SetActive(false);
 			_itemPanel.SetActive(false);
+
+			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+			gameContainer.GetComponent<PlayerInputHandler>().ClearClicks();
+
+			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 0.1f;
+			canvasGroup.blocksRaycasts = false;
+			foreach (var trail in gameContainer.GetComponentsInChildren<TrailRenderer>())
+			{
+				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.25f);
+				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.125f);
+			}
+			foreach (var blink in gameContainer.GetComponentsInChildren<BlinkBehaviour>())
+			{
+				var image = blink.GetComponent<Image>();
+				if (image != null)
+				{
+					blink.enabled = false;
+					image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
+				}
+			}
 		}
 
 		private void FixedUpdate()
