@@ -124,7 +124,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool TryGetItem(out ItemBehaviour itemBehaviour)
 		{
-			if (_itemContainer.Item.HasValue)
+			if (_itemContainer?.Item != null)
 			{
 				UIEntity itemEntity;
 				if (Director.TryGetEntity(_itemContainer.Item.Value, out itemEntity))

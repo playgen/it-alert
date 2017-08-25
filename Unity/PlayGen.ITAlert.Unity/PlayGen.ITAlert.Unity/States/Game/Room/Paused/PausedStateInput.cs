@@ -9,6 +9,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using Engine.Lifecycle;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 {
@@ -28,6 +29,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		private CanvasGroup _canvasGroup;
 		private Dictionary<BlinkBehaviour, bool> _blinkPauseToggle = new Dictionary<BlinkBehaviour, bool>();
 
+		private readonly Director _director;
+		private bool _endGame;
+
+		public PausedStateInput(Director director)
+		{
+			_director = director;
+		}
+
 		protected override void OnInitialize()
 		{
 			// Main Menu
@@ -40,11 +49,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 			_gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
 			_canvasGroup = _gameContainer.GetComponent<CanvasGroup>();
+			_director.GameEnded += OnEndGame;
 		}
 
 		private void OnContinueClick()
 		{
-			GameVisible();
+			if (!_endGame)
+			{
+				GameVisible();
+			}
+			_endGame = false;
 			ContinueClickedEvent?.Invoke();
 		}
 
@@ -56,7 +70,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		private void OnQuitClick()
 		{
 			GameVisible();
+			_endGame = false;
 			QuitClickedEvent?.Invoke();
+		}
+
+		private void OnEndGame(EndGameState obj)
+		{
+			_endGame = true;
 		}
 
 		protected override void OnEnter()
@@ -97,7 +117,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 			_continueButton.onClick.RemoveListener(OnContinueClick);
 			_settingsButton.onClick.RemoveListener(OnSettingsClick);
 			_quitButton.onClick.RemoveListener(OnQuitClick);
-
 			_menuPanel.SetActive(false);
 		}
 

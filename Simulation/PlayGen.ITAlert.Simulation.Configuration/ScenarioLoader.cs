@@ -22,14 +22,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				new Tutorial2_Analysis(),
 				new Tutorial3_Bandwidth(),
 				new Tutorial4_Mutation(),
-				new SPL1_35(),
-				new SPL1_50(),
-				new SPL1_65(),
-				new SPL1_80(),
+				//new SPL1_35(),
+				//new SPL1_50(),
+				//new SPL1_65(),
+				//new SPL1_80(),
 				new SPL1(),
 				new SPL2(),
 				new SPL3(),
-				new Dev1(), 
+				//new Dev1(), 
 			}
 			.ToDictionary(k => k.ScenarioInfo.Key, v => v);
 		}

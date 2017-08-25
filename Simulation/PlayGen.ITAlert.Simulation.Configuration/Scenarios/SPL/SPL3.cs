@@ -116,7 +116,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			var connection0102 = new EdgeConfig(node01, EdgeDirection.South, node02, ConnectionNode.Archetype);
 			var connection0201 = connection0102.Reciprocate();
 
-			var connection2122 = new EdgeConfig(node22, EdgeDirection.South, node21, ConnectionNode.Archetype);
+			var connection2122 = new EdgeConfig(node21, EdgeDirection.South, node22, ConnectionNode.Archetype);
 			var connection2221 = connection2122.Reciprocate();
 
 			var connection3132 = new EdgeConfig(node31, EdgeDirection.South, node32, ConnectionNode.Archetype);

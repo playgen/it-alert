@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using ExitGames.Client.Photon.Voice;
+
 using GameWork.Core.States.Tick.Input;
+
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Photon;
@@ -9,6 +14,8 @@ using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Players;
 using PlayGen.Photon.Unity.Client;
+using PlayGen.SUGAR.Unity;
+
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
@@ -27,7 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		private List<ITAlertPlayer> _players;
 
-		//private readonly Client _photonClient;
+		private readonly ITAlertPhotonClient _photonClient;
 
 		private GameObject _feedbackPanel;
 		private GameObject _columnPrefab;
@@ -48,7 +55,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		public FeedbackStateInput(ITAlertPhotonClient photonClient, Director director)
 		{
-			//_photonClient = photonClient;
+			_photonClient = photonClient;
 			_director = director;
 		}
 
@@ -155,6 +162,20 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			PlayerRankingsCompleteEvent(playerRankings);
 			FeedbackSendClickedEvent?.Invoke();
+			if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
+			{
+				// The following string contains the key for the google form is used for the cognitive load questionnaire
+				string formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
+
+				// Google form ID
+				string googleFormsURL = "https://docs.google.com/forms/d/e/"
+										+ formsKey
+										+ "/viewform?entry.1596836094="
+										+ SUGARManager.CurrentUser.Name;
+				// Open the default browser and show the form
+				Application.OpenURL(googleFormsURL);
+				Application.Quit();
+			}
 		}
 
 		private void PopulateFeedback(List<ITAlertPlayer> players, int currentplayerPhotonId)
