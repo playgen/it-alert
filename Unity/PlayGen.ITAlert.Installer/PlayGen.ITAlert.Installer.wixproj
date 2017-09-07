@@ -12,7 +12,7 @@
     <WixTargetsPath Condition=" '$(WixTargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.targets</WixTargetsPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <OutputPath>D:\projects\it-alert\Unity\PlayGen.ITAlert.Installer\bin\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <DefineConstants>Debug;SourcePath=$(SolutionDir)..\Build\ITAlert_StandaloneWindows64_Data</DefineConstants>
   </PropertyGroup>

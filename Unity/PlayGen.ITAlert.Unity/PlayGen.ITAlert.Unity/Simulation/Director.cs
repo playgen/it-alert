@@ -288,14 +288,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							LogProxy.Info($"Selected active player with id {playerServerId}: entity {playerBehaviour.Entity.Id}");
 							_activePlayer = playerBehaviour;
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
+							playerUiEntity.GameObject.GetComponent<TrailRenderer>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 							if (player.ExternalId.HasValue)
 							{
 								playerBehaviour.PhotonId = player.ExternalId.Value;
 							}
-						}
-						else
-						{
-							playerBehaviour.DisableTrail();
 						}
 					}
 					else

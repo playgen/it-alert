@@ -68,11 +68,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		public void DisableTrail()
-		{
-			_trailRenderer.enabled = false;
-		}
-
 		private void SetGlyph(string playerGlyph)
 		{
 			_image.sprite = Resources.Load<Sprite>($"playerglyph_{playerGlyph}");
@@ -93,6 +88,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
 				_trailRenderer.sortingLayerName = _canvas.sortingLayerName;
+				_canvas.sortingOrder = 10;
 			}
 		}
 
