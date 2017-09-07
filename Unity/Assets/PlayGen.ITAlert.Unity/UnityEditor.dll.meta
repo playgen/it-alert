@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ab03304babc5a16418abc5339724872d
-timeCreated: 1504013132
+guid: abddb41068aee624494e1fa48b599bf6
+timeCreated: 1503665982
 licenseType: Free
 PluginImporter:
   serializedVersion: 2
@@ -29,7 +29,7 @@ PluginImporter:
           Exclude Win: 1
           Exclude Win64: 1
           Exclude WindowsStoreApps: 1
-          Exclude iOS: 0
+          Exclude iOS: 1
           Exclude tvOS: 1
     data:
       first:
@@ -151,7 +151,7 @@ PluginImporter:
       first:
         iPhone: iOS
       second:
-        enabled: 1
+        enabled: 0
         settings:
           CompileFlags: 
           FrameworkDependencies: 

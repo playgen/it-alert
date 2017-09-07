@@ -175,7 +175,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			}
 			else
 			{
-				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr);
+				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
 			}
 			base.OnLeave(info);
 		}
