@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Engine.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
@@ -14,8 +13,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	public class ConnectionBehaviour : NodeBehaviour
 	{
 		[SerializeField]
-		private Color[] _weightColors = new Color[]
-		{
+		private Color[] _weightColors = {
 		};
 
 		private Vector2 _headPos;
@@ -107,7 +105,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			transform.eulerAngles = new Vector3(0, 0, _angle);
 
-			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindChild("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
+			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.Find("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
 			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
 			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
 

@@ -28,11 +28,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			if (CommandQueue.TryTakeFirstCommand(out command))
 			{
 				var createGameCommand = command as CreateGameCommand;
-				if (createGameCommand != null)
-				{
-					createGameCommand.Execute(_controller);
-					return;
-				}
+			    createGameCommand?.Execute(_controller);
 			}
 		}
 

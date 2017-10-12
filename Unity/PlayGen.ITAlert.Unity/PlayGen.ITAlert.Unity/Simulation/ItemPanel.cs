@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Linq;
+
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components;
-using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
@@ -25,40 +23,34 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public ItemContainer ItemContainer { private get; set; }
 
-			public UIEntity ItemEntity { get; private set; }
+			private UIEntity _itemEntity { get; }
 
 			private readonly bool _proxyItem;
 
-			private Director _director;
-
-			private RectTransform _itemTransform;
-
-			private readonly Vector2 InventoryItemOffset = new Vector2(0.5f, 0.5f);
+			private readonly Director _director;
 
 			public ItemPanelContainer(Director director, GameObject gameObject, int containerIndex, ItemContainer itemContainer = null, bool proxyItem = true)
 			{
 				_director = director;
 				GameObject = gameObject;
 				ContainerBehaviour = gameObject.GetComponent<ItemContainerBehaviour>();
-				_itemTransform = ((GameObject) Resources.Load("Item")).GetComponent<RectTransform>();
-
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
 				{
 					ContainerBehaviour.Initialize(ItemContainer, _director, containerIndex);
 				}
 
-				ItemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
-				director.AddUntrackedEntity(ItemEntity);
-				ItemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
-				ItemEntity.GameObject.SetActive(false);
-				//ItemEntity.GameObject.GetComponent<RectTransform>().localScale = _itemTransform.localScale;
-				ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, _itemTransform.position.z);
-				ItemEntity.GameObject.AddComponent<ItemDragBehaviour>();
-				ItemEntity.GameObject.GetComponent<ItemDragBehaviour>().StartPosition(ItemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
-				//ContainerBehaviour.SpriteOverride = UIConstants.PanelItemContainerDefaultSpriteName;
+				_itemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
+				director.AddUntrackedEntity(_itemEntity);
+				_itemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
+			    _itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, 0);
+                _itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = ((RectTransform)GameObject.transform).rect.size + new Vector2(2, 2);
+			    _itemEntity.GameObject.GetComponentsInChildren<Light>(true).First().areaSize = Vector2.one * 11;
+                _itemEntity.GameObject.AddComponent<ItemDragBehaviour>();
+				_itemEntity.GameObject.GetComponent<ItemDragBehaviour>().StartPosition(_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
+			    _itemEntity.GameObject.SetActive(false);
 
-				_proxyItem = proxyItem;
+                _proxyItem = proxyItem;
 			}
 
 			public void Update()
@@ -69,10 +61,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				if (ItemContainer?.Item != null
 					&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
 				{
-					var itemBehaviour = (ItemBehaviour)ItemEntity.EntityBehaviour;
-					if (ItemEntity.GameObject.activeSelf == false)
+					var itemBehaviour = (ItemBehaviour)_itemEntity.EntityBehaviour;
+					if (_itemEntity.GameObject.activeSelf == false)
 					{
-						ItemEntity.GameObject.SetActive(true);
+						_itemEntity.GameObject.SetActive(true);
 					}
 					if (itemBehaviour.Entity?.Id != item.EntityBehaviour.Entity.Id)
 					{
@@ -81,9 +73,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				}
 				else
 				{
-					if (ItemEntity.GameObject.activeSelf)
+					if (_itemEntity.GameObject.activeSelf)
 					{
-						ItemEntity.GameObject.SetActive(false);
+						_itemEntity.GameObject.SetActive(false);
 					}
 				}
 				if (!_proxyItem)
@@ -132,15 +124,15 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			for (var i = 0; i < ItemCount; i++)
 			{
-				var gameObject = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
+				var go = GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_" + i);
 
 				var containerIndex = i;
-				_systemItems[i] = new ItemPanelContainer(_director, gameObject, containerIndex);
+				_systemItems[i] = new ItemPanelContainer(_director, go, containerIndex);
 				_systemItems[i].ContainerBehaviour.ClickEnable = true;
-				_systemItems[i].ContainerBehaviour.Click += ic => SystemContainerBehaviourOnClick(ic, containerIndex);
+				_systemItems[i].ContainerBehaviour.Click += SystemContainerBehaviourOnClick;
 				_systemItems[i].ContainerBehaviour.Drag += (ic, it, sin) => SystemContainerBehaviourOnDrag(it, ic, containerIndex, sin);
 
-				gameObject.GetComponent<ItemContainerBehaviour>().Initialize(_director, i);
+				go.GetComponent<ItemContainerBehaviour>().Initialize(_director, i);
 			}
 		}
 
@@ -170,14 +162,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				for (var i = 0; i < ItemCount; i++)
 				{
 					// the current subsystem has less item containers than the item panel
-					if (i > subsystemBehaviour.ItemStorage.Items.Length - 1)
-					{
-						_systemItems[i].ItemContainer = null;
-					}
-					else
-					{
-						_systemItems[i].ItemContainer = subsystemBehaviour.ItemStorage.Items[i];
-					}
+					_systemItems[i].ItemContainer = i > subsystemBehaviour.ItemStorage.Items.Length - 1 ? null : subsystemBehaviour.ItemStorage.Items[i];
 					_systemItems[i].Update();
 				}
 			}
@@ -191,7 +176,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour, int containerIndex)
+		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
 		{
 			if (itemContainerBehaviour.State == ContainerState.HasItem)
 			{

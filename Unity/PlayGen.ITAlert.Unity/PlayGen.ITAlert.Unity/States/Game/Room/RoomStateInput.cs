@@ -5,9 +5,9 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
+using PlayGen.Unity.Utilities.Localization;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private GameObject _chatPanel;
 		private GameObject _playerChatItemPrefab;
 
-		public Director Director { get; private set; }
+		public Director Director { get; }
 
 		public RoomStateInput(ITAlertPhotonClient photonClient)
 		{
@@ -45,17 +45,20 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
 			_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
+			Localization.LanguageChange += OnLanguageChange;
+			OnLanguageChange();
 		}
 
 		protected override void OnEnter()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
 
+
 			foreach (var playerVoiceItem in _chatPanel.transform)
 			{
 				if (((Transform)playerVoiceItem).gameObject.name != "PushToTalk")
 				{
-					UnityEngine.Object.Destroy(((Transform)playerVoiceItem).gameObject);
+					Object.Destroy(((Transform)playerVoiceItem).gameObject);
 				}
 			}
 			_playerVoiceItems.Clear();
@@ -85,12 +88,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					var playerItem = Object.Instantiate(_playerChatItemPrefab);
 
 
-					var nameText = playerItem.transform.FindChild("Name").GetComponent<Text>();
+					var nameText = playerItem.transform.Find("Name").GetComponent<Text>();
 					nameText.text = player.Name;
 
-					var soundIcon = playerItem.transform.FindChild("SoundIcon").GetComponent<Image>();
+					var soundIcon = playerItem.transform.Find("SoundIcon").GetComponent<Image>();
 
-					var playerGlyph = playerItem.transform.FindChild("Glyph").GetComponent<Image>();
+					var playerGlyph = playerItem.transform.Find("Glyph").GetComponent<Image>();
 
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
@@ -110,7 +113,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				if (players.All(p => p.PhotonId != playerVoiceItem.Key))
 				{
-					UnityEngine.Object.Destroy(playerVoiceItem.Value.GameObject);
+					Object.Destroy(playerVoiceItem.Value.GameObject);
 				}
 			}
 			_playerVoiceItems = _playerVoiceItems.Where(p => p.Value.GameObject != null).ToDictionary(p => p.Key, p => p.Value);
@@ -139,6 +142,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				{
 					playerVoiceItem.VoiceIcon.enabled = status.Value;
 				}
+			}
+		}
+
+		private void OnLanguageChange()
+		{
+			var pushToTalk = _chatPanel.transform.Find("PushToTalk");
+			if (pushToTalk != null && pushToTalk.GetComponent<Text>())
+			{
+				pushToTalk.GetComponent<Text>().text = Localization.GetAndFormat("VOICE_PUSH_TO_TALK", false, "TAB");
 			}
 		}
 	}

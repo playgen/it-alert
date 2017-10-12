@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
+
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions.ColorPicker;
@@ -92,7 +90,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			}
 		}
 
-		public void GenerateColorPicker(IEnumerable<ITAlertPlayer> players, ITAlertPlayer currentPlayer)
+		public void GenerateColorPicker(List<ITAlertPlayer> players, ITAlertPlayer currentPlayer)
 		{
 			_currentPlayer = currentPlayer;
 			
@@ -112,10 +110,10 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			_colourPickerRow = Resources.Load<GameObject>("ColorPickerRow");
 
 			const int cols = 3;
-			var rows = Mathf.CeilToInt(PlayerColour.Glyphs.Length / cols);
+			var rows = Mathf.CeilToInt((float)PlayerColour.Glyphs.Length / cols);
 
 			var index = 0;
-			for (int i = 0; i < rows; i++)
+			for (var i = 0; i < rows; i++)
 			{
 				if (index >= PlayerColour.Glyphs.Length)
 				{

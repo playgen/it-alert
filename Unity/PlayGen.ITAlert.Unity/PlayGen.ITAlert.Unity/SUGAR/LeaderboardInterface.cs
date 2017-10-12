@@ -98,7 +98,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
                 UpdatePageNumber(1);
                 return;
             }
-            for (int i = 0; i < _leaderboardPositions.Length; i++)
+            for (var i = 0; i < _leaderboardPositions.Length; i++)
             {
                 if (i >= SUGARManager.Leaderboard.CurrentStandings.Count)
                 {

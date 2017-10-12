@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Simulation.Common;
+﻿using PlayGen.ITAlert.Simulation.Common;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +21,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			AnimationRate = DefaultAnimationRate;
 
-			var material = UnityEngine.Object.Instantiate(_image.material);
+			var material = Instantiate(_image.material);
 			_image.material = material;
 		}
 

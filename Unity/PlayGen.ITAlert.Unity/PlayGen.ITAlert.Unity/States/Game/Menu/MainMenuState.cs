@@ -1,7 +1,4 @@
-﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.States.Tick.Input;
-using PlayGen.ITAlert.Unity.Commands;
-using PlayGen.ITAlert.Unity.Controllers;
+﻿using GameWork.Core.States.Tick.Input;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
 {

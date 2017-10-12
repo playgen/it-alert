@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using GameWork.Core.States.Tick.Input;
+﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
@@ -8,8 +6,6 @@ using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Unity;
-using PlayGen.Photon.Unity.Client;
 
 using Logger = PlayGen.Photon.Unity.Logger;
 
@@ -92,7 +88,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			if (stopMessage != null)
 			{
 				_director.EndGame();
-				return;
 			}
 
 			//throw new Exception("Unhandled Simulation State Message: " + message);

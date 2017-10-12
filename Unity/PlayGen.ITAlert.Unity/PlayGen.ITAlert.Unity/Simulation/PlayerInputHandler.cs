@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
 	public class PlayerInputHandler : MonoBehaviour
 	{
-		private List<RaycastHit2D> _lastClicked = new List<RaycastHit2D>();
+		private readonly List<RaycastResult> _lastClicked = new List<RaycastResult>();
 
 		[SerializeField]
 		private Director _director;
@@ -46,13 +46,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ClearClicks();
 			}
 
-			var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-
-			if (hits.Count(d => d.collider.tag.Equals(Tags.PauseScreen)) == 0)
+			var hits = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, hits);
+			if (hits.Count(d => d.gameObject.tag.Equals(Tags.PauseScreen)) == 0)
 			{
-				var subsystemHits = hits.Where(d => d.collider.tag.Equals(Tags.Subsystem)).ToArray();
-				var itemHits = hits.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
-				var itemContainerHits = hits.Where(d => d.collider.tag.Equals(Tags.ItemContainer)).ToArray();
+				var subsystemHits = hits.Where(d => d.gameObject.tag.Equals(Tags.Subsystem)).ToArray();
+				var itemHits = hits.Where(d => d.gameObject.tag.Equals(Tags.Item)).ToArray();
+				var itemContainerHits = hits.Where(d => d.gameObject.tag.Equals(Tags.ItemContainer)).ToArray();
 
 				if (subsystemHits.Length == 1 && itemHits.Length == 1 && itemContainerHits.Length == 1)
 				{
@@ -85,27 +85,29 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			foreach (var clicked in _lastClicked)
 			{
-				switch (clicked.collider.tag)
+				if (clicked.gameObject != null)
 				{
-					case Tags.Subsystem:
-						SubsystemClickReset(clicked);
-						break;
-					case Tags.Item:
-						ItemClickReset(clicked);
-						break;
-					case Tags.ItemContainer:
-						ItemContainerClickReset(clicked);
-						break;
+					switch (clicked.gameObject.tag)
+					{
+						case Tags.Subsystem:
+							SubsystemClickReset(clicked);
+							break;
+						case Tags.Item:
+							ItemClickReset(clicked);
+							break;
+						case Tags.ItemContainer:
+							ItemContainerClickReset(clicked);
+							break;
+					}
 				}
-
 			}
 			_lastClicked.Clear();
 		}
 
 
-		private void OnClickSubsystem(RaycastHit2D subsystemHit, bool down)
+		private void OnClickSubsystem(RaycastResult subsystemHit, bool down)
 		{
-			var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
+			var subsystem = subsystemHit.gameObject.GetComponentInParent<SubsystemBehaviour>();
 			if (down)
 			{
 				subsystem.OnClickDown();
@@ -121,11 +123,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void OnClickItemInContainer(RaycastHit2D itemHit, RaycastHit2D containerHit, bool down)
+		private void OnClickItemInContainer(RaycastResult itemHit, RaycastResult containerHit, bool down)
 		{
-			var item = itemHit.collider.GetComponent<ItemBehaviour>();
-			var itemdrag = itemHit.collider.GetComponent<ItemDragBehaviour>();
-			var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
+			var item = itemHit.gameObject.GetComponentInParent<ItemBehaviour>();
+			var itemdrag = itemHit.gameObject.GetComponentInParent<ItemDragBehaviour>();
+			var container = containerHit.gameObject.GetComponent<ItemContainerBehaviour>();
 			if (down)
 			{
 				if (container.OnClickDown())
@@ -139,9 +141,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				if (itemdrag == null && _lastClicked.Any(d => d.collider.name.Equals(itemHit.transform.gameObject.name)))
+				if (itemdrag == null && _lastClicked.Any(d => d.gameObject.name.Equals(itemHit.gameObject.name)))
 				{
-					container.OnClickUp(item, container.ContainerIndex, false);
+					container.OnClickUp(item, container.ContainerIndex);
 				}
 				else if (itemdrag != null && itemdrag.OnClickUp(out var containerIndex, out var dragged))
 				{
@@ -150,9 +152,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void OnClickItemContainer(RaycastHit2D containerHit, bool down)
+		private void OnClickItemContainer(RaycastResult containerHit, bool down)
 		{
-			var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
+			var container = containerHit.gameObject.GetComponent<ItemContainerBehaviour>();
 			if (down)
 			{
 				container.OnClickDown();
@@ -160,7 +162,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 			else
 			{
-				var itemsPreviouslyHit = _lastClicked.Where(d => d.collider.tag.Equals(Tags.Item)).ToArray();
+				var itemsPreviouslyHit = _lastClicked.Where(d => d.gameObject.tag.Equals(Tags.Item)).ToArray();
 
 				if (itemsPreviouslyHit.Length == 1)
 				{
@@ -171,23 +173,23 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 		}
 
-		private void SubsystemClickReset(RaycastHit2D subsystemHit)
+		private void SubsystemClickReset(RaycastResult subsystemHit)
 		{
-			var subsystem = subsystemHit.collider.GetComponent<SubsystemBehaviour>();
+			var subsystem = subsystemHit.gameObject.GetComponentInParent<SubsystemBehaviour>();
 			//	// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
 			subsystem.ClickReset();
 		}
 
-		private void ItemClickReset(RaycastHit2D itemHit)
+		private void ItemClickReset(RaycastResult itemHit)
 		{
-			var item = itemHit.collider.GetComponent<ItemDragBehaviour>();
+			var item = itemHit.gameObject.GetComponentInParent<ItemDragBehaviour>();
 			item?.ClickReset();
 			item?.PositionReset();
 		}
 
-		private void ItemContainerClickReset(RaycastHit2D containerHit)
+		private void ItemContainerClickReset(RaycastResult containerHit)
 		{
-			var container = containerHit.collider.GetComponent<ItemContainerBehaviour>();
+			var container = containerHit.gameObject.GetComponent<ItemContainerBehaviour>();
 			container.ClickReset();
 		}
 

@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 		private GameObject _gameContainer;
 		private CanvasGroup _canvasGroup;
-		private Dictionary<BlinkBehaviour, bool> _blinkPauseToggle = new Dictionary<BlinkBehaviour, bool>();
+		private readonly Dictionary<BlinkBehaviour, bool> _blinkPauseToggle = new Dictionary<BlinkBehaviour, bool>();
 
 		private readonly Director _director;
 		private bool _endGame;
@@ -139,7 +139,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnContinueClick();
 			}

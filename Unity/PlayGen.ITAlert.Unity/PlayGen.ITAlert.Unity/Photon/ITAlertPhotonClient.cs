@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Messaging.Interfaces;
 using PlayGen.Photon.Unity.Client;

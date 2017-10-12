@@ -1,12 +1,8 @@
-﻿using System;
-using Engine.Commands;
+﻿using Engine.Commands;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
-using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Unity.Photon;
-using PlayGen.Photon.Unity.Client;
-using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation
 {
@@ -70,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public static void Continue()
 		{
-			Log($"Request tutorial continue");
+			Log("Request tutorial continue");
 
 			var continueCommand = new ContinueCommand();
 			IssueCommand(continueCommand);

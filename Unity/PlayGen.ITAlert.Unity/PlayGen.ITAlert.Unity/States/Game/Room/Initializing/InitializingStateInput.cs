@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GameWork.Core.States.Tick.Input;
+﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 

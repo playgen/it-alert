@@ -16,11 +16,6 @@ namespace PlayGen.ITAlert.Unity.Utilities
 				var raycastResults = new List<RaycastResult>();
 				//gets all UI objects below the cursor
 				EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-				var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
-				foreach (var hit in hits)
-				{
-					RayHit(hit.transform);
-				}
 				foreach (var hit in raycastResults)
 				{
 					RayHit(hit.gameObject.transform);

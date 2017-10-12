@@ -10,7 +10,6 @@ using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
@@ -73,10 +72,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 				if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
 				{
 					// The following string contains the key for the google form is used for the cognitive load questionnaire
-					string formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
+					var formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
 
 					// Google form ID
-					string googleFormsURL = "https://docs.google.com/forms/d/e/"
+					var googleFormsURL = "https://docs.google.com/forms/d/e/"
 											+ formsKey
 											+ "/viewform?entry.1596836094="
 											+ SUGARManager.CurrentUser.Name;
@@ -107,7 +106,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (!_endGame && UnityEngine.Input.GetKeyDown(KeyCode.Escape))
+			if (!_endGame && Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnPauseClicked();
 			}

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ExitGames.Client.Photon;
+﻿using ExitGames.Client.Photon;
 using PlayGen.ITAlert.Photon.Common;
 
 namespace PlayGen.ITAlert.Unity.Photon

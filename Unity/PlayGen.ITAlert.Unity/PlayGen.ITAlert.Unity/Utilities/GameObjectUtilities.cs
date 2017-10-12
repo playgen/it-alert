@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 			var currentLevel = new List<Transform> {rootTransform};
 			var nextLevel = new List<Transform>();
 
-			List<Transform> matches = FindMatches(++level, segments, currentLevel, nextLevel);
+			var matches = FindMatches(++level, segments, currentLevel, nextLevel);
 
 			return matches.ToArray();
 		}
@@ -55,15 +55,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 
 			if (results.Length != 1)
 			{
-				if (results.Length == 0)
-				{
-					LogProxy.Warning($"Couldn't find any objects matching the path: \"{absolutePath}\"");
-				}
-				else
-				{
-					LogProxy.Warning($"Found {results.Length} objects matching the path: \"{absolutePath}\"");
-				}
-
+				LogProxy.Warning(results.Length == 0 ? $"Couldn't find any objects matching the path: \"{absolutePath}\"" : $"Found {results.Length} objects matching the path: \"{absolutePath}\"");
 				return null;
 			}
 
@@ -105,7 +97,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 			{
 				foreach (var transform in currentLevel)
 				{
-					for (int i = 0; i < transform.childCount; i++)
+					for (var i = 0; i < transform.childCount; i++)
 					{
 						if (transform.GetChild(i).name == pathSegments[level])
 						{

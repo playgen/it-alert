@@ -8,12 +8,9 @@ namespace PlayGen.ITAlert.Unity.Utilities
 	{
 		private readonly GameObject[] _buttons;
 
-        public GameObject[] Buttons
-        {
-            get { return _buttons; }
-        }
+        public GameObject[] Buttons => _buttons;
 
-		public ButtonList(string menuPath)
+	    public ButtonList(string menuPath)
 		{
 			_buttons = GameObjectUtilities.FindAllChildren(menuPath);
 		}

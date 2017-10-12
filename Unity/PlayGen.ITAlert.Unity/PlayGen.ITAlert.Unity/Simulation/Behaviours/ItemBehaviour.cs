@@ -1,6 +1,5 @@
-﻿using System;
-using Engine.Systems.Activation.Components;
-using PlayGen.ITAlert.Simulation.Common;
+﻿using Engine.Systems.Activation.Components;
+
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
@@ -48,12 +47,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
-		#region public events
-
-		public event Action<ItemBehaviour> Click;
-
-		#endregion
-
 		public bool ClickEnable { get; set; }
 
 		#region Initialization
@@ -84,7 +77,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 				_midgroundSprite.enabled = false;
 				_midgroundSprite.type = Image.Type.Simple;
-				_midgroundSprite.gameObject.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
 				
 				//TODO: extract item specific logic to subclasses
 				InitializeAntivirus();
@@ -162,7 +154,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (_antivirus != null)
 			{
 				_midgroundSprite.sprite = Resources.Load<Sprite>("antivirus-full");
-				_midgroundSprite.gameObject.transform.localScale = _foregroundSprite.gameObject.transform.localScale;
 				if (_consumableActivation != null)
 				{
 					_midgroundSprite.type = Image.Type.Filled;

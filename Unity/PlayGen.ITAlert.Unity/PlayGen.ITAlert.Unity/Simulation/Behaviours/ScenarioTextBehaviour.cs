@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PlayGen.ITAlert.Unity.Exceptions;
+﻿using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void Awake()
 		{
 			_text = GetComponentInChildren<Text>();
-			_continue = transform.FindChild("Continue").gameObject;
+			_continue = transform.Find("Continue").gameObject;
 			_continue.GetComponent<Button>().onClick.AddListener(OnContinue);
 			Localization.LanguageChange += LocalizationOnLanguageChange;
 		}

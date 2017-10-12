@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+
 using Engine.Serialization;
-using GameWork.Core.States.Tick;
+
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -13,7 +13,6 @@ using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Unity;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 {

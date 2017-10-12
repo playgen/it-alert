@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PlayGen.ITAlert.Simulation.Components.Common;
+﻿using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
@@ -18,8 +15,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private RectTransform _rectTransform;
 
-		public float ActorZ => _rectTransform.position.z;
-
 		protected void UpdatePosition()
 		{
 			if (CurrentLocation.Value.HasValue && Director.TryGetEntity(CurrentLocation.Value.Value, out var currentLocationEntity))
@@ -35,9 +30,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					transform.SetParent(CurrentLocationEntity.GameObject.transform, true);
 				}
-				var visitorVectors = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
-				_rectTransform.anchoredPosition = new Vector3(visitorVectors.Position.x, visitorVectors.Position.y, transform.position.z);
-				_rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
+			    if (nodeBehaviour != null)
+			    {
+			        var visitorVectors = nodeBehaviour.GetVisitorPosition(VisitorPosition.Position);
+			        _rectTransform.anchoredPosition = new Vector3(visitorVectors.Position.x, visitorVectors.Position.y, transform.position.z);
+			        _rectTransform.eulerAngles = new Vector3(0, 0, visitorVectors.Rotation.z);
+			    }
 			}
 			else
 			{
