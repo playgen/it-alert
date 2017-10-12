@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using UnityEngine;
 
@@ -11,8 +8,8 @@ namespace PlayGen.ITAlert.Unity
 	{
 		public static LogType LogLevel
 		{
-			get { return Logger.filterLogType; }
-			set { Logger.filterLogType = value; }
+			get => Logger.filterLogType;
+		    set => Logger.filterLogType = value;
 		}
 
 		public static ILogger Logger { get; set; } = UnityEngine.Debug.logger;

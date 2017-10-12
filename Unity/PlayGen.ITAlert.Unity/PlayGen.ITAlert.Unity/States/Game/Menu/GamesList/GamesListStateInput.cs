@@ -63,7 +63,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		private void OnBackClick()
 		{
-			BackClickedEvent();
+			BackClickedEvent?.Invoke();
 		}
 
 		protected override void OnEnter()
@@ -122,7 +122,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		private void OnJoinGameSuccess(ClientRoom<ITAlertPlayer> clientRoom)
 		{
-			JoinGameSuccessEvent();
+			JoinGameSuccessEvent?.Invoke();
 		}
 
 		private void OnGamesListSuccess(RoomInfo[] rooms)
@@ -130,7 +130,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			PlayGen.Unity.Utilities.Loading.Loading.Stop();
 			foreach (Transform child in _gameListObject.transform)
 			{
-				GameObject.Destroy(child.gameObject);
+				Object.Destroy(child.gameObject);
 			}
 			var offset = 0.5f;
 			var height = _gameItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
@@ -140,16 +140,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				var gameItem = Object.Instantiate(_gameItemPrefab).transform;
 				var name = room.name;
 				var scenario = room.customProperties[CustomRoomSettingKeys.GameScenario];
-				gameItem.FindChild("Name").GetComponent<Text>().text = name;
-				gameItem.FindChild("Scenario").GetComponent<Text>().text = (string)scenario;
-				gameItem.FindChild("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
+				gameItem.Find("Name").GetComponent<Text>().text = name;
+				gameItem.Find("Scenario").GetComponent<Text>().text = (string)scenario;
+				gameItem.Find("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
 				var minPlayers = room.customProperties[CustomRoomSettingKeys.MinPlayers];
 
 				if (room.playerCount == room.maxPlayers || (minPlayers != null && (int)minPlayers > room.playerCount))
 				{
-					gameItem.FindChild("Name").GetComponent<Text>().color = Color.red;
-					gameItem.FindChild("Scenario").GetComponent<Text>().color = Color.red;
-					gameItem.FindChild("Players").GetComponent<Text>().color = Color.red;
+					gameItem.Find("Name").GetComponent<Text>().color = Color.red;
+					gameItem.Find("Scenario").GetComponent<Text>().color = Color.red;
+					gameItem.Find("Players").GetComponent<Text>().color = Color.red;
 				}
 				gameItem.SetParent(_gameListObject.transform, false);
 
@@ -169,11 +169,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				// add listener to each button to join specifc game 
 				if (room.playerCount < room.maxPlayers)
 				{
-					gameItem.FindChild("Join").GetComponent<Button>().onClick.AddListener(delegate { JoinGame(name); });
+					gameItem.Find("Join").GetComponent<Button>().onClick.AddListener(delegate { JoinGame(name); });
 				}
 				else
 				{
-					gameItem.FindChild("Join").gameObject.SetActive(false);
+					gameItem.Find("Join").gameObject.SetActive(false);
 				}
 			}
 			// Set the content box to be the correct size for our elements

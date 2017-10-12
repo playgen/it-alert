@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Linq;
 
-using Engine.Configuration;
 using GameWork.Core.Commands.Interfaces;
 
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Scenario;
-using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame;
 using PlayGen.Photon.Unity.Client;

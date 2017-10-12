@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -67,9 +66,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_rectTransform.anchoredPosition = ((Vector2) _camera.ScreenToWorldPoint(Input.mousePosition) /
 														(transform.lossyScale.x / transform.localScale.x)) - _dragPosition;
 					transform.position = new Vector3(transform.position.x, transform.position.y, z);
-					var hits = Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero)
-						.Select(h => h.collider.gameObject)
-						.ToList();
+					var raycastResults = new List<RaycastResult>();
+					EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+					var hits = raycastResults.Select(h => h.gameObject).ToList();
 					if (!hits.Contains(_dragContainer))
 					{
 						_beingDragged = true;
@@ -78,7 +77,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		public bool OnClickDown(RaycastHit2D container)
+		public bool OnClickDown(RaycastResult container)
 		{
 			LogProxy.Info("Item OnClick");
 			if (_item.CanActivate == false)
@@ -88,7 +87,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_beingClicked = true;
 			_beingDragged = false;
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;
-			_dragContainer = container.collider.gameObject;
+			_dragContainer = container.gameObject;
 			transform.SetAsLastSibling();
 			return true;
 		}

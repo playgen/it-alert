@@ -12,7 +12,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
-using PlayGen.Photon.Players;
+
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation
@@ -120,7 +120,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public GameObject InstantiateEntity(string resourceString)
 		{
-			return UnityEngine.Object.Instantiate(Resources.Load(resourceString), transform.Find("Canvas/Graph").transform) as GameObject;
+			return Instantiate(Resources.Load(resourceString), transform.Find("Canvas/Graph").transform) as GameObject;
 		}
 
 		public void ResetDirector()
@@ -199,6 +199,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				CreateInitialEntities();
 				SetupPlayers(players, playerServerId);
 				// item panel must come after players
+				GetComponentsInChildren<Canvas>(true).ToList().ForEach(c => c.gameObject.SetActive(true));
 				ItemPanel.Initialize();
 				ItemPanel.ExplicitUpdate();
 
@@ -336,8 +337,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void ThreadWorker()
 		{
-			int loop = 0;
-
 			while (true)
 			{
 				try
@@ -370,7 +369,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							ICommandSystem commandSystem;
 							if (SimulationRoot.ECS.TryGetSystem(out commandSystem) == false)
 							{
-								throw new SimulationIntegrationException($"Could not locate command processing system");
+								throw new SimulationIntegrationException("Could not locate command processing system");
 							}
 							var success = true;
 							foreach (var command in tick.CommandQueue)
@@ -379,7 +378,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							}
 							if (success != true)
 							{
-								throw new SimulationIntegrationException($"Local Simulation failed to apply command(s).");
+								throw new SimulationIntegrationException("Local Simulation failed to apply command(s).");
 							}
 							SimulationRoot.ECS.Tick();
 
@@ -394,8 +393,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 									throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
 								}
 
-								uint crc = 0;
-								var state = SimulationRoot.GetEntityState(out crc);
+								SimulationRoot.GetEntityState(out var crc);
 #if LOG_ENTITYSTATE
 								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.{Player.PhotonId}.json", state);
 #endif
@@ -414,7 +412,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				catch (Exception ex)
 				{
 					LogProxy.Error($"Simulation worker thread terminating due to error: {ex}");
-					ThreadWorkerException = new SimulationIntegrationException($"Terminating simulation worker thread", ex);
+					ThreadWorkerException = new SimulationIntegrationException("Terminating simulation worker thread", ex);
 					_workerThreadExceptionSignal.Set();
 					break;
 				}
@@ -427,7 +425,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void UpdateSimulation(TickMessage tickMessage)
 		{
-			LogProxy.Info($"ExplicitUpdate Simulation");
+			LogProxy.Info("ExplicitUpdate Simulation");
 			lock (_queueLock)
 			{
 				_queuedMessages.Enqueue(tickMessage);
@@ -497,8 +495,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			try
 			{
-				var newEntites = 0;
-
 				foreach (var entity in SimulationRoot.ECS.Entities)
 				{
 					try
@@ -516,7 +512,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						}
 						else
 						{
-							newEntites++;
 							var newUiEntity = CreateEntity(entity.Value);
 							newUiEntity.EntityBehaviour?.Initialize(entity.Value, this);
 						}
@@ -526,11 +521,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						throw new SimulationIntegrationException($"Error updating entity {entity.Key}", ex);
 					}
 				}
-
-				//if (newEntites > 0)
-				//{
-				//	LogProxy.Info($"New entities created in tick {_update}: {newEntites}");
-				//}
 
 				int[] destroyedEntities;
 

@@ -1,16 +1,17 @@
 ﻿using System;
-using Engine.Configuration;
+
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Simulation.Configuration;
-using PlayGen.ITAlert.Simulation.Scenario;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Unity.Client;
+
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+
+using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
@@ -119,7 +120,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		{
 			foreach (Transform child in _scenarioListObject.transform)
 			{
-				child.FindChild("Selected").GetComponent<Image>().enabled = selected == child;
+				child.Find("Selected").GetComponent<Image>().enabled = selected == child;
 			}
 		}
 
@@ -133,20 +134,20 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		{
 			foreach (Transform child in _scenarioListObject.transform)
 			{
-				GameObject.Destroy(child.gameObject);
+				Object.Destroy(child.gameObject);
 			}
 			var offset = 0.5f;
 			var height = _scenarioItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
 			// Populate Scenario list UI
 			foreach (var scenario in scenarios)
 			{
-				var gameItem = UnityEngine.Object.Instantiate(_scenarioItemPrefab).transform;
-				gameItem.FindChild("Name").GetComponent<Text>().text = scenario.Name;
+				var gameItem = Object.Instantiate(_scenarioItemPrefab).transform;
+				gameItem.Find("Name").GetComponent<Text>().text = scenario.Name;
 				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
 					? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
 					: scenario.MaxPlayerCount.ToString();
-				gameItem.FindChild("Players").GetComponent<Text>().text = players;
-				gameItem.FindChild("Selected").GetComponent<Image>().enabled = false;
+				gameItem.Find("Players").GetComponent<Text>().text = players;
+				gameItem.Find("Selected").GetComponent<Image>().enabled = false;
 				gameItem.SetParent(_scenarioListObject.transform, false);
 
 				// set anchors

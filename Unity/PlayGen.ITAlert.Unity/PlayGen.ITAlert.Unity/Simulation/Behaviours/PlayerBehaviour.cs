@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Engine.Planning;
-using PlayGen.ITAlert.Simulation.Components;
+
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Components.Player;
 using PlayGen.ITAlert.Unity.Exceptions;
@@ -94,14 +91,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnEnable()
 		{
-			_scale = ((GameObject)Resources.Load("Player")).GetComponent<RectTransform>().localScale;
-			if (_scale == null)
-			{
-				LogProxy.Warning("PlayerBehaviour OnEnable: _scale is null");
-			}
-			transform.localScale = new Vector3(_scale.x / transform.parent.localScale.x, _scale.y / transform.parent.localScale.y, 1);
+            transform.localScale = Vector3.one;
 		}
-
 		#region State Update
 
 		protected override void OnStateUpdated()

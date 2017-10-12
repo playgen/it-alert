@@ -1,6 +1,5 @@
 ﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {

@@ -68,7 +68,7 @@ TrailRenderer:
   m_Time: 0.8
   m_Parameters:
     serializedVersion: 2
-    widthMultiplier: 16
+    widthMultiplier: 1.6
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -134,11 +134,11 @@ Light:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000014000263050}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 8
   m_Type: 3
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.8
+  m_Intensity: 0.5
   m_Range: 30
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -158,7 +158,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_Lightmapping: 2
-  m_AreaSize: {x: 40, y: 40}
+  m_AreaSize: {x: 2.5, y: 2.5}
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
@@ -242,7 +242,7 @@ RectTransform:
   m_GameObject: {fileID: 1000014000263050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -250,5 +250,5 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 4, y: 4}
+  m_SizeDelta: {x: 16, y: 16}
   m_Pivot: {x: 0.5, y: 0.5}

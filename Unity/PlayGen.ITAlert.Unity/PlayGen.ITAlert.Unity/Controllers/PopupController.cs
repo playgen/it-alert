@@ -1,11 +1,11 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
+
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Photon;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -65,7 +65,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 				_popupBehaviour.ClearContent();
 
 				_colourPickerBehaviour = colorPanel.GetComponent<ColourPickerBehaviour>();
-				_colourPickerBehaviour.GenerateColorPicker(players, currentPlayer);
+				_colourPickerBehaviour.GenerateColorPicker(players.ToList(), currentPlayer);
 
 				_photonClient.CurrentRoom.PlayerListUpdatedEvent += _colourPickerBehaviour.UpdateSelectedGlyphs;
 				_popupBehaviour.SetPopup(Localization.Get("COLOUR_PICKER_LABEL_TITLE"),

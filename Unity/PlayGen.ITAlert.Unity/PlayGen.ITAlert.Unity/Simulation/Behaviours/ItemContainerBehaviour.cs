@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using PlayGen.ITAlert.Simulation.Components;
+
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using UnityEngine;
@@ -38,7 +36,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool ClickEnable { get; set; }
 
-		public int ContainerIndex => _containerIndex.Value;
+		public int ContainerIndex => _containerIndex ?? -10;
 
 		// TODO: push this down int othe item containers
 
@@ -172,7 +170,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 			else if (item != null && sourceContainerIndex != null)
 			{
-				item.gameObject.SetActive(false);
 				Drag?.Invoke(this, item, sourceContainerIndex.Value);
 			}
 			ClickReset();

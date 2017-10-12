@@ -1,5 +1,4 @@
-﻿using System;
-using Engine.Lifecycle;
+﻿using Engine.Lifecycle;
 using Engine.Systems.Timing;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;

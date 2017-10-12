@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using ExitGames.Client.Photon.Voice;
-
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Photon.Common;
@@ -12,8 +10,6 @@ using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
@@ -79,7 +75,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				if (flowDown)
 				{
 					flowDown = false;
-					for (int i = position; i < _playerRankings[newList].Count; i++)
+					for (var i = position; i < _playerRankings[newList].Count; i++)
 					{
 						if (_playerRankings[newList][i] == null)
 						{
@@ -100,7 +96,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				var oldSlot = drag.transform.parent;
 				if (!_playerRankings.All(rank => rank.Value.Contains(name)))
 				{
-					var playerObj = UnityEngine.Object.Instantiate(_entryPrefab, oldSlot.transform, false);
+					var playerObj = Object.Instantiate(_entryPrefab, oldSlot.transform, false);
 					playerObj.GetComponent<Text>().text = name;
 					playerObj.GetComponent<Text>().color = drag.GetComponent<Text>().color;
 					playerObj.GetComponent<Text>().fontSize = drag.GetComponent<Text>().fontSize;
@@ -160,15 +156,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				playerRankings.Add(player.PhotonId, playerRanking);
 			}
 
-			PlayerRankingsCompleteEvent(playerRankings);
+			PlayerRankingsCompleteEvent?.Invoke(playerRankings);
 			FeedbackSendClickedEvent?.Invoke();
 			if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
 			{
 				// The following string contains the key for the google form is used for the cognitive load questionnaire
-				string formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
+				var formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
 
 				// Google form ID
-				string googleFormsURL = "https://docs.google.com/forms/d/e/"
+				var googleFormsURL = "https://docs.google.com/forms/d/e/"
 										+ formsKey
 										+ "/viewform?entry.1596836094="
 										+ SUGARManager.CurrentUser.Name;
@@ -184,7 +180,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			{
 				if (child != _rankingImage.transform)
 				{
-					GameObject.Destroy(child.gameObject);
+					Object.Destroy(child.gameObject);
 				}
 			}
 			_playerRankings.Clear();
@@ -194,44 +190,43 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 			_players = players.Where(p => p.ExternalId != currentplayerPhotonId).ToList();
 
-			var playerList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
-			var emptySlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
+			var playerList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
+			var emptySlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
 			emptySlot.GetComponent<Image>().enabled = false;
 			emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 
 			foreach (var player in _players)
 			{
-				var colour = new Color();
-				ColorUtility.TryParseHtmlString(player.Colour, out colour);
+				ColorUtility.TryParseHtmlString(player.Colour, out var colour);
 
-				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
+				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
 				//playerSlot.GetComponent<Image>().enabled = false;
 
-				var playerObj = UnityEngine.Object.Instantiate(_entryPrefab, playerSlot.transform, false);
+				var playerObj = Object.Instantiate(_entryPrefab, playerSlot.transform, false);
 				playerObj.GetComponent<Text>().text = player.Name;
 				playerObj.GetComponent<Text>().color = colour;
 				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
 			}
 
-			for (int i = playerList.transform.childCount; i <= 6; i++)
+			for (var i = playerList.transform.childCount; i <= 6; i++)
 			{
-				var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, playerList.transform, false);
+				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
 				playerSlot.GetComponent<Image>().enabled = false;
 			}
 
-			var rankList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
-			var emptyRank = UnityEngine.Object.Instantiate(_slotPrefab, rankList.transform, false);
+			var rankList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
+			var emptyRank = Object.Instantiate(_slotPrefab, rankList.transform, false);
 			emptyRank.GetComponent<Image>().enabled = false;
 			emptyRank.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-			for (int i = 0; i < 6; i++)
+			for (var i = 0; i < 6; i++)
 			{ 
-				var rankSlot = UnityEngine.Object.Instantiate(_slotPrefab, rankList.transform, false);
-				var rankObj = UnityEngine.Object.Instantiate(_entryPrefab, rankSlot.transform, false);
+				var rankSlot = Object.Instantiate(_slotPrefab, rankList.transform, false);
+				var rankObj = Object.Instantiate(_entryPrefab, rankSlot.transform, false);
 				rankObj.GetComponent<Text>().text = (i+1).ToString();
 			}
 
-			bool sectionFound = true;
-			int sectionCount = 1;
+			var sectionFound = true;
+			var sectionCount = 1;
 			while (sectionFound)
 			{
 				if (!Localization.HasKey("FEEDBACK_LABEL_CATEGORY_" + (sectionCount)))
@@ -241,9 +236,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 				var sectionName = Localization.Get("FEEDBACK_LABEL_CATEGORY_" + (sectionCount));
 				sectionCount++;
-				var sectionList = UnityEngine.Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
+				var sectionList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 
-				var headerObj = UnityEngine.Object.Instantiate(_entryPrefab, sectionList.transform, false);
+				var headerObj = Object.Instantiate(_entryPrefab, sectionList.transform, false);
 				headerObj.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
 				headerObj.GetComponent<Text>().text = sectionName;
 				Object.Destroy(headerObj.GetComponent<FeedbackDragBehaviour>());
@@ -252,9 +247,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				_rankingObjects.Add(sectionName, new List<KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>>());
 
 				//foreach (var player in players)
-				for (int j = 0; j < 6; j++)
+				for (var j = 0; j < 6; j++)
 				{
-					var playerSlot = UnityEngine.Object.Instantiate(_slotPrefab, sectionList.transform, false);
+					var playerSlot = Object.Instantiate(_slotPrefab, sectionList.transform, false);
 					_playerRankings[sectionName].Add(null);
 					_rankingObjects[sectionName].Add(
 						new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(),

@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private GameOverCondition _condition;
 		private static readonly Vector3 InitialOffset = new Vector3(0, 1000);
 
-		private float _animationProgress = 0;
+		private float _animationProgress;
 
 		// Use this for initialization
 		void Start()

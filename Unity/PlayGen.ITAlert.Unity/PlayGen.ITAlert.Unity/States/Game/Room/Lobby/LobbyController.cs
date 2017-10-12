@@ -1,11 +1,8 @@
-﻿using ExitGames.Client.Photon.Voice;
-using GameWork.Core.Commands.Interfaces;
+﻿using GameWork.Core.Commands.Interfaces;
 using PlayGen.ITAlert.Photon.Messages.Game.Commands;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Messages.Players;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {

@@ -3,7 +3,6 @@ using PlayGen.ITAlert.Photon.Messages.Game.UI;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 
@@ -37,7 +36,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 						if (!VoiceClient?.IsTransmitting ?? false)
 						{
 							VoiceClient.StartTransmission();
-							LogProxy.Warning($"Starting voice transmission");
+							LogProxy.Warning("Starting voice transmission");
 							if (_director?.Player != null)
 							{
 								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceActivatedMessage()
@@ -49,7 +48,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 					}
 					if (Input.GetKeyUp(KeyCode.Tab))
 					{
-						if (VoiceClient?.IsTransmitting ?? false)
+						if ((bool)VoiceClient?.IsTransmitting)
 						{
 							VoiceClient.StopTransmission();
 							if (_director?.Player != null)

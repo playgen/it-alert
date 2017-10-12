@@ -6,8 +6,6 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Messages.Players;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
@@ -63,11 +61,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				}
 				
 				var colorCommand = command as ChangePlayerColorCommand;
-				if (colorCommand != null)
-				{
-					colorCommand.Execute(_controller);
-					return;
-				}
+			    colorCommand?.Execute(_controller);
 			}
 		}
 

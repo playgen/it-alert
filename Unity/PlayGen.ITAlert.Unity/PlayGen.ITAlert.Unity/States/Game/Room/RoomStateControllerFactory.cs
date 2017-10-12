@@ -1,5 +1,4 @@
-﻿using System;
-using GameWork.Core.States;
+﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;

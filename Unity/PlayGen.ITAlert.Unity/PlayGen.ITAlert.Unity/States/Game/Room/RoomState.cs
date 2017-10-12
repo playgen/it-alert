@@ -10,7 +10,6 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
@@ -62,11 +61,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private void ProcessErrorMessage(Message message)
 		{
 			var errorMessage = message as ErrorMessage;
-			LogProxy.Error($"Received server error message: {errorMessage.Message}");
-			if (errorMessage != null)
-			{
-				throw new Exception(errorMessage.Message);
-			}
+		    if (errorMessage != null)
+		    {
+		        LogProxy.Error($"Received server error message: {errorMessage.Message}");
+		        throw new Exception(errorMessage.Message);
+		    }
 		}
 
 		protected override void OnExit()

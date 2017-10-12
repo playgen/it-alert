@@ -1,15 +1,13 @@
 ﻿using System;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-using PlayGen.ITAlert.Photon.Players;
+
 using PlayGen.ITAlert.Unity.Debug;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Unity.Client;
-using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.States.Game
 {

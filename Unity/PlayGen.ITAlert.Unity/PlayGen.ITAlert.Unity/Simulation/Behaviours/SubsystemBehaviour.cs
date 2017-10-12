@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
@@ -12,42 +11,18 @@ using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 	public class SubsystemBehaviour : NodeBehaviour
 	{
-		private readonly Vector2[] _itemContainerPositions = new Vector2[4]
-		{
-			new Vector2(30, -120),
-			new Vector2(-30, -120),
-			new Vector2(30, 130),
-			new Vector2(-30, 130),
-		};
-
-		private readonly Vector2[] _itemContainerColliderOffsets = new Vector2[4]
-		{
-			new Vector2(130, -130),
-			new Vector2(-130, -130),
-			new Vector2(130, 130),
-			new Vector2(-130, 130),
-		};
-
-		private readonly Vector2[] _itemContainerOffsets = new Vector2[4]
-		{
-			new Vector2(0, 1),
-			new Vector2(1, 1),
-			new Vector2(0, 0),
-			new Vector2(1, 0),
-		};
-
-		private readonly Vector2[] _itemContainerPivots = new Vector2[4]
-		{
-			new Vector2(0, 1),
-			new Vector2(1, 1),
-			new Vector2(0, 0),
-			new Vector2(1, 0),
+		private readonly Vector2[] _itemContainerPositions = {
+			new Vector2(-59, 31.5f),
+			new Vector2(59, 31.5f),
+			new Vector2(-59, -31.5f),
+			new Vector2(59, -31.5f),
 		};
 
 		#region game elements
@@ -75,11 +50,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		[SerializeField]
 		private BlinkBehaviour _blink;
-
-		public BoxCollider2D DropCollider
-		{
-			get; private set;
-		}
 
 		[SerializeField]
 		private GameObject _connectionSquare;
@@ -137,8 +107,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			//_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
-			DropCollider = GetComponent<BoxCollider2D>();
-
 			// TODO: these should probably be UIEntities
 			_itemZ = ((GameObject)Resources.Load("Item")).GetComponent<RectTransform>().position.z;
 		}
@@ -177,9 +145,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			ForEachItemContainer((i, itemContainer) =>
 			{
 				var itemContainerObject = Director.InstantiateEntity(UIConstants.ItemContainerPrefab);
-				itemContainerObject.transform.SetParent(this.transform, false);
+				itemContainerObject.transform.SetParent(transform, false);
 				itemContainerObject.name = $"ItemContainer_{i}";
-				itemContainerObject.GetComponent<BoxCollider2D>().offset = _itemContainerColliderOffsets[i];
 
 				_itemContainers.Add(itemContainerObject);
 
@@ -206,11 +173,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void SetItemPosition(int index, GameObject go)
 		{
 			var rectTransform = go.GetComponent<RectTransform>();
-			rectTransform.anchorMin = _itemContainerOffsets[index];
-			rectTransform.anchorMax = _itemContainerOffsets[index];
-			rectTransform.pivot = _itemContainerPivots[index];
 			rectTransform.anchoredPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
-			go.GetComponent<BoxCollider2D>().offset = _itemContainerColliderOffsets[index];
 		}
 
 		private void SetPosition()
@@ -297,7 +260,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (itemContainer.Item != null
 					&& Director.TryGetEntity(itemContainer.Item.Value, out item))
 				{
-					item.GameObject.transform.SetParent(this.transform, false);
+					item.GameObject.transform.SetParent(transform, false);
 					SetItemPosition(i, item.GameObject);
 				}
 			});
@@ -342,7 +305,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			// Position on square perimeter
 			// Top Left = (-1, -1), Bottom Right = (1, 1)
-			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width - 18;
+			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width - 8;
 			var halfSide = sideLength / 2;
 			//var step = sideLength / PointsPerSide * 2;
 			var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;
@@ -408,7 +371,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			if (_beingClicked && !Physics2D.RaycastAll(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero).Select(r => r.collider).Contains(DropCollider))
+			var raycastResults = new List<RaycastResult>();
+			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+			if (_beingClicked && !raycastResults.Select(r => r.gameObject).Contains(_sprite.gameObject))
 			{
 				ClickReset();
 			}

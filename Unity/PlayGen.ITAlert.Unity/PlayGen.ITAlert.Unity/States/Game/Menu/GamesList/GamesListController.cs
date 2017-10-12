@@ -17,8 +17,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		public void GetGamesList()
 		{
-			var rooms = _photonClient.ListRooms(ListRoomsFilters.Open | ListRoomsFilters.Visible);
-			GamesListSuccessEvent(rooms);
+		    var rooms = _photonClient.ListRooms(ListRoomsFilters.Open | ListRoomsFilters.Visible);
+		    GamesListSuccessEvent?.Invoke(rooms);
 		}
 
 	}

@@ -3,7 +3,6 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Photon.Unity;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 {

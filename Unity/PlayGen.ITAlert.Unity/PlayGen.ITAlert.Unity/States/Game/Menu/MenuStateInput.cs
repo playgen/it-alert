@@ -1,7 +1,6 @@
 ﻿using System;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;

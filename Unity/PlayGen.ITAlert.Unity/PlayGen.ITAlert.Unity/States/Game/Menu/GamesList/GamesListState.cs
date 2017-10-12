@@ -48,10 +48,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				}
 
 				var joinCommand = command as JoinGameCommand;
-				if (joinCommand != null)
-				{
-					joinCommand.Execute(_joinGameController);
-				}
+			    joinCommand?.Execute(_joinGameController);
 			}
 		}
 

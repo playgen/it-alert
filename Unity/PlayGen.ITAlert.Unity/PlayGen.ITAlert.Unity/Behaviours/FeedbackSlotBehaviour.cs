@@ -7,12 +7,9 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private string _currentList;
 
-		public string CurrentList
-		{
-			get { return _currentList; }
-		}
+		public string CurrentList => _currentList;
 
-		public void SetList(string listName)
+	    public void SetList(string listName)
 		{
 			_currentList = listName;
 		}

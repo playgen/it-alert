@@ -9,18 +9,19 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 	public class PopupBehaviour : MonoBehaviour
 	{
 		private GameObject _buttonContainer;
-		private List<GameObject> _buttonsGameObjects = new List<GameObject>();
+		private readonly List<GameObject> _buttonsGameObjects = new List<GameObject>();
 
 		private Text _title;
 
 		private GameObject _contentPanel;
 
-		/// <summary>
-		/// Set the title and buttons of the popup containier
-		/// </summary>
-		/// <param name="title">The title of the popup</param>
-		/// <param name="output">The desired button Output from left to right</param
-		public void SetPopup(string title, Output[] outputs, Action closePopupAction)
+	    /// <summary>
+	    /// Set the title and buttons of the popup containier
+	    /// </summary>
+	    /// <param name="title">The title of the popup</param>
+	    /// <param name="outputs">The desired button Output from left to right</param>
+	    /// <param name="closePopupAction"></param>
+	    public void SetPopup(string title, Output[] outputs, Action closePopupAction)
 		{
 			// set the title
 			SetTitle(title);
@@ -34,11 +35,14 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			foreach (var buttonOutput in outputs)
 			{
 				var buttonObject = Instantiate(buttonPrefab) as GameObject;
-				SetButton(buttonObject.GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
+			    if (buttonObject != null)
+			    {
+			        SetButton(buttonObject.GetComponent<Button>(), buttonOutput.Name, buttonOutput.Action, closePopupAction);
 
-				//now set the parent of the object
-				buttonObject.transform.SetParent(_buttonContainer.transform, false);
-				_buttonsGameObjects.Add(buttonObject);
+			        //now set the parent of the object
+			        buttonObject.transform.SetParent(_buttonContainer.transform, false);
+			        _buttonsGameObjects.Add(buttonObject);
+			    }
 			}
 		}
 

@@ -4,7 +4,6 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Unity.Client;
 
 namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 {

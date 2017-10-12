@@ -4,8 +4,6 @@ using System.Linq;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Players;
-using PlayGen.Photon.Unity.Client;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +31,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private GameObject _roomNameObject;
 		private Dictionary<int, Image> _playerVoiceIcons = new Dictionary<int, Image>();
 
-		private bool _ready;
 		private int _lobbyPlayerMax;
 		private Button _backButton;
 		private bool _bestFitTick;
@@ -67,8 +64,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnEnter()
 		{
-			_ready = false;
-
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += OnPlayersChanged;
 
 			SetRoomMax(Convert.ToInt32(_photonClient.CurrentRoom.RoomInfo.maxPlayers));
@@ -182,19 +177,19 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 					ColorUtility.TryParseHtmlString("#" + player.Colour, out color);
 				}
 
-				var glyphImage = playerItem.FindChild("Glyph").GetComponent<Image>();
+				var glyphImage = playerItem.Find("Glyph").GetComponent<Image>();
 				glyphImage.color = color;
 				glyphImage.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
 
-				var nameText = playerItem.FindChild("Name").GetComponent<Text>();
+				var nameText = playerItem.Find("Name").GetComponent<Text>();
 				nameText.text = player.Name;
 				nameText.color = color;
 
-				var readyText = playerItem.FindChild("Ready").GetComponent<Text>();
+				var readyText = playerItem.Find("Ready").GetComponent<Text>();
 				readyText.text = Localization.Get(player.State == (int)ITAlert.Photon.Players.ClientState.Ready ? "LOBBY_BUTTON_READY" : "LOBBY_LABEL_WAITING");
 				readyText.color = color;
 
-				var soundIcon = playerItem.FindChild("SoundIcon").GetComponent<Image>();
+				var soundIcon = playerItem.Find("SoundIcon").GetComponent<Image>();
 				soundIcon.color = color;
 				_playerVoiceIcons[player.PhotonId] = soundIcon;
 
