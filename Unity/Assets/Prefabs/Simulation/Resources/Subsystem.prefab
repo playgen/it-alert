@@ -534,7 +534,7 @@ MonoBehaviour:
   _memoryImage: {fileID: 114000010482817606}
   _cpu: {fileID: 1000010845451186}
   _memory: {fileID: 1000011774028848}
-  _sprite: {fileID: 0}
+  _sprite: {fileID: 114300050959162016}
   _glow: {fileID: 0}
   _blink: {fileID: 114285210407176144}
   _connectionSquare: {fileID: 1000010052614556}

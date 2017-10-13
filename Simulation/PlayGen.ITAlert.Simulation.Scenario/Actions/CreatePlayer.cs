@@ -26,6 +26,7 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Actions
 						Colour = colourHex,
 						StartingLocation = nodeConfig.Id,
 						Name = name,
+						Glyph = "star"
 					}
 				};
 				ecs.EnqueueCommand(createPlayerCommand);
