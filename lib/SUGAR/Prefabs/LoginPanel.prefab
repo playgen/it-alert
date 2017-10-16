@@ -850,9 +850,9 @@ MonoBehaviour:
   m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: REGISTER
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114252252257617746
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -933,7 +933,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: dc4ce7856d07d4e42ac9f491e0f062a5, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -977,9 +977,9 @@ MonoBehaviour:
   m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: PASSWORD
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114519457796189890
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1113,9 +1113,9 @@ MonoBehaviour:
   m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: SIGN_IN
   ToUpper: 0
-  LanguageOverride: 
 --- !u!114 &114817327251156750
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1160,9 +1160,9 @@ MonoBehaviour:
   m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LanguageOverride: 
   Key: USERNAME
   ToUpper: 0
-  LanguageOverride: 
 --- !u!222 &222000010040566640
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -1503,10 +1503,10 @@ RectTransform:
   m_Father: {fileID: 224000012523923728}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 391.44415, y: -26.99607}
+  m_SizeDelta: {x: 0, y: 53.99214}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224078014185312924
 RectTransform:
@@ -1558,10 +1558,10 @@ RectTransform:
   m_Father: {fileID: 224000012523923728}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 120.48139, y: -26.99607}
+  m_SizeDelta: {x: 0, y: 53.99214}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224979734043611896
 RectTransform:

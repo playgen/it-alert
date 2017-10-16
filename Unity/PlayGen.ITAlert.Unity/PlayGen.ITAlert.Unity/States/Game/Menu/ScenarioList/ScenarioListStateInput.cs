@@ -45,12 +45,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			// Join Game Popup
 			_scenarioPanel = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer");
 
-			_backButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/BackButtonContainer").GetComponent<Button>();
+			_backButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ButtonPanel/BackButtonContainer").GetComponent<Button>();
 
 			_scenarioSelectPanel = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected");
-			_selectedName = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Name").GetComponent<Text>();
-			_selectedDescription = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Description").GetComponent<Text>();
-			_selectButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/SelectButtonContainer").GetComponent<Button>();
+			_selectedName = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Name Border/Name").GetComponent<Text>();
+			_selectedDescription = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioSelected/Description Border/Description").GetComponent<Text>();
+			_selectButton = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ButtonPanel/SelectButtonContainer").GetComponent<Button>();
 
 			_scenarioListObject = GameObjectUtilities.FindGameObject("ScenarioContainer/ScenarioContainer/ScenarioListContainer/Viewport/Content");
 			_scenarioItemPrefab = Resources.Load("ScenarioItem") as GameObject;

@@ -12,7 +12,8 @@ TrueTypeFontImporter:
   fontName: SquareFont
   fontNames:
   - SquareFont
-  fallbackFontReferences: []
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: e3db470116eb74247a4525ac881ea499, type: 3}
   customCharacters: 
   fontRenderingMode: 0
   ascentCalculationMode: 1
