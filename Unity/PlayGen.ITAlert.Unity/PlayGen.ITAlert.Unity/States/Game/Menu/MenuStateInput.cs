@@ -107,10 +107,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 		protected override void OnEnter()
 		{
-			_photonClient.JoinedRoomEvent += OnJoinGameSuccess;
+		    OnTick(0f);
+            _photonClient.JoinedRoomEvent += OnJoinGameSuccess;
 			_mainMenuPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
-		}
+        }
 
 		protected override void OnExit()
 		{
