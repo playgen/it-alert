@@ -40,9 +40,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_language = _creator.Language(false, true, "SETTINGS_LABEL_LANGUAGE");
 			_resolution = _creator.Resolution(960, 540, null, false, true, "SETTINGS_LABEL_RESOLUTION");
 			_fullScreen = _creator.FullScreen(true, "SETTINGS_LABEL_FULLSCREEN");
+#if VOICE_SETTINGS
 			_creator.Custom<Text>("SETTINGS_LABEL_VOICE", true);
 
-#if VOICE_SETTINGS
 			_voiceEnabled = _creator.Custom<Toggle>("SETTINGS_LABEL_VOICE_ENABLED", true);
 			_voiceEnabled.onValueChanged.AddListener(OnVoiceEnabledChanged);
 			_voiceEnabled.isOn = VoiceSettings.Instance.Enabled;

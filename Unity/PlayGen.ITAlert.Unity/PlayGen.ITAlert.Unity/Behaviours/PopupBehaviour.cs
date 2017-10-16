@@ -86,7 +86,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void SetTitle(string title)
 		{
-			_title = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/TitleContainer/Title").GetComponent<Text>();
+			_title = GameObjectUtilities.Find("PopupContainer/PopupPanelContainer/Title").GetComponent<Text>();
 			_title.text = title;
 		}
 
