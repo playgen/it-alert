@@ -57,12 +57,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_receive.onValueChanged.AddListener(OnVoicePlaybakLevelChanged);
 			_receive.value = VoiceSettings.Instance.PlaybackLevel;
 #endif
-
-			var buttonLayout = _creator.HorizontalLayout("Buttons");
-			_cancel = _creator.Custom<Button>("SETTINGS_BUTTON_CANCEL", true);
-			_creator.AddToLayout(buttonLayout, _cancel);
-			_apply = _creator.Custom<Button>("SETTINGS_BUTTON_APPLY", true);
-			_creator.AddToLayout(buttonLayout, _apply);
+            _cancel = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/CancelButtonContainer").GetComponent<Button>();
+			_apply = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/ApplyButtonContainer").GetComponent<Button>();
 
 #if VOICE_SETTINGS
 			if (PlayerPrefs.HasKey("Voice Enabled"))
