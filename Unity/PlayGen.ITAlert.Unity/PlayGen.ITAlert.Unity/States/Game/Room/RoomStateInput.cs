@@ -140,7 +140,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				if (_playerVoiceItems.TryGetValue(status.Key, out var playerVoiceItem))
 				{
-					playerVoiceItem.VoiceIcon.enabled = status.Value;
+                    if (playerVoiceItem != null && playerVoiceItem.VoiceIcon != null)
+                    {
+                        playerVoiceItem.VoiceIcon.enabled = status.Value;
+                    }
 				}
 			}
 		}
