@@ -46,9 +46,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _sprite;
 
 		[SerializeField]
-		private Image _glow;
-
-		[SerializeField]
 		private BlinkBehaviour _blink;
 
 		[SerializeField]
