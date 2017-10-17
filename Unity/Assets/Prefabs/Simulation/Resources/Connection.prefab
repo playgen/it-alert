@@ -41,7 +41,7 @@ MonoBehaviour:
   m_Script: {fileID: -1241431896, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultAnimationRate: {x: -0.5, y: 0}
+  DefaultAnimationRate: {x: -0.7, y: 0}
   AnimationRate: {x: 0, y: 0}
   _image: {fileID: 114532947901074548}
 --- !u!114 &114532947901074548

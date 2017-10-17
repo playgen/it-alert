@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private TrailRenderer _trailRenderer;
 
 		[SerializeField]
-		private Light _light;
+		private Image _glow;
 
 		[SerializeField]
 		private Canvas _canvas;
@@ -81,7 +81,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
 			{
 				_image.color = _playerColor;
-				_light.color = _playerColor;
+			    _glow.color = _playerColor;
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);
 				_trailRenderer.sortingLayerName = _canvas.sortingLayerName;

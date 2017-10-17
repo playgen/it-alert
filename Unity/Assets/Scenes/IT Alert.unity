@@ -3295,7 +3295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 954414460}
-  SubsystemSpacing: {x: 192, y: 176}
+  SubsystemSpacing: {x: 192, y: 192}
 --- !u!1001 &1071533136
 Prefab:
   m_ObjectHideFlags: 0

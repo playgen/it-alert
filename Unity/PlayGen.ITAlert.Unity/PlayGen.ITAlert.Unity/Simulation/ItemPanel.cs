@@ -45,7 +45,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_itemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
 			    _itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(GameObject.transform.localPosition.x, GameObject.transform.localPosition.y, 0);
                 _itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = ((RectTransform)GameObject.transform).rect.size + new Vector2(2, 2);
-			    _itemEntity.GameObject.GetComponentsInChildren<Light>(true).First().areaSize = Vector2.one * 11;
                 _itemEntity.GameObject.AddComponent<ItemDragBehaviour>();
 				_itemEntity.GameObject.GetComponent<ItemDragBehaviour>().StartPosition(_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition, _director.GetComponentInChildren<Canvas>(true).transform);
 			    _itemEntity.GameObject.SetActive(false);

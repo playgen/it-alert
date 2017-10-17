@@ -203,7 +203,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			return new VisitorVectors()
 			{
 				Position = position,
-				Rotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, (transform.eulerAngles.y + 180) % 360),
+				Rotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, (transform.eulerAngles.z + 180) % 360)
 			};
 		}
 
