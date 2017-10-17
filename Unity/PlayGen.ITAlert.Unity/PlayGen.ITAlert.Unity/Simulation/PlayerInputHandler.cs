@@ -107,82 +107,97 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void OnClickSubsystem(RaycastResult subsystemHit, bool down)
 		{
-			var subsystem = subsystemHit.gameObject.GetComponentInParent<SubsystemBehaviour>();
-			if (down)
-			{
-				subsystem.OnClickDown();
-				_lastClicked.Add(subsystemHit);
-			}
-			else
-			{
-				var clickConfirm = subsystem.OnClickUp();
-				if (clickConfirm)
-				{
-					PlayerCommands.Move(subsystem.Id);
-				}
-			}
+			var subsystem = subsystemHit.gameObject.GetComponentsInParent<SubsystemBehaviour>(true).FirstOrDefault();
+            if (subsystem)
+            {
+                if (down)
+                {
+                    subsystem.OnClickDown();
+                    _lastClicked.Add(subsystemHit);
+                }
+                else
+                {
+                    var clickConfirm = subsystem.OnClickUp();
+                    if (clickConfirm)
+                    {
+                        PlayerCommands.Move(subsystem.Id);
+                    }
+                }
+            }
 		}
 
 		private void OnClickItemInContainer(RaycastResult itemHit, RaycastResult containerHit, bool down)
 		{
-			var item = itemHit.gameObject.GetComponentInParent<ItemBehaviour>();
-			var itemdrag = itemHit.gameObject.GetComponentInParent<ItemDragBehaviour>();
+			var item = itemHit.gameObject.GetComponentsInParent<ItemBehaviour>(true).FirstOrDefault();
+			var itemdrag = itemHit.gameObject.GetComponentsInParent<ItemDragBehaviour>(true).FirstOrDefault();
 			var container = containerHit.gameObject.GetComponent<ItemContainerBehaviour>();
-			if (down)
-			{
-				if (container.OnClickDown())
-				{
-					if (itemdrag?.OnClickDown(containerHit) ?? true)
-					{
-						_lastClicked.Add(itemHit);
-					}
-				}
-				_lastClicked.Add(containerHit);
-			}
-			else
-			{
-				if (itemdrag == null && _lastClicked.Any(d => d.gameObject.name.Equals(itemHit.gameObject.name)))
-				{
-					container.OnClickUp(item, container.ContainerIndex);
-				}
-				else if (itemdrag != null && itemdrag.OnClickUp(out var containerIndex, out var dragged))
-				{
-					container.OnClickUp(item, containerIndex, dragged);
-				}
-			}
+            if (container)
+            {
+                if (down)
+                {
+                    if (container.OnClickDown())
+                    {
+                        if (itemdrag?.OnClickDown(containerHit) ?? true)
+                        {
+                            _lastClicked.Add(itemHit);
+                        }
+                    }
+                    _lastClicked.Add(containerHit);
+                }
+                else
+                {
+                    if (item)
+                    {
+                        if (itemdrag == null && _lastClicked.Any(d => d.gameObject.name.Equals(itemHit.gameObject.name)))
+                        {
+                            container.OnClickUp(item, container.ContainerIndex);
+                        }
+                        else if (itemdrag != null && itemdrag.OnClickUp(out var containerIndex, out var dragged))
+                        {
+                            container.OnClickUp(item, containerIndex, dragged);
+                        }
+                    }
+                }
+            }
 		}
 
 		private void OnClickItemContainer(RaycastResult containerHit, bool down)
 		{
 			var container = containerHit.gameObject.GetComponent<ItemContainerBehaviour>();
-			if (down)
-			{
-				container.OnClickDown();
-				_lastClicked.Add(containerHit);
-			}
-			else
-			{
-				var itemsPreviouslyHit = _lastClicked.Where(d => d.gameObject.tag.Equals(Tags.Item)).ToArray();
+            if (container)
+            {
+                if (down)
+                {
+                    container.OnClickDown();
+                    _lastClicked.Add(containerHit);
+                }
+                else
+                {
+                    var itemsPreviouslyHit = _lastClicked.Where(d => d.gameObject.tag.Equals(Tags.Item)).ToArray();
 
-				if (itemsPreviouslyHit.Length == 1)
-				{
-					OnClickItemInContainer(itemsPreviouslyHit[0], containerHit, false);
-					return;
-				}
-				container.OnClickUp();
-			}
+                    if (itemsPreviouslyHit.Length == 1)
+                    {
+                        OnClickItemInContainer(itemsPreviouslyHit[0], containerHit, false);
+                        return;
+                    }
+                    container.OnClickUp();
+                }
+            }
 		}
 
 		private void SubsystemClickReset(RaycastResult subsystemHit)
 		{
-			var subsystem = subsystemHit.gameObject.GetComponentInParent<SubsystemBehaviour>();
-			//	// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
-			subsystem.ClickReset();
+			var subsystem = subsystemHit.gameObject.GetComponentsInParent<SubsystemBehaviour>(true).FirstOrDefault();
+            //	// Debug.Log(string.Format("mouse input: {0} bound: min {1}, max {2}", Camera.main.ScreenToWorldPoint(Input.mousePosition), _minDragBounds, _maxDragBounds));
+            if (subsystem)
+            {
+                subsystem.ClickReset();
+            }
 		}
 
 		private void ItemClickReset(RaycastResult itemHit)
 		{
-			var item = itemHit.gameObject.GetComponentInParent<ItemDragBehaviour>();
+			var item = itemHit.gameObject.GetComponentsInParent<ItemDragBehaviour>(true).FirstOrDefault();
 			item?.ClickReset();
 			item?.PositionReset();
 		}
