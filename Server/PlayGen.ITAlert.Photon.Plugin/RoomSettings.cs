@@ -8,11 +8,8 @@ namespace PlayGen.ITAlert.Photon.Plugin
 	{
 		public bool CloseOnStarted
 		{
-			get
-			{
-				return PhotonPlugin.PluginHost.GameProperties
-				  .ValueOrDefault<string, bool>(CustomRoomSettingKeys.CloseOnStarted);
-			}
+			get => PhotonPlugin.PluginHost.GameProperties
+								.ValueOrDefault<string, bool>(CustomRoomSettingKeys.CloseOnStarted);
 			set
 			{
 				if (OpenOnEnded != value)
@@ -24,10 +21,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 		public bool OpenOnEnded
 		{
-			get
-			{
-				return PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, bool>(CustomRoomSettingKeys.OpenOnEnded);
-			}
+			get => PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, bool>(CustomRoomSettingKeys.OpenOnEnded);
 			set
 			{
 				if (OpenOnEnded != value)
@@ -39,10 +33,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 		public string GameScenario
 		{
-			get
-			{
-				return PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, string>(CustomRoomSettingKeys.GameScenario);
-			}
+			get => PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, string>(CustomRoomSettingKeys.GameScenario);
 			set
 			{
 				if (GameScenario != value)
@@ -54,10 +45,7 @@ namespace PlayGen.ITAlert.Photon.Plugin
 
 		public string GameName
 		{
-			get
-			{
-				return PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, string>(CustomRoomSettingKeys.GameName);
-			}
+			get => PhotonPlugin.PluginHost.GameProperties.ValueOrDefault<string, string>(CustomRoomSettingKeys.GameName);
 			set
 			{
 				if (GameScenario != value)

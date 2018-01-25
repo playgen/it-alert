@@ -21,8 +21,8 @@ namespace PlayGen.Photon.Unity
 			else
 			{
 				_isSendingMessage = true;
-				Messenger.SendMessage(new LogMessage()
-				{
+				Messenger.SendMessage(new LogMessage
+										{
 					PlayerPhotonId = PlayerPhotonId,
 					LogLevel = logLevel,
 					Message = message

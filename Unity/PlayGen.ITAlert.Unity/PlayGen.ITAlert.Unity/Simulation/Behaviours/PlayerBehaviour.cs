@@ -28,8 +28,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Canvas _canvas;
 
-		private Vector3 _scale;
-
 		private PlayerBitMask _playerBitMask;
 
 		private PlayerColour _playerColour;

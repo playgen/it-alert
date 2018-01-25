@@ -43,8 +43,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, Input.mousePosition, _camera, out _dragPosition);
             _parent = transform.parent;
 			transform.SetParent(transform.parent.parent.parent.parent, false);
-            Vector2 newPosition;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out newPosition);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out var newPosition);
 		    transform.localPosition = newPosition - _dragPosition;
             transform.SetAsLastSibling();
 		}
@@ -53,8 +52,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		{
 			if (_beingDragged)
 			{
-			    Vector2 newPosition;
-			    RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out newPosition);
+				RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out var newPosition);
 			    transform.localPosition = newPosition - _dragPosition;
             }
 		}

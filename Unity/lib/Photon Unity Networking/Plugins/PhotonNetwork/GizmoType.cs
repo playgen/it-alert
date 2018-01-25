@@ -7,7 +7,7 @@ namespace ExitGames.Client.GUI
         WireSphere,
         Sphere,
         WireCube,
-        Cube,
+        Cube
     }
 
     public class GizmoTypeDrawer

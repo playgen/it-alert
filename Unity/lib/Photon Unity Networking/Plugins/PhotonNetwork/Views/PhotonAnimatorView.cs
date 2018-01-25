@@ -32,14 +32,14 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
         Float = 1,
         Int = 3,
         Bool = 4,
-        Trigger = 9,
+        Trigger = 9
     }
 
     public enum SynchronizeType
     {
         Disabled = 0,
         Discrete = 1,
-        Continuous = 2,
+        Continuous = 2
     }
 
     [System.Serializable]
@@ -94,7 +94,7 @@ public class PhotonAnimatorView : MonoBehaviour, IPunObservable
     /// Cached raised triggers that are set to be synchronized in discrete mode. since a Trigger only stay up for less than a frame,
     /// We need to cache it until the next discrete serialization call.
     /// </summary>
-    List<string> m_raisedDiscreteTriggersCache = new List<string>();
+	private List<string> m_raisedDiscreteTriggersCache = new List<string>();
 
     #endregion
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -48,8 +47,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void ProcessGameStateMessage(Message message)
 		{
-			var initializingMessage = message as InitializingMessage;
-			if (initializingMessage != null)
+			if (message is InitializingMessage initializingMessage)
 			{
 				var player = PlayerManager.Get(initializingMessage.PlayerPhotonId);
 				player.State = (int) ClientState.Initializing;
@@ -62,21 +60,19 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 						PlayerConfiguration = _simulationLifecycleManager.ECSRoot.GetPlayerConfiguration(),
 						SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
 						ScenarioName = RoomSettings.GameScenario,
-						InstanceId = _simulationLifecycleManager.ECSRoot.InstanceId,
+						InstanceId = _simulationLifecycleManager.ECSRoot.InstanceId
 					});
 				}
 				return;
 			}
 
-			var initializedMessage = message as InitializedMessage;
-			if (initializedMessage != null)
+			if (message is InitializedMessage initializedMessage)
 			{
 				var player = PlayerManager.Get(initializedMessage.PlayerPhotonId);
 				player.State = (int) ClientState.Initialized;
 				PlayerManager.UpdatePlayer(player);
 
 				OnPlayerInitialized(PlayerManager.Players);
-				return;
 			}
 		}
 

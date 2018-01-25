@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Photon.Players.Extensions;
+﻿using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.Photon.Players;
 
 namespace PlayGen.ITAlert.Photon.Players
@@ -18,12 +14,13 @@ namespace PlayGen.ITAlert.Photon.Players
 			}
 
 			var playerColour = Players.GetUnusedGlyph();
-			var player = new ITAlertPlayer() {
+			var player = new ITAlertPlayer
+							{
 				PhotonId = photonId,
 				ExternalId = externalId,
 				Name = name,
 				Glyph = playerColour.Glyph,
-				Colour = playerColour.Colour,
+				Colour = playerColour.Colour
 			};
 
 			_players[photonId] = player;

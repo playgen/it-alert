@@ -3,7 +3,6 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using PlayGen.Photon.Analytics;
-using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Plugin.Interfaces;
 using PlayGen.Photon.SUGAR;

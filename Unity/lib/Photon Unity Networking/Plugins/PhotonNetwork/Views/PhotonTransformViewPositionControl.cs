@@ -13,23 +13,28 @@ using System.Collections.Generic;
 
 public class PhotonTransformViewPositionControl 
 {
-    PhotonTransformViewPositionModel m_Model;
-    float m_CurrentSpeed;
-    double m_LastSerializeTime;
-    Vector3 m_SynchronizedSpeed = Vector3.zero;
-    float m_SynchronizedTurnSpeed = 0;
+	private PhotonTransformViewPositionModel m_Model;
 
-    Vector3 m_NetworkPosition;
-    Queue<Vector3> m_OldNetworkPositions = new Queue<Vector3>();
+	private float m_CurrentSpeed;
 
-    bool m_UpdatedPositionAfterOnSerialize = true;
+	private double m_LastSerializeTime;
+
+	private Vector3 m_SynchronizedSpeed = Vector3.zero;
+
+	private float m_SynchronizedTurnSpeed = 0;
+
+	private Vector3 m_NetworkPosition;
+
+	private Queue<Vector3> m_OldNetworkPositions = new Queue<Vector3>();
+
+	private bool m_UpdatedPositionAfterOnSerialize = true;
 
     public PhotonTransformViewPositionControl( PhotonTransformViewPositionModel model )
     {
         m_Model = model;
     }
 
-    Vector3 GetOldestStoredNetworkPosition()
+	private Vector3 GetOldestStoredNetworkPosition()
     {
         Vector3 oldPosition = m_NetworkPosition;
 
@@ -203,7 +208,7 @@ public class PhotonTransformViewPositionControl
         m_UpdatedPositionAfterOnSerialize = false;
     }
 
-    void SerializeData( Vector3 currentPosition, PhotonStream stream, PhotonMessageInfo info )
+	private void SerializeData( Vector3 currentPosition, PhotonStream stream, PhotonMessageInfo info )
     {
         stream.SendNext( currentPosition );
         m_NetworkPosition = currentPosition;
@@ -216,7 +221,7 @@ public class PhotonTransformViewPositionControl
         }
     }
 
-    void DeserializeData( PhotonStream stream, PhotonMessageInfo info )
+	private void DeserializeData( PhotonStream stream, PhotonMessageInfo info )
     {
         Vector3 readPosition = (Vector3)stream.ReceiveNext();
         if( m_Model.ExtrapolateOption == PhotonTransformViewPositionModel.ExtrapolateOptions.SynchronizeValues ||

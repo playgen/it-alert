@@ -1,6 +1,6 @@
 ﻿using GameWork.Core.States.Event;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.Photon.Players;
+
 using System.Collections.Generic;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 

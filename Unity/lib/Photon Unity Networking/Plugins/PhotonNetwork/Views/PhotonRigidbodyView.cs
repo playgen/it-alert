@@ -26,14 +26,14 @@ using UnityEngine;
 public class PhotonRigidbodyView : MonoBehaviour, IPunObservable
 {
     [SerializeField]
-    bool m_SynchronizeVelocity = true;
+	private bool m_SynchronizeVelocity = true;
 
     [SerializeField]
-    bool m_SynchronizeAngularVelocity = true;
+	private bool m_SynchronizeAngularVelocity = true;
 
-    Rigidbody m_Body;
+	private Rigidbody m_Body;
 
-    void Awake()
+	private void Awake()
     {
         this.m_Body = GetComponent<Rigidbody>();
     }

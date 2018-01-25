@@ -23,6 +23,6 @@
 
 		Feedback,
 
-		UiEvent,
+		UiEvent
 	}
 }

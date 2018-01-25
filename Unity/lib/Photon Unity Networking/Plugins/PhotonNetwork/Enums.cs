@@ -412,7 +412,7 @@ public enum PhotonNetworkingMessage
     /// EnableLobbyStatistics must be set to true, before this client connects.
     /// And the client has to be connected to the Master Server, which is providing the info about lobbies.
     /// </remarks>
-    OnLobbyStatisticsUpdate,
+    OnLobbyStatisticsUpdate
 }
 
 
@@ -529,7 +529,7 @@ public enum EncryptionMode
     /// <summary>
     /// With this encryption mode for UDP, the connection gets setup and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is skipped.
     /// </summary>
-    DatagramEncryption = 10,
+    DatagramEncryption = 10
 }
 
 

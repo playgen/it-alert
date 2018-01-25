@@ -2,14 +2,13 @@
 {
 	public class PlayerColour
 	{
-		public static string[] Glyphs = new[]
-		{
+		public static string[] Glyphs = {
 			"circle",
 			"cross",
 			"hexagon",
 			"square",
 			"triangle",
-			"star",
+			"star"
 		};
 
 		public string Colour { get; set; }

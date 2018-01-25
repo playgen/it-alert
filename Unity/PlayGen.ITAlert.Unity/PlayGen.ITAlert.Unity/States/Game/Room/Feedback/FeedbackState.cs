@@ -27,10 +27,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 
 		private void OnPlayerRankingsComplete(Dictionary<int, int[]> rankedPlayerPhotonIdBySection)
 		{
-			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayerFeedbackMessage()
-			{
+			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayerFeedbackMessage
+																{
 				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId,
-				RankedPlayerPhotonIdBySection = rankedPlayerPhotonIdBySection,
+				RankedPlayerPhotonIdBySection = rankedPlayerPhotonIdBySection
 			});
 		}
 	}

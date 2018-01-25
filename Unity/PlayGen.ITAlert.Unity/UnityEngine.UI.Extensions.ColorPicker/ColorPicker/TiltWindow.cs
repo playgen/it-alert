@@ -9,17 +9,19 @@ public class TiltWindow : MonoBehaviour
 {
 	public Vector2 range = new Vector2(5f, 3f);
 
-	Transform mTrans;
-	Quaternion mStart;
-	Vector2 mRot = Vector2.zero;
+	private Transform mTrans;
 
-	void Start ()
+	private Quaternion mStart;
+
+	private Vector2 mRot = Vector2.zero;
+
+	private void Start ()
 	{
 		mTrans = transform;
 		mStart = mTrans.localRotation;
 	}
 
-	void Update ()
+	private void Update ()
 	{
 		Vector3 pos = Input.mousePosition;
 

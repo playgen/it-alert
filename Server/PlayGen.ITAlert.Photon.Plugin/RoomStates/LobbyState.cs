@@ -4,7 +4,6 @@ using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.Commands;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Players.Extensions;
@@ -35,7 +34,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			
 			Messenger.SendAllMessage(new LobbyMessage
 			{
-				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId,
+				PlayerPhotonId = RoomControllerPlugin.ServerPlayerId
 			});
 
 			PlayerManager.ChangeAllState((int)ClientState.NotReady);
@@ -58,8 +57,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		private void ProcessGameCommandMessage(Message message)
 		{
-			var startGameMessage = message as StartGameMessage;
-			if (startGameMessage != null)
+			if (message is StartGameMessage startGameMessage)
 			{
 				TryStartGame(startGameMessage.Force);
 				return;

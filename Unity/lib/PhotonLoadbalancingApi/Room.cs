@@ -80,7 +80,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
 
                 if (value != this.isOpen)
                 {
-                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.IsOpen, value } });
+                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.IsOpen, value } });
                 }
 
                 this.isOpen = value;
@@ -112,7 +112,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
 
                 if (value != this.isVisible)
                 {
-                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.IsVisible, value } });
+                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.IsVisible, value } });
                 }
 
                 this.isVisible = value;
@@ -143,7 +143,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
 
                 if (value != this.maxPlayers)
                 {
-                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.MaxPlayers, value } });
+                    LoadBalancingClient.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.MaxPlayers, value } });
                 }
 
                 this.maxPlayers = value;
@@ -422,8 +422,8 @@ namespace ExitGames.Client.Photon.LoadBalancing
                 return false;
             }
 
-            Hashtable newProps = new Hashtable() { { GamePropertyKey.MasterClientId, masterClientPlayer.ID } };
-            Hashtable prevProps = new Hashtable() { { GamePropertyKey.MasterClientId, this.MasterClientId} };
+            Hashtable newProps = new Hashtable { { GamePropertyKey.MasterClientId, masterClientPlayer.ID } };
+            Hashtable prevProps = new Hashtable { { GamePropertyKey.MasterClientId, this.MasterClientId} };
             return this.LoadBalancingClient.OpSetPropertiesOfRoom(newProps, prevProps);
         }
 

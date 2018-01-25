@@ -20,7 +20,7 @@ public class PhotonTransformViewPositionModel
         EstimatedSpeed,
         SynchronizeValues,
         //MoveTowardsComplex,
-        Lerp,
+        Lerp
     }
 
     public enum ExtrapolateOptions
@@ -28,7 +28,7 @@ public class PhotonTransformViewPositionModel
         Disabled,
         SynchronizeValues,
         EstimateSpeedAndTurn,
-        FixedSpeed,
+        FixedSpeed
     }
 
     public bool SynchronizeEnabled;

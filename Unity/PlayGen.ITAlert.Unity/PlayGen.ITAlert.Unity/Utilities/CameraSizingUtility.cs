@@ -8,21 +8,13 @@ namespace PlayGen.ITAlert.Unity.Utilities
 		public Rect GameBounds;
 
 		private float _prevAspect;
-		private float _baseSize;
+
 		private Camera _cam;
 
 		private void Awake()
 		{
 			_cam = GetComponent<Camera>();
 			_prevAspect = BaseAspectRatio;
-			if (GameBounds.height * BaseAspectRatio > GameBounds.width)
-			{
-				_baseSize = GameBounds.height / BaseAspectRatio;
-			}
-			else
-			{
-				_baseSize = GameBounds.width / (BaseAspectRatio * 2);
-			}
 		}
 
 		private void Update()

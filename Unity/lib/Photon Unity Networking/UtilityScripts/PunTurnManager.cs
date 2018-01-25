@@ -120,12 +120,12 @@ public class PunTurnManager : PunBehaviour
 	/// <summary>
 	/// Register for Event Call from PhotonNetwork.
 	/// </summary>
-    void Start()
+	private void Start()
     {
         PhotonNetwork.OnEventCall = OnEvent;
     }
 
-	void Update()
+	private void Update()
 	{
 		if (Turn > 0 && this.IsOver && !_isOverCallProcessed)
 		{
@@ -168,7 +168,7 @@ public class PunTurnManager : PunBehaviour
         moveHt.Add("move", move);
 
         byte evCode = (finished) ? EvFinalMove : EvMove;
-        PhotonNetwork.RaiseEvent(evCode, moveHt, true, new RaiseEventOptions() { CachingOption = EventCaching.AddToRoomCache });
+        PhotonNetwork.RaiseEvent(evCode, moveHt, true, new RaiseEventOptions { CachingOption = EventCaching.AddToRoomCache });
         if (finished)
         {
             PhotonNetwork.player.SetFinishedTurn(Turn);

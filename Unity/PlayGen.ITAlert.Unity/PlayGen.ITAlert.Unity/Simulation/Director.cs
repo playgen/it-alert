@@ -89,12 +89,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		#region player
 
-		/// <summary>
-		/// the active player
-		/// </summary>
-		private PlayerBehaviour _activePlayer;
-
-		public PlayerBehaviour Player => _activePlayer;
+		public PlayerBehaviour Player { get; private set; }
 
 		public List<ITAlertPlayer> Players { get; private set; }
 		
@@ -139,7 +134,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			ThreadWorkerException = null;
 			
-			_activePlayer = null;
+			Player = null;
 			if (_trackedEntities == null)
 			{
 				_trackedEntities = new Dictionary<int, UIEntity>(DefaultntityCapacity);
@@ -212,7 +207,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				_updatethread = new Thread(ThreadWorker)
 				{
-					IsBackground = true,
+					IsBackground = true
 				};
 				_updatethread.Start();
 				return true;
@@ -252,8 +247,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				try
 				{
-					UIEntity uiEntity;
-					if (TryGetEntity(entityKvp.Key, out uiEntity))
+					if (TryGetEntity(entityKvp.Key, out var uiEntity))
 					{
 						uiEntity.EntityBehaviour.Initialize(entityKvp.Value, this);
 					}
@@ -280,14 +274,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 					var internalPlayer = SimulationRoot.Configuration.PlayerConfiguration.Single(pc => pc.ExternalId == player.PhotonId);
 
-					UIEntity playerUiEntity;
-					if (_trackedEntities.TryGetValue(internalPlayer.EntityId, out playerUiEntity))
+					if (_trackedEntities.TryGetValue(internalPlayer.EntityId, out var playerUiEntity))
 					{
 						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
 						if (player.PhotonId == playerServerId)
 						{
 							LogProxy.Info($"Selected active player with id {playerServerId}: entity {playerBehaviour.Entity.Id}");
-							_activePlayer = playerBehaviour;
+							Player = playerBehaviour;
 							playerUiEntity.GameObject.GetComponent<Canvas>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 							playerUiEntity.GameObject.GetComponent<TrailRenderer>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 							if (player.ExternalId.HasValue)
@@ -306,7 +299,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					throw new SimulationIntegrationException($"Error mapping photon player '{playerServerId}' to simulation", ex);
 				}
 			}
-			if (_activePlayer == null)
+			if (Player == null)
 			{
 				throw new SimulationIntegrationException($"Error mapping actiove photon player '{playerServerId}'");
 			}
@@ -366,8 +359,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 
 							// TODO: this should probably be pushed into the ECS
-							ICommandSystem commandSystem;
-							if (SimulationRoot.ECS.TryGetSystem(out commandSystem) == false)
+							if (SimulationRoot.ECS.TryGetSystem(out ICommandSystem commandSystem) == false)
 							{
 								throw new SimulationIntegrationException("Could not locate command processing system");
 							}
@@ -505,8 +497,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							return;
 						}
 
-						UIEntity uiEntity;
-						if (TryGetEntity(entity.Key, out uiEntity))
+						if (TryGetEntity(entity.Key, out var uiEntity))
 						{
 							uiEntity.UpdateEntityState();
 						}

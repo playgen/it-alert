@@ -219,7 +219,7 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
     }
 
     // give user a chance to change MicrophoneDevice in Awake()
-    void Start()
+	private void Start()
     {
         if (Microphone.devices.Length < 1)
         {
@@ -262,7 +262,7 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
         }
     }
 
-    void OnDestroy()
+	private void OnDestroy()
     {
         if (this.voice != Voice.LocalVoice.Dummy) // photonView.isMine does not work
         {
@@ -270,13 +270,13 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
         }
     }
 
-    void OnEnable()
+	private void OnEnable()
     {
         Application.RequestUserAuthorization(UserAuthorization.Microphone);
     }
 
     // message sent by Voice client
-    void OnJoinedVoiceRoom()
+	private void OnJoinedVoiceRoom()
     {
         if (photonView.isMine)
         {

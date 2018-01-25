@@ -121,7 +121,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
         /// <summary>OnOperationResponse: Operation that's (currently) not available for this client (not authorized usually). Only tracked for op Authenticate.</summary>
         OperationNotAllowedInCurrentState,
         /// <summary>OnOperationResponse: Authenticate in the Photon Cloud with invalid client values or custom authentication setup in Cloud Dashboard.</summary>
-        CustomAuthenticationFailed,
+        CustomAuthenticationFailed
     }
 
     /// <summary>Available server (types) for internally used field: server.</summary>
@@ -148,7 +148,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
         /// <summary>
         /// With this encryption mode for UDP, the connection gets setup and all further datagrams get encrypted almost entirely. On-demand message encryption (like in PayloadEncryption) is skipped.
         /// </summary>
-        DatagramEncryption = 10,
+        DatagramEncryption = 10
     }
 
 
@@ -236,7 +236,7 @@ using Hashtable = ExitGames.Client.Photon.Hashtable;
         public string NameServerHttp = "http://ns.exitgames.com:80/photon/n";
 
         /// <summary>Name Server port per protocol (the UDP port is different than TCP, etc).</summary>
-        private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>() { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
+        private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int> { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
 
         /// <summary>Name Server Address for Photon Cloud (based on current protocol). You can use the default values and usually won't have to set this value.</summary>
         public string NameServerAddress { get { return this.GetNameServerAddress(); } }

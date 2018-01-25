@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using PlayGen.ITAlert.Simulation.Commands;
-using PlayGen.ITAlert.Simulation.Systems.Initialization;
-using PlayGen.ITAlert.Simulation.Systems.Players;
+﻿using PlayGen.ITAlert.Simulation.Commands;
 
 namespace PlayGen.ITAlert.Photon.Plugin
 {
@@ -12,9 +6,9 @@ namespace PlayGen.ITAlert.Photon.Plugin
 	{
 		public static void PlayerDisconnected(this Simulation.Simulation simulation, int photonPlayerId)
 		{
-			simulation.EnqueueCommand(new PlayerDisconnectedCommand()
-			{
-				PlayerExternalId = photonPlayerId,
+			simulation.EnqueueCommand(new PlayerDisconnectedCommand
+										{
+				PlayerExternalId = photonPlayerId
 			});
 
 		}

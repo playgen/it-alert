@@ -102,7 +102,7 @@ public static class TeamExtensions
         PunTeams.Team currentTeam = PhotonNetwork.player.GetTeam();
         if (currentTeam != team)
         {
-            PhotonNetwork.player.SetCustomProperties(new Hashtable() {{PunTeams.TeamPlayerProp, (byte) team}});
+            PhotonNetwork.player.SetCustomProperties(new Hashtable {{PunTeams.TeamPlayerProp, (byte) team}});
         }
     }
 }

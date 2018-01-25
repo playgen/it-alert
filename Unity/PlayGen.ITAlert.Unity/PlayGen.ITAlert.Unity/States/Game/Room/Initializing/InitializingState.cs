@@ -42,8 +42,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 			LogProxy.Info("InitializingState OnEnter");
 
 			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.SimulationState, ProcessSimulationStateMessage);
-			_photonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage()
-			{
+			_photonClient.CurrentRoom.Messenger.SendMessage(new InitializingMessage
+																{
 				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 			});
             PlayGen.Unity.Utilities.Loading.Loading.Start();
@@ -57,15 +57,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 		
 		private void ProcessSimulationStateMessage(Message message)
 		{
-			var initializedMessage = message as ITAlert.Photon.Messages.Simulation.States.InitializedMessage;
-			if (initializedMessage != null)
+			if (message is ITAlert.Photon.Messages.Simulation.States.InitializedMessage initializedMessage)
 			{
 				LogProxy.Info("InitializingState: Received InitializedMessage");
 
-				SimulationScenario scenario;
 				if (string.IsNullOrEmpty(initializedMessage.PlayerConfiguration) 
 					|| string.IsNullOrEmpty(initializedMessage.ScenarioName)
-					|| _scenarioLoader.TryGetScenario(initializedMessage.ScenarioName, out scenario) == false)
+					|| _scenarioLoader.TryGetScenario(initializedMessage.ScenarioName, out var scenario) == false)
 				{
 					throw new InvalidOperationException("Received invalid InitializedMessage.");
 				}
@@ -77,8 +75,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 					var simulationRoot = SimulationInstaller.CreateSimulationRoot(scenario);
 					if (_director.Initialize(simulationRoot, _photonClient.CurrentRoom.Player.PhotonId, _photonClient.CurrentRoom.Players))
 					{
-						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage()
-						{
+						_photonClient.CurrentRoom.Messenger.SendMessage(new InitializedMessage
+																			{
 							PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 						});
 					}

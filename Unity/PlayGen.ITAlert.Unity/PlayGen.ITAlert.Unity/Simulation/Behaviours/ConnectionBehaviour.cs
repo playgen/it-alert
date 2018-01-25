@@ -16,9 +16,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Color[] _weightColors = {
 		};
 
-		private Vector2 _headPos;
-		private Vector2 _tailPos;
-
 		public Vector Position;
 
 		[SerializeField]
@@ -106,8 +103,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			transform.eulerAngles = new Vector3(0, 0, _angle);
 
 			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.Find("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
-			_headPos = ScaleEndPoint(headPos, connectionSquareSize / 2);
-			_tailPos = ScaleEndPoint(tailPos, connectionSquareSize / 2);
+			ScaleEndPoint(headPos, connectionSquareSize / 2);
+			ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
 			//LogProxy.Info($"Connection {gameObject.name}, angle: {_angle}, head: {_headPos.x},{_headPos.y}, tail {_tailPos.x},{_tailPos.y}");
 			//scale and position the connection accordingly
@@ -141,7 +138,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		}
 
-		private Vector2 ScaleEndPoint(Vector2 point, float scaleDelta)
+		private void ScaleEndPoint(Vector2 point, float scaleDelta)
 		{
 			if (point.x > transform.localPosition.x)
 			{
@@ -160,7 +157,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				point.y += scaleDelta;
 
 			}
-			return point;
 		}
 
 		#endregion
@@ -200,8 +196,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			var halfWidth = _rectTransform.rect.width / 2;
 			var position = Vector2.Lerp(new Vector2(-1 * halfWidth, 0), new Vector2(halfWidth, 0), (float) pathPoint/_length);
-			return new VisitorVectors()
-			{
+			return new VisitorVectors
+						{
 				Position = position,
 				Rotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, (transform.eulerAngles.z + 180) % 360)
 			};

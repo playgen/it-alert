@@ -17,8 +17,8 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	public class ScenarioController : ICommandAction
 	{
 		private readonly ITAlertPhotonClient _photonClient;
-		private ScenarioInfo _selectedScenario;
-		public ScenarioInfo SelectedScenario => _selectedScenario;
+
+		public ScenarioInfo SelectedScenario { get; private set; }
 
 		public event Action ScenarioSelectedSuccessEvent;
 		public event Action QuickMatchSuccessEvent;
@@ -78,7 +78,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 
 		public void SelectScenario(ScenarioInfo scenario)
 		{
-			_selectedScenario = scenario;
+			SelectedScenario = scenario;
 			if (_quickMatch)
 			{
 				QuickMatch();
@@ -93,11 +93,11 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			var roomSettings = new CreateRoomSettings {
 				Name = $"QUICK-{Guid.NewGuid().ToString().Substring(0, 4)}",
-				MinPlayers = _selectedScenario.MinPlayerCount,
-				MaxPlayers = _selectedScenario.MaxPlayerCount,
+				MinPlayers = SelectedScenario.MinPlayerCount,
+				MaxPlayers = SelectedScenario.MaxPlayerCount,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
-				GameScenario = _selectedScenario.Key
+				GameScenario = SelectedScenario.Key
 			};
 			var rooms = _photonClient.ListRooms(ListRoomsFilters.Open);
 			rooms = rooms.Where(r => (string)r.customProperties[CustomRoomSettingKeys.GameScenario] == roomSettings.GameScenario).ToArray();

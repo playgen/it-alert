@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PlayGen.Photon.Players;
 
 namespace PlayGen.ITAlert.Photon.Players.Extensions
 {
@@ -12,10 +11,10 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 		public static PlayerColour GetUnusedGlyph(this IEnumerable<ITAlertPlayer> players)
 		{
 			var usedGlyphs = players.Select(p => p.Glyph);
-			var playerColour = new PlayerColour()
-			{
+			var playerColour = new PlayerColour
+									{
 				Glyph = PlayerColour.Glyphs.Except(usedGlyphs).First(),
-				Colour = ConvertHueToRgb(Random.Next(0, 6)),
+				Colour = ConvertHueToRgb(Random.Next(0, 6))
 			};
 
 			return playerColour;
@@ -23,17 +22,14 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 
 		public static string ConvertHueToRgb(double h)
 		{
-			double r = 0, g = 0, b = 0;
+			double r, g, b;
 
-			int i;
-			double f, p, q, t;
+			var i = (int)(h);
+			var f = h - i;
 
-			i = (int)(h);
-			f = h - i;
-
-			p = 0;
-			q = (1.0 - (1 * f));
-			t = (1.0 - (1 * (1.0f - f)));
+			double p = 0;
+			var q = (1.0 - (1 * f));
+			var t = (1.0 - (1 * (1.0f - f)));
 
 			switch (i)
 			{

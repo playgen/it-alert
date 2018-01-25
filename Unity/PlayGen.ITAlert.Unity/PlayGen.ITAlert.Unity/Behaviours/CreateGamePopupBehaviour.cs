@@ -21,7 +21,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private int _playerCount = 2;
 
-		void Awake()
+		private void Awake()
 		{
 			PlayerNumberInputField.text = _playerCount.ToString();
 
@@ -38,9 +38,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void OnChangePlayerCount(string value)
 		{
-			int playerCount;
-
-			if (Int32.TryParse(value, out playerCount))
+			if (int.TryParse(value, out var playerCount))
 			{
 				_playerCount = Math.Max(_minPlayers, Math.Min(playerCount, _maxPlayers));
 			}
@@ -78,7 +76,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			}
 		}
 
-		void Update()
+		private void Update()
 		{
 			if (EventSystem.current.currentSelectedGameObject == PlayerNumberInputField.gameObject)
 			{

@@ -22,7 +22,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			new Vector2(-59, 31.5f),
 			new Vector2(59, 31.5f),
 			new Vector2(-59, -31.5f),
-			new Vector2(59, -31.5f),
+			new Vector2(59, -31.5f)
 		};
 
 		#region game elements
@@ -253,9 +253,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			ForEachItemContainer((i, itemContainer) =>
 			{
-				UIEntity item;
 				if (itemContainer.Item != null
-					&& Director.TryGetEntity(itemContainer.Item.Value, out item))
+					&& Director.TryGetEntity(itemContainer.Item.Value, out var item))
 				{
 					item.GameObject.transform.SetParent(transform, false);
 					SetItemPosition(i, item.GameObject);
@@ -310,37 +309,37 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			// TOP
 			if (offsetPositionAlong < squarePermimiterSideScale)
 			{
-				return new VisitorVectors()
-				{
+				return new VisitorVectors
+							{
 					Position = new Vector2((localPositionAlong) - halfSide, halfSide),
-					Rotation = new Vector3(0, 0, 180),
+					Rotation = new Vector3(0, 0, 180)
 				};
 			}
 			// RIGHT
 			if (offsetPositionAlong < 2 * squarePermimiterSideScale)
 			{
-				return new VisitorVectors()
-				{
+				return new VisitorVectors
+							{
 					Position = new Vector2(halfSide, (localPositionAlong - halfSide) * -1),
-					Rotation = new Vector3(0, 0, 90),
+					Rotation = new Vector3(0, 0, 90)
 				};
 			}
 			// BOTTOM
 			if (offsetPositionAlong < 3 * squarePermimiterSideScale)
 			{
-				return new VisitorVectors()
-				{
+				return new VisitorVectors
+							{
 					Position = new Vector2(halfSide - (localPositionAlong), -halfSide),
-					Rotation = new Vector3(0, 0, 0),
+					Rotation = new Vector3(0, 0, 0)
 				};
 			}
 			// LEFT
 			if (offsetPositionAlong < 4 * squarePermimiterSideScale)
 			{
-				return new VisitorVectors()
-				{
+				return new VisitorVectors
+							{
 					Position = new Vector2(-halfSide, (halfSide - localPositionAlong) * -1),
-					Rotation = new Vector3(0, 0, 270),
+					Rotation = new Vector3(0, 0, 270)
 				};
 			}
 			throw new Exception("Subsystem movement has exceeded bounds: this should never be hit.");

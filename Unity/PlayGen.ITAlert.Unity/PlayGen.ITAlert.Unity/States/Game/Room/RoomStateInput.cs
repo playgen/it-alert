@@ -97,12 +97,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
-					playerVoiceItem = new PlayerVoiceItem()
-					{
+					playerVoiceItem = new PlayerVoiceItem
+										{
 						GameObject = playerItem,
 						VoiceIcon = soundIcon,
 						PlayerGlyph = playerGlyph,
-						NameText = nameText,
+						NameText = nameText
 					};
 
 					_playerVoiceItems.Add(player.PhotonId, playerVoiceItem);

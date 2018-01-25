@@ -19,17 +19,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private float _animationProgress;
 
 		// Use this for initialization
-		void Start()
+		private void Start()
 		{
 		}
 
-		void Awake()
+		private void Awake()
 		{
 
 		}
 
 		// Update is called once per frame
-		void Update () {
+		private void Update () {
 			if (_animationProgress < 1)
 			{
 				_animationProgress += Time.deltaTime;
@@ -38,7 +38,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		void OnEnable()
+		private void OnEnable()
 		{
 			_bigVirus.transform.position = InitialOffset;
 			_animationProgress = 0;

@@ -64,7 +64,7 @@ public class PhotonVoiceSettings : MonoBehaviour
     }
 
     // for settings put in scene in editor
-    void Awake()
+	private void Awake()
     {
         lock (instanceLock)
         {

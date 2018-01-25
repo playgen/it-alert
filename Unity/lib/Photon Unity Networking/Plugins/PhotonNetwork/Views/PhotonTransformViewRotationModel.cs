@@ -16,7 +16,7 @@ public class PhotonTransformViewRotationModel
     {
         Disabled,
         RotateTowards,
-        Lerp,
+        Lerp
     }
 
     public bool SynchronizeEnabled;

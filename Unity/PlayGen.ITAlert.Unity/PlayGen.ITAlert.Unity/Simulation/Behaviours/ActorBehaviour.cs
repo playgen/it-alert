@@ -55,10 +55,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnInitialize()
 		{
-			CurrentLocation currentLocation;
-			VisitorPosition visitorPosition;
-			if (Entity.TryGetComponent(out currentLocation)
-				&& Entity.TryGetComponent(out visitorPosition))
+			if (Entity.TryGetComponent(out CurrentLocation currentLocation)
+				&& Entity.TryGetComponent(out VisitorPosition visitorPosition))
 			{
 				CurrentLocation = currentLocation;
 				VisitorPosition = visitorPosition;

@@ -11,7 +11,7 @@ namespace UnityEngine.UI.Extensions.ColorPicker
         public GameObject[] presets;
         public Image createPresetImage;
 
-        void Awake()
+		private void Awake()
         {
             //		picker.onHSVChanged.AddListener(HSVChanged);
             picker.onValueChanged.AddListener(ColorChanged);

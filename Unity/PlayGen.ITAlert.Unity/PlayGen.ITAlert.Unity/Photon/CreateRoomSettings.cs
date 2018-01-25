@@ -23,7 +23,7 @@ namespace PlayGen.ITAlert.Unity.Photon
 		public string[] CustomRoomPropertiesForLobby = 
 		{
 			CustomRoomSettingKeys.MinPlayers,
-			CustomRoomSettingKeys.GameScenario,
+			CustomRoomSettingKeys.GameScenario
 		};
 
 		public Hashtable CustomPropertiesToHashtable()
@@ -34,7 +34,7 @@ namespace PlayGen.ITAlert.Unity.Photon
 				{ CustomRoomSettingKeys.CloseOnStarted, CloseOnStarted },
 				{ CustomRoomSettingKeys.OpenOnEnded, OpenOnEnded },
 				{ CustomRoomSettingKeys.GameScenario, GameScenario },
-				{ CustomRoomSettingKeys.GameName, Name },
+				{ CustomRoomSettingKeys.GameName, Name }
 			};
 		}
 	}
