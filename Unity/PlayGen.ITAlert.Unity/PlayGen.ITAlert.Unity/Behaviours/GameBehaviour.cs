@@ -61,7 +61,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 				{
 					if (Input.GetKeyDown(KeyCode.Insert))
 					{
-						Application.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
+						ScreenCapture.CaptureScreenshot(System.DateTime.UtcNow.ToFileTimeUtc() + ".png");
 					}
 				}
 			}

@@ -41,11 +41,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public static void DropItem(int itemId, int containerIndex)
 		{
 			Log($"Request PickupItem item: {itemId}");
-			var pickupItemCommand = new DropItemCommand()
-			{
+			var pickupItemCommand = new DropItemCommand
+										{
 				PlayerId = Director.Player.Id,
 				ItemId = itemId,
-				ContainerId = containerIndex,
+				ContainerId = containerIndex
 			};
 			IssueCommand(pickupItemCommand);
 		}
@@ -53,13 +53,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public static void MoveItem(int itemId, int sourceContainerIndex, int destinationContainerIndex)
 		{
 			Log($"Request MoveItem item: {itemId}");
-			var moveItemCommand = new MoveItemCommand()
-			{
+			var moveItemCommand = new MoveItemCommand
+									{
 				PlayerId = Director.Player.Id,
 				ItemId = itemId,
 				SourceContainerId = sourceContainerIndex,
 				DestinationContainerId = destinationContainerIndex,
-				SystemEntityId = Director.Player.CurrentLocationEntity.Id,
+				SystemEntityId = Director.Player.CurrentLocationEntity.Id
 			};
 			IssueCommand(moveItemCommand);
 		}
@@ -76,10 +76,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			Log($"Request Move to subsystem: {subsystemId}");
 
-			var requestMovePlayerCommand = new SetActorDestinationCommand()
-			{
+			var requestMovePlayerCommand = new SetActorDestinationCommand
+												{
 				PlayerEntityId = Director.Player.Id,
-				DestinationEntityId = subsystemId,
+				DestinationEntityId = subsystemId
 			};
 			IssueCommand(requestMovePlayerCommand);
 
@@ -90,8 +90,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			Log($"Request Activate item: {itemId}");
 
-			var activateItemCommand = new ActivateItemCommand()
-			{
+			var activateItemCommand = new ActivateItemCommand
+										{
 				PlayerId = Director.Player.Id,
 				ItemId = itemId
 			};
@@ -107,8 +107,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private static void IssueCommand(ICommand command)
 		{
-			PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage()
-			{
+			PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage
+																{
 				Command = command
 			});
 		}
@@ -137,7 +137,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								SubsystemId = Director.Player.CurrentLocationEntity.Id,
 								SubsystemItemId = subsystemItemid,
 								ContainerId = subsystemContainerId,
-								InventoryItemId = inventoryItemId,
+								InventoryItemId = inventoryItemId
 							};
 			IssueCommand(command);
 		}

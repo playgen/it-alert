@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameWork.Core.Commands.Interfaces;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Commands;
@@ -43,18 +42,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnTick(float deltaTime)
 		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
+			if (CommandQueue.TryTakeFirstCommand(out var command))
 			{
-				var leaveCommand = command as LeaveRoomCommand;
-				if (leaveCommand != null)
+				if (command is LeaveRoomCommand leaveCommand)
 				{
 					leaveCommand.Execute(_controller);
 					return;
 				}
 
-				var readyCommand = command as ReadyPlayerCommand;
-				if (readyCommand != null)
+				if (command is ReadyPlayerCommand readyCommand)
 				{
 					readyCommand.Execute(_controller);
 					return;

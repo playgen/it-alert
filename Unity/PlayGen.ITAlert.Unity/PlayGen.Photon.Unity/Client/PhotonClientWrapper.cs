@@ -183,8 +183,8 @@ namespace PlayGen.Photon.Unity.Client
 			}
 
 			PhotonNetwork.CreateRoom(roomName,
-				new RoomOptions()
-				{
+				new RoomOptions
+					{
 					Plugins = new string[] {_gamePlugin},
 					MaxPlayers = (byte) maxPlayers,
 					CustomRoomProperties = customRoomProperties,
@@ -356,9 +356,9 @@ namespace PlayGen.Photon.Unity.Client
 				return;
 			}
 
-			PhotonNetwork.RaiseEvent(eventCode, eventContext, true, new RaiseEventOptions()
-			{
-				TargetActors = new int[] {0},
+			PhotonNetwork.RaiseEvent(eventCode, eventContext, true, new RaiseEventOptions
+																		{
+				TargetActors = new int[] {0}
 			});
 		}
 

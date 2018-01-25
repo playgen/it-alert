@@ -15,9 +15,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		[SerializeField]
 		private Image _image;
 
-		Vector2 uvOffset = Vector2.zero;
+		private Vector2 uvOffset = Vector2.zero;
 
-		void Awake()
+		private void Awake()
 		{
 			AnimationRate = DefaultAnimationRate;
 
@@ -25,7 +25,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_image.material = material;
 		}
 
-		void LateUpdate()
+		private void LateUpdate()
 		{
 			uvOffset += ((float)SimulationConstants.PlayerSpeed *  AnimationRate * Time.deltaTime);
 			if (_image.enabled)

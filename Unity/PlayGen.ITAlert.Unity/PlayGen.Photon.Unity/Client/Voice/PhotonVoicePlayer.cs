@@ -31,7 +31,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 			VoiceClient.UnregisterVoicePlayer(_photonView.ownerId);
 		}
 
-		void Update()
+		private void Update()
 		{
 			IsRecording = _photonVoiceRecorder != null && _photonVoiceRecorder.IsTransmitting
 						  && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;

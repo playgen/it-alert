@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-using PlayGen.ITAlert.Simulation.Common;
+﻿using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
@@ -56,9 +54,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			{
 				ContainerBehaviour.TryUpdate(ItemContainer);
 
-				UIEntity item;
 				if (ItemContainer?.Item != null
-					&& _director.TryGetEntity(ItemContainer.Item.Value, out item))
+					&& _director.TryGetEntity(ItemContainer.Item.Value, out var item))
 				{
 					var itemBehaviour = (ItemBehaviour)_itemEntity.EntityBehaviour;
 					if (_itemEntity.GameObject.activeSelf == false)
@@ -97,8 +94,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private ItemPanelContainer _inventoryItem;
 
 		private ItemPanelContainer[] _systemItems;
-		
-		private int _playerLocationLast = -1;
 
 		[SerializeField]
 		private Director _director;
@@ -108,8 +103,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_systemItems = new ItemPanelContainer[ItemCount];
 
 			// get player entity item storage component
-			ItemStorage itemStorage;
-			if (_director.Player.Entity.TryGetComponent(out itemStorage) == false)
+			if (_director.Player.Entity.TryGetComponent(out ItemStorage itemStorage) == false)
 			{
 				throw new SimulationIntegrationException("No item storage found on player");
 			}
@@ -145,8 +139,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 
 			// TODO: the following shouldnt be necessary when the container reference isnt changed
-			ItemStorage itemStorage;
-			if (_director.Player.Entity.TryGetComponent(out itemStorage))
+			if (_director.Player.Entity.TryGetComponent(out ItemStorage itemStorage))
 			{
 				var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
 				_inventoryItem.ItemContainer = inventoryItemContainer;

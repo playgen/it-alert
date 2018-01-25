@@ -21,6 +21,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Image _foregroundSprite;
 
 		[SerializeField]
+		private Text _foregroundText;
+
+		[SerializeField]
 		private Image _midgroundSprite;
 
 		[SerializeField]
@@ -132,8 +135,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if ((_owner?.Value.HasValue ?? false)
                 && _activation.ActivationState == ActivationState.Active)
 			{
-				UIEntity owner;
-				if (Director.TryGetEntity(_owner.Value.Value, out owner))
+				if (Director.TryGetEntity(_owner.Value.Value, out var owner))
 				{
 					var playerColour = ((PlayerBehaviour)owner.EntityBehaviour).PlayerColor;
 					_activationTimerImage.color = playerColour;
@@ -172,6 +174,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (_consumableActivation != null)
 				{
 					_midgroundSprite.fillAmount = (float)_consumableActivation.ActivationsRemaining / _consumableActivation.TotalActivations;
+					_foregroundText.text = _consumableActivation.ActivationsRemaining > 0 ? _consumableActivation.ActivationsRemaining.ToString() : string.Empty;
 				}
 			}
 		}

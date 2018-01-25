@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using Engine.Events;
-using Engine.Lifecycle;
+
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Players;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Feedback;
 using Photon.Hive.Plugin;
@@ -56,8 +55,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void ProcessFeedbackMessage(Message message)
 		{
-			var feedbackMessage = message as PlayerFeedbackMessage;
-			if (feedbackMessage != null)
+			if (message is PlayerFeedbackMessage feedbackMessage)
 			{
 				var player = PlayerManager.Get(feedbackMessage.PlayerPhotonId);
 				player.State = (int) ClientState.FeedbackSent;
@@ -67,16 +65,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				{
 					foreach (var feedbackPlayer in feedbackMessage.RankedPlayerPhotonIdBySection)
 					{
-						var feedbackEvent = new PlayerFeedbackEvent() {
+						var feedbackEvent = new PlayerFeedbackEvent
+												{
 							PlayerExternalId = feedbackMessage.PlayerPhotonId,
 							RankedPlayerExternalId = feedbackPlayer.Key,
-							PlayerRankings = feedbackPlayer.Value,
+							PlayerRankings = feedbackPlayer.Value
 						};
 						evenTsystem.Publish(feedbackEvent);
 					}
 				}
 
-				PlayerFeedbackSentEvent(PlayerManager.Players);
+				PlayerFeedbackSentEvent?.Invoke(PlayerManager.Players);
 				return;
 			}
 

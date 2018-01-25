@@ -58,7 +58,7 @@ public class Room : RoomInfo
 
             if (value != this.openField && !PhotonNetwork.offlineMode)
             {
-                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.IsOpen, value } }, expectedProperties: null, webForward: false);
+                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.IsOpen, value } }, expectedProperties: null, webForward: false);
             }
 
             this.openField = value;
@@ -86,7 +86,7 @@ public class Room : RoomInfo
 
             if (value != this.visibleField && !PhotonNetwork.offlineMode)
             {
-                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.IsVisible, value } }, expectedProperties: null, webForward: false);
+                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.IsVisible, value } }, expectedProperties: null, webForward: false);
             }
 
             this.visibleField = value;
@@ -136,7 +136,7 @@ public class Room : RoomInfo
 
             if (value != this.maxPlayersField && !PhotonNetwork.offlineMode)
             {
-                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable() { { GamePropertyKey.MaxPlayers, (byte)value } }, expectedProperties: null, webForward: false);
+                PhotonNetwork.networkingPeer.OpSetPropertiesOfRoom(new Hashtable { { GamePropertyKey.MaxPlayers, (byte)value } }, expectedProperties: null, webForward: false);
             }
 
             this.maxPlayersField = (byte)value;

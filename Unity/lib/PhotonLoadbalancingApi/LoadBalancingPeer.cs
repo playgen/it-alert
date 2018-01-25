@@ -1282,7 +1282,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
         JoinOrRejoin = 2,
 
         /// <summary>Only re-join will be allowed. If the user is not yet in the room, this will fail.</summary>
-        RejoinOnly = 3,
+        RejoinOnly = 3
     }
 
     /// <summary>
@@ -1316,7 +1316,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
 
         /// <summary>The server sends this event only to the actor with the lowest actorNumber.</summary>
         /// <remarks>The "master client" does not have special rights but is the one who is in this room the longest time.</remarks>
-        MasterClient = 2,
+        MasterClient = 2
     }
 
     /// <summary>
@@ -1366,7 +1366,7 @@ namespace ExitGames.Client.Photon.LoadBalancing
         SlicePurgeIndex = 12,
 
         /// <summary>Purge cache slices with specified index and anything lower than that. You must set RaiseEventOptions.CacheSliceIndex for this.</summary>
-        SlicePurgeUpToIndex = 13,
+        SlicePurgeUpToIndex = 13
     }
 
     /// <summary>

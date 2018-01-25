@@ -11,7 +11,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private Text _text;
 		private GameObject _continue;
-		private Button _continueButton;
 
 		#region Initialization
 

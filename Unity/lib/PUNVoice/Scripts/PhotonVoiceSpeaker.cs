@@ -7,7 +7,7 @@
 [DisallowMultipleComponent]
 public class PhotonVoiceSpeaker : Photon.MonoBehaviour
 {
-    const int maxPlayLagMs = 100;
+	private const int maxPlayLagMs = 100;
     private int maxPlayLagSamples;
 
     // buffering by playing few samples back
@@ -58,7 +58,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
 
     private AudioSource source;
 
-    void Awake()
+	private void Awake()
     {
         DontDestroyOnLoad(transform.gameObject);
         this.source = GetComponent<AudioSource>();
@@ -106,7 +106,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
     /// <summary>Is the speaker linked to the remote voice (info available and streaming is possible).</summary>
     public bool IsVoiceLinked { get { return this.source != null && this.source.clip != null; } }
 
-    void Update()
+	private void Update()
     {
         if (this.source != null && this.source.clip != null)
         {
@@ -181,7 +181,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
         
     }
 
-    void OnDestroy() 
+	private void OnDestroy() 
     {
         PhotonVoiceNetwork.UnlinkSpeakerFromRemoteVoice(this);
         if (this.source != null)
@@ -190,7 +190,7 @@ public class PhotonVoiceSpeaker : Photon.MonoBehaviour
         }
     }
 
-    void OnApplicationQuit()
+	private void OnApplicationQuit()
     {
         if (this.source != null)
         {

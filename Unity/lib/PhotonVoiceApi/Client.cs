@@ -20,7 +20,7 @@ namespace ExitGames.Client.Photon.Voice
 	/// Single event code for all events to save codes for user.
 	/// Change if conflicts with other code.
 	/// </summary>
-	enum EventCode
+	internal enum EventCode
     {
         VoiceEvent = 201
     }
@@ -95,7 +95,7 @@ namespace ExitGames.Client.Photon.Voice
         public byte VoiceId { get; private set; }
     }
 
-    enum EventSubcode : byte
+	internal enum EventSubcode : byte
     {
         VoiceInfo = 1,
         VoiceRemove = 2,
@@ -103,7 +103,7 @@ namespace ExitGames.Client.Photon.Voice
         DebugEchoRemoveMyVoices = 10
     }
 
-    enum EventParam : byte
+	internal enum EventParam : byte
     {
         VoiceId = 1,
         SamplingRate = 2,
@@ -469,7 +469,7 @@ namespace ExitGames.Client.Photon.Voice
                 this.DebugReturn(DebugLevel.INFO, "[PV] Local voice #" + v.id + " added: src_f=" + audioStream.SamplingRate + " enc_f=" + v.InputSamplingRate + " ch=" + v.InputChannels + " d=" + v.EncoderDelay + " s=" + v.frameSize + " b=" + v.Bitrate + " ud=" + voiceInfo.UserData);
                 if (this.State == LoadBalancing.ClientState.Joined)
                 {
-                    this.sendVoicesInfo(0, new List<LocalVoice>() { v }); // broadcast if joined
+                    this.sendVoicesInfo(0, new List<LocalVoice> { v }); // broadcast if joined
                 }
                 v.AudioGroup = this.globalAudioGroup;
                 return v;
@@ -489,7 +489,7 @@ namespace ExitGames.Client.Photon.Voice
             localVoices.Remove(v);
             if (this.State == LoadBalancing.ClientState.Joined)
             {
-                this.sendVoiceRemove(new List<LocalVoice>() { v });
+                this.sendVoiceRemove(new List<LocalVoice> { v });
             }
             this.DebugReturn(DebugLevel.INFO, "[PV] Local voice #" + v.id + " removed");
         }
@@ -563,7 +563,8 @@ namespace ExitGames.Client.Photon.Voice
             int i = 0;
             foreach (var v in voicesToSend)
             {
-                infos[i] = new Hashtable() { 
+                infos[i] = new Hashtable
+								{ 
                     { (byte)EventParam.VoiceId, v.id },
                     { (byte)EventParam.SamplingRate, v.InputSamplingRate },
                     { (byte)EventParam.Channels, v.InputChannels },
@@ -807,7 +808,7 @@ namespace ExitGames.Client.Photon.Voice
             }
         }
 
-        Random rnd = new Random();
+		private Random rnd = new Random();
         private void onFrame(EventData ev, object[] content)
         {
             var playerId = (int)ev[LoadBalancing.ParameterCode.ActorNr];
@@ -961,15 +962,19 @@ namespace ExitGames.Client.Photon.Voice
     public class LevelMeter
     {
         // sum of all values in buffer
-        float ampSum;
+		private float ampSum;
         // max of values from start buffer to current pos
-        float ampPeak;
-        int bufferSize;
-        float[] buffer;
-        int prevValuesPtr;
+		private float ampPeak;
 
-        float accumAvgPeakAmpSum;
-        int accumAvgPeakAmpCount;
+		private int bufferSize;
+
+		private float[] buffer;
+
+		private int prevValuesPtr;
+
+		private float accumAvgPeakAmpSum;
+
+		private int accumAvgPeakAmpCount;
 
         internal LevelMeter(int samplingRate, int numChannels)
         {
@@ -1052,10 +1057,13 @@ namespace ExitGames.Client.Photon.Voice
             } 
         }
 
-        int activityDelay;
-        int autoSilenceCounter = 0;
-        int valuesCountPerSec;
-        int activityDelayValuesCount;
+		private int activityDelay;
+
+		private int autoSilenceCounter = 0;
+
+		private int valuesCountPerSec;
+
+		private int activityDelayValuesCount;
 
         internal VoiceDetector(int samplingRate, int numChannels)
         {

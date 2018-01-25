@@ -10,15 +10,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 	{
 		public const string StateName = "Paused";
 		public override string Name => StateName;
-		
-		private readonly ITAlertPhotonClient _networkPhotonClient;
-
-		private readonly Director _director;
 
 		public PausedState(Director director, TickStateInput input, ITAlertPhotonClient networkPhotonClient) : base(input)
 		{
-			_director = director;
-			_networkPhotonClient = networkPhotonClient;
 		}
 
 		protected override void OnEnter()

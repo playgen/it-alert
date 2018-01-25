@@ -1,11 +1,10 @@
 ﻿using System;
-using Engine.Commands;
+
 using Engine.Events;
 using Engine.Lifecycle;
 using Engine.Serialization;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Players;
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -51,23 +50,23 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void ProcessUiEventMessage(Message message)
 		{
-			var uiEventMessage = message as UIEventMessage;
-			if (uiEventMessage != null)
+			if (message is UIEventMessage uiEventMessage)
 			{
 				switch (uiEventMessage)
 				{
 					case PlayerVoiceActivatedMessage pva:
-						PublishSimulationEvent(new PlayerVoiceEvent()
-						{
+						PublishSimulationEvent(new PlayerVoiceEvent
+													{
 							Mode = PlayerVoiceEvent.Signal.Activated,
-							PlayerEntityId = pva.PlayerId,
+							PlayerEntityId = pva.PlayerId
 						});
 						break;
 
 					case PlayerVoiceDeactivatedMessage pvd:
-						PublishSimulationEvent(new PlayerVoiceEvent() {
+						PublishSimulationEvent(new PlayerVoiceEvent
+													{
 							Mode = PlayerVoiceEvent.Signal.Deactivated,
-							PlayerEntityId = pvd.PlayerId,
+							PlayerEntityId = pvd.PlayerId
 						});
 						break;
 				}
@@ -112,8 +111,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void ProcessGameStateMessage(Message message)
 		{
-			var playingMessage = message as PlayingMessage;
-			if (playingMessage != null)
+			if (message is PlayingMessage playingMessage)
 			{
 				if (_simulationLifecycleManager.EngineState == EngineState.NotStarted)
 				{
@@ -134,7 +132,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 							throw new LifecycleException("Start lifecycle failed.");
 						}
 					}
-					return;
 				}
 			}
 		}
@@ -146,8 +143,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void ProcessSimulationCommandMessage(Message message)
 		{
-			var commandMessage = message as CommandMessage;
-			if (commandMessage == null)
+			if (!(message is CommandMessage commandMessage))
 			{
 				throw new SimulationException($"Unhandled Simulation Command: ${message}");
 			}
@@ -162,7 +158,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.SendAllMessage(new TickMessage
 			{
 				CRC = crc,
-				TickString = tickString,
+				TickString = tickString
 			});
 		}
 

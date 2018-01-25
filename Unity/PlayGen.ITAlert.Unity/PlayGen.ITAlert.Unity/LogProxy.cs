@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Unity
 		    set => Logger.filterLogType = value;
 		}
 
-		public static ILogger Logger { get; set; } = UnityEngine.Debug.logger;
+		public static ILogger Logger { get; set; } = UnityEngine.Debug.unityLogger;
 
 		public static void Exception(Exception exception)
 		{

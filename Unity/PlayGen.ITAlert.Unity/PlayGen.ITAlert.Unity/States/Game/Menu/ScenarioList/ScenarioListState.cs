@@ -1,5 +1,4 @@
-﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.States.Tick.Input;
+﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 
@@ -23,8 +22,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		protected override void OnTick(float deltaTime)
 		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
+			if (CommandQueue.TryTakeFirstCommand(out var command))
 			{
 				var selectCommand = command as SelectScenarioCommand;
 				selectCommand?.Execute(_scenarioController);

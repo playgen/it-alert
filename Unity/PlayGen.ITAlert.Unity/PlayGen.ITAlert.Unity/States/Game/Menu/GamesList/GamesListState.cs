@@ -1,5 +1,4 @@
-﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.States.Tick.Input;
+﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 using PlayGen.ITAlert.Unity.Controllers;
 
@@ -29,22 +28,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnTick(float deltaTime)
 		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
+			if (CommandQueue.TryTakeFirstCommand(out var command))
 			{
-				var refreshCommand = command as RefreshGamesListCommand;
-				if (refreshCommand != null)
+				if (command is RefreshGamesListCommand refreshCommand)
 				{
 					ExecuteRefresh(refreshCommand);
 					return;
 				}
-				else
+				_lastRefresh += deltaTime;
+				if (_lastRefresh >= _refreshInterval)
 				{
-					_lastRefresh += deltaTime;
-					if (_lastRefresh >= _refreshInterval)
-					{
-						ExecuteRefresh(new RefreshGamesListCommand());
-					}
+					ExecuteRefresh(new RefreshGamesListCommand());
 				}
 
 				var joinCommand = command as JoinGameCommand;

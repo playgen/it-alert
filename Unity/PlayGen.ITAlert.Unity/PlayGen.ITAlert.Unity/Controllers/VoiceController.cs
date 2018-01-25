@@ -39,9 +39,9 @@ namespace PlayGen.ITAlert.Unity.Controllers
 							LogProxy.Warning("Starting voice transmission");
 							if (_director?.Player != null)
 							{
-								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceActivatedMessage()
-								{
-									PlayerId = _director.Player.Id,
+								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceActivatedMessage
+																					{
+									PlayerId = _director.Player.Id
 								});
 							}
 						}
@@ -53,9 +53,9 @@ namespace PlayGen.ITAlert.Unity.Controllers
 							VoiceClient.StopTransmission();
 							if (_director?.Player != null)
 							{
-								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceDeactivatedMessage()
-								{
-									PlayerId = _director.Player.Id,
+								_photonClient?.CurrentRoom?.Messenger.SendMessage(new PlayerVoiceDeactivatedMessage
+																					{
+									PlayerId = _director.Player.Id
 								});
 							}
 						}

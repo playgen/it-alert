@@ -6,18 +6,16 @@ namespace PlayGen.ITAlert.Unity.Utilities
 {
 	public class ButtonList
 	{
-		private readonly GameObject[] _buttons;
+		public GameObject[] Buttons { get; }
 
-        public GameObject[] Buttons => _buttons;
-
-	    public ButtonList(string menuPath)
+		public ButtonList(string menuPath)
 		{
-			_buttons = GameObjectUtilities.FindAllChildren(menuPath);
+			Buttons = GameObjectUtilities.FindAllChildren(menuPath);
 		}
 
         public Button GetButton(string containerName)
 		{
-			var button = _buttons.First(o => o.name.Equals(containerName));
+			var button = Buttons.First(o => o.name.Equals(containerName));
 			return button.GetComponentInChildren<Button>();
 		}
 	}

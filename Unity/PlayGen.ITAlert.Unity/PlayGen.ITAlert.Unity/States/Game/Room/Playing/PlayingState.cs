@@ -33,9 +33,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			Logger.LogDebug("Entered " + StateName);
 
 			LogProxy.Info("PlayingState: OnEnter");
-			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage()
-			{
-				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId,
+			_photonClient.CurrentRoom.Messenger.SendMessage(new PlayingMessage
+																{
+				PlayerPhotonId = _photonClient.CurrentRoom.Player.PhotonId
 			});
 
 		}
@@ -77,15 +77,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private void ProcessSimulationStateMessage(Message message)
 		{
-			var tickMessage = message as TickMessage;
-			if (tickMessage != null)
+			if (message is TickMessage tickMessage)
 			{
 				_director.UpdateSimulation(tickMessage);
 				return;
 			}
 
-			var stopMessage = message as StopMessage;
-			if (stopMessage != null)
+			if (message is StopMessage)
 			{
 				_director.EndGame();
 			}

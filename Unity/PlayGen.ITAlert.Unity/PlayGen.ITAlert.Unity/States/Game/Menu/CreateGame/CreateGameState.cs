@@ -1,5 +1,4 @@
-﻿using GameWork.Core.Commands.Interfaces;
-using GameWork.Core.States.Tick.Input;
+﻿using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Commands;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
@@ -24,8 +23,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnTick(float deltaTime)
 		{
-			ICommand command;
-			if (CommandQueue.TryTakeFirstCommand(out command))
+			if (CommandQueue.TryTakeFirstCommand(out var command))
 			{
 				var createGameCommand = command as CreateGameCommand;
 			    createGameCommand?.Execute(_controller);

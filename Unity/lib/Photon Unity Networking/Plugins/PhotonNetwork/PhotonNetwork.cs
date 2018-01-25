@@ -854,7 +854,8 @@ public static class PhotonNetwork
 
 	/// <summary>If true, PUN will use a Stopwatch to measure time since start/connect. This is more precise than the Environment.TickCount used by default.</summary>
 	private static bool UsePreciseTimer = false;
-	static Stopwatch startupStopwatch;
+
+	private static Stopwatch startupStopwatch;
 
 	/// <summary>
 	/// Defines how long PUN keeps running a "fallback thread" to keep the connection after Unity's OnApplicationPause(true) call.
@@ -2591,7 +2592,7 @@ public static class PhotonNetwork
 			return false;
 		}
 
-		RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { kickPlayer.ID } };
+		RaiseEventOptions options = new RaiseEventOptions { TargetActors = new int[] { kickPlayer.ID } };
 		return networkingPeer.OpRaiseEvent(PunEvent.CloseConnection, null, true, options);
 	}
 
@@ -2640,8 +2641,8 @@ public static class PhotonNetwork
 
 		if (room.serverSideMasterClient)
 		{
-			Hashtable newProps = new Hashtable() { { GamePropertyKey.MasterClientId, masterClientPlayer.ID } };
-			Hashtable prevProps = new Hashtable() { { GamePropertyKey.MasterClientId, networkingPeer.mMasterClientId } };
+			Hashtable newProps = new Hashtable { { GamePropertyKey.MasterClientId, masterClientPlayer.ID } };
+			Hashtable prevProps = new Hashtable { { GamePropertyKey.MasterClientId, networkingPeer.mMasterClientId } };
 			return networkingPeer.OpSetPropertiesOfRoom(newProps, expectedProperties: prevProps, webForward: false);
 		}
 		else

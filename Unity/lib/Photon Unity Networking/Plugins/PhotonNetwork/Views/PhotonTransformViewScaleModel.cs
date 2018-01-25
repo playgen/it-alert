@@ -16,7 +16,7 @@ public class PhotonTransformViewScaleModel
     {
         Disabled,
         MoveTowards,
-        Lerp,
+        Lerp
     }
 
     public bool SynchronizeEnabled;

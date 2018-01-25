@@ -45,8 +45,8 @@ namespace UnityEngine.UI.Extensions.ColorPicker
                     h += 360;
             }
 
-            HsvColor hsvColor = new HsvColor()
-            {
+            HsvColor hsvColor = new HsvColor
+									{
                 H = 360 - h,
                 S = s,
                 V = v / 255

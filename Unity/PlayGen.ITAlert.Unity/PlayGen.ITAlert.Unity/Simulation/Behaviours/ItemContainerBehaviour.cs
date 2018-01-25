@@ -40,8 +40,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		// TODO: push this down int othe item containers
 
-		private ContainerState _state = ContainerState.Empty;
-		public ContainerState State => _state;
+		public ContainerState State { get; private set; } = ContainerState.Empty;
 
 		private ItemContainer _itemContainer;
 
@@ -87,7 +86,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void UpdateImage()
 		{
 			var itemContainerTypeName = _itemContainer?.GetType().Name.ToLowerInvariant();
-			var sprite = String.IsNullOrEmpty(SpriteOverride)
+			var sprite = string.IsNullOrEmpty(SpriteOverride)
 				? string.IsNullOrEmpty(itemContainerTypeName)
 					? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
 					: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
@@ -108,9 +107,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Transition(ContainerState state)
 		{
-			if (_state != state)
+			if (State != state)
 			{
-				_state = state;
+				State = state;
 				ClickEnable = state == ContainerState.HasItem || state == ContainerState.Empty;
 				_containerImage.color = state == ContainerState.Disabled
 					? UIConstants.ItemContainerDisabledColor
@@ -124,8 +123,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (_itemContainer?.Item != null)
 			{
-				UIEntity itemEntity;
-				if (Director.TryGetEntity(_itemContainer.Item.Value, out itemEntity))
+				if (Director.TryGetEntity(_itemContainer.Item.Value, out var itemEntity))
 				{
 					itemBehaviour = itemEntity.EntityBehaviour as ItemBehaviour;
 					return itemBehaviour != null;

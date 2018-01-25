@@ -94,10 +94,10 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		{
 			_currentPlayer = currentPlayer;
 			
-			_playerColour = new PlayerColour()
-			{
+			_playerColour = new PlayerColour
+								{
 				Colour = currentPlayer.Colour ?? "#ffffff",
-				Glyph = currentPlayer.Glyph,
+				Glyph = currentPlayer.Glyph
 			};
 			_playerGlyphs = new Dictionary<string, PlayerGlyph>();
 
@@ -143,10 +143,10 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 					button.onClick.AddListener(delegate { SetGlyph(glyphName); });
 					index++;
 
-					_playerGlyphs.Add(glyphName, new PlayerGlyph()
-					{
+					_playerGlyphs.Add(glyphName, new PlayerGlyph
+													{
 						Button = button,
-						Image = image,
+						Image = image
 					});
 				}
 

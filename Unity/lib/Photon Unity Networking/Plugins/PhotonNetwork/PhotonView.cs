@@ -118,7 +118,8 @@ public class PhotonView : Photon.MonoBehaviour
     public OwnershipOption ownershipTransfer = OwnershipOption.Fixed;
 
     public List<Component> ObservedComponents;
-    Dictionary<Component, MethodInfo> m_OnSerializeMethodInfos = new Dictionary<Component, MethodInfo>(3);
+
+	private Dictionary<Component, MethodInfo> m_OnSerializeMethodInfos = new Dictionary<Component, MethodInfo>(3);
 
     [SerializeField]
     private int viewIdField = 0;

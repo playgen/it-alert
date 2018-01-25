@@ -13,8 +13,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Canvas _canvas;
 
-		private Vector3 _scale;
-
 		#region Initialization
 
 		public void Awake()

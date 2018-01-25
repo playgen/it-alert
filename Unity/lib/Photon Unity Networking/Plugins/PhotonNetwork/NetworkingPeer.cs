@@ -162,7 +162,7 @@ public enum DisconnectCause
 	/// Possible cause: Socket failure.</summary>
 	InternalReceiveException,
 	/// <summary>The Authentication ticket expired. Handle this by connecting again (which includes an authenticate to get a fresh ticket).</summary>
-	AuthenticationTicketExpired,
+	AuthenticationTicketExpired
 }
 
 /// <summary>Available server (types) for internally used field: server.</summary>
@@ -234,7 +234,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	public const string NameServerHttp = "http://ns.exitgamescloud.com:80/photon/n";
 
 	/// <summary>Name Server port per protocol (the UDP port is different than TCP, etc).</summary>
-	private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int>() { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
+	private static readonly Dictionary<ConnectionProtocol, int> ProtocolToNameServerPort = new Dictionary<ConnectionProtocol, int> { { ConnectionProtocol.Udp, 5058 }, { ConnectionProtocol.Tcp, 4533 }, { ConnectionProtocol.WebSocket, 9093 }, { ConnectionProtocol.WebSocketSecure, 19093 } }; //, { ConnectionProtocol.RHttp, 6063 } };
 
 	/// <summary>Name Server Address for Photon Cloud (based on current protocol). You can use the default values and usually won't have to set this value.</summary>
 	public string NameServerAddress { get { return this.GetNameServerAddress(); } }
@@ -745,7 +745,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	private bool CallAuthenticate()
 	{
 		// once encryption is availble, the client should send one (secure) authenticate. it includes the AppId (which identifies your app on the Photon Cloud)
-		AuthenticationValues auth = this.AuthValues ?? new AuthenticationValues() { UserId = this.PlayerName };
+		AuthenticationValues auth = this.AuthValues ?? new AuthenticationValues { UserId = this.PlayerName };
 		if (this.AuthMode == AuthModeOption.Auth)
 		{
 			return this.OpAuthenticate(this.AppId, this.AppVersion, auth, this.CloudRegion.ToString(), this.requestLobbyStatistics);
@@ -1184,7 +1184,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		}
 	}
 
-	void RemovePlayer(int ID, PhotonPlayer player)
+	private void RemovePlayer(int ID, PhotonPlayer player)
 	{
 		this.mActors.Remove(ID);
 		if (!player.isLocal)
@@ -1193,7 +1193,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		}
 	}
 
-	void RebuildPlayerListCopies()
+	private void RebuildPlayerListCopies()
 	{
 		this.mPlayerListCopy = new PhotonPlayer[this.mActors.Count];
 		this.mActors.Values.CopyTo(this.mPlayerListCopy, 0);
@@ -1376,7 +1376,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
 		if (sync)
 		{
-			bool sent = this.OpRaiseEvent(PunEvent.AssignMaster, new Hashtable() { { (byte)1, playerId } }, true, null);
+			bool sent = this.OpRaiseEvent(PunEvent.AssignMaster, new Hashtable { { (byte)1, playerId } }, true, null);
 			if (!sent)
 			{
 				return false;
@@ -1392,8 +1392,8 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	/// <summary>Uses a well-known property to set someone new as Master PhotonClient in room (requires "Server Side Master PhotonClient" feature).</summary>
 	public bool SetMasterClient(int nextMasterId)
 	{
-		Hashtable newProps = new Hashtable() { { GamePropertyKey.MasterClientId, nextMasterId } };
-		Hashtable prevProps = new Hashtable() { { GamePropertyKey.MasterClientId, this.mMasterClientId } };
+		Hashtable newProps = new Hashtable { { GamePropertyKey.MasterClientId, nextMasterId } };
+		Hashtable prevProps = new Hashtable { { GamePropertyKey.MasterClientId, this.mMasterClientId } };
 		return this.OpSetPropertiesOfRoom(newProps, expectedProperties: prevProps, webForward: false);
 	}
 
@@ -1706,7 +1706,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 							Debug.Log("Skipping region because it's not in PhotonServerSettings.EnabledRegions: " + code);
 						}
 					}
-					if (enabledRegion) this.AvailableRegions.Add(new Region() { Code = code, HostAndPort = servers[i] });
+					if (enabledRegion) this.AvailableRegions.Add(new Region { Code = code, HostAndPort = servers[i] });
 				}
 
 				// PUN assumes you fetch the name-server's list of regions to ping them
@@ -1979,7 +1979,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
 			case StatusCode.EncryptionFailedToEstablish:
 				Debug.LogError("Encryption wasn't established: " + statusCode + ". Going to authenticate anyways.");
-				AuthenticationValues authV = this.AuthValues ?? new AuthenticationValues() { UserId = this.PlayerName };
+				AuthenticationValues authV = this.AuthValues ?? new AuthenticationValues { UserId = this.PlayerName };
 				this.OpAuthenticate(this.AppId, this.AppVersion, authV, this.CloudRegion.ToString(), this.requestLobbyStatistics);     // TODO: check if there are alternatives
 				break;
 
@@ -3264,7 +3264,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		Hashtable removeFilter = new Hashtable();
 		removeFilter[(byte)7] = instantiateId;
 
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { creatorId } };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { creatorId } };
 		this.OpRaiseEvent(PunEvent.Instantiation, removeFilter, true, options);
 		//this.OpRaiseEvent(PunEvent.Instantiation, removeFilter, true, 0, new int[] { actorNr }, EventCaching.RemoveFromRoomCache);
 
@@ -3304,7 +3304,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	private void OpRemoveFromServerInstantiationsOfPlayer(int actorNr)
 	{
 		// removes all "Instantiation" events of player actorNr. this is not an event for anyone else
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNr } };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNr } };
 		this.OpRaiseEvent(PunEvent.Instantiation, null, true, options);
 		//this.OpRaiseEvent(PunEvent.Instantiation, null, true, 0, new int[] { actorNr }, EventCaching.RemoveFromRoomCache);
 	}
@@ -3313,14 +3313,14 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	{
 		Debug.Log("RequestOwnership(): " + viewID + " from: " + fromOwner + " Time: " + Environment.TickCount % 1000);
 		//PhotonNetwork.networkingPeer.OpRaiseEvent(PunEvent.OwnershipRequest, true, new int[] { viewID, fromOwner }, 0, EventCaching.DoNotCache, null, ReceiverGroup.All, 0);
-		this.OpRaiseEvent(PunEvent.OwnershipRequest, new int[] {viewID, fromOwner}, true, new RaiseEventOptions() { Receivers = ReceiverGroup.All });   // All sends to all via server (including self)
+		this.OpRaiseEvent(PunEvent.OwnershipRequest, new int[] {viewID, fromOwner}, true, new RaiseEventOptions { Receivers = ReceiverGroup.All });   // All sends to all via server (including self)
 	}
 
 	internal protected void TransferOwnership(int viewID, int playerID)
 	{
 		Debug.Log("TransferOwnership() view " + viewID + " to: " + playerID + " Time: " + Environment.TickCount % 1000);
 		//PhotonNetwork.networkingPeer.OpRaiseEvent(PunEvent.OwnershipTransfer, true, new int[] {viewID, playerID}, 0, EventCaching.DoNotCache, null, ReceiverGroup.All, 0);
-		this.OpRaiseEvent(PunEvent.OwnershipTransfer, new int[] { viewID, playerID }, true, new RaiseEventOptions() { Receivers = ReceiverGroup.All });   // All sends to all via server (including self)
+		this.OpRaiseEvent(PunEvent.OwnershipTransfer, new int[] { viewID, playerID }, true, new RaiseEventOptions { Receivers = ReceiverGroup.All });   // All sends to all via server (including self)
 	}
 
 	public bool LocalCleanPhotonView(PhotonView view)
@@ -3430,7 +3430,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	/// <param name="actorNumber"></param>
 	public void OpCleanRpcBuffer(int actorNumber)
 	{
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };
 		this.OpRaiseEvent(PunEvent.RPC, null, true, options);
 		//this.OpRaiseEvent(PunEvent.RPC, null, true, 0, new int[] { actorNumber }, EventCaching.RemoveFromRoomCache);
 	}
@@ -3441,7 +3441,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	/// <param name="actorNumber"></param>
 	public void OpRemoveCompleteCacheOfPlayer(int actorNumber)
 	{
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache, TargetActors = new int[] { actorNumber } };
 		this.OpRaiseEvent(0, null, true, options);
 		//this.OpRaiseEvent(0, null, true, 0, new int[] { actorNumber }, EventCaching.RemoveFromRoomCache);
 	}
@@ -3449,7 +3449,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 
 	public void OpRemoveCompleteCache()
 	{
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache, Receivers = ReceiverGroup.MasterClient };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache, Receivers = ReceiverGroup.MasterClient };
 		this.OpRaiseEvent(0, null, true, options);
 		//this.OpRaiseEvent(0, null, true, 0, EventCaching.RemoveFromRoomCache, ReceiverGroup.MasterClient);  // TODO: check who gets this event?
 	}
@@ -3482,7 +3482,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		Hashtable rpcFilterByViewId = new Hashtable();
 		rpcFilterByViewId[(byte)0] = view.viewID;
 
-		RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.RemoveFromRoomCache };
+		RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.RemoveFromRoomCache };
 		this.OpRaiseEvent(PunEvent.RPC, rpcFilterByViewId, true, options);
 		//this.OpRaiseEvent(PunEvent.RPC, rpcFilterByViewId, true, 0, EventCaching.RemoveFromRoomCache, ReceiverGroup.Others);
 	}
@@ -3573,7 +3573,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 			}
 			else
 			{
-				RaiseEventOptions options = new RaiseEventOptions() { TargetActors = new int[] { player.ID }, Encrypt = encrypt };
+				RaiseEventOptions options = new RaiseEventOptions { TargetActors = new int[] { player.ID }, Encrypt = encrypt };
 				this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 			}
 
@@ -3583,7 +3583,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		// send to a specific set of players
 		if (target == PhotonTargets.All)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { InterestGroup = (byte)view.group, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { InterestGroup = (byte)view.group, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 
 			// Execute local
@@ -3591,12 +3591,12 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		}
 		else if (target == PhotonTargets.Others)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { InterestGroup = (byte)view.group, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { InterestGroup = (byte)view.group, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 		}
 		else if (target == PhotonTargets.AllBuffered)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 
 			// Execute local
@@ -3604,7 +3604,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		}
 		else if (target == PhotonTargets.OthersBuffered)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 		}
 		else if (target == PhotonTargets.MasterClient)
@@ -3615,13 +3615,13 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 			}
 			else
 			{
-				RaiseEventOptions options = new RaiseEventOptions() { Receivers = ReceiverGroup.MasterClient, Encrypt = encrypt };
+				RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.MasterClient, Encrypt = encrypt };
 				this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 			}
 		}
 		else if (target == PhotonTargets.AllViaServer)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { InterestGroup = (byte)view.group, Receivers = ReceiverGroup.All, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { InterestGroup = (byte)view.group, Receivers = ReceiverGroup.All, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 			if (PhotonNetwork.offlineMode)
 			{
@@ -3630,7 +3630,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		}
 		else if (target == PhotonTargets.AllBufferedViaServer)
 		{
-			RaiseEventOptions options = new RaiseEventOptions() { InterestGroup = (byte)view.group, Receivers = ReceiverGroup.All, CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
+			RaiseEventOptions options = new RaiseEventOptions { InterestGroup = (byte)view.group, Receivers = ReceiverGroup.All, CachingOption = EventCaching.AddToRoomCache, Encrypt = encrypt };
 			this.OpRaiseEvent(PunEvent.RPC, rpcEvent, true, options);
 			if (PhotonNetwork.offlineMode)
 			{
@@ -3979,8 +3979,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 		return null;
 	}
 
-
-	string LogObjectArray(object[] data)
+	private string LogObjectArray(object[] data)
 	{
 		if (data == null) return "null";
 		string[] sb = new string[data.Length];
@@ -4207,7 +4206,7 @@ internal class NetworkingPeer : LoadBalancingPeer, IPhotonPeerListener
 	/// Returns true if both objects are almost identical.
 	/// Used to check whether two objects are similar enough to skip an update.
 	/// </summary>
-	bool ObjectIsSameWithInprecision(object one, object two)
+	private bool ObjectIsSameWithInprecision(object one, object two)
 	{
 		if (one == null || two == null)
 		{

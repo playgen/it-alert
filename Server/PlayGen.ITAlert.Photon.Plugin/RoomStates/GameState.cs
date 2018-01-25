@@ -1,12 +1,12 @@
 ﻿using System;
 using Photon.Hive.Plugin;
-using PlayGen.Photon.Players;
+
 using PlayGen.Photon.Plugin;
 using PlayGen.ITAlert.Simulation.Startup;
 using System.Linq;
 using Engine.Configuration;
 using Engine.Lifecycle;
-using PlayGen.ITAlert.Photon.Common;
+
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates;
@@ -14,7 +14,6 @@ using PlayGen.ITAlert.Photon.Plugin.RoomStates.Transitions;
 using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Logging;
 using PlayGen.Photon.Analytics;
-using PlayGen.Photon.Common.Extensions;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 {
@@ -93,8 +92,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 		{
 			if (string.IsNullOrEmpty(RoomSettings.GameScenario) == false)
 			{
-				SimulationScenario scenario;
-				if (_scenarioLoader.TryGetScenario(RoomSettings.GameScenario, out scenario))
+				if (_scenarioLoader.TryGetScenario(RoomSettings.GameScenario, out var scenario))
 				{
 					// add the database event logger
 					scenario.Configuration.Systems.Add(new SystemConfiguration<DatabaseEventLogger>());
@@ -119,7 +117,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 				}
 			}
 
-			throw new SimulationException($"Could not load scenario");
+			throw new SimulationException("Could not load scenario");
 		}
 
 		private ITAlertRoomStateController CreateStateController()
