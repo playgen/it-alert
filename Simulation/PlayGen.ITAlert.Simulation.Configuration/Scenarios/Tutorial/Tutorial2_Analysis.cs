@@ -321,7 +321,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(VisibleGreenTutorialVirus.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame13"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(EvaluatorExtensions.Not(new IsInfected())),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -336,7 +336,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame14"),
 					},
-					ExitCondition = new EntityDisposed<Malware>(),
+					ExitCondition = new EntityDisposed<Malware>().Or(EvaluatorExtensions.Not(new IsInfected())),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

@@ -174,7 +174,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node31),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeT1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -189,7 +189,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(true, $"{scenario.Key}_Frame2")
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeT1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -206,7 +206,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new ShowText(false, $"{scenario.Key}_Frame3")
 					},
 					ExitCondition = new PlayerIsAtLocation(nodeT1)
-						.And(new ItemTypeIsInInventory<Antivirus>(filter: new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))),
+						.And(new ItemTypeIsInInventory<Antivirus>(filter: new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen)).Or(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1))),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -223,10 +223,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new SetCommandEnabled<ActivateItemCommand>(false),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeT2, typeof(TransferItemContainer)),
-						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague"),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -247,6 +246,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<PickupItemCommand>(false),
 						new SetCommandEnabled<ActivateItemCommand>(true),
 					},
 				}
@@ -280,6 +280,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(true),
+						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague")
 					},
 				}
 			);
