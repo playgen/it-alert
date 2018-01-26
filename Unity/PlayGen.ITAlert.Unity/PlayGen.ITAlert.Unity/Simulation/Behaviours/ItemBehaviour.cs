@@ -70,6 +70,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				LogProxy.Info($"Creating item type: {spriteName}");
 				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
+				_foregroundText.text = string.Empty;
 
 				Entity.TryGetComponent(out _timedActivation);
 				Entity.TryGetComponent(out _antivirus);

@@ -78,7 +78,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 			if (ColorUtility.TryParseHtmlString(colour, out _playerColor))
 			{
-				_image.color = _playerColor;
 			    _glow.color = _playerColor;
 				_trailRenderer.startColor = _playerColor;
 				_trailRenderer.endColor = new Color(_playerColor.r, _playerColor.g, _playerColor.b, 0.875f);

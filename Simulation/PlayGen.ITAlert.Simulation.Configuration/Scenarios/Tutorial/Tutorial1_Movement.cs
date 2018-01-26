@@ -105,7 +105,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new PlayerDestinarionIs(nodeLeft)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -155,7 +155,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialScanner.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeRight)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -202,6 +202,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(true, $"{scenario.Key}_Frame7"),
+						new SetCommandEnabled<PickupItemCommand>(true),
 					},
 					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInInventory<Scanner>()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

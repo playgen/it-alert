@@ -29,7 +29,7 @@ public class PhotonLagSimulationGui : MonoBehaviour
 
     public void Start()
     {
-        this.Peer = PhotonNetwork.networkingPeer;
+        
     }
 
     public void OnGUI()
@@ -41,13 +41,10 @@ public class PhotonLagSimulationGui : MonoBehaviour
 
         if (this.Peer == null)
         {
-            this.WindowRect = GUILayout.Window(this.WindowId, this.WindowRect, this.NetSimHasNoPeerWindow, "Netw. Sim.");
-        }
-        else
-        {
-            this.WindowRect = GUILayout.Window(this.WindowId, this.WindowRect, this.NetSimWindow, "Netw. Sim.");
-        }
-    }
+			this.Peer = PhotonNetwork.networkingPeer;
+		}
+		this.WindowRect = GUILayout.Window(this.WindowId, this.WindowRect, this.NetSimWindow, "Netw. Sim.");
+	}
 
     private void NetSimHasNoPeerWindow(int windowId)
     {
