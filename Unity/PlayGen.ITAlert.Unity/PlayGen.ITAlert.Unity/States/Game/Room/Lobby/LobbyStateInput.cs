@@ -34,6 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private int _lobbyPlayerMax;
 		private Button _backButton;
 		private bool _bestFitTick;
+		private bool _readyPulseDown;
 
 		public event Action LeaveLobbyClickedEvent;
 
@@ -70,6 +71,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			SetRoomName(_photonClient.CurrentRoom.RoomInfo.name + " - " + _photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario]);
 
 			_readyButton.gameObject.GetComponentInChildren<Text>().text = Localization.Get("LOBBY_BUTTON_READY");
+			_readyButton.GetComponent<Image>().color = Color.white;
 			_lobbyPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
 			_bestFitTick = true;
@@ -96,6 +98,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		protected override void OnTick(float deltaTime)
 		{
+			if (_photonClient.CurrentRoom.Player.State == (int)ITAlert.Photon.Players.ClientState.Ready)
+			{
+				_readyButton.GetComponent<Image>().color += new Color(0, 0, 0, _readyPulseDown ? -Time.deltaTime : Time.deltaTime);
+				if (_readyButton.GetComponent<Image>().color.a < 0 && _readyPulseDown)
+				{
+					_readyPulseDown = false;
+				}
+				if (_readyButton.GetComponent<Image>().color.a > 1 && !_readyPulseDown)
+				{
+					_readyPulseDown = true;
+				}
+			}
+			else
+			{
+				_readyButton.GetComponent<Image>().color = Color.white;
+			}
 			if (_bestFitTick)
 			{
 				_buttons.Buttons.BestFit();
@@ -178,8 +196,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				}
 
 				var glyphImage = playerItem.Find("Glyph").GetComponent<Image>();
-				glyphImage.color = color;
 				glyphImage.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
+
+				var colorImage = playerItem.Find("Color").GetComponent<Image>();
+				colorImage.color = color;
 
 				var nameText = playerItem.Find("Name").GetComponent<Text>();
 				nameText.text = player.Name;

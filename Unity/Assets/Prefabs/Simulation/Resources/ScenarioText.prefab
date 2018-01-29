@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 222332164643921104}
   - component: {fileID: 114448262279408666}
   - component: {fileID: 114939142839232072}
+  - component: {fileID: 114161673873782576}
   m_Layer: 0
   m_Name: ScenarioText
   m_TagString: Untagged
@@ -117,6 +118,18 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114161673873782576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1112668031604564}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1200242548, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
 --- !u!114 &114280568304501946
 MonoBehaviour:
   m_ObjectHideFlags: 1
