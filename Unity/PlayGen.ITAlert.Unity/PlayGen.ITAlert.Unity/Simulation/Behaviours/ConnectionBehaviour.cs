@@ -123,6 +123,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					edgeDirectionOffset = new Vector2(offset, 0);
 					break;
 				case 180:
+				case -180:
 					edgeDirectionOffset = new Vector2(0, offset);
 					break;
 				case -90:

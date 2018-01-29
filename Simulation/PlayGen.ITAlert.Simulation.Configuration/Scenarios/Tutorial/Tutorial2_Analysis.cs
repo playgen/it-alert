@@ -129,8 +129,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new CreateItem(ScannerTool.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame1"),
+						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new GenomeRevealedAtLocation(nodeLeft, SimulationConstants.MalwareGeneRed)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -146,7 +147,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new SetHighlight(nodeAntivirus),
 						new ShowText(true, $"{scenario.Key}_Frame2"),
 					},
-					ExitCondition = new WaitForTutorialContinue(),
+					ExitCondition = new WaitForTutorialContinue().Or(new GenomeRevealedAtLocation(nodeLeft, SimulationConstants.MalwareGeneRed)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -161,7 +162,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetHighlight(nodeLeft),
-						new CreateMalware(RedTutorialVirus.Archetype, nodeLeft),
 						new ShowText(false, $"{scenario.Key}_Frame3"),
 					},
 					ExitCondition = new GenomeRevealedAtLocation(nodeLeft, SimulationConstants.MalwareGeneRed),
@@ -181,7 +181,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialCapture.Archetype, nodeAntivirus),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInInventory<Capture>()),
+					ExitCondition = new ItemTypeIsInInventory<Capture>().Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),

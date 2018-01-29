@@ -21,10 +21,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL.Archetypes
 			{
 				ComponentTemplate = new MalwarePropogation()
 				{
-					TicksRemaining = 143,
-					Interval = 429,
-					IntervalVariation = 71,
-					RollThreshold = 29,
+					TicksRemaining = 300,
+					Interval = 300,
+					IntervalVariation = 75,
+					RollThreshold = 25,
 				}
 			});
 	}

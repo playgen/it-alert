@@ -102,10 +102,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new PlayerDestinarionIs(nodeLeft)),
+					ExitCondition = new PlayerDestinarionIs(nodeLeft).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -155,7 +154,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(TutorialScanner.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeRight)),
+					ExitCondition = new PlayerIsAtLocation(nodeRight).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -204,7 +203,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new ShowText(true, $"{scenario.Key}_Frame7"),
 						new SetCommandEnabled<PickupItemCommand>(true),
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInInventory<Scanner>()),
+					ExitCondition = new ItemTypeIsInInventory<Scanner>().Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
