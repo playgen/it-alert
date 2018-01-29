@@ -45,12 +45,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			#region graph
 
-			var node00 = new NodeConfig(0, 0, AntivirusWorkstation.Archetype, "Antivirus");
+			var node11 = new NodeConfig(1, 1, AntivirusWorkstation.Archetype, "Antivirus");
 			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
 			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
 
 			var node01 = new NodeConfig(0, 1, SubsystemNode.Archetype);
-			var node11 = new NodeConfig(1, 1, SubsystemNode.Archetype);
+			var node00 = new NodeConfig(0, 0, SubsystemNode.Archetype);
 			var node21 = new NodeConfig(2, 1, SubsystemNode.Archetype);
 
 			var node02 = new NodeConfig(0, 2, SubsystemNode.Archetype);
@@ -144,7 +144,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				TimeLimitSeconds = 480, // 8 minutes
 				Configuration = configuration,
 
-				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node11.Id, node02.Id }),
+				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node22.Id, node02.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
 
 				Scoring = SimulationScenario.ScoringMode.Full,
@@ -190,14 +190,14 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 						new SetTimer<Simulation, SimulationConfiguration>(scenario.TimeLimitSeconds.Value),
 						new CreateItem(ScannerTool.Archetype, node01),
 						new CreateItem(ScannerTool.Archetype, node21),
-						new CreateItem(CaptureTool.Archetype, node02),
-						new CreateItem(CaptureTool.Archetype, node22),
+						new CreateItem(CaptureTool.Archetype, node10),
+						new CreateItem(CaptureTool.Archetype, node12),
 					},
 					ExitCondition = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new CreateMalware(RedVirus.Archetype, node00),
-						new CreateMalware(GreenVirus.Archetype, node20),
+						new CreateMalware(RedVirus.Archetype, node01),
+						new CreateMalware(GreenVirus.Archetype, node21),
 					},
 				}
 			);

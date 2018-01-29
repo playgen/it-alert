@@ -73,7 +73,7 @@
 		public const int MalwarePropogationInterval = 300;
 		public const int MalwarePropogationRoll = 66;
 
-		public static decimal MalwareSpeed = 1;
+		public static decimal MalwareSpeed = 2m;
 		
 		#endregion
 

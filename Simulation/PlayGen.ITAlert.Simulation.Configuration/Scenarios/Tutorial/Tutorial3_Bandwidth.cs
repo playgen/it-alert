@@ -174,7 +174,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateMalware(VisibleGreenTutorialVirus.Archetype, node31),
 						new ShowText(true, $"{scenario.Key}_Frame1")
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeT1)),
+					ExitCondition = new PlayerIsAtLocation(nodeT1).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -189,7 +189,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(true, $"{scenario.Key}_Frame2")
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new PlayerIsAtLocation(nodeT1)),
+					ExitCondition = new PlayerIsAtLocation(nodeT1).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
@@ -225,7 +225,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeT2, typeof(TransferItemContainer)),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
-					ExitCondition = new WaitForTutorialContinue().Or(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1)),
+					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1).Or(new WaitForTutorialContinue()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
