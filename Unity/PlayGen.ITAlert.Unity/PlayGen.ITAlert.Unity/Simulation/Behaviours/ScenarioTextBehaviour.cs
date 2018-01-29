@@ -12,6 +12,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Text _text;
 		private GameObject _continue;
 
+		private bool _pulse;
+		private bool _pulsingDown;
+
 		#region Initialization
 
 		public void Awake()
@@ -31,6 +34,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (Entity.TryGetComponent(out _textComponent))
 			{
+				/*LogProxy.Warning(Director.SimulationRoot.Scenario.Sequence[int.Parse(_textComponent.Value.Split(new[] { "_Frame" }, StringSplitOptions.None).Last()) - 1].ExitCondition.GetType().ToString());
+				LogProxy.Warning(typeof(LogicalOperationEvaluator<ITAlert.Simulation.Simulation, SimulationConfiguration>).ToString());
+				var exitCondition = Director.SimulationRoot.Scenario.Sequence[int.Parse(_textComponent.Value.Split(new[] { "_Frame" }, StringSplitOptions.None).Last()) - 1].ExitCondition;
+				var exitType = exitCondition.GetType();
+				_pulse = exitType == typeof(WaitForTutorialContinue) || 
+						(exitType == typeof(LogicalOperationEvaluator<ITAlert.Simulation.Simulation, SimulationConfiguration>) &&
+						(LogicalOperationEvaluator< ITAlert.Simulation.Simulation, SimulationConfiguration>)exitCondition.);*/
 				if (_textComponent.ShowContinue)
 				{
 					_continue.SetActive(true);
@@ -76,6 +86,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
+			if (_pulse)
+			{
+				_continue.GetComponent<Image>().color += new Color(0, 0, 0, _pulsingDown ? -Time.deltaTime : Time.deltaTime);
+				if (_continue.GetComponent<Image>().color.a < 0 && _pulsingDown)
+				{
+					_pulsingDown = false;
+				}
+				if (_continue.GetComponent<Image>().color.a > 1 && !_pulsingDown)
+				{
+					_pulsingDown = true;
+				}
+			}
 		}
 
 		protected override void OnStateUpdated()

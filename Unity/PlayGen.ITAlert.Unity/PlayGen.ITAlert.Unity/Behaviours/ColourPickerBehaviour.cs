@@ -137,7 +137,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 					var image = colourPickerEntry.GetComponent<Image>();
 					var sprite = Resources.Load<Sprite>($"playerglyph_{glyphName}");
-					image.sprite = sprite;
+					var iconImage = colourPickerEntry.transform.Find("Icon").GetComponent<Image>();
+					iconImage.sprite = sprite;
 
 					var button = colourPickerEntry.GetComponent<Button>();
 					button.onClick.AddListener(delegate { SetGlyph(glyphName); });

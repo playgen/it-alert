@@ -49,6 +49,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnInitialize()
 		{
 			base.OnInitialize();
+			_trailRenderer.Clear();
 			_trailRenderer.enabled = true;
 
 			if (Entity.TryGetComponent(out _playerBitMask)
@@ -95,6 +96,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnStateUpdated()
 		{
 			UpdatePosition();
+			_image.transform.eulerAngles = Vector3.zero;
 		}
 
 		#endregion
