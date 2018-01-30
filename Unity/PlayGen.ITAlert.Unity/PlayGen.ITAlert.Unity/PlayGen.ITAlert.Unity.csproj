@@ -236,6 +236,7 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
+    <Compile Include="Controllers\HoverController.cs" />
     <Compile Include="Debug\DebugCommands.cs" />
     <Compile Include="Debug\DebugInterface.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
@@ -332,6 +333,7 @@
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\CameraSizingUtility.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
+    <Compile Include="Utilities\HoverObject.cs" />
     <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>

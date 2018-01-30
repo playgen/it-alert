@@ -5,6 +5,8 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.ITAlert.Unity.Utilities;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -67,6 +69,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _activation))
 			{
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
+				GetComponentInChildren<HoverObject>().SetHoverText(spriteName.ToUpperInvariant() + "_DESCRIPTION");
 				LogProxy.Info($"Creating item type: {spriteName}");
 				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);

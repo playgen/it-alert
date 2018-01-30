@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using PlayGen.ITAlert.Unity.Controllers;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -89,6 +91,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_dragPosition = (Vector2)_camera.ScreenToWorldPoint(Input.mousePosition) / (transform.lossyScale.x / transform.localScale.x) - _defaultPosition;
 			_dragContainer = container.gameObject;
 			transform.SetAsLastSibling();
+			HoverController.HideHover();
 			return true;
 		}
 

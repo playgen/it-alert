@@ -190,7 +190,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			base.OnStateUpdated();
 			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
-			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation();
+			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation() - 0.2f;
 
 			if (_nameText.text != _name.Value)
 			{
