@@ -2,6 +2,8 @@
 
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Utilities;
+
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -92,6 +94,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
 				: Resources.Load<Sprite>(SpriteOverride);
 			_containerImage.sprite = sprite;
+			GetComponentInChildren<HoverObject>().SetHoverText(!string.Equals(sprite.name, UIConstants.ItemContainerDefaultSpriteName, StringComparison.CurrentCultureIgnoreCase) ? sprite.name.ToUpperInvariant() + "_DESCRIPTION" : string.Empty);
 		}
 
 		//public void Uninitialize()

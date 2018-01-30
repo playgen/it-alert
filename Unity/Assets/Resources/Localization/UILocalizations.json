@@ -75,4 +75,15 @@
 {"Key":"SETTINGS_LABEL_MICROPHONE_DEVICE","en-gb":"Microphone Device","nl":"Microfoon"},
 {"Key":"GAME_COMPLETION_BUTTON_CONTINUE","en-gb":"Continue","nl":"Doorgaan"},
 {"Key":"GAME_COMPLETION_LABEL_TEAM_SCORE","en-gb":"Team Score:","nl":"Team Score:"},
-{"Key":"GAME_COMPLETION_NEUTRAL","en-gb":"Game Over","nl":"Game Over"}]
+{"Key":"GAME_COMPLETION_NEUTRAL","en-gb":"Game Over","nl":"Game Over"},
+{"Key":"CAPTURE_DESCRIPTION","en-gb":"Capture Tool - Activate to collect a virus sample","nl":"XXXX"},
+{"Key":"SCANNER_DESCRIPTION","en-gb":"Scanner Tool - Activate to find hidden viruses","nl":"XXXX"},
+{"Key":"ANALYSER_DESCRIPTION","en-gb":"Analyser Tool - Activate to create an antivirus","nl":"XXXX"},
+{"Key":"INVENTORYITEMCONTAINER_DESCRIPTION","en-gb":"Inventory - Currently held item","nl":"XXXX"},
+{"Key":"ANALYSISTARGETITEMCONTAINER_DESCRIPTION","en-gb":"Analysis Target - Place captured viruses here","nl":"XXXX"},
+{"Key":"ANALYSISOUTPUTITEMCONTAINER_DESCRIPTION","en-gb":"Analysis Output - Antiviruses appear here","nl":"XXXX"},
+{"Key":"ANTIVIRUS_DESCRIPTION","en-gb":"Antivirus Tool - Used to eliminate viruses","nl":"XXXX"},
+{"Key":"TRANSFERACTIVATOR_DESCRIPTION","en-gb":"Transfer Tool - Used to transfer items between systems","nl":"XXXX"},
+{"Key":"TRANSFERITEMCONTAINER_DESCRIPTION","en-gb":"Transfer Container - Items placed here are transferred","nl":"XXXX"},
+{"Key":"CPU_DESCRIPTION","en-gb":"CPU - Movement speed on this system","nl":"XXXX"},
+{"Key":"MEMORY_DESCRIPTION","en-gb":"Memory - Remaining item slots on this system","nl":"XXXX"}]
