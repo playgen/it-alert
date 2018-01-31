@@ -5,17 +5,14 @@ using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	public class ItemContainerBehaviour : MonoBehaviour
+	public class ItemContainerBehaviour : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 	{
 		#region public events
-
-		public event Action<ItemContainerBehaviour> Click;
-
-		public event Action<ItemContainerBehaviour, ItemBehaviour, int> Drag;
 
 		public event Action<ContainerState> StateChanged;
 
@@ -32,11 +29,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private int? _containerIndex;
 
-		private bool _beingClicked { get; set; }
-
 		#endregion
-
-		public bool ClickEnable { get; set; }
 
 		public int ContainerIndex => _containerIndex ?? -10;
 
@@ -45,6 +38,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public ContainerState State { get; private set; } = ContainerState.Empty;
 
 		private ItemContainer _itemContainer;
+
+		private ItemBehaviour _moveItem;
+
+		private int _moveItemIndex;
+
+		private bool _moveHighlightGrow;
 
 		public bool CanRelease => _itemContainer.CanRelease;
 
@@ -113,7 +112,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (State != state)
 			{
 				State = state;
-				ClickEnable = state == ContainerState.HasItem || state == ContainerState.Empty;
 				_containerImage.color = state == ContainerState.Disabled
 					? UIConstants.ItemContainerDisabledColor
 					: UIConstants.ItemContainerEnabledColor;
@@ -141,6 +139,26 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var hasItem = _itemContainer?.Item != null;
 			var isEnabled = _itemContainer?.Enabled == true;
 
+			if (_moveItem)
+			{
+				var newScale = transform.localScale.x + ((_moveHighlightGrow ? Time.smoothDeltaTime : -Time.smoothDeltaTime) * 0.25f);
+				if (newScale < 0.95f)
+				{
+					newScale = 0.95f;
+					_moveHighlightGrow = true;
+				}
+				if (newScale > 1.05f)
+				{
+					newScale = 1.05f;
+					_moveHighlightGrow = false;
+				}
+				transform.localScale = Vector3.one * newScale;
+				if (TryGetItem(out var item))
+				{
+					item.transform.localScale = Vector3.one * newScale;
+				}
+			}
+
 			if (hasItem)
 			{
 				Transition(ContainerState.HasItem);
@@ -155,32 +173,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		public bool OnClickDown()
-		{
-			_beingClicked = true;
-			return true;
-		}
-
-		public void OnClickUp(ItemBehaviour item = null, int? sourceContainerIndex = null, bool isDrag = false)
-		{
-			if (_beingClicked && !isDrag)
-			{
-				LogProxy.Info("ItemContainer OnClick");
-
-				Click?.Invoke(this);
-			}
-			else if (item != null && sourceContainerIndex != null)
-			{
-				Drag?.Invoke(this, item, sourceContainerIndex.Value);
-			}
-			ClickReset();
-		}
-
-		public void ClickReset()
-		{
-			_beingClicked = false;
-		}
-
 		#endregion
 
 		protected virtual void OnStateChanged(ContainerState obj)
@@ -188,6 +180,63 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			StateChanged?.Invoke(obj);
 		}
 
+		public void OnPointerClick(PointerEventData eventData)
+		{
+			if (_moveItem)
+			{
+				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory) && inventory.Id == _moveItem.Id)
+				{
+					if (TryGetItem(out var containerItem) == false)
+					{
+						PlayerCommands.DropItem(_moveItem.Id, ContainerIndex);
+					}
+					else
+					{
+						PlayerCommands.SwapInventoryItem(containerItem.Id, ContainerIndex, _moveItem.Id);
+					}
+				}
+				else
+				{
+					if (TryGetItem(out var containerItem))
+					{
+						PlayerCommands.SwapSubsystemItem(_moveItem.Id, _moveItemIndex, containerItem.Id, ContainerIndex);
+					}
+					else
+					{
+						PlayerCommands.MoveItem(_moveItem.Id, _moveItemIndex, ContainerIndex);
+					}
+				}
+			}
+			else if (TryGetItem(out var item) && (item.CurrentLocation.Value == Director.Player.CurrentLocationEntity.EntityBehaviour.Id || item.CurrentLocation.Value == null))
+			{
+				item.OnPointerClick(this, Director);
+			}
+		}
 
+		public void Highlight(ItemBehaviour item, int index)
+		{
+			_moveItem = item;
+			_moveItemIndex = index;
+			_moveHighlightGrow = false;
+		}
+
+		public void RemoveHighlight()
+		{
+			_moveItem = null;
+			_moveItemIndex = 0;
+			transform.localScale = Vector3.one;
+			if (TryGetItem(out var item))
+			{
+				item.transform.localScale = Vector3.one;
+			}
+		}
+
+		public void OnPointerDown(PointerEventData eventData)
+		{
+		}
+
+		public void OnPointerUp(PointerEventData eventData)
+		{
+		}
 	}
 }

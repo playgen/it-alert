@@ -89,7 +89,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_itemPanel.SetActive(false);
 
 			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
-			gameContainer.GetComponent<PlayerInputHandler>().ClearClicks();
 
 			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
 			canvasGroup.alpha = 0.1f;

@@ -6,8 +6,13 @@ using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.Localization;
+using System.Linq;
+
+using PlayGen.Unity.Utilities.BestFit;
 
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
@@ -31,6 +36,20 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private Image _backgroundSprite;
 
+		[SerializeField]
+		private GameObject _selectionOptions;
+
+		[SerializeField]
+		private GameObject _leftButton;
+
+		[SerializeField]
+		private GameObject _middleButton;
+
+		[SerializeField]
+		private GameObject _rightButton;
+
+		[SerializeField]
+		private Text _descriptionText;
 
 		#endregion
 
@@ -50,9 +69,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private ConsumableActivation _consumableActivation;
 		private Capture _capture;
 
-		#endregion
+		private bool _moveState;
 
-		public bool ClickEnable { get; set; }
+		public CurrentLocation CurrentLocation => _currentLocation;
+
+		#endregion
 
 		#region Initialization
 
@@ -68,8 +89,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Entity.TryGetComponent(out _owner)
 				&& Entity.TryGetComponent(out _activation))
 			{
+				_selectionOptions.SetActive(false);
 				var spriteName = _itemType.GetType().Name.ToLowerInvariant();
-				GetComponentInChildren<HoverObject>().SetHoverText(spriteName.ToUpperInvariant() + "_DESCRIPTION");
+				_descriptionText.GetComponent<TextLocalization>().Key = spriteName.ToUpperInvariant() + "_DESCRIPTION";
 				LogProxy.Info($"Creating item type: {spriteName}");
 				gameObject.name = $"{Name}_{spriteName}";
 				_foregroundSprite.sprite = Resources.Load<Sprite>(spriteName);
@@ -137,7 +159,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void UpdateColour()
 		{
 			if ((_owner?.Value.HasValue ?? false)
-                && _activation.ActivationState == ActivationState.Active)
+				&& _activation.ActivationState == ActivationState.Active)
 			{
 				if (Director.TryGetEntity(_owner.Value.Value, out var owner))
 				{
@@ -231,5 +253,146 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public bool CanActivate => _activation.ActivationState == ActivationState.NotActive;
 		#endregion
+
+		protected override void OnUpdate()
+		{
+			if ((_selectionOptions.activeInHierarchy || _moveState) && !IsInvoking("OptionsDelay"))
+			{
+				if (Input.GetMouseButtonUp(0))
+				{
+					_moveState = false;
+					if (_selectionOptions.activeInHierarchy)
+					{
+						_selectionOptions.SetActive(false);
+						GetComponent<Canvas>().sortingOrder -= 100;
+					}
+					foreach (var con in transform.root.GetComponentsInChildren<ItemContainerBehaviour>(true))
+					{
+						con.RemoveHighlight();
+					}
+				}
+			}
+		}
+
+		public void OnPointerClick(ItemContainerBehaviour container, Director director)
+		{
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+			GetComponent<Canvas>().sortingOrder += 100;
+			if (!_selectionOptions.activeInHierarchy && CanActivate)
+			{
+				_selectionOptions.SetActive(true);
+				if (container.CanRelease && CanActivate)
+				{
+					_leftButton.SetActive(true);
+					_rightButton.SetActive(true);
+					_middleButton.SetActive(true);
+					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_leftButton.GetComponent<Button>().onClick.AddListener(Use);
+					_leftButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
+					_leftButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
+					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_rightButton.GetComponent<Button>().onClick.AddListener(() => Take(container));
+					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("TAKE_BUTTON");
+					_rightButton.GetComponentInChildren<TextLocalization>().Key = "TAKE_BUTTON";
+					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
+					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
+					_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
+				}
+				else if (!container.CanRelease && CanActivate)
+				{
+					_leftButton.SetActive(false);
+					_rightButton.SetActive(false);
+					_middleButton.SetActive(true);
+					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_middleButton.GetComponent<Button>().onClick.AddListener(Use);
+					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
+					_middleButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
+				}
+				else if (container.CanRelease && !CanActivate)
+				{
+					if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory) && inventory.Id == Id)
+					{
+						_leftButton.SetActive(false);
+						_rightButton.SetActive(false);
+						_middleButton.SetActive(true);
+						_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
+						_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
+						_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
+					}
+					else
+					{
+						_leftButton.SetActive(true);
+						_rightButton.SetActive(true);
+						_middleButton.SetActive(false);
+						_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						_leftButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
+						_leftButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
+						_leftButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
+						_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						_rightButton.GetComponent<Button>().onClick.AddListener(() => Take(container));
+						_rightButton.GetComponentInChildren<Text>().text = Localization.Get("TAKE_BUTTON");
+						_rightButton.GetComponentInChildren<TextLocalization>().Key = "TAKE_BUTTON";
+						_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
+						
+					}
+				}
+				else
+				{
+					_leftButton.SetActive(false);
+					_rightButton.SetActive(false);
+					_middleButton.SetActive(true);
+				}
+				_selectionOptions.GetComponentsInChildren<Button>().BestFit();
+				Invoke("SetDescriptionSize", Time.smoothDeltaTime * 2);
+			}
+		}
+
+		private void SetDescriptionSize()
+		{
+			_descriptionText.fontSize = _selectionOptions.GetComponentsInChildren<Button>()[0].GetComponentInChildren<Text>().fontSize;
+		}
+
+		private void Use()
+		{
+			PlayerCommands.ActivateItem(Id);
+		}
+
+		private void Take(ItemContainerBehaviour container)
+		{
+			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			{
+				PlayerCommands.SwapInventoryItem(Id, container.ContainerIndex, inventory.Id);
+			}
+			else
+			{
+				PlayerCommands.PickupItem(Id);
+			}
+		}
+
+		private void Move(ItemContainerBehaviour container, Director director)
+		{
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+			_moveState = true;
+			_selectionOptions.SetActive(false);
+			GetComponent<Canvas>().sortingOrder -= 100;
+			var currentLocation = director.Player.CurrentLocationEntity;
+			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			{
+				foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
+				{
+					if (systemContainer != container)
+					{
+						systemContainer.Highlight(this, container.ContainerIndex);
+					}
+				}
+			}
+		}
 	}
 }
