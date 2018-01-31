@@ -246,7 +246,6 @@
     <Compile Include="Photon\ITAlertClientRoom.cs" />
     <Compile Include="Photon\ITAlertPhotonClient.cs" />
     <Compile Include="Photon\PhotonConfigLoader.cs" />
-    <Compile Include="Simulation\Behaviours\ItemDragBehaviour.cs" />
     <Compile Include="Simulation\AnimateConnectionUV.cs" />
     <Compile Include="Simulation\Behaviours\NpcBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\VisitorVectors.cs" />
@@ -322,7 +321,6 @@
     <Compile Include="Simulation\Behaviours\PlayerBehaviour.cs" />
     <Compile Include="Simulation\Behaviours\SubsystemBehaviour.cs" />
     <Compile Include="Simulation\Director.cs" />
-    <Compile Include="Simulation\PlayerInputHandler.cs" />
     <Compile Include="Simulation\PlayerCommands.cs" />
     <Compile Include="Simulation\Tags.cs" />
     <Compile Include="Simulation\UIConstants.cs" />

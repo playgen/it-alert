@@ -52,7 +52,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		{
 			_endGame = false;
 			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
-			gameContainer.GetComponent<PlayerInputHandler>().ClearClicks();
 			gameContainer.SetActive(false);
 			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
 			canvasGroup.alpha = 1;

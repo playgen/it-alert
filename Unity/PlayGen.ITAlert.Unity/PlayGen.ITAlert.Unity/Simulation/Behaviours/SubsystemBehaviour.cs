@@ -16,7 +16,7 @@ using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
-	public class SubsystemBehaviour : NodeBehaviour
+	public class SubsystemBehaviour : NodeBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
 	{
 		private readonly Vector2[] _itemContainerPositions = {
 			new Vector2(-59, 31.5f),
@@ -60,8 +60,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private RectTransform _rectTransform;
 
 		private float _itemZ;
-
-		private bool _beingClicked { get; set; }
 
 		#endregion
 
@@ -149,22 +147,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
 				itemContainerBehaviour.Initialize(itemContainer, Director, i);
-				itemContainerBehaviour.Click += SystemContainerBehaviourOnClick;
 				SetItemPosition(i, _itemContainers[i]);
 
 			});
-		}
-
-		private void SystemContainerBehaviourOnClick(ItemContainerBehaviour itemContainerBehaviour)
-		{
-			if (Director.Player.CurrentLocationEntity.Id == Entity.Id
-				&& itemContainerBehaviour.State == ContainerState.HasItem)
-			{
-				if (itemContainerBehaviour.TryGetItem(out var item))
-				{
-					PlayerCommands.ActivateItem(item.Id);
-				}
-			}
 		}
 
 		private void SetItemPosition(int index, GameObject go)
@@ -359,33 +344,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#endregion
 
-		public void OnClickDown()
+		public void OnPointerClick(PointerEventData eventData)
 		{
-			_beingClicked = true;
-			_blink.enabled = _beingClicked;
+			PlayerCommands.Move(Id);
 		}
 
-		protected override void OnUpdate()
+		public void OnPointerDown(PointerEventData eventData)
 		{
-			var raycastResults = new List<RaycastResult>();
-			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
-			if (_beingClicked && !raycastResults.Select(r => r.gameObject).Contains(_sprite.gameObject))
-			{
-				ClickReset();
-			}
+			_blink.enabled = true;
 		}
 
-		public bool OnClickUp()
+		public void OnPointerUp(PointerEventData eventData)
 		{
-			var wasClicked = _beingClicked;
-			_beingClicked = false;
-			_blink.enabled = _beingClicked;
-			return wasClicked;
-		}
-
-		public void ClickReset()
-		{
-			OnClickUp();
+			_blink.enabled = false;
 		}
 	}
 }
