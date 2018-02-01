@@ -93,7 +93,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
 				: Resources.Load<Sprite>(SpriteOverride);
 			_containerImage.sprite = sprite;
-			GetComponentInChildren<HoverObject>().SetHoverText(!string.Equals(sprite.name, UIConstants.ItemContainerDefaultSpriteName, StringComparison.CurrentCultureIgnoreCase) ? sprite.name.ToUpperInvariant() + "_DESCRIPTION" : string.Empty);
+			if (GetComponentInChildren<HoverObject>())
+			{
+				GetComponentInChildren<HoverObject>().SetHoverText(!string.Equals(sprite.name, UIConstants.ItemContainerDefaultSpriteName, StringComparison.CurrentCultureIgnoreCase) ? sprite.name.ToUpperInvariant() + "_DESCRIPTION" : string.Empty);
+			}
 		}
 
 		//public void Uninitialize()
@@ -207,9 +210,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					}
 				}
 			}
-			else if (TryGetItem(out var item) && (item.CurrentLocation.Value == Director.Player.CurrentLocationEntity.EntityBehaviour.Id || item.CurrentLocation.Value == null))
+			else if (TryGetItem(out var item))
 			{
-				item.OnPointerClick(this, Director);
+				if (item.CurrentLocation.Value == Director.Player.CurrentLocationEntity.EntityBehaviour.Id)
+				{
+					item.OnPointerClick(this, Director);
+				}
+				else if (item.CurrentLocation.Value == null)
+				{
+					GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel").GetComponentInChildren<ItemBehaviour>().OnPointerClick(this, Director);
+				}
 			}
 		}
 

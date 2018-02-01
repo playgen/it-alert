@@ -86,4 +86,7 @@
 {"Key":"TRANSFERACTIVATOR_DESCRIPTION","en-gb":"Transfer Tool - Used to transfer items between systems","nl":"XXXX"},
 {"Key":"TRANSFERITEMCONTAINER_DESCRIPTION","en-gb":"Transfer Container - Items placed here are transferred","nl":"XXXX"},
 {"Key":"CPU_DESCRIPTION","en-gb":"CPU - Movement speed on this system","nl":"XXXX"},
-{"Key":"MEMORY_DESCRIPTION","en-gb":"Memory - Remaining item slots on this system","nl":"XXXX"}]
+{"Key":"MEMORY_DESCRIPTION","en-gb":"Memory - Remaining item slots on this system","nl":"XXXX"},
+{"Key":"USE_BUTTON","en-gb":"Use","nl":"XXXX"},
+{"Key":"MOVE_BUTTON","en-gb":"Move","nl":"XXXX"},
+{"Key":"TAKE_BUTTON","en-gb":"Take","nl":"XXXX"}]

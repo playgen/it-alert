@@ -26,8 +26,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 		private Button _createGamePopupButton;
 		private Button _createGameCloseButton;
 
-		private bool _bestFitTick;
-
 		public CreateGameStateInput(ITAlertPhotonClient photonClient, ScenarioController scenarioController)
 		{
 			_photonClient = photonClient;
@@ -76,7 +74,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 			_createGamePanel.SetActive(true);
 			_createGamePanel.GetComponent<CreateGamePopupBehaviour>().ResetFields(_scenarioController.SelectedScenario);
 			_buttons.Buttons.BestFit();
-			_bestFitTick = true;
 		}
 
 		protected override void OnExit()
@@ -90,11 +87,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (_bestFitTick)
-			{
-				_buttons.Buttons.BestFit();
-				_bestFitTick = false;
-			}
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();

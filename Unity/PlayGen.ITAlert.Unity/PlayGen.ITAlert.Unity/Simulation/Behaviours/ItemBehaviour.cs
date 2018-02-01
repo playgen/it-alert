@@ -1,4 +1,6 @@
-﻿using Engine.Systems.Activation.Components;
+﻿using System.Collections.Generic;
+
+using Engine.Systems.Activation.Components;
 
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
@@ -270,36 +272,37 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					{
 						con.RemoveHighlight();
 					}
+					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				}
 			}
 		}
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			GetComponent<Canvas>().sortingOrder += 100;
-			if (!_selectionOptions.activeInHierarchy && CanActivate)
+			if (!_selectionOptions.activeInHierarchy && CanActivate && !IsInvoking("OptionsDelay"))
 			{
+				GetComponent<Canvas>().sortingOrder += 100;
+				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				_selectionOptions.SetActive(true);
-				if (container.CanRelease && CanActivate)
+				if (container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
 					_leftButton.SetActive(true);
-					_rightButton.SetActive(true);
-					_middleButton.SetActive(true);
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_leftButton.GetComponent<Button>().onClick.AddListener(Use);
 					_leftButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
 					_leftButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
+					_rightButton.SetActive(true);
 					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_rightButton.GetComponent<Button>().onClick.AddListener(() => Take(container));
 					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("TAKE_BUTTON");
 					_rightButton.GetComponentInChildren<TextLocalization>().Key = "TAKE_BUTTON";
+					_middleButton.SetActive(true);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
 				}
-				else if (!container.CanRelease && CanActivate)
+				else if (!container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
 					_leftButton.SetActive(false);
 					_rightButton.SetActive(false);
@@ -311,36 +314,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
 				}
-				else if (container.CanRelease && !CanActivate)
+				else if (CurrentLocation.Value == null)
 				{
-					if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory) && inventory.Id == Id)
-					{
-						_leftButton.SetActive(false);
-						_rightButton.SetActive(false);
-						_middleButton.SetActive(true);
-						_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
-						_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
-						_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
-					}
-					else
-					{
-						_leftButton.SetActive(true);
-						_rightButton.SetActive(true);
-						_middleButton.SetActive(false);
-						_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						_leftButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
-						_leftButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
-						_leftButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
-						_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						_rightButton.GetComponent<Button>().onClick.AddListener(() => Take(container));
-						_rightButton.GetComponentInChildren<Text>().text = Localization.Get("TAKE_BUTTON");
-						_rightButton.GetComponentInChildren<TextLocalization>().Key = "TAKE_BUTTON";
-						_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
-						
-					}
+					_leftButton.SetActive(false);
+					_rightButton.SetActive(false);
+					_middleButton.SetActive(true);
+					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					((RectTransform)_middleButton.transform).anchorMin = new Vector2(-0.2f, 1.2f);
+					((RectTransform)_middleButton.transform).anchorMax = new Vector2(1.2f, 2f);
+					((RectTransform)_middleButton.transform).anchoredPosition = Vector2.zero;
+					((RectTransform)_middleButton.transform).sizeDelta = Vector2.zero;
+					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
+					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
+					_middleButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
 				}
 				else
 				{
@@ -348,14 +336,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_rightButton.SetActive(false);
 					_middleButton.SetActive(true);
 				}
-				_selectionOptions.GetComponentsInChildren<Button>().BestFit();
-				Invoke("SetDescriptionSize", Time.smoothDeltaTime * 2);
+				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
+				_descriptionText.fontSize = (int)(bestFitSize * 0.6f);
 			}
-		}
-
-		private void SetDescriptionSize()
-		{
-			_descriptionText.fontSize = _selectionOptions.GetComponentsInChildren<Button>()[0].GetComponentInChildren<Text>().fontSize;
 		}
 
 		private void Use()

@@ -33,7 +33,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 		private int _lobbyPlayerMax;
 		private Button _backButton;
-		private bool _bestFitTick;
 		private bool _readyPulseDown;
 
 		public event Action LeaveLobbyClickedEvent;
@@ -74,7 +73,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_readyButton.GetComponent<Image>().color = Color.white;
 			_lobbyPanel.SetActive(true);
 			_buttons.Buttons.BestFit();
-			_bestFitTick = true;
 
 			_backButton.onClick.AddListener(OnBackButtonClick);
 			_readyButton.onClick.AddListener(OnReadyButtonClick);
@@ -113,11 +111,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			else
 			{
 				_readyButton.GetComponent<Image>().color = Color.white;
-			}
-			if (_bestFitTick)
-			{
-				_buttons.Buttons.BestFit();
-				_bestFitTick = false;
 			}
 			UpdateVoiceStatuses();
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
