@@ -41,8 +41,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private GameObject _error;
 		private Button _sendButton;
 
-		private bool _bestFitDelay;
-
 		public event Action<Dictionary<int, int[]>> PlayerRankingsCompleteEvent;
 		public event Action FeedbackSendClickedEvent;
 
@@ -266,23 +264,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			_rankingImage.transform.SetAsLastSibling();
 			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
 			_feedbackPanel.BestFit();
-			_bestFitDelay = true;
 		}
 
 		private void SetErrorText()
 		{
 			var firstUnfilled = _playerRankings.First(rank => rank.Value.Count(r => r != null) != _director.Players.Count - 1).Key;
 			_error.GetComponent<Text>().text = Localization.GetAndFormat("FEEDBACK_LABEL_ERROR", false, firstUnfilled);
-		}
-
-		protected override void OnTick(float deltaTime)
-		{
-			if (_bestFitDelay)
-			{
-				LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
-				_feedbackPanel.BestFit();
-				_bestFitDelay = false;
-			}
 		}
 	}
 }

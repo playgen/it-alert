@@ -26,8 +26,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 		private Button _backButton;
 		private Button _refreshButton;
 
-		private bool _bestFitTick;
-
 		public event Action JoinGameSuccessEvent;
 		public event Action BackClickedEvent;
 
@@ -76,7 +74,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 			_joinGamePanel.SetActive(true);
 			_buttons.Buttons.BestFit();
-			_bestFitTick = true;
 			OnRefreshClick();
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}
@@ -93,11 +90,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 		protected override void OnTick(float deltaTime)
 		{
-			if (_bestFitTick)
-			{
-				_buttons.Buttons.BestFit();
-				_bestFitTick = false;
-			}
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
 			{
 				OnBackClick();
