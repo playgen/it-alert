@@ -146,7 +146,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_itemContainers.Add(itemContainerObject);
 
 				var itemContainerBehaviour = itemContainerObject.GetComponent<ItemContainerBehaviour>();
-				itemContainerBehaviour.Initialize(itemContainer, Director, i);
+				itemContainerBehaviour.Initialize(itemContainer, Director, i, Id);
 				SetItemPosition(i, _itemContainers[i]);
 
 			});

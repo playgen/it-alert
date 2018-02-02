@@ -89,4 +89,5 @@
 {"Key":"MEMORY_DESCRIPTION","en-gb":"Memory - Remaining item slots on this system","nl":"XXXX"},
 {"Key":"USE_BUTTON","en-gb":"Use","nl":"XXXX"},
 {"Key":"MOVE_BUTTON","en-gb":"Move","nl":"XXXX"},
-{"Key":"TAKE_BUTTON","en-gb":"Take","nl":"XXXX"}]
+{"Key":"TAKE_BUTTON","en-gb":"Take","nl":"XXXX"},
+{"Key":"PLACE_BUTTON","en-gb":"Place","nl":"XXXX"}]
