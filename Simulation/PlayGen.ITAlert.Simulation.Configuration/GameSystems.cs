@@ -156,7 +156,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SwapSubsystemItemCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SwapInventoryItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SwapInventoryItemAndActivateCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemCommandHandler>(),
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropAndActivateItemCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DropItemTypeCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<PickupItemTypeCommandHandler>(),

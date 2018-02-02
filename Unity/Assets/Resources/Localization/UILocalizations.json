@@ -90,4 +90,5 @@
 {"Key":"USE_BUTTON","en-gb":"Use","nl":"XXXX"},
 {"Key":"MOVE_BUTTON","en-gb":"Move","nl":"XXXX"},
 {"Key":"TAKE_BUTTON","en-gb":"Take","nl":"XXXX"},
-{"Key":"PLACE_BUTTON","en-gb":"Place","nl":"XXXX"}]
+{"Key":"PLACE_BUTTON","en-gb":"Place","nl":"XXXX"},
+{"Key":"PLACE_AND_USE_BUTTON","en-gb":"Place And Use","nl":"XXXX"}]

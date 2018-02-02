@@ -43,7 +43,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private ItemBehaviour _moveItem;
 
-		private int _moveItemIndex;
+		private int? _moveItemIndex;
 
 		private bool _moveHighlightGrow;
 
@@ -192,24 +192,38 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory) && inventory.Id == _moveItem.Id)
 				{
-					if (TryGetItem(out var containerItem) == false)
+					if (_moveItemIndex.HasValue)
 					{
-						PlayerCommands.DropItem(_moveItem.Id, ContainerIndex);
+						if (TryGetItem(out var containerItem) == false)
+						{
+							PlayerCommands.DropItem(_moveItem.Id, ContainerIndex);
+						}
+						else
+						{
+							PlayerCommands.SwapInventoryItem(containerItem.Id, ContainerIndex, _moveItem.Id);
+						}
 					}
 					else
 					{
-						PlayerCommands.SwapInventoryItem(containerItem.Id, ContainerIndex, _moveItem.Id);
+						if (TryGetItem(out var containerItem) == false)
+						{
+							PlayerCommands.DropAndActivateItem(_moveItem.Id, ContainerIndex);
+						}
+						else
+						{
+							PlayerCommands.SwapAndActivateInventoryItem(containerItem.Id, ContainerIndex, _moveItem.Id);
+						}
 					}
 				}
-				else
+				else if (_moveItemIndex.HasValue)
 				{
 					if (TryGetItem(out var containerItem))
 					{
-						PlayerCommands.SwapSubsystemItem(_moveItem.Id, _moveItemIndex, containerItem.Id, ContainerIndex);
+						PlayerCommands.SwapSubsystemItem(_moveItem.Id, _moveItemIndex.Value, containerItem.Id, ContainerIndex);
 					}
 					else
 					{
-						PlayerCommands.MoveItem(_moveItem.Id, _moveItemIndex, ContainerIndex);
+						PlayerCommands.MoveItem(_moveItem.Id, _moveItemIndex.Value, ContainerIndex);
 					}
 				}
 			}
@@ -234,7 +248,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 		}
 
-		public void Highlight(ItemBehaviour item, int index)
+		public void Highlight(ItemBehaviour item, int? index)
 		{
 			_moveItem = item;
 			_moveItemIndex = index;
@@ -244,7 +258,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		public void RemoveHighlight()
 		{
 			_moveItem = null;
-			_moveItemIndex = 0;
+			_moveItemIndex = null;
 			transform.localScale = Vector3.one;
 			if (TryGetItem(out var item))
 			{

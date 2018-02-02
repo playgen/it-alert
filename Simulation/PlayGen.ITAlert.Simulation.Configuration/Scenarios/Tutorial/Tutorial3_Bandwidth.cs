@@ -212,6 +212,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new HideText(),
 						new ClearHighlight(),
 						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
 					},
 				}
 			);
@@ -248,6 +249,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new SetCommandEnabled<PickupItemCommand>(false),
 						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 					},
 				}
 			);

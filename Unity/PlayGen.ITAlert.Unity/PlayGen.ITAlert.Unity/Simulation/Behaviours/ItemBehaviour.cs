@@ -325,19 +325,27 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				else if (CurrentLocation.Value == null)
 				{
-					_leftButton.SetActive(false);
-					_rightButton.SetActive(false);
-					_middleButton.SetActive(true);
-					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					_leftButton.SetActive(true);
+					_rightButton.SetActive(true);
+					_middleButton.SetActive(false);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					((RectTransform)_middleButton.transform).anchorMin = new Vector2(-0.2f, 1.2f);
-					((RectTransform)_middleButton.transform).anchorMax = new Vector2(1.2f, 2f);
-					((RectTransform)_middleButton.transform).anchoredPosition = Vector2.zero;
-					((RectTransform)_middleButton.transform).sizeDelta = Vector2.zero;
-					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
-					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
-					_middleButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
+					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					((RectTransform)_leftButton.transform).anchorMin = new Vector2(-1.6f, 1.2f);
+					((RectTransform)_leftButton.transform).anchorMax = new Vector2(-0.2f, 2f);
+					((RectTransform)_leftButton.transform).anchoredPosition = Vector2.zero;
+					((RectTransform)_leftButton.transform).sizeDelta = Vector2.zero;
+					_leftButton.GetComponent<Button>().onClick.AddListener(() => MoveAndUse(container, director));
+					_leftButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_AND_USE_BUTTON");
+					_leftButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_AND_USE_BUTTON";
+
+					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
+					((RectTransform)_rightButton.transform).anchorMin = new Vector2(1.2f, 1.2f);
+					((RectTransform)_rightButton.transform).anchorMax = new Vector2(2.6f, 2f);
+					((RectTransform)_rightButton.transform).anchoredPosition = Vector2.zero;
+					((RectTransform)_rightButton.transform).sizeDelta = Vector2.zero;
+					_rightButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
+					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
+					_rightButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
 				}
 				else
 				{
@@ -345,7 +353,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_rightButton.SetActive(false);
 					_middleButton.SetActive(true);
 				}
-				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON"), Localization.Get("PLACE_BUTTON") });
+				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON"), Localization.Get("PLACE_BUTTON"), Localization.Get("PLACE_AND_USE_BUTTON") });
 				_descriptionText.fontSize = (int)(bestFitSize * 0.6f);
 				var optionAnim = _selectionOptions.GetComponent<Animation>();
 				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
@@ -396,6 +404,26 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					if (systemContainer != container)
 					{
 						systemContainer.Highlight(this, container.ContainerIndex);
+					}
+				}
+			}
+		}
+
+		private void MoveAndUse(ItemContainerBehaviour container, Director director)
+		{
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+			_moveState = true;
+			_selectionOptions.SetActive(false);
+			GetComponent<Canvas>().sortingOrder -= 100;
+			var currentLocation = director.Player.CurrentLocationEntity;
+			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			{
+				foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
+				{
+					if (systemContainer != container)
+					{
+						systemContainer.Highlight(this, null);
 					}
 				}
 			}
