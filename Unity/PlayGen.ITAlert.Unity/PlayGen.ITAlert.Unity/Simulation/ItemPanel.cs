@@ -32,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
 				{
-					ContainerBehaviour.Initialize(ItemContainer, _director, containerIndex);
+					ContainerBehaviour.Initialize(ItemContainer, _director, containerIndex, null);
 				}
 
 				_itemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);

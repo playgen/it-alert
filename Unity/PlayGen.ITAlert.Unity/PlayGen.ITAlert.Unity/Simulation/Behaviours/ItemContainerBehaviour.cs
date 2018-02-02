@@ -29,6 +29,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private int? _containerIndex;
 
+		private int? _subsystemId;
+
 		#endregion
 
 		public int ContainerIndex => _containerIndex ?? -10;
@@ -62,11 +64,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_containerIndex = containerIndex;
 		}
 
-		public void Initialize(ItemContainer itemContainer, Director director, int containerIndex)
+		public void Initialize(ItemContainer itemContainer, Director director, int containerIndex, int? subsystemId)
 		{
 			_itemContainer = itemContainer;
 			Director = director;
 			_containerIndex = containerIndex;
+			_subsystemId = subsystemId;
 
 			UpdateImage();
 		}
@@ -216,10 +219,18 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					item.OnPointerClick(this, Director);
 				}
-				else if (item.CurrentLocation.Value == null)
+				else if (_subsystemId == null && item.CurrentLocation.Value == null)
 				{
 					GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel").GetComponentInChildren<ItemBehaviour>().OnPointerClick(this, Director);
 				}
+				else if (_subsystemId != null)
+				{
+					PlayerCommands.Move(_subsystemId.Value);
+				}
+			}
+			else if (_subsystemId != null)
+			{
+				PlayerCommands.Move(_subsystemId.Value);
 			}
 		}
 

@@ -265,7 +265,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_moveState = false;
 					if (_selectionOptions.activeInHierarchy)
 					{
-						_selectionOptions.SetActive(false);
+						var optionAnim = _selectionOptions.GetComponent<Animation>();
+						var clipName = optionAnim.clip.name;
+						optionAnim[clipName].time = optionAnim[clipName].length;
+						optionAnim[clipName].speed = -1;
+						optionAnim.Play();
+						Invoke("DisableOptions", 0.33f);
 						GetComponent<Canvas>().sortingOrder -= 100;
 					}
 					foreach (var con in transform.root.GetComponentsInChildren<ItemContainerBehaviour>(true))
@@ -281,6 +286,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (!_selectionOptions.activeInHierarchy && CanActivate && !IsInvoking("OptionsDelay"))
 			{
+				_leftButton.transform.localScale = Vector3.one;
+				_rightButton.transform.localScale = Vector3.one;
+				_middleButton.transform.localScale = Vector3.one;
+				_descriptionText.transform.parent.localScale = Vector3.one;
 				GetComponent<Canvas>().sortingOrder += 100;
 				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				_selectionOptions.SetActive(true);
@@ -338,7 +347,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
 				_descriptionText.fontSize = (int)(bestFitSize * 0.6f);
+				var optionAnim = _selectionOptions.GetComponent<Animation>();
+				var clipName = optionAnim.clip.name;
+				optionAnim[clipName].time = 0;
+				optionAnim[clipName].speed = 1;
+				optionAnim.Play();
 			}
+		}
+
+		private void DisableOptions()
+		{
+			_leftButton.transform.localScale = Vector3.one;
+			_rightButton.transform.localScale = Vector3.one;
+			_middleButton.transform.localScale = Vector3.one;
+			_descriptionText.transform.parent.localScale = Vector3.one;
+			_selectionOptions.SetActive(false);
 		}
 
 		private void Use()
