@@ -98,6 +98,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			IssueCommand(activateItemCommand);
 		}
 
+		public static void DropAndActivateItem(int itemId, int containerIndex)
+		{
+			Log($"Request DropAndActivateItemCommand item: {itemId}");
+			var dropAndActivateItemCommand = new DropAndActivateItemCommand
+			{
+				PlayerId = Director.Player.Id,
+				ItemId = itemId,
+				ContainerId = containerIndex
+			};
+			IssueCommand(dropAndActivateItemCommand);
+		}
+
 		public static void HaltAndCatchFire()
 		{
 			Log("Halt and Fire");
@@ -139,6 +151,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								ContainerId = subsystemContainerId,
 								InventoryItemId = inventoryItemId
 							};
+			IssueCommand(command);
+		}
+
+		public static void SwapAndActivateInventoryItem(int subsystemItemid, int subsystemContainerId, int inventoryItemId)
+		{
+			Log($"Request SwapAndActivateInventoryItem fromItem: {inventoryItemId} to: {subsystemItemid}");
+			var command = new SwapInventoryItemAndActivateCommand
+			{
+				PlayerId = Director.Player.Id,
+				SubsystemId = Director.Player.CurrentLocationEntity.Id,
+				SubsystemItemId = subsystemItemid,
+				ContainerId = subsystemContainerId,
+				InventoryItemId = inventoryItemId
+			};
 			IssueCommand(command);
 		}
 	}

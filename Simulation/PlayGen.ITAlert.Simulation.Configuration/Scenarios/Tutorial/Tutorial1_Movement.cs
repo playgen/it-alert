@@ -151,6 +151,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						// TODO: this should disable the cancapture flag of the inventory slot
 						new SetCommandEnabled<PickupItemCommand>(false),	
 						new SetCommandEnabled<ActivateItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
 						new CreateItem(TutorialScanner.Archetype, nodeRight),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
@@ -184,6 +185,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame6"),
 					},
 					ExitCondition = new ItemTypeIsActivated<Scanner>(),
@@ -224,6 +226,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new HideText(),
 						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
 					},
 				}
 			);
@@ -250,6 +253,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<DropItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 						new ShowText(false, $"{scenario.Key}_Frame10"),
 					},
 					ExitCondition = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
@@ -285,6 +289,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new ShowText(false, $"{scenario.Key}_Frame12"),
 						new SetCommandEnabled<ActivateItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
 					},
 					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
@@ -305,6 +310,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 				}

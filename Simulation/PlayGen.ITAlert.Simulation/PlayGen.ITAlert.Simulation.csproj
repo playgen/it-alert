@@ -47,6 +47,7 @@
     <Compile Include="Commands\ActivateItemCommand.cs" />
     <Compile Include="Commands\ActivateItemTypeCommand.cs" />
     <Compile Include="Commands\CreatePlayerCommand.cs" />
+    <Compile Include="Commands\DropAndActivateItemCommand.cs" />
     <Compile Include="Commands\MoveItemCommand.cs" />
     <Compile Include="Commands\PlayerDisconnectedCommand.cs" />
     <Compile Include="Commands\SetActorDestinationCommand.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Sequencing\SimulationAction.cs" />
     <Compile Include="Sequencing\SimulationFrame.cs" />
     <Compile Include="Components\Items\ItemContainerExtensions.cs" />
+    <Compile Include="Commands\SwapInventoryItemAndActivateCommand.cs" />
     <Compile Include="Systems\Initialization\GraphSystem.cs" />
     <Compile Include="Systems\Movement\MovementSpeedSystem.cs" />
     <Compile Include="Systems\Players\DisposePlayerOnDisconnect.cs" />
