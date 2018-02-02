@@ -266,10 +266,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					if (_selectionOptions.activeInHierarchy)
 					{
 						var optionAnim = _selectionOptions.GetComponent<Animation>();
-						var clipName = optionAnim.clip.name;
+						var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
 						optionAnim[clipName].time = optionAnim[clipName].length;
 						optionAnim[clipName].speed = -1;
-						optionAnim.Play();
+						optionAnim.Play(clipName);
 						Invoke("DisableOptions", 0.33f);
 						GetComponent<Canvas>().sortingOrder -= 100;
 					}
@@ -345,13 +345,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_rightButton.SetActive(false);
 					_middleButton.SetActive(true);
 				}
-				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
+				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON"), Localization.Get("PLACE_BUTTON") });
 				_descriptionText.fontSize = (int)(bestFitSize * 0.6f);
 				var optionAnim = _selectionOptions.GetComponent<Animation>();
-				var clipName = optionAnim.clip.name;
+				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
 				optionAnim[clipName].time = 0;
 				optionAnim[clipName].speed = 1;
-				optionAnim.Play();
+				optionAnim.Play(clipName);
 			}
 		}
 
