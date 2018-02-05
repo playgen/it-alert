@@ -133,6 +133,21 @@ namespace PlayGen.ITAlert.Simulation.Commands
 								_eventSystem.Publish(@event);
 								return true;
 							}
+
+							inventory.Item = command.InventoryItemId;
+							if (inventoryItemTuple != null)
+							{
+								inventoryItemTuple.Component2.Value = playerTuple.Entity.Id;
+								inventoryItemTuple.Component3.Value = null;
+							}
+
+							subsystemContainer.Item = command.SubsystemItemId;
+							if (subsystemItemTuple != null)
+							{
+								subsystemItemTuple.Component3.Value = subsystemTuple.Entity.Id;
+								subsystemItemTuple.Component2.Value = null;
+							}
+
 							@event.Result = handlerEnabled
 								? itemNotActive
 									? playerCanActivate

@@ -1,8 +1,11 @@
 ﻿using System;
 
+using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -47,6 +50,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private bool _moveHighlightGrow;
 
+		[SerializeField]
+		private GameObject _selectionOptions;
+
+		[SerializeField]
+		private GameObject _leftButton;
+
+		[SerializeField]
+		private GameObject _rightButton;
+
 		public bool CanRelease => _itemContainer.CanRelease;
 
 		public string SpriteOverride { private get; set; }
@@ -58,19 +70,22 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//Canvas.ForceUpdateCanvases();
 		}
 
-		public void Initialize(Director director, int containerIndex)
-		{
-			Director = director;
-			_containerIndex = containerIndex;
-		}
-
 		public void Initialize(ItemContainer itemContainer, Director director, int containerIndex, int? subsystemId)
 		{
 			_itemContainer = itemContainer;
 			Director = director;
 			_containerIndex = containerIndex;
 			_subsystemId = subsystemId;
-
+			if (_selectionOptions)
+			{
+				_selectionOptions.SetActive(false);
+				_leftButton.GetComponent<Button>().onClick.AddListener(MoveAndUse);
+				_leftButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_AND_USE_BUTTON");
+				_leftButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_AND_USE_BUTTON";
+				_rightButton.GetComponent<Button>().onClick.AddListener(Move);
+				_rightButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
+				_rightButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
+			}
 			UpdateImage();
 		}
 
@@ -177,6 +192,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				Transition(ContainerState.Disabled);
 			}
+
+			if (_selectionOptions && _selectionOptions.activeInHierarchy && !IsInvoking("OptionsDelay"))
+			{
+				if (Input.GetMouseButtonUp(0))
+				{
+					var optionAnim = _selectionOptions.GetComponent<Animation>();
+					var clipName = optionAnim.clip.name;
+					optionAnim[clipName].time = optionAnim[clipName].length;
+					optionAnim[clipName].speed = -1;
+					optionAnim.Play(clipName);
+					Invoke("DisableOptions", 0.33f);
+					GetComponent<Canvas>().sortingOrder -= 100;
+					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				}
+			}
 		}
 
 		#endregion
@@ -188,9 +218,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(PointerEventData eventData)
 		{
+			GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory);
 			if (_moveItem)
 			{
-				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory) && inventory.Id == _moveItem.Id)
+				if (inventory && inventory.Id == _moveItem.Id)
 				{
 					if (_moveItemIndex.HasValue)
 					{
@@ -244,8 +275,32 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			}
 			else if (_subsystemId != null)
 			{
-				PlayerCommands.Move(_subsystemId.Value);
+				if (_subsystemId != Director.Player.CurrentLocationEntity.EntityBehaviour.Id)
+				{
+					PlayerCommands.Move(_subsystemId.Value);
+				}
+				else if (_selectionOptions && inventory && !IsInvoking("OptionsDelay"))
+				{
+					_leftButton.transform.localScale = Vector3.one;
+					_rightButton.transform.localScale = Vector3.one;
+					GetComponent<Canvas>().sortingOrder += 100;
+					_selectionOptions.SetActive(true);
+					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+					_selectionOptions.GetComponentsInChildren<Button>().BestFit();
+					var optionAnim = _selectionOptions.GetComponent<Animation>();
+					var clipName = optionAnim.clip.name;
+					optionAnim[clipName].time = 0;
+					optionAnim[clipName].speed = 1;
+					optionAnim.Play(clipName);
+				}
 			}
+		}
+
+		private void DisableOptions()
+		{
+			_leftButton.transform.localScale = Vector3.one;
+			_rightButton.transform.localScale = Vector3.one;
+			_selectionOptions.SetActive(false);
 		}
 
 		public void Highlight(ItemBehaviour item, int? index)
@@ -263,6 +318,28 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			if (TryGetItem(out var item))
 			{
 				item.transform.localScale = Vector3.one;
+			}
+		}
+
+		private void Move()
+		{
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+			_selectionOptions.SetActive(false);
+			GetComponent<Canvas>().sortingOrder -= 100;
+			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			{
+				PlayerCommands.DropItem(inventory.Id, ContainerIndex);
+			}
+		}
+
+		private void MoveAndUse()
+		{
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+			_selectionOptions.SetActive(false);
+			GetComponent<Canvas>().sortingOrder -= 100;
+			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			{
+				PlayerCommands.DropAndActivateItem(inventory.Id, ContainerIndex);
 			}
 		}
 
