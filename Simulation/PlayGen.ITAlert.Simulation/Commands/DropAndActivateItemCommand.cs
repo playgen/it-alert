@@ -100,6 +100,12 @@ namespace PlayGen.ITAlert.Simulation.Commands
 							_eventSystem.Publish(@event);
 							return true;
 						}
+
+						inventory.Item = itemTuple.Entity.Id;
+						itemTuple.Component2.Value = playerTuple.Entity.Id;
+						itemTuple.Component3.Value = null;
+						target.Item = null;
+
 						@event.Result = handlerEnabled
 							? itemNotActive
 								? playerCanActivate
