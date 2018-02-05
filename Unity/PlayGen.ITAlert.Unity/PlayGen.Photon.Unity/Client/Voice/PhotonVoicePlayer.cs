@@ -24,6 +24,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 			_photonVoiceSpeaker = GetComponent<PhotonVoiceSpeaker>();
 
 			VoiceClient.RegisterVoicePlayer(_photonView.ownerId, this);
+			SetVolume();
 		}
 
 		private void OnDisable()
@@ -38,6 +39,12 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 			IsOutputting = _photonVoiceSpeaker != null && _photonVoiceSpeaker.IsPlaying
 						   && PhotonVoiceNetwork.ClientState == ExitGames.Client.Photon.LoadBalancing.ClientState.Joined;
+		}
+
+		public void SetVolume()
+		{
+			var volume = VoiceSettings.Instance.Enabled ? VoiceSettings.Instance.PlaybackLevel : 0;
+			GetComponent<AudioSource>().volume = volume;
 		}
 	}
 }

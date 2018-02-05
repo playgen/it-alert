@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 
@@ -8,11 +9,7 @@ using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Settings;
-using PlayGen.Unity.Utilities.Localization;
-
-// #define VOICE_SETTINGS
-
-namespace PlayGen.ITAlert.Unity.States.Game.Settings
+using PlayGen.Unity.Utilities.Localization;namespace PlayGen.ITAlert.Unity.States.Game.Settings
 {
 	public class SettingsStateInput : TickStateInput
 	{
@@ -21,17 +18,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 		private Dropdown _language;
 		private Dropdown _resolution;
 		private Toggle _fullScreen;
-#if VOICE_SETTINGS
-		//private Toggle _voiceEnabled;
-		//private Dropdown _device;
-		//private Slider _receive;
-#endif
+		private Toggle _voiceEnabled;
+		private Dropdown _device;
+		private Slider _receive;
 		private Button _cancel;
 		private Button _apply;
 		public event Action BackClickedEvent;
 
 		protected override void OnInitialize()
 		{
+			LogProxy.Warning("Settings Start");
 			_settingsPanel = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer");
 			_creator = _settingsPanel.GetComponentInChildren<SettingCreation>();
 			_creator.Wipe();
@@ -40,68 +36,63 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 			_language = _creator.Language(false, true, "SETTINGS_LABEL_LANGUAGE");
 			_resolution = _creator.Resolution(960, 540, null, false, true, "SETTINGS_LABEL_RESOLUTION");
 			_fullScreen = _creator.FullScreen(true, "SETTINGS_LABEL_FULLSCREEN");
-#if VOICE_SETTINGS
 			_creator.Custom<Text>("SETTINGS_LABEL_VOICE", true);
 
 			_voiceEnabled = _creator.Custom<Toggle>("SETTINGS_LABEL_VOICE_ENABLED", true);
-			_voiceEnabled.onValueChanged.AddListener(OnVoiceEnabledChanged);
-			_voiceEnabled.isOn = VoiceSettings.Instance.Enabled;
 
 			_device = _creator.Custom<Dropdown>("SETTINGS_LABEL_MICROPHONE_DEVICE", false, true, true, false);
 			_device.AddOptions(Microphone.devices.ToList());
-			_device.interactable = _device.options.Count > 1;
-			_device.onValueChanged.AddListener(OnVoiceDeviceChanged);
-			_device.value = Microphone.GetPosition(VoiceSettings.Instance.RecordDevice);
 
 			_receive = _creator.Volume("SETTINGS_LABEL_RECEIVE_VOLUME");
-			_receive.onValueChanged.AddListener(OnVoicePlaybakLevelChanged);
-			_receive.value = VoiceSettings.Instance.PlaybackLevel;
-#endif
             _cancel = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/CancelButtonContainer").GetComponent<Button>();
 			_apply = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/ApplyButtonContainer").GetComponent<Button>();
 
-#if VOICE_SETTINGS
-			if (PlayerPrefs.HasKey("Voice Enabled"))
+			_voiceEnabled.isOn = PlayerPrefs.GetInt("Voice Enabled", 1) == 1;
+			VoiceSettings.Instance.Enabled = _voiceEnabled.isOn;
+
+			if (!PlayerPrefs.HasKey("Voice Enabled"))
 			{
-				_voiceEnabled.isOn = PlayerPrefs.GetInt("Voice Enabled") == 1;
+				PlayerPrefs.SetInt("Voice Enabled", 1);
 			}
-			else
-			{
-				_voiceEnabled.isOn = true;
-				PlayerPrefs.SetInt("Voice Enabled", _voiceEnabled.isOn ? 1 : 0);
-			}
-			if (PlayerPrefs.HasKey("Voice Volume"))
-			{
-				_receive.value = PlayerPrefs.GetFloat("Voice Volume");
-			}
-			else
+
+			_receive.value = PlayerPrefs.GetFloat("Voice Volume", _receive.value);
+			VoiceSettings.Instance.PlaybackLevel = _receive.value;
+
+			if (!PlayerPrefs.HasKey("Voice Volume"))
 			{
 				PlayerPrefs.SetFloat("Voice Volume", _receive.value);
 			}
-#endif
+
+			_device.interactable = _device.options.Count > 1 && _voiceEnabled.isOn;
+
+			foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoicePlayer>())
+			{
+				voice.SetVolume();
+			}
+
+			if (VoiceSettings.Instance.RecordDevice != null)
+			{
+				if (_device.options.Count > 0 && _voiceEnabled.isOn && _device.options.Select(o => o.text).ToList().Contains(VoiceSettings.Instance.RecordDevice))
+				{
+					_device.value = _device.options.Select(o => o.text).ToList().IndexOf(VoiceSettings.Instance.RecordDevice);
+				}
+				else
+				{
+					_device.value = 0;
+					VoiceSettings.Instance.RecordDevice = null;
+				}
+			}
+			else
+			{
+				_device.value = 0;
+				VoiceSettings.Instance.RecordDevice = _device.options.Count > 0 && _voiceEnabled.isOn ? _device.options[_device.value].text : null;
+			}
+			foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
+			{
+				voice.DeviceSet(VoiceSettings.Instance.RecordDevice);
+			}
 		}
 
-#if VOICE_SETTINGS
-		private void OnVoiceEnabledChanged(bool isOn)
-		{
-			_receive.interactable = isOn;
-			//VoiceSettings.Instance.Enabled = isOn;
-		}
-		private void OnVoiceDeviceChanged(int value)
-		{
-			//VoiceSettings.Instance.RecordDevice = Microphone.devices[value];
-		}
-
-		private void OnVoiceRecordLevelChanged(float value)
-		{
-			
-		}
-
-		private void OnVoicePlaybakLevelChanged(float value)
-		{
-			//VoiceSettings.Instance.PlaybackLevel = value;
-		}
-#endif
 		private void OnBackClick()
 		{
 			BackClickedEvent?.Invoke();
@@ -118,24 +109,23 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 
 			Localization.UpdateLanguage(Localization.Languages[_language.value]);
 			Screen.SetResolution(newResolution.width, newResolution.height, _fullScreen.isOn);
-#if VOICE_SETTINGS
+
 			PlayerPrefs.SetInt("Voice Enabled", _voiceEnabled.isOn ? 1 : 0);
 			VoiceSettings.Instance.Enabled = _voiceEnabled.isOn;
+
 			PlayerPrefs.SetFloat("Voice Volume", _receive.value);
-#endif
-			var volume = PlayerPrefs.GetInt("Voice Enabled") == 1 ? PlayerPrefs.GetFloat("Voice Volume") : 0;
+			VoiceSettings.Instance.PlaybackLevel = _receive.value;
+
 			foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoicePlayer>())
 			{
-				voice.GetComponent<AudioSource>().volume = volume;
+				voice.SetVolume();
 			}
-			//if (_device.options.Count > 0)
-			//{
-			//	foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
-			//	{
-			//		voice.MicrophoneDevice = _device.options[_device.value].text;
-			//	}
-			//	UnityEngine.Object.FindObjectOfType<PhotonVoiceRecorder>().MicrophoneDevice = _device.options[_device.value].text;
-			//}
+
+			VoiceSettings.Instance.RecordDevice = _device.options.Count > 0 && _voiceEnabled.isOn ? _device.options[_device.value].text : null;
+			foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
+			{
+				voice.DeviceSet(VoiceSettings.Instance.RecordDevice);
+			}
 
 			OnExit();
 			OnEnter();
@@ -143,28 +133,37 @@ namespace PlayGen.ITAlert.Unity.States.Game.Settings
 
 		protected override void OnEnter()
 		{
+			LogProxy.Warning("Settings Enter");
 			_cancel.onClick.AddListener(OnBackClick);
 			_apply.onClick.AddListener(OnApplyClick);
 			_settingsPanel.SetActive(true);
 
-#if VOICE_SETTINGS
-			OnVoiceEnabledChanged(_voiceEnabled.isOn);
+			_receive.interactable = VoiceSettings.Instance.Enabled;
 
 			if (_device != null)
 			{
 				_device.ClearOptions();
 				_device.AddOptions(Microphone.devices.ToList());
 				_device.interactable = _device.options.Count > 1;
+				if (_device.options.Count > 0 && _voiceEnabled.isOn && _device.options.Select(o => o.text).ToList().Contains(VoiceSettings.Instance.RecordDevice))
+				{
+					_device.value = _device.options.Select(o => o.text).ToList().IndexOf(VoiceSettings.Instance.RecordDevice);
+				}
+				else
+				{
+					_device.value = 0;
+					VoiceSettings.Instance.RecordDevice = null;
+					foreach (var voice in UnityEngine.Object.FindObjectsOfType<PhotonVoiceRecorder>())
+					{
+						voice.DeviceSet(VoiceSettings.Instance.RecordDevice);
+					}
+				}
 			}
-#endif
 			_creator.RebuildLayout();
 		}
 
 		protected override void OnExit()
 		{
-#if VOICE_SETTINGS
-			_voiceEnabled.onValueChanged.RemoveListener(OnVoiceEnabledChanged);
-#endif
 			_cancel.onClick.RemoveListener(OnBackClick);
 			_apply.onClick.RemoveListener(OnApplyClick);
 

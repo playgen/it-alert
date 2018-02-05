@@ -52,8 +52,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 			_gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
 
-			var volume = PlayerPrefs.GetInt("Voice Enabled") == 1 ? PlayerPrefs.GetFloat("Voice Volume") : 0;
-			_gameObject.GetComponent<AudioSource>().volume = volume;
+			SetVolume();
 
 			_rec = _gameObject.GetComponent<PhotonVoiceRecorder>();
 
@@ -84,6 +83,12 @@ namespace PlayGen.Photon.Unity.Client.Voice
 		public static void UnregisterVoicePlayer(int id)
 		{
 			VoicePlayers.Remove(id);
+		}
+
+		public void SetVolume()
+		{
+			var volume = PlayerPrefs.GetInt("Voice Enabled", 1) == 1 ? PlayerPrefs.GetFloat("Voice Volume", 1) : 0;
+			_gameObject.GetComponent<AudioSource>().volume = volume;
 		}
 
 		public void StartTransmission()
