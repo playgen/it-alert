@@ -128,6 +128,8 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
     
     private string microphoneDevice = null;
 
+	private int deviceCount = 0;
+
     /// <summary>
     /// Set aidio clip in instector for playing back instead of microphone signal streaming.
     /// </summary>
@@ -221,46 +223,65 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
     // give user a chance to change MicrophoneDevice in Awake()
 	private void Start()
     {
-        if (Microphone.devices.Length < 1)
-        {
-            return;
-        }
-        if (photonView.isMine)
-        {
-            var pvs = PhotonVoiceSettings.Instance;
-
-            Application.RequestUserAuthorization(UserAuthorization.Microphone);
-            // put required sample rate into audio source and encoder - both adjust it if needed
-            Voice.IAudioStream audioStream;
-            int channels = 0;
-            if (AudioClip == null)
-            {
-                var micDev = this.MicrophoneDevice != null ? this.MicrophoneDevice : PhotonVoiceNetwork.MicrophoneDevice;
-                if (PhotonVoiceSettings.Instance.DebugInfo)
-                {
-                    Debug.LogFormat("PUNVoice: Setting recorder's microphone device to {0}", micDev);
-                }
-                var mic = new MicWrapper(micDev, (int)pvs.SamplingRate);
-                channels = mic.Channels;
-                audioStream = mic;                
-            }
-            else
-            {
-                audioStream = new AudioClipWrapper(AudioClip);
-                channels = AudioClip.channels;
-                if (this.LoopAudioClip)
-                {
-                    ((AudioClipWrapper)audioStream).Loop = true;
-                }
-            }
-
-            Voice.VoiceInfo voiceInfo = new Voice.VoiceInfo((int)pvs.SamplingRate, channels, (int)pvs.Delay, pvs.Bitrate, photonView.viewID);            
-            this.voice = PhotonVoiceNetwork.CreateLocalVoice(audioStream, voiceInfo);
-
-            this.VoiceDetector.On = PhotonVoiceSettings.Instance.VoiceDetection;
-            this.VoiceDetector.Threshold = PhotonVoiceSettings.Instance.VoiceDetectionThreshold;
-        }
+		InvokeRepeating("DeviceCheck", 0, 1.5f);
     }
+
+	private void DeviceCheck()
+	{
+		if (deviceCount != Microphone.devices.Length)
+		{
+			deviceCount = Microphone.devices.Length;
+			if (Microphone.devices.Length < 1)
+			{
+				return;
+			}
+		}
+		DeviceSet();
+	}
+
+	public void DeviceSet(string deviceName = "")
+	{
+		if (photonView.isMine)
+		{
+			if (deviceName != "")
+			{
+				this.MicrophoneDevice = deviceName;
+			}
+			var pvs = PhotonVoiceSettings.Instance;
+
+			Application.RequestUserAuthorization(UserAuthorization.Microphone);
+			// put required sample rate into audio source and encoder - both adjust it if needed
+			Voice.IAudioStream audioStream;
+			int channels = 0;
+			if (AudioClip == null)
+			{
+				var micDev = this.MicrophoneDevice != null ? this.MicrophoneDevice : PhotonVoiceNetwork.MicrophoneDevice;
+				MicrophoneDevice = micDev;
+				if (PhotonVoiceSettings.Instance.DebugInfo)
+				{
+					Debug.LogFormat("PUNVoice: Setting recorder's microphone device to {0}", micDev);
+				}
+				var mic = new MicWrapper(micDev, (int)pvs.SamplingRate);
+				channels = mic.Channels;
+				audioStream = mic;
+			}
+			else
+			{
+				audioStream = new AudioClipWrapper(AudioClip);
+				channels = AudioClip.channels;
+				if (this.LoopAudioClip)
+				{
+					((AudioClipWrapper)audioStream).Loop = true;
+				}
+			}
+
+			Voice.VoiceInfo voiceInfo = new Voice.VoiceInfo((int)pvs.SamplingRate, channels, (int)pvs.Delay, pvs.Bitrate, photonView.viewID);
+			this.voice = PhotonVoiceNetwork.CreateLocalVoice(audioStream, voiceInfo);
+
+			this.VoiceDetector.On = PhotonVoiceSettings.Instance.VoiceDetection;
+			this.VoiceDetector.Threshold = PhotonVoiceSettings.Instance.VoiceDetectionThreshold;
+		}
+	}
 
 	private void OnDestroy()
     {
