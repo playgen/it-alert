@@ -165,8 +165,6 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
 
             microphoneDevice = value;
 
-			Debug.LogWarning(voice != Voice.LocalVoice.Dummy);
-
 			// update local voice's mic audio source
 			if (voice != Voice.LocalVoice.Dummy && AudioClip == null)
             {
@@ -225,14 +223,6 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
 	private void Start()
     {
 		InvokeRepeating("DeviceCheck", 1.5f, 1.5f);
-		if (Microphone.devices.Length < 1)
-		{
-			return;
-		}
-		if (photonView.isMine)
-		{
-			InitialVoiceSetUp();
-		}
 	}
 
 	private void InitialVoiceSetUp()
