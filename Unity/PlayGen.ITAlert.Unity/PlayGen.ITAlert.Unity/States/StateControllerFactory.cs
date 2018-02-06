@@ -29,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.States
 			gameState.Exception += GameExceptionHandler.OnException;
 			GameExceptionHandler.HadUnignoredExceptionEvent += hadExceptionTransition.ChangeState;
 
-			var disconnectedTransition = new OnEventTransition(gameState.Name);
+			var disconnectedTransition = new OnEventTransition(ErrorState.StateName);
 			gameState.Disconnected += disconnectedTransition.ChangeState;
 
 			gameState.AddTransitions(hadExceptionTransition, disconnectedTransition);

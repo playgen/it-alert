@@ -23,6 +23,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			public Image PlayerGlyph { get; set; }
 
+			public Image PlayerColor { get; set; }
+
 			public Text NameText { get; set; }
 		}
 
@@ -95,6 +97,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 					var playerGlyph = playerItem.transform.Find("Glyph").GetComponent<Image>();
 
+					var playerColor = playerItem.transform.Find("Color").GetComponent<Image>();
+
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
 					playerVoiceItem = new PlayerVoiceItem
@@ -102,6 +106,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 						GameObject = playerItem,
 						VoiceIcon = soundIcon,
 						PlayerGlyph = playerGlyph,
+						PlayerColor = playerColor,
 						NameText = nameText
 					};
 
@@ -125,7 +130,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				playerVoiceItem.NameText.color = colour;
 				playerVoiceItem.VoiceIcon.color = colour;
-				playerVoiceItem.PlayerGlyph.color = colour;
+				playerVoiceItem.PlayerColor.color = colour;
 			}
 			playerVoiceItem.PlayerGlyph.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
 			if (playerVoiceItem.NameText.text != player.Name)
