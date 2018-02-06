@@ -73,11 +73,10 @@ namespace PlayGen.Photon.Unity.Client
 		{
 			if (_isDisposed) return;
 
+			_isDisposed = true;
 			Disconnect();
 			_photonClientWrapper.Dispose();
 			UnityEngine.Object.Destroy(_clientGameObject);
-
-			_isDisposed = true;
 		}
 
 		public RoomInfo[] ListRooms(ListRoomsFilters filters = ListRoomsFilters.None)

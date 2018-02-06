@@ -29,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		{
 			try
 			{
-				if (VoiceClient != null && _photonClient.CurrentRoom.Players.Count > 1)
+				if (VoiceClient != null && _photonClient.CurrentRoom.Players.Count > 1 && VoiceSettings.Instance.Enabled)
 				{
 					if (Input.GetKeyDown(KeyCode.Tab))
 					{
