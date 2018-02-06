@@ -60,7 +60,6 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		protected override void OnExit()
 		{
 			_stateController.Terminate();
-			_photonClient.Disconnect();
 			_photonClient.Dispose();
 		}
 

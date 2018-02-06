@@ -27,7 +27,6 @@ using PlayGen.Unity.Utilities.Localization;namespace PlayGen.ITAlert.Unity.State
 
 		protected override void OnInitialize()
 		{
-			LogProxy.Warning("Settings Start");
 			_settingsPanel = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer");
 			_creator = _settingsPanel.GetComponentInChildren<SettingCreation>();
 			_creator.Wipe();
@@ -133,7 +132,6 @@ using PlayGen.Unity.Utilities.Localization;namespace PlayGen.ITAlert.Unity.State
 
 		protected override void OnEnter()
 		{
-			LogProxy.Warning("Settings Enter");
 			_cancel.onClick.AddListener(OnBackClick);
 			_apply.onClick.AddListener(OnApplyClick);
 			_settingsPanel.SetActive(true);
