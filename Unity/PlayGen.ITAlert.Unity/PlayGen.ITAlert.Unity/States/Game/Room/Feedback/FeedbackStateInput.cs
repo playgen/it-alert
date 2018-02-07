@@ -37,7 +37,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		private GameObject _entryPrefab;
 		private GameObject _slotPrefab;
 		private ButtonList _buttons;
-		private GameObject _rankingImage;
 		private GameObject _error;
 		private Button _sendButton;
 
@@ -45,6 +44,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		public event Action FeedbackSendClickedEvent;
 
 		private readonly Director _director;
+		private bool _panelBestFit;
 		private bool RankingsComplete => _playerRankings.All(rank => rank.Value.Count(r => r != null) == _director.Players.Count - 1);
 
 		public FeedbackStateInput(ITAlertPhotonClient photonClient, Director director)
@@ -56,8 +56,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		public bool RearrangeOrder(string previousList, string newList, int position, string name, FeedbackSlotBehaviour slot,
 			FeedbackDragBehaviour drag, bool flowDown = true)
 		{
-			if ((previousList == null && _playerRankings[newList].Contains(name)) ||
-				_playerRankings[newList].IndexOf(name) == position)
+			if (newList == null || (previousList == null && _playerRankings[newList].Contains(name)) || _playerRankings[newList].IndexOf(name) == position)
 			{
 				return false;
 			}
@@ -84,8 +83,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				}
 				var rearrangedSlot = _rankingObjects[newList][position + (flowDown ? 1 : -1)].Key;
 				var rearrangedPlayer = _rankingObjects[newList][position].Value;
-				RearrangeOrder(newList, newList, position + (flowDown ? 1 : -1), _playerRankings[newList][position], rearrangedSlot,
-					rearrangedPlayer, flowDown);
+				RearrangeOrder(newList, newList, position + (flowDown ? 1 : -1), _playerRankings[newList][position], rearrangedSlot, rearrangedPlayer, flowDown);
 			}
 			_playerRankings[newList][position] = name;
 			_rankingObjects[newList][position] = new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(slot, drag);
@@ -115,8 +113,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			_slotPrefab = Resources.Load("FeedbackSlot") as GameObject;
 			_buttons = new ButtonList("FeedbackContainer/FeedbackPanelContainer/FeedbackButtons");
 			_error = GameObjectUtilities.FindGameObject("FeedbackContainer/FeedbackPanelContainer/Error");
-			_rankingImage =
-				GameObjectUtilities.FindGameObject("FeedbackContainer/FeedbackPanelContainer/FeedbackPanel/RankingImage");
 
 			_sendButton = _buttons.GetButton("SendButtonContainer");
 		}
@@ -176,41 +172,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		{
 			foreach (Transform child in _feedbackPanel.transform)
 			{
-				if (child != _rankingImage.transform)
-				{
-					Object.Destroy(child.gameObject);
-				}
+				Object.Destroy(child.gameObject);
 			}
 			_playerRankings.Clear();
 			_rankingObjects.Clear();
 
-			//To-Do: Get the list of evaluation criteria from somewhere
+			//ToDo: Get the list of evaluation criteria from somewhere
 
 			_players = players.Where(p => p.ExternalId != currentplayerPhotonId).ToList();
-
-			var playerList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
-			var emptySlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
-			emptySlot.GetComponent<Image>().enabled = false;
-			emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
-
-			foreach (var player in _players)
-			{
-				ColorUtility.TryParseHtmlString(player.Colour, out var colour);
-
-				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
-				//playerSlot.GetComponent<Image>().enabled = false;
-
-				var playerObj = Object.Instantiate(_entryPrefab, playerSlot.transform, false);
-				playerObj.GetComponent<Text>().text = player.Name;
-				playerObj.GetComponent<Text>().color = colour;
-				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
-			}
-
-			for (var i = playerList.transform.childCount; i <= 6; i++)
-			{
-				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
-				playerSlot.GetComponent<Image>().enabled = false;
-			}
 
 			var rankList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
 			var emptyRank = Object.Instantiate(_slotPrefab, rankList.transform, false);
@@ -219,8 +188,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			for (var i = 0; i < 6; i++)
 			{ 
 				var rankSlot = Object.Instantiate(_slotPrefab, rankList.transform, false);
+				rankSlot.GetComponent<Image>().enabled = false;
 				var rankObj = Object.Instantiate(_entryPrefab, rankSlot.transform, false);
 				rankObj.GetComponent<Text>().text = (i+1).ToString();
+				rankObj.GetComponent<Text>().alignment = TextAnchor.MiddleRight;
+				Object.Destroy(rankObj.GetComponent<FeedbackDragBehaviour>());
 			}
 
 			var sectionFound = true;
@@ -249,21 +221,52 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 				{
 					var playerSlot = Object.Instantiate(_slotPrefab, sectionList.transform, false);
 					_playerRankings[sectionName].Add(null);
-					_rankingObjects[sectionName].Add(
-						new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(),
-							null));
+					_rankingObjects[sectionName].Add(new KeyValuePair<FeedbackSlotBehaviour, FeedbackDragBehaviour>(playerSlot.GetComponent<FeedbackSlotBehaviour>(), null));
 					playerSlot.GetComponent<FeedbackSlotBehaviour>().SetList(sectionName);
 				}
 			}
+
+			var playerList = Object.Instantiate(_columnPrefab, _feedbackPanel.transform, false);
+			var emptySlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
+			emptySlot.GetComponent<Image>().enabled = false;
+			emptySlot.GetComponent<LayoutElement>().preferredHeight *= 1.25f;
+
+			foreach (var player in _players)
+			{
+				ColorUtility.TryParseHtmlString(player.Colour, out var colour);
+
+				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
+				playerSlot.GetComponent<Image>().enabled = false;
+
+				var playerObj = Object.Instantiate(_entryPrefab, playerSlot.transform, false);
+				playerObj.GetComponent<Text>().text = player.Name;
+				playerObj.GetComponent<Text>().color = colour;
+				playerObj.GetComponent<FeedbackDragBehaviour>().SetInterface(this);
+			}
+
+			for (var i = playerList.transform.childCount; i <= 6; i++)
+			{
+				var playerSlot = Object.Instantiate(_slotPrefab, playerList.transform, false);
+				playerSlot.GetComponent<Image>().enabled = false;
+			}
+
 			_buttons.GetButton("SendButtonContainer").interactable = RankingsComplete;
 			_error.SetActive(!_buttons.GetButton("SendButtonContainer").interactable);
 			if (_error.activeSelf)
 			{
 				SetErrorText();
 			}
-			_rankingImage.transform.SetAsLastSibling();
 			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
-			_feedbackPanel.BestFit();
+			_panelBestFit = true;
+		}
+
+		protected override void OnTick(float deltaTime)
+		{
+			if (_panelBestFit)
+			{
+				_feedbackPanel.BestFit();
+				_panelBestFit = false;
+			}
 		}
 
 		private void SetErrorText()
