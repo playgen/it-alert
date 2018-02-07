@@ -72,6 +72,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private Capture _capture;
 
 		private bool _moveState;
+		private Vector2? _selectPos;
 
 		public CurrentLocation CurrentLocation => _currentLocation;
 
@@ -258,9 +259,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			if ((_selectionOptions.activeInHierarchy || _moveState) && !IsInvoking("OptionsDelay"))
+			if ((_selectionOptions.activeInHierarchy || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				if (Input.GetMouseButtonUp(0))
+				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos || !gameObject.activeInHierarchy)
 				{
 					_moveState = false;
 					if (_selectionOptions.activeInHierarchy)
@@ -271,12 +272,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						optionAnim[clipName].speed = -1;
 						optionAnim.Play(clipName);
 						Invoke("DisableOptions", 0.33f);
-						GetComponent<Canvas>().sortingOrder -= 100;
 					}
 					foreach (var con in transform.root.GetComponentsInChildren<ItemContainerBehaviour>(true))
 					{
 						con.RemoveHighlight();
 					}
+					_selectPos = null;
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				}
 			}
@@ -284,14 +285,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			if (!_selectionOptions.activeInHierarchy && CanActivate && !IsInvoking("OptionsDelay"))
+			if (!_selectionOptions.activeInHierarchy && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
 				_leftButton.transform.localScale = Vector3.one;
 				_rightButton.transform.localScale = Vector3.one;
 				_middleButton.transform.localScale = Vector3.one;
 				_descriptionText.transform.parent.localScale = Vector3.one;
-				GetComponent<Canvas>().sortingOrder += 100;
+				GetComponent<Canvas>().sortingOrder = 100;
 				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				Invoke("EnableOptions", 0.33f);
 				_selectionOptions.SetActive(true);
 				if (container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
@@ -351,20 +353,22 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					_leftButton.SetActive(false);
 					_rightButton.SetActive(false);
-					_middleButton.SetActive(true);
+					_middleButton.SetActive(false);
 				}
 				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON"), Localization.Get("PLACE_BUTTON"), Localization.Get("PLACE_AND_USE_BUTTON") });
-				_descriptionText.fontSize = (int)(bestFitSize * 0.6f);
+				_descriptionText.fontSize = bestFitSize;
 				var optionAnim = _selectionOptions.GetComponent<Animation>();
 				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
 				optionAnim[clipName].time = 0;
 				optionAnim[clipName].speed = 1;
 				optionAnim.Play(clipName);
+				_selectPos = transform.position;
 			}
 		}
 
 		private void DisableOptions()
 		{
+			GetComponent<Canvas>().sortingOrder = 0;
 			_leftButton.transform.localScale = Vector3.one;
 			_rightButton.transform.localScale = Vector3.one;
 			_middleButton.transform.localScale = Vector3.one;
@@ -393,8 +397,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 			_moveState = true;
-			_selectionOptions.SetActive(false);
-			GetComponent<Canvas>().sortingOrder -= 100;
+			DisableOptions();
 			var currentLocation = director.Player.CurrentLocationEntity;
 			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
@@ -413,8 +416,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 			_moveState = true;
-			_selectionOptions.SetActive(false);
-			GetComponent<Canvas>().sortingOrder -= 100;
+			DisableOptions();
 			var currentLocation = director.Player.CurrentLocationEntity;
 			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)

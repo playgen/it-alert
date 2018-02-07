@@ -282,7 +282,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<SetActorDestinationCommand>(true),
-						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague")
+						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague"),
+						new SetCommandEnabled<ActivateItemCommand>(false),
 					},
 				}
 			);
@@ -295,9 +296,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new WaitForTicks(20),
+					ExitCondition = new WaitForTicks(10),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<ActivateItemCommand>(true),
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
 						{
 							ItemType = typeof(Antivirus),

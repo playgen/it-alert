@@ -38,9 +38,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_itemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
 				director.AddUntrackedEntity(_itemEntity);
 				_itemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
-			    _itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = new Vector3(go.transform.localPosition.x, go.transform.localPosition.y, 0);
-                _itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = ((RectTransform)go.transform).rect.size + new Vector2(2, 2);
-			    _itemEntity.GameObject.SetActive(false);
+			    _itemEntity.GameObject.GetComponent<RectTransform>().anchorMin = ContainerBehaviour.GetComponent<RectTransform>().anchorMin;
+                _itemEntity.GameObject.GetComponent<RectTransform>().anchorMax = ContainerBehaviour.GetComponent<RectTransform>().anchorMax;
+				_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = ContainerBehaviour.GetComponent<RectTransform>().anchoredPosition;
+				_itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = ContainerBehaviour.GetComponent<RectTransform>().sizeDelta;
+				_itemEntity.GameObject.SetActive(false);
 
                 _proxyItem = proxyItem;
 			}
