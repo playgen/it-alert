@@ -193,9 +193,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				Transition(ContainerState.Disabled);
 			}
 
-			if (_selectionOptions && _selectionOptions.activeInHierarchy && !IsInvoking("OptionsDelay"))
+			if (_selectionOptions && _selectionOptions.activeInHierarchy && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				if (Input.GetMouseButtonUp(0))
+				if (hasItem || Input.GetMouseButtonUp(0))
 				{
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					var clipName = optionAnim.clip.name;
@@ -203,7 +203,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					optionAnim[clipName].speed = -1;
 					optionAnim.Play(clipName);
 					Invoke("DisableOptions", 0.33f);
-					GetComponent<Canvas>().sortingOrder -= 100;
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				}
 			}
@@ -279,13 +278,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					PlayerCommands.Move(_subsystemId.Value);
 				}
-				else if (_selectionOptions && inventory && !IsInvoking("OptionsDelay"))
+				else if (_selectionOptions && inventory && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 				{
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;
-					GetComponent<Canvas>().sortingOrder += 100;
+					GetComponent<Canvas>().sortingOrder = 100;
 					_selectionOptions.SetActive(true);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+					Invoke("EnableOptions", 0.33f);
 					_selectionOptions.GetComponentsInChildren<Button>().BestFit();
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					var clipName = optionAnim.clip.name;
@@ -298,6 +298,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DisableOptions()
 		{
+			GetComponent<Canvas>().sortingOrder = 0;
 			_leftButton.transform.localScale = Vector3.one;
 			_rightButton.transform.localScale = Vector3.one;
 			_selectionOptions.SetActive(false);
@@ -324,8 +325,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void Move()
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			_selectionOptions.SetActive(false);
-			GetComponent<Canvas>().sortingOrder -= 100;
+			DisableOptions();
 			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
 			{
 				PlayerCommands.DropItem(inventory.Id, ContainerIndex);
@@ -335,8 +335,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void MoveAndUse()
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			_selectionOptions.SetActive(false);
-			GetComponent<Canvas>().sortingOrder -= 100;
+			DisableOptions();
 			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
 			{
 				PlayerCommands.DropAndActivateItem(inventory.Id, ContainerIndex);
