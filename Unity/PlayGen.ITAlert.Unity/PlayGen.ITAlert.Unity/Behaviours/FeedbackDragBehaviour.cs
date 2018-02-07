@@ -8,7 +8,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 {
 	public class FeedbackDragBehaviour : MonoBehaviour
 	{
-
 		private bool _beingDragged;
 		private string _currentList;
 		private Transform _parent;
@@ -42,8 +41,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			_beingDragged = true;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, Input.mousePosition, _camera, out _dragPosition);
             _parent = transform.parent;
-			transform.SetParent(transform.parent.parent.parent.parent, false);
-			RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out var newPosition);
+			transform.SetParent(transform.root, false);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent, Input.mousePosition, _camera, out var newPosition);
 		    transform.localPosition = newPosition - _dragPosition;
             transform.SetAsLastSibling();
 		}
@@ -52,37 +51,36 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		{
 			if (_beingDragged)
 			{
-				RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent.transform, Input.mousePosition, _camera, out var newPosition);
+				RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent, Input.mousePosition, _camera, out var newPosition);
 			    transform.localPosition = newPosition - _dragPosition;
             }
 		}
 
 		private void EndDrag()
 		{
-			_beingDragged = false;
-			_dragPosition = Vector2.zero;
-			var raycastResults = new List<RaycastResult>();
-			//gets all UI objects below the cursor
-			EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) {position = Input.mousePosition},
-				raycastResults);
-			foreach (var result in raycastResults)
+			if (_beingDragged)
 			{
-				if (result.gameObject.GetComponent<FeedbackSlotBehaviour>())
+				_beingDragged = false;
+				_dragPosition = Vector2.zero;
+				var raycastResults = new List<RaycastResult>();
+				//gets all UI objects below the cursor
+				EventSystem.current.RaycastAll(new PointerEventData(EventSystem.current) { position = Input.mousePosition }, raycastResults);
+				foreach (var result in raycastResults)
 				{
 					var slot = result.gameObject.GetComponent<FeedbackSlotBehaviour>();
-					if (_currentList == null || _currentList == slot.CurrentList)
+					if (slot && (_currentList == null || _currentList == slot.CurrentList))
 					{
 						transform.SetParent(_parent, false);
-						if (_input.RearrangeOrder(_currentList, slot.CurrentList, result.gameObject.transform.GetSiblingIndex() - 1,
-							GetComponent<Text>().text, slot, this))
+						if (_input.RearrangeOrder(_currentList, slot.CurrentList, result.gameObject.transform.GetSiblingIndex() - 1, GetComponent<Text>().text, slot, this))
 						{
 							_currentList = slot.CurrentList;
 							_parent = transform.parent;
+							break;
 						}
 					}
 				}
+				transform.SetParent(_parent, false);
 			}
-			transform.SetParent(_parent, false);
 		}
 	}
 }
