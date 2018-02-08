@@ -43,8 +43,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 		public void SetVolume()
 		{
-			var volume = VoiceSettings.Instance.Enabled ? VoiceSettings.Instance.PlaybackLevel : 0;
-			GetComponent<AudioSource>().volume = volume;
+			GetComponent<AudioSource>().volume = 1;
 		}
 	}
 }
