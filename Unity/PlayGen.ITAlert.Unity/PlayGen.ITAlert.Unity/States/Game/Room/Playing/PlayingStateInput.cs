@@ -51,16 +51,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		private void OnContinueClick()
 		{
 			_endGame = false;
-			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
-			gameContainer.SetActive(false);
-			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
-			canvasGroup.alpha = 1;
-			canvasGroup.blocksRaycasts = true;
-			foreach (var trail in gameContainer.GetComponentsInChildren<TrailRenderer>())
-			{
-				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 1);
-				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.875f);
-			}
+			FadeReset();
 			if (_director.Players.Count > 1)
 			{
 				EndGameContinueClickedEvent?.Invoke();
@@ -90,6 +81,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			_gameContainers.ForEach(g => g.SetActive(true));
 			_continueButton.onClick.AddListener(OnContinueClick);
 			PlayGen.Unity.Utilities.Loading.Loading.Stop();
+			FadeReset();
 		}
 
 		protected override void OnExit()
@@ -108,6 +100,20 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			if (!_endGame && Input.GetKeyDown(KeyCode.Escape))
 			{
 				OnPauseClicked();
+			}
+		}
+
+		private void FadeReset()
+		{
+			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+			gameContainer.SetActive(false);
+			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 1;
+			canvasGroup.blocksRaycasts = true;
+			foreach (var trail in gameContainer.GetComponentsInChildren<TrailRenderer>())
+			{
+				trail.startColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 1);
+				trail.endColor = new Color(trail.startColor.r, trail.startColor.g, trail.startColor.b, 0.875f);
 			}
 		}
 	}

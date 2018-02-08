@@ -87,8 +87,7 @@ namespace PlayGen.Photon.Unity.Client.Voice
 
 		public void SetVolume()
 		{
-			var volume = PlayerPrefs.GetInt("Voice Enabled", 1) == 1 ? PlayerPrefs.GetFloat("Voice Volume", 1) : 0;
-			_gameObject.GetComponent<AudioSource>().volume = volume;
+			_gameObject.GetComponent<AudioSource>().volume = 1;
 		}
 
 		public void StartTransmission()
