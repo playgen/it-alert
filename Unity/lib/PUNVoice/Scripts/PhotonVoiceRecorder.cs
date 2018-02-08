@@ -187,7 +187,7 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
                 PhotonVoiceNetwork.RemoveLocalVoice(voice);
                 var prevVoice = voice;
                 voice = PhotonVoiceNetwork.CreateLocalVoice(mic, voiceInfo);
-                voice.AudioGroup = prevVoice.AudioGroup;
+				voice.AudioGroup = prevVoice.AudioGroup;
                 voice.Transmit = prevVoice.Transmit;
                 voice.VoiceDetector.On = prevVoice.VoiceDetector.On;
                 voice.VoiceDetector.Threshold = prevVoice.VoiceDetector.Threshold;
@@ -219,10 +219,16 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
         get { return voice.LevelMeter; }
     }
 
+	private int _deviceCount;
+
     // give user a chance to change MicrophoneDevice in Awake()
-	private void Start()
+	private void Update()
     {
-		InvokeRepeating("DeviceCheck", 1.5f, 1.5f);
+		if (!IsInvoking("DeviceCheck") && photonView.isMine && _deviceCount != Microphone.devices.Length)
+		{
+			_deviceCount = Microphone.devices.Length;
+			Invoke("DeviceCheck", 2f);
+		}
 	}
 
 	private void InitialVoiceSetUp()
@@ -259,15 +265,26 @@ public class PhotonVoiceRecorder : Photon.MonoBehaviour
 		voice = PhotonVoiceNetwork.CreateLocalVoice(audioStream, voiceInfo);
 		VoiceDetector.On = PhotonVoiceSettings.Instance.VoiceDetection;
 		VoiceDetector.Threshold = PhotonVoiceSettings.Instance.VoiceDetectionThreshold;
+		MicrophoneDevice = microphoneDevice;
 	}
 
 	private void DeviceCheck()
 	{
 		if (photonView.isMine)
 		{
+			if (_deviceCount != Microphone.devices.Length)
+			{
+				_deviceCount = Microphone.devices.Length;
+				Invoke("DeviceCheck", 2f);
+				return;
+			}
 			if ((microphoneDevice != null && !Microphone.devices.Contains(microphoneDevice)) || (microphoneDevice == null && Microphone.devices.Any()))
 			{
 				DeviceSet();
+			}
+			else if (Microphone.devices.Contains(microphoneDevice))
+			{
+				DeviceSet(microphoneDevice);
 			}
 		}
 	}
