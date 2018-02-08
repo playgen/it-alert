@@ -143,11 +143,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& _owner.Value.Value != (Director.Player?.Id ?? -1)
 				&& _currentLocation.Value.HasValue == false)
 			{
-				gameObject.SetActive(false);
+				if (GetComponentInParent<SubsystemBehaviour>() && gameObject.activeSelf)
+				{
+					gameObject.SetActive(false);
+				}
 			}
 			else
 			{
-				gameObject.SetActive(true);
+				if (GetComponentInParent<SubsystemBehaviour>() && !gameObject.activeSelf)
+				{
+					gameObject.SetActive(true);
+				}
 			}
 		}
 
@@ -259,33 +265,31 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			if ((_selectionOptions.activeInHierarchy || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if ((_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
 			{
-				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos || !gameObject.activeInHierarchy)
+				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos)
 				{
-					_moveState = false;
-					if (_selectionOptions.activeInHierarchy)
-					{
-						var optionAnim = _selectionOptions.GetComponent<Animation>();
-						var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
-						optionAnim[clipName].time = optionAnim[clipName].length;
-						optionAnim[clipName].speed = -1;
-						optionAnim.Play(clipName);
-						Invoke("DisableOptions", 0.33f);
-					}
-					foreach (var con in transform.root.GetComponentsInChildren<ItemContainerBehaviour>(true))
-					{
-						con.RemoveHighlight();
-					}
-					_selectPos = null;
-					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+					DisableOptions();
 				}
+			}
+		}
+
+		private void OnEnable()
+		{
+			LogProxy.Info("Enabled");
+		}
+
+		private void OnDisable()
+		{
+			if (_selectionOptions.activeSelf || _moveState)
+			{
+				DisableOptions();
 			}
 		}
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			if (!_selectionOptions.activeInHierarchy && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if (!_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
 			{
 				_leftButton.transform.localScale = Vector3.one;
 				_rightButton.transform.localScale = Vector3.one;
@@ -368,6 +372,30 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DisableOptions()
 		{
+			_moveState = false;
+			if (_selectionOptions.activeInHierarchy)
+			{
+				var optionAnim = _selectionOptions.GetComponent<Animation>();
+				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
+				optionAnim[clipName].time = optionAnim[clipName].length;
+				optionAnim[clipName].speed = -1;
+				optionAnim.Play(clipName);
+				Invoke("ResetOptions", 0.33f);
+			}
+			else
+			{
+				ResetOptions();
+			}
+			foreach (var con in transform.root.GetComponentsInChildren<ItemContainerBehaviour>(true))
+			{
+				con.RemoveHighlight();
+			}
+			_selectPos = null;
+			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+		}
+
+		private void ResetOptions()
+		{
 			GetComponent<Canvas>().sortingOrder = 0;
 			_leftButton.transform.localScale = Vector3.one;
 			_rightButton.transform.localScale = Vector3.one;
@@ -397,7 +425,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 			_moveState = true;
-			DisableOptions();
+			ResetOptions();
 			var currentLocation = director.Player.CurrentLocationEntity;
 			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
@@ -416,7 +444,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 			_moveState = true;
-			DisableOptions();
+			ResetOptions();
 			var currentLocation = director.Player.CurrentLocationEntity;
 			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)

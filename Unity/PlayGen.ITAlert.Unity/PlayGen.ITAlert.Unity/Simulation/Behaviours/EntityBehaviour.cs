@@ -90,10 +90,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		/// </summary>
 		public void UpdateState()
 		{
-			if (gameObject.activeInHierarchy == false)
-			{
-				gameObject.SetActive(true);
-			}
 			OnStateUpdated();
 		}
 
@@ -118,8 +114,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			Entity.TryGetComponent(out _tutorialHighlight);
 			OnInitialize();
 			Initialized = true;
+			if (gameObject.activeSelf == false)
+			{
+				gameObject.SetActive(true);
+			}
 
-			
 			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 
 		}
