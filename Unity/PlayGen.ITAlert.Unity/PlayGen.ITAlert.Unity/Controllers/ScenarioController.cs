@@ -45,7 +45,10 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			if (CommandLineUtility.CustomArgs.ContainsKey("sessionid"))
 			{
 				var keys = CommandLineUtility.CustomArgs["sessionid"].Split(new[] { ";" }, StringSplitOptions.RemoveEmptyEntries);
-				scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.Trim().ToLower()))).ToArray();
+				if (keys.Any())
+				{
+					scenarios = scenarios.Where(s => keys.Any(k => s.Key.ToLower().StartsWith(k.Trim().ToLower()))).ToArray();
+				}
 			}
 
 			foreach (var scenario in scenarios)

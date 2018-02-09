@@ -51,7 +51,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		private void OnContinueClick()
 		{
 			_endGame = false;
-			FadeReset();
+			Fade();
 			if (_director.Players.Count > 1)
 			{
 				EndGameContinueClickedEvent?.Invoke();
@@ -81,7 +81,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			_gameContainers.ForEach(g => g.SetActive(true));
 			_continueButton.onClick.AddListener(OnContinueClick);
 			PlayGen.Unity.Utilities.Loading.Loading.Stop();
-			FadeReset();
+			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+			gameContainer.SetActive(true);
+			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
+			canvasGroup.alpha = 1;
+			canvasGroup.blocksRaycasts = true;
 		}
 
 		protected override void OnExit()
@@ -103,7 +107,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			}
 		}
 
-		private void FadeReset()
+		private void Fade()
 		{
 			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
 			gameContainer.SetActive(false);

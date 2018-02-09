@@ -937,6 +937,25 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 386849606}
+--- !u!1 &401798475 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1032775847248748, guid: 7b6cf604dbced7348a34d082e2403d18,
+    type: 2}
+  m_PrefabInternal: {fileID: 273305969}
+--- !u!114 &401798479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 401798475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: 'LOBBY_BUTTON_BACK '
+  ToUpper: 0
 --- !u!1 &412567353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,6 +1064,7 @@ GameObject:
   - component: {fileID: 566878670}
   - component: {fileID: 566878672}
   - component: {fileID: 566878671}
+  - component: {fileID: 566878673}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -1112,6 +1132,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 566878669}
+--- !u!114 &566878673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 566878669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: PAUSE_BUTTON_CONTINUE
+  ToUpper: 0
 --- !u!1001 &570835216
 Prefab:
   m_ObjectHideFlags: 0
@@ -1626,6 +1660,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &694982680 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1565486932689130, guid: 7b6cf604dbced7348a34d082e2403d18,
+    type: 2}
+  m_PrefabInternal: {fileID: 273305969}
+--- !u!114 &694982684
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 694982680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: 'ERROR_LABEL_TITLE '
+  ToUpper: 1
 --- !u!1 &695004056
 GameObject:
   m_ObjectHideFlags: 0
@@ -3467,6 +3520,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MinFontSize: 2
   MaxFontSize: 48
+--- !u!1 &1269998695 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1501717542259088, guid: ec7e4819cc4c3f549b86284c23a18b8d,
+    type: 2}
+  m_PrefabInternal: {fileID: 984282943}
+--- !u!114 &1269998697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1269998695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: 'PASSWORD '
+  ToUpper: 0
 --- !u!224 &1290444829
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3936,6 +4008,11 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114051721694775806, guid: 76634eb84ae8a4d45ad496ee2a80bf1e,
+        type: 2}
+      propertyPath: Key
+      value: 'GAME_COMPLETION_BUTTON_CONTINUE '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 76634eb84ae8a4d45ad496ee2a80bf1e, type: 2}

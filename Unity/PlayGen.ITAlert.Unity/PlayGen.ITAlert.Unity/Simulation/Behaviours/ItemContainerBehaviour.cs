@@ -202,7 +202,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					optionAnim[clipName].time = optionAnim[clipName].length;
 					optionAnim[clipName].speed = -1;
 					optionAnim.Play(clipName);
-					Invoke("ResetOptions", 0.33f);
+					Invoke("ResetOptions", 0.34f);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				}
 			}
@@ -278,14 +278,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					PlayerCommands.Move(_subsystemId.Value);
 				}
-				else if (_selectionOptions && inventory && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+				else if (_selectionOptions && !_selectionOptions.activeSelf && inventory && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
 				{
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;
 					GetComponent<Canvas>().sortingOrder = 100;
 					_selectionOptions.SetActive(true);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-					Invoke("EnableOptions", 0.33f);
+					Invoke("EnableOptions", 0.34f);
 					_selectionOptions.GetComponentsInChildren<Button>().BestFit();
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					var clipName = optionAnim.clip.name;
@@ -324,21 +324,27 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Move()
 		{
-			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			ResetOptions();
-			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				PlayerCommands.DropItem(inventory.Id, ContainerIndex);
+				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				ResetOptions();
+				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+				{
+					PlayerCommands.DropItem(inventory.Id, ContainerIndex);
+				}
 			}
 		}
 
 		private void MoveAndUse()
 		{
-			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			ResetOptions();
-			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				PlayerCommands.DropAndActivateItem(inventory.Id, ContainerIndex);
+				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				ResetOptions();
+				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+				{
+					PlayerCommands.DropAndActivateItem(inventory.Id, ContainerIndex);
+				}
 			}
 		}
 
