@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 224693302889858346}
   - component: {fileID: 222128233456299512}
   - component: {fileID: 114699554752960788}
+  - component: {fileID: 114590486733998522}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -238,6 +239,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_AspectMode: 1
   m_AspectRatio: 4
+--- !u!114 &114590486733998522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1415624729316434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1807221761, guid: 67197b2f7206fa74785174bc6561bb0a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LanguageOverride: 
+  Key: PAUSE_BUTTON_CONTINUE
+  ToUpper: 0
 --- !u!114 &114699554752960788
 MonoBehaviour:
   m_ObjectHideFlags: 1

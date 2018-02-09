@@ -9,7 +9,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	{
 		private ITAlert.Simulation.Modules.Tutorial.Components.Text _textComponent;
 
-		private Text _text;
 		private GameObject _continue;
 
 		private bool _pulse;
@@ -19,10 +18,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void Awake()
 		{
-			_text = GetComponentInChildren<Text>();
 			_continue = transform.Find("Continue").gameObject;
 			_continue.GetComponent<Button>().onClick.AddListener(OnContinue);
 			Localization.LanguageChange += LocalizationOnLanguageChange;
+		}
+
+		private new void OnDestroy()
+		{
+			Localization.LanguageChange -= LocalizationOnLanguageChange;
 		}
 
 		private void LocalizationOnLanguageChange()
@@ -65,12 +68,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						Director.SimulationRoot.Scenario.LocalizationDictionary.DefaultLocale,
 						_textComponent.Value, out value);
 				}
-				_text.text = value;
+				GetComponentInChildren<Text>().text = value;
 			}
 			else
 			{
 				LogProxy.Error($"Could not find Localized text for key {_textComponent.Value}");
-				_text.text = _textComponent.Value;
+				GetComponentInChildren<Text>().text = _textComponent.Value;
 			}
 		}
 

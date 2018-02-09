@@ -297,7 +297,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_descriptionText.transform.parent.localScale = Vector3.one;
 				GetComponent<Canvas>().sortingOrder = 100;
 				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-				Invoke("EnableOptions", 0.33f);
+				Invoke("EnableOptions", 0.34f);
 				_selectionOptions.SetActive(true);
 				if (container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
@@ -316,6 +316,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
+					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
+					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
 				}
 				else if (!container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
@@ -328,6 +330,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.GetComponent<Button>().onClick.AddListener(Use);
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
+					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
+					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
 				}
 				else if (CurrentLocation.Value == null)
 				{
@@ -336,8 +340,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.SetActive(false);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					((RectTransform)_leftButton.transform).anchorMin = new Vector2(-1.6f, 1.2f);
-					((RectTransform)_leftButton.transform).anchorMax = new Vector2(-0.2f, 2f);
+					((RectTransform)_leftButton.transform).anchorMin = new Vector2(-1.5f, 1f);
+					((RectTransform)_leftButton.transform).anchorMax = new Vector2(0, 1.7f);
 					((RectTransform)_leftButton.transform).anchoredPosition = Vector2.zero;
 					((RectTransform)_leftButton.transform).sizeDelta = Vector2.zero;
 					_leftButton.GetComponent<Button>().onClick.AddListener(() => MoveAndUse(container, director));
@@ -345,13 +349,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_leftButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_AND_USE_BUTTON";
 
 					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					((RectTransform)_rightButton.transform).anchorMin = new Vector2(1.2f, 1.2f);
-					((RectTransform)_rightButton.transform).anchorMax = new Vector2(2.6f, 2f);
+					((RectTransform)_rightButton.transform).anchorMin = new Vector2(1f, 1f);
+					((RectTransform)_rightButton.transform).anchorMax = new Vector2(2.5f, 1.7f);
 					((RectTransform)_rightButton.transform).anchoredPosition = Vector2.zero;
 					((RectTransform)_rightButton.transform).sizeDelta = Vector2.zero;
 					_rightButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
 					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
 					_rightButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
+					_selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("PLACE_BUTTON"), Localization.Get("PLACE_AND_USE_BUTTON") });
 				}
 				else
 				{
@@ -359,8 +364,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_rightButton.SetActive(false);
 					_middleButton.SetActive(false);
 				}
-				var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON"), Localization.Get("PLACE_BUTTON"), Localization.Get("PLACE_AND_USE_BUTTON") });
-				_descriptionText.fontSize = bestFitSize;
 				var optionAnim = _selectionOptions.GetComponent<Animation>();
 				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";
 				optionAnim[clipName].time = 0;
@@ -380,7 +383,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				optionAnim[clipName].time = optionAnim[clipName].length;
 				optionAnim[clipName].speed = -1;
 				optionAnim.Play(clipName);
-				Invoke("ResetOptions", 0.33f);
+				Invoke("ResetOptions", 0.34f);
 			}
 			else
 			{
@@ -406,35 +409,44 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Use()
 		{
-			PlayerCommands.ActivateItem(Id);
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			{
+				PlayerCommands.ActivateItem(Id);
+			}
 		}
 
 		private void Take(ItemContainerBehaviour container)
 		{
-			if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				PlayerCommands.SwapInventoryItem(Id, container.ContainerIndex, inventory.Id);
-			}
-			else
-			{
-				PlayerCommands.PickupItem(Id);
+				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
+				{
+					PlayerCommands.SwapInventoryItem(Id, container.ContainerIndex, inventory.Id);
+				}
+				else
+				{
+					PlayerCommands.PickupItem(Id);
+				}
 			}
 		}
 
 		private void Move(ItemContainerBehaviour container, Director director)
 		{
-			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			_moveState = true;
-			ResetOptions();
-			var currentLocation = director.Player.CurrentLocationEntity;
-			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
-			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
+				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				_moveState = true;
+				ResetOptions();
+				var currentLocation = director.Player.CurrentLocationEntity;
+				var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+				if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
 				{
-					if (systemContainer != container)
+					foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
 					{
-						systemContainer.Highlight(this, container.ContainerIndex);
+						if (systemContainer != container)
+						{
+							systemContainer.Highlight(this, container.ContainerIndex);
+						}
 					}
 				}
 			}
@@ -442,18 +454,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void MoveAndUse(ItemContainerBehaviour container, Director director)
 		{
-			Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
-			_moveState = true;
-			ResetOptions();
-			var currentLocation = director.Player.CurrentLocationEntity;
-			var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
-			if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
 			{
-				foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
+				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
+				_moveState = true;
+				ResetOptions();
+				var currentLocation = director.Player.CurrentLocationEntity;
+				var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+				if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
 				{
-					if (systemContainer != container)
+					foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
 					{
-						systemContainer.Highlight(this, null);
+						if (systemContainer != container)
+						{
+							systemContainer.Highlight(this, null);
+						}
 					}
 				}
 			}
