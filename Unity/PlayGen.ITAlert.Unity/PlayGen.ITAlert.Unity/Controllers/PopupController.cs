@@ -17,6 +17,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		private readonly ITAlertPhotonClient _photonClient;
 
 		private ColourPickerBehaviour _colourPickerBehaviour;
+        public bool Active => _popupPanel != null && _popupPanel.gameObject.activeSelf;
 
 		public PopupController(ITAlertPhotonClient photonClient)
 		{
@@ -89,7 +90,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			callback(playerColour);
 		}
 
-		private void PopupClosed()
+		public void PopupClosed()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= _colourPickerBehaviour.UpdateSelectedGlyphs;
 			_popupPanel.gameObject.SetActive(false);

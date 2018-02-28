@@ -91,7 +91,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			_backButton.onClick.RemoveListener(OnBackButtonClick);
 			_readyButton.onClick.RemoveListener(OnReadyButtonClick);
 			_changeColorButton.onClick.RemoveListener(OnColorChangeButtonClick);
-			_lobbyPanel.SetActive(false);
+            if (_popupController.Active)
+            {
+                _popupController.PopupClosed();
+            }
+            _lobbyPanel.SetActive(false);
 		}
 
 		protected override void OnTick(float deltaTime)
