@@ -78,15 +78,18 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnEnter()
 		{
-			_gameContainers.ForEach(g => g.SetActive(true));
-			_continueButton.onClick.AddListener(OnContinueClick);
-			PlayGen.Unity.Utilities.Loading.Loading.Stop();
-			var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
-			gameContainer.SetActive(true);
-			var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
-			canvasGroup.alpha = 1;
-			canvasGroup.blocksRaycasts = true;
-		}
+            _gameContainers.ForEach(g => g.SetActive(true));
+            _continueButton.onClick.AddListener(OnContinueClick);
+            PlayGen.Unity.Utilities.Loading.Loading.Stop();
+            var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");
+            gameContainer.SetActive(true);
+            if (!_endGame)
+            {
+                var canvasGroup = gameContainer.GetComponent<CanvasGroup>();
+                canvasGroup.alpha = 1;
+                canvasGroup.blocksRaycasts = true;
+            }
+        }
 
 		protected override void OnExit()
 		{
