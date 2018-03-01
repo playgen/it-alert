@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Engine.Commands;
@@ -205,6 +206,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					throw new SimulationIntegrationException("Could not locate end game system");
 				}
 
+                CultureInfo.CurrentCulture = new CultureInfo("en");
 				_updatethread = new Thread(ThreadWorker)
 				{
 					IsBackground = true
@@ -373,7 +375,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								throw new SimulationIntegrationException("Local Simulation failed to apply command(s).");
 							}
 							SimulationRoot.ECS.Tick();
-
+                            
 							if (fastForward)
 							{
 								LogProxy.Warning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
