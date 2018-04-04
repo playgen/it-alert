@@ -33,17 +33,50 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Engine.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Simulation\Engine.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Engine.Startup, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Simulation\Engine.Startup.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\lib\GameWork\Engine\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Scenario.Localization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="PlayGen.ITAlert.Simulation.Startup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PlayGen.Unity.Editor.Settings">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Editor.Settings.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.Localization">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.Localization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.Shortcuts">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Localization.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,15 +92,21 @@
       <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectorThreadHelper.cs" />
+    <Compile Include="LocalizationCharacterCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlayGen.ITAlert.Unity\PlayGen.ITAlert.Unity.csproj">
       <Project>{007d85af-805f-4bed-abfa-679b8359ff8e}</Project>
       <Name>PlayGen.ITAlert.Unity</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

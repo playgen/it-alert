@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 				switch (activation.ActivationState)
 				{
 					case ActivationState.NotActive:
-						OnNotActive(match);
+						OnNotActive(match, currentTick);
 						break;
 					case ActivationState.Deactivating:
 						OnDeactivating(match);
@@ -46,13 +46,17 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			}
 		}
 
-		private void OnNotActive(ComponentEntityTuple<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> entityTuple)
+		private void OnNotActive(ComponentEntityTuple<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> entityTuple, int currentTick)
 		{
 			if (entityTuple.Component3.Value.HasValue
 				&& entityTuple.Component4.Value.HasValue)
 			{
 				entityTuple.Component4.Value = null;
 				entityTuple.Component5.ActivationsRemaining -= 1;
+				if (entityTuple.Component5.ActivationsRemaining == 0)
+				{
+					entityTuple.Entity.Dispose();
+				}
 			}
 		}
 
