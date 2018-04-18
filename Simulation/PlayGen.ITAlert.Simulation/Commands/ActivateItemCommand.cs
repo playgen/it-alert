@@ -22,6 +22,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 	public class ActivateItemCommandHandler : CommandHandler<ActivateItemCommand>
 	{
+		private readonly ComponentMatcherGroup<Player, ItemStorage, CurrentLocation> _playerMatcherGroup;
 		private readonly ComponentMatcherGroup<Item, Activation, CurrentLocation, Owner, IItemType> _activationMatcherGroup;
 		// TODO: match subsystems on presence of activationcontainer once theyr are refactored into independent entities
 		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
@@ -36,6 +37,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		public ActivateItemCommandHandler(IMatcherProvider matcherProvider, EventSystem eventSystem)
 		{
+			_playerMatcherGroup = matcherProvider.CreateMatcherGroup<Player, ItemStorage, CurrentLocation>();
 			_activationMatcherGroup = matcherProvider.CreateMatcherGroup<Item, Activation, CurrentLocation, Owner, IItemType>();
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
 			_eventSystem = eventSystem;
@@ -61,7 +63,10 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					&& playerCanActivate
 					&& playerHasActive == false
 					&& itemTuple.Component3.Value.HasValue // item is on a subsystem
-					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
+					&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple)
+					&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+					&& playerTuple.Component3.Value.HasValue
+					&& itemTuple.Component3.Value.Value == playerTuple.Component3.Value.Value)
 				{
 					itemTuple.Component2.SetState(ActivationState.Activating,
 						currentTick);
