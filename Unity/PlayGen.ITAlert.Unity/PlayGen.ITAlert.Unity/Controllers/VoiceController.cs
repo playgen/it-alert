@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 							}
 						}
 					}
-					if (Input.GetKeyUp(KeyCode.Tab))
+					if (Input.GetKeyUp(KeyCode.Tab) || !Application.isFocused)
 					{
 						if ((bool)VoiceClient?.IsTransmitting)
 						{

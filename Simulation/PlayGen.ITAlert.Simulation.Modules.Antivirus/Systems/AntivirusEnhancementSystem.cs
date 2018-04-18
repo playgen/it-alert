@@ -23,6 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 		public const int AnalysisOutputStorageLocation = 3;
 
 		private readonly ComponentMatcherGroup<Capture> _captureMatcherGroup;
+		private readonly ComponentMatcherGroup<Components.Antivirus> _outputMatcherGroup;
 
 		private readonly IEntityFactoryProvider _entityFactoryProvider;
 
@@ -37,6 +38,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			antivirusMatcherGroup.MatchingEntityAdded += OnNewEntity;
 
 			_captureMatcherGroup = matcherProvider.CreateMatcherGroup<Capture>();
+			_outputMatcherGroup = matcherProvider.CreateMatcherGroup<Components.Antivirus>();
 		}
 
 		#endregion
@@ -60,7 +62,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			{
 				Item = activatorEntityTuple.Entity.Id,
 			};
-			itemStorage.Items[AnalysisOutputStorageLocation] = new AnalysisOutputItemContainer();
+			itemStorage.Items[AnalysisOutputStorageLocation] = new AnalysisOutputItemContainer(_outputMatcherGroup);
 		}
 
 		public void Dispose()
