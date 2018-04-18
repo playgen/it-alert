@@ -128,12 +128,12 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 					{
 						antivirusTuple.Entity.Dispose();
 					}
-					analysisTargetItemContainer.Locked = false;
 				}
 				else
 				{
 					@event.ActivationResult = AnalyserActivationEvent.AnalyserActivationResult.OutputContainerFull;
 				}
+				analysisTargetItemContainer.Locked = false;
 				_eventSystem.Publish(@event);
 			}
 		}
