@@ -101,6 +101,7 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 !Unity/lib/**/*.dll
 !Unity/lib/**/*.dll.meta
 !Unity/lib/**/*.pdb
+!Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity/Debug/
 
 !lib/**/*.dll
 !lib/**/*.dll.meta
