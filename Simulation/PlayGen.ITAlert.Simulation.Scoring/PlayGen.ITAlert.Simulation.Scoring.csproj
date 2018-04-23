@@ -45,7 +45,11 @@
     <Compile Include="Player\Antivirus\AnalyserActivationScoringEventHandler.cs" />
     <Compile Include="Player\Antivirus\AntivirusActivationScoringEventHandler.cs" />
     <Compile Include="Player\Events\PlayerScoreEvent.cs" />
+    <Compile Include="Player\GameActions\GameAction.cs" />
+    <Compile Include="Player\GameActions\PlayerGameActions.cs" />
     <Compile Include="Player\IPlayerScoringExtension.cs" />
+    <Compile Include="Player\IPlayerTrackingExtension.cs" />
+    <Compile Include="Player\PlayerTrackingSystem.cs" />
     <Compile Include="Team\Events\TeamScoreEvent.cs" />
     <Compile Include="Team\ITeamScoringExtension.cs" />
     <Compile Include="Team\NetworkHealthTeamScoringExtension.cs" />

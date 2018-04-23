@@ -8,6 +8,7 @@ using Engine.Systems.RNG;
 using Engine.Systems.Timing;
 using Engine.Systems.Timing.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
+using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems;
 using PlayGen.ITAlert.Simulation.Modules.GarbageDisposal.Systems;
 using PlayGen.ITAlert.Simulation.Modules.Malware.Systems;
@@ -288,7 +289,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 						}
 					}
 				}
-			}
+			},
+
+			#endregion
+
+			#region game actions
+
+			new SystemConfiguration<PlayerTrackingSystem>()
 
 			#endregion
 		};
