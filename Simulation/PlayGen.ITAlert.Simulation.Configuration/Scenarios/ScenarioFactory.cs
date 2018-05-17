@@ -20,16 +20,18 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios
 			string nameToken,
 			string descriptionToken,
 			int minPlayers,
-			int maxPlayers)
-			: this(new ScenarioInfo()
+			int maxPlayers,
+            int? timeLimitSeconds)
+			: this(new ScenarioInfo
 			{
 				Description = descriptionToken,
 				Key = key,
 				LocalizationDictionary = LocalizationHelper.GetLocalizationFromEmbeddedResource(key),
 				MaxPlayerCount = maxPlayers,
 				MinPlayerCount = minPlayers,
-				Name = nameToken
-			})
+				Name = nameToken,
+                TimeLimitSeconds = timeLimitSeconds
+            })
 		{
 			
 		}
