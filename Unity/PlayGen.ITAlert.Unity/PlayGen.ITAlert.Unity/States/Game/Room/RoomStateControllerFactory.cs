@@ -1,4 +1,5 @@
-﻿using GameWork.Core.States;
+﻿using System.Linq;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -11,6 +12,7 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
 using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.States.Game.Settings;
+using PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary;
 using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
@@ -22,11 +24,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public StateControllerBase ParentStateController { private get; set; }
 
 		private readonly Director _director;
+	    private readonly SimulationSummary _simulationSummary;
 
-		public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient)
+	    public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient,
+		    SimulationSummary simulationSummary)
 		{
 			_director = director;
 			_photonClient = photonClient;
+		    _simulationSummary = simulationSummary;
 		}
 
 		public TickStateController Create()
@@ -91,7 +96,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private PlayingState CreatePlayingState(ITAlertPhotonClient photonClient)
 		{
 			var playingStateInput = new PlayingStateInput(_photonClient, _director);
-			var playingState = new PlayingState(_director, playingStateInput, photonClient);
+			var playingState = new PlayingState(_director, playingStateInput, photonClient, _simulationSummary);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toFeedbackTransition = new OnEventTransition(FeedbackState.StateName);
@@ -137,14 +142,30 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			var input = new FeedbackStateInput(photonClient, _director);
 			var state = new FeedbackState(input, photonClient);
+            
+		    var onLobbyStateSyncAndSimulationEventsTransition = new OnMessageTransition(
+		        photonClient, 
+		        ITAlertChannel.GameState, 
+		        typeof(LobbyMessage), 
+		        SimulationEventSummaryState.StateName, 
+		        () => _simulationSummary.HasData);
 
-			var onLobbyStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(LobbyMessage), LobbyState.StateName);
+            var onLobbyStateSyncAndNoSimulationEventsTransition = new OnMessageTransition(
+		        photonClient,
+		        ITAlertChannel.GameState,
+		        typeof(LobbyMessage),
+		        LobbyState.StateName,
+		        () => !_simulationSummary.HasData);
+
 			var sendTransition = new OnEventTransition(MenuState.StateName);
 
 			input.FeedbackSendClickedEvent += sendTransition.ChangeState;
 			input.FeedbackSendClickedEvent += photonClient.CurrentRoom.Leave;
 
-			state.AddTransitions(onLobbyStateSyncTransition, sendTransition);
+			state.AddTransitions(
+			    onLobbyStateSyncAndSimulationEventsTransition,
+			    onLobbyStateSyncAndNoSimulationEventsTransition,
+                sendTransition);
 
 			return state;
 		}

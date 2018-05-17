@@ -6,17 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Engine.Events;
-using Engine.Logging.Database;
 using Engine.Logging.Database.Model;
 using Engine.Serialization;
 using Engine.Systems;
-using MySql.Data.Entity;
-using MySql.Data.MySqlClient;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Events;
 using PlayGen.ITAlert.Simulation.Logging.Models;
 using PlayGen.ITAlert.Simulation.UI.Events;
-using Event = Engine.Events.Event;
 
 namespace PlayGen.ITAlert.Simulation.Logging
 {
@@ -25,7 +21,6 @@ namespace PlayGen.ITAlert.Simulation.Logging
 		private readonly SimulationScenario _scenario;
 		private readonly EventSystem _eventSystem;
 
-		private DbConnection _connection;
 		private ITAlertLoggingContext _context;
 
 		private GameInstance _game;
@@ -46,14 +41,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 
 		public void Initialize()
 		{
-			var connectionStrings = System.Configuration.ConfigurationManager.ConnectionStrings;
-			var connectionString = connectionStrings["DatabaseEventLoggerContext"].ConnectionString;
-
-			DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
-
-			_connection = new MySqlConnection(connectionString);
-			_context = new ITAlertLoggingContext(_connection, true);
-			_context.Database.CreateIfNotExists();
+            _context = ITAlertLoggingContextFactory.Create();
 			
 			CreateGame();
 			CreatePlayers();
@@ -67,7 +55,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 			_eventQueueWait.Set();
 		}
 
-		#region queue worker
+        #region queue worker
 
 		private void StartQueueWorker()
 		{

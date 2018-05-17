@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
 using Engine.Events;
 using Engine.Lifecycle;
 using Engine.Serialization;
@@ -14,9 +15,11 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Exceptions;
+using PlayGen.ITAlert.Simulation.Logging;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Simulation.UI.Events;
 using PlayGen.Photon.Analytics;
+using Event = Engine.Logging.Database.Model.Event;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -125,7 +128,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 						if (_simulationLifecycleManager.TryStart())
 						{
 							_simulationLifecycleManager.Tick += OnTick;
-							_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
+							_simulationLifecycleManager.Stopped += exitCode => SimulationLifecycleManagerOnStopped(exitCode);
 						}
 						else
 						{
@@ -136,9 +139,32 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			}
 		}
 
-		private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
-		{
-			Messenger.SendAllMessage(new StopMessage());
+	    private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
+	    {
+	        List<StopMessage.SimulationEvent> simulationEvents = null;
+
+            // If logging was enabled, include events for the game
+            if (_simulationLifecycleManager.ECSRoot.ECS.GetSystems<DatabaseEventLogger>().Any())
+	        {
+	            var gameId = _simulationLifecycleManager.ECSRoot.InstanceId;
+	            using (var loggingController = new ITAlertLoggingController())
+	            {
+	                var events = loggingController.GetGameEvents(gameId);
+	                simulationEvents = events.Select(e => new StopMessage.SimulationEvent
+	                {
+                        PlayerId = e.PlayerId,
+                        Data = e.Data,
+                        EventCode = e.EventCode,
+                        Tick = e.Tick
+
+	                }).ToList();
+	            }
+	        }
+
+	        Messenger.SendAllMessage(new StopMessage
+	        {
+	            SimulationEvents = simulationEvents
+	        });
 		}
 
 		private void ProcessSimulationCommandMessage(Message message)

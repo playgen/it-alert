@@ -114,3 +114,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 *.7z
 Demo/
 !Tools/**/*.dll
+*.DotSettings
