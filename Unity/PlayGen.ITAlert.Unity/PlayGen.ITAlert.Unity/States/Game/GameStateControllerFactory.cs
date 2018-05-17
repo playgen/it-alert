@@ -1,10 +1,11 @@
-﻿using GameWork.Core.States;
+﻿using System.Collections.Generic;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
-
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room;
+using PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary;
 using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 
 namespace PlayGen.ITAlert.Unity.States.Game
@@ -15,6 +16,8 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 		public TickStateController Create(ITAlertPhotonClient photonClient)
 		{
+		    var simulationSummary = new SimulationSummary();
+
 			// Loading
 			var loadingState = new LoadingState(new LoadingStateInput());
 			loadingState.AddTransitions(new OnCompletedTransition(loadingState, LoginState.StateName));
@@ -28,15 +31,23 @@ namespace PlayGen.ITAlert.Unity.States.Game
 
 			// Room
 			var roomStateInput = new RoomStateInput(photonClient);
-			var roomState = new RoomState(roomStateInput, photonClient);
+			var roomState = new RoomState(roomStateInput, photonClient, simulationSummary);
 
 			var stateController = new TickStateController(loadingState, loginState, menuState, roomState);
 			stateController.SetParent(ParentStateController);
-
+            
 			roomState.SetSubstateParentController(stateController);
 			menuState.SetSubstateParentController(stateController);
 
-			return stateController;
+            // Simulation Events Summary
+            var simulationEventsSummaryInput = new SimulationEventSummaryStateInput(simulationSummary);
+		    var simulationEventsSummaryState = new SimulationEventSummaryState(simulationEventsSummaryInput, simulationSummary);
+
+            var menuStateTransition = new OnEventTransition(MenuState.StateName);
+		    simulationEventsSummaryInput.ContinueClickedEvent += menuStateTransition.ChangeState;
+            simulationEventsSummaryState.AddTransitions(menuStateTransition);
+            
+            return stateController;
 		}
 	}
 }

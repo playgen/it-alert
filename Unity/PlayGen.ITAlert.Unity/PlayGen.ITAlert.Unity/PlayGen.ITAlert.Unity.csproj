@@ -253,6 +253,9 @@
     <Compile Include="Simulation\ItemPanel.cs" />
     <Compile Include="Simulation\MalwareGeneMapper.cs" />
     <Compile Include="States\Game\Room\Initializing\InitializingStateInput.cs" />
+    <Compile Include="States\Game\SimulationEventSummary\SimulationEventSummaryState.cs" />
+    <Compile Include="States\Game\SimulationEventSummary\SimulationEventSummaryStateInput.cs" />
+    <Compile Include="States\Game\SimulationEventSummary\SimulationSummary.cs" />
     <Compile Include="SUGAR\AccountInterface.cs" />
     <Compile Include="SUGAR\AchievementItemInterface.cs" />
     <Compile Include="SUGAR\AchievementListInterface.cs" />

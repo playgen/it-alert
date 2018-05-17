@@ -1,12 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
+using PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
 using PlayGen.Photon.Messaging;
@@ -25,14 +28,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private VoiceController _voiceController;
 
 		private readonly Director _director;
+	    private readonly SimulationSummary _simulationSummary;
 
-		public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient) 
+	    public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
+		    SimulationSummary simulationSummary) 
 			: base(roomStateInput)
 		{
 			_director = roomStateInput.Director;
 			_director.Exception += GameExceptionHandler.OnException;
 			_photonClient = photonClient;
-			_controllerFactory = new RoomStateControllerFactory(_director, photonClient);
+			_controllerFactory = new RoomStateControllerFactory(_director, photonClient, _simulationSummary);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)
