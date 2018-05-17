@@ -37,8 +37,9 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 			//var ageOfInfections = infections.Sum(i => i.Component2.TicksAtLocation);
 
 			//var ageRatio = (decimal) ageOfInfections / (infections.Length * currentTick);
-			
-			OnScore((int)(infectionRatio * PointsPerTick));
+
+            var inverseInfectionRatio = 1 - infectionRatio;
+            OnScore((int)(inverseInfectionRatio * PointsPerTick));
 		}
 
 		public void Dispose()
