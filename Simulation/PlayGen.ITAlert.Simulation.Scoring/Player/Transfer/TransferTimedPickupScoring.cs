@@ -14,10 +14,14 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 		private readonly IDisposable _transferActivationSubscription;
 		private readonly IDisposable _pickupItemSubscription;
 		private readonly IDisposable _activateItemSubscription;
+		private readonly IDisposable _pickupItemAndActivateHeldSubscription;
+		private readonly IDisposable _pickupItemAndSwapWithHeldSubscription;
+		private readonly IDisposable _moveItemSubscription;
+		private readonly IDisposable _swapItemSubscription;
 
 		private readonly Dictionary<int, TransferActivationEvent> _transferTiming;
 
-		private const int ScoreWindowSeconds = 4;
+		private const int ScoreWindowSeconds = 9;
 
 		private readonly int TickWindow = (1000 * ScoreWindowSeconds) / SimulationConstants.TickInterval;
 
@@ -28,6 +32,10 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 			_transferActivationSubscription = eventSystem.Subscribe<TransferActivationEvent>(OnTransferActivationEvent);
 			_pickupItemSubscription = eventSystem.Subscribe<PickupItemEvent>(OnPickupItemEvent);
 			_activateItemSubscription = eventSystem.Subscribe<ActivateItemEvent>(OnActivateItemEvent);
+			_pickupItemAndActivateHeldSubscription = eventSystem.Subscribe<SwapInventoryItemAndActivateEvent>(OnPickUpAndActivateHeldEvent);
+			_pickupItemAndSwapWithHeldSubscription = eventSystem.Subscribe<SwapInventoryItemCommandEvent>(OnPickUpAndSwapHeldEvent);
+			_moveItemSubscription = eventSystem.Subscribe<MoveItemCommandEvent>(OnMoveItemEvent);
+			_swapItemSubscription = eventSystem.Subscribe<SwapSubsystemItemCommandEvent>(OnSwapItemEvent);
 
 			_transferTiming = new Dictionary<int, TransferActivationEvent>();
 
@@ -69,7 +77,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 			if (pickupItemEvent.Result == PickupItemEvent.ActivationResult.Success
 				&& _transferTiming.TryGetValue(pickupItemEvent.ItemId, out var transferEvent))
 			{
-				if (pickupItemEvent.Tick - transferEvent.Tick > TickWindow
+				if (pickupItemEvent.Tick - transferEvent.Tick <= TickWindow
 					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
 				{
 					playerTuple.Component2.ResourceManagement += 1;
@@ -83,12 +91,68 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 			if (activateItemEvent.Result == ActivateItemEvent.ActivationResult.Success
 				&& _transferTiming.TryGetValue(activateItemEvent.ItemId, out var transferEvent))
 			{
-				if (activateItemEvent.Tick - transferEvent.Tick > TickWindow
+				if (activateItemEvent.Tick - transferEvent.Tick <= TickWindow
 					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
 				{
 					playerTuple.Component2.ResourceManagement += 1;
 				}
 				_transferTiming.Remove(activateItemEvent.ItemId);
+			}
+		}
+
+		private void OnPickUpAndActivateHeldEvent(SwapInventoryItemAndActivateEvent pickUpItemEvent)
+		{
+			if (pickUpItemEvent.Result == SwapInventoryItemAndActivateEvent.ActivationResult.Success
+				&& _transferTiming.TryGetValue(pickUpItemEvent.SubsystemItemId, out var transferEvent))
+			{
+				if (pickUpItemEvent.Tick - transferEvent.Tick <= TickWindow
+					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
+				{
+					playerTuple.Component2.ResourceManagement += 1;
+				}
+				_transferTiming.Remove(pickUpItemEvent.SubsystemItemId);
+			}
+		}
+
+		private void OnPickUpAndSwapHeldEvent(SwapInventoryItemCommandEvent pickUpItemEvent)
+		{
+			if (pickUpItemEvent.Result == SwapInventoryItemCommandEvent.ActivationResult.Success
+				&& _transferTiming.TryGetValue(pickUpItemEvent.SubsystemItemId, out var transferEvent))
+			{
+				if (pickUpItemEvent.Tick - transferEvent.Tick <= TickWindow
+					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
+				{
+					playerTuple.Component2.ResourceManagement += 1;
+				}
+				_transferTiming.Remove(pickUpItemEvent.SubsystemItemId);
+			}
+		}
+
+		private void OnMoveItemEvent(MoveItemCommandEvent moveItemEvent)
+		{
+			if (moveItemEvent.Result == MoveItemCommandEvent.ActivationResult.Success
+				&& _transferTiming.TryGetValue(moveItemEvent.ItemId, out var transferEvent))
+			{
+				if (moveItemEvent.Tick - transferEvent.Tick <= TickWindow
+					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
+				{
+					playerTuple.Component2.ResourceManagement += 1;
+				}
+				_transferTiming.Remove(moveItemEvent.ItemId);
+			}
+		}
+
+		private void OnSwapItemEvent(SwapSubsystemItemCommandEvent moveItemEvent)
+		{
+			if (moveItemEvent.Result == SwapSubsystemItemCommandEvent.ActivationResult.Success
+				&& (_transferTiming.TryGetValue(moveItemEvent.FromItemId, out var transferEvent) || _transferTiming.TryGetValue(moveItemEvent.ToItemId, out transferEvent)))
+			{
+				if (moveItemEvent.Tick - transferEvent.Tick <= TickWindow
+					&& _playerScoreMatcherGroup.TryGetMatchingEntity(transferEvent.PlayerEntityId, out var playerTuple))
+				{
+					playerTuple.Component2.ResourceManagement += 1;
+				}
+				_transferTiming.Remove(_transferTiming.TryGetValue(moveItemEvent.FromItemId, out var _) ? moveItemEvent.FromItemId : moveItemEvent.ToItemId);
 			}
 		}
 
