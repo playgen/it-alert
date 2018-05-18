@@ -74,7 +74,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			var player = _photonClient.CurrentRoom.Player;
 			player.ExternalId = SUGARManager.CurrentUser.Id;
 			player.Name = SUGARManager.CurrentUser.Name;
-			player.RageClassId = SUGARManager.GroupId;
+			player.RageClassId = SUGARManager.ClassId;
 			SendPlayerUpdate(player);
 		}
 

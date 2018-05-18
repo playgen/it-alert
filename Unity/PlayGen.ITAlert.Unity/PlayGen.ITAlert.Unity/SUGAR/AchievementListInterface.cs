@@ -10,7 +10,7 @@ using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Sugar
 {
-    public class AchievementListInterface : BaseAchievementListInterface
+    public class AchievementListInterface : BaseEvaluationListInterface
     {
         /// <summary>
         /// An array of the AchievementItemInterfaces on this GameObject, set in the Inspector.
@@ -87,7 +87,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
         /// </summary>
         protected override void Draw()
         {
-            var achievementList = SUGARManager.Achievement.Progress.Skip(_pageNumber * _achievementItems.Length).Take(_achievementItems.Length).ToList();
+            var achievementList = SUGARManager.Evaluation.Progress.Skip(_pageNumber * _achievementItems.Length).Take(_achievementItems.Length).ToList();
             if (!achievementList.Any() && _pageNumber > 0)
             {
                 UpdatePageNumber(-1);
@@ -111,7 +111,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
             }
             _pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);
             _previousButton.interactable = _pageNumber > 0;
-            _nextButton.interactable = SUGARManager.Achievement.Progress.Count > (_pageNumber + 1) * _achievementItems.Length;
+            _nextButton.interactable = SUGARManager.Evaluation.Progress.Count > (_pageNumber + 1) * _achievementItems.Length;
             _achievementItems.Select(t => t.gameObject).BestFit();
         }
 
