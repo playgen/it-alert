@@ -47,8 +47,8 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 				case AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination:
 					resourceManagementModifier += 2;
 					systematicityModifier += onAvWorkstation
-						? 2
-						: 1;
+						? 3
+						: 2;
 
 					break;
 			}

@@ -51,6 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					ItemId = itemTuple.Entity.Id,
 					ItemType = itemTuple.Component5.GetType().Name,
 					PlayerEntityId = command.PlayerId,
+					SubsystemEntityId = itemTuple.Component3.Value ?? -1
 				};
 
 				var itemNotActive = itemTuple.Component2.ActivationState == ActivationState.NotActive;	// item is not active

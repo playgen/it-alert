@@ -45,8 +45,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryHandleCommand(DropItemCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (handlerEnabled
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& playerTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple)
@@ -55,33 +54,39 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				var @event = new DropItemEvent()
 				{
 					PlayerEntityId = playerTuple.Entity.Id,
-					//ItemId = itemTuple.Entity.Id,
+					ItemId = itemTuple.Entity.Id,
 					ItemType = itemTuple.Component4.GetType().Name,
+					SubsystemEntityId = itemTuple.Component3.Value ?? -1
 				};
 
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
 				var target = subsystemTuple.Component2.Items[command.ContainerId];
 
 				@event.TargetContainerType = target.GetType().Name;
-				
-				if (inventory != null
-					&& inventory.Item == itemTuple.Entity.Id
-					&& target != null
-					&& target.CanCapture(itemTuple.Entity.Id))
+
+				if (handlerEnabled)
 				{
-					target.Item = itemTuple.Entity.Id;
-					itemTuple.Component3.Value = subsystemTuple.Entity.Id;
-					inventory.Item = null;
-					itemTuple.Component2.Value = null;
+					if (inventory != null
+						&& inventory.Item == itemTuple.Entity.Id
+						&& target != null
+						&& target.CanCapture(itemTuple.Entity.Id))
+					{
+						target.Item = itemTuple.Entity.Id;
+						itemTuple.Component3.Value = subsystemTuple.Entity.Id;
+						inventory.Item = null;
+						itemTuple.Component2.Value = null;
 
-					@event.Result = DropItemEvent.ActivationResult.Success;
+						@event.Result = DropItemEvent.ActivationResult.Success;
+						_eventSystem.Publish(@event);
+
+						return true;
+					}
+					@event.Result = DropItemEvent.ActivationResult.Failure_DestinationCannotCapture;
 					_eventSystem.Publish(@event);
-
-					return true;
 				}
 				else
 				{
-					@event.Result = DropItemEvent.ActivationResult.Failure_DestinationCannotCapture;
+					@event.Result = DropItemEvent.ActivationResult.Failure_CommandDisabled;
 					_eventSystem.Publish(@event);
 				}
 			}
@@ -113,6 +118,8 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		}
 
 		public ActivationResult Result { get; set; }
+
+		public int ItemId { get; set; }
 
 		public string ItemType { get; set; }
 

@@ -49,8 +49,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryHandleCommand(DropAndActivateItemCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (handlerEnabled
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& playerTuple.Component3.Value.HasValue
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(playerTuple.Component3.Value.Value, out var subsystemTuple)
@@ -61,66 +60,71 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					PlayerEntityId = playerTuple.Entity.Id,
 					ItemId = itemTuple.Entity.Id,
 					ItemType = itemTuple.Component4.GetType().Name,
+					SubsystemEntityId = itemTuple.Component3.Value ?? -1
 				};
 
 				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
 				var target = subsystemTuple.Component2.Items[command.ContainerId];
 
 				@event.TargetContainerType = target.GetType().Name;
-
-				if (inventory != null
-					&& inventory.Item == itemTuple.Entity.Id
-					&& target != null
-					&& target.CanCapture(itemTuple.Entity.Id))
+				if (handlerEnabled)
 				{
-					target.Item = itemTuple.Entity.Id;
-					itemTuple.Component3.Value = subsystemTuple.Entity.Id;
-					inventory.Item = null;
-					itemTuple.Component2.Value = null;
-
-					if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out var activeItemTuple))
+					if (inventory != null
+						&& inventory.Item == itemTuple.Entity.Id
+						&& target != null
+						&& target.CanCapture(itemTuple.Entity.Id))
 					{
-						var itemNotActive = activeItemTuple.Component2.ActivationState == ActivationState.NotActive;  // item is not active
-						var playerCanActivate = (activeItemTuple.Component4.AllowAll || activeItemTuple.Component4.Value == null || activeItemTuple.Component4.Value == command.PlayerId); // player can activate item
-						// TODO: should an item have to have a location to be activated?
-						var playerHasActive = _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId && it.Component2.ActivationState != ActivationState.NotActive);    // player has no other active items
+						target.Item = itemTuple.Entity.Id;
+						itemTuple.Component3.Value = subsystemTuple.Entity.Id;
+						inventory.Item = null;
+						itemTuple.Component2.Value = null;
 
-						if (handlerEnabled
-							&& itemNotActive
-							&& playerCanActivate
-							&& playerHasActive == false
-							&& activeItemTuple.Component3.Value.HasValue // item is on a subsystem
-							&& _subsystemMatcherGroup.TryGetMatchingEntity(activeItemTuple.Component3.Value.Value, out var _))
+						if (_activationMatcherGroup.TryGetMatchingEntity(command.ItemId, out var activeItemTuple))
 						{
-							activeItemTuple.Component2.SetState(ActivationState.Activating,
-								currentTick);
-							activeItemTuple.Component4.Value = command.PlayerId;
+							var itemNotActive = activeItemTuple.Component2.ActivationState == ActivationState.NotActive;  // item is not active
+							var playerCanActivate = (activeItemTuple.Component4.AllowAll || activeItemTuple.Component4.Value == null || activeItemTuple.Component4.Value == command.PlayerId); // player can activate item
+																																															   // TODO: should an item have to have a location to be activated?
+							var playerHasActive = _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId && it.Component2.ActivationState != ActivationState.NotActive);    // player has no other active items
 
-							@event.Result = DropAndActivateItemEvent.ActivationResult.Success;
+							if (itemNotActive
+								&& playerCanActivate
+								&& playerHasActive == false
+								&& activeItemTuple.Component3.Value.HasValue // item is on a subsystem
+								&& _subsystemMatcherGroup.TryGetMatchingEntity(activeItemTuple.Component3.Value.Value, out var _))
+							{
+								activeItemTuple.Component2.SetState(ActivationState.Activating,
+									currentTick);
+								activeItemTuple.Component4.Value = command.PlayerId;
+
+								@event.Result = DropAndActivateItemEvent.ActivationResult.Success;
+								_eventSystem.Publish(@event);
+								return true;
+							}
+
+							inventory.Item = itemTuple.Entity.Id;
+							itemTuple.Component2.Value = playerTuple.Entity.Id;
+							itemTuple.Component3.Value = null;
+							target.Item = null;
+
+							@event.Result = itemNotActive
+									? playerCanActivate
+										? playerHasActive
+											? DropAndActivateItemEvent.ActivationResult.Failure_PlayerHasActive
+											: DropAndActivateItemEvent.ActivationResult.Error
+										: DropAndActivateItemEvent.ActivationResult.Failure_PlayerCannotActivate
+									: DropAndActivateItemEvent.ActivationResult.Failure_ItemAlreadyActive;
 							_eventSystem.Publish(@event);
-							return true;
 						}
-
-						inventory.Item = itemTuple.Entity.Id;
-						itemTuple.Component2.Value = playerTuple.Entity.Id;
-						itemTuple.Component3.Value = null;
-						target.Item = null;
-
-						@event.Result = handlerEnabled
-							? itemNotActive
-								? playerCanActivate
-									? playerHasActive
-										? DropAndActivateItemEvent.ActivationResult.Failure_PlayerHasActive
-										: DropAndActivateItemEvent.ActivationResult.Error
-									: DropAndActivateItemEvent.ActivationResult.Failure_PlayerCannotActivate
-								: DropAndActivateItemEvent.ActivationResult.Failure_ItemAlreadyActive
-							: DropAndActivateItemEvent.ActivationResult.Failure_CommandDisabled;
+					}
+					else
+					{
+						@event.Result = DropAndActivateItemEvent.ActivationResult.Failure_DestinationCannotCapture;
 						_eventSystem.Publish(@event);
 					}
 				}
 				else
 				{
-					@event.Result = DropAndActivateItemEvent.ActivationResult.Failure_DestinationCannotCapture;
+					@event.Result = DropAndActivateItemEvent.ActivationResult.Failure_CommandDisabled;
 					_eventSystem.Publish(@event);
 				}
 			}
