@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Sugar
 {
-    public class AchievementPopupInterface : BaseAchievementPopupInterface
+    public class AchievementPopupInterface : BaseEvaluationPopupInterface
     {
         /// <summary>
         /// Animation for displaying the achievement notification.
@@ -32,15 +32,15 @@ namespace PlayGen.ITAlert.Unity.Sugar
         /// </summary>
         private IEnumerator AnimatePopup()
         {
-            while (_achievementQueue.Count > 0)
+            while (_evaluationQueue.Count > 0)
             {
-                _name.text = _achievementQueue[0].Name;
+                _name.text = _evaluationQueue[0].Name;
                 _animation.Play();
                 while (_animation.isPlaying)
                 {
                     yield return null;
                 }
-                _achievementQueue.RemoveAt(0);
+                _evaluationQueue.RemoveAt(0);
                 yield return null;
             }
         }
