@@ -10,3 +10,8 @@ Currently using the unity client built from commit: 58e604d90ea003492514f142d27d
 
 1. Build SUGAR-Unity
 2. Copy build output of SUGAR-Unity build to lib/SUGAR/bin
+
+OR
+
+1. Build the SUGAR-Unity unitypackage
+2. Import into IT Alert
