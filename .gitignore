@@ -115,3 +115,4 @@ Server/deploy/bin_Win64/SUGARConfiguration.json
 Demo/
 !Tools/**/*.dll
 *.DotSettings
+Unity/UnityPackageManager/manifest.json
