@@ -47,6 +47,11 @@
       <HintPath>..\..\..\lib\Unity\nunit.framework.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PlayGen.ITAlert.Photon.Messages, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\bin\Server\PlayGen.ITAlert.Photon.Messages.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Photon.Messaging, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -78,6 +83,11 @@
       <Name>PlayGen.ITAlert.Unity</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="States\Game\SimulationSummary\InstanceEvents_dump.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
