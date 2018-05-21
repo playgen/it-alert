@@ -10,6 +10,7 @@ using Engine.Lifecycle;
 using Engine.Serialization;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Simulation.Scoring.Player;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
@@ -279,6 +280,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					if (_trackedEntities.TryGetValue(internalPlayer.EntityId, out var playerUiEntity))
 					{
 						var playerBehaviour = (PlayerBehaviour) playerUiEntity.EntityBehaviour;
+						playerBehaviour.PhotonId = player.PhotonId;
 						if (player.PhotonId == playerServerId)
 						{
 							LogProxy.Info($"Selected active player with id {playerServerId}: entity {playerBehaviour.Entity.Id}");
@@ -287,7 +289,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							playerUiEntity.GameObject.GetComponent<TrailRenderer>().sortingLayerName = UIConstants.ActivePlayerSortingLayer;
 							if (player.ExternalId.HasValue)
 							{
-								playerBehaviour.PhotonId = player.ExternalId.Value;
+								playerBehaviour.ExternalId = player.ExternalId.Value;
 							}
 						}
 					}

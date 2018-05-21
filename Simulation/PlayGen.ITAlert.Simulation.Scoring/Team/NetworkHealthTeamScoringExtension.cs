@@ -14,14 +14,14 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 
 		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 
-		private readonly ComponentMatcherGroup<MalwareGenome, CurrentLocation> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<MalwarePropogation, CurrentLocation> _malwareMatcherGroup;
 
 		private const int PointsPerTick = 100;
 
 		public NetworkHealthTeamScoringExtension(IMatcherProvider matcherProvider)
 		{
 			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
-			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, CurrentLocation>();
+			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwarePropogation, CurrentLocation>();
 		}
 
 		public void Tick(int currentTick)

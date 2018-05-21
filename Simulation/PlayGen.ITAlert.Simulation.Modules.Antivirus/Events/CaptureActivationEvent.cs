@@ -15,6 +15,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 			NoVirusPresent,
 			SimpleGenomeCaptured,
 			ComplexGenomeCaptured,
+			GenomeAlreadyCaptured
 		}
 
 		public CaptureActivationResult ActivationResult { get; set; }
