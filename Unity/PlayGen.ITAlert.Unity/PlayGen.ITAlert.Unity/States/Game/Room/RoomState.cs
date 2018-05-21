@@ -9,7 +9,6 @@ using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
-using PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
 using PlayGen.Photon.Messaging;
@@ -28,10 +27,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private VoiceController _voiceController;
 
 		private readonly Director _director;
-	    private readonly SimulationSummary _simulationSummary;
+	    private readonly SimulationSummary.SimulationSummary _simulationSummary;
 
 	    public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
-		    SimulationSummary simulationSummary) 
+		    SimulationSummary.SimulationSummary simulationSummary) 
 			: base(roomStateInput)
 		{
 			_director = roomStateInput.Director;
