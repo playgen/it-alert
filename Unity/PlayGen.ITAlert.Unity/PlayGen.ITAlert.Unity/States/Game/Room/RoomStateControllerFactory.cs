@@ -100,14 +100,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toFeedbackTransition = new OnEventTransition(FeedbackState.StateName);
-			var toMenuTransition = new OnEventTransition(MenuState.StateName);
+			var toSimulationSummaryTransition = new OnEventTransition(SimulationSummaryState.StateName);
 			var toPauseTransition = new OnEventTransition(PausedState.StateName);
 
 			playingStateInput.PauseClickedEvent += toPauseTransition.ChangeState;
 			playingStateInput.EndGameContinueClickedEvent += toFeedbackTransition.ChangeState;
-			playingStateInput.EndGameOnePlayerContinueClickedEvent += toMenuTransition.ChangeState;
+			playingStateInput.EndGameOnePlayerContinueClickedEvent += toSimulationSummaryTransition.ChangeState;
 
-			playingState.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toMenuTransition);
+			playingState.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toSimulationSummaryTransition);
 
 			return playingState;
 		}
@@ -143,14 +143,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var input = new FeedbackStateInput(photonClient, _director);
 			var state = new FeedbackState(input, photonClient);
             
-		    var onLobbyStateSyncAndSimulationEventsTransition = new OnMessageTransition(
+		    var onLobbyStateSyncAndSimulationSummaryTransition = new OnMessageTransition(
 		        photonClient, 
 		        ITAlertChannel.GameState, 
 		        typeof(LobbyMessage), 
 		        SimulationSummaryState.StateName, 
 		        () => _simulationSummary.HasData);
 
-            var onLobbyStateSyncAndNoSimulationEventsTransition = new OnMessageTransition(
+            var onLobbyStateSyncAndNoSimulationSummaryTransition = new OnMessageTransition(
 		        photonClient,
 		        ITAlertChannel.GameState,
 		        typeof(LobbyMessage),
@@ -163,8 +163,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			input.FeedbackSendClickedEvent += photonClient.CurrentRoom.Leave;
 
 			state.AddTransitions(
-			    onLobbyStateSyncAndSimulationEventsTransition,
-			    onLobbyStateSyncAndNoSimulationEventsTransition,
+			    onLobbyStateSyncAndSimulationSummaryTransition,
+			    onLobbyStateSyncAndNoSimulationSummaryTransition,
                 sendTransition);
 
 			return state;

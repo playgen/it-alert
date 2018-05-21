@@ -44,6 +44,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
 
             var gameStateController = GetStateController<TickStateController>(gameState);
 
+            
             // Wait until the game state controller has completed loading
             while (gameStateController.ActiveStateName != MenuState.StateName)
             {

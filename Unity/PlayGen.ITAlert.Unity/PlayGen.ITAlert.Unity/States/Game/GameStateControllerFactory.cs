@@ -33,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			var roomStateInput = new RoomStateInput(photonClient);
 			var roomState = new RoomState(roomStateInput, photonClient, simulationSummary);
 
-			// Simulation Events Summary
+			// Simulation Summary
             var simulationSummaryStateInput = new SimulationSummaryStateInput(simulationSummary);
 		    var simulationSummaryState = new SimulationSummaryState(simulationSummaryStateInput, simulationSummary);
 
