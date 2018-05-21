@@ -28,6 +28,8 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 				case CaptureActivationEvent.CaptureActivationResult.NoVirusPresent:
 					systematicityModifier -= 1;
 					break;
+				case CaptureActivationEvent.CaptureActivationResult.GenomeAlreadyCaptured:
+					break;
 				case CaptureActivationEvent.CaptureActivationResult.SimpleGenomeCaptured:
 					systematicityModifier += onAvWorkstation
 						? 2
