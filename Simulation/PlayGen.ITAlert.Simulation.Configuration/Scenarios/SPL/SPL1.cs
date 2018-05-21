@@ -171,8 +171,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 					OnTickActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(spawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)), 
-							new OnEvent<AntivirusActivationEvent>(aae => aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
-								|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination)),
+							new OnEvent<AntivirusActivationEvent>(aae => (aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
+								|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination) && aae.MalwareCount[SimulationConstants.MalwareGeneRed] == 0)),
 					},
 					ExitCondition = new WaitForTimer(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
