@@ -87,7 +87,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		    if (message is StopMessage stopMessage)
 			{
-			    _simulationSummary.SetData(stopMessage.SimulationEvents);
+                // todo pass the player data to the sim summary
+			    _simulationSummary.SetData(stopMessage.SimulationEvents, null);
                 _director.EndGame();
 			}
 
