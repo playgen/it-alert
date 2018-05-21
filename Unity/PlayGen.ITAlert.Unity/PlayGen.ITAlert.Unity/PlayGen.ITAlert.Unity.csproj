@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Assets\PlayGen.ITAlert.Unity\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -253,9 +253,9 @@
     <Compile Include="Simulation\ItemPanel.cs" />
     <Compile Include="Simulation\MalwareGeneMapper.cs" />
     <Compile Include="States\Game\Room\Initializing\InitializingStateInput.cs" />
-    <Compile Include="States\Game\SimulationEventSummary\SimulationEventSummaryState.cs" />
-    <Compile Include="States\Game\SimulationEventSummary\SimulationEventSummaryStateInput.cs" />
-    <Compile Include="States\Game\SimulationEventSummary\SimulationSummary.cs" />
+    <Compile Include="States\Game\SimulationSummary\SimulationSummaryState.cs" />
+    <Compile Include="States\Game\SimulationSummary\SimulationSummaryStateInput.cs" />
+    <Compile Include="States\Game\SimulationSummary\SimulationSummary.cs" />
     <Compile Include="SUGAR\AccountInterface.cs" />
     <Compile Include="SUGAR\AchievementItemInterface.cs" />
     <Compile Include="SUGAR\AchievementListInterface.cs" />

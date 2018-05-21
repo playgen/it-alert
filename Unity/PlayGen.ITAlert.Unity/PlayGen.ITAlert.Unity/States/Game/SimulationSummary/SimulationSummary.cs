@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 
-namespace PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary
+namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 {
     public class SimulationSummary
     {

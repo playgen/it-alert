@@ -12,7 +12,7 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
 using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
 using PlayGen.ITAlert.Unity.States.Game.Settings;
-using PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary;
+using PlayGen.ITAlert.Unity.States.Game.SimulationSummary;
 using PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
@@ -24,10 +24,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public StateControllerBase ParentStateController { private get; set; }
 
 		private readonly Director _director;
-	    private readonly SimulationSummary _simulationSummary;
+	    private readonly SimulationSummary.SimulationSummary _simulationSummary;
 
 	    public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient,
-		    SimulationSummary simulationSummary)
+		    SimulationSummary.SimulationSummary simulationSummary)
 		{
 			_director = director;
 			_photonClient = photonClient;
@@ -147,7 +147,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		        photonClient, 
 		        ITAlertChannel.GameState, 
 		        typeof(LobbyMessage), 
-		        SimulationEventSummaryState.StateName, 
+		        SimulationSummaryState.StateName, 
 		        () => _simulationSummary.HasData);
 
             var onLobbyStateSyncAndNoSimulationEventsTransition = new OnMessageTransition(

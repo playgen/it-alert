@@ -1,28 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using GameWork.Core.States.Input;
-using PlayGen.ITAlert.Photon.Messages.Simulation.States;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 
-namespace PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary
+namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 {
-    public class SimulationEventSummaryStateInput : StateInput
+    public class SimulationSummaryStateInput : TickStateInput
     {
         private readonly SimulationSummary _simulationSummary;
         private GameObject _panel;
 
         public event Action ContinueClickedEvent;
 
-        public SimulationEventSummaryStateInput(SimulationSummary simulationSummary)
+        public SimulationSummaryStateInput(SimulationSummary simulationSummary)
         {
             _simulationSummary = simulationSummary;
         }
 
         protected override void OnInitialize()
         {
-            _panel = GameObjectUtilities.FindGameObject("SimulationEventSummaryContainer/SimulationEventSummaryPanelContainer/SimulationEventSummaryPanel");
+            _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer");
         }
 
         protected override void OnEnter()
@@ -34,7 +32,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationEventSummary
             _buttons.Buttons.BestFit();
             _sendButton.gameObject.SetActive(true);*/
 
-            Task.Delay(5000).ContinueWith(_ => ContinueClickedEvent?.Invoke());
+            //Task.Delay(5000).ContinueWith(_ => ContinueClickedEvent?.Invoke());
         }
 
         protected override void OnExit()
