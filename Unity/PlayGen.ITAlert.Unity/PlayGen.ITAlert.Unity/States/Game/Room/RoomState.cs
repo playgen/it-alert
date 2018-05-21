@@ -27,7 +27,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private VoiceController _voiceController;
 
 		private readonly Director _director;
-	    private readonly SimulationSummary.SimulationSummary _simulationSummary;
 
 	    public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
 		    SimulationSummary.SimulationSummary simulationSummary) 
@@ -36,7 +35,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_director = roomStateInput.Director;
 			_director.Exception += GameExceptionHandler.OnException;
 			_photonClient = photonClient;
-			_controllerFactory = new RoomStateControllerFactory(_director, photonClient, _simulationSummary);
+			_controllerFactory = new RoomStateControllerFactory(_director, photonClient, simulationSummary);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)

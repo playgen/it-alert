@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 {
@@ -10,6 +11,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
     {
         private readonly SimulationSummary _simulationSummary;
         private GameObject _panel;
+        private Button _continueButton;
 
         public event Action ContinueClickedEvent;
 
@@ -20,25 +22,32 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         protected override void OnInitialize()
         {
-            _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer");
+            _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer/SimulationSummaryPanelContainer");
+            _continueButton = _panel.transform.Find("ContinueButtonContainer").GetComponent<Button>();
         }
 
         protected override void OnEnter()
         {
-            /*_sendButton.onClick.AddListener(OnSendClick);
+            _continueButton.onClick.AddListener(OnContinueClicked);
+            _panel.SetActive(true);
 
-            PopulateFeedback(_director.Players, _director.Player.PhotonId);
+            /*PopulateFeedback(_director.Players, _director.Player.PhotonId);
             _feedbackPanel.transform.parent.gameObject.SetActive(true);
             _buttons.Buttons.BestFit();
-            _sendButton.gameObject.SetActive(true);*/
+            _sendButton.gameObject.SetActive(true); */
 
             //Task.Delay(5000).ContinueWith(_ => ContinueClickedEvent?.Invoke());
         }
 
         protected override void OnExit()
         {
-            /*_sendButton.onClick.RemoveListener(OnSendClick);
-            _feedbackPanel.transform.parent.gameObject.SetActive(false);*/
+            _continueButton.onClick.RemoveListener(OnContinueClicked);
+            _panel.SetActive(false);
+        }
+
+        private void OnContinueClicked()
+        {
+            ContinueClickedEvent.Invoke();
         }
     }
 }
