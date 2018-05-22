@@ -1,8 +1,11 @@
+Make sure that Submodules have been pulled properly. Source Tree likes to ignore the Newtonsoft.Json Submodule
+
 # Run Instructions
-1. Build Simulation/PlayGen.ITAlert.sln
-2. Run PlayGen.ITAlert.Photon.sln
-3. Build Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity.sln
-4. Open and run Unity/
+1. Build Simulation/Engine/Ephermis.ECS-Alpha.sln
+2. Build Simulation/PlayGen.ITAlert.sln
+3. Run Server/PlayGen.ITAlert.Photon.sln (Make sure PlayGen.ITAlert.Photon.Plugin is set as startup project)
+4. Build Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity.sln
+5. Open and run Unity/
 
 # SUGAR
 ## Build Instructions
