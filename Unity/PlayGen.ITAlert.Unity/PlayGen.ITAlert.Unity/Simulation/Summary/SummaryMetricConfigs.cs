@@ -6,7 +6,7 @@ public static class SummaryMetricConfigs
     {
         Key = "SIMULATION_SUMMARY_METRIC_SPOKE",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "Sound_Icon"
     };
 
     public static SummaryMetricConfig Moved = new SummaryMetricConfig
@@ -20,7 +20,7 @@ public static class SummaryMetricConfigs
     {
         Key = "SIMULATION_SUMMARY_METRIC_TRANSFERS_SENT",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "transferitemcontainer"
     };
 
     public static SummaryMetricConfig TransfersRecieved = new SummaryMetricConfig
@@ -34,21 +34,21 @@ public static class SummaryMetricConfigs
     {
         Key = "SIMULATION_SUMMARY_METRIC_ANTIVURUSES_USED",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "antivirus"
     };
 
     public static SummaryMetricConfig ScannersUsed = new SummaryMetricConfig
     {
         Key = "SIMULATION_SUMMARY_METRIC_SCANNERS_USED",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "scanner"
     };
 
     public static SummaryMetricConfig VirusesKilled = new SummaryMetricConfig
     {
         Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_KILLED",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "big_virus"
     };
 
     public static SummaryMetricConfig AntivirusesWasted = new SummaryMetricConfig
@@ -76,7 +76,7 @@ public static class SummaryMetricConfigs
     {
         Key = "SIMULATION_SUMMARY_METRIC_CAPTURES_USED",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "capture"
     };
 
     public static SummaryMetricConfig VirusesCaptured = new SummaryMetricConfig
@@ -97,7 +97,7 @@ public static class SummaryMetricConfigs
     {
         Key = "SIMULATION_SUMMARY_METRIC_ANALYSERS_USED",
         HighlightHighest = true,
-        IconPath = ""
+        IconPath = "analyser"
     };
 
     public static SummaryMetricConfig AntivirusesCreated = new SummaryMetricConfig
