@@ -34,11 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 			            }
 			            break;
 					case nameof(PlayerLeaveNodeEvent):
-						var setActorDestinationEvent = JsonConvert.DeserializeObject<SetActorDestinationEvent>(@event.Data);
-			            if (setActorDestinationEvent.Result == SetActorDestinationEvent.CommandResult.Success)
-			            {
-				            Increment(sumByPlayerByEvent, "Moved", @event.PlayerId);
-			            }
+				        Increment(sumByPlayerByEvent, "Moved", @event.PlayerId);
 			            break;
 					case nameof(TransferActivationEvent):
 						var transferActivationEvent = JsonConvert.DeserializeObject<TransferActivationEvent>(@event.Data);
