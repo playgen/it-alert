@@ -80,7 +80,7 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 								//exitNode.GetComponent<IMovementSystemExtension>().AddVisitor(visitor, Entity, overflow, currentTick);
 								OnVisitorTransition(exitNode.Value, visitorId, subsystemTuple.Entity.Id, overflow, currentTick);
-
+								//TODO move to a better place
 								_movementSpeedSystem.LeaveSystem(visitorId);
 							}
 							else

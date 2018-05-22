@@ -10,7 +10,7 @@ using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class MovementSpeedSystem : ITickableSystem
+	public class MovementSpeedSystem : ISystem
 	{
 		/// <summary>
 		/// 
@@ -40,16 +40,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 		public void LeaveSystem(int id)
 		{
-			var @event = new PlayerLeaveNodeEvent()
+			var @event = new PlayerLeaveNodeEvent
 			{
-				PlayerEntityId = id
+				PlayerEntityId = id,
+				Result = PlayerLeaveNodeEvent.CommandResult.Success
 			};
 			_eventSystem.Publish(@event);
-
-		}
-
-		public void Tick(int currentTick)
-		{
 
 		}
 
@@ -60,6 +56,12 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 	public class PlayerLeaveNodeEvent : Event, IPlayerEvent
 	{
+		public enum CommandResult
+		{
+			Error = 0,
+			Success,
+		}
+		public CommandResult Result { get; set; }
 		public int PlayerEntityId { get; set; }
 	}
 
