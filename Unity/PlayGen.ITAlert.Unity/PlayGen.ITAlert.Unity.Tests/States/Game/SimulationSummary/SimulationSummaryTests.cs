@@ -104,6 +104,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
             return events;
         }
 
+        [Timeout(int.MaxValue)]
         [UnityTest]
         public IEnumerator DoesDisplay()
         {
