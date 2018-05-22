@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameWork.Core.States.Tick.Input;
+using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
@@ -21,6 +23,43 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         public event Action ContinueClickedEvent;
 
+        private readonly List<SummaryMetricConfig> _multiplayerMetrics = new List<SummaryMetricConfig>
+        {
+            SummaryMetricConfigs.Spoke,
+            SummaryMetricConfigs.Moved,
+            SummaryMetricConfigs.TransfersSent,
+            SummaryMetricConfigs.TransfersRecieved,
+            SummaryMetricConfigs.AntivirusesUsed,
+            SummaryMetricConfigs.ScannersUsed,
+            SummaryMetricConfigs.VirusesKilled,
+            SummaryMetricConfigs.AntivirusesWasted,
+            SummaryMetricConfigs.VirusesFound,
+            SummaryMetricConfigs.ScansWithNoVirusesFound,
+            SummaryMetricConfigs.CapturesUsed,
+            SummaryMetricConfigs.VirusesCaptured,
+            SummaryMetricConfigs.CaptureWithNoVirusCaught,
+            SummaryMetricConfigs.AnalysersUsed,
+            SummaryMetricConfigs.AntivirusesCreated,
+            SummaryMetricConfigs.AntivirusCreationFails
+        };
+
+        private readonly List<SummaryMetricConfig> _singleplayerMetrics = new List<SummaryMetricConfig>
+        {
+            SummaryMetricConfigs.Moved,
+            SummaryMetricConfigs.AntivirusesUsed,
+            SummaryMetricConfigs.ScannersUsed,
+            SummaryMetricConfigs.VirusesKilled,
+            SummaryMetricConfigs.AntivirusesWasted,
+            SummaryMetricConfigs.VirusesFound,
+            SummaryMetricConfigs.ScansWithNoVirusesFound,
+            SummaryMetricConfigs.CapturesUsed,
+            SummaryMetricConfigs.VirusesCaptured,
+            SummaryMetricConfigs.CaptureWithNoVirusCaught,
+            SummaryMetricConfigs.AnalysersUsed,
+            SummaryMetricConfigs.AntivirusesCreated,
+            SummaryMetricConfigs.AntivirusCreationFails
+        };
+
         public SimulationSummaryStateInput(SimulationSummary simulationSummary)
         {
             _simulationSummary = simulationSummary;
@@ -37,39 +76,47 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         protected override void OnEnter()
         {
+            PopulateMetrics();
             _continueButton.onClick.AddListener(OnContinueClicked);
             _panel.SetActive(true);
+        }
+
+        private void PopulateMetrics()
+        {
+            var metricConfigs = _simulationSummary.PlayersData.Count > 1
+                ? _multiplayerMetrics
+                : _singleplayerMetrics;
 
             var sumByPlayerByMetrics = EventProcessor.GetSumByPlayerByMetric(_simulationSummary.Events);
-            
+
             AddColumn(null, _simulationSummary.PlayersData.ToDictionary(pd => pd.Id, pd => pd.Name), _simulationSummary.PlayersData);
 
-            foreach (var item in sumByPlayerByMetrics)
+            foreach (var metricConfig in metricConfigs)
             {
-                AddColumn(item.Key, item.Value.ToDictionary(i => i.Key, i => i.Value.ToString()), _simulationSummary.PlayersData, "0");
+                sumByPlayerByMetrics.TryGetValue(metricConfig.Key, out var valueByPlayer);
+                AddColumn(metricConfig.Key, valueByPlayer?.ToDictionary(i => i.Key, i => i.Value.ToString()), _simulationSummary.PlayersData, "0");
             }
         }
 
         private void AddColumn(
-            string title, 
-            Dictionary<int?, string> valueByPlayer, 
-            IReadOnlyList<SimulationSummary.PlayerData> playersData, 
+            string titleKey,
+            Dictionary<int?, string> valueByPlayer,
+            IReadOnlyList<SimulationSummary.PlayerData> playersData,
             string placeholderValue = null)
         {
             var column = Object.Instantiate(_columnResource, _columnContainer);
 
             // Title
-            if (!string.IsNullOrWhiteSpace(title))
+            if (!string.IsNullOrWhiteSpace(titleKey))
             {
-                // todo localization
-                column.transform.Find("Title").GetComponent<Text>().text = title;
+                column.transform.Find("Title").GetComponent<Text>().text = Localization.Get(titleKey);
             }
 
             // Items
             foreach (var playerData in playersData)
             {
                 var rowItem = Object.Instantiate(_rowItemResource, column.transform);
-                if (!valueByPlayer.TryGetValue(playerData.Id, out var value))
+                if (valueByPlayer == null || !valueByPlayer.TryGetValue(playerData.Id, out var value))
                 {
                     value = placeholderValue;
                 }
@@ -95,7 +142,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                 Object.Destroy(column);
             }
         }
-        
+
         private void OnContinueClicked()
         {
             ContinueClickedEvent.Invoke();
