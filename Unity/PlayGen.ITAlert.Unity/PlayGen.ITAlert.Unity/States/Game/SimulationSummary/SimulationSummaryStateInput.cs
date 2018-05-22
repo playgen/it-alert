@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
+using Logger = PlayGen.Photon.Unity.Logger;
 using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
@@ -106,9 +107,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                     0, 
                     metricConfig.HighlightHighest);
             }
-        }
+	        //var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
+	        //LogPlayers(playerComparisons);
+		}
 
-        private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
+		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
         {
             foreach (var playerData in playersData)
             {
@@ -222,5 +225,69 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             ContinueClickedEvent.Invoke();
         }
-    }
+
+	    private List<PlayerMetrics> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics)
+	    {
+		    var playerMetrics = new List<PlayerMetrics>();
+		    foreach (var item in metrics)
+		    {
+			    var metric = item.Key;
+			    var scoresByPlayer = item.Value.ToDictionary(i => i.Key, i => i.Value.ToString());
+			    var players = _simulationSummary.PlayersData;
+
+			    // using the following formula, comparison = score / 2nd best score
+			    var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value));
+
+			    var secondBestValue = orderedList.Count() == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count() - 2).Value;
+			    var secondBest = Convert.ToInt16(secondBestValue);
+			    Logger.LogError(metric + ": " + secondBest);
+
+			    foreach (var playerData in players)
+			    {
+				    int score = 0;
+				    if (scoresByPlayer.TryGetValue(playerData.Id, out var value))
+				    {
+					    score = Convert.ToInt16(value);
+				    }
+
+				    var comparison = new PlayerMetrics
+				    {
+					    PlayerId = playerData.Id,
+					    Metric = metric,
+					    Score = score,
+					    Ratio = (float)score / secondBest
+				    };
+				    playerMetrics.Add(comparison);
+			    }
+		    }
+		    return playerMetrics;
+	    }
+
+	    private void LogPlayers(List<PlayerMetrics> metrics)
+	    {
+		    var str = "";
+		    foreach (var playerMetricse in metrics)
+		    {
+			    str += "Player: " + playerMetricse.PlayerId + " - " + playerMetricse.Metric + " - " + playerMetricse.Ratio + " (" + playerMetricse.Score + ")\n";
+		    }
+		    Logger.LogError(str);
+	    }
+
+	    private void LogPlayersBest(List<PlayerMetrics> metrics, int playerId)
+	    {
+		    var best = metrics.Where(m => m.PlayerId == playerId)
+			    .OrderBy(v => v.Ratio)
+			    .Last().Metric;
+	    }
+
+
+	    private struct PlayerMetrics
+	    {
+		    public int? PlayerId;
+		    public int Score;
+		    public string Metric;
+		    // How players compare to others in the game
+		    public float Ratio;
+	    }
+	}
 }
