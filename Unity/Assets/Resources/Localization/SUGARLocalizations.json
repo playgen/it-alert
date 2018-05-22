@@ -37,5 +37,5 @@
 {"Key":"USER","en":"User","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Gebruiker","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"},
 {"Key":"USERNAME","en":"Username:","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Gebruikersnaam:","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"},
 {"Key":"VALUE","en":"Score","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Score","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"},
-{"Key":"GROUPS_LOAD_ERROR","en":"Unable to load group data.","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Kan groep gegevens niet laden","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"},
+{"Key":"GROUPS_DATA_LOAD_ERROR","en":"Unable to load group data.","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Kan groep gegevens niet laden","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"},
 {"Key":"LABEL_ERROR","en":"Error","fr":"XXXX","es":"XXXX","it":"XXXX","de":"XXXX","nl":"Fout","el":"XXXX","ja":"XXXX","zh-cn":"XXXX"}]
