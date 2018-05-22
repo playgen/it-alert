@@ -89,46 +89,120 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
             var sumByPlayerByMetrics = EventProcessor.GetSumByPlayerByMetric(_simulationSummary.Events);
 
-            AddColumn(null, _simulationSummary.PlayersData.ToDictionary(pd => pd.Id, pd => pd.Name), _simulationSummary.PlayersData);
+            var column = CreateColumn();
+            AddPlayers(column, _simulationSummary.PlayersData);
 
             foreach (var metricConfig in metricConfigs)
             {
                 sumByPlayerByMetrics.TryGetValue(metricConfig.Key, out var valueByPlayer);
-                AddColumn(metricConfig.Key, valueByPlayer?.ToDictionary(i => i.Key, i => i.Value.ToString()), _simulationSummary.PlayersData, "0");
+
+                column = CreateColumn();
+                SetLocalizedTitle(column, metricConfig.Key);
+                SetIcon(column, metricConfig.IconPath);
+                AddItems(
+                    column,
+                    _simulationSummary.PlayersData, 
+                    valueByPlayer, 
+                    0, 
+                    metricConfig.HighlightHighest);
             }
         }
 
-        private void AddColumn(
-            string titleKey,
-            Dictionary<int?, string> valueByPlayer,
-            IReadOnlyList<SimulationSummary.PlayerData> playersData,
-            string placeholderValue = null)
+        private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
         {
-            var column = Object.Instantiate(_columnResource, _columnContainer);
-
-            // Title
-            if (!string.IsNullOrWhiteSpace(titleKey))
-            {
-                column.transform.Find("Title").GetComponent<Text>().text = Localization.Get(titleKey);
-            }
-
-            // Items
             foreach (var playerData in playersData)
             {
-                var rowItem = Object.Instantiate(_rowItemResource, column.transform);
-                if (valueByPlayer == null || !valueByPlayer.TryGetValue(playerData.Id, out var value))
-                {
-                    value = placeholderValue;
-                }
-
-                var rowText = rowItem.GetComponent<Text>();
-                rowText.text = value;
+                var (rowItem, rowText) = AddRowItem(column);
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
                     rowText.color = colour;
                 }
+
+                rowText.text = playerData.Name;
             }
+        }
+
+        private void AddItems(
+            GameObject column, 
+            IReadOnlyList<SimulationSummary.PlayerData> playersData, 
+            Dictionary<int?, int> valueByPlayer, 
+            int defaultValue, 
+            bool? highlightHighest)
+        {
+            List<Image> extremeValueRowHighlights = null;
+            int? extremeValue = null;
+
+            foreach (var playerData in playersData)
+            {
+                var (rowItem, rowText) = AddRowItem(column);
+                var rowHighlight = rowItem.transform.Find("Highlight").GetComponent<Image>();
+
+                if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
+                {
+                    rowText.color = colour;
+                    rowHighlight.color = colour;
+                }
+
+                if (valueByPlayer == null || !valueByPlayer.TryGetValue(playerData.Id, out var value))
+                {
+                    value = defaultValue;
+                }
+                else if(highlightHighest != null)
+                {
+                    if (extremeValue == null)
+                    {
+                        extremeValue = value;
+                        extremeValueRowHighlights = new List<Image> { rowHighlight };
+                    }
+                    else if(extremeValue == value)
+                    {
+                        extremeValueRowHighlights.Add(rowHighlight);
+                    }
+                    else if(highlightHighest.Value && value > extremeValue)
+                    {
+                        extremeValue = value;
+                        extremeValueRowHighlights = new List<Image> { rowHighlight };
+                    }
+                    else if(!highlightHighest.Value && value <= extremeValue)
+                    {
+                        extremeValue = value;
+                        extremeValueRowHighlights = new List<Image> { rowHighlight };
+                    }
+                }
+
+                rowText.text = value.ToString();
+            }
+
+            extremeValueRowHighlights?.ForEach(rowHighlight =>
+            {
+                rowHighlight.gameObject.SetActive(true);
+            });
+        }
+
+        private (GameObject, Text) AddRowItem(GameObject column)
+        {
+            var rowItem = Object.Instantiate(_rowItemResource, column.transform);
+            var rowText = rowItem.transform.Find("Text").GetComponent<Text>();
+
+            return (rowItem, rowText);
+        }
+        private void SetIcon(GameObject column, string iconPath)
+        {
+            var image = column.transform.Find("IconContainer/Icon").GetComponent<Image>();
+            var sprite = Resources.Load<Sprite>(iconPath);
+            image.sprite = sprite;
+        }
+
+        private void SetLocalizedTitle(GameObject column, string localizationKey)
+        {
+            column.transform.Find("Title").GetComponent<Text>().text = Localization.Get(localizationKey);
+        }
+
+        private GameObject CreateColumn()
+        {
+            var column = Object.Instantiate(_columnResource, _columnContainer);
+            return column;
         }
 
         protected override void OnExit()
@@ -146,11 +220,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         private void OnContinueClicked()
         {
             ContinueClickedEvent.Invoke();
-        }
-
-        private void AddColumn()
-        {
-
         }
     }
 }
