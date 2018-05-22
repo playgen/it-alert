@@ -192,6 +192,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             var image = column.transform.Find("IconContainer/Icon").GetComponent<Image>();
             var sprite = Resources.Load<Sprite>(iconPath);
             image.sprite = sprite;
+            image.gameObject.SetActive(true);
         }
 
         private void SetLocalizedTitle(GameObject column, string localizationKey)
