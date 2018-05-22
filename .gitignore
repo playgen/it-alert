@@ -27,6 +27,7 @@ artifacts/
 # ReSharper is a .NET coding add-in
 _ReSharper*/	
 *.DotSettings.user
+*.DotSettings
 
 # NuGet Packages
 *.nupkg
@@ -69,8 +70,6 @@ Server/deploy/LoadBalancing/bin/Cache/
 !Server/nuget/*
 
 # Exclude dlls, debug symbols and documentation unless otherwise specified
-*.dll
-*.pdb
 bin/*.xml
 
 !Server/deploy/Policy/
@@ -90,22 +89,8 @@ Server/deploy/bin_Win64/Newtonsoft*
 Server/deploy/bin_Win64/NLog*
 Server/deploy/bin_Win64/SUGARConfiguration.json
 
-# keep loadbalancing dependencies
-!Server/deploy/LoadBalancing/bin
-!Server/deploy/LoadBalancing/bin/*.dll
-!Server/deploy/LoadBalancing/bin/*.pdb
+Unity/Assets/PlayGen.ITAlert.Unity/*
 
-!Unity/lib/*.dll
-!Unity/lib/*.dll.meta
-!Unity/lib/*.pdb
-!Unity/lib/**/*.dll
-!Unity/lib/**/*.dll.meta
-!Unity/lib/**/*.pdb
-!Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity/Debug/
-
-!lib/**/*.dll
-!lib/**/*.dll.meta
-!lib/**/*.pdb
 
 ~*.docx
 
