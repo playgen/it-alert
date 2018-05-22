@@ -2,18 +2,27 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Engine.Events;
 using Engine.Systems;
 
 using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
-	public class MovementSpeedSystem : ISystem
+	public class MovementSpeedSystem : ITickableSystem
 	{
 		/// <summary>
 		/// 
 		/// </summary>
+
+		private readonly EventSystem _eventSystem;
+
+		public MovementSpeedSystem(EventSystem eventSystem)
+		{
+			_eventSystem = eventSystem;
+		}
+
 		public Dictionary<MovementOffsetCategory, decimal> SpeedOffsets { get; set; } = new Dictionary<MovementOffsetCategory, decimal>();
 
 		public decimal GetMovementSpeed(MovementSpeed movementSpeed)
@@ -29,8 +38,29 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			return offsetSpeed < 0.1m ? 0.1m : offsetSpeed;
 		}
 
+		public void LeaveSystem(int id)
+		{
+			var @event = new PlayerLeaveNodeEvent()
+			{
+				PlayerEntityId = id
+			};
+			_eventSystem.Publish(@event);
+
+		}
+
+		public void Tick(int currentTick)
+		{
+
+		}
+
 		public void Dispose()
 		{
 		}
 	}
+
+	public class PlayerLeaveNodeEvent : Event, IPlayerEvent
+	{
+		public int PlayerEntityId { get; set; }
+	}
+
 }

@@ -80,6 +80,8 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 
 								//exitNode.GetComponent<IMovementSystemExtension>().AddVisitor(visitor, Entity, overflow, currentTick);
 								OnVisitorTransition(exitNode.Value, visitorId, subsystemTuple.Entity.Id, overflow, currentTick);
+
+								_movementSpeedSystem.LeaveSystem(visitorId);
 							}
 							else
 							{
