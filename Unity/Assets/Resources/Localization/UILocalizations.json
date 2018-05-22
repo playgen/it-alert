@@ -91,4 +91,6 @@
 {"Key":"MOVE_BUTTON","en":"Move","nl":"Verplaatsen"},
 {"Key":"TAKE_BUTTON","en":"Take","nl":"Pakken"},
 {"Key":"PLACE_BUTTON","en":"Place","nl":"Plaatsen"},
-{"Key":"PLACE_AND_USE_BUTTON","en":"Place And Use","nl":"Plaatsen en Gebruiken"}]
+{"Key":"PLACE_AND_USE_BUTTON","en":"Place And Use","nl":"Plaatsen en Gebruiken"},
+{"Key":"SUMMARY_TITLE","en":"Summary","nl":"Overzicht"},
+{"Key":"SUMMARY_BUTTON_CONTINUE","en":"Continue","nl":"Doorgaan"}]
