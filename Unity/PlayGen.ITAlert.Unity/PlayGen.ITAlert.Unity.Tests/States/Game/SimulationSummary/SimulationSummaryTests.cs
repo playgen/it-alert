@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
@@ -104,9 +105,35 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
             return events;
         }
 
-        [Timeout(int.MaxValue)]
         [UnityTest]
-        public IEnumerator DoesDisplay()
+        [Timeout(int.MaxValue)]
+        public IEnumerator DoesDisplay_4()
+        {
+            return DoesDisplay(_playersData.Take(4).ToList());
+        }
+
+        [UnityTest]
+        [Timeout(int.MaxValue)]
+        public IEnumerator DoesDisplay_3()
+        {
+            return DoesDisplay(_playersData.Take(3).ToList());
+        }
+
+        [UnityTest]
+        [Timeout(int.MaxValue)]
+        public IEnumerator DoesDisplay_2()
+        {
+            return DoesDisplay(_playersData.Take(2).ToList());
+        }
+
+        [UnityTest]
+        [Timeout(int.MaxValue)]
+        public IEnumerator DoesDisplay_1()
+        {
+            return DoesDisplay(_playersData.Take(1).ToList());
+        }
+
+        public IEnumerator DoesDisplay(List<Unity.States.Game.SimulationSummary.SimulationSummary.PlayerData> playersData)
         {
             // Load the scene
             SceneManager.LoadScene("IT Alert");
@@ -146,7 +173,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
 
             // Add the events to the simulation summary
             var events = ParseDump();
-            simulationSummary.SetData(events, _playersData);
+            simulationSummary.SetData(events, playersData);
 
             gameStateController.ExitState(gameStateController.ActiveStateName);
             gameStateController.EnterState(SimulationSummaryState.StateName);
