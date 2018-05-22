@@ -30,7 +30,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer/SimulationSummaryPanelContainer");
             _columnContainer = _panel.transform.Find("ColumnContainer");
-            _continueButton = _panel.transform.Find("ContinueButtonContainer").GetComponent<Button>();
+            _continueButton = _panel.transform.Find("ButtonPanel/ContinueButtonContainer").GetComponent<Button>();
             _columnResource = Resources.Load<GameObject>("SimulationSummaryColumn");
             _rowItemResource = Resources.Load<GameObject>("SimulationSummaryRowItem");
         }
