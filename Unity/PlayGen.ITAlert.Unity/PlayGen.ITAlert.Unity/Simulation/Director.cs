@@ -363,6 +363,17 @@ namespace PlayGen.ITAlert.Unity.Simulation
 							{
 								var orderedMessages = _queuedMessages.Select(m => new Tuple<TickMessage, Tick>(m, ConfigurationSerializer.Deserialize<Tick>(m.TickString))).OrderBy(m => m.Item2.CurrentTick).ToArray();
 								_queuedMessages.Clear();
+								if (orderedMessages.Length > 50)
+								{
+									if (SimulationRoot.ECS.CurrentTick + 1 > orderedMessages[0].Item2.CurrentTick)
+									{
+										orderedMessages = orderedMessages.Where(m => m.Item2.CurrentTick >= SimulationRoot.ECS.CurrentTick + 1).ToArray();
+									}
+									while (SimulationRoot.ECS.CurrentTick + 1 < orderedMessages[0].Item2.CurrentTick)
+									{
+										SimulationRoot.ECS.Tick();
+									}
+								}
 								for (var m = 0; m < orderedMessages.Length; m++)
 								{
 									if (m + SimulationRoot.ECS.CurrentTick + 1 == orderedMessages[m].Item2.CurrentTick)

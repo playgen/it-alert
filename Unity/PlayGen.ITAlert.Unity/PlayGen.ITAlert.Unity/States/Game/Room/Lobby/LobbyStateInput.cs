@@ -11,6 +11,7 @@ using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 
@@ -199,7 +200,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				colorImage.color = color;
 
 				var nameText = playerItem.Find("Name").GetComponent<Text>();
-				nameText.text = player.Name;
+				nameText.GetComponent<TextCutoff>().text = player.Name;
 				nameText.color = color;
 
 				var readyText = playerItem.Find("Ready").GetComponent<Text>();
