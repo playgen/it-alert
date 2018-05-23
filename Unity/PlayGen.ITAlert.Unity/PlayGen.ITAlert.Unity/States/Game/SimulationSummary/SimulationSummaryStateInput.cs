@@ -235,9 +235,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 	    private void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
 	    {
 			//var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-		 //   var bestComparisons = FilterToBestScores(playerComparisons);
-		 //   LogMetrics(bestComparisons);
-		 //   Logger.LogError(GetPlayersBest(bestComparisons, 1));
+		 //   var unique = UniquePlayerBests(playerComparisons);
+			
+			//LogMetrics(unique);
 		}
 
 	    private List<PlayerMetrics> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics)
@@ -276,33 +276,41 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		    return playerMetrics;
 	    }
 
-	    private List<PlayerMetrics> FilterToBestScores(List<PlayerMetrics> metrics)
+		/// <summary>
+		/// Get a list of each players best metric that they have unique to other players
+		/// </summary>
+		/// <param name="metrics"></param>
+		/// <returns></returns>
+	    private List<PlayerMetrics> UniquePlayerBests(List<PlayerMetrics> metrics)
 	    {
-		    var filtered = new List<PlayerMetrics>();
-		    foreach (var metric in metrics)
+		    var uniqueList = new List<PlayerMetrics>();
+		    metrics = metrics.OrderByDescending(m => m.Ratio).ToList();
+			// it is safe to assume the first element is the best and unique
+			uniqueList.Add(metrics[0]);
+			
+			// now iterate through the list and get unique bests
+		    for (var i = 1; i < metrics.Count; i++)
 		    {
-			    var currentMetric = metric.Metric;
-			    if (filtered.Any(m => m.Metric == currentMetric))
+			    var playerId = metrics[i].PlayerId;
+			    if (uniqueList.Any(m => m.PlayerId == playerId || m.Metric == metrics[i].Metric))
 			    {
+					// we already have this players or metric best, we can skip this
 				    continue;
 			    }
-				// find best score for this metric
-			    var best = metrics.Where(m => m.Metric == currentMetric)
-				    .OrderBy(r => r.Ratio)
-				    .Last();
-				filtered.Add(best);
+				// now we have a unique player and metric, so add it to the list
+				uniqueList.Add(metrics[i]);
 		    }
-		    return filtered;
+		    return uniqueList;
 	    }
 
-	    private void LogMetrics(List<PlayerMetrics> metrics)
+		private void LogMetrics(List<PlayerMetrics> metrics)
 	    {
 		    var str = "";
 		    foreach (var metric in metrics)
 		    {
 			    str += metric.OutputString();
 			}
-		    Logger.LogError(str);
+			Logger.LogError(str);
 	    }
 
 		/// <summary>
@@ -314,7 +322,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		/// <returns></returns>
 	    private string GetPlayersBest(List<PlayerMetrics> metrics, int? playerId, List<string> excludeMetrics = null)
 	    {
-		    if (excludeMetrics != null)
+			if (excludeMetrics != null)
 		    {
 				return metrics.Where(m => m.PlayerId == playerId && !excludeMetrics.Contains(m.Metric))
 					.OrderBy(r => r.Ratio)
