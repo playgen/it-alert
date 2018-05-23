@@ -214,11 +214,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(redSpawnSequence, ec => new CreateMalware(RedVirus.Archetype, ec)),
 							new OnEvent<AntivirusActivationEvent>(aae => (aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
 									|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination)
-								&& aae.GenomeEradicated == SimulationConstants.MalwareGeneRed)),
+								&& aae.MalwareCount[SimulationConstants.MalwareGeneRed] == 0)),
 						new ConditionalAction<Simulation, SimulationConfiguration>(new NodeSequenceAction(greenSpawnSequence, ec => new CreateMalware(GreenVirus.Archetype, ec)),
 							new OnEvent<AntivirusActivationEvent>(aae => (aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination
 									|| aae.ActivationResult == AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination)
-								&& aae.GenomeEradicated == SimulationConstants.MalwareGeneGreen)),
+								&& aae.MalwareCount[SimulationConstants.MalwareGeneGreen] == 0)),
 					},
 					ExitCondition = new WaitForTimer(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()

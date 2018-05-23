@@ -9,6 +9,7 @@ using Engine.Events;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Commands
 {
@@ -53,8 +54,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		{
 			ComponentEntityTuple<Item, Owner, CurrentLocation, IItemType> toItemTuple = null;
 
-			if (handlerEnabled
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId,
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId,
 					out var playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.FromItemId,
 					out var fromItemTuple)
@@ -68,11 +68,25 @@ namespace PlayGen.ITAlert.Simulation.Commands
 				// Must be same subsystem as when command was issued
 				&& subsystemTuple.Entity.Id == command.SubsystemId)
 			{
+
+				var @event = new SwapSubsystemItemCommandEvent()
+				{
+					FromItemId = fromItemTuple.Entity.Id,
+					FromItemType = fromItemTuple.Component4.GetType().Name,
+					ToItemId = toItemTuple?.Entity.Id ?? -1,
+					ToItemType = toItemTuple?.Component4.GetType().Name,
+					PlayerEntityId = command.PlayerId,
+					SubsystemEntityId = fromItemTuple.Component3.Value ?? -1
+				};
+
 				// No one must own either item
-				if (fromItemTuple.Component2.Value == null && toItemTuple?.Component2.Value == null)
+				if (handlerEnabled && fromItemTuple.Component2.Value == null && toItemTuple?.Component2.Value == null)
 				{
 					var toContainer = subsystemTuple.Component2.Items[command.ToContainerIndex];
 					var fromContainer = subsystemTuple.Component2.Items[command.FromContainerIndex];
+
+					@event.FromContainerType = fromContainer.GetType().Name;
+					@event.ToContainerType = toContainer.GetType().Name;
 
 					// Items must still be in same locations as when the command was issued
 					if (fromContainer.Item == command.FromItemId
@@ -90,7 +104,36 @@ namespace PlayGen.ITAlert.Simulation.Commands
 						toContainer.Item = command.FromItemId;
 						fromContainer.Item = command.ToItemId;
 
+						@event.Result = SwapSubsystemItemCommandEvent.ActivationResult.Success;
+						_eventSystem.Publish(@event);
 						return true;
+					}
+					else
+					{
+						if (toContainer.CanContain(command.FromItemId)
+							&& (!command.ToItemId.HasValue || fromContainer.CanContain(command.ToItemId.Value)))
+						{
+							@event.Result = SwapSubsystemItemCommandEvent.ActivationResult.Error;
+							_eventSystem.Publish(@event);
+						}
+						else
+						{
+							@event.Result = SwapSubsystemItemCommandEvent.ActivationResult.Failure_DestinationCannotCapture;
+							_eventSystem.Publish(@event);
+						}
+					}
+				}
+				else
+				{
+					if (handlerEnabled)
+					{
+						@event.Result = SwapSubsystemItemCommandEvent.ActivationResult.Failure_ItemAlreadyActive;
+						_eventSystem.Publish(@event);
+					}
+					else
+					{
+						@event.Result = SwapSubsystemItemCommandEvent.ActivationResult.Failure_CommandDisabled;
+						_eventSystem.Publish(@event);
 					}
 				}
 			}
@@ -113,5 +156,30 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		}
 
 		#endregion
+	}
+
+	public class SwapSubsystemItemCommandEvent : Event, IPlayerEvent, ISubsystemEvent
+	{
+		public enum ActivationResult
+		{
+			Error = 0,
+			Success,
+			Failure_ItemAlreadyActive,
+			Failure_DestinationCannotCapture,
+			Failure_CommandDisabled,
+		}
+
+		public ActivationResult Result { get; set; }
+
+		public int FromItemId { get; set; }
+		public string FromItemType { get; set; }
+		public string FromContainerType { get; set; }
+
+		public int ToItemId { get; set; }
+		public string ToItemType { get; set; }
+		public string ToContainerType { get; set; }
+
+		public int PlayerEntityId { get; set; }
+		public int SubsystemEntityId { get; set; }
 	}
 }

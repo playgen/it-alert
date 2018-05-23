@@ -265,7 +265,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			if ((_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+			if (_selectionOptions != null && (_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
 			{
 				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos)
 				{
@@ -376,7 +376,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private void DisableOptions()
 		{
 			_moveState = false;
-			if (_selectionOptions.activeInHierarchy)
+			if (_selectionOptions != null && _selectionOptions.activeInHierarchy)
 			{
 				var optionAnim = _selectionOptions.GetComponent<Animation>();
 				var clipName = CurrentLocation.Value != null ? optionAnim.clip.name : optionAnim.clip.name + "Inventory";

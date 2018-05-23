@@ -108,18 +108,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		{
 			LogProxy.Info($"ItemPanel ExplicitUpdate: Director Id {_director.InstanceId} player is null: {_director.Player}");
 
-			if (_director.Player == null)
+			if (_director.Player != null)
 			{
-				throw new SimulationIntegrationException($"Director {_director.InstanceId} Player is unassigned");
+				// TODO: the following shouldnt be necessary when the container reference isnt changed
+				if (_director.Player.Entity.TryGetComponent(out ItemStorage itemStorage))
+				{
+					var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
+					_inventoryItem.ItemContainer = inventoryItemContainer;
+					// TODO: keep this when above fixed
+					_inventoryItem.Update();
+				}
 			}
-
-			// TODO: the following shouldnt be necessary when the container reference isnt changed
-			if (_director.Player.Entity.TryGetComponent(out ItemStorage itemStorage))
+			else
 			{
-				var inventoryItemContainer = itemStorage.Items[0] as InventoryItemContainer;
-				_inventoryItem.ItemContainer = inventoryItemContainer;
-				// TODO: keep this when above fixed
-				_inventoryItem.Update();
+				LogProxy.Error($"Director {_director.InstanceId} Player is unassigned");
 			}
 		}
 	}

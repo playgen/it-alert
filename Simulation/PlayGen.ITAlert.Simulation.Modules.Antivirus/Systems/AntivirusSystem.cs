@@ -3,7 +3,10 @@ using Engine.Components;
 using Engine.Events;
 using Engine.Systems;
 using Engine.Systems.Activation.Components;
+
+using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Events;
@@ -14,8 +17,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 	public class AntivirusSystem : ITickableSystem
 	{
 		private readonly ComponentMatcherGroup<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation> _antivirusMatcherGroup;
+		private readonly ComponentMatcherGroup<Subsystem> _subsystemMatcherGroup;
 		private readonly ComponentMatcherGroup<Visitors> _visitorsMatcherGroup;
-		private readonly ComponentMatcherGroup<MalwareGenome> _malwareMatcherGroup;
+		private readonly ComponentMatcherGroup<MalwareGenome, MalwarePropogation, CurrentLocation> _malwareMatcherGroup;
 
 		private readonly EventSystem _eventSystem;
 
@@ -23,8 +27,9 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 			EventSystem eventSystem)
 		{
 			_antivirusMatcherGroup = matcherProvider.CreateMatcherGroup<Activation, Components.Antivirus, CurrentLocation, Owner, ConsumableActivation>();
+			_subsystemMatcherGroup = matcherProvider.CreateMatcherGroup<Subsystem>();
 			_visitorsMatcherGroup = matcherProvider.CreateMatcherGroup<Visitors>();
-			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome>();
+			_malwareMatcherGroup = matcherProvider.CreateMatcherGroup<MalwareGenome, MalwarePropogation, CurrentLocation>();
 
 			_eventSystem = eventSystem;
 		}
@@ -98,6 +103,17 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 						@event.ActivationResult = AntivirusActivationEvent.AntivirusActivationResult.IncorrectGenome;
 					}
 				}
+
+				@event.MalwareCount = new System.Collections.Generic.Dictionary<int, int>();
+				var infections = _malwareMatcherGroup.MatchingEntities.Join(_subsystemMatcherGroup.MatchingEntities,
+						mw => mw.Component3.Value,
+						ss => ss.Entity.Id,
+						(mw, ss) => mw)
+					.ToArray();
+
+				@event.MalwareCount.Add(SimulationConstants.MalwareGeneRed, infections.Count(i => i.Component1.Value == SimulationConstants.MalwareGeneRed ||i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen) || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneBlue) || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue)));
+				@event.MalwareCount.Add(SimulationConstants.MalwareGeneGreen, infections.Count(i => i.Component1.Value == SimulationConstants.MalwareGeneGreen || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen) || i.Component1.Value == (SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue) || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue)));
+				@event.MalwareCount.Add(SimulationConstants.MalwareGeneBlue, infections.Count(i => i.Component1.Value == SimulationConstants.MalwareGeneBlue || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneBlue) || i.Component1.Value == (SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue) || i.Component1.Value == (SimulationConstants.MalwareGeneRed | SimulationConstants.MalwareGeneGreen | SimulationConstants.MalwareGeneBlue)));
 
 				_eventSystem.Publish(@event);
 			}

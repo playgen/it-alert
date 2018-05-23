@@ -40,6 +40,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public int PhotonId { get; set; }
 
+		public int ExternalId { get; set; }
+
 		#region Initialization
 
 		public void Awake()

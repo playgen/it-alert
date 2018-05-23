@@ -26,6 +26,8 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Events
 
 		public int GenomeEradicated { get; set; }
 
+		public Dictionary<int, int> MalwareCount { get; set; }
+
 		public int PlayerEntityId { get; set; }
 
 	}

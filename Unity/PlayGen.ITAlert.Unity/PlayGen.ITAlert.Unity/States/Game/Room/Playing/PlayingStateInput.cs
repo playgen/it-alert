@@ -78,7 +78,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		protected override void OnEnter()
 		{
-            _gameContainers.ForEach(g => g.SetActive(true));
+			ColorUtility.TryParseHtmlString(_photonClient.CurrentRoom.Player.Colour, out var color);
+			if (color == Color.white)
+			{
+				ColorUtility.TryParseHtmlString("#" + _photonClient.CurrentRoom.Player.Colour, out color);
+			}
+			GameObjectUtilities.FindGameObject("Game/Canvas/Border").GetComponent<Image>().color = color;
+			_gameContainers.ForEach(g => g.SetActive(true));
             _continueButton.onClick.AddListener(OnContinueClick);
             PlayGen.Unity.Utilities.Loading.Loading.Stop();
             var gameContainer = GameObjectUtilities.FindGameObject("Game/Canvas");

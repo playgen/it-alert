@@ -58,7 +58,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player
 			{
 				return GetScoreForPlayerEntity(playerEntityId);
 			}
-			throw new SimulationException($"Could not get score for player {playerLogicalId}");
+			return new Score();
 		}
 
 		public Score GetScoreForPlayerEntity(int playerEntityId)
@@ -68,7 +68,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player
 			{
 				return playerTuple.Component2;
 			}
-			throw new SimulationException($"Could not get score for entity {playerEntityId}");
+			return new Score();
 		}
 
 		public Score GetAggregateScore()

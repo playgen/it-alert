@@ -121,7 +121,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 		{
 			_sendButton.onClick.AddListener(OnSendClick);
 
-			PopulateFeedback(_director.Players, _director.Player.PhotonId);
+			PopulateFeedback(_director.Players, _director.Player.ExternalId);
 			_feedbackPanel.transform.parent.gameObject.SetActive(true);
 			_buttons.Buttons.BestFit();
 			_sendButton.gameObject.SetActive(true);

@@ -63,10 +63,6 @@
     <Reference Include="Engine.Systems.RNG">
       <HintPath>..\..\..\bin\simulation\Engine.Systems.RNG.dll</HintPath>
     </Reference>
-    <Reference Include="Engine.Systems.Scoring, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\bin\simulation\Engine.Systems.Scoring.dll</HintPath>
-    </Reference>
     <Reference Include="Engine.Systems.Timing, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\bin\Simulation\Engine.Systems.Timing.dll</HintPath>
@@ -181,6 +177,9 @@
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.BestFit">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.BestFit.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Extensions">
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.FormKeyboardControls">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.FormKeyboardControls.dll</HintPath>

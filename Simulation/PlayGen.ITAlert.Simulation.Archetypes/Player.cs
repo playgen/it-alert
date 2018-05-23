@@ -18,7 +18,15 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 		.HasComponent<Components.EntityTypes.Player>()
 		.HasComponent<PlayerColour>()
 		.HasComponent<PlayerBitMask>()
-		.HasComponent<Score>()
+		.HasComponent(new ComponentBinding<Score>()
+			{
+				ComponentTemplate = new Score()
+				{
+					ResourceManagement = 10,
+					Systematicity = 10
+				}
+			}
+		)
 		.HasComponent(new ComponentBinding<MovementSpeed>()
 			{
 				ComponentTemplate = new MovementSpeed()
