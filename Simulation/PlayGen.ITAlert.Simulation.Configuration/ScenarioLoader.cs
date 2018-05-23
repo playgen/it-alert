@@ -31,6 +31,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				new SPL2(),
 				new SPL3(),
 				//new Dev1(), 
+			    //new Dev_SPL3_1sec(), 
                 //new Dev_SPL3_10sec(), 
                 //new Dev_SPL3_30sec(),
 			}
