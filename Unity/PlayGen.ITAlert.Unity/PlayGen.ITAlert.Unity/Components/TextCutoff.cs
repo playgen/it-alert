@@ -39,6 +39,11 @@ namespace PlayGen.ITAlert.Unity.Components
                 }
             }
 
+			if (text.Length > (_useGlobalSettings ? GlobalMaxLength : _maxLength) && builder.ToString().Length == (_useGlobalSettings ? GlobalMaxLength : _maxLength))
+			{
+				builder.Append("...");
+			}
+
             var cutText = builder.ToString();
             _text.text = cutText;
         }
