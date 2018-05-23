@@ -107,6 +107,22 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
 
         [UnityTest]
         [Timeout(int.MaxValue)]
+        public IEnumerator LongPlayerNames()
+        {
+            _playersData.ForEach(pd => pd.Name = $"{pd.Name} - and some text to make this name really long");
+            return DoesDisplay(_playersData);
+        }
+
+        [UnityTest]
+        [Timeout(int.MaxValue)]
+        public IEnumerator EmailPlayerNames()
+        {
+            _playersData.ForEach(pd => pd.Name = $"{pd.Name}@gmail.com");
+            return DoesDisplay(_playersData);
+        }
+
+        [UnityTest]
+        [Timeout(int.MaxValue)]
         public IEnumerator DoesDisplay_4()
         {
             return DoesDisplay(_playersData.Take(4).ToList());
