@@ -3,6 +3,7 @@ using System.Linq;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Scoring.Player;
+using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
@@ -45,6 +46,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private GameObject _playerChatItemPrefab;
 
 		public Director Director { get; }
+		private PlayerScoringSystem _scoringSystem;
 
 		public RoomStateInput(ITAlertPhotonClient photonClient)
 		{
@@ -74,11 +76,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				}
 			}
 			_playerVoiceItems.Clear();
+			_scoringSystem = null;
+			Director.Reset += SetScoringSystem;
 		}
 
 		protected override void OnExit()
 		{
 			_chatPanel.SetActive(false);
+			Director.Reset -= SetScoringSystem;
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -154,17 +159,25 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
+		private void SetScoringSystem()
+		{
+			if (Director.SimulationRoot.ECS.TryGetSystem(out _scoringSystem) == false)
+			{
+				throw new SimulationIntegrationException("Could not locate player scoring system");
+			}
+		}
+
 		private void UpdateChatPanel()
 		{
 			foreach (var player in _playerVoiceItems)
 			{
 				if (player.Value != null && player.Value.ResourceText != null && player.Value.SystemText != null && player.Value.VoiceIcon != null)
 				{
-					if (Director && Director.SimulationRoot != null && Director.SimulationRoot.ECS.TryGetSystem(out PlayerScoringSystem scoringSystem))
+					if (_scoringSystem != null)
 					{
 						if (_playerIdPair.ContainsKey(player.Key))
 						{
-							var score = scoringSystem.GetScoreForPlayerEntity(_playerIdPair[player.Key]);
+							var score = _scoringSystem.GetScoreForPlayerEntity(_playerIdPair[player.Key]);
 							player.Value.ResourceText.text = score.ResourceManagement.ToString();
 							player.Value.SystemText.text = score.Systematicity.ToString();
 						}
@@ -175,7 +188,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					}
 				}
 			}
-			_playerVoiceItems.Where(player => player.Value != null && player.Value.ResourceText != null && player.Value.SystemText != null && player.Value.VoiceIcon != null).Select(p => p.Value.GameObject).ToList().BestFit();
+			_chatPanel.BestFit();
 		}
 
 		private void OnLanguageChange()

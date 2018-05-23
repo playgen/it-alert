@@ -3,6 +3,7 @@ using Engine.Systems.Timing;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Utilities;
 
 using UnityEngine;
@@ -46,6 +47,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private Text _teamScoreText;
 
 		#endregion
+
+		private TimerSystem _timerSystem;
 
 		private void Start()
 		{
@@ -118,10 +121,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private void SetTimer()
 		{
-			_timerText.text = _director.SimulationRoot.ECS.TryGetSystem<TimerSystem>(out var timerSystem)
-				&& timerSystem.Enabled
-				? $"{timerSystem.Current.Minutes:00}:{timerSystem.Current.Seconds:00}"
-				: _director.Tick.ToString("d5");
+			if (_timerSystem == null)
+			{
+				if (_director.SimulationRoot.ECS.TryGetSystem(out _timerSystem) == false)
+				{
+					throw new SimulationIntegrationException("Could not locate timing system");
+				}
+			}
+			_timerText.text = _timerSystem != null && _timerSystem.Enabled ? $"{_timerSystem.Current.Minutes:00}:{_timerSystem.Current.Seconds:00}" : _director.Tick.ToString("d5");
 		}
 
 		#endregion
@@ -137,6 +144,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_timerText.text = 0.ToString("d5");
 			_teamSCoreOverlay.SetActive(false);
 			_teamScoreText.text = 0.ToString("d5");
+			_timerSystem = null;
 		}
 	}
 }
