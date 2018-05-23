@@ -73,6 +73,9 @@
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Editor.UI">
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.UI.dll</HintPath>
+    </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Localization.dll</HintPath>

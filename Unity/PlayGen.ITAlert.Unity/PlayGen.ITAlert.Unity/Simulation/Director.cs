@@ -43,6 +43,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private readonly ManualResetEvent _terminateSignal = new ManualResetEvent(false);
 		private readonly AutoResetEvent _workerThreadExceptionSignal = new AutoResetEvent(false);
 
+		private volatile bool _queueBeingProcessed;
+
 		public int Tick => SimulationRoot?.ECS?.CurrentTick ?? 0;
 
 		public bool Active => _terminateSignal.WaitOne(0) == false;
@@ -54,6 +56,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		// TODO: replace temporary implementation
 		private EndGameSystem _endGameSystem;
+		private ICommandSystem _commandSystem;
 
 		private const int DefaultntityCapacity = 1000;
 
@@ -206,8 +209,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				{
 					throw new SimulationIntegrationException("Could not locate end game system");
 				}
+				// TODO: this should probably be pushed into the ECS
+				if (SimulationRoot.ECS.TryGetSystem(out _commandSystem) == false)
+				{
+					throw new SimulationIntegrationException("Could not locate command processing system");
+				}
 
-                CultureInfo.CurrentCulture = new CultureInfo("en");
+				CultureInfo.CurrentCulture = new CultureInfo("en");
 				_updatethread = new Thread(ThreadWorker)
 				{
 					IsBackground = true
@@ -326,7 +334,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void StopWorker()
 		{
-			LogProxy.Info("Director: Stop Worker");
+			LogProxy.Warning("Director: Stop Worker");
 			_terminateSignal.Set();
 			_updateSignal.Reset();
 			_updateCompleteSignal.Set();
@@ -346,63 +354,76 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					}
 					if (handle == 1)
 					{
-						TickMessage[] queuedMessages;
-
-						lock (_queueLock)
+						if (!_queueBeingProcessed)
 						{
-							queuedMessages = new TickMessage[_queuedMessages.Count];
-							_queuedMessages.CopyTo(queuedMessages, 0);
-							_queuedMessages.Clear();
-						}
+							_queueBeingProcessed = true;
+							var queuedMessages = new List<Tuple<TickMessage, Tick>>();
 
-						var i = 1;
-						foreach (var tickMessage in queuedMessages)
-						{
-							var fastForward = i++ < queuedMessages.Length;
-							var tick = ConfigurationSerializer.Deserialize<Tick>(tickMessage.TickString);
-
-
-							// TODO: this should probably be pushed into the ECS
-							if (SimulationRoot.ECS.TryGetSystem(out ICommandSystem commandSystem) == false)
+							lock (_queueLock)
 							{
-								throw new SimulationIntegrationException("Could not locate command processing system");
-							}
-							var success = true;
-							foreach (var command in tick.CommandQueue)
-							{
-								success &= commandSystem.TryHandleCommand(command, tick.CurrentTick);
-							}
-							if (success != true)
-							{
-								throw new SimulationIntegrationException("Local Simulation failed to apply command(s).");
-							}
-							SimulationRoot.ECS.Tick();
-                            
-							if (fastForward)
-							{
-								LogProxy.Warning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
-							}
-							else
-							{
-								if (tick.CurrentTick != SimulationRoot.ECS.CurrentTick) 
+								var orderedMessages = _queuedMessages.Select(m => new Tuple<TickMessage, Tick>(m, ConfigurationSerializer.Deserialize<Tick>(m.TickString))).OrderBy(m => m.Item2.CurrentTick).ToArray();
+								_queuedMessages.Clear();
+								for (var m = 0; m < orderedMessages.Length; m++)
 								{
-									throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doest not match master {tick.CurrentTick}");
+									if (m + SimulationRoot.ECS.CurrentTick + 1 == orderedMessages[m].Item2.CurrentTick)
+									{
+										queuedMessages.Add(orderedMessages[m]);
+									}
+									else
+									{
+										_queuedMessages.Enqueue(orderedMessages[m].Item1);
+									}
+								}
+							}
+
+							var i = 1;
+							foreach (var tickMessage in queuedMessages)
+							{
+								var fastForward = i++ < queuedMessages.Count;
+								var success = true;
+								foreach (var command in tickMessage.Item2.CommandQueue)
+								{
+									success &= _commandSystem.TryHandleCommand(command, tickMessage.Item2.CurrentTick);
+								}
+								if (success != true)
+								{
+									throw new SimulationIntegrationException("Local Simulation failed to apply command(s).");
 								}
 
-								SimulationRoot.GetEntityState(out var crc);
+								SimulationRoot.ECS.Tick();
+
+								if (fastForward)
+								{
+									LogProxy.Warning($"Simulation fast forwarding tick {SimulationRoot.ECS.CurrentTick}");
+								}
+								else
+								{
+									if (tickMessage.Item2.CurrentTick != SimulationRoot.ECS.CurrentTick)
+									{
+										throw new SimulationSynchronisationException($"Simulation out of sync: Local tick {SimulationRoot.ECS.CurrentTick} doesn't not match master {tickMessage.Item2.CurrentTick}");
+									}
+
+									var localTick = SimulationRoot.ECS.CurrentTick;
+
+									SimulationRoot.GetEntityState(out var crc);
 #if LOG_ENTITYSTATE
 								System.IO.File.WriteAllText($"d:\\temp\\{SimulationRoot.ECS.CurrentTick}.{Player.PhotonId}.json", state);
 #endif
-								if (tickMessage.CRC != crc)
-								{
-									throw new SimulationSynchronisationException($"Simulation out of sync at tick {SimulationRoot.ECS.CurrentTick}: Local CRC {crc} doest not match master {tickMessage.CRC}");
+									if (tickMessage.Item1.CRC != crc)
+									{
+										throw new SimulationSynchronisationException($"Simulation out of sync at tick {localTick}: Local CRC {crc} doest not match master {tickMessage.Item1.CRC}");
+									}
 								}
 							}
+
+							_updateSignal.Set();
+							_updateCompleteSignal.WaitOne();
+							_queueBeingProcessed = false;
 						}
-
-						_updateSignal.Set();
-						_updateCompleteSignal.WaitOne();
-
+						else
+						{
+							LogProxy.Warning("ProcessQueuedMessages not called as already running");
+						}
 					}
 				}
 				catch (Exception ex)
@@ -413,8 +434,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					break;
 				}
 			}
-			LogProxy.Info("Director: Thread Worker Terminated.");
-
+			LogProxy.Warning("Director: Thread Worker Terminated.");
 		}
 
 		public static SimulationIntegrationException ThreadWorkerException { get; set; }
@@ -453,7 +473,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					//{
 					//	LogProxy.Warning($"ExplicitUpdate tick out of sync at {_update}");
 					//}
-					UpdateEntityStates();
+					if (Player != null)
+					{
+						UpdateEntityStates();
+					}
 				}
 				catch (Exception ex)
 				{

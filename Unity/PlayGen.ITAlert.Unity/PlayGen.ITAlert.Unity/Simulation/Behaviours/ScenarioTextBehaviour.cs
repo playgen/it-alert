@@ -91,14 +91,21 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (_pulse)
 			{
-				_continue.GetComponent<Image>().color += new Color(0, 0, 0, _pulsingDown ? -Time.deltaTime : Time.deltaTime);
-				if (_continue.GetComponent<Image>().color.a < 0 && _pulsingDown)
+				if (_continue != null)
 				{
-					_pulsingDown = false;
-				}
-				if (_continue.GetComponent<Image>().color.a > 1 && !_pulsingDown)
-				{
-					_pulsingDown = true;
+					var continueImage = _continue.GetComponent<Image>();
+					if (continueImage != null)
+					{
+						continueImage.color += new Color(0, 0, 0, _pulsingDown ? -Time.deltaTime : Time.deltaTime);
+						if (continueImage.color.a < 0 && _pulsingDown)
+						{
+							_pulsingDown = false;
+						}
+						if (continueImage.color.a > 1 && !_pulsingDown)
+						{
+							_pulsingDown = true;
+						}
+					}
 				}
 			}
 		}
