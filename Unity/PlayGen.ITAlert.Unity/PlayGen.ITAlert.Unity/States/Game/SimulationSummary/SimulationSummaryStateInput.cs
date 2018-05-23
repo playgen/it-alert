@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
@@ -101,6 +102,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
             var column = CreateColumn();
             AddPlayers(column, _simulationSummary.PlayersData, playerNameBestFitGroup);
+            playerNameBestFitGroup.ForEach(playerText => playerText.gameObject.AddComponent<TextCutoff>());
 
             foreach (var metricConfig in metricConfigs)
             {
@@ -123,11 +125,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
         }
 
-		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData, List<Text> bestFitGroup)
+		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData, List<Text> rowItemTexts)
         {
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column, bestFitGroup);
+                var (rowItem, rowText) = AddRowItem(column, rowItemTexts);
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
@@ -144,14 +146,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             Dictionary<int?, int> valueByPlayer, 
             int defaultValue, 
             bool? highlightHighest,
-            List<Text> rowBestFitGroup)
+            List<Text> rowItemTexts)
         {
             List<Image> extremeValueRowHighlights = null;
             int? extremeValue = null;
 
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column, rowBestFitGroup);
+                var (rowItem, rowText) = AddRowItem(column, rowItemTexts);
                 var rowHighlight = rowItem.transform.Find("Highlight").GetComponent<Image>();
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
