@@ -20,18 +20,18 @@ namespace PlayGen.ITAlert.Unity.Components
         // Mimic Unity's API
         public string text
         {
-            get { return _text.text; }
-            set { SetText(value); }
+            get => _text.text;
+            set => SetText(value);
         }
 
-        public void SetText(string text)
+        public void SetText(string uncutText)
         {
             var builder = new StringBuilder();
-            for(var i = 0; i < Mathf.Min(text.Length, _useGlobalSettings ? GlobalMaxLength : _maxLength); i++)
+            for(var i = 0; i < Mathf.Min(uncutText.Length, _useGlobalSettings ? GlobalMaxLength : _maxLength); i++)
             {
-                if (!_cuttoffAfter.Contains(text[i]) && (!_useGlobalSettings || !GlobalCutoffAfter.Contains(text[i])))
+                if (!_cuttoffAfter.Contains(uncutText[i]) && (!_useGlobalSettings || !GlobalCutoffAfter.Contains(uncutText[i])))
                 {
-                    builder.Append(text[i]);
+                    builder.Append(uncutText[i]);
                 }
                 else
                 {
