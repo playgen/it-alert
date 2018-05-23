@@ -101,3 +101,6 @@ Demo/
 !Tools/**/*.dll
 *.DotSettings
 Unity/UnityPackageManager/manifest.json
+
+# Unity Test Tools Scenes
+Unity/Assets/InitTestScene*.unity*
