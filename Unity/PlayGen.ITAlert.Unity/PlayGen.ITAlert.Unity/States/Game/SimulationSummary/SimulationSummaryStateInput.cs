@@ -91,7 +91,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                 ? _multiplayerMetrics
                 : _singleplayerMetrics;
 
-            var sumByPlayerByMetrics = EventProcessor.GetSumByPlayerByMetric(_simulationSummary.Events);
+            var sumByPlayerByMetrics = MetricProcessor.GetSumByPlayerByMetric(_simulationSummary.Events);
 
             var column = CreateColumn();
             AddPlayers(column, _simulationSummary.PlayersData);
@@ -111,7 +111,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                     metricConfig.HighlightHighest);
             }
 
-	        GetPlayerBestMetrics(sumByPlayerByMetrics);
+	        PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics);
         }
 
 		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
@@ -228,126 +228,5 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             ContinueClickedEvent.Invoke();
         }
-
-
-	    #region PlayerMetrics
-
-	    private void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
-	    {
-			//var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-		 //   var unique = UniquePlayerBests(playerComparisons);
-			
-			//LogMetrics(unique);
-		}
-
-	    private List<PlayerMetrics> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics)
-	    {
-		    var playerMetrics = new List<PlayerMetrics>();
-		    foreach (var item in metrics)
-		    {
-			    var metric = item.Key;
-			    var scoresByPlayer = item.Value.ToDictionary(i => i.Key, i => i.Value.ToString());
-			    var players = _simulationSummary.PlayersData;
-
-			    // using the following formula, comparison = score / 2nd best score
-			    var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value));
-
-			    var secondBestValue = orderedList.Count() == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count() - 2).Value;
-			    var secondBest = Convert.ToInt16(secondBestValue);
-
-			    foreach (var playerData in players)
-			    {
-				    int score = 0;
-				    if (scoresByPlayer.TryGetValue(playerData.Id, out var value))
-				    {
-					    score = Convert.ToInt16(value);
-				    }
-
-				    var comparison = new PlayerMetrics
-				    {
-					    PlayerId = playerData.Id,
-					    Metric = metric,
-					    Score = score,
-					    Ratio = (float)score / secondBest
-				    };
-				    playerMetrics.Add(comparison);
-			    }
-		    }
-		    return playerMetrics;
-	    }
-
-		/// <summary>
-		/// Get a list of each players best metric that they have unique to other players
-		/// </summary>
-		/// <param name="metrics"></param>
-		/// <returns></returns>
-	    private List<PlayerMetrics> UniquePlayerBests(List<PlayerMetrics> metrics)
-	    {
-		    var uniqueList = new List<PlayerMetrics>();
-		    metrics = metrics.OrderByDescending(m => m.Ratio).ToList();
-			// it is safe to assume the first element is the best and unique
-			uniqueList.Add(metrics[0]);
-			
-			// now iterate through the list and get unique bests
-		    for (var i = 1; i < metrics.Count; i++)
-		    {
-			    var playerId = metrics[i].PlayerId;
-			    if (uniqueList.Any(m => m.PlayerId == playerId || m.Metric == metrics[i].Metric))
-			    {
-					// we already have this players or metric best, we can skip this
-				    continue;
-			    }
-				// now we have a unique player and metric, so add it to the list
-				uniqueList.Add(metrics[i]);
-		    }
-		    return uniqueList;
-	    }
-
-		private void LogMetrics(List<PlayerMetrics> metrics)
-	    {
-		    var str = "";
-		    foreach (var metric in metrics)
-		    {
-			    str += metric.OutputString();
-			}
-			Logger.LogError(str);
-	    }
-
-		/// <summary>
-		/// Get the players best score for all metrics
-		/// </summary>
-		/// <param name="metrics"></param>
-		/// <param name="playerId"></param>
-		/// <param name="excludeMetrics">Metrics to exclude, eg. other players have these metrics as their best</param>
-		/// <returns></returns>
-	    private string GetPlayersBest(List<PlayerMetrics> metrics, int? playerId, List<string> excludeMetrics = null)
-	    {
-			if (excludeMetrics != null)
-		    {
-				return metrics.Where(m => m.PlayerId == playerId && !excludeMetrics.Contains(m.Metric))
-					.OrderBy(r => r.Ratio)
-					.Last().Metric;
-			}
-			return metrics.Where(m => m.PlayerId == playerId)
-				.OrderBy(r => r.Ratio)
-				.Last().Metric;
-	    }
-
-	    private struct PlayerMetrics
-	    {
-		    public int? PlayerId;
-		    public int Score;
-		    public string Metric;
-		    // How players compare to others in the game
-		    public float Ratio;
-
-		    public string OutputString()
-		    {
-			    return "Player: " + PlayerId + " - " + Metric + " - " + Ratio + " (" + Score + ")\n";
-			}
-	    }
-
-	    #endregion
-
 	}
 }

@@ -10,7 +10,7 @@ using PlayGen.ITAlert.Simulation.UI.Events;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
-    public static class EventProcessor
+    public static class MetricProcessor
     {
         public static Dictionary<string, Dictionary<int?, int>> GetSumByPlayerByMetric(IReadOnlyList<StopMessage.SimulationEvent> events)
         {
