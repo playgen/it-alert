@@ -231,10 +231,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
 	    private void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
 	    {
-			var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-		    var bestComparisons = FilterToBestScores(playerComparisons);
-		    LogMetrics(bestComparisons);
-		    Logger.LogError(GetPlayersBest(bestComparisons, 1));
+			//var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
+		 //   var bestComparisons = FilterToBestScores(playerComparisons);
+		 //   LogMetrics(bestComparisons);
+		 //   Logger.LogError(GetPlayersBest(bestComparisons, 1));
 		}
 
 	    private List<PlayerMetrics> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics)
