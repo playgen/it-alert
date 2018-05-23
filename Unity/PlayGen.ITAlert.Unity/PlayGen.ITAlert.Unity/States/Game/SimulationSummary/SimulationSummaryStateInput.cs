@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GameWork.Core.States.Tick.Input;
+using ModestTree;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
-using Logger = PlayGen.Photon.Unity.Logger;
 using Object = UnityEngine.Object;
 
 namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
@@ -27,7 +28,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         private readonly List<SummaryMetricConfig> _multiplayerMetrics = new List<SummaryMetricConfig>
         {
             SummaryMetricConfigs.Spoke,
-            SummaryMetricConfigs.Moved,
+            //SummaryMetricConfigs.Moved,
             SummaryMetricConfigs.TransfersSent,
             SummaryMetricConfigs.TransfersRecieved,
             //SummaryMetricConfigs.AntivirusesUsed,
@@ -80,12 +81,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         protected override void OnEnter()
         {
-            PopulateMetrics();
+            var bestFitGroups = PopulateMetrics();
             _continueButton.onClick.AddListener(OnContinueClicked);
             _panel.SetActive(true);
+            bestFitGroups.ForEach(bfg => bfg.BestFit());
         }
 
-        private void PopulateMetrics()
+        private IEnumerable<List<Text>> PopulateMetrics()
         {
             var metricConfigs = _simulationSummary.PlayersData.Count > 1
                 ? _multiplayerMetrics
@@ -93,32 +95,39 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
             var sumByPlayerByMetrics = MetricProcessor.GetSumByPlayerByMetric(_simulationSummary.Events);
 
+            var playerNameBestFitGroup = new List<Text>();
+            var metricTitleBestFitGroup = new List<Text>();
+            var metricValueBestFitGroup = new List<Text>();
+
             var column = CreateColumn();
-            AddPlayers(column, _simulationSummary.PlayersData);
+            AddPlayers(column, _simulationSummary.PlayersData, playerNameBestFitGroup);
 
             foreach (var metricConfig in metricConfigs)
             {
                 sumByPlayerByMetrics.TryGetValue(metricConfig.Key, out var valueByPlayer);
 
                 column = CreateColumn();
-                SetLocalizedTitle(column, metricConfig.Key);
+                SetLocalizedTitle(column, metricConfig.Key, metricTitleBestFitGroup);
                 SetIcon(column, metricConfig.IconPath);
                 AddItems(
                     column,
                     _simulationSummary.PlayersData, 
                     valueByPlayer, 
                     0, 
-                    metricConfig.HighlightHighest);
+                    metricConfig.HighlightHighest,
+                    metricValueBestFitGroup);
             }
 
 	        PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics);
+
+            return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
         }
 
-		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
+		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData, List<Text> bestFitGroup)
         {
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column);
+                var (rowItem, rowText) = AddRowItem(column, bestFitGroup);
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
@@ -134,14 +143,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             IReadOnlyList<SimulationSummary.PlayerData> playersData, 
             Dictionary<int?, int> valueByPlayer, 
             int defaultValue, 
-            bool? highlightHighest)
+            bool? highlightHighest,
+            List<Text> rowBestFitGroup)
         {
             List<Image> extremeValueRowHighlights = null;
             int? extremeValue = null;
 
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column);
+                var (rowItem, rowText) = AddRowItem(column, rowBestFitGroup);
                 var rowHighlight = rowItem.transform.Find("Highlight").GetComponent<Image>();
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
@@ -186,10 +196,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             });
         }
 
-        private (GameObject, Text) AddRowItem(GameObject column)
+        private (GameObject, Text) AddRowItem(GameObject column, List<Text> bestFitGroup)
         {
             var rowItem = Object.Instantiate(_rowItemResource, column.transform);
             var rowText = rowItem.transform.Find("Text").GetComponent<Text>();
+            bestFitGroup.Add(rowText);
 
             return (rowItem, rowText);
         }
@@ -201,9 +212,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             image.gameObject.SetActive(true);
         }
 
-        private void SetLocalizedTitle(GameObject column, string localizationKey)
+        private void SetLocalizedTitle(GameObject column, string localizationKey, List<Text> bestFitGroup)
         {
-            column.transform.Find("Title").GetComponent<Text>().text = Localization.Get(localizationKey);
+            var titleText = column.transform.Find("Title").GetComponent<Text>();
+            titleText.text = Localization.Get(localizationKey);
+            bestFitGroup.Add(titleText);
         }
 
         private GameObject CreateColumn()
