@@ -235,6 +235,7 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
+    <Compile Include="Components\TextCutoff.cs" />
     <Compile Include="Controllers\HoverController.cs" />
     <Compile Include="Debug\DebugCommands.cs" />
     <Compile Include="Debug\DebugInterface.cs" />
