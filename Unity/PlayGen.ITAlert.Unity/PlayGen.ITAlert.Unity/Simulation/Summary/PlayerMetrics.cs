@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
         public static void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
         {
             //var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-            //   var unique = UniquePlayerBests(playerComparisons);
+            //var unique = UniquePlayerBests(playerComparisons);
 
             //LogMetrics(unique);
         }
@@ -68,18 +68,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
             for (var i = 1; i < metrics.Count; i++)
             {
                 var playerId = metrics[i].PlayerId;
-                if (uniqueList.Any(m => m.PlayerId == playerId || m.Metric == metrics[i].Metric))
+                if (!uniqueList.Any(m => m.PlayerId == playerId || m.Metric == metrics[i].Metric))
                 {
-                    // we already have this players or metric best, we can skip this
-                    continue;
+					// this is a unique player and metric, so add it to the list
+	                uniqueList.Add(metrics[i]);
                 }
-                // now we have a unique player and metric, so add it to the list
-                uniqueList.Add(metrics[i]);
             }
             return uniqueList;
         }
 
-        public static void LogMetrics(List<PlayerMetric> metrics)
+#if DEBUG
+		public static void LogMetrics(List<PlayerMetric> metrics)
         {
             var str = "";
             foreach (var metric in metrics)
@@ -88,27 +87,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
             }
             UnityEngine.Debug.LogError(str);
         }
-
-        /// <summary>
-        /// Get the players best score for all metrics
-        /// </summary>
-        /// <param name="metrics"></param>
-        /// <param name="playerId"></param>
-        /// <param name="excludeMetrics">Metrics to exclude, eg. other players have these metrics as their best</param>
-        /// <returns></returns>
-        public static string GetPlayersBest(List<PlayerMetric> metrics, int? playerId, List<string> excludeMetrics = null)
-        {
-            if (excludeMetrics != null)
-            {
-                return metrics.Where(m => m.PlayerId == playerId && !excludeMetrics.Contains(m.Metric))
-                    .OrderBy(r => r.Ratio)
-                    .Last().Metric;
-            }
-            return metrics.Where(m => m.PlayerId == playerId)
-                .OrderBy(r => r.Ratio)
-                .Last().Metric;
-        }
-
+#endif
         public struct PlayerMetric
         {
             public int? PlayerId;
