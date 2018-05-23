@@ -107,9 +107,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                     0, 
                     metricConfig.HighlightHighest);
             }
-	        //var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-	        //LogPlayers(playerComparisons);
-		}
+
+	        GetPlayerBestMetrics(sumByPlayerByMetrics);
+        }
 
 		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData)
         {
@@ -226,6 +226,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             ContinueClickedEvent.Invoke();
         }
 
+
+	    #region PlayerMetrics
+
+	    private void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
+	    {
+			var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
+		    var bestComparisons = FilterToBestScores(playerComparisons);
+		    LogMetrics(bestComparisons);
+		    Logger.LogError(GetPlayersBest(bestComparisons, 1));
+		}
+
 	    private List<PlayerMetrics> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics)
 	    {
 		    var playerMetrics = new List<PlayerMetrics>();
@@ -240,7 +251,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
 			    var secondBestValue = orderedList.Count() == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count() - 2).Value;
 			    var secondBest = Convert.ToInt16(secondBestValue);
-			    Logger.LogError(metric + ": " + secondBest);
 
 			    foreach (var playerData in players)
 			    {
@@ -263,23 +273,54 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		    return playerMetrics;
 	    }
 
-	    private void LogPlayers(List<PlayerMetrics> metrics)
+	    private List<PlayerMetrics> FilterToBestScores(List<PlayerMetrics> metrics)
+	    {
+		    var filtered = new List<PlayerMetrics>();
+		    foreach (var metric in metrics)
+		    {
+			    var currentMetric = metric.Metric;
+			    if (filtered.Any(m => m.Metric == currentMetric))
+			    {
+				    continue;
+			    }
+				// find best score for this metric
+			    var best = metrics.Where(m => m.Metric == currentMetric)
+				    .OrderBy(r => r.Ratio)
+				    .Last();
+				filtered.Add(best);
+		    }
+		    return filtered;
+	    }
+
+	    private void LogMetrics(List<PlayerMetrics> metrics)
 	    {
 		    var str = "";
-		    foreach (var playerMetricse in metrics)
+		    foreach (var metric in metrics)
 		    {
-			    str += "Player: " + playerMetricse.PlayerId + " - " + playerMetricse.Metric + " - " + playerMetricse.Ratio + " (" + playerMetricse.Score + ")\n";
-		    }
+			    str += metric.OutputString();
+			}
 		    Logger.LogError(str);
 	    }
 
-	    private void LogPlayersBest(List<PlayerMetrics> metrics, int playerId)
+		/// <summary>
+		/// Get the players best score for all metrics
+		/// </summary>
+		/// <param name="metrics"></param>
+		/// <param name="playerId"></param>
+		/// <param name="excludeMetrics">Metrics to exclude, eg. other players have these metrics as their best</param>
+		/// <returns></returns>
+	    private string GetPlayersBest(List<PlayerMetrics> metrics, int? playerId, List<string> excludeMetrics = null)
 	    {
-		    var best = metrics.Where(m => m.PlayerId == playerId)
-			    .OrderBy(v => v.Ratio)
-			    .Last().Metric;
+		    if (excludeMetrics != null)
+		    {
+				return metrics.Where(m => m.PlayerId == playerId && !excludeMetrics.Contains(m.Metric))
+					.OrderBy(r => r.Ratio)
+					.Last().Metric;
+			}
+			return metrics.Where(m => m.PlayerId == playerId)
+				.OrderBy(r => r.Ratio)
+				.Last().Metric;
 	    }
-
 
 	    private struct PlayerMetrics
 	    {
@@ -288,6 +329,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		    public string Metric;
 		    // How players compare to others in the game
 		    public float Ratio;
+
+		    public string OutputString()
+		    {
+			    return "Player: " + PlayerId + " - " + Metric + " - " + Ratio + " (" + Score + ")\n";
+			}
 	    }
+
+	    #endregion
+
 	}
 }
