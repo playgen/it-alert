@@ -1,10 +1,13 @@
-﻿using GameWork.Core.States.Tick.Input;
+﻿using System.Linq;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
+using PlayGen.ITAlert.Unity.Simulation.Behaviours;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
 
 using Logger = PlayGen.Photon.Unity.Logger;
@@ -87,8 +90,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		    if (message is StopMessage stopMessage)
 			{
-                // todo pass the player data to the sim summary
-			    _simulationSummary.SetData(stopMessage.SimulationEvents, null);
+			    var entityIdByPhotonId = GameObjectUtilities.FindGameObject("Game").GetComponentsInChildren<PlayerBehaviour>().ToDictionary(p => p.PhotonId, p => p.Id);
+                _simulationSummary.SetData(stopMessage.SimulationEvents, _director.Players.Select(p => new SimulationSummary.SimulationSummary.PlayerData
+                {
+                    Colour = p.Colour,
+                    Name = p.Name,
+                    Id = entityIdByPhotonId[p.PhotonId]
+                }).ToList());
                 _director.EndGame();
 			}
 
