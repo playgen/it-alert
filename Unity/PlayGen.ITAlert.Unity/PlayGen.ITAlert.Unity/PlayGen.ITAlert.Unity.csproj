@@ -255,10 +255,11 @@
     <Compile Include="Simulation\ContainerState.cs" />
     <Compile Include="Simulation\ItemPanel.cs" />
     <Compile Include="Simulation\MalwareGeneMapper.cs" />
+    <Compile Include="Simulation\Summary\PlayerMetrics.cs" />
     <Compile Include="Simulation\Summary\SummaryMetricConfig.cs" />
     <Compile Include="Simulation\Summary\SummaryMetricConfigs.cs" />
     <Compile Include="States\Game\Room\Initializing\InitializingStateInput.cs" />
-    <Compile Include="Simulation\Summary\EventProcessor.cs" />
+    <Compile Include="Simulation\Summary\MetricProcessor.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummaryState.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummaryStateInput.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummary.cs" />
