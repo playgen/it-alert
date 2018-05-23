@@ -56,8 +56,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 			ComponentEntityTuple<Item, Owner, CurrentLocation, IItemType> subsystemItemTuple = null;
 			ComponentEntityTuple<Item, Owner, CurrentLocation, IItemType> inventoryItemTuple = null;
 
-			if (handlerEnabled
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId,
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId,
 					out var playerTuple)
 				&& (!command.SubsystemItemId.HasValue
 					|| _itemMatcherGroup.TryGetMatchingEntity(command.SubsystemItemId.Value,
@@ -87,8 +86,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 						&& (subsystemContainer.CanRelease || subsystemContainer.Item == null)
 						&& (inventory.CanRelease || inventory.Item == null)
 						// Containers must be able to accept items
-						&& (!command.SubsystemItemId.HasValue || inventory.CanContain(command.SubsystemItemId.Value))
-						&& (subsystemContainer.CanContain(command.InventoryItemId)))
+						&& (!command.SubsystemItemId.HasValue || inventory.CanContain(command.SubsystemItemId.Value)))
 					{
 						inventory.Item = command.SubsystemItemId;
 						if (inventoryItemTuple != null)
@@ -108,19 +106,27 @@ namespace PlayGen.ITAlert.Simulation.Commands
 						{
 							var @event = new SwapInventoryItemAndActivateEvent()
 							{
-								ItemId = itemTuple.Entity.Id,
-								ItemType = itemTuple.Component5.GetType().Name,
+								InventoryItemId = itemTuple.Entity.Id,
+								InventoryItemType = itemTuple.Component5.GetType().Name,
+								SubsystemItemId = subsystemItemTuple.Entity.Id,
+								SubsystemItemType = subsystemItemTuple.Component4.GetType().Name,
 								PlayerEntityId = command.PlayerId,
+								SubsystemEntityId = itemTuple.Component3.Value ?? -1
 							};
 
 							var itemNotActive = itemTuple.Component2.ActivationState == ActivationState.NotActive;  // item is not active
 							var playerCanActivate = (itemTuple.Component4.AllowAll || itemTuple.Component4.Value == null || itemTuple.Component4.Value == command.PlayerId); // player can activate item
 							// TODO: should an item have to have a location to be activated?
 							var playerHasActive = _activationMatcherGroup.MatchingEntities.Any(it => it.Component4.Value == command.PlayerId && it.Component2.ActivationState != ActivationState.NotActive);    // player has no other active items
+							var subsystemCanContain = subsystemContainer.CanContain(command.InventoryItemId);
+							var target = subsystemTuple.Component2.Items[command.ContainerId];
+
+							@event.TargetContainerType = target.GetType().Name;
 
 							if (handlerEnabled
 								&& itemNotActive
 								&& playerCanActivate
+								&& subsystemCanContain
 								&& playerHasActive == false
 								&& itemTuple.Component3.Value.HasValue // item is on a subsystem
 								&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var _))
@@ -151,9 +157,11 @@ namespace PlayGen.ITAlert.Simulation.Commands
 							@event.Result = handlerEnabled
 								? itemNotActive
 									? playerCanActivate
-										? playerHasActive
-											? SwapInventoryItemAndActivateEvent.ActivationResult.Failure_PlayerHasActive
-											: SwapInventoryItemAndActivateEvent.ActivationResult.Error
+										? subsystemCanContain
+											? playerHasActive
+												? SwapInventoryItemAndActivateEvent.ActivationResult.Failure_PlayerHasActive
+												: SwapInventoryItemAndActivateEvent.ActivationResult.Error
+											: SwapInventoryItemAndActivateEvent.ActivationResult.Failure_DestinationCannotCapture
 										: SwapInventoryItemAndActivateEvent.ActivationResult.Failure_PlayerCannotActivate
 									: SwapInventoryItemAndActivateEvent.ActivationResult.Failure_ItemAlreadyActive
 								: SwapInventoryItemAndActivateEvent.ActivationResult.Failure_CommandDisabled;
@@ -191,6 +199,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		{
 			Error = 0,
 			Success,
+			Failure_DestinationCannotCapture,
 			Failure_ItemAlreadyActive,
 			Failure_PlayerCannotActivate,
 			Failure_PlayerHasActive,
@@ -199,9 +208,11 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		public ActivationResult Result { get; set; }
 
-		public int ItemId { get; set; }
+		public int InventoryItemId { get; set; }
+		public string InventoryItemType { get; set; }
 
-		public string ItemType { get; set; }
+		public int SubsystemItemId { get; set; }
+		public string SubsystemItemType { get; set; }
 
 		public string TargetContainerType { get; set; }
 		public int PlayerEntityId { get; set; }

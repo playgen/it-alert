@@ -76,6 +76,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 				{
 					// cyclical behaviour for capture on advanced genomes
 					int gene = entityTuple.Component2.CapturedGenome;
+					int captured = 0;
 					do
 					{
 						switch (gene)
@@ -96,7 +97,7 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 
 						if (HasGene(malwareVisitor.Component1.Value, gene))
 						{
-							entityTuple.Component2.CapturedGenome = gene;
+							captured = gene;
 						}
 					} while (HasGene(malwareVisitor.Component1.Value, gene) == false);
 
@@ -108,9 +109,17 @@ namespace PlayGen.ITAlert.Simulation.Modules.Antivirus.Systems
 						}
 						.Count(g => HasGene(malwareVisitor.Component1.Value, g));
 
-					@event.ActivationResult = genes > 1 
-						? CaptureActivationEvent.CaptureActivationResult.ComplexGenomeCaptured
-						: CaptureActivationEvent.CaptureActivationResult.SimpleGenomeCaptured;
+					if (entityTuple.Component2.CapturedGenome != captured)
+					{
+						entityTuple.Component2.CapturedGenome = captured;
+						@event.ActivationResult = genes > 1
+							? CaptureActivationEvent.CaptureActivationResult.ComplexGenomeCaptured
+							: CaptureActivationEvent.CaptureActivationResult.SimpleGenomeCaptured;
+					}
+					else
+					{
+						@event.ActivationResult = CaptureActivationEvent.CaptureActivationResult.GenomeAlreadyCaptured;
+					}
 				}
 				else
 				{

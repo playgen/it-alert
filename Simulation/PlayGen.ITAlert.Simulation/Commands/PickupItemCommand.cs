@@ -37,11 +37,9 @@ namespace PlayGen.ITAlert.Simulation.Commands
 
 		protected override bool TryHandleCommand(PickupItemCommand command, int currentTick, bool handlerEnabled)
 		{
-			if (handlerEnabled
-				&& _playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
+			if (_playerMatcherGroup.TryGetMatchingEntity(command.PlayerId, out var playerTuple)
 				&& _itemMatcherGroup.TryGetMatchingEntity(command.ItemId, out var itemTuple)
 				&& itemTuple.Component2.Value.HasValue == false
-				&& itemTuple.Component4.ActivationState == ActivationState.NotActive
 				&& itemTuple.Component3.Value.HasValue
 				&& itemTuple.Component3.Value == playerTuple.Component3.Value
 				&& _subsystemMatcherGroup.TryGetMatchingEntity(itemTuple.Component3.Value.Value, out var subsystemTuple))
@@ -51,23 +49,33 @@ namespace PlayGen.ITAlert.Simulation.Commands
 					PlayerEntityId = command.PlayerId,
 					ItemId = itemTuple.Entity.Id,
 					ItemType = itemTuple.Component5.GetType().Name,
+					SubsystemEntityId = itemTuple.Component3.Value ?? -1
 				};
 
-				var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
-				var source = subsystemTuple.Component2.Items.SingleOrDefault(ic => ic.Item == itemTuple.Entity.Id);
-				if (inventory != null && inventory.Item.HasValue == false
-					&& source != null && source.CanRelease)
+				var itemNotActive = itemTuple.Component4.ActivationState == ActivationState.NotActive;
+
+				if (handlerEnabled && itemNotActive)
 				{
-					inventory.Item = itemTuple.Entity.Id;
-					itemTuple.Component2.Value = playerTuple.Entity.Id;
-					itemTuple.Component3.Value = null;
-					source.Item = null;
+					var inventory = playerTuple.Component2.Items[0] as InventoryItemContainer;
+					var source = subsystemTuple.Component2.Items.SingleOrDefault(ic => ic.Item == itemTuple.Entity.Id);
+					if (inventory != null && inventory.Item.HasValue == false
+						&& source != null && source.CanRelease)
+					{
+						inventory.Item = itemTuple.Entity.Id;
+						itemTuple.Component2.Value = playerTuple.Entity.Id;
+						itemTuple.Component3.Value = null;
+						source.Item = null;
 
-					@event.Result = PickupItemEvent.ActivationResult.Success;
-					_eventSystem.Publish(@event);
-					return true;
+						@event.Result = PickupItemEvent.ActivationResult.Success;
+						_eventSystem.Publish(@event);
+						return true;
+					}
 				}
-
+				else
+				{
+					@event.Result = handlerEnabled ? PickupItemEvent.ActivationResult.Failure_ItemActive : PickupItemEvent.ActivationResult.Failure_CommandDisabled;
+					_eventSystem.Publish(@event);
+				}
 			}
 			return false;
 		}
@@ -79,9 +87,7 @@ namespace PlayGen.ITAlert.Simulation.Commands
 		{
 			Error = 0,
 			Success,
-			Failure_NotOwner,
 			Failure_ItemActive,
-			Failure_PlayerHasInventory,
 			Failure_CommandDisabled,
 		}
 
