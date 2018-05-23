@@ -3,6 +3,7 @@ using System.Linq;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Scoring.Player;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
@@ -26,10 +27,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			public GameObject GameObject { get; set; }
 
 			public Image VoiceIcon { get; set; }
-
-			public Image PlayerGlyph { get; set; }
-
-			public Image PlayerColor { get; set; }
 
 			public Text NameText { get; set; }
 
@@ -112,18 +109,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 					var soundIcon = playerItem.transform.Find("SoundIcon").GetComponent<Image>();
 
-					var playerGlyph = playerItem.transform.Find("Glyph").GetComponent<Image>();
-
-					var playerColor = playerItem.transform.Find("Color").GetComponent<Image>();
-
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
 					playerVoiceItem = new PlayerVoiceItem
 										{
 						GameObject = playerItem,
 						VoiceIcon = soundIcon,
-						PlayerGlyph = playerGlyph,
-						PlayerColor = playerColor,
 						NameText = nameText,
 						ResourceText = resourceText,
 						SystemText = systemText
@@ -150,12 +141,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				playerVoiceItem.NameText.color = colour;
 				playerVoiceItem.VoiceIcon.color = colour;
-				playerVoiceItem.PlayerColor.color = colour;
 			}
-			playerVoiceItem.PlayerGlyph.sprite = Resources.Load<Sprite>($"playerglyph_{player.Glyph}");
 			if (playerVoiceItem.NameText.text != player.Name)
 			{
-				playerVoiceItem.NameText.text = player.Name;
+				playerVoiceItem.NameText.GetComponent<TextCutoff>().text = player.Name;
 			}
 		}
 

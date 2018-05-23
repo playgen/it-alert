@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 224000011572455588}
   - component: {fileID: 222000010229903002}
   - component: {fileID: 114000010648616904}
+  - component: {fileID: 114174701634488342}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -233,6 +234,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114174701634488342
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000010313199112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1258779384, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxLength: 15
+  _cuttoffAfter: 4000
+  _useGlobalSettings: 0
 --- !u!114 &114252461665959920
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -395,10 +410,10 @@ RectTransform:
   m_Father: {fileID: 224000011087233738}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.07, y: 0.2}
-  m_AnchorMax: {x: 0.12, y: 0.8}
+  m_AnchorMin: {x: 0, y: 0.2}
+  m_AnchorMax: {x: 0.05, y: 0.8}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -0.0000038146973, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224613179662966946
 RectTransform:
@@ -413,8 +428,8 @@ RectTransform:
   m_Father: {fileID: 224000011087233738}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.07, y: 1}
+  m_AnchorMin: {x: 0.05, y: 0}
+  m_AnchorMax: {x: 0.12, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -431,8 +446,8 @@ RectTransform:
   m_Father: {fileID: 224000011087233738}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.01, y: 0.25}
-  m_AnchorMax: {x: 0.06, y: 0.75}
+  m_AnchorMin: {x: 0.06, y: 0.25}
+  m_AnchorMax: {x: 0.11, y: 0.75}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0.0000019073486, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
