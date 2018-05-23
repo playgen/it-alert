@@ -13,21 +13,21 @@
         {
             Key = "SIMULATION_SUMMARY_METRIC_MOVED",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "moved"
         };
 
         public static SummaryMetricConfig TransfersSent = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_TRANSFERS_SENT",
             HighlightHighest = true,
-            IconPath = "transferitemcontainer"
+            IconPath = "transferitem_sent"
         };
 
         public static SummaryMetricConfig TransfersRecieved = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_TRANSFERS_RECEIVED",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "transferitem_received"
         };
 
         public static SummaryMetricConfig AntivirusesUsed = new SummaryMetricConfig
@@ -48,28 +48,28 @@
         {
             Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_KILLED",
             HighlightHighest = true,
-            IconPath = "big_virus"
+            IconPath = "virus_killed"
         };
 
         public static SummaryMetricConfig AntivirusesWasted = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_WASTED",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "antivirus_wasted"
         };
 
         public static SummaryMetricConfig VirusesFound = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_FOUND",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "virus_found"
         };
 
         public static SummaryMetricConfig ScansWithNoVirusesFound = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_SCANS_WITH_NO_VIRUSES_FOUND",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "scan_no_virus_found"
         };
 
         public static SummaryMetricConfig CapturesUsed = new SummaryMetricConfig
@@ -83,14 +83,14 @@
         {
             Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_CAPTURED",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "virus_captured"
         };
 
         public static SummaryMetricConfig CaptureWithNoVirusCaught = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_CAPTURE_WITH_NO_VIRUS_CAUGHT",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "capture_no_virus_caught"
         };
 
         public static SummaryMetricConfig AnalysersUsed = new SummaryMetricConfig
@@ -104,14 +104,14 @@
         {
             Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATED",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "antivirus_created"
         };
 
         public static SummaryMetricConfig AntivirusCreationFails = new SummaryMetricConfig
         {
             Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATION_FAILS",
             HighlightHighest = true,
-            IconPath = ""
+            IconPath = "antivirus_creation_failed"
         };
     }
 }
