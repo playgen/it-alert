@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
@@ -106,7 +107,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             var metricValueBestFitGroup = new List<Text>();
 
             var column = CreateColumn();
-            AddPlayers(column.GetComponentInChildren<LayoutGroup>().gameObject, _simulationSummary.PlayersData, playerNameBestFitGroup);
+	        playerNameBestFitGroup.ForEach(playerText => playerText.gameObject.AddComponent<TextCutoff>());
+
+			AddPlayers(column.GetComponentInChildren<LayoutGroup>().gameObject, _simulationSummary.PlayersData, playerNameBestFitGroup);
 
             foreach (var metricConfig in metricConfigs)
             {
