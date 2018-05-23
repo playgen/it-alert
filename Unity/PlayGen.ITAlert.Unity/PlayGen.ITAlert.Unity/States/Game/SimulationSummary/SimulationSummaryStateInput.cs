@@ -23,6 +23,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         private GameObject _columnResource;
         private GameObject _rowItemResource;
 
+	    private Transform _playerMetricsContainer;
+	    private GameObject _playerMetricsResource;
+
+
         public event Action ContinueClickedEvent;
 
         private readonly List<SummaryMetricConfig> _multiplayerMetrics = new List<SummaryMetricConfig>
@@ -74,9 +78,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer/SimulationSummaryPanelContainer");
             _columnContainer = _panel.transform.Find("ColumnContainer");
-            _continueButton = _panel.transform.Find("ButtonPanel/ContinueButtonContainer").GetComponent<Button>();
+	        _playerMetricsContainer = _panel.transform.Find("PlayerMetricsPanel");
+			_continueButton = _panel.transform.Find("ButtonPanel/ContinueButtonContainer").GetComponent<Button>();
             _columnResource = Resources.Load<GameObject>("SimulationSummaryColumn");
             _rowItemResource = Resources.Load<GameObject>("SimulationSummaryRowItem");
+	        _playerMetricsResource = Resources.Load<GameObject>("PlayerMetricContainer");
         }
 
         protected override void OnEnter()
@@ -100,7 +106,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             var metricValueBestFitGroup = new List<Text>();
 
             var column = CreateColumn();
-            AddPlayers(column, _simulationSummary.PlayersData, playerNameBestFitGroup);
+            AddPlayers(column.GetComponentInChildren<LayoutGroup>().gameObject, _simulationSummary.PlayersData, playerNameBestFitGroup);
 
             foreach (var metricConfig in metricConfigs)
             {
@@ -110,16 +116,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                 SetLocalizedTitle(column, metricConfig.Key, metricTitleBestFitGroup);
                 SetIcon(column, metricConfig.IconPath);
                 AddItems(
-                    column,
+                    column.GetComponentInChildren<LayoutGroup>().gameObject,
                     _simulationSummary.PlayersData, 
                     valueByPlayer, 
                     0, 
                     metricConfig.HighlightHighest,
                     metricValueBestFitGroup);
             }
-
-	        PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics);
-
+	        var playerIds = _simulationSummary.PlayersData.Select(p => p.Id).ToList();
+	        var playerMetrics = PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics, playerIds);
+	        AddMetricItems(playerMetrics);
             return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
         }
 
@@ -195,6 +201,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                 rowHighlight.gameObject.SetActive(true);
             });
         }
+
+	    private void AddMetricItems(List<PlayerMetrics.PlayerMetric> playerMetrics)
+	    {
+		    foreach (var playerMetric in playerMetrics)
+		    {
+			    var metricItem = Object.Instantiate(_playerMetricsResource, _playerMetricsContainer.transform);
+			    metricItem.transform.Find("PlayerName").GetComponent<Text>().text = "Player" + playerMetric.PlayerId;
+			    metricItem.transform.Find("PlayerTitle").GetComponent<Text>().text = "Generic Title";
+			    metricItem.transform.Find("PlayerMetric").GetComponent<Text>().text = playerMetric.Score + " " + playerMetric.Metric;
+			}
+	    }
 
         private (GameObject, Text) AddRowItem(GameObject column, List<Text> bestFitGroup)
         {

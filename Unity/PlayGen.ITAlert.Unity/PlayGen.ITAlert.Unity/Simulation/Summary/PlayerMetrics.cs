@@ -9,15 +9,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
     public static class PlayerMetrics
     {
-        public static void GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics)
+	   
+		public static List<PlayerMetric> GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics, List<int?> playerIds)
         {
-            //var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics);
-            //var unique = UniquePlayerBests(playerComparisons);
-
-            //LogMetrics(unique);
+            var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics, playerIds);
+            var unique = UniquePlayerBests(playerComparisons);
+	        return unique;
+	        //LogMetrics(unique);
         }
 
-        public static List<PlayerMetric> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics, List<int> playerIds)
+        public static List<PlayerMetric> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics, List<int?> playerIds)
         {
             var playerMetrics = new List<PlayerMetric>();
             foreach (var item in metrics)
