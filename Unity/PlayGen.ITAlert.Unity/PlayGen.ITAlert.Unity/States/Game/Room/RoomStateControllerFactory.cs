@@ -143,29 +143,28 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var input = new FeedbackStateInput(photonClient, _director);
 			var state = new FeedbackState(input, photonClient);
             
-		    var onLobbyStateSyncAndSimulationSummaryTransition = new OnMessageTransition(
-		        photonClient, 
-		        ITAlertChannel.GameState, 
-		        typeof(LobbyMessage), 
-		        SimulationSummaryState.StateName, 
-		        () => _simulationSummary.HasData);
-
-            var onLobbyStateSyncAndNoSimulationSummaryTransition = new OnMessageTransition(
+		    var onLobbyStateSync = new OnMessageTransition(
 		        photonClient,
 		        ITAlertChannel.GameState,
 		        typeof(LobbyMessage),
-		        LobbyState.StateName,
+		        LobbyState.StateName);
+
+            var onSendAndSimulationSummaryTransition = new OnEventTransition(
+		        SimulationSummaryState.StateName,
+		        () => _simulationSummary.HasData);
+
+		    var onSendAndNoSimulationSummaryTransition = new OnEventTransition(
+		        MenuState.StateName,
 		        () => !_simulationSummary.HasData);
 
-			var sendTransition = new OnEventTransition(MenuState.StateName);
-
-			input.FeedbackSendClickedEvent += sendTransition.ChangeState;
-			input.FeedbackSendClickedEvent += photonClient.CurrentRoom.Leave;
+            input.FeedbackSendClickedEvent += onSendAndSimulationSummaryTransition.ChangeState;
+		    input.FeedbackSendClickedEvent += onSendAndNoSimulationSummaryTransition.ChangeState;
+            input.FeedbackSendClickedEvent += photonClient.CurrentRoom.Leave;
 
 			state.AddTransitions(
-			    onLobbyStateSyncAndSimulationSummaryTransition,
-			    onLobbyStateSyncAndNoSimulationSummaryTransition,
-                sendTransition);
+			    onLobbyStateSync,
+                onSendAndSimulationSummaryTransition,
+			    onSendAndNoSimulationSummaryTransition);
 
 			return state;
 		}
