@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Engine.Events;
+using Engine.Lifecycle;
 
 using PlayGen.Photon.Messaging;
 using PlayGen.ITAlert.Photon.Messages;
@@ -53,6 +54,23 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			_simulationLifecycleManager.Dispose();
 		}
 
+		private void Shutdown(bool dispose)
+		{
+			switch (_simulationLifecycleManager.EngineState)
+			{
+				case EngineState.Error:
+				case EngineState.Stopped:
+					return;
+			}
+
+			_simulationLifecycleManager.TryStop();
+
+			if (dispose)
+			{
+				_simulationLifecycleManager.Dispose();
+			}
+		}
+
 		private void ProcessFeedbackMessage(Message message)
 		{
 			if (message is PlayerFeedbackMessage feedbackMessage)
@@ -80,6 +98,20 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			}
 
 			throw new Exception($"Unhandled Simulation ClientState Message: ${message}");
+		}
+
+		public override void OnLeave(ILeaveGameCallInfo info)
+		{
+			if (PlayerManager.Players.Count == 0)
+			{
+				Shutdown(true);
+			}
+			else
+			{
+				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
+				PlayerFeedbackSentEvent?.Invoke(PlayerManager.Players);
+			}
+			base.OnLeave(info);
 		}
 	}
 }
