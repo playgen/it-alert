@@ -95,6 +95,23 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             bestFitGroups.ForEach(bfg => bfg.BestFit());
         }
 
+        protected override void OnExit()
+        {
+            _continueButton.onClick.RemoveListener(OnContinueClicked);
+            _panel.SetActive(false);
+
+            // Remove all columns
+            foreach (Object column in _columnContainer)
+            {
+                Object.Destroy(column);
+            }
+        }
+
+        private void OnContinueClicked()
+        {
+            ContinueClickedEvent.Invoke();
+        }
+
         private IEnumerable<List<Text>> PopulateMetrics()
         {
             var metricConfigs = _simulationSummary.PlayersData.Count > 1
@@ -267,23 +284,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             var column = Object.Instantiate(_columnResource, _columnContainer);
             return column;
-        }
-
-        protected override void OnExit()
-        {
-            _continueButton.onClick.RemoveListener(OnContinueClicked);
-            _panel.SetActive(false);
-
-            // Remove all columns
-            foreach (Object column in _columnContainer)
-            {
-                Object.Destroy(column);
-            }
-        }
-
-        private void OnContinueClicked()
-        {
-            ContinueClickedEvent.Invoke();
         }
 	}
 }
