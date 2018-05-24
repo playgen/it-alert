@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.Lifecycle;
 using Photon.Hive.Plugin;
 using PlayGen.Photon.Messaging;
 using PlayGen.Photon.Plugin;
@@ -45,6 +46,23 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			Messenger.Unsubscribe((int)ITAlertChannel.GameState, ProcessGameStateMessage);
 		}
 
+		private void Shutdown(bool dispose)
+		{
+			switch (_simulationLifecycleManager.EngineState)
+			{
+				case EngineState.Error:
+				case EngineState.Stopped:
+					return;
+			}
+
+			_simulationLifecycleManager.TryStop();
+
+			if (dispose)
+			{
+				_simulationLifecycleManager.Dispose();
+			}
+		}
+
 		private void ProcessGameStateMessage(Message message)
 		{
 			if (message is InitializingMessage initializingMessage)
@@ -52,17 +70,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				var player = PlayerManager.Get(initializingMessage.PlayerPhotonId);
 				player.State = (int) ClientState.Initializing;
 				PlayerManager.UpdatePlayer(player);
-
-				if (PlayerManager.Players.GetCombinedStates() == ClientState.Initializing)
-				{
-					Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
-					{
-						PlayerConfiguration = _simulationLifecycleManager.ECSRoot.GetPlayerConfiguration(),
-						SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
-						ScenarioName = RoomSettings.GameScenario,
-						InstanceId = _simulationLifecycleManager.ECSRoot.InstanceId
-					});
-				}
+				InitializingPlayerCheck();
 				return;
 			}
 
@@ -76,9 +84,42 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			}
 		}
 
+		private bool InitializingPlayerCheck()
+		{
+			if (PlayerManager.Players.GetCombinedStates() == ClientState.Initializing)
+			{
+				Messenger.SendAllMessage(new Messages.Simulation.States.InitializedMessage
+				{
+					PlayerConfiguration = _simulationLifecycleManager.ECSRoot.GetPlayerConfiguration(),
+					SimulationState = _simulationLifecycleManager.ECSRoot.GetEntityState(),
+					ScenarioName = RoomSettings.GameScenario,
+					InstanceId = _simulationLifecycleManager.ECSRoot.InstanceId
+				});
+				return true;
+			}
+			return false;
+		}
+
 		protected virtual void OnPlayerInitialized(List<ITAlertPlayer> players)
 		{
 			PlayersInitialized?.Invoke(players);
+		}
+
+		public override void OnLeave(ILeaveGameCallInfo info)
+		{
+			if (PlayerManager.Players.Count == 0)
+			{
+				Shutdown(true);
+			}
+			else
+			{
+				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
+				if (!InitializingPlayerCheck())
+				{
+					PlayersInitialized?.Invoke(PlayerManager.Players);
+				}
+			}
+			base.OnLeave(info);
 		}
 	}
 }

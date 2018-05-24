@@ -50,6 +50,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnExit()
 		{
+			PlayerManager.PlayerLeft -= PlayerManagerOnPlayerLeft;
 			RoomSettings.MinPlayersChangedEvent -= TryStartGame;
 			PlayerManager.PlayersUpdated -= TryStartGame;
 			Messenger.Unsubscribe((int)ITAlertChannel.GameCommands, ProcessGameCommandMessage);

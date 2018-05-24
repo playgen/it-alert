@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using Engine.Events;
 using Engine.Lifecycle;
 using Engine.Serialization;
@@ -15,11 +14,9 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Photon.Players.Extensions;
 using PlayGen.ITAlert.Simulation.Exceptions;
-using PlayGen.ITAlert.Simulation.Logging;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Simulation.UI.Events;
 using PlayGen.Photon.Analytics;
-using Event = Engine.Logging.Database.Model.Event;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -122,49 +119,31 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 					player.State = (int) ClientState.Playing;
 					PlayerManager.UpdatePlayer(player);
 
-					if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing
-						&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
-					{
-						if (_simulationLifecycleManager.TryStart())
-						{
-							_simulationLifecycleManager.Tick += OnTick;
-							_simulationLifecycleManager.Stopped += exitCode => SimulationLifecycleManagerOnStopped(exitCode);
-						}
-						else
-						{
-							throw new LifecycleException("Start lifecycle failed.");
-						}
-					}
+					PlayingStateCheck();
 				}
 			}
 		}
 
-	    private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
-	    {
-	        List<StopMessage.SimulationEvent> simulationEvents = null;
+		private void PlayingStateCheck()
+		{
+			if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing
+				&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
+			{
+				if (_simulationLifecycleManager.TryStart())
+				{
+					_simulationLifecycleManager.Tick += OnTick;
+					_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
+				}
+				else
+				{
+					throw new LifecycleException("Start lifecycle failed.");
+				}
+			}
+		}
 
-            // If logging was enabled, include events for the game
-            if (_simulationLifecycleManager.ECSRoot.ECS.GetSystems<DatabaseEventLogger>().Any())
-	        {
-	            var gameId = _simulationLifecycleManager.ECSRoot.InstanceId;
-	            using (var loggingController = new ITAlertLoggingController())
-	            {
-	                var events = loggingController.GetGameEvents(gameId);
-	                simulationEvents = events.Select(e => new StopMessage.SimulationEvent
-	                {
-                        PlayerId = e.PlayerExternalId,
-                        Data = e.Data,
-                        EventCode = e.EventCode,
-                        Tick = e.Tick
-
-	                }).ToList();
-	            }
-	        }
-
-	        Messenger.SendAllMessage(new StopMessage
-	        {
-	            SimulationEvents = simulationEvents
-	        });
+		private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
+		{
+			Messenger.SendAllMessage(new StopMessage());
 		}
 
 		private void ProcessSimulationCommandMessage(Message message)
@@ -198,6 +177,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			else
 			{
 				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
+				PlayingStateCheck();
 			}
 			base.OnLeave(info);
 		}

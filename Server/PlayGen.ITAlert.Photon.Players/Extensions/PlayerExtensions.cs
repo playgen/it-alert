@@ -10,11 +10,13 @@ namespace PlayGen.ITAlert.Photon.Players.Extensions
 
 		public static PlayerColour GetUnusedGlyph(this IEnumerable<ITAlertPlayer> players)
 		{
-			var usedGlyphs = players.Select(p => p.Glyph);
+			var unusedGlyphs = PlayerColour.Glyphs.Except(players.Select(p => p.Glyph)).ToArray();
+			var glyph = unusedGlyphs[Random.Next(0, unusedGlyphs.Length)];
+			var glyphIndex = PlayerColour.Glyphs.ToList().IndexOf(glyph);
 			var playerColour = new PlayerColour
 									{
-				Glyph = PlayerColour.Glyphs.Except(usedGlyphs).First(),
-				Colour = ConvertHueToRgb(Random.Next(0, 6))
+				Glyph = glyph,
+				Colour = ConvertHueToRgb(glyphIndex)
 			};
 
 			return playerColour;
