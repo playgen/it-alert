@@ -126,8 +126,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                     metricConfig.HighlightHighest,
                     metricValueBestFitGroup);
             }
-	        var playerIds = _simulationSummary.PlayersData.Select(p => p.Id).ToList();
-	        var playerMetrics = PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics, playerIds);
+	        var playerMetrics = PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics, _simulationSummary);
 	        AddMetricItems(playerMetrics);
             return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
         }
@@ -210,9 +209,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		    foreach (var playerMetric in playerMetrics)
 		    {
 			    var metricItem = Object.Instantiate(_playerMetricsResource, _playerMetricsContainer.transform);
-			    metricItem.transform.Find("PlayerName").GetComponent<Text>().text = "Player" + playerMetric.PlayerId;
-			    metricItem.transform.Find("PlayerTitle").GetComponent<Text>().text = "Generic Title";
-			    metricItem.transform.Find("PlayerMetric").GetComponent<Text>().text = playerMetric.Score + " " + playerMetric.Metric;
+			    metricItem.transform.Find("PlayerName").GetComponent<Text>().text = playerMetric.PlayerName;
+			    metricItem.transform.Find("PlayerTitle").GetComponent<Text>().text = "Add Title";
+			    metricItem.transform.Find("PlayerMetric").GetComponent<Text>().text = "Add Metric Count";
 			}
 	    }
 

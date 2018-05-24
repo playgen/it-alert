@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PlayGen.ITAlert.Unity.States.Game.SimulationSummary;
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Summary
@@ -10,15 +11,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
     public static class PlayerMetrics
     {
 	   
-		public static List<PlayerMetric> GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics, List<int?> playerIds)
+		public static List<PlayerMetric> GetPlayerBestMetrics(Dictionary<string, Dictionary<int?, int>> sumByPlayerByMetrics, SimulationSummary simulationSummary)
         {
-            var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics, playerIds);
+            var playerComparisons = GetPlayerComparisons(sumByPlayerByMetrics, simulationSummary);
             var unique = UniquePlayerBests(playerComparisons);
 	        return unique;
 	        //LogMetrics(unique);
         }
 
-        public static List<PlayerMetric> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics, List<int?> playerIds)
+        public static List<PlayerMetric> GetPlayerComparisons(Dictionary<string, Dictionary<int?, int>> metrics, SimulationSummary simulationSummary)
         {
             var playerMetrics = new List<PlayerMetric>();
             foreach (var item in metrics)
@@ -26,8 +27,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
                 var metric = item.Key;
                 var scoresByPlayer = item.Value.ToDictionary(i => i.Key, i => i.Value.ToString());
 
-                // using the following formula, comparison = score / 2nd best score
-                var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value));
+				var playerIds = simulationSummary.PlayersData.Select(p => p.Id).ToList();
+
+				// using the following formula, comparison = score / 2nd best score
+				var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value));
 
                 var secondBestValue = orderedList.Count() == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count() - 2).Value;
                 var secondBest = Convert.ToInt16(secondBestValue);
@@ -40,9 +43,12 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
                         score = Convert.ToInt16(value);
                     }
 
+	                var name = simulationSummary.PlayersData.First(p => p.Id == playerId).Name;
+
                     var comparison = new PlayerMetric
                     {
                         PlayerId = playerId,
+						PlayerName = name,
                         Metric = metric,
                         Score = score,
                         Ratio = (float)score / secondBest
@@ -92,6 +98,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
         public struct PlayerMetric
         {
             public int? PlayerId;
+	        public string PlayerName;
             public int Score;
             public string Metric;
             // How players compare to others in the game
