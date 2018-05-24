@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
@@ -26,13 +28,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private readonly Director _director;
 
-		public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient) 
+	    public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
+		    SimulationSummary.SimulationSummary simulationSummary) 
 			: base(roomStateInput)
 		{
 			_director = roomStateInput.Director;
 			_director.Exception += GameExceptionHandler.OnException;
 			_photonClient = photonClient;
-			_controllerFactory = new RoomStateControllerFactory(_director, photonClient);
+			_controllerFactory = new RoomStateControllerFactory(_director, photonClient, simulationSummary);
 		}
 
 		public void SetSubstateParentController(StateControllerBase parentStateController)

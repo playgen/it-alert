@@ -33,7 +33,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				nameToken: "Tutorial1_Name",
 				descriptionToken: "Tutorial1_Description",
 				minPlayers: 1,
-				maxPlayers: 1)
+				maxPlayers: 1,
+                timeLimitSeconds: null)
 		{
 
 		}

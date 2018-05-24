@@ -28,12 +28,13 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 	// ReSharper disable once InconsistentNaming
 	internal class SPL3 : ScenarioFactory
 	{
-		public SPL3()
+		public SPL3(int timeLimitSeconds = 480)
 			: base(key: "SPL3",
 				nameToken: "SPL Scenario 3",
 				descriptionToken: "SPL Scenario 3",
 				minPlayers: 1,
-				maxPlayers: 4)
+				maxPlayers: 4,
+                timeLimitSeconds: timeLimitSeconds)
 		{
 
 		}
@@ -195,7 +196,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 			var scenario = new SimulationScenario(ScenarioInfo)
 			{
 				Configuration = configuration,
-				TimeLimitSeconds = 480, // 8 minutes
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node30.Id, node02.Id, node32.Id }),
 				Sequence = new List<SequenceFrame<Simulation, SimulationConfiguration>>(),
