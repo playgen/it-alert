@@ -2,116 +2,100 @@
 {
     public static class SummaryMetricConfigs
     {
-        public static SummaryMetricConfig Spoke = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_SPOKE",
-            HighlightHighest = true,
-            IconPath = "Sound_Icon"
-        };
+        public static SummaryMetricConfig Spoke = new SummaryMetricConfig (
+			"SPOKE", 
+			"Sound_Icon", 
+			true
+		);
 
-        public static SummaryMetricConfig Moved = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_MOVED",
-            HighlightHighest = true,
-            IconPath = "moved"
-        };
+		public static SummaryMetricConfig Moved = new SummaryMetricConfig(
+			"MOVED", 
+			"moved", 
+			true
+		);
 
-        public static SummaryMetricConfig TransfersSent = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_TRANSFERS_SENT",
-            HighlightHighest = true,
-            IconPath = "transferitem_sent"
-        };
+		public static SummaryMetricConfig TransfersSent = new SummaryMetricConfig(
+			"TRANSFERS_SENT", 
+			"transferitem_sent", 
+			true
+		);
 
-        public static SummaryMetricConfig TransfersRecieved = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_TRANSFERS_RECEIVED",
-            HighlightHighest = true,
-            IconPath = "transferitem_received"
-        };
+		public static SummaryMetricConfig TransfersRecieved = new SummaryMetricConfig(
+			"TRANSFERS_RECEIVED", 
+			"transferitem_received", 
+			true
+		);
 
-        public static SummaryMetricConfig AntivirusesUsed = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_ANTIVURUSES_USED",
-            HighlightHighest = true,
-            IconPath = "antivirus"
-        };
+		public static SummaryMetricConfig AntivirusUsed = new SummaryMetricConfig(
+			"ANTIVIRUS_USED", 
+			"antivirus", 
+			true
+		);
 
-        public static SummaryMetricConfig ScannersUsed = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_SCANNERS_USED",
-            HighlightHighest = true,
-            IconPath = "scanner"
-        };
+		public static SummaryMetricConfig ScannersUsed = new SummaryMetricConfig(
+			"SCANNERS_USED", 
+			"scanner", 
+			true
+		);
 
-        public static SummaryMetricConfig VirusesKilled = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_KILLED",
-            HighlightHighest = true,
-            IconPath = "virus_killed"
-        };
+		public static SummaryMetricConfig VirusesKilled = new SummaryMetricConfig(
+			"VIRUSES_KILLED", 
+			"virus_killed", 
+			true
+		);
 
-        public static SummaryMetricConfig AntivirusesWasted = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_WASTED",
-            HighlightHighest = true,
-            IconPath = "antivirus_wasted"
-        };
+		public static SummaryMetricConfig AntivirusWasted = new SummaryMetricConfig(
+			"ANTIVIRUS_WASTED", 
+			"antivirus_wasted", 
+			true
+		);
 
-        public static SummaryMetricConfig VirusesFound = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_FOUND",
-            HighlightHighest = true,
-            IconPath = "virus_found"
-        };
+		public static SummaryMetricConfig VirusesFound = new SummaryMetricConfig(
+			"VIRUSES_FOUND",
+			"virus_found",
+			true
+		);
 
-        public static SummaryMetricConfig ScansWithNoVirusesFound = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_SCANS_WITH_NO_VIRUSES_FOUND",
-            HighlightHighest = true,
-            IconPath = "scan_no_virus_found"
-        };
+		public static SummaryMetricConfig ScansWithNoVirusesFound = new SummaryMetricConfig(
+			"SCANS_WITH_NO_VIRUSES_FOUND", 
+			"scan_no_virus_found", 
+			true
+		);
 
-        public static SummaryMetricConfig CapturesUsed = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_CAPTURES_USED",
-            HighlightHighest = true,
-            IconPath = "capture"
-        };
+		public static SummaryMetricConfig CapturesUsed = new SummaryMetricConfig(
+			"CAPTURES_USED", 
+			"capture", 
+			true
+		);
 
-        public static SummaryMetricConfig VirusesCaptured = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_VIRUSES_CAPTURED",
-            HighlightHighest = true,
-            IconPath = "virus_captured"
-        };
+		public static SummaryMetricConfig VirusesCaptured = new SummaryMetricConfig(
+			"VIRUSES_CAPTURED", 
+			"virus_captured", 
+			true
+		);
 
-        public static SummaryMetricConfig CaptureWithNoVirusCaught = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_CAPTURE_WITH_NO_VIRUS_CAUGHT",
-            HighlightHighest = true,
-            IconPath = "capture_no_virus_caught"
-        };
+		public static SummaryMetricConfig CaptureWithNoVirusCaught = new SummaryMetricConfig(
+			"CAPTURE_WITH_NO_VIRUS_CAUGHT", 
+			"capture_no_virus_caught", 
+			true
+		);
 
-        public static SummaryMetricConfig AnalysersUsed = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_ANALYSERS_USED",
-            HighlightHighest = true,
-            IconPath = "analyser"
-        };
+		public static SummaryMetricConfig AnalysersUsed = new SummaryMetricConfig(
+			"ANALYSERS_USED", 
+			"analyser", 
+			true
+		);
 
-        public static SummaryMetricConfig AntivirusesCreated = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATED",
-            HighlightHighest = true,
-            IconPath = "antivirus_created"
-        };
+		public static SummaryMetricConfig AntivirusesCreated = new SummaryMetricConfig(
+			"ANTIVIRUSES_CREATED", 
+			"antivirus_created", 
+			true
+		);
 
-        public static SummaryMetricConfig AntivirusCreationFails = new SummaryMetricConfig
-        {
-            Key = "SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATION_FAILS",
-            HighlightHighest = true,
-            IconPath = "antivirus_creation_failed"
-        };
+	    public static SummaryMetricConfig AntivirusCreationFails = new SummaryMetricConfig(
+			"ANTIVIRUSES_CREATION_FAILS", 
+			"antivirus_creation_failed", 
+			true
+		);
     }
 }
