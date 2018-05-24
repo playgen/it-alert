@@ -153,14 +153,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         {
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column, bestFitGroup);
+                var (rowItem, rowText, background) = AddRowItem(column, bestFitGroup);
 
-                if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
+				if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
-                    rowText.color = colour;
+					//rowText.color = colour;
+	                background.color = colour;
                 }
 
-                rowText.text = playerData.Name;
+				rowText.text = playerData.Name;
             }
         }
 
@@ -177,14 +178,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
             foreach (var playerData in playersData)
             {
-                var (rowItem, rowText) = AddRowItem(column, rowBestFitGroup);
+                var (rowItem, rowText, background) = AddRowItem(column, rowBestFitGroup);
                 var rowHighlight = rowItem.transform.Find("Highlight").GetComponent<Image>();
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
-                    rowText.color = colour;
+                    //rowText.color = colour;
                     rowHighlight.color = colour;
-                }
+	                background.color = colour;
+				}
 
                 if (valueByPlayer == null || !valueByPlayer.TryGetValue(playerData.Id, out var value))
                 {
@@ -257,13 +259,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 		    bestFitGroupDescription.BestFit();
 	    }
 
-        private (GameObject, Text) AddRowItem(GameObject column, List<Text> bestFitGroup)
+        private (GameObject, Text, Image) AddRowItem(GameObject column, List<Text> bestFitGroup)
         {
             var rowItem = Object.Instantiate(_rowItemResource, column.transform);
             var rowText = rowItem.transform.Find("Text").GetComponent<Text>();
-            bestFitGroup.Add(rowText);
+			var background = rowItem.transform.Find("Background").GetComponent<Image>();
+			bestFitGroup.Add(rowText);
 
-            return (rowItem, rowText);
+            return (rowItem, rowText, background);
         }
         private void SetIcon(GameObject column, string iconPath)
         {
