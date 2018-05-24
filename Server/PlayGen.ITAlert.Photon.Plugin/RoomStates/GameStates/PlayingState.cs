@@ -178,7 +178,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			{
 				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
 				PlayingStateCheck();
-				PlayerManager.OnPlayersUpdated();
 			}
 			base.OnLeave(info);
 		}
