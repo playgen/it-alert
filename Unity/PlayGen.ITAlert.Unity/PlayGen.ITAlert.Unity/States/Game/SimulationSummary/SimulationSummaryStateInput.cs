@@ -101,9 +101,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             _panel.SetActive(false);
 
             // Remove all columns
-            foreach (Object column in _columnContainer)
+            foreach (Transform column in _columnContainer)
             {
-                Object.Destroy(column);
+                Object.Destroy(column.gameObject);
             }
         }
 
