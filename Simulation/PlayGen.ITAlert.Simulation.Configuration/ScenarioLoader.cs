@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Engine.Configuration;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios;
+using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Dev;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL;
 using PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial;
 using PlayGen.ITAlert.Simulation.Scenario;
@@ -30,6 +31,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 				new SPL2(),
 				new SPL3(),
 				//new Dev1(), 
+			    //new Dev_SPL3_1sec(), 
+                //new Dev_SPL3_10sec(), 
+                //new Dev_SPL3_30sec(),
 			}
 			.ToDictionary(k => k.ScenarioInfo.Key, v => v);
 		}

@@ -14,6 +14,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 
 		public int MaxPlayerCount { get; set; }
 
+        public int? TimeLimitSeconds { get; set; }
+
 		public LocalizationDictionary LocalizationDictionary { get; set; }
 
 	}

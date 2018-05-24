@@ -32,8 +32,9 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 				nameToken: "SPL Scenario 1",
 				descriptionToken: "SPL Scenario 1",
 				minPlayers: 1,
-				maxPlayers: 4)
-		{
+				maxPlayers: 4,
+                timeLimitSeconds: 480)
+        {
 			
 		}
 
@@ -117,7 +118,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			var scenario = new SimulationScenario(ScenarioInfo)
 			{
-				TimeLimitSeconds = 480, // 8 minutes
 				Configuration = configuration,
 
 				PlayerConfigFactory = new StartingLocationSequencePlayerConfigFactory(Player.Archetype, new[] { node00.Id, node20.Id, node01.Id, node21.Id }),

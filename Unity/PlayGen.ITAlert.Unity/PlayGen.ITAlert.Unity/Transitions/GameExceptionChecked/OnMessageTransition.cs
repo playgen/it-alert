@@ -13,13 +13,20 @@ namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 		private readonly ITAlertChannel _channel;
 		private readonly Type _requiredMessageType;
 		private readonly string _toStateName;
+	    private readonly Func<bool> _condition;
 
-		public OnMessageTransition(ITAlertPhotonClient photonClient, ITAlertChannel channel, Type messageType, string toStateName)
+	    public OnMessageTransition(
+	        ITAlertPhotonClient photonClient, 
+	        ITAlertChannel channel, 
+	        Type messageType, 
+	        string toStateName, 
+	        Func<bool> condition = null)
 		{
 			_photonClient = photonClient;
 			_channel = channel;
 			_requiredMessageType = messageType;
 			_toStateName = toStateName;
+		    _condition = condition;
 		}
 
 		protected override void OnEnter(string fromStateName)
@@ -34,7 +41,7 @@ namespace PlayGen.ITAlert.Unity.Transitions.GameExceptionChecked
 
 		private void OnMessageRecieved(Message message)
 		{
-			if (!GameExceptionHandler.HasException && message.GetType() == _requiredMessageType)
+			if (!GameExceptionHandler.HasException && message.GetType() == _requiredMessageType && (_condition == null || _condition()))
 			{
 				ExitState(_toStateName);
 				EnterState(_toStateName);

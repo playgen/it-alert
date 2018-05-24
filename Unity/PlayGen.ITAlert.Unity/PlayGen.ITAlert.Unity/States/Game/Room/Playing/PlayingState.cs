@@ -1,10 +1,13 @@
-﻿using GameWork.Core.States.Tick.Input;
+﻿using System.Linq;
+using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
+using PlayGen.ITAlert.Unity.Simulation.Behaviours;
+using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
 
 using Logger = PlayGen.Photon.Unity.Logger;
@@ -19,13 +22,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		private readonly Director _director;
 
 		private readonly ITAlertPhotonClient _photonClient;
-		
-		public bool IsComplete { get; private set; }
+	    private readonly SimulationSummary.SimulationSummary _simulationSummary;
 
-		public PlayingState(Director director, PlayingStateInput input, ITAlertPhotonClient photonClient) : base(input)
+	    public bool IsComplete { get; private set; }
+
+		public PlayingState(Director director, PlayingStateInput input, ITAlertPhotonClient photonClient, SimulationSummary.SimulationSummary simulationSummary) : base(input)
 		{
 			_director = director;
 			_photonClient = photonClient;
+		    _simulationSummary = simulationSummary;
 		}
 
 		protected override void OnEnter()
@@ -83,9 +88,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 				return;
 			}
 
-			if (message is StopMessage)
+		    if (message is StopMessage stopMessage)
 			{
-				_director.EndGame();
+                _simulationSummary.SetData(stopMessage.SimulationEvents, _director.Players.Select(p => new SimulationSummary.SimulationSummary.PlayerData
+                {
+                    Colour = p.Colour,
+                    Name = p.Name,
+                    Id = p.PhotonId
+                }).ToList());
+                _director.EndGame();
 			}
 
 			//throw new Exception("Unhandled Simulation State Message: " + message);

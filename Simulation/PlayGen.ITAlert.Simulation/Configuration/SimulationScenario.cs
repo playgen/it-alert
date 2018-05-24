@@ -42,6 +42,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 			MinPlayers = scenarioInfo.MinPlayerCount;
 			MaxPlayers = scenarioInfo.MaxPlayerCount;
 			LocalizationDictionary = scenarioInfo.LocalizationDictionary;
-		}
+            TimeLimitSeconds = scenarioInfo.TimeLimitSeconds;
+        }
 	}
 }

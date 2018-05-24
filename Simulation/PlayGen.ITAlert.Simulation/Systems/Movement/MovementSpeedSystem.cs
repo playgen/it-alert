@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Engine.Events;
 using Engine.Systems;
 
 using PlayGen.ITAlert.Simulation.Components.Movement;
+using PlayGen.ITAlert.Simulation.Events;
 
 namespace PlayGen.ITAlert.Simulation.Systems.Movement
 {
@@ -14,6 +15,14 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 		/// <summary>
 		/// 
 		/// </summary>
+
+		private readonly EventSystem _eventSystem;
+
+		public MovementSpeedSystem(EventSystem eventSystem)
+		{
+			_eventSystem = eventSystem;
+		}
+
 		public Dictionary<MovementOffsetCategory, decimal> SpeedOffsets { get; set; } = new Dictionary<MovementOffsetCategory, decimal>();
 
 		public decimal GetMovementSpeed(MovementSpeed movementSpeed)
@@ -29,8 +38,31 @@ namespace PlayGen.ITAlert.Simulation.Systems.Movement
 			return offsetSpeed < 0.1m ? 0.1m : offsetSpeed;
 		}
 
+		public void LeaveSystem(int id)
+		{
+			var @event = new PlayerLeaveNodeEvent
+			{
+				PlayerEntityId = id,
+				Result = PlayerLeaveNodeEvent.CommandResult.Success
+			};
+			_eventSystem.Publish(@event);
+
+		}
+
 		public void Dispose()
 		{
 		}
 	}
+
+	public class PlayerLeaveNodeEvent : Event, IPlayerEvent
+	{
+		public enum CommandResult
+		{
+			Error = 0,
+			Success,
+		}
+		public CommandResult Result { get; set; }
+		public int PlayerEntityId { get; set; }
+	}
+
 }

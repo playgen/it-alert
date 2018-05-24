@@ -9,7 +9,7 @@ Make sure that Submodules have been pulled properly. Source Tree likes to ignore
 
 # SUGAR
 ## Build Instructions
-Currently using the unity client built from commit: 58e604d90ea003492514f142d27d805bcbbbfaa6
+Currently using the unity client built from commit: 65b3f05407eb5f58096c1ae862da18ab8d643e1c
 
 1. Build SUGAR-Unity
 2. Copy build output of SUGAR-Unity build to lib/SUGAR/bin

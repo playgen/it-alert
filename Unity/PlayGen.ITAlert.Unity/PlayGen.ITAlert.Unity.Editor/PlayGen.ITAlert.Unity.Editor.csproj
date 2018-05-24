@@ -26,7 +26,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Assets\PlayGen.ITAlert.Unity\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -72,9 +72,6 @@
     <Reference Include="PlayGen.Unity.Utilities.Editor.Shortcuts">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Editor.UI">
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.UI.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

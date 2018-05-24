@@ -50,7 +50,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseEventLogger.cs" />
-    <Compile Include="ITAlertContext.cs" />
+    <Compile Include="ITAlertLoggingContext.cs" />
+    <Compile Include="ITAlertLoggingContextFactory.cs" />
+    <Compile Include="ITAlertLoggingController.cs" />
     <Compile Include="Models\PlayerFeedback.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
