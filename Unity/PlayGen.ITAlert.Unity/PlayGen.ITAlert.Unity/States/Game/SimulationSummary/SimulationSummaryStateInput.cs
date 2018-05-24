@@ -113,10 +113,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
             foreach (var metricConfig in metricConfigs)
             {
-                sumByPlayerByMetrics.TryGetValue(metricConfig.Key, out var valueByPlayer);
+                sumByPlayerByMetrics.TryGetValue(metricConfig.KeyMetric, out var valueByPlayer);
 
                 column = CreateColumn();
-                SetLocalizedTitle(column, metricConfig.Key, metricTitleBestFitGroup);
+                SetLocalizedTitle(column, metricConfig.KeyMetric, metricTitleBestFitGroup);
                 SetIcon(column, metricConfig.IconPath);
                 AddItems(
                     column.GetComponentInChildren<LayoutGroup>().gameObject,
