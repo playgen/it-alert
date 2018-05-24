@@ -118,7 +118,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				{
 					PlayersInitialized?.Invoke(PlayerManager.Players);
 				}
-				PlayerManager.OnPlayersUpdated();
 			}
 			base.OnLeave(info);
 		}
