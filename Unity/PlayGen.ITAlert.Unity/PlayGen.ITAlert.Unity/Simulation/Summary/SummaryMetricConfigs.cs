@@ -1,4 +1,8 @@
-﻿namespace PlayGen.ITAlert.Unity.Simulation.Summary
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
     public static class SummaryMetricConfigs
     {
@@ -113,5 +117,20 @@
             HighlightHighest = true,
             IconPath = "antivirus_creation_failed"
         };
+
+        private static IReadOnlyList<SummaryMetricConfig> _all;
+
+        public static IReadOnlyList<SummaryMetricConfig> All => _all ?? (_all = GetAll());
+
+        public static List<SummaryMetricConfig> GetAll()
+        {
+            var all = typeof(SummaryMetricConfigs)
+                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.FieldType.IsAssignableFrom(typeof(SummaryMetricConfig)))
+                .Select(f => (SummaryMetricConfig)f.GetValue(null))
+                .ToList();
+
+            return all;
+        }
     }
 }
