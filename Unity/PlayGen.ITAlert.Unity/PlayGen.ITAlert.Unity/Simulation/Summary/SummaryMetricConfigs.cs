@@ -1,4 +1,8 @@
-﻿namespace PlayGen.ITAlert.Unity.Simulation.Summary
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+
+namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
     public static class SummaryMetricConfigs
     {
@@ -26,7 +30,7 @@
 			true
 		);
 
-		public static SummaryMetricConfig AntivirusUsed = new SummaryMetricConfig(
+		public static SummaryMetricConfig AntivirusesUsed = new SummaryMetricConfig(
 			"ANTIVIRUS_USED", 
 			"antivirus", 
 			true
@@ -44,8 +48,8 @@
 			true
 		);
 
-		public static SummaryMetricConfig AntivirusWasted = new SummaryMetricConfig(
-			"ANTIVIRUS_WASTED", 
+		public static SummaryMetricConfig AntivirusesWasted = new SummaryMetricConfig(
+			"ANTIVIRUSES_WASTED", 
 			"antivirus_wasted", 
 			true
 		);
@@ -97,5 +101,20 @@
 			"antivirus_creation_failed", 
 			true
 		);
+		
+		private static IReadOnlyList<SummaryMetricConfig> _all;
+
+        public static IReadOnlyList<SummaryMetricConfig> All => _all ?? (_all = GetAll());
+
+        public static List<SummaryMetricConfig> GetAll()
+        {
+            var all = typeof(SummaryMetricConfigs)
+                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(f => f.FieldType.IsAssignableFrom(typeof(SummaryMetricConfig)))
+                .Select(f => (SummaryMetricConfig)f.GetValue(null))
+                .ToList();
+
+            return all;
+        }
     }
 }
