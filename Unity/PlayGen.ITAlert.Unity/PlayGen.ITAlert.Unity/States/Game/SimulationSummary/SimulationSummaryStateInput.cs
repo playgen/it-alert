@@ -88,9 +88,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         protected override void OnEnter()
         {
-            var bestFitGroups = PopulateMetrics();
+	        _panel.SetActive(true);
+			
+			var bestFitGroups = PopulateMetrics();
             _continueButton.onClick.AddListener(OnContinueClicked);
-            _panel.SetActive(true);
             bestFitGroups.ForEach(bfg => bfg.BestFit());
         }
 
@@ -206,13 +207,37 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
 	    private void AddMetricItems(List<PlayerMetrics.PlayerMetric> playerMetrics)
 	    {
-		    foreach (var playerMetric in playerMetrics)
+			var bestFitGroupName = new List<Text>();
+			var bestFitGroupTitle = new List<Text>();
+			var bestFitGroupDescription = new List<Text>();
+			foreach (var playerMetric in playerMetrics)
 		    {
-			    var metricItem = Object.Instantiate(_playerMetricsResource, _playerMetricsContainer.transform);
-			    metricItem.transform.Find("PlayerName").GetComponent<Text>().text = playerMetric.PlayerName;
-			    metricItem.transform.Find("PlayerTitle").GetComponent<Text>().text = "Add Title";
-			    metricItem.transform.Find("PlayerMetric").GetComponent<Text>().text = "Add Metric Count";
+			    var metricConfig = SummaryMetricConfigs.GetAll().First(c => c.KeyMetric == playerMetric.Metric);
+				var metricItem = Object.Instantiate(_playerMetricsResource, _playerMetricsContainer.transform);
+
+			    var nameText = metricItem.transform.Find("PlayerName").GetComponent<Text>();
+			    var titleText = metricItem.transform.Find("PlayerTitle").GetComponent<Text>();
+			    var descriptionText = metricItem.transform.Find("PlayerMetric").GetComponent<Text>();
+
+				nameText.text = playerMetric.PlayerData.Name;
+				titleText.text = Localization.Get(metricConfig.KeyTitle);
+				descriptionText.text = Localization.GetAndFormat(metricConfig.KeyFormattedMetric, false, playerMetric.Score.ToString());
+
+				if (ColorUtility.TryParseHtmlString(playerMetric.PlayerData.Colour, out var colour))
+			    {
+				    nameText.color = colour;
+				    //titleText.color = colour;
+				    descriptionText.color = colour;
+			    }
+
+				bestFitGroupName.Add(nameText);
+				bestFitGroupTitle.Add(titleText);
+				bestFitGroupDescription.Add(descriptionText);
 			}
+
+			bestFitGroupName.BestFit();
+		    bestFitGroupTitle.BestFit();
+		    bestFitGroupDescription.BestFit();
 	    }
 
         private (GameObject, Text) AddRowItem(GameObject column, List<Text> bestFitGroup)

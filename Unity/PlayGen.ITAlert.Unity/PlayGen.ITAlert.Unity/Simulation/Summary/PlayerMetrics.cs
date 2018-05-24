@@ -43,12 +43,11 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
                         score = Convert.ToInt16(value);
                     }
 
-	                var name = simulationSummary.PlayersData.First(p => p.Id == playerId).Name;
+					var playerData = simulationSummary.PlayersData.First(p => p.Id == playerId);
 
                     var comparison = new PlayerMetric
                     {
-                        PlayerId = playerId,
-						PlayerName = name,
+                        PlayerData = playerData,
                         Metric = metric,
                         Score = score,
                         Ratio = (float)score / secondBest
@@ -74,8 +73,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
             // now iterate through the list and get unique bests
             for (var i = 1; i < metrics.Count; i++)
             {
-                var playerId = metrics[i].PlayerId;
-                if (!uniqueList.Any(m => m.PlayerId == playerId || m.Metric == metrics[i].Metric))
+                var playerId = metrics[i].PlayerData.Id;
+                if (!uniqueList.Any(m => m.PlayerData.Id == playerId || m.Metric == metrics[i].Metric))
                 {
 					// this is a unique player and metric, so add it to the list
 	                uniqueList.Add(metrics[i]);
@@ -97,8 +96,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 #endif
         public struct PlayerMetric
         {
-            public int? PlayerId;
-	        public string PlayerName;
+	        public SimulationSummary.PlayerData PlayerData;
             public int Score;
             public string Metric;
             // How players compare to others in the game
@@ -106,7 +104,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 
             public string OutputString()
             {
-                return "Player: " + PlayerId + " - " + Metric + " - " + Ratio + " (" + Score + ")\n";
+                return "Player: " + PlayerData.Name + " - " + Metric + " - " + Ratio + " (" + Score + ")\n";
             }
         }
     }
