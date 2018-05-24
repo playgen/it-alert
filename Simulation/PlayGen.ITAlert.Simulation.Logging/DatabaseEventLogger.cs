@@ -185,6 +185,7 @@ namespace PlayGen.ITAlert.Simulation.Logging
 						Tick = playerEvent.Tick,
 						Data = ConfigurationSerializer.Serialize(playerEvent),
 						PlayerId = playerConfig.Id,
+                        PlayerExternalId = playerConfig.ExternalId
 					};
 
 					_context.InstanceEvents.Add(logEvent);
