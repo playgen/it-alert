@@ -119,19 +119,24 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 					player.State = (int) ClientState.Playing;
 					PlayerManager.UpdatePlayer(player);
 
-					if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing
-						&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
-					{
-						if (_simulationLifecycleManager.TryStart())
-						{
-							_simulationLifecycleManager.Tick += OnTick;
-							_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
-						}
-						else
-						{
-							throw new LifecycleException("Start lifecycle failed.");
-						}
-					}
+					PlayingStateCheck();
+				}
+			}
+		}
+
+		private void PlayingStateCheck()
+		{
+			if (PlayerManager.Players.GetCombinedStates() == ClientState.Playing
+				&& _simulationLifecycleManager.EngineState == EngineState.NotStarted)
+			{
+				if (_simulationLifecycleManager.TryStart())
+				{
+					_simulationLifecycleManager.Tick += OnTick;
+					_simulationLifecycleManager.Stopped += SimulationLifecycleManagerOnStopped;
+				}
+				else
+				{
+					throw new LifecycleException("Start lifecycle failed.");
 				}
 			}
 		}
@@ -172,6 +177,8 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 			else
 			{
 				_simulationLifecycleManager.ECSRoot.ECS.PlayerDisconnected(info.ActorNr - 1);
+				PlayingStateCheck();
+				PlayerManager.OnPlayersUpdated();
 			}
 			base.OnLeave(info);
 		}
