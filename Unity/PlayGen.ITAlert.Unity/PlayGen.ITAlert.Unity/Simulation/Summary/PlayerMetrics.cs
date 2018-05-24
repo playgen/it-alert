@@ -66,20 +66,24 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
         public static List<PlayerMetric> UniquePlayerBests(List<PlayerMetric> metrics)
         {
             var uniqueList = new List<PlayerMetric>();
-            metrics = metrics.OrderByDescending(m => m.Ratio).ToList();
-            // it is safe to assume the first element is the best and unique
-            uniqueList.Add(metrics[0]);
-
-            // now iterate through the list and get unique bests
-            for (var i = 1; i < metrics.Count; i++)
+            if (metrics.Any())
             {
-                var playerId = metrics[i].PlayerData.Id;
-                if (!uniqueList.Any(m => m.PlayerData.Id == playerId || m.Metric == metrics[i].Metric))
+                metrics = metrics.OrderByDescending(m => m.Ratio).ToList();
+                // it is safe to assume the first element is the best and unique
+                uniqueList.Add(metrics[0]);
+
+                // now iterate through the list and get unique bests
+                for (var i = 1; i < metrics.Count; i++)
                 {
-					// this is a unique player and metric, so add it to the list
-	                uniqueList.Add(metrics[i]);
+                    var playerId = metrics[i].PlayerData.Id;
+                    if (!uniqueList.Any(m => m.PlayerData.Id == playerId || m.Metric == metrics[i].Metric))
+                    {
+                        // this is a unique player and metric, so add it to the list
+                        uniqueList.Add(metrics[i]);
+                    }
                 }
             }
+
             return uniqueList;
         }
 
