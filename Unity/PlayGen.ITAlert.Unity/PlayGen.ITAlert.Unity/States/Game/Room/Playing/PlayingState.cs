@@ -90,12 +90,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		    if (message is StopMessage stopMessage)
 			{
-			    var entityIdByPhotonId = GameObjectUtilities.FindGameObject("Game").GetComponentsInChildren<PlayerBehaviour>().ToDictionary(p => p.PhotonId, p => p.Id);
                 _simulationSummary.SetData(stopMessage.SimulationEvents, _director.Players.Select(p => new SimulationSummary.SimulationSummary.PlayerData
                 {
                     Colour = p.Colour,
                     Name = p.Name,
-                    Id = entityIdByPhotonId[p.PhotonId]
+                    Id = p.PhotonId
                 }).ToList());
                 _director.EndGame();
 			}
