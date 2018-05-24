@@ -44,7 +44,7 @@ _ReSharper*/
 Unity/[Ll]ibrary/
 Unity/[Tt]emp/
 Unity/[Oo]bj/
-Unity/[Bb]uild/
+Unity/[Bb]uild/**/*
 Unity/*.suo
 Unity/*.user
 Unity/*.sln
@@ -59,6 +59,9 @@ Unity/Assets/PlayGen.ITAlert.Unity/
 
 # Unity Test Tools Scenes
 Unity/Assets/InitTestScene*.unity*
+
+# Run Helpers
+!Unity/[Bb]uild/start*.bat
 
 #
 # Photon
@@ -100,4 +103,3 @@ bin/*.xml
 #
 # General Keep
 #
-!Tools/**/*.dll
