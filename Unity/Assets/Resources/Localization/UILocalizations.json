@@ -93,6 +93,7 @@
 {"Key":"PLACE_BUTTON","en":"Place","nl":"Plaatsen"},
 {"Key":"PLACE_AND_USE_BUTTON","en":"Place And Use","nl":"Plaatsen en Gebruiken"},
 {"Key":"SUMMARY_TITLE","en":"Summary","nl":"xxxxx"},
+{"Key":"SYSTEM_REPORT_TITLE","en":"System Report","nl":"xxxxx"},
 {"Key":"SUMMARY_BUTTON_CONTINUE","en":"Continue","nl":"xxxxx"},
 {"Key":"SIMULATION_SUMMARY_METRIC_SPOKE","en":"Spoke","nl":"xxxxx"},
 {"Key":"SIMULATION_SUMMARY_METRIC_SPOKE_TITLE","en":"Chatterbox","nl":"xxxxx"},
