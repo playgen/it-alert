@@ -48,13 +48,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void Shutdown(bool dispose)
 		{
-			switch (_simulationLifecycleManager.EngineState)
-			{
-				case EngineState.Error:
-				case EngineState.Stopped:
-					return;
-			}
-
 			_simulationLifecycleManager.TryStop();
 
 			if (dispose)
