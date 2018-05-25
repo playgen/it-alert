@@ -34,6 +34,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private Text _serverConnectionText;
 		private Text _sugarConnectionText;
 
+		private Color _red;
+		private Color _green;
 
 		public MenuStateInput(ITAlertPhotonClient photonClient, ScenarioController controller)
 		{
@@ -61,6 +63,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_joinGameButton.onClick.AddListener(OnJoinGameClick);
 			_quickMatchButton.onClick.AddListener(OnQuickMatchClick);
 			_settingsButton.onClick.AddListener(OnSettingsClick);
+
+			ColorUtility.TryParseHtmlString("#E32730", out _red);
+			ColorUtility.TryParseHtmlString("#89C845", out _green);
 		}
 
 		protected override void OnTerminate()
@@ -129,16 +134,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_joinGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
 			_createGameButton.interactable = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected;
 			_serverConnectionText.text = Localization.Get("CONNECTION_LABEL") + " " + Localization.Get((_photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? "CONNECTION_LABEL_CONNECTED" : "CONNECTION_LABEL_NOT_CONNECTED"));
-			_serverConnectionText.color = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? Color.green : Color.red;
+			_serverConnectionText.color = _photonClient.ClientState == PlayGen.Photon.Unity.Client.ClientState.Connected ? _green : _red;
 			if (SUGARManager.CurrentUser != null)
 			{
 				_sugarConnectionText.text = SUGARManager.CurrentUser.Name;
-				_sugarConnectionText.color = Color.green;
+				_sugarConnectionText.color = _green;
 			}
 			else
 			{
 				_sugarConnectionText.text = Localization.Get("SUGAR_LABEL_NOT_SIGNED_IN");
-				_sugarConnectionText.color = Color.red;
+				_sugarConnectionText.color = _red;
 			}
 		}
 	}

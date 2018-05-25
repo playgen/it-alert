@@ -139,9 +139,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 
 				if (room.playerCount == room.maxPlayers || (minPlayers != null && (int)minPlayers > room.playerCount))
 				{
-					gameItem.Find("Name").GetComponent<Text>().color = Color.red;
-					gameItem.Find("Scenario").GetComponent<Text>().color = Color.red;
-					gameItem.Find("Players").GetComponent<Text>().color = Color.red;
+					ColorUtility.TryParseHtmlString("#E32730", out var red);
+					gameItem.Find("Name").GetComponent<Text>().color = red;
+					gameItem.Find("Scenario").GetComponent<Text>().color = red;
+					gameItem.Find("Players").GetComponent<Text>().color = red;
 				}
 				gameItem.SetParent(_gameListObject.transform, false);
 
