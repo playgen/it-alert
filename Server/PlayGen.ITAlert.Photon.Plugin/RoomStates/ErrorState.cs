@@ -27,7 +27,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 
 		protected override void OnEnter()
 		{
-			var message = "Server Error :(";
+			var message = "Server Error";
 
 			if (_exceptionHandler.Exception != null)
 			{

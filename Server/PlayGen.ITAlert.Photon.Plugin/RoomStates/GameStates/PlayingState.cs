@@ -17,6 +17,9 @@ using PlayGen.ITAlert.Simulation.Exceptions;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Simulation.UI.Events;
 using PlayGen.Photon.Analytics;
+using System.Collections.Generic;
+using PlayGen.ITAlert.Simulation.Logging;
+using System.Linq;
 
 namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 {
@@ -28,11 +31,11 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		public override string Name => StateName;
 
-		public PlayingState(SimulationLifecycleManager simulationLifecycleManager, 
-			PluginBase photonPlugin, 
+		public PlayingState(SimulationLifecycleManager simulationLifecycleManager,
+			PluginBase photonPlugin,
 			Messenger messenger,
 			ITAlertPlayerManager playerManager,
-			RoomSettings roomSettings, 
+			RoomSettings roomSettings,
 			AnalyticsServiceManager analytics)
 			: base(photonPlugin, messenger, playerManager, roomSettings, analytics)
 		{
@@ -56,7 +59,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				{
 					case PlayerVoiceActivatedMessage pva:
 						PublishSimulationEvent(new PlayerVoiceEvent
-													{
+						{
 							Mode = PlayerVoiceEvent.Signal.Activated,
 							PlayerEntityId = pva.PlayerId
 						});
@@ -64,7 +67,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 					case PlayerVoiceDeactivatedMessage pvd:
 						PublishSimulationEvent(new PlayerVoiceEvent
-													{
+						{
 							Mode = PlayerVoiceEvent.Signal.Deactivated,
 							PlayerEntityId = pvd.PlayerId
 						});
@@ -93,13 +96,6 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void Shutdown(bool dispose)
 		{
-			switch (_simulationLifecycleManager.EngineState)
-			{
-				case EngineState.Error:
-				case EngineState.Stopped:
-					return;
-			}
-
 			_simulationLifecycleManager.Tick -= OnTick;
 			_simulationLifecycleManager.TryStop();
 
@@ -116,7 +112,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				if (_simulationLifecycleManager.EngineState == EngineState.NotStarted)
 				{
 					var player = PlayerManager.Get(playingMessage.PlayerPhotonId);
-					player.State = (int) ClientState.Playing;
+					player.State = (int)ClientState.Playing;
 					PlayerManager.UpdatePlayer(player);
 
 					PlayingStateCheck();
@@ -143,7 +139,30 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 
 		private void SimulationLifecycleManagerOnStopped(ExitCode exitCode)
 		{
-			Messenger.SendAllMessage(new StopMessage());
+			List<StopMessage.SimulationEvent> simulationEvents = null;
+
+			// If logging was enabled, include events for the game
+			if (_simulationLifecycleManager.ECSRoot.ECS.GetSystems<DatabaseEventLogger>().Any())
+			{
+				var gameId = _simulationLifecycleManager.ECSRoot.InstanceId;
+				using (var loggingController = new ITAlertLoggingController())
+				{
+					var events = loggingController.GetGameEvents(gameId);
+					simulationEvents = events.Select(e => new StopMessage.SimulationEvent
+					{
+						PlayerId = e.PlayerId,
+						Data = e.Data,
+						EventCode = e.EventCode,
+						Tick = e.Tick
+
+					}).ToList();
+				}
+			}
+
+			Messenger.SendAllMessage(new StopMessage
+			{
+				SimulationEvents = simulationEvents
+			});
 		}
 
 		private void ProcessSimulationCommandMessage(Message message)
