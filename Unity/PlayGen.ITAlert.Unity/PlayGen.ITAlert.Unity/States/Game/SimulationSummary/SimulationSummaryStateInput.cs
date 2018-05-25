@@ -196,7 +196,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
                 {
                     value = defaultValue;
                 }
-                else if(highlightHighest != null)
+                if(highlightHighest != null)
                 {
                     if (extremeValue == null)
                     {
@@ -244,6 +244,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
 				nameText.text = playerMetric.PlayerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
 				titleText.text = Localization.Get(metricConfig.KeyTitle);
+			    //descriptionText.text = Localization.Get(metricConfig.KeyDescription);
 				descriptionText.text = Localization.GetAndFormat(metricConfig.KeyFormattedMetric, false, playerMetric.Score.ToString());
 
 				if (ColorUtility.TryParseHtmlString(playerMetric.PlayerData.Colour, out var colour))

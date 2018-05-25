@@ -13,10 +13,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		/// The title for having the best number of this metric
 		/// </summary>
 		public string KeyTitle { get; set; }
+
+		/// <summary>
+		/// The description players will see
+		/// </summary>
+	    public string KeyDescription { get; set; }
+
 		/// <summary>
 		/// The descriptive metric text, eg "{0} Virus Killed"
 		/// </summary>
-        public string KeyFormattedMetric { get; set; }
+		public string KeyFormattedMetric { get; set; }
 
 		public string IconPath { get; set; }
 
@@ -30,6 +36,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		{
 			KeyMetric = _keyPrefix + keyExtension;
 			KeyTitle = _keyPrefix + keyExtension + "_TITLE";
+			KeyDescription = _keyPrefix + keyExtension + "_DESCRIPTION";
 			KeyFormattedMetric = _keyPrefix + keyExtension + "_FORMATTED";
 
 			IconPath = iconPath;

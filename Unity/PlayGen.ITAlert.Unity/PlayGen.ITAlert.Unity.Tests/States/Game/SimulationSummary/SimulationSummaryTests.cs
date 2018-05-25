@@ -42,25 +42,25 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
                 {
                     Id = 0,
                     Name = "Player 1",
-                    Colour = "#FF0000"
+                    Colour = "#E5297B"
                 },
                 new Unity.States.Game.SimulationSummary.SimulationSummary.PlayerData
                 {
                     Id = 1,
                     Name = "Player 2",
-                    Colour = "#00FF00"
+                    Colour = "#EFF140"
                 },
                 new Unity.States.Game.SimulationSummary.SimulationSummary.PlayerData
                 {
                     Id = 2,
                     Name = "Player 3",
-                    Colour = "#0000FF"
+                    Colour = "#64A7EB"
                 },
                 new Unity.States.Game.SimulationSummary.SimulationSummary.PlayerData
                 {
                     Id = 3,
                     Name = "Player 4",
-                    Colour = "#FFFF00"
+                    Colour = "#ED962F"
                 }
             };
 
