@@ -5,7 +5,6 @@ using PlayGen.Photon.Players;
 
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions.ColorPicker;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {
@@ -19,12 +18,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			public Image Image { get; set; }
 		}
 
-		[SerializeField]
-		private ColorPickerControl _colorPickerControl;
-
 		private Dictionary<string, PlayerGlyph> _playerGlyphs;
-
-		public Color[] colors; //
 
 		private GameObject _colourPickerRow;
 		private GameObject _colourPickerObject;
@@ -85,7 +79,6 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 				else
 				{
 					playerGlyph.Image.color = selectedColour;
-					_colorPickerControl.CurrentColor = selectedColour;
 				}
 			}
 		}
