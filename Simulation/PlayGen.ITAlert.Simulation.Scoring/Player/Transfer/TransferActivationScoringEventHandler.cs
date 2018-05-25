@@ -23,6 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Transfer
 					case TransferActivationEvent.TransferActivationResult.PushedItem:
 					case TransferActivationEvent.TransferActivationResult.SwappedItems:
 						playerTuple.Component2.ResourceManagement += 1;
+						playerTuple.Component2.ActionCompleted(1);
 						break;
 				}
 			}

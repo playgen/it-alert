@@ -5,6 +5,6 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 {
 	public interface ITeamScoringExtension : ISystemExtension
 	{
-		event Action<int> Score;
+		event Action<int, decimal> Score;
 	}
 }
