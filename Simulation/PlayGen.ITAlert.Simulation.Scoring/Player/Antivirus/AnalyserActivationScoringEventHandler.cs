@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 						playerTuple.Component2.ResourceManagement += 1;
 						// one extra if the workstation is infected
 						playerTuple.Component2.Systematicity += 1 + (avWorkstationInfected ? 1 : 0);
-						playerTuple.Component2.ActionCompleted(1);
+						playerTuple.Component2.ActionCompleted(2);
 						break;
 				}
 			}

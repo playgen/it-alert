@@ -78,6 +78,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player
 				{
 					score.Systematicity += playerTuple.Component2.Systematicity;
 					score.ResourceManagement += playerTuple.Component2.ResourceManagement;
+					score.PublicScore += playerTuple.Component2.PublicScore;
 					return score;
 				});
 		}
