@@ -128,8 +128,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 	        playerNameBestFitGroup.ForEach(playerText => playerText.gameObject.AddComponent<TextCutoff>());
 
 			AddPlayers(column.GetComponentInChildren<LayoutGroup>().gameObject, _simulationSummary.PlayersData, playerNameBestFitGroup);
+			// Set players box to be wider than the rest
+			var layoutElement = column.GetComponent<LayoutElement>();
+	        layoutElement.preferredWidth = layoutElement.preferredWidth * 3;
+	        layoutElement.minWidth = layoutElement.minWidth * 3;
 
-            foreach (var metricConfig in metricConfigs)
+			foreach (var metricConfig in metricConfigs)
             {
                 sumByPlayerByMetrics.TryGetValue(metricConfig.KeyMetric, out var valueByPlayer);
 
@@ -146,7 +150,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             }
 	        var playerMetrics = PlayerMetrics.GetPlayerBestMetrics(sumByPlayerByMetrics, _simulationSummary);
 	        AddMetricItems(playerMetrics);
-            return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
+
+			return new[] {playerNameBestFitGroup, metricTitleBestFitGroup, metricValueBestFitGroup};
         }
 
 		private void AddPlayers(GameObject column, IReadOnlyList<SimulationSummary.PlayerData> playersData, List<Text> bestFitGroup)
@@ -160,9 +165,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 					//rowText.color = colour;
 	                background.color = colour;
                 }
-
-				rowText.text = playerData.Name;
-            }
+				rowText.text = playerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
+			}
         }
 
         private void AddItems(

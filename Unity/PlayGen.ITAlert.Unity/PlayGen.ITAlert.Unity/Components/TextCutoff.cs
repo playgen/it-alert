@@ -26,26 +26,10 @@ namespace PlayGen.ITAlert.Unity.Components
 
         public void SetText(string uncutText)
         {
-            var builder = new StringBuilder();
-            for(var i = 0; i < Mathf.Min(uncutText.Length, _useGlobalSettings ? GlobalMaxLength : _maxLength); i++)
-            {
-                if (!_cuttoffAfter.Contains(uncutText[i]) && (!_useGlobalSettings || !GlobalCutoffAfter.Contains(uncutText[i])))
-                {
-                    builder.Append(uncutText[i]);
-                }
-                else
-                {
-                    break;
-                }
-            }
+	        var cutoffAfter = _useGlobalSettings ? GlobalCutoffAfter : _cuttoffAfter;
+	        var maxLength = _useGlobalSettings ? GlobalMaxLength : _maxLength;
 
-			if (text.Length > (_useGlobalSettings ? GlobalMaxLength : _maxLength) && builder.ToString().Length == (_useGlobalSettings ? GlobalMaxLength : _maxLength))
-			{
-				builder.Append("...");
-			}
-
-            var cutText = builder.ToString();
-            _text.text = cutText;
+			_text.text = uncutText.Cutoff(cutoffAfter, maxLength);
         }
 
         private void Awake()
