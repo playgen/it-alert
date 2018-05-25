@@ -23,6 +23,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 
 			var resourceManagementModifier = 0;
 			var systematicityModifier = 0;
+			var actionModifier = 0;
 
 			switch (@event.ActivationResult)
 			{
@@ -34,6 +35,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 				case AntivirusActivationEvent.AntivirusActivationResult.IncorrectGenome:
 					resourceManagementModifier -= 1;
 					systematicityModifier -= 1;
+					actionModifier = -1;
 					break;
 
 				case AntivirusActivationEvent.AntivirusActivationResult.SoloExtermination:
@@ -41,7 +43,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 					systematicityModifier += onAvWorkstation 
 						? 2
 						: 1;
-
+					actionModifier = 1;
 					break;
 
 				case AntivirusActivationEvent.AntivirusActivationResult.CoopExtermination:
@@ -49,6 +51,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 					systematicityModifier += onAvWorkstation
 						? 3
 						: 2;
+					actionModifier = 3;
 
 					break;
 			}
@@ -56,6 +59,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 			{
 				playerTuple.Component2.ResourceManagement += resourceManagementModifier;
 				playerTuple.Component2.Systematicity += systematicityModifier;
+				playerTuple.Component2.ActionCompleted(actionModifier);
 			}
 		}
 

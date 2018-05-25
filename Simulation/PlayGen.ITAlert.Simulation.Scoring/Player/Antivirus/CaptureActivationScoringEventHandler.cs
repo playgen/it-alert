@@ -22,11 +22,12 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 			var onAvWorkstation = _antivirusWorkstationMatcherGroup.MatchingEntityKeys.Contains(@event.SubsystemEntityId);
 
 			var systematicityModifier = 0;
-
+			var actionModifier = 0;
 			switch (@event.ActivationResult)
 			{
 				case CaptureActivationEvent.CaptureActivationResult.NoVirusPresent:
 					systematicityModifier -= 1;
+					actionModifier = -1;
 					break;
 				case CaptureActivationEvent.CaptureActivationResult.GenomeAlreadyCaptured:
 					break;
@@ -34,16 +35,19 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 					systematicityModifier += onAvWorkstation
 						? 2
 						: 1;
+					actionModifier = 1;
 					break;
 				case CaptureActivationEvent.CaptureActivationResult.ComplexGenomeCaptured:
 					systematicityModifier += onAvWorkstation
 						? 3
 						: 2;
+					actionModifier = 3;
 					break;
 			}
 			if (PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEntityId, out var playerTuple))
 			{
 				playerTuple.Component2.Systematicity += systematicityModifier;
+				playerTuple.Component2.ActionCompleted(actionModifier);
 			}
 		}
 
