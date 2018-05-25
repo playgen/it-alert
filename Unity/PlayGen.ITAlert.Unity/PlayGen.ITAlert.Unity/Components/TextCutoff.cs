@@ -14,7 +14,7 @@ namespace PlayGen.ITAlert.Unity.Components
         [SerializeField] private bool _useGlobalSettings = true;
         private Text _text;
 
-        public static int GlobalMaxLength = 10;
+        public static int GlobalMaxLength = 15;
         public static char[] GlobalCutoffAfter = {'@'};
 
         // Mimic Unity's API

@@ -242,7 +242,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 			    var titleText = metricItem.transform.Find("PlayerTitle").GetComponent<Text>();
 			    var descriptionText = metricItem.transform.Find("PlayerMetric").GetComponent<Text>();
 
-				nameText.text = playerMetric.PlayerData.Name;
+				nameText.text = playerMetric.PlayerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
 				titleText.text = Localization.Get(metricConfig.KeyTitle);
 				descriptionText.text = Localization.GetAndFormat(metricConfig.KeyFormattedMetric, false, playerMetric.Score.ToString());
 
