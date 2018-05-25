@@ -51,7 +51,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		public static SummaryMetricConfig AntivirusesWasted = new SummaryMetricConfig(
 			"ANTIVIRUSES_WASTED", 
 			"antivirus_wasted", 
-			true
+			false
 		);
 
 		public static SummaryMetricConfig VirusesFound = new SummaryMetricConfig(
@@ -63,7 +63,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		public static SummaryMetricConfig ScansWithNoVirusesFound = new SummaryMetricConfig(
 			"SCANS_WITH_NO_VIRUSES_FOUND", 
 			"scan_no_virus_found", 
-			true
+			false
 		);
 
 		public static SummaryMetricConfig CapturesUsed = new SummaryMetricConfig(
@@ -81,7 +81,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		public static SummaryMetricConfig CaptureWithNoVirusCaught = new SummaryMetricConfig(
 			"CAPTURE_WITH_NO_VIRUS_CAUGHT", 
 			"capture_no_virus_caught", 
-			true
+			false
 		);
 
 		public static SummaryMetricConfig AnalysersUsed = new SummaryMetricConfig(
@@ -99,7 +99,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 	    public static SummaryMetricConfig AntivirusCreationFails = new SummaryMetricConfig(
 			"ANTIVIRUSES_CREATION_FAILS", 
 			"antivirus_creation_failed", 
-			true
+			false
 		);
 		
 		private static IReadOnlyList<SummaryMetricConfig> _all;
