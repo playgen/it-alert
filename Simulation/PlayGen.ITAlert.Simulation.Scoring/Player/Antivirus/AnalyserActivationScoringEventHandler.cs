@@ -26,23 +26,21 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 			if (PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEntityId, out var playerTuple))
 			{
 				var avWorkstationInfected = _malwareMatcherGroup.MatchingEntities.Any(mw => mw.Component2.Value == @event.LocationEntityId);
-
 				switch (@event.ActivationResult)
 				{
 					case AnalyserActivationEvent.AnalyserActivationResult.Error:
 						// TODO: log
 						break;
-
 					case AnalyserActivationEvent.AnalyserActivationResult.NoSamplePresent:
-						playerTuple.Component2.ResourceManagement -= 1;
-						break;
 					case AnalyserActivationEvent.AnalyserActivationResult.OutputContainerFull:
 						playerTuple.Component2.ResourceManagement -= 1;
+						playerTuple.Component2.ActionCompleted(-1);
 						break;
 					case AnalyserActivationEvent.AnalyserActivationResult.AnalysisComplete:
 						playerTuple.Component2.ResourceManagement += 1;
 						// one extra if the workstation is infected
 						playerTuple.Component2.Systematicity += 1 + (avWorkstationInfected ? 1 : 0);
+						playerTuple.Component2.ActionCompleted(1);
 						break;
 				}
 			}

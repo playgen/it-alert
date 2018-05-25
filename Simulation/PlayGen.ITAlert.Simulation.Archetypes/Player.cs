@@ -23,7 +23,8 @@ namespace PlayGen.ITAlert.Simulation.Archetypes
 				ComponentTemplate = new Score()
 				{
 					ResourceManagement = 10,
-					Systematicity = 10
+					Systematicity = 10,
+					PublicScore = 0
 				}
 			}
 		)
