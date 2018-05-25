@@ -141,11 +141,13 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates
 			playingState.AddTransitions(lifecycleCompleteTransition, lifecycleStoppedErrorTransition);
 
 			var feedbackState = new FeedbackState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
-			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, LobbyState.StateName);
+			var feedbackStateTransition = new CombinedPlayersStateTransition(ClientState.FeedbackSent, ExitState.StateName);
 			feedbackState.PlayerFeedbackSentEvent += feedbackStateTransition.OnPlayersStateChange;
 			feedbackState.AddTransitions(feedbackStateTransition);
 
-			var controller = new ITAlertRoomStateController(initializingState, playingState, feedbackState);
+			var exitState = new ExitState(lifecycleManager, PhotonPlugin, Messenger, PlayerManager, RoomSettings, Analytics);
+
+			var controller = new ITAlertRoomStateController(initializingState, playingState, feedbackState, exitState);
 			controller.SetParent(ParentStateController);
 
 			return controller;
