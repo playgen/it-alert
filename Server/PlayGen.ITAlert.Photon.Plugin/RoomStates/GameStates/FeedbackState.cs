@@ -51,18 +51,10 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 		protected override void OnExit()
 		{
 			Messenger.Unsubscribe((int)ITAlertChannel.Feedback, ProcessFeedbackMessage);
-			_simulationLifecycleManager.Dispose();
 		}
 
 		private void Shutdown(bool dispose)
 		{
-			switch (_simulationLifecycleManager.EngineState)
-			{
-				case EngineState.Error:
-				case EngineState.Stopped:
-					return;
-			}
-
 			_simulationLifecycleManager.TryStop();
 
 			if (dispose)
@@ -79,17 +71,17 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 				player.State = (int) ClientState.FeedbackSent;
 				PlayerManager.UpdatePlayer(player);
 
-				if (_simulationLifecycleManager.ECSRoot.ECS.TryGetSystem<EventSystem>(out var evenTsystem))
+				if (_simulationLifecycleManager.ECSRoot.ECS.TryGetSystem<EventSystem>(out var eventSystem))
 				{
 					foreach (var feedbackPlayer in feedbackMessage.RankedPlayerPhotonIdBySection)
 					{
 						var feedbackEvent = new PlayerFeedbackEvent
-												{
+						{
 							PlayerExternalId = feedbackMessage.PlayerPhotonId,
 							RankedPlayerExternalId = feedbackPlayer.Key,
 							PlayerRankings = feedbackPlayer.Value
 						};
-						evenTsystem.Publish(feedbackEvent);
+						eventSystem.Publish(feedbackEvent);
 					}
 				}
 

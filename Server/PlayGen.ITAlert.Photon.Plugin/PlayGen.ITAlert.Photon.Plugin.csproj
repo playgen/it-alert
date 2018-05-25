@@ -182,6 +182,7 @@
     <Compile Include="ITAlertRoomControllerPlugin.cs" />
     <Compile Include="ITAlertRoomStateController.cs" />
     <Compile Include="RoomSettings.cs" />
+    <Compile Include="RoomStates\ExitState.cs" />
     <Compile Include="RoomStates\GameState.cs" />
     <Compile Include="RoomStates\GameStates\FeedbackState.cs" />
     <Compile Include="RoomStates\GameStates\InitializingState.cs" />
