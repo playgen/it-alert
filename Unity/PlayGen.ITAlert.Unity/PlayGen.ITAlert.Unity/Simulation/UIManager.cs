@@ -1,4 +1,6 @@
-﻿using Engine.Lifecycle;
+﻿using System;
+using System.Linq;
+using Engine.Lifecycle;
 using Engine.Systems.Timing;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;
@@ -85,6 +87,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_teamSCoreOverlay.SetActive(true);
 				if (_director.SimulationRoot.ECS.TryGetSystem<TeamScoringSystem>(out var teamScoringSystem))
 				{
+					//var playerScore = teamScoringSystem.GetPlayerScores();
+					//var totalPlayerScore = playerScore.Sum(s => s.PublicScore);
+					//var multiplier = teamScoringSystem.SystemHealth.Average();
+					//var totalScore = Math.Round(totalPlayerScore * multiplier);
+
+					//_teamScoreText.text = totalPlayerScore + " x " + multiplier.ToString("0.0000") + " = " + totalScore; 
 					_teamScoreText.text = teamScoringSystem.CumulativeScore.ToString("d5");
 				}
 			}
