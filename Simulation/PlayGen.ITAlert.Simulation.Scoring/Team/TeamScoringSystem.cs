@@ -14,6 +14,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 		private readonly List<ITeamScoringExtension> _scoringExtensions;
 
 		public int  CumulativeScore { get; private set; }
+		public List<decimal> SystemHealth { get; private set; } 
 
 		private readonly EventSystem _eventSystem;
 		private readonly IDisposable _endGameSubscription;
@@ -22,11 +23,11 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 			EventSystem eventSystem)
 		{
 			_scoringExtensions = scoringExtensions;
+			SystemHealth = new List<decimal>();
 			foreach (var extension in scoringExtensions)
 			{
 				extension.Score += ExtensionOnScore;
 			}
-
 			_eventSystem = eventSystem;
 			_endGameSubscription = eventSystem.Subscribe<EndGameEvent>(OnEndGameEvent);
 		}
@@ -40,9 +41,13 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 			_eventSystem.Publish(teamScoreEvent);
 		}
 
-		private void ExtensionOnScore(int i)
+		private void ExtensionOnScore(int i, decimal systemHealth = -1)
 		{
 			CumulativeScore += i;
+			if (systemHealth != -1)
+			{
+				SystemHealth.Add(systemHealth);
+			}
 		}
 
 		public void Tick(int currentTick)
