@@ -35,13 +35,13 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 					systematicityModifier += onAvWorkstation
 						? 2
 						: 1;
-					actionModifier = 1;
+					actionModifier = 2;
 					break;
 				case CaptureActivationEvent.CaptureActivationResult.ComplexGenomeCaptured:
 					systematicityModifier += onAvWorkstation
 						? 3
 						: 2;
-					actionModifier = 3;
+					actionModifier = 5;
 					break;
 			}
 			if (PlayerScoreMatcherGroup.TryGetMatchingEntity(@event.PlayerEntityId, out var playerTuple))
