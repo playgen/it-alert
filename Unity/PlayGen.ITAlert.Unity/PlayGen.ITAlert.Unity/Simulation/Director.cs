@@ -28,6 +28,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public string InstanceId => SimulationRoot.ToString();
 
 		public event Action<EndGameState> GameEnded;
+		public event Action<EndGameState, List<ITAlertPlayer>> PlayersGameEnded;
 
 		public event Action Reset;
 
@@ -460,10 +461,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			_messageSignal.Set();
 		}
 
-		public void EndGame()
+		public void EndGame(List<ITAlertPlayer> players)
 		{
 			StopWorker();
-			OnGameEnded(_endGameSystem.EndGameState);
+			OnGameEnded(_endGameSystem.EndGameState, players);
 		}
 
 		//private int _update;
@@ -613,6 +614,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void OnGameEnded(EndGameState obj)
 		{
 			GameEnded?.Invoke(obj);
+		}
+
+		private void OnGameEnded(EndGameState obj, List<ITAlertPlayer> players)
+		{
+			PlayersGameEnded?.Invoke(obj, players);
 		}
 
 		private void OnReset()

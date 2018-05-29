@@ -10,7 +10,9 @@ namespace PlayGen.ITAlert.Simulation.Components.Scoring
 
 		public int PublicScore { get; set; }
 
-	    private const int ActionValue = 100;
+	    public int PlayerEntityId { get; set; }
+
+		private const int ActionValue = 100;
 
 	    public void ActionCompleted(int multiplier)
 	    {

@@ -6,6 +6,7 @@ using Engine.Events;
 using Engine.Lifecycle.Events;
 using Engine.Systems;
 using PlayGen.ITAlert.Simulation.Components.Scoring;
+using PlayGen.ITAlert.Simulation.Scoring.Player.Events;
 using PlayGen.ITAlert.Simulation.Scoring.Team.Events;
 using Zenject;
 
@@ -59,7 +60,19 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 
 		public List<Score> GetPlayerScores()
 		{
-			return _playerMatcherGroup.MatchingEntities.Select(s => s.Component2).ToList();
+			var scores = new List<Score>();
+			foreach (var playerTuple in _playerMatcherGroup.MatchingEntities)
+			{
+				var score = new Score()
+				{
+					PlayerEntityId = playerTuple.Entity.Id,
+					ResourceManagement = playerTuple.Component2.ResourceManagement,
+					Systematicity = playerTuple.Component2.Systematicity,
+					PublicScore = playerTuple.Component2.PublicScore
+				};
+				scores.Add(score);
+			}
+			return scores;
 		}
 
 		public void Tick(int currentTick)
