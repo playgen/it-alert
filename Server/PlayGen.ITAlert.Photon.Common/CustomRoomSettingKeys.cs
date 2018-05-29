@@ -11,5 +11,7 @@
 		public const string GameScenario = "GameScenario";
 
 		public const string GameName = "GameName";
+
+		public const string TimeLimit = "TimeLimit";
 	}
 }
