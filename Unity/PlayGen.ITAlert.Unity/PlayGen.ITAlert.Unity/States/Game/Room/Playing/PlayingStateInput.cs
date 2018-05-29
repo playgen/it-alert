@@ -22,6 +22,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 		public event Action PauseClickedEvent;
 		public event Action EndGameContinueClickedEvent;
 		public event Action EndGameOnePlayerContinueClickedEvent;
+		public event Action EndGameMaxOnePlayerContinueClickedEvent;
 
 		private List<GameObject> _gameContainers;
 		private Button _continueButton;
@@ -56,7 +57,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			{
 				EndGameContinueClickedEvent?.Invoke();
 			}
-			else
+			else if (_director.Players.Count == 1 && int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0)
 			{
 				EndGameOnePlayerContinueClickedEvent?.Invoke();
 				if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
@@ -73,6 +74,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 					Application.OpenURL(googleFormsURL);
 					Application.Quit();
 				}
+			}
+			else
+			{
+				EndGameMaxOnePlayerContinueClickedEvent?.Invoke();
 			}
 		}
 

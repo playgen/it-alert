@@ -2,6 +2,7 @@
 using System.Linq;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.Photon.Players;
+using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -130,7 +131,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 					var image = colourPickerEntry.GetComponent<Image>();
 					var sprite = Resources.Load<Sprite>($"playerglyph_{glyphName}");
-					var iconImage = colourPickerEntry.transform.Find("Icon").GetComponent<Image>();
+					var iconImage = colourPickerEntry.transform.FindImage("Icon");
 					iconImage.sprite = sprite;
 
 					var button = colourPickerEntry.GetComponent<Button>();

@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
@@ -80,7 +81,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             _panel = GameObjectUtilities.FindGameObject("Menu/SimulationSummaryContainer/SimulationSummaryPanelContainer");
             _columnContainer = _panel.transform.Find("ColumnContainer");
 	        _playerMetricsContainer = _panel.transform.Find("PlayerMetricsPanel");
-			_continueButton = _panel.transform.Find("ButtonPanel/ContinueButtonContainer").GetComponent<Button>();
+			_continueButton = _panel.transform.FindButton("ButtonPanel/ContinueButtonContainer");
             _columnResource = Resources.Load<GameObject>("SimulationSummaryColumn");
             _rowItemResource = Resources.Load<GameObject>("SimulationSummaryRowItem");
 	        _playerMetricsResource = Resources.Load<GameObject>("PlayerMetricContainer");
@@ -187,7 +188,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             foreach (var playerData in playersData)
             {
                 var (rowItem, rowText, background) = AddRowItem(column, rowBestFitGroup);
-                var rowHighlight = rowItem.transform.Find("Highlight").GetComponent<Image>();
+                var rowHighlight = rowItem.transform.FindImage("Highlight");
 
                 if (ColorUtility.TryParseHtmlString(playerData.Colour, out var colour))
                 {
@@ -242,9 +243,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 			    var metricConfig = SummaryMetricConfigs.GetAll().First(c => c.KeyMetric == playerMetric.Metric);
 				var metricItem = Object.Instantiate(_playerMetricsResource, _playerMetricsContainer.transform);
 
-			    var nameText = metricItem.transform.Find("PlayerName").GetComponent<Text>();
-			    var titleText = metricItem.transform.Find("PlayerTitle").GetComponent<Text>();
-			    var descriptionText = metricItem.transform.Find("PlayerMetric").GetComponent<Text>();
+			    var nameText = metricItem.transform.FindText("PlayerName");
+			    var titleText = metricItem.transform.FindText("PlayerTitle");
+			    var descriptionText = metricItem.transform.FindText("PlayerMetric");
 
 				nameText.text = playerMetric.PlayerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
 				titleText.text = Localization.Get(metricConfig.KeyTitle);
@@ -271,15 +272,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
         private (GameObject, Text, Image) AddRowItem(GameObject column, List<Text> bestFitGroup)
         {
             var rowItem = Object.Instantiate(_rowItemResource, column.transform);
-            var rowText = rowItem.transform.Find("Text").GetComponent<Text>();
-			var background = rowItem.transform.Find("Background").GetComponent<Image>();
+            var rowText = rowItem.transform.FindText("Text");
+			var background = rowItem.transform.FindImage("Background");
 			bestFitGroup.Add(rowText);
 
             return (rowItem, rowText, background);
         }
         private void SetIcon(GameObject column, string iconPath)
         {
-            var image = column.transform.Find("IconContainer/Icon").GetComponent<Image>();
+            var image = column.transform.FindImage("IconContainer/Icon");
             var sprite = Resources.Load<Sprite>(iconPath);
             image.sprite = sprite;
             image.gameObject.SetActive(true);
@@ -287,7 +288,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         private void SetLocalizedTitle(GameObject column, string localizationKey, List<Text> bestFitGroup)
         {
-            var titleText = column.transform.Find("Title").GetComponent<Text>();
+            var titleText = column.transform.FindText("Title");
             titleText.text = Localization.Get(localizationKey);
             bestFitGroup.Add(titleText);
         }

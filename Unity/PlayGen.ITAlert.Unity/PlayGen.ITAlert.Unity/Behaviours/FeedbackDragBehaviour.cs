@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
+using PlayGen.Unity.Utilities.Extensions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		{
 			_parent = transform.parent;
 		    _camera = GetComponentInParent<Canvas>().worldCamera;
-            _rectTransform = GetComponent<RectTransform>();
+            _rectTransform = gameObject.RectTransform();
             var trigger = GetComponent<EventTrigger>();
 			trigger.triggers.Clear();
 			var drag = new EventTrigger.Entry {eventID = EventTriggerType.PointerDown};
@@ -42,7 +43,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
             RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform, Input.mousePosition, _camera, out _dragPosition);
             _parent = transform.parent;
 			transform.SetParent(transform.root, false);
-			RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)_rectTransform.parent, Input.mousePosition, _camera, out var newPosition);
+			RectTransformUtility.ScreenPointToLocalPointInRectangle(_rectTransform.parent.RectTransform(), Input.mousePosition, _camera, out var newPosition);
 		    transform.localPosition = newPosition - _dragPosition;
             transform.SetAsLastSibling();
 		}

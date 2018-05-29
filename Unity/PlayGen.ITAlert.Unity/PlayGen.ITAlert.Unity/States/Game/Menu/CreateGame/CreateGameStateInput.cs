@@ -54,7 +54,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 				MaxPlayers = details.MaxPlayers,
 				CloseOnStarted = true,
 				OpenOnEnded = true,
-				GameScenario = _scenarioController.SelectedScenario.Key
+				GameScenario = _scenarioController.SelectedScenario.Key,
+				TimeLimitSeconds = _scenarioController.SelectedScenario.TimeLimitSeconds ?? 0
 			}));
 			PlayGen.Unity.Utilities.Loading.Loading.Start();
 		}

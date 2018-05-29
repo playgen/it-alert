@@ -100,13 +100,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toFeedbackTransition = new OnEventTransition(FeedbackState.StateName);
 			var toSimulationSummaryTransition = new OnEventTransition(SimulationSummaryState.StateName);
+			var toMenuTransition = new OnEventTransition(MenuState.StateName);
 			var toPauseTransition = new OnEventTransition(PausedState.StateName);
 
 			playingStateInput.PauseClickedEvent += toPauseTransition.ChangeState;
 			playingStateInput.EndGameContinueClickedEvent += toFeedbackTransition.ChangeState;
 			playingStateInput.EndGameOnePlayerContinueClickedEvent += toSimulationSummaryTransition.ChangeState;
+			playingStateInput.EndGameMaxOnePlayerContinueClickedEvent += toMenuTransition.ChangeState;
 
-			playingState.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toSimulationSummaryTransition);
+			playingState.AddTransitions(onFeedbackStateSyncTransition, toPauseTransition, toFeedbackTransition, toSimulationSummaryTransition, toMenuTransition);
 
 			return playingState;
 		}

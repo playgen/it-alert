@@ -18,6 +18,8 @@ namespace PlayGen.ITAlert.Unity.Photon
 
 		public string GameScenario { get; set; }
 
+		public int TimeLimitSeconds { get; set; }
+
 		#endregion
 
 		public string[] CustomRoomPropertiesForLobby = 
@@ -34,7 +36,8 @@ namespace PlayGen.ITAlert.Unity.Photon
 				{ CustomRoomSettingKeys.CloseOnStarted, CloseOnStarted },
 				{ CustomRoomSettingKeys.OpenOnEnded, OpenOnEnded },
 				{ CustomRoomSettingKeys.GameScenario, GameScenario },
-				{ CustomRoomSettingKeys.GameName, Name }
+				{ CustomRoomSettingKeys.GameName, Name },
+				{ CustomRoomSettingKeys.TimeLimit, TimeLimitSeconds }
 			};
 		}
 	}

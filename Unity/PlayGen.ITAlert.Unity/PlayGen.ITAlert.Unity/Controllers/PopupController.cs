@@ -6,6 +6,7 @@ using System.Linq;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Controllers
@@ -77,7 +78,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 					},
 					PopupClosed
 				);
-				_popupBehaviour.SetContent(colorPanel.GetComponent<RectTransform>());
+				_popupBehaviour.SetContent(colorPanel.RectTransform());
 			}
 
 			_popupPanel.gameObject.SetActive(true);

@@ -10,6 +10,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 
 using Object = UnityEngine.Object;
 
@@ -137,7 +138,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 				Object.Destroy(child.gameObject);
 			}
 			var offset = 0.5f;
-			var height = _scenarioItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+			var height = _scenarioItemPrefab.RectTransform().sizeDelta.y;
 			// Populate Scenario list UI
 			foreach (var scenario in scenarios)
 			{
@@ -151,7 +152,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 				gameItem.SetParent(_scenarioListObject.transform, false);
 
 				// set anchors
-				var gameItemRect = gameItem.GetComponent<RectTransform>();
+				var gameItemRect = gameItem.RectTransform();
 
 				gameItemRect.pivot = new Vector2(0.5f, 1f);
 				gameItemRect.anchorMax = Vector2.one;
@@ -172,7 +173,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			}
 			// Set the content box to be the correct size for our elements
 			_scenarioListObject.BestFit();
-			_scenarioListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+			_scenarioListObject.RectTransform().sizeDelta = new Vector2(0f, offset * -1f);
 		}
 	}
 }

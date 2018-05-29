@@ -14,6 +14,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
+using PlayGen.Unity.Utilities.Extensions;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
@@ -180,7 +181,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 			var offset = 0f;
 			var maximumPlayersPossible = 6f;
 				// the maximum number of players the game currently supports - Not the max for the room
-			var height = _playerListObject.GetComponent<RectTransform>().rect.height / maximumPlayersPossible;
+			var height = _playerListObject.RectTransform().rect.height / maximumPlayersPossible;
 			_playerVoiceIcons = new Dictionary<int, Image>();
 
 			foreach (var player in players)
@@ -214,7 +215,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				playerItem.SetParent(_playerListObject.transform, false);
 
 				// set anchors
-				var playerItemRect = playerItem.GetComponent<RectTransform>();
+				var playerItemRect = playerItem.RectTransform();
 
 				playerItemRect.pivot = new Vector2(0.5f, 1f);
 				playerItemRect.anchorMax = Vector2.one;
@@ -233,7 +234,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				playerSpace.SetParent(_playerListObject.transform, false);
 
 				// set anchors
-				var playerSpaceRect = playerSpace.GetComponent<RectTransform>();
+				var playerSpaceRect = playerSpace.RectTransform();
 
 				playerSpaceRect.pivot = new Vector2(0.5f, 1f);
 				playerSpaceRect.anchorMax = Vector2.one;
