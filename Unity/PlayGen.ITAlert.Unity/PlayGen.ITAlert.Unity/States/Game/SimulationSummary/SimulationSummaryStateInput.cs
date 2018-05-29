@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
 using PlayGen.ITAlert.Unity.Components;
@@ -105,11 +105,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             {
                 Object.Destroy(column.gameObject);
             }
-        }
+			foreach (Transform player in _playerMetricsContainer)
+			{
+				Object.Destroy(player.gameObject);
+			}
+		}
 
         private void OnContinueClicked()
         {
-            ContinueClickedEvent.Invoke();
+            ContinueClickedEvent?.Invoke();
         }
 
         private IEnumerable<List<Text>> PopulateMetrics()

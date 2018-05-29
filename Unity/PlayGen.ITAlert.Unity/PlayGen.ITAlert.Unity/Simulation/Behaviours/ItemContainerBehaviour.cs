@@ -1,8 +1,6 @@
 ﻿using System;
 
-using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
-using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Localization;
@@ -27,8 +25,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		[SerializeField]
 		private Image _containerImage;
-		[SerializeField]
-		private BlinkBehaviour _blinkBehaviour;
 
 		private int? _containerIndex;
 
@@ -193,7 +189,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				Transition(ContainerState.Disabled);
 			}
 
-			if (_selectionOptions && _selectionOptions.activeSelf && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+			if (_selectionOptions && _selectionOptions.activeSelf && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
 				if (hasItem || Input.GetMouseButtonUp(0))
 				{
@@ -202,7 +198,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					optionAnim[clipName].time = optionAnim[clipName].length;
 					optionAnim[clipName].speed = -1;
 					optionAnim.Play(clipName);
-					Invoke("ResetOptions", 0.34f);
+					Invoke(nameof(ResetOptions), 0.34f);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				}
 			}
@@ -247,13 +243,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				else if (_moveItemIndex.HasValue)
 				{
+					var moveItemIndexValue = _moveItemIndex.Value;
 					if (TryGetItem(out var containerItem))
 					{
-						PlayerCommands.SwapSubsystemItem(_moveItem.Id, _moveItemIndex.Value, containerItem.Id, ContainerIndex);
+						PlayerCommands.SwapSubsystemItem(_moveItem.Id, moveItemIndexValue, containerItem.Id, ContainerIndex);
 					}
 					else
 					{
-						PlayerCommands.MoveItem(_moveItem.Id, _moveItemIndex.Value, ContainerIndex);
+						PlayerCommands.MoveItem(_moveItem.Id, moveItemIndexValue, ContainerIndex);
 					}
 				}
 			}
@@ -278,7 +275,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					PlayerCommands.Move(_subsystemId.Value);
 				}
-				else if (_selectionOptions && !_selectionOptions.activeSelf && inventory && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+				else if (_selectionOptions && !_selectionOptions.activeSelf && inventory && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 				{
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;

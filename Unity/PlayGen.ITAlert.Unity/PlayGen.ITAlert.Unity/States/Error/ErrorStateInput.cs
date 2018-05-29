@@ -40,7 +40,7 @@ namespace PlayGen.ITAlert.Unity.States.Error
 			{
 				var exceptionString = GameExceptionHandler.Exception?.ToString();
 				_messageText.text = exceptionString?.Substring(0, Math.Min(exceptionString.Length, 3000)) ?? string.Empty;
-				_panelVisibility.gameObject?.SetActive(true);
+				_panelVisibility.gameObject.SetActive(true);
 				_buttons.Buttons.BestFit();
 
 				Loading.Stop();

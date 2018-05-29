@@ -10,7 +10,6 @@ using Engine.Lifecycle;
 using Engine.Serialization;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Simulation.Scoring.Player;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;

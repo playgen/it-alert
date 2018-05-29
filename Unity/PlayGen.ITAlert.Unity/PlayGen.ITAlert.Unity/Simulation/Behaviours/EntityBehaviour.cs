@@ -119,7 +119,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				gameObject.SetActive(true);
 			}
 
-			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
+			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject.name} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 
 		}
 
@@ -152,7 +152,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnDestroy()
 		{
-			LogProxy.Info($"EntityBehviour Destroy: GameObject {gameObject?.name ?? "null"} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
+			LogProxy.Info($"EntityBehviour Destroy: GameObject {gameObject.name} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 		}
 
 		#endregion

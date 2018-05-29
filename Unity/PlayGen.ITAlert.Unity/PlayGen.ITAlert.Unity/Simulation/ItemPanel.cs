@@ -1,5 +1,4 @@
-﻿using PlayGen.ITAlert.Simulation.Common;
-using PlayGen.ITAlert.Simulation.Components.EntityTypes;
+﻿using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
@@ -15,9 +14,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		private class ItemPanelContainer
 		{
-			public ItemContainerBehaviour ContainerBehaviour { get; }
-
 			public ItemContainer ItemContainer { private get; set; }
+
+			private ItemContainerBehaviour _containerBehaviour { get; }
 
 			private UIEntity _itemEntity { get; }
 
@@ -28,20 +27,20 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			public ItemPanelContainer(Director director, GameObject go, int containerIndex, ItemContainer itemContainer = null, bool proxyItem = true)
 			{
 				_director = director;
-				ContainerBehaviour = go.GetComponent<ItemContainerBehaviour>();
+				_containerBehaviour = go.GetComponent<ItemContainerBehaviour>();
 				ItemContainer = itemContainer;
 				if (itemContainer != null)
 				{
-					ContainerBehaviour.Initialize(ItemContainer, _director, containerIndex, null);
+					_containerBehaviour.Initialize(ItemContainer, _director, containerIndex, null);
 				}
 
 				_itemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
 				director.AddUntrackedEntity(_itemEntity);
 				_itemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
-			    _itemEntity.GameObject.GetComponent<RectTransform>().anchorMin = ContainerBehaviour.GetComponent<RectTransform>().anchorMin;
-                _itemEntity.GameObject.GetComponent<RectTransform>().anchorMax = ContainerBehaviour.GetComponent<RectTransform>().anchorMax;
-				_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = ContainerBehaviour.GetComponent<RectTransform>().anchoredPosition;
-				_itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = ContainerBehaviour.GetComponent<RectTransform>().sizeDelta;
+			    _itemEntity.GameObject.GetComponent<RectTransform>().anchorMin = _containerBehaviour.GetComponent<RectTransform>().anchorMin;
+                _itemEntity.GameObject.GetComponent<RectTransform>().anchorMax = _containerBehaviour.GetComponent<RectTransform>().anchorMax;
+				_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = _containerBehaviour.GetComponent<RectTransform>().anchoredPosition;
+				_itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = _containerBehaviour.GetComponent<RectTransform>().sizeDelta;
 				_itemEntity.GameObject.SetActive(false);
 
                 _proxyItem = proxyItem;
@@ -49,7 +48,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			public void Update()
 			{
-				ContainerBehaviour.TryUpdate(ItemContainer);
+				_containerBehaviour.TryUpdate(ItemContainer);
 
 				if (ItemContainer?.Item != null
 					&& _director.TryGetEntity(ItemContainer.Item.Value, out var item))
@@ -80,7 +79,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 						item.GameObject.SetActive(false);
 					}					
 				}
-				ContainerBehaviour.Update();
+				_containerBehaviour.Update();
 			}
 		}
 

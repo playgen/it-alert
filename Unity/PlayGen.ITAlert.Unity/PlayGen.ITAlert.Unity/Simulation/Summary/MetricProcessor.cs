@@ -117,12 +117,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
                 sumByPlayerByMetric.Add(metric, sumByPlayer);
             }
 
-            if (!sumByPlayer.TryGetValue(playerId, out var currentValue))
-            {
-                currentValue = 0;
-            }
+			if (playerId.HasValue)
+			{
+				if (!sumByPlayer.TryGetValue(playerId, out var currentValue))
+				{
+					currentValue = 0;
+				}
 
-            sumByPlayer[playerId] = currentValue + 1;
+				sumByPlayer[playerId] = currentValue + 1;
+			}
         }
     }
 }

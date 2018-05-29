@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.Photon.Unity.Client.Voice;
 
 using UnityEngine;
 using UnityEngine.UI;

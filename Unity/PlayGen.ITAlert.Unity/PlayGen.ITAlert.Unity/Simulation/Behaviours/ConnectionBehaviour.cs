@@ -5,27 +5,16 @@ using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Unity.Exceptions;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
 
 	public class ConnectionBehaviour : NodeBehaviour
 	{
-		[SerializeField]
-		private Color[] _weightColors = {
-		};
-
 		public Vector Position;
 
 		[SerializeField]
-		private Image _connectionImage;
-
-		[SerializeField]
 		private RectTransform _rectTransform;
-
-		[SerializeField]
-		private Gradient _movementCostGradient;
 
 		[SerializeField]
 		private AnimateConnectionUV _animateConnectionUv;
@@ -47,6 +36,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		#region Initialization
 
+		/// <inheritdoc />
 		/// <summary>
 		/// Called by the base class after the state has been set during initialization
 		/// </summary>

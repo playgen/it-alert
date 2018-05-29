@@ -11,7 +11,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused
 		public const string StateName = "Paused";
 		public override string Name => StateName;
 
-		public PausedState(Director director, TickStateInput input, ITAlertPhotonClient networkPhotonClient) : base(input)
+		public PausedState(TickStateInput input) : base(input)
 		{
 		}
 

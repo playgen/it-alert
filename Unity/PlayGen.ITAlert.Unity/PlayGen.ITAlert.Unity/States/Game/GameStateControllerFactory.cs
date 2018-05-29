@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GameWork.Core.States;
+﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.States.Game.Loading;

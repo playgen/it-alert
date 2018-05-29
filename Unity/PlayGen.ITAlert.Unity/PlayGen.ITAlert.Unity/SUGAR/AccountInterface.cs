@@ -2,7 +2,6 @@
 using PlayGen.SUGAR.Unity;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
-using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Sugar
 {

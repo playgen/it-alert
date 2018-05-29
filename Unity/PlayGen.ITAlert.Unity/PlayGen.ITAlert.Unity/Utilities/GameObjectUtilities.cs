@@ -90,8 +90,7 @@ namespace PlayGen.ITAlert.Unity.Utilities
 			return children.Select(t => t.gameObject).ToArray();
 		}
 
-		private static List<Transform> FindMatches(int level, string[] pathSegments, List<Transform> currentLevel,
-			List<Transform> nextLevel)
+		private static List<Transform> FindMatches(int level, string[] pathSegments, List<Transform> currentLevel, List<Transform> nextLevel)
 		{
 			if (level < pathSegments.Length)
 			{
