@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
+
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Scoring.Player;
 using PlayGen.ITAlert.Unity.Components;
@@ -64,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnEnter()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
-			_chatPanel.SetActive(true);
+			_chatPanel.SetActive(int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0);
 
 			foreach (var playerVoiceItem in _chatPanel.transform)
 			{
