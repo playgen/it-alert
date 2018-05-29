@@ -9,6 +9,7 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu
@@ -55,8 +56,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 			_quickMatchButton = _buttons.GetButton("QuickMatchButtonContainer");
 			_settingsButton = _buttons.GetButton("SettingsButtonContainer");
 
-			_serverConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/ServerConnection").GetComponent<Text>();
-			_sugarConnectionText = _mainMenuPanel.transform.Find("MenuStatusContainer/SUGARConnection").GetComponent<Text>();
+			_serverConnectionText = _mainMenuPanel.transform.FindText("MenuStatusContainer/ServerConnection");
+			_sugarConnectionText = _mainMenuPanel.transform.FindText("MenuStatusContainer/SUGARConnection");
 
 			_quitButton.onClick.AddListener(OnQuitClick);
 			_createGameButton.onClick.AddListener(OnCreateGameClick);

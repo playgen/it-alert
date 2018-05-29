@@ -3,6 +3,7 @@ using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
 
@@ -37,10 +38,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_itemEntity = new UIEntity(nameof(Item), "ItemPanelProxy", director);
 				director.AddUntrackedEntity(_itemEntity);
 				_itemEntity.GameObject.transform.SetParent(_director.ItemPanel.transform, false);
-			    _itemEntity.GameObject.GetComponent<RectTransform>().anchorMin = _containerBehaviour.GetComponent<RectTransform>().anchorMin;
-                _itemEntity.GameObject.GetComponent<RectTransform>().anchorMax = _containerBehaviour.GetComponent<RectTransform>().anchorMax;
-				_itemEntity.GameObject.GetComponent<RectTransform>().anchoredPosition = _containerBehaviour.GetComponent<RectTransform>().anchoredPosition;
-				_itemEntity.GameObject.GetComponent<RectTransform>().sizeDelta = _containerBehaviour.GetComponent<RectTransform>().sizeDelta;
+			    _itemEntity.GameObject.RectTransform().anchorMin = _containerBehaviour.RectTransform().anchorMin;
+                _itemEntity.GameObject.RectTransform().anchorMax = _containerBehaviour.RectTransform().anchorMax;
+				_itemEntity.GameObject.RectTransform().anchoredPosition = _containerBehaviour.RectTransform().anchoredPosition;
+				_itemEntity.GameObject.RectTransform().sizeDelta = _containerBehaviour.RectTransform().sizeDelta;
 				_itemEntity.GameObject.SetActive(false);
 
                 _proxyItem = proxyItem;

@@ -10,6 +10,8 @@ using PlayGen.ITAlert.Simulation.Modules.Resources.Components;
 using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.Unity.Utilities.Extensions;
+
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -100,7 +102,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			//_connectionScaleCoefficient = 1 / _connectionSquare.transform.localScale.x;
 
 			// TODO: these should probably be UIEntities
-			_itemZ = ((GameObject)Resources.Load("Item")).GetComponent<RectTransform>().position.z;
+			_itemZ = ((GameObject)Resources.Load("Item")).RectTransform().position.z;
 		}
 
 		protected override void OnInitialize()
@@ -151,7 +153,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void SetItemPosition(int index, GameObject go)
 		{
-			var rectTransform = go.GetComponent<RectTransform>();
+			var rectTransform = go.RectTransform();
 			rectTransform.anchoredPosition = new Vector3(_itemContainerPositions[index].x, _itemContainerPositions[index].y, _itemZ);
 		}
 
@@ -162,7 +164,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var relativeX = _coordinate2D.X - ((Director.NetworkDimensions.x - 1) / 2);
 			var relativeY = _coordinate2D.Y - ((Director.NetworkDimensions.y - 1) / 2);
 
-			GetComponent<RectTransform>().anchoredPosition = new Vector3(relativeX * Director.SubsystemSpacing.x, -1 * relativeY * Director.SubsystemSpacing.y, subsystemZ);
+			gameObject.RectTransform().anchoredPosition = new Vector3(relativeX * Director.SubsystemSpacing.x, -1 * relativeY * Director.SubsystemSpacing.y, subsystemZ);
 		}
 
 		#endregion
@@ -271,7 +273,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var visitorVectors = GetPositionOnSquare(pathPoint);
 			var localPosition = visitorVectors.Position;
 			//localPosition *= _connectionSquare.transform.localScale.x;
-			localPosition += _connectionSquare.GetComponent<RectTransform>().anchoredPosition; // Move relative to this subsystem
+			localPosition += _connectionSquare.RectTransform().anchoredPosition; // Move relative to this subsystem
 			visitorVectors.Position = localPosition;
 			return visitorVectors;
 		}
@@ -283,7 +285,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			// Position on square perimeter
 			// Top Left = (-1, -1), Bottom Right = (1, 1)
-			var sideLength = _connectionSquare.GetComponent<RectTransform>().rect.width - 8;
+			var sideLength = _connectionSquare.RectTransform().rect.width - 8;
 			var halfSide = sideLength / 2;
 			//var step = sideLength / PointsPerSide * 2;
 			var localPositionAlong = (offsetPositionAlong % squarePermimiterSideScale) * sideLength;

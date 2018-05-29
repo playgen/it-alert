@@ -13,6 +13,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
+using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
 
@@ -119,7 +120,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public GameObject InstantiateEntity(string resourceString)
 		{
-			return Instantiate(Resources.Load(resourceString), transform.Find("Canvas/Graph").transform) as GameObject;
+			return Instantiate(Resources.Load(resourceString), transform.Find("Canvas/Graph")) as GameObject;
 		}
 
 		public void ResetDirector()
@@ -187,7 +188,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				//TODO: get rid of this hacky sack
 				PlayerCommands.Director = this;
 
-				ItemPanel = transform.Find("Canvas/ItemPanel").GetComponent<ItemPanel>();
+				ItemPanel = transform.FindComponent<ItemPanel>("Canvas/ItemPanel");
 				_queuedMessages = new Queue<TickMessage>();
 
 				ResetDirector();

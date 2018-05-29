@@ -10,6 +10,7 @@ using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -337,19 +338,19 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.SetActive(false);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					((RectTransform)_leftButton.transform).anchorMin = new Vector2(-1.5f, 1f);
-					((RectTransform)_leftButton.transform).anchorMax = new Vector2(0, 1.7f);
-					((RectTransform)_leftButton.transform).anchoredPosition = Vector2.zero;
-					((RectTransform)_leftButton.transform).sizeDelta = Vector2.zero;
+					_leftButton.RectTransform().anchorMin = new Vector2(-1.5f, 1f);
+					_leftButton.RectTransform().anchorMax = new Vector2(0, 1.7f);
+					_leftButton.RectTransform().anchoredPosition = Vector2.zero;
+					_leftButton.RectTransform().sizeDelta = Vector2.zero;
 					_leftButton.GetComponent<Button>().onClick.AddListener(() => MoveAndUse(container, director));
 					_leftButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_AND_USE_BUTTON");
 					_leftButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_AND_USE_BUTTON";
 
 					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
-					((RectTransform)_rightButton.transform).anchorMin = new Vector2(1f, 1f);
-					((RectTransform)_rightButton.transform).anchorMax = new Vector2(2.5f, 1.7f);
-					((RectTransform)_rightButton.transform).anchoredPosition = Vector2.zero;
-					((RectTransform)_rightButton.transform).sizeDelta = Vector2.zero;
+					_rightButton.RectTransform().anchorMin = new Vector2(1f, 1f);
+					_rightButton.RectTransform().anchorMax = new Vector2(2.5f, 1.7f);
+					_rightButton.RectTransform().anchoredPosition = Vector2.zero;
+					_rightButton.RectTransform().sizeDelta = Vector2.zero;
 					_rightButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
 					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("PLACE_BUTTON");
 					_rightButton.GetComponentInChildren<TextLocalization>().Key = "PLACE_BUTTON";
