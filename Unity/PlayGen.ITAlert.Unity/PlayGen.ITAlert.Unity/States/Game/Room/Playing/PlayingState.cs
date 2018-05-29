@@ -92,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 						Name = p.Name,
 						Id = p.PhotonId
 					}).ToList());
-					_director.EndGame();
+					_director.EndGame(_director.Players);
 					break;
 			}
 
