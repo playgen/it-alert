@@ -1,11 +1,16 @@
-﻿using Engine.Lifecycle;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Engine.Lifecycle;
 using Engine.Systems.Timing;
+using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
-
+using PlayGen.Unity.Utilities.BestFit;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -44,9 +49,14 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private GameObject _teamSCoreOverlay;
 
 		[SerializeField]
+		private GameObject _teamScoresParent;
+
+		[SerializeField]
 		private Text _teamScoreText;
 
 		#endregion
+
+		private string _resourcesScoreObject = "ScoreObject";
 
 		private TimerSystem _timerSystem;
 
@@ -58,10 +68,10 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void Awake()
 		{
 			_director.Reset += Reset;
-			_director.GameEnded += Director_GameEnded;
+			_director.PlayersGameEnded += Director_GameEnded;
 		}
 
-		private void Director_GameEnded(EndGameState endGameState)
+		private void Director_GameEnded(EndGameState endGameState, List<ITAlertPlayer> players)
 		{
 			switch (endGameState)
 			{
@@ -85,6 +95,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				_teamSCoreOverlay.SetActive(true);
 				if (_director.SimulationRoot.ECS.TryGetSystem<TeamScoringSystem>(out var teamScoringSystem))
 				{
+					ShowEndGameScore(teamScoringSystem, players);
 					//var playerScore = teamScoringSystem.GetPlayerScores();
 					//var totalPlayerScore = playerScore.Sum(s => s.PublicScore);
 					//var multiplier = teamScoringSystem.SystemHealth.Average();
@@ -115,6 +126,64 @@ namespace PlayGen.ITAlert.Unity.Simulation
 					blink.enabled = false;
 					image.color = new Color(image.color.r, image.color.g, image.color.b, 0.625f);
 				}
+			}
+		}
+
+		private void ShowEndGameScore(TeamScoringSystem teamScoringSystem, List<ITAlertPlayer> players)
+		{
+			var parent = _teamScoresParent.transform;
+			var playerScores = teamScoringSystem.GetPlayerScores();
+			var multiplier = 1 + teamScoringSystem.SystemHealth.Average();
+			var finalScore = Math.Round(playerScores.Sum(s => s.PublicScore) * multiplier);
+
+			foreach (var scores in playerScores)
+			{
+				var playerbehaviours = GameObjectUtilities.FindGameObject("Game").GetComponentsInChildren<PlayerBehaviour>().ToDictionary(p => p.Id, p => p.PhotonId);
+				playerbehaviours.TryGetValue(scores.PlayerEntityId, out var playerPhotonId);
+
+				var player = players.FirstOrDefault(p => p.PhotonId == playerPhotonId);
+
+				if (player == null)
+				{
+					player = new ITAlertPlayer(){Colour = "#FFFFFF", Name = "Temp Player"};
+				}
+				CreateScoreObject(parent, player.Name, scores.PublicScore.ToString(), player.Colour);
+			}
+
+			// now create the multiplier object
+			var multiplierObj = parent.transform.parent.Find("Multiplier").gameObject;
+			SetupScoreObject(multiplierObj, "Multiplier", multiplier.ToString("N"));
+			// Finally create the final score object
+
+			var finalScoreObj = parent.transform.parent.Find("FinalScore").gameObject;
+			SetupScoreObject(finalScoreObj, "Final Score", finalScore.ToString());
+
+			parent.gameObject.BestFit();
+			multiplierObj.BestFit();
+			finalScoreObj.BestFit();
+		}
+
+		private void CreateScoreObject(Transform parent, string name, string value, string color = "#FFFFFF")
+		{
+			var scoreObj = Resources.Load<GameObject>(_resourcesScoreObject);
+
+			var playerObj = Instantiate(scoreObj, parent, false);
+			SetupScoreObject(playerObj, name, value, color);
+		}
+
+		private void SetupScoreObject(GameObject scoreObj, string name, string value, string color = "#FFFFFF")
+		{
+			var nameText = scoreObj.transform.Find("Text").GetComponent<Text>();
+			var scoreText = scoreObj.transform.Find("Score").GetComponent<Text>();
+
+			nameText.text = name;
+			scoreText.text = value;
+
+			if (ColorUtility.TryParseHtmlString(color, out var colour))
+			{
+				//rowText.color = colour;
+				nameText.color = colour;
+				scoreText.color = colour;
 			}
 		}
 
