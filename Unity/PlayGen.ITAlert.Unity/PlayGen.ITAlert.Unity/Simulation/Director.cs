@@ -57,7 +57,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		// TODO: replace temporary implementation
 		private EndGameSystem _endGameSystem;
-		private ICommandSystem _commandSystem;
+		public ICommandSystem CommandSystem { get; private set; }
 
 		private const int DefaultntityCapacity = 1000;
 
@@ -196,6 +196,13 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 				// all of this must happen after reset
 
+				// TODO: this should probably be pushed into the ECS
+				if (SimulationRoot.ECS.TryGetSystem<ICommandSystem>(out var commandSystem) == false)
+				{
+					throw new SimulationIntegrationException("Could not locate command processing system");
+				}
+				CommandSystem = commandSystem;
+
 				CalculateNetworkOffset();
 				CreateInitialEntities();
 				SetupPlayers(players, playerServerId);
@@ -209,11 +216,6 @@ namespace PlayGen.ITAlert.Unity.Simulation
 				if (SimulationRoot.ECS.TryGetSystem(out _endGameSystem) == false)
 				{
 					throw new SimulationIntegrationException("Could not locate end game system");
-				}
-				// TODO: this should probably be pushed into the ECS
-				if (SimulationRoot.ECS.TryGetSystem(out _commandSystem) == false)
-				{
-					throw new SimulationIntegrationException("Could not locate command processing system");
 				}
 
 				CultureInfo.CurrentCulture = new CultureInfo("en");
@@ -395,7 +397,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 								var success = true;
 								foreach (var command in tickMessage.Item2.CommandQueue)
 								{
-									success &= _commandSystem.TryHandleCommand(command, tickMessage.Item2.CurrentTick);
+									success &= CommandSystem.TryHandleCommand(command, tickMessage.Item2.CurrentTick);
 								}
 								if (success != true)
 								{
