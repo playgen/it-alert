@@ -2949,6 +2949,11 @@ Prefab:
       propertyPath: Key
       value: SYSTEM_REPORT_TITLE
       objectReference: {fileID: 0}
+    - target: {fileID: 114593577215171130, guid: b5d7e17a83268824281d5575be8d93e9,
+        type: 2}
+      propertyPath: m_Spacing
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b5d7e17a83268824281d5575be8d93e9, type: 2}
   m_IsPrefabParent: 0
@@ -2957,6 +2962,44 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224394722393689866, guid: b5d7e17a83268824281d5575be8d93e9,
     type: 2}
   m_PrefabInternal: {fileID: 1008004097}
+--- !u!1 &1008004099 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1869987631473552, guid: b5d7e17a83268824281d5575be8d93e9,
+    type: 2}
+  m_PrefabInternal: {fileID: 1008004097}
+--- !u!114 &1008004100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1008004099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19215687, g: 0.19215687, b: 0.19215687, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+--- !u!222 &1008004101
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1008004099}
 --- !u!1 &1030677313
 GameObject:
   m_ObjectHideFlags: 0
@@ -3017,7 +3060,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _containerImage: {fileID: 1030677314}
-  _blinkBehaviour: {fileID: 0}
   _selectionOptions: {fileID: 0}
   _leftButton: {fileID: 0}
   _rightButton: {fileID: 0}

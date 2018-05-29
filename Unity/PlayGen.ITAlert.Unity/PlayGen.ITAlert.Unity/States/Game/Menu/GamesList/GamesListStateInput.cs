@@ -11,6 +11,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 {
@@ -125,7 +126,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				Object.Destroy(child.gameObject);
 			}
 			var offset = 0.5f;
-			var height = _gameItemPrefab.GetComponent<RectTransform>().sizeDelta.y;
+			var height = _gameItemPrefab.RectTransform().sizeDelta.y;
 			// Populate Game list UI
 			foreach (var room in rooms)
 			{
@@ -147,7 +148,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				gameItem.SetParent(_gameListObject.transform, false);
 
 				// set anchors
-				var gameItemRect = gameItem.GetComponent<RectTransform>();
+				var gameItemRect = gameItem.RectTransform();
 
 				gameItemRect.pivot = new Vector2(0.5f, 1f);
 				gameItemRect.anchorMax = Vector2.one;
@@ -170,7 +171,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 				}
 			}
 			// Set the content box to be the correct size for our elements
-			_gameListObject.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, offset * -1f);
+			_gameListObject.RectTransform().sizeDelta = new Vector2(0f, offset * -1f);
 			_gameListObject.BestFit();
 		}
 	}

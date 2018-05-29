@@ -15,6 +15,7 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
 using Object = UnityEngine.Object;
@@ -256,7 +257,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Feedback
 			{
 				SetErrorText();
 			}
-			LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform)_feedbackPanel.transform);
+			LayoutRebuilder.ForceRebuildLayoutImmediate(_feedbackPanel.RectTransform());
 			_panelBestFit = true;
 		}
 
