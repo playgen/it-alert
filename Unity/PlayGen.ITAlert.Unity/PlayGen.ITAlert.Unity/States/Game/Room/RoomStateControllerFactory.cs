@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GameWork.Core.States;
+﻿using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -76,7 +75,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private PausedState CreatePausedState(ITAlertPhotonClient photonClient)
 		{
 			var pausedStateInput = new PausedStateInput(_director);
-			var pausedState = new PausedState(_director, pausedStateInput, photonClient);
+			var pausedState = new PausedState(pausedStateInput);
 
 			var onFeedbackStateSyncTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(FeedbackMessage), FeedbackState.StateName);
 			var toPlayingStateTransition = new OnEventTransition(PlayingState.StateName);

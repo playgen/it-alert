@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 {
@@ -7,17 +6,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 	{
 		public int? InventoryItem => null;
 
-		[SerializeField]
-		private Image _image;
-
-		[SerializeField]
-		private Canvas _canvas;
-
 		#region Initialization
-
-		public void Awake()
-		{
-		}
 
 		public void OnEnable()
 		{

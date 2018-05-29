@@ -44,18 +44,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		{
 			if (CommandQueue.TryTakeFirstCommand(out var command))
 			{
-				if (command is LeaveRoomCommand leaveCommand)
+				switch (command)
 				{
-					leaveCommand.Execute(_controller);
-					return;
+					case LeaveRoomCommand leaveCommand:
+						leaveCommand.Execute(_controller);
+						return;
+					case ReadyPlayerCommand readyCommand:
+						readyCommand.Execute(_controller);
+						return;
 				}
 
-				if (command is ReadyPlayerCommand readyCommand)
-				{
-					readyCommand.Execute(_controller);
-					return;
-				}
-				
 				var colorCommand = command as ChangePlayerColorCommand;
 			    colorCommand?.Execute(_controller);
 			}

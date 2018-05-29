@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			if (!string.IsNullOrEmpty(text) && !Input.GetMouseButton(0))
 			{
 				_instance._currentText = text;
-				_instance.Invoke("HoverCheck", 1f);
+				_instance.Invoke(nameof(HoverCheck), 1f);
 			}
 			return !string.IsNullOrEmpty(text);
 		}

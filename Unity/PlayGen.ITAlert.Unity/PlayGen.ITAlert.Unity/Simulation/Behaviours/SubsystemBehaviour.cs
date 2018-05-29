@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+
 using Engine.Components;
 using PlayGen.ITAlert.Simulation.Common;
 using PlayGen.ITAlert.Simulation.Components.Common;
@@ -55,9 +55,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		[SerializeField]
 		private List<GameObject> _itemContainers;
-
-		[SerializeField]
-		private RectTransform _rectTransform;
 
 		private float _itemZ;
 

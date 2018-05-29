@@ -9,12 +9,9 @@ using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.Localization;
-using System.Linq;
-
 using PlayGen.Unity.Utilities.BestFit;
 
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
@@ -265,7 +262,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		protected override void OnUpdate()
 		{
-			if (_selectionOptions != null && (_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+			if (_selectionOptions != null && (_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
 				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos)
 				{
@@ -289,7 +286,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			if (!_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking("ResetOptions") && !IsInvoking("EnableOptions"))
+			if (!_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
 				_leftButton.transform.localScale = Vector3.one;
 				_rightButton.transform.localScale = Vector3.one;
@@ -383,7 +380,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				optionAnim[clipName].time = optionAnim[clipName].length;
 				optionAnim[clipName].speed = -1;
 				optionAnim.Play(clipName);
-				Invoke("ResetOptions", 0.34f);
+				Invoke(nameof(ResetOptions), 0.34f);
 			}
 			else
 			{
@@ -409,7 +406,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Use()
 		{
-			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if (!IsInvoking(nameof(DisableOptions)) && !IsInvoking("EnableOptions"))
 			{
 				PlayerCommands.ActivateItem(Id);
 			}
@@ -417,7 +414,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Take(ItemContainerBehaviour container)
 		{
-			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if (!IsInvoking(nameof(DisableOptions)) && !IsInvoking("EnableOptions"))
 			{
 				if (GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory))
 				{
@@ -432,7 +429,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void Move(ItemContainerBehaviour container, Director director)
 		{
-			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if (!IsInvoking(nameof(DisableOptions)) && !IsInvoking("EnableOptions"))
 			{
 				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				_moveState = true;
@@ -454,7 +451,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void MoveAndUse(ItemContainerBehaviour container, Director director)
 		{
-			if (!IsInvoking("DisableOptions") && !IsInvoking("EnableOptions"))
+			if (!IsInvoking(nameof(DisableOptions)) && !IsInvoking("EnableOptions"))
 			{
 				Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 				_moveState = true;

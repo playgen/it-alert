@@ -12,21 +12,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private GameObject _bigVirus;
 
-		[SerializeField]
-		private GameOverCondition _condition;
 		private static readonly Vector3 InitialOffset = new Vector3(0, 1000);
 
 		private float _animationProgress;
-
-		// Use this for initialization
-		private void Start()
-		{
-		}
-
-		private void Awake()
-		{
-
-		}
 
 		// Update is called once per frame
 		private void Update () {

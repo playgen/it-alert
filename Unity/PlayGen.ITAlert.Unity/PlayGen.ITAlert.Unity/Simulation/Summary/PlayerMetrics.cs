@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using PlayGen.ITAlert.Unity.States.Game.SimulationSummary;
-using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
@@ -30,15 +28,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 				var playerIds = simulationSummary.PlayersData.Select(p => p.Id).ToList();
 
 				// using the following formula, comparison = score / 2nd best score
-				var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value));
+				var orderedList = scoresByPlayer.OrderBy(s => Convert.ToInt16(s.Value)).ToList();
 
-                var secondBestValue = orderedList.Count() == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count() - 2).Value;
+                var secondBestValue = orderedList.Count == 1 ? orderedList.Last().Value : orderedList.ElementAt(orderedList.Count - 2).Value;
                 var secondBest = Convert.ToInt16(secondBestValue);
 
                 foreach (var playerId in playerIds)
                 {
-                    int score = 0;
-                    if (scoresByPlayer.TryGetValue(playerId, out var value))
+                    var score = 0;
+                    if (playerId.HasValue && scoresByPlayer.TryGetValue(playerId, out var value))
                     {
                         score = Convert.ToInt16(value);
                     }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PlayGen.ITAlert.Unity.Simulation.Summary
+﻿namespace PlayGen.ITAlert.Unity.Simulation.Summary
 {
     public class SummaryMetricConfig
     {

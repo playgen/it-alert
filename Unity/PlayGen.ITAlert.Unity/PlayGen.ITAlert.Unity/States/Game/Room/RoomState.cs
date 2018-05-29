@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
-using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;

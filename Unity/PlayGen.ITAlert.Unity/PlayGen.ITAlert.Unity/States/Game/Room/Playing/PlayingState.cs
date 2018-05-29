@@ -6,8 +6,6 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Interfaces;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
-using PlayGen.ITAlert.Unity.Simulation.Behaviours;
-using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messaging;
 
 using Logger = PlayGen.Photon.Unity.Logger;
@@ -82,21 +80,20 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 
 		private void ProcessSimulationStateMessage(Message message)
 		{
-			if (message is TickMessage tickMessage)
+			switch (message)
 			{
-				_director.UpdateSimulation(tickMessage);
-				return;
-			}
-
-		    if (message is StopMessage stopMessage)
-			{
-                _simulationSummary.SetData(stopMessage.SimulationEvents, _director.Players.Select(p => new SimulationSummary.SimulationSummary.PlayerData
-                {
-                    Colour = p.Colour,
-                    Name = p.Name,
-                    Id = p.PhotonId
-                }).ToList());
-                _director.EndGame();
+				case TickMessage tickMessage:
+					_director.UpdateSimulation(tickMessage);
+					return;
+				case StopMessage stopMessage:
+					_simulationSummary.SetData(stopMessage.SimulationEvents, _director.Players.Select(p => new SimulationSummary.SimulationSummary.PlayerData
+					{
+						Colour = p.Colour,
+						Name = p.Name,
+						Id = p.PhotonId
+					}).ToList());
+					_director.EndGame();
+					break;
 			}
 
 			//throw new Exception("Unhandled Simulation State Message: " + message);
