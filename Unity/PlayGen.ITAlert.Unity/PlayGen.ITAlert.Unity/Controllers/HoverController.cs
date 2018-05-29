@@ -1,4 +1,5 @@
-﻿using PlayGen.Unity.Utilities.Localization;
+﻿using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		public void Awake()
 		{
 			_instance = this;
-			_hoverHint = (RectTransform)transform.GetComponentInChildren<Image>(true).transform;
+			_hoverHint = transform.GetComponentInChildren<Image>(true).RectTransform();
 			_hoverHint.gameObject.SetActive(false);
 		}
 
@@ -25,8 +26,8 @@ namespace PlayGen.ITAlert.Unity.Controllers
 		/// </summary>
 		public static void SetHoverObject(Transform trans)
 		{
-			var adjust = (Vector2.one * 0.5f) - ((RectTransform)trans).pivot;
-			_instance._currentHovered = (Vector2)trans.position + new Vector2(((RectTransform)trans).rect.width * adjust.x, ((RectTransform)trans).rect.height * adjust.y);
+			var adjust = (Vector2.one * 0.5f) - trans.RectTransform().pivot;
+			_instance._currentHovered = (Vector2)trans.position + new Vector2(trans.RectTransform().rect.width * adjust.x, trans.RectTransform().rect.height * adjust.y);
 		}
 
 		/// <summary>
@@ -68,7 +69,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			{
 				_mobileReadyToHide = false;
 				var canvas = GetComponentInParent<Canvas>();
-				var canvasSize = ((RectTransform)canvas.transform).rect.size;
+				var canvasSize = canvas.transform.RectTransform().rect.size;
 				var canvasCam = canvas.worldCamera;
 				_hoverHint.gameObject.SetActive(true);
 				_hoverHint.GetComponentInChildren<Text>(true).text = Localization.Get(_currentText);

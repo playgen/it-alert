@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameWork.Core.States.Tick.Input;
+
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Scoring.Player;
 using PlayGen.ITAlert.Unity.Components;
@@ -11,6 +13,7 @@ using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client.Voice;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 
 using UnityEngine;
@@ -63,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnEnter()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
-			_chatPanel.SetActive(true);
+			_chatPanel.SetActive(int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0);
 
 			foreach (var playerVoiceItem in _chatPanel.transform)
 			{
@@ -101,14 +104,14 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					var playerItem = Object.Instantiate(_playerChatItemPrefab);
 
 
-					var nameText = playerItem.transform.Find("Name").GetComponent<Text>();
+					var nameText = playerItem.transform.FindText("Name");
 					nameText.text = player.Name;
 
-					var resourceText = playerItem.transform.Find("Resource Management").GetComponent<Text>();
+					var resourceText = playerItem.transform.FindText("Resource Management");
 
-					var systemText = playerItem.transform.Find("Systematicity").GetComponent<Text>();
+					var systemText = playerItem.transform.FindText("Systematicity");
 
-					var soundIcon = playerItem.transform.Find("SoundIcon").GetComponent<Image>();
+					var soundIcon = playerItem.transform.FindImage("SoundIcon");
 
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
@@ -183,10 +186,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void OnLanguageChange()
 		{
-			var pushToTalk = _chatPanel.transform.Find("PushToTalk/PushToTalk Text");
-			if (pushToTalk != null && pushToTalk.GetComponent<Text>())
+			var pushToTalk = _chatPanel.transform.FindText("PushToTalk/PushToTalk Text");
+			if (pushToTalk != null)
 			{
-				pushToTalk.GetComponent<Text>().text = Localization.GetAndFormat("VOICE_PUSH_TO_TALK", false, "TAB");
+				pushToTalk.text = Localization.GetAndFormat("VOICE_PUSH_TO_TALK", false, "TAB");
 			}
 		}
 	}

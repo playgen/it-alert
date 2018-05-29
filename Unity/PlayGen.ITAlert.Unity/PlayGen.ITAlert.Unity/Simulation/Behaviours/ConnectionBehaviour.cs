@@ -4,6 +4,8 @@ using Engine.Common;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Movement;
 using PlayGen.ITAlert.Unity.Exceptions;
+using PlayGen.Unity.Utilities.Extensions;
+
 using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
@@ -78,13 +80,13 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private void DrawConnection()
 		{
-			var headPos = _head.GameObject.GetComponent<RectTransform>().anchoredPosition;
-			var tailPos = _tail.GameObject.GetComponent<RectTransform>().anchoredPosition;
+			var headPos = _head.GameObject.RectTransform().anchoredPosition;
+			var tailPos = _tail.GameObject.RectTransform().anchoredPosition;
 
 			var length = Math.Abs(Vector2.Distance(headPos, tailPos));
 			var connectionZ = ((GameObject)Resources.Load("Connection")).transform.position.z;
 			var midpoint = (headPos + tailPos) * 0.5f;
-			var rectTransform = GetComponent<RectTransform>();
+			var rectTransform = gameObject.RectTransform();
 
 			//get the angle between the locations
 			var v2 = tailPos - headPos;
@@ -92,7 +94,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			transform.eulerAngles = new Vector3(0, 0, _angle);
 
-			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.Find("ConnectionSquare").GetComponent<RectTransform>().rect.width * _tail.GameObject.transform.localScale.x;
+			var connectionSquareSize = ((GameObject)Resources.Load(nameof(Subsystem))).transform.FindRect("ConnectionSquare").rect.width * _tail.GameObject.transform.localScale.x;
 			ScaleEndPoint(headPos, connectionSquareSize / 2);
 			ScaleEndPoint(tailPos, connectionSquareSize / 2);
 
