@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Engine.Lifecycle;
 using GameWork.Core.States.Tick.Input;
@@ -36,7 +37,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			public Text ScoreText { get; set; }
 
-			public Text SystemText { get; set; }
+			public Text ScoreIncrementText { get; set; }
+
+			public int TicksRemainingToShowIncrement { get; set; }
 		}
 
 		private Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
@@ -48,6 +51,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
+
+		private const int TicksToShowIncrement = 100;
 
 		private bool _gameEnded = false;
 
@@ -120,7 +125,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 					var scoreText = playerItem.transform.FindText("PlayerScore");
 
+					var scoreIncrementText = scoreText.transform.FindText("ScoreChange");
+
 					var soundIcon = playerItem.transform.FindImage("SoundIcon");
+
 
 					playerItem.transform.SetParent(_chatPanel.transform, false);
 
@@ -129,7 +137,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 						GameObject = playerItem,
 						VoiceIcon = soundIcon,
 						NameText = nameText,
-						ScoreText = scoreText
+						ScoreText = scoreText,
+						ScoreIncrementText = scoreIncrementText
 					};
 
 					_playerVoiceItems.Add(player.PhotonId, playerVoiceItem);
@@ -144,7 +153,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				}
 			}
 			_playerVoiceItems = _playerVoiceItems.Where(p => p.Value.GameObject != null).ToDictionary(p => p.Key, p => p.Value);
-			_playerIdPair = GameObjectUtilities.FindGameObject("Game").GetComponentsInChildren<PlayerBehaviour>().ToDictionary(p => p.PhotonId, p => p.Id);
+			_playerIdPair = GameObjectUtilities.FindGameObject("Game").GetComponentsInChildren<PlayerBehaviour>(true).ToDictionary(p => p.PhotonId, p => p.Id);
 		}
 
 		private void UpdatePlayerVoiceItem(ITAlertPlayer player, PlayerVoiceItem playerVoiceItem)
@@ -152,7 +161,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			if (ColorUtility.TryParseHtmlString(player.Colour, out var colour))
 			{
 				playerVoiceItem.NameText.color = colour;
+				playerVoiceItem.ScoreText.color = colour;
 				playerVoiceItem.VoiceIcon.color = colour;
+				playerVoiceItem.ScoreIncrementText.color = colour;
 			}
 			if (playerVoiceItem.NameText.text != player.Name)
 			{
@@ -178,9 +189,19 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					{
 						if (_playerIdPair.ContainsKey(player.Key))
 						{
-							var score = _scoringSystem.GetScoreForPlayerEntity(_playerIdPair[player.Key]);
-							var playerScore = _gameEnded ? "" : score.PublicScore.ToString();
-							player.Value.ScoreText.text = playerScore;
+							var score = _scoringSystem.GetScoreForPlayerEntity(_playerIdPair[player.Key]).PublicScore;
+							if (player.Value.ScoreText.text != "" && player.Value.ScoreText.text != score.ToString())
+							{
+								// value has changed
+								var increment = GetScoreDifference(player.Value.ScoreText.text, score);
+								player.Value.ScoreIncrementText.text = increment;
+								player.Value.TicksRemainingToShowIncrement = TicksToShowIncrement;
+							}
+							player.Value.ScoreText.text = score.ToString();
+
+							player.Value.ScoreText.gameObject.SetActive(!_gameEnded);
+							var remaining = --player.Value.TicksRemainingToShowIncrement;
+							player.Value.ScoreIncrementText.gameObject.SetActive(remaining > 0);
 						}
 					}
 					if (VoiceClient.TransmittingStatuses.ContainsKey(player.Key))
@@ -189,7 +210,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					}
 				}
 			}
-			_chatPanel.BestFit();
+			_playerVoiceItems.Select(p => p.Value.NameText).ToList().BestFit();
+			//_chatPanel.BestFit();
+		}
+
+		private string GetScoreDifference(string current, int next)
+		{
+			var currentInt = Convert.ToInt16(current);
+			var difference = next - currentInt;
+			return difference > 0 ? "+" + difference : difference.ToString();
 		}
 
 		private void OnLanguageChange()
