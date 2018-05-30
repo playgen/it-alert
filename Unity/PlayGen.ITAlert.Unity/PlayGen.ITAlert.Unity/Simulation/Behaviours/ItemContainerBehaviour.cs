@@ -1,5 +1,7 @@
 ﻿using System;
 
+using PlayGen.ITAlert.Simulation.Archetypes;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
@@ -42,7 +44,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		private ItemBehaviour _moveItem;
 
-		private int? _moveItemIndex;
+		private ItemContainerBehaviour _moveItemContainer;
 
 		private bool _moveHighlightGrow;
 
@@ -61,6 +63,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		private string _currentAnim;
 
 		public bool CanRelease => _itemContainer.CanRelease;
+
+		public bool IsEnabled => _itemContainer.Enabled;
 
 		public string SpriteOverride { private get; set; }
 
@@ -147,12 +151,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			return false;
 		}
 
+		public bool CanContain(int itemId)
+		{
+			return _itemContainer.CanContain(itemId);
+		}
+
 		public void Update()
 		{
 			var hasItem = _itemContainer?.Item != null;
-			var isEnabled = _itemContainer?.Enabled == true;
 
-			if (_moveItem && isEnabled)
+			if (_moveItem && IsEnabled && CanContain(_moveItem.Id) && (!hasItem || _moveItemContainer.CanContain(_itemContainer.Item.Value)))
 			{
 				var newScale = transform.localScale.x + ((_moveHighlightGrow ? Time.smoothDeltaTime : -Time.smoothDeltaTime) * 0.25f);
 				if (newScale < 0.95f)
@@ -176,7 +184,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				Transition(ContainerState.HasItem);
 			}
-			else if (isEnabled)
+			else if (IsEnabled)
 			{
 				Transition(ContainerState.Empty);
 			}
@@ -187,7 +195,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			if (_selectionOptions && _selectionOptions.activeSelf && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
-				if (hasItem || Input.GetMouseButtonUp(0))
+				if (hasItem || Input.GetMouseButtonUp(0) || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype != nameof(SubsystemNode))
 				{
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					var clipName = _currentAnim;
@@ -215,7 +223,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			{
 				if (inventory && inventory.Id == _moveItem.Id)
 				{
-					if (_moveItemIndex.HasValue)
+					if (_moveItemContainer != null)
 					{
 						if (TryGetItem(out var containerItem) == false)
 						{
@@ -238,9 +246,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 						}
 					}
 				}
-				else if (_moveItemIndex.HasValue)
+				else if (_moveItemContainer != null)
 				{
-					var moveItemIndexValue = _moveItemIndex.Value;
+					var moveItemIndexValue = _moveItemContainer.ContainerIndex;
 					if (TryGetItem(out var containerItem))
 					{
 						PlayerCommands.SwapSubsystemItem(_moveItem.Id, moveItemIndexValue, containerItem.Id, ContainerIndex);
@@ -274,6 +282,9 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				else if (_selectionOptions && !_selectionOptions.activeSelf && (inventory || !string.IsNullOrEmpty(description)) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 				{
+					var canContain = IsEnabled && (!inventory || CanContain(inventory.Id));
+					_leftButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropAndActivateItemCommand), out var dropAndActivateHandler) && dropAndActivateHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemAndActivateCommand), out dropAndActivateHandler) && dropAndActivateHandler.Enabled);
+					_rightButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropItemCommand), out var dropHandler) && dropHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemCommand), out dropHandler) && dropHandler.Enabled);
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;
 					_descriptionText.transform.localScale = Vector3.one;
@@ -302,17 +313,17 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			_selectionOptions.SetActive(false);
 		}
 
-		public void Highlight(ItemBehaviour item, int? index)
+		public void Highlight(ItemBehaviour item, ItemContainerBehaviour container)
 		{
 			_moveItem = item;
-			_moveItemIndex = index;
+			_moveItemContainer = container;
 			_moveHighlightGrow = false;
 		}
 
 		public void RemoveHighlight()
 		{
 			_moveItem = null;
-			_moveItemIndex = null;
+			_moveItemContainer = null;
 			transform.localScale = Vector3.one;
 			if (TryGetItem(out var item))
 			{

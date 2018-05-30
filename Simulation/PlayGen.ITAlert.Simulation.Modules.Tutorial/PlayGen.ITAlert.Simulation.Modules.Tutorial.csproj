@@ -42,6 +42,7 @@
     <Compile Include="Actions\HideText.cs" />
     <Compile Include="Actions\ShowText.cs" />
     <Compile Include="Archetypes\TutorialText.cs" />
+    <Compile Include="Commands\SetCommandEnabledCommand.cs" />
     <Compile Include="Commands\SetHighlightCommand.cs" />
     <Compile Include="Commands\ContinueCommand.cs" />
     <Compile Include="Commands\DisplayTextCommand.cs" />

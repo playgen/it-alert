@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using Engine.Systems.Activation.Components;
 
+using PlayGen.ITAlert.Simulation.Archetypes;
+using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Components.Common;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Simulation.Modules.Antivirus.Components;
@@ -265,7 +268,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (_selectionOptions != null && (_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
-				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos)
+				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype != nameof(SubsystemNode))
 				{
 					DisableOptions();
 				}
@@ -287,7 +290,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			if (!_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
+			if (director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype == nameof(SubsystemNode) && !_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
 				_leftButton.transform.localScale = Vector3.one;
 				_rightButton.transform.localScale = Vector3.one;
@@ -299,17 +302,27 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_selectionOptions.SetActive(true);
 				if (container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
-					_leftButton.SetActive(true);
+					var validMoveExists = true;
+					var currentLocation = director.Player.CurrentLocationEntity;
+					var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
+					if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
+					{
+						var containers = subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>().Where(c => c != container).ToList();
+						validMoveExists = containers.Any(c => c.CanContain(Id) && c.IsEnabled && (!c.TryGetItem(out var cItem) || container.CanContain(cItem.Id)));
+					}
+					GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory);
+					var canTake = !inventory || container.CanContain(inventory.Id);
+					_leftButton.SetActive(Director.CommandSystem.TryGetHandler(typeof(ActivateItemCommand), out var activateHandler) && activateHandler.Enabled);
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_leftButton.GetComponent<Button>().onClick.AddListener(Use);
 					_leftButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
 					_leftButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
-					_rightButton.SetActive(true);
+					_rightButton.SetActive(canTake && Director.CommandSystem.TryGetHandler(typeof(PickupItemCommand), out var pickUpHandler) && pickUpHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemCommand), out pickUpHandler) && pickUpHandler.Enabled);
 					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_rightButton.GetComponent<Button>().onClick.AddListener(() => Take(container));
 					_rightButton.GetComponentInChildren<Text>().text = Localization.Get("TAKE_BUTTON");
 					_rightButton.GetComponentInChildren<TextLocalization>().Key = "TAKE_BUTTON";
-					_middleButton.SetActive(true);
+					_middleButton.SetActive(validMoveExists && Director.CommandSystem.TryGetHandler(typeof(MoveItemCommand), out var moveHandler) && moveHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapSubsystemItemCommand), out moveHandler) && moveHandler.Enabled);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_middleButton.GetComponent<Button>().onClick.AddListener(() => Move(container, director));
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
@@ -321,7 +334,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					_leftButton.SetActive(false);
 					_rightButton.SetActive(false);
-					_middleButton.SetActive(true);
+					_middleButton.SetActive(Director.CommandSystem.TryGetHandler(typeof(ActivateItemCommand), out var activateHandler) && activateHandler.Enabled);
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_rightButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -333,8 +346,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				}
 				else if (CurrentLocation.Value == null)
 				{
-					_leftButton.SetActive(true);
-					_rightButton.SetActive(true);
+					_leftButton.SetActive(Director.CommandSystem.TryGetHandler(typeof(DropAndActivateItemCommand), out var dropAndActivateHandler) && dropAndActivateHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemAndActivateCommand), out dropAndActivateHandler) && dropAndActivateHandler.Enabled);
+					_rightButton.SetActive(Director.CommandSystem.TryGetHandler(typeof(DropItemCommand), out var dropHandler) && dropHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemCommand), out dropHandler) && dropHandler.Enabled);
 					_middleButton.SetActive(false);
 					_middleButton.GetComponent<Button>().onClick.RemoveAllListeners();
 					_leftButton.GetComponent<Button>().onClick.RemoveAllListeners();
@@ -439,12 +452,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				var subsystemBehaviour = currentLocation.EntityBehaviour as SubsystemBehaviour;
 				if (subsystemBehaviour != null && subsystemBehaviour.ItemStorage != null)
 				{
-					foreach (var systemContainer in subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>())
+					var containers = subsystemBehaviour.GetComponentsInChildren<ItemContainerBehaviour>().Where(c => c != container).ToList();
+					foreach (var systemContainer in containers)
 					{
-						if (systemContainer != container)
-						{
-							systemContainer.Highlight(this, container.ContainerIndex);
-						}
+						systemContainer.Highlight(this, container);
 					}
 				}
 			}
