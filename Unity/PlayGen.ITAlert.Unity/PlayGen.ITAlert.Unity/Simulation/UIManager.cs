@@ -7,6 +7,7 @@ using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;
 using PlayGen.ITAlert.Unity.Behaviours;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
@@ -176,7 +177,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			var nameText = scoreObj.transform.Find("Text").GetComponent<Text>();
 			var scoreText = scoreObj.transform.Find("Score").GetComponent<Text>();
 
-			nameText.text = name;
+			nameText.text = name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
 			scoreText.text = value;
 
 			if (ColorUtility.TryParseHtmlString(color, out var colour))
