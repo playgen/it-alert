@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
 
-		private const int TicksToShowIncrement = 100;
+		private const int TicksToShowIncrement = 200;
 
 		private bool _gameEnded = false;
 

@@ -12,6 +12,7 @@ using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -153,11 +154,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			// now create the multiplier object
 			var multiplierObj = parent.transform.parent.Find("Multiplier").gameObject;
-			SetupScoreObject(multiplierObj, "Multiplier", multiplier.ToString("N"));
+			SetupScoreObject(multiplierObj,Localization.Get("GAME_OVER_MULTIPLIER"), multiplier.ToString("N"));
 			// Finally create the final score object
 
 			var finalScoreObj = parent.transform.parent.Find("FinalScore").gameObject;
-			SetupScoreObject(finalScoreObj, "Final Score", finalScore.ToString());
+			SetupScoreObject(finalScoreObj, Localization.Get("GAME_OVER_FINAL_SCORE"), finalScore.ToString());
 
 			parent.gameObject.BestFit();
 			multiplierObj.BestFit();
