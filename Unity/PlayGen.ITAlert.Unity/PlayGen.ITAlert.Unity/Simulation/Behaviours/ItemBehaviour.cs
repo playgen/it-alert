@@ -268,7 +268,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			if (_selectionOptions != null && (_selectionOptions.activeSelf || _moveState) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
-				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype != nameof(SubsystemNode))
+				if (Input.GetMouseButtonUp(0) || _activation.ActivationState == ActivationState.Active || transform.position != _selectPos || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype == nameof(ConnectionNode))
 				{
 					DisableOptions();
 				}
@@ -290,7 +290,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(ItemContainerBehaviour container, Director director)
 		{
-			if (director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype == nameof(SubsystemNode) && !_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
+			if (director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype != nameof(ConnectionNode) && !_selectionOptions.activeSelf && CanActivate && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
 				_leftButton.transform.localScale = Vector3.one;
 				_rightButton.transform.localScale = Vector3.one;

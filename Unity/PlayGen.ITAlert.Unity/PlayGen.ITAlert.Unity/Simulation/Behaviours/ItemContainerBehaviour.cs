@@ -195,7 +195,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 			if (_selectionOptions && _selectionOptions.activeSelf && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 			{
-				if (hasItem || Input.GetMouseButtonUp(0) || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype != nameof(SubsystemNode))
+				if (hasItem || Input.GetMouseButtonUp(0) || Director.Player.CurrentLocationEntity.EntityBehaviour.Entity.CreatedFromArchetype == nameof(ConnectionNode))
 				{
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					var clipName = _currentAnim;
