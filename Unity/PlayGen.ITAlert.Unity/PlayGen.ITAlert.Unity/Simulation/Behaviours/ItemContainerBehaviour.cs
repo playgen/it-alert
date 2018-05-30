@@ -55,16 +55,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		[SerializeField]
 		private GameObject _rightButton;
 
+		[SerializeField]
+		private Text _descriptionText;
+
+		private string _currentAnim;
+
 		public bool CanRelease => _itemContainer.CanRelease;
 
 		public string SpriteOverride { private get; set; }
 
 		#region initialization
-		
-		public void Start()
-		{
-			//Canvas.ForceUpdateCanvases();
-		}
 
 		public void Initialize(ItemContainer itemContainer, Director director, int containerIndex, int? subsystemId)
 		{
@@ -107,10 +107,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					: Resources.Load<Sprite>(itemContainerTypeName) ?? Resources.Load<Sprite>(UIConstants.ItemContainerDefaultSpriteName)
 				: Resources.Load<Sprite>(SpriteOverride);
 			_containerImage.sprite = sprite;
-			if (GetComponentInChildren<HoverObject>())
-			{
-				GetComponentInChildren<HoverObject>().SetHoverText(!string.Equals(sprite.name, UIConstants.ItemContainerDefaultSpriteName, StringComparison.CurrentCultureIgnoreCase) ? sprite.name.ToUpperInvariant() + "_DESCRIPTION" : string.Empty);
-			}
 		}
 
 		//public void Uninitialize()
@@ -156,7 +152,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			var hasItem = _itemContainer?.Item != null;
 			var isEnabled = _itemContainer?.Enabled == true;
 
-			if (_moveItem)
+			if (_moveItem && isEnabled)
 			{
 				var newScale = transform.localScale.x + ((_moveHighlightGrow ? Time.smoothDeltaTime : -Time.smoothDeltaTime) * 0.25f);
 				if (newScale < 0.95f)
@@ -194,7 +190,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (hasItem || Input.GetMouseButtonUp(0))
 				{
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
-					var clipName = optionAnim.clip.name;
+					var clipName = _currentAnim;
 					optionAnim[clipName].time = optionAnim[clipName].length;
 					optionAnim[clipName].speed = -1;
 					optionAnim.Play(clipName);
@@ -213,6 +209,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 		public void OnPointerClick(PointerEventData eventData)
 		{
+			var description = !string.Equals(_containerImage.sprite.name, UIConstants.ItemContainerDefaultSpriteName, StringComparison.CurrentCultureIgnoreCase) ? _containerImage.sprite.name.ToUpperInvariant() + "_DESCRIPTION" : string.Empty;
 			GameObjectUtilities.FindGameObject("Game/Canvas/ItemPanel/ItemContainer_Inventory").GetComponent<ItemContainerBehaviour>().TryGetItem(out var inventory);
 			if (_moveItem)
 			{
@@ -275,20 +272,24 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					PlayerCommands.Move(_subsystemId.Value);
 				}
-				else if (_selectionOptions && !_selectionOptions.activeSelf && inventory && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
+				else if (_selectionOptions && !_selectionOptions.activeSelf && (inventory || !string.IsNullOrEmpty(description)) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 				{
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;
+					_descriptionText.transform.localScale = Vector3.one;
 					GetComponent<Canvas>().sortingOrder = 100;
 					_selectionOptions.SetActive(true);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 					Invoke("EnableOptions", 0.34f);
-					_selectionOptions.GetComponentsInChildren<Button>().BestFit();
+					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit();
+					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
-					var clipName = optionAnim.clip.name;
-					optionAnim[clipName].time = 0;
-					optionAnim[clipName].speed = 1;
-					optionAnim.Play(clipName);
+					_currentAnim = inventory ? !string.IsNullOrEmpty(description) ? "ItemContainerSelection" : "ItemContainerNoDescription" : "ItemContainerOnlyDescription";
+					_descriptionText.GetComponent<TextLocalization>().Key = description;
+					_descriptionText.GetComponent<TextLocalization>().Set();
+					optionAnim[_currentAnim].time = 0;
+					optionAnim[_currentAnim].speed = 1;
+					optionAnim.Play(_currentAnim);
 				}
 			}
 		}
