@@ -159,4 +159,6 @@
 {"Key":"SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATION_FAILS_TITLE","en":"Blindfire","nl":"XXXX"},
 {"Key":"SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATION_FAILS_DESCRIPTION","en":"Wasted Most Analyser Actions","nl":"XXXX"},
 {"Key":"SIMULATION_SUMMARY_METRIC_ANTIVIRUSES_CREATION_FAILS_FORMATTED","en":"Misused Analyser {0} Times","nl":"XXXX"},
-{"Key":"SERVER_DISCONNECT","en":"No longer connected to the game server.\nThis may be due to a loss of Internet connection or the game server being stopped.","nl":"XXXX"}]
+{"Key":"SERVER_DISCONNECT","en":"No longer connected to the game server.\nThis may be due to a loss of Internet connection or the game server being stopped.","nl":"XXXX"},
+{"Key":"GAME_OVER_MULTIPLIER","en":"Multiplier","nl":"XXXX"},
+{"Key":"GAME_OVER_FINAL_SCORE","en":"Final Score","nl":"XXXX"}]
