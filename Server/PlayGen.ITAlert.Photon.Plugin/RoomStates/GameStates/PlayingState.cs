@@ -150,7 +150,7 @@ namespace PlayGen.ITAlert.Photon.Plugin.RoomStates.GameStates
 					var events = loggingController.GetGameEvents(gameId);
 					simulationEvents = events.Select(e => new StopMessage.SimulationEvent
 					{
-						PlayerId = e.PlayerId,
+						PlayerId = e.PlayerExternalId,
 						Data = e.Data,
 						EventCode = e.EventCode,
 						Tick = e.Tick
