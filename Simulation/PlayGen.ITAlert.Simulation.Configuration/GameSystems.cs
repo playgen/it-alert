@@ -139,6 +139,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration
 							// probably create a zenject installer
 
 							// tutorial
+							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<SetCommandEnabledCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<DisplayTextCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<ContinueCommandCommandHandler>(),
 							new SystemExtensionConfiguration<ICommandHandler>.SystemExtensionImplementation<HideTextCommandHandler>(),
