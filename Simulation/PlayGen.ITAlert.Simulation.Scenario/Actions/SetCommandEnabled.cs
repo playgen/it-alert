@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Engine.Commands;
+
+using PlayGen.ITAlert.Simulation.Modules.Tutorial.Commands;
 using PlayGen.ITAlert.Simulation.Sequencing;
 
 namespace PlayGen.ITAlert.Simulation.Scenario.Actions
@@ -21,6 +23,12 @@ namespace PlayGen.ITAlert.Simulation.Scenario.Actions
 					&& commandSystem.TryGetHandler<TCommand>(out commandHandler))
 				{
 					commandHandler.SetEnabled(enabled);
+					var setCommand = new SetCommandEnabledCommand()
+					{
+						Command = typeof(TCommand),
+						Enabled = enabled,
+					};
+					ecs.EnqueueCommand(setCommand);
 				}
 			};
 		}
