@@ -466,7 +466,9 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		public void EndGame(List<ITAlertPlayer> players)
 		{
 			StopWorker();
+			// Send both the on game ended events
 			OnGameEnded(_endGameSystem.EndGameState, players);
+			OnGameEnded(_endGameSystem.EndGameState);
 		}
 
 		//private int _update;

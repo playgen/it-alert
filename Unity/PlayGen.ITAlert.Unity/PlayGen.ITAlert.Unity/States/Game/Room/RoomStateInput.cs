@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Engine.Lifecycle;
 using GameWork.Core.States.Tick.Input;
 
 using PlayGen.ITAlert.Photon.Common;
@@ -33,7 +34,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			public Text NameText { get; set; }
 
-			public Text ResourceText { get; set; }
+			public Text ScoreText { get; set; }
 
 			public Text SystemText { get; set; }
 		}
@@ -47,6 +48,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
+
+		private bool _gameEnded = false;
 
 		public RoomStateInput(ITAlertPhotonClient photonClient)
 		{
@@ -77,7 +80,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 			_playerVoiceItems.Clear();
 			_scoringSystem = null;
+			_gameEnded = false;
 			Director.Reset += SetScoringSystem;
+			Director.GameEnded += GameFinished;
 		}
 
 		protected override void OnExit()
@@ -85,6 +90,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_chatPanel.SetActive(false);
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= PlayersUpdated;
 			Director.Reset -= SetScoringSystem;
+			Director.GameEnded -= GameFinished;
 		}
 
 		protected override void OnTick(float deltaTime)
@@ -93,6 +99,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			{
 				UpdateChatPanel();
 			}
+		}
+
+		private void GameFinished(EndGameState endGameState)
+		{
+			_gameEnded = true;
 		}
 
 		private void PlayersUpdated(List<ITAlertPlayer> players)
@@ -107,9 +118,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					var nameText = playerItem.transform.FindText("Name");
 					nameText.text = player.Name;
 
-					var resourceText = playerItem.transform.FindText("Resource Management");
-
-					var systemText = playerItem.transform.FindText("Systematicity");
+					var scoreText = playerItem.transform.FindText("PlayerScore");
 
 					var soundIcon = playerItem.transform.FindImage("SoundIcon");
 
@@ -120,8 +129,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 						GameObject = playerItem,
 						VoiceIcon = soundIcon,
 						NameText = nameText,
-						ResourceText = resourceText,
-						SystemText = systemText
+						ScoreText = scoreText
 					};
 
 					_playerVoiceItems.Add(player.PhotonId, playerVoiceItem);
@@ -164,15 +172,15 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			foreach (var player in _playerVoiceItems)
 			{
-				if (player.Value != null && player.Value.ResourceText != null && player.Value.SystemText != null && player.Value.VoiceIcon != null)
+				if (player.Value != null && player.Value.ScoreText != null && player.Value.VoiceIcon != null)
 				{
 					if (_scoringSystem != null)
 					{
 						if (_playerIdPair.ContainsKey(player.Key))
 						{
 							var score = _scoringSystem.GetScoreForPlayerEntity(_playerIdPair[player.Key]);
-							player.Value.ResourceText.text = score.ResourceManagement.ToString();
-							player.Value.SystemText.text = score.Systematicity.ToString();
+							var playerScore = _gameEnded ? "" : score.PublicScore.ToString();
+							player.Value.ScoreText.text = playerScore;
 						}
 					}
 					if (VoiceClient.TransmittingStatuses.ContainsKey(player.Key))
