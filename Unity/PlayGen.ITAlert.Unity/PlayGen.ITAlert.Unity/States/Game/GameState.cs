@@ -8,6 +8,7 @@ using PlayGen.ITAlert.Unity.Photon.Messaging;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Loading;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Game
 {
@@ -25,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		public override string Name => StateName;
 
 		public event Action<Exception> Exception;
-		public event Action Disconnected;
+		public event Action<Exception> Disconnected;
 
 		public GameState()
 		{
@@ -89,7 +90,7 @@ namespace PlayGen.ITAlert.Unity.States.Game
 		private void OnDisconnected()
 		{
 			_photonClient.DisconnectedEvent -= OnDisconnected;
-			Disconnected?.Invoke();
+			Disconnected?.Invoke(new System.Exception(Localization.Get("SERVER_DISCONNECT")));
 		}
 
 		private void OnClientException(Exception exception)
