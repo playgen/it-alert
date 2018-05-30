@@ -1,8 +1,11 @@
-﻿using GameWork.Core.States.Tick;
+﻿using System;
+
+using GameWork.Core.States.Tick;
 using PlayGen.ITAlert.Unity.States.Error;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Transitions;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States
 {
@@ -27,12 +30,10 @@ namespace PlayGen.ITAlert.Unity.States
 			// TODO: firgure out how to catch unmity exceptions and trigger state transition
 			// temporarily catch ui exception from the director ourselves
 			gameState.Exception += GameExceptionHandler.OnException;
+			gameState.Disconnected += GameExceptionHandler.OnException;
 			GameExceptionHandler.HadUnignoredExceptionEvent += hadExceptionTransition.ChangeState;
 
-			var disconnectedTransition = new OnEventTransition(ErrorState.StateName);
-			gameState.Disconnected += disconnectedTransition.ChangeState;
-
-			gameState.AddTransitions(hadExceptionTransition, disconnectedTransition);
+			gameState.AddTransitions(hadExceptionTransition);
 
 			return gameState;
 		}
