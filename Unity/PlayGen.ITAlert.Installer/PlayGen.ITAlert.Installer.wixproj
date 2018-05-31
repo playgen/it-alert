@@ -14,13 +14,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
-    <DefineConstants>Debug;SourcePath=$(SolutionDir)..\Build\ITAlert_StandaloneWindows64_Data</DefineConstants>
+    <DefineConstants>Debug;SourcePath=$(SolutionDir)..\Build\ITAlert_StandaloneWindows64\ITAlert_StandaloneWindows64_Data;MonoPath=$(SolutionDir)..\Build\ITAlert_StandaloneWindows64\MonoBleedingEdge</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="mono.wxs" />
     <Compile Include="Product.wxs" />
     <Compile Include="source.wxs" />
   </ItemGroup>
@@ -46,7 +47,8 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PreBuildEvent>"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)..\Build\ITAlert_StandaloneWindows64_Data" -dr ITAlertDIR -cg SourceComponentGroup -var var.SourcePath -gg -out "$(ProjectDir).\source.wxs"</PreBuildEvent>
+    <PreBuildEvent>"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)..\Build\ITAlert_StandaloneWindows64\ITAlert_StandaloneWindows64_Data" -dr ITAlertDIR -cg SourceComponentGroup -var var.SourcePath -gg -out "$(ProjectDir).\source.wxs"
+"%25WIX%25\bin\heat.exe" dir "$(SolutionDir)..\Build\ITAlert_StandaloneWindows64\MonoBleedingEdge" -dr ITAlertDIR -cg MonoComponentGroup -var var.MonoPath -gg -out "$(ProjectDir).\mono.wxs"</PreBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
