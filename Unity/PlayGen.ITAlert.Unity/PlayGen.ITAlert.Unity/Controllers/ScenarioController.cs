@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using GameWork.Core.Commands.Interfaces;
@@ -51,27 +52,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 				}
 			}
 
-			foreach (var scenario in scenarios)
-			{
-				LocalizeScenario(scenario);
-			}
-
-			ScenarioListSuccessEvent?.Invoke(scenarios);
-		}
-
-		private void LocalizeScenario(ScenarioInfo scenarioInfo)
-		{
-			var language = Localization.SelectedLanguage.TwoLetterISOLanguageName;
-			if (scenarioInfo.LocalizationDictionary.TryGetLocalizedStringForKey(language,
-				scenarioInfo.Name, out var name))
-			{
-				scenarioInfo.Name = name;
-			}
-			if (scenarioInfo.LocalizationDictionary.TryGetLocalizedStringForKey(language,
-				scenarioInfo.Description, out var description))
-			{
-				scenarioInfo.Description = description;
-			}
+			ScenarioListSuccessEvent?.Invoke(scenarios.ToArray());
 		}
 
 		public void SetQuickMatch(bool quick)
