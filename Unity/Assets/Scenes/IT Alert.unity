@@ -3956,6 +3956,16 @@ Prefab:
       propertyPath: m_AnchorMax.x
       value: 0.95
       objectReference: {fileID: 0}
+    - target: {fileID: 114942730453865642, guid: 5e34bf726e60e3b4cb2104c1cbda8645,
+        type: 2}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114432309880731428, guid: 5e34bf726e60e3b4cb2104c1cbda8645,
+        type: 2}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e34bf726e60e3b4cb2104c1cbda8645, type: 2}
   m_IsPrefabParent: 0
@@ -4828,7 +4838,12 @@ Prefab:
     - target: {fileID: 114432309880731428, guid: 5e34bf726e60e3b4cb2104c1cbda8645,
         type: 2}
       propertyPath: m_Text
-      value: Final Score
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 114942730453865642, guid: 5e34bf726e60e3b4cb2104c1cbda8645,
+        type: 2}
+      propertyPath: m_Text
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e34bf726e60e3b4cb2104c1cbda8645, type: 2}
