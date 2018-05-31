@@ -134,6 +134,12 @@ namespace PlayGen.ITAlert.Unity.Simulation
 		private void ShowEndGameScore(TeamScoringSystem teamScoringSystem, List<ITAlertPlayer> players)
 		{
 			var parent = _teamScoresParent.transform;
+
+			foreach (Transform t in parent)
+			{
+				Destroy(t.gameObject);
+			}
+
 			var playerScores = teamScoringSystem.GetPlayerScores();
 			var multiplier = 1 + teamScoringSystem.SystemHealth.Average();
 			var finalScore = Math.Round(playerScores.Sum(s => s.PublicScore) * multiplier);
