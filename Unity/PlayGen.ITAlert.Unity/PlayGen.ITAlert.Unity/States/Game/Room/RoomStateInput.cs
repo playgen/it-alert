@@ -210,7 +210,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 					}
 				}
 			}
-			_playerVoiceItems.Select(p => p.Value.NameText).ToList().BestFit();
+			_playerVoiceItems.Select(p => p.Value.NameText).Where(t => t != null).ToList().BestFit();
 			//_chatPanel.BestFit();
 		}
 
