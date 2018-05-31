@@ -31,7 +31,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Summary
 		);
 
 		public static SummaryMetricConfig AntivirusesUsed = new SummaryMetricConfig(
-			"ANTIVIRUS_USED", 
+			"ANTIVIRUSES_USED", 
 			"antivirus", 
 			true
 		);

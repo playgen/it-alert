@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			public Text ScoreIncrementText { get; set; }
 
-			public int TicksRemainingToShowIncrement { get; set; }
+			public float TimeRemainingToShowIncrement { get; set; }
 		}
 
 		private Dictionary<int, PlayerVoiceItem> _playerVoiceItems;
@@ -52,7 +52,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
 
-		private const int TicksToShowIncrement = 200;
+		private const int TimeToShowIncrement = 1;
 
 		private bool _gameEnded = false;
 
@@ -102,7 +102,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			if (_chatPanel.activeSelf)
 			{
-				UpdateChatPanel();
+				UpdateChatPanel(deltaTime);
 			}
 		}
 
@@ -179,7 +179,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void UpdateChatPanel()
+		private void UpdateChatPanel(float deltatime)
 		{
 			foreach (var player in _playerVoiceItems)
 			{
@@ -195,12 +195,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 								// value has changed
 								var increment = GetScoreDifference(player.Value.ScoreText.text, score);
 								player.Value.ScoreIncrementText.text = increment;
-								player.Value.TicksRemainingToShowIncrement = TicksToShowIncrement;
+								player.Value.TimeRemainingToShowIncrement = TimeToShowIncrement;
 							}
 							player.Value.ScoreText.text = score.ToString();
 
 							player.Value.ScoreText.gameObject.SetActive(!_gameEnded);
-							var remaining = --player.Value.TicksRemainingToShowIncrement;
+							var remaining = player.Value.TimeRemainingToShowIncrement -= deltatime;
 							player.Value.ScoreIncrementText.gameObject.SetActive(remaining > 0);
 						}
 					}
