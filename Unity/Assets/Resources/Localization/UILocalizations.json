@@ -26,6 +26,7 @@
 {"Key":"PAUSE_BUTTON_SETTINGS","en":"Settings","nl":"Instellingen"},
 {"Key":"PAUSE_BUTTON_MENU","en":"Main Menu","nl":"Hoofdmenu"},
 {"Key":"VOICE_PUSH_TO_TALK","en":"Push {0} to talk","nl":"Druk {0} om te praten"},
+{"Key":"VOICE_PRESS_TO_TALK","en":"Press here to talk","nl":"Druk hier om te praten"},
 {"Key":"ERROR_LABEL_TITLE","en":"Error","nl":"Fout"},
 {"Key":"CONNECTION_LABEL","en":"Game Server:","nl":"Spel Server:"},
 {"Key":"CONNECTION_LABEL_CONNECTED","en":"Connected","nl":"Verbonden"},
