@@ -12,14 +12,14 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 {
 	public static class ActivationEventScoring
 	{
-		/// ---------------------------------------------
-		///			Scoring Event Multipliers
-		/// Event		Result					Modifier
+		// ---------------------------------------------
+		//			Scoring Event Multipliers
+		// Event		Result					Modifier
 		
-		/// Analyser	NoSamplePresent			-1
-		/// Analyser	OutputContainerFull		-1
-		/// Analyser	AnalysisComplete		2
-		/// Analyser	Error					0
+		// Analyser	NoSamplePresent			-1
+		// Analyser	OutputContainerFull		-1
+		// Analyser	AnalysisComplete		2
+		// Analyser	Error					0
 		public static int GetMultiplier(AnalyserActivationEvent.AnalyserActivationResult result)
 		{
 			switch (result)
@@ -34,10 +34,10 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 			}
 		}
 
-		/// Antivirus	NoVirusPresent			-1
-		/// Antivirus	IncorrectGenome			-1
-		/// Antivirus	SoloExtermination		5
-		/// Antivirus	CoopExtermination		10
+		// Antivirus	NoVirusPresent			-1
+		// Antivirus	IncorrectGenome			-1
+		// Antivirus	SoloExtermination		5
+		// Antivirus	CoopExtermination		10
 		/// Antivirus	Error					0
 		public static int GetMultiplier(AntivirusActivationEvent.AntivirusActivationResult result)
 		{
@@ -55,11 +55,11 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 			}
 		}
 
-		/// Capture		NoVirusPresent			-1
-		/// Capture		SimpleGenomeCaptured	2
-		/// Capture		ComplexGenomeCaptured	5
-		/// Capture		GenomeAlreadyCaptured	0
-		/// Capture		Error					0
+		// Capture		NoVirusPresent			-1
+		// Capture		SimpleGenomeCaptured	2
+		// Capture		ComplexGenomeCaptured	5
+		// Capture		GenomeAlreadyCaptured	0
+		// Capture		Error					0
 		public static int GetMultiplier(CaptureActivationEvent.CaptureActivationResult result)
 		{
 			switch (result)
@@ -75,10 +75,10 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 			}
 		}
 
-		/// Scanner		VirusAlreadyVisible		-1
-		/// Scanner		VirusRevealed			2
-		/// Scanner		NoVirusPresent			0
-		/// Scanner		Error					0
+		// Scanner		VirusAlreadyVisible		-1
+		// Scanner		VirusRevealed			2
+		// Scanner		NoVirusPresent			0
+		// Scanner		Error					0
 		public static int GetMultiplier(ScannerActivationEvent.ScannerActivationResult result)
 		{
 			switch (result)
@@ -92,11 +92,11 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 			}
 		}
 
-		/// Transfer	PulledItem				1
-		/// Transfer	PushedItem				1
-		/// Transfer	SwappedItems			1
-		/// Transfer	NoItemsPresent			0
-		/// Transfer	Error					0
+		// Transfer	PulledItem				1
+		// Transfer	PushedItem				1
+		// Transfer	SwappedItems			1
+		// Transfer	NoItemsPresent			0
+		// Transfer	Error					0
 		public static int GetMultiplier(TransferActivationEvent.TransferActivationResult result)
 		{
 			switch (result)
@@ -108,6 +108,15 @@ namespace PlayGen.ITAlert.Simulation.Scoring
 				default:
 					return 0;
 			}
+		}
+
+		// Malware	AlreadyInfected			0
+		// Malware	InfectionSpread			0
+		// Malware	InfectionMutated		0
+		// Malware	Error					0
+		public static int GetMultiplier(MalwarePropogationEvent.MalwarePropogationResult result)
+		{
+			return 0;
 		}
 		
 	}
