@@ -64,7 +64,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			}
 			catch (Exception ex)
 			{
-				throw new PhotonVoiceException("Error processing voice communciation", ex);
+				throw new PhotonVoiceException("Error processing voice communication", ex);
 			}
 		}
 	}

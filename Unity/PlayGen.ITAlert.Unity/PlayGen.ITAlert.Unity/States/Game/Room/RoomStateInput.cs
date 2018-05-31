@@ -226,7 +226,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var pushToTalk = _chatPanel.transform.FindText("PushToTalk/PushToTalk Text");
 			if (pushToTalk != null)
 			{
-				pushToTalk.text = Localization.GetAndFormat("VOICE_PUSH_TO_TALK", false, "TAB");
+			    pushToTalk.text = Localization.GetAndFormat(
+			        Application.isMobilePlatform 
+			            ? "VOICE_PRESS_TO_TALK" 
+			            : "VOICE_PUSH_TO_TALK", 
+			        false, 
+			        "TAB");
 			}
 		}
 	}
