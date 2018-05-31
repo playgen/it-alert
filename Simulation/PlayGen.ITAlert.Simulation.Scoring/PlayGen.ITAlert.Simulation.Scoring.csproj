@@ -41,6 +41,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActivationEventScoring.cs" />
     <Compile Include="Player\Antivirus\CaptureActivationScoringEventHandler.cs" />
     <Compile Include="Player\Antivirus\AnalyserActivationScoringEventHandler.cs" />
     <Compile Include="Player\Antivirus\AntivirusActivationScoringEventHandler.cs" />

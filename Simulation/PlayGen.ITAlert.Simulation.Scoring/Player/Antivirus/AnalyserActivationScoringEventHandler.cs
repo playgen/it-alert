@@ -34,15 +34,14 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Player.Antivirus
 					case AnalyserActivationEvent.AnalyserActivationResult.NoSamplePresent:
 					case AnalyserActivationEvent.AnalyserActivationResult.OutputContainerFull:
 						playerTuple.Component2.ResourceManagement -= 1;
-						playerTuple.Component2.ActionCompleted(-1);
 						break;
 					case AnalyserActivationEvent.AnalyserActivationResult.AnalysisComplete:
 						playerTuple.Component2.ResourceManagement += 1;
 						// one extra if the workstation is infected
 						playerTuple.Component2.Systematicity += 1 + (avWorkstationInfected ? 1 : 0);
-						playerTuple.Component2.ActionCompleted(2);
 						break;
 				}
+				playerTuple.Component2.ActionCompleted(ActivationEventScoring.GetMultiplier(@event.ActivationResult));
 			}
 		}
 
