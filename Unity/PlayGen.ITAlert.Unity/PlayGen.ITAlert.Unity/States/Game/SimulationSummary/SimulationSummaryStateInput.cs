@@ -4,9 +4,12 @@ using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Unity.Components;
+using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
+using PlayGen.SUGAR.Unity;
 using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
@@ -28,7 +31,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 	    private Transform _playerMetricsContainer;
 	    private GameObject _playerMetricsResource;
 
-
+	    private ITAlertPhotonClient _photonClient;
         public event Action ContinueClickedEvent;
 
         private readonly List<SummaryMetricConfig> _multiplayerMetrics = new List<SummaryMetricConfig>
@@ -71,9 +74,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             SummaryMetricConfigs.AntivirusCreationFails
         };
 
-        public SimulationSummaryStateInput(SimulationSummary simulationSummary)
+        public SimulationSummaryStateInput(SimulationSummary simulationSummary, ITAlertPhotonClient photonClient)
         {
             _simulationSummary = simulationSummary;
+	        _photonClient = photonClient;
         }
 
         protected override void OnInitialize()
@@ -85,13 +89,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             _columnResource = Resources.Load<GameObject>("SimulationSummaryColumn");
             _rowItemResource = Resources.Load<GameObject>("SimulationSummaryRowItem");
 	        _playerMetricsResource = Resources.Load<GameObject>("PlayerMetricContainer");
-        }
+		}
 
         protected override void OnEnter()
         {
 	        _panel.SetActive(true);
-			
-			var bestFitGroups = PopulateMetrics();
+
+	        var bestFitGroups = PopulateMetrics();
             _continueButton.onClick.AddListener(OnContinueClicked);
             bestFitGroups.ForEach(bfg => bfg.BestFit());
         }
@@ -114,7 +118,21 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         private void OnContinueClicked()
         {
-            ContinueClickedEvent?.Invoke();
+			if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
+	        {
+		        // The following string contains the key for the google form is used for the cognitive load questionnaire
+		        var formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
+
+		        // Google form ID
+		        var googleFormsURL = "https://docs.google.com/forms/d/e/"
+		                             + formsKey
+		                             + "/viewform?entry.1596836094="
+		                             + SUGARManager.CurrentUser.Name;
+		        // Open the default browser and show the form
+		        Application.OpenURL(googleFormsURL);
+		        Application.Quit();
+	        }
+			ContinueClickedEvent?.Invoke();
         }
 
         private IEnumerable<List<Text>> PopulateMetrics()
@@ -140,9 +158,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
 			foreach (var metricConfig in metricConfigs)
             {
-                sumByPlayerByMetrics.TryGetValue(metricConfig.KeyMetric, out var valueByPlayer);
+				sumByPlayerByMetrics.TryGetValue(metricConfig.KeyMetric, out var valueByPlayer);
 
-                column = CreateColumn();
+				column = CreateColumn();
                 SetLocalizedTitle(column, metricConfig.KeyMetric, metricTitleBestFitGroup);
                 SetIcon(column, metricConfig.IconPath);
                 AddItems(
