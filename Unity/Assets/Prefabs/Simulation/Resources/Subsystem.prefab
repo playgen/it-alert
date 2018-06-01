@@ -348,6 +348,7 @@ MonoBehaviour:
   _cpuImageRight: {fileID: 114039314195019164}
   _cpuLeft: {fileID: 1465333831451354}
   _cpuRight: {fileID: 1441770524339952}
+  _cpuConnection: {fileID: 1000010845451186}
   _sprite: {fileID: 114300050959162016}
   _blink: {fileID: 114285210407176144}
   _connectionSquare: {fileID: 1394528046241312}

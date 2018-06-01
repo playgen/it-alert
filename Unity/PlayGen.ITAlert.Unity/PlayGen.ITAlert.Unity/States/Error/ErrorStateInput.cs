@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Loading;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Error
 {
@@ -39,7 +40,7 @@ namespace PlayGen.ITAlert.Unity.States.Error
 			try
 			{
 				var exceptionString = GameExceptionHandler.Exception?.ToString();
-				_messageText.text = exceptionString?.Substring(0, Math.Min(exceptionString.Length, 3000)) ?? string.Empty;
+				_messageText.text = exceptionString?.Substring(0, Math.Min(exceptionString.Length, 3000)) ?? Localization.Get("SERVER_DISCONNECT");
 				_panelVisibility.gameObject.SetActive(true);
 				_buttons.Buttons.BestFit();
 
