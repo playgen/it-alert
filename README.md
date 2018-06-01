@@ -23,3 +23,6 @@ OR
 # Deployment
 ## Run Instructions
 To run the Photon Server as a service, see this [ReadMe](Server/deploy/ReadMe.md).
+
+## Android Build
+At the time of writing, builds need to be done using the Unity Build Setting "Internal" rather than "Gradle"..
