@@ -1,4 +1,7 @@
 # Running the Server
+## Configuring the IP
+Make sure to set the correct IP for the host in the Photon.LoadBalancing.dll.config file.
+
 ## As a Service:
 1. Remove previous  
 1.1. Check if Photon Control is running by checking the system tray  
