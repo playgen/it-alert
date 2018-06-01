@@ -469,6 +469,10 @@ Prefab:
       propertyPath: m_Color.b
       value: 0.92156863
       objectReference: {fileID: 0}
+    - target: {fileID: 1222140792331538, guid: 332367b908fb8024194241202422f8a5, type: 2}
+      propertyPath: m_Name
+      value: ChangeIconButtonContainer
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 332367b908fb8024194241202422f8a5, type: 2}
   m_IsPrefabParent: 0

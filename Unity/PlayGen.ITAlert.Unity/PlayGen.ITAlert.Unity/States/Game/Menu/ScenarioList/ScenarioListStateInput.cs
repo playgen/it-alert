@@ -13,6 +13,7 @@ using PlayGen.Unity.Utilities.BestFit;
 using PlayGen.Unity.Utilities.Extensions;
 
 using Object = UnityEngine.Object;
+using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 {
@@ -107,8 +108,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 
 		private void SelectScenario(ScenarioInfo scenario)
 		{
-			_selectedName.text = scenario.Name;
-			_selectedDescription.text = scenario.Description;
+			scenario.LocalizationDictionary.TryGetLocalizedStringForKey(Localization.SelectedLanguage.TwoLetterISOLanguageName, scenario.Name, out var name);
+			scenario.LocalizationDictionary.TryGetLocalizedStringForKey(Localization.SelectedLanguage.TwoLetterISOLanguageName, scenario.Description, out var description);
+			_selectedName.text = name ?? scenario.Name;
+			_selectedDescription.text = description ?? scenario.Description;
 			_scenarioSelectPanel.SetActive(true);
 			_selectButton.gameObject.SetActive(true);
 			_selectButton.gameObject.BestFit();
@@ -142,8 +145,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			// Populate Scenario list UI
 			foreach (var scenario in scenarios)
 			{
+				scenario.LocalizationDictionary.TryGetLocalizedStringForKey(Localization.SelectedLanguage.TwoLetterISOLanguageName, scenario.Name, out var name);
 				var gameItem = Object.Instantiate(_scenarioItemPrefab).transform;
-				gameItem.Find("Name").GetComponent<Text>().text = scenario.Name;
+				gameItem.Find("Name").GetComponent<Text>().text = name ?? scenario.Name;
 				var players = scenario.MinPlayerCount != scenario.MaxPlayerCount 
 					? $"{scenario.MinPlayerCount}-{scenario.MaxPlayerCount}"
 					: scenario.MaxPlayerCount.ToString();

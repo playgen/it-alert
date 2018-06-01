@@ -130,44 +130,40 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList
 			// Populate Game list UI
 			foreach (var room in rooms)
 			{
-				var gameItem = Object.Instantiate(_gameItemPrefab).transform;
-				var name = room.name;
-				var scenario = room.customProperties[CustomRoomSettingKeys.GameScenario];
-				gameItem.Find("Name").GetComponent<Text>().text = name;
-				gameItem.Find("Scenario").GetComponent<Text>().text = (string)scenario;
-				gameItem.Find("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
-				var minPlayers = room.customProperties[CustomRoomSettingKeys.MinPlayers];
-
-				if (room.playerCount == room.maxPlayers || (minPlayers != null && (int)minPlayers > room.playerCount))
-				{
-					ColorUtility.TryParseHtmlString("#E32730", out var red);
-					gameItem.Find("Name").GetComponent<Text>().color = red;
-					gameItem.Find("Scenario").GetComponent<Text>().color = red;
-					gameItem.Find("Players").GetComponent<Text>().color = red;
-				}
-				gameItem.SetParent(_gameListObject.transform, false);
-
-				// set anchors
-				var gameItemRect = gameItem.RectTransform();
-
-				gameItemRect.pivot = new Vector2(0.5f, 1f);
-				gameItemRect.anchorMax = Vector2.one;
-				gameItemRect.anchorMin = new Vector2(0f, 1f);
-
-				gameItemRect.offsetMin = new Vector2(0f, offset - height);
-				gameItemRect.offsetMax = new Vector2(0f, offset);
-
-				// increment the offset
-				offset -= height;
-
-				// add listener to each button to join specifc game 
 				if (room.playerCount < room.maxPlayers)
 				{
+					var gameItem = Object.Instantiate(_gameItemPrefab).transform;
+					var name = room.name;
+					var scenario = room.customProperties[CustomRoomSettingKeys.GameScenario];
+					gameItem.Find("Name").GetComponent<Text>().text = name;
+					gameItem.Find("Scenario").GetComponent<Text>().text = (string)scenario;
+					gameItem.Find("Players").GetComponent<Text>().text = room.playerCount + "/" + room.maxPlayers;
+					var minPlayers = room.customProperties[CustomRoomSettingKeys.MinPlayers];
+
+					if (minPlayers != null && (int)minPlayers > room.playerCount)
+					{
+						ColorUtility.TryParseHtmlString("#E32730", out var red);
+						gameItem.Find("Name").GetComponent<Text>().color = red;
+						gameItem.Find("Scenario").GetComponent<Text>().color = red;
+						gameItem.Find("Players").GetComponent<Text>().color = red;
+					}
+					gameItem.SetParent(_gameListObject.transform, false);
+
+					// set anchors
+					var gameItemRect = gameItem.RectTransform();
+
+					gameItemRect.pivot = new Vector2(0.5f, 1f);
+					gameItemRect.anchorMax = Vector2.one;
+					gameItemRect.anchorMin = new Vector2(0f, 1f);
+
+					gameItemRect.offsetMin = new Vector2(0f, offset - height);
+					gameItemRect.offsetMax = new Vector2(0f, offset);
+
+					// increment the offset
+					offset -= height;
+
+					// add listener to each button to join specifc game 
 					gameItem.Find("Join").GetComponent<Button>().onClick.AddListener(delegate { JoinGame(name); });
-				}
-				else
-				{
-					gameItem.Find("Join").gameObject.SetActive(false);
 				}
 			}
 			// Set the content box to be the correct size for our elements
