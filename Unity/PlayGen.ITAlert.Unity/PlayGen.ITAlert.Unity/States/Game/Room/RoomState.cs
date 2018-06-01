@@ -4,6 +4,7 @@ using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
+using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
@@ -11,6 +12,7 @@ using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Messages.Error;
 using PlayGen.Photon.Messaging;
+using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room
 {
@@ -21,13 +23,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		
 		private readonly RoomStateControllerFactory _controllerFactory;
 		private readonly ITAlertPhotonClient _photonClient;
+	    private readonly Director _director;
 
-		private TickStateController _stateController;
+        private TickStateController _stateController;
 		private VoiceController _voiceController;
+	    private PressedState _talkButton;
 
-		private readonly Director _director;
-
-	    public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
+        public RoomState(RoomStateInput roomStateInput, ITAlertPhotonClient photonClient,
 		    SimulationSummary.SimulationSummary simulationSummary) 
 			: base(roomStateInput)
 		{
@@ -37,21 +39,32 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			_controllerFactory = new RoomStateControllerFactory(_director, photonClient, simulationSummary);
 		}
 
-		public void SetSubstateParentController(StateControllerBase parentStateController)
+        public void SetSubstateParentController(StateControllerBase parentStateController)
 		{
 			_controllerFactory.ParentStateController = parentStateController;
 		}
 
-		protected override void OnEnter()
+	    protected override void OnInitialize()
+	    {
+	        var chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
+	        _talkButton = chatPanel.GetComponent<PressedState>();
+	        
+            base.OnInitialize();
+	    }
+
+	    protected override void OnEnter()
 		{
 			LogProxy.Info("RoomState: OnEnter");
 
+            _photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.Error, ProcessErrorMessage);
 
-			_photonClient.CurrentRoom.Messenger.Subscribe((int)ITAlertChannel.Error, ProcessErrorMessage);
-
-			_voiceController = new VoiceController(_photonClient, _director);
-
-			_stateController = _controllerFactory.Create();
+            _voiceController = new VoiceController(
+			    _photonClient, 
+			    _director,
+                () => Input.GetKeyDown(KeyCode.Tab) || _talkButton.IsDownFrame,
+                () => Input.GetKeyUp(KeyCode.Tab) || _talkButton.IsUpFrame || !Application.isFocused);
+            
+            _stateController = _controllerFactory.Create();
 			_stateController.Initialize();
 
 			if (!GameExceptionHandler.HasException)
@@ -60,7 +73,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void ProcessErrorMessage(Message message)
+	    private void ProcessErrorMessage(Message message)
 		{
 			if (message is ErrorMessage errorMessage)
 		    {
@@ -73,8 +86,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		{
 			LogProxy.Info("RoomState: OnExit");
 
-
-			_director.StopWorker();
+            _director.StopWorker();
 			_director.ResetDirector();
 
 			_photonClient.CurrentRoom?.Leave();

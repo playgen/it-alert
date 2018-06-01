@@ -12,13 +12,21 @@ namespace PlayGen.ITAlert.Unity.Controllers
 	{
 		private readonly ITAlertPhotonClient _photonClient;
 		private readonly Director _director;
+	    private readonly Func<bool> _getActivated;
+	    private readonly Func<bool> _getDeactivated;
 
-		private VoiceClient VoiceClient => _photonClient?.CurrentRoom?.VoiceClient;
+	    private VoiceClient VoiceClient => _photonClient?.CurrentRoom?.VoiceClient;
 
-		public VoiceController(ITAlertPhotonClient photonClient, Director director)
+        public VoiceController(
+            ITAlertPhotonClient photonClient,
+            Director director,
+            Func<bool> getActivated,
+            Func<bool> getDeactivated)
 		{
 			_photonClient = photonClient;
 			_director = director;
+		    _getActivated = getActivated;
+		    _getDeactivated = getDeactivated;
 		}
 
 		/// <summary>
@@ -31,7 +39,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 			{
 				if (VoiceClient != null && _photonClient.CurrentRoom.Players.Count > 1)
 				{
-					if (Input.GetKeyDown(KeyCode.Tab))
+					if (_getActivated())
 					{
 						if (!VoiceClient?.IsTransmitting ?? false)
 						{
@@ -46,7 +54,7 @@ namespace PlayGen.ITAlert.Unity.Controllers
 							}
 						}
 					}
-					if (Input.GetKeyUp(KeyCode.Tab) || !Application.isFocused)
+					if (_getDeactivated())
 					{
 						if ((bool)VoiceClient?.IsTransmitting)
 						{
