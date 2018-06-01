@@ -49,7 +49,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private GameObject _chatPanel;
         private GameObject _playerChatItemPrefab;
 	    private Transform _pushToTalkText;
-	    private Button _pressToTalkButton;
+	    private Button _pressToTalkButton;  
 
         public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
@@ -175,7 +175,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				playerVoiceItem.VoiceIcon.color = colour;
 				playerVoiceItem.ScoreIncrementText.color = colour;
 
-			    if (Director.Player.PhotonId == player.PhotonId && PlatformUtils.IsMobile)
+			    if (PhotonNetwork.player.ID == player.PhotonId && PlatformUtils.IsMobile)
 			    {
 			        UpdatePressToTalkButton(colour);
 			    }
@@ -188,8 +188,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 	    private void UpdatePressToTalkButton(Color colour)
 	    {
-	        _pressToTalkButton.transform.Find("Icon").GetComponent<Image>().color = colour;
-	     }
+            _pressToTalkButton.transform.Find("Icon").GetComponent<Image>().color = colour;
+        }
 
 	    private void SetScoringSystem()
 		{
@@ -238,11 +238,11 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 	    private void CheckShowToTalk()
 	    {
-            if (_toTalkToggle.activeSelf )//todo && _playerVoiceItems.Count <= 1)
+            if (_toTalkToggle.activeSelf && _playerVoiceItems.Count <= 1)
 	        {
 	            _toTalkToggle.SetActive(false);
 	        }
-	        else if (!_toTalkToggle.activeSelf)//todo && _playerVoiceItems.Count > 1)
+	        else if (!_toTalkToggle.activeSelf && _playerVoiceItems.Count > 1)
 	        {
 	            _toTalkToggle.SetActive(true);
 	        }
