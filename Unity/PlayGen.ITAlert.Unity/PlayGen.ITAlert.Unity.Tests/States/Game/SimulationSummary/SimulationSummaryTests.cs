@@ -11,6 +11,8 @@ using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
+using PlayGen.ITAlert.Unity.States.Game.Room;
+using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.States.Game.SimulationSummary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -171,6 +173,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
             var rootStateControllerStates = GetStates(rootStateController);
 
             var gameState = (GameState)rootStateControllerStates[GameState.StateName];
+			
 
             var gameStateController = GetStateController<TickStateController>(gameState);
 
@@ -181,17 +184,21 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
                 yield return null;
             }
 
-            var simulationSummaryState = GetStates(gameStateController)[SimulationSummaryState.StateName];
+
+	        var roomState = GetStates(gameStateController)[RoomState.StateName];
+			var roomStateController = GetStateController<TickStateController>(roomState);
+
+			var simulationSummaryState = GetStates(roomStateController)[SimulationSummaryState.StateName];
             var simulationSummary = (Unity.States.Game.SimulationSummary.SimulationSummary)simulationSummaryState
-                .GetType()
+				.GetType()
                 .GetField("_simulationSummary", BindingFlags.NonPublic | BindingFlags.Instance)
                 .GetValue(simulationSummaryState);
 
-            // Add the events to the simulation summary
-            var events = ParseDump();
+			// Add the events to the simulation summary
+			var events = ParseDump();
             simulationSummary.SetData(events, playersData);
 
-            gameStateController.ExitState(gameStateController.ActiveStateName);
+			gameStateController.ExitState(roomStateController.ActiveStateName);
             gameStateController.EnterState(SimulationSummaryState.StateName);
 
             while (!Input.GetKey(KeyCode.Escape))
@@ -204,15 +211,13 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
             where T : StateControllerBase
         {
             Assert.IsNotNull(container);
-
             var stateControllerField = container.GetType()
                 .GetField("_stateController", BindingFlags.NonPublic | BindingFlags.Instance);
             Assert.IsNotNull(stateControllerField);
-
             var stateController = (T)stateControllerField.GetValue(container);
             Assert.IsNotNull(stateController);
 
-            return stateController;
+			return stateController;
         }
 
         public static Dictionary<string, TState> GetStates<TState>(StateController<TState> stateController)
