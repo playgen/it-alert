@@ -238,6 +238,7 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
+    <Compile Include="Components\PressedState.cs" />
     <Compile Include="Components\StringExtensions.cs" />
     <Compile Include="Components\TextCutoff.cs" />
     <Compile Include="Debug\DebugCommands.cs" />
