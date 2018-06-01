@@ -22,7 +22,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		public LobbyState(LobbyStateInput input, LobbyController controller, ITAlertPhotonClient photonClient)
 			: base(input)
 		{
-			input.LeaveLobbyClickedEvent += LeaveLobby;
 			_controller = controller;
 			_photonClient = photonClient;
 		}
@@ -57,11 +56,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 				var colorCommand = command as ChangePlayerColorCommand;
 			    colorCommand?.Execute(_controller);
 			}
-		}
-
-		private void LeaveLobby()
-		{
-			_photonClient.CurrentRoom.Leave();
 		}
 
 		// ReSharper disable once InconsistentNaming

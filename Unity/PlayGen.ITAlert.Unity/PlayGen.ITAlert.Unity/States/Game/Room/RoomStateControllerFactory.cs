@@ -66,7 +66,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var initializingTransition = new OnMessageTransition(photonClient, ITAlertChannel.GameState, typeof(InitializingMessage), InitializingState.StateName);
 			var toMenuStateTransition = new OnEventTransition(MenuState.StateName);
 
-			photonClient.LeftRoomEvent += toMenuStateTransition.ChangeState;
+			lobbyStateInput.LeaveLobbyClickedEvent += toMenuStateTransition.ChangeState;
 
 			lobbyState.AddTransitions(initializingTransition, toMenuStateTransition);
 
@@ -86,7 +86,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			pausedStateInput.ContinueClickedEvent += toPlayingStateTransition.ChangeState;
 			pausedStateInput.SettingsClickedEvent += toSettingsStateTransition.ChangeState;
 			pausedStateInput.QuitClickedEvent += quitTransition.ChangeState;
-			pausedStateInput.QuitClickedEvent += photonClient.CurrentRoom.Leave;
 
 			pausedState.AddTransitions(onFeedbackStateSyncTransition, toPlayingStateTransition, toSettingsStateTransition, quitTransition);
 

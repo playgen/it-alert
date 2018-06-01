@@ -328,7 +328,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("MOVE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "MOVE_BUTTON";
 					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
-					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
+					_descriptionText.fontSize = bestFitSize;
 				}
 				else if (!container.CanRelease && CanActivate && CurrentLocation.Value != null)
 				{
@@ -342,7 +342,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_middleButton.GetComponentInChildren<Text>().text = Localization.Get("USE_BUTTON");
 					_middleButton.GetComponentInChildren<TextLocalization>().Key = "USE_BUTTON";
 					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit(true, new List<string> { Localization.Get("USE_BUTTON"), Localization.Get("MOVE_BUTTON"), Localization.Get("TAKE_BUTTON") });
-					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
+					_descriptionText.fontSize = bestFitSize;
 				}
 				else if (CurrentLocation.Value == null)
 				{
