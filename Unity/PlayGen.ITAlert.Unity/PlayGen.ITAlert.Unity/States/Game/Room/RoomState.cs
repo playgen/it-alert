@@ -47,7 +47,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 	    protected override void OnInitialize()
 	    {
 	        var chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
-	        _talkButton = chatPanel.GetComponent<PressedState>();
+	        _talkButton = GameObjectUtilities.FindGameObject("Voice/PressToTalkButtonContainer").GetComponent<PressedState>();
 	        
             base.OnInitialize();
 	    }
