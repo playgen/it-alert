@@ -260,6 +260,8 @@
     <Compile Include="Simulation\Summary\SummaryMetricConfigs.cs" />
     <Compile Include="States\Game\Room\Initializing\InitializingStateInput.cs" />
     <Compile Include="Simulation\Summary\MetricProcessor.cs" />
+    <Compile Include="States\Game\Room\LaunchQuestionnaire\LaunchQuestionnaireState.cs" />
+    <Compile Include="States\Game\Room\LaunchQuestionnaire\LaunchQuestionnaireStateInput.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummaryState.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummaryStateInput.cs" />
     <Compile Include="States\Game\SimulationSummary\SimulationSummary.cs" />
