@@ -103,6 +103,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 	    protected override void OnExit()
 		{
 		    _chatPanel.SetActive(false);
+            _toTalkToggle.SetActive(false);
+
             _photonClient.CurrentRoom.PlayerListUpdatedEvent -= PlayersUpdated;
 			Director.Reset -= SetScoringSystem;
 			Director.GameEnded -= GameFinished;
@@ -123,7 +125,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void PlayersUpdated(List<ITAlertPlayer> players)
 		{
-			foreach (var player in players)
+		    CheckShowToTalk(players.Count);
+
+            foreach (var player in players)
 			{
 				if (_playerVoiceItems.TryGetValue(player.PhotonId, out var playerVoiceItem) == false)
 				{
@@ -201,8 +205,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void UpdateChatPanel(float deltatime)
 		{
-		    CheckShowToTalk();
-		    
 			foreach (var player in _playerVoiceItems)
 			{
 				if (player.Value != null && player.Value.ScoreText != null && player.Value.VoiceIcon != null)
@@ -236,13 +238,13 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			//_chatPanel.BestFit();
 		}
 
-	    private void CheckShowToTalk()
+	    private void CheckShowToTalk(int playerCount)
 	    {
-            if (_toTalkToggle.activeSelf && _playerVoiceItems.Count <= 1)
+            if (_toTalkToggle.activeSelf && playerCount <= 1)
 	        {
 	            _toTalkToggle.SetActive(false);
 	        }
-	        else if (!_toTalkToggle.activeSelf && _playerVoiceItems.Count > 1)
+	        else if (!_toTalkToggle.activeSelf && playerCount > 1)
 	        {
 	            _toTalkToggle.SetActive(true);
 	        }
