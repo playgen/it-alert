@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 224954105031785238}
   - component: {fileID: 222592381696145456}
   - component: {fileID: 114647936416543054}
+  - component: {fileID: 114033660808132556}
   m_Layer: 0
   m_Name: Background
   m_TagString: Subsystem
@@ -187,6 +188,7 @@ GameObject:
   - component: {fileID: 224689815138633338}
   - component: {fileID: 222294681999844276}
   - component: {fileID: 114068446498075636}
+  - component: {fileID: 114386317535048634}
   m_Layer: 0
   m_Name: Background
   m_TagString: Subsystem
@@ -399,6 +401,18 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114033660808132556
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1505052116896710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 314147913, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverText: CPU_DESCRIPTION
 --- !u!114 &114038645907666518
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,6 +594,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114386317535048634
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1514680895723092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 314147913, guid: 245d17946616d1d45b546fec5936ce65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hoverText: CPU_DESCRIPTION
 --- !u!114 &114502295599524036
 MonoBehaviour:
   m_ObjectHideFlags: 1
