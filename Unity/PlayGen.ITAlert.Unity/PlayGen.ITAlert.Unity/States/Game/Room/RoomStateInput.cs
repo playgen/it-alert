@@ -47,16 +47,17 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private readonly ITAlertPhotonClient _photonClient;
 		private GameObject _chatPanel;
-		private GameObject _playerChatItemPrefab;
+        private GameObject _playerChatItemPrefab;
+	    private Transform _pushToTalk;
 
-		public Director Director { get; }
+        public Director Director { get; }
 		private PlayerScoringSystem _scoringSystem;
 
 		private const int TimeToShowIncrement = 1;
 
 		private bool _gameEnded = false;
-
-		public RoomStateInput(ITAlertPhotonClient photonClient)
+	    
+	    public RoomStateInput(ITAlertPhotonClient photonClient)
 		{
 			_photonClient = photonClient;
 			Director = GameObjectUtilities.FindGameObject("Game").GetComponent<Director>();
@@ -66,15 +67,16 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		protected override void OnInitialize()
 		{
 			_chatPanel = GameObjectUtilities.FindGameObject("Voice/VoicePanelContainer").gameObject;
-			_playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
-			Localization.LanguageChange += OnLanguageChange;
+		    _playerChatItemPrefab = Resources.Load("PlayerChatEntry") as GameObject;
+		    _pushToTalk = _chatPanel.transform.Find("PushToTalk");
+            Localization.LanguageChange += OnLanguageChange;
 			OnLanguageChange();
 		}
 
 		protected override void OnEnter()
 		{
 			_photonClient.CurrentRoom.PlayerListUpdatedEvent += PlayersUpdated;
-			_chatPanel.SetActive(int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0);
+            _chatPanel.SetActive(int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0);
 
 			foreach (var playerVoiceItem in _chatPanel.transform)
 			{
@@ -90,10 +92,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			Director.GameEnded += GameFinished;
 		}
 
-		protected override void OnExit()
+	    protected override void OnExit()
 		{
-			_chatPanel.SetActive(false);
-			_photonClient.CurrentRoom.PlayerListUpdatedEvent -= PlayersUpdated;
+		    _chatPanel.SetActive(false);
+            _photonClient.CurrentRoom.PlayerListUpdatedEvent -= PlayersUpdated;
 			Director.Reset -= SetScoringSystem;
 			Director.GameEnded -= GameFinished;
 		}
@@ -106,7 +108,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			}
 		}
 
-		private void GameFinished(EndGameState endGameState)
+        private void GameFinished(EndGameState endGameState)
 		{
 			_gameEnded = true;
 		}
@@ -181,6 +183,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void UpdateChatPanel(float deltatime)
 		{
+		    CheckShowPushToTalk();
+		    
 			foreach (var player in _playerVoiceItems)
 			{
 				if (player.Value != null && player.Value.ScoreText != null && player.Value.VoiceIcon != null)
@@ -214,7 +218,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			//_chatPanel.BestFit();
 		}
 
-		private string GetScoreDifference(string current, int next)
+	    private void CheckShowPushToTalk()
+	    {
+	        if (!PlatformUtils.IsMobile)
+	        {
+	            if (_pushToTalk.gameObject.activeSelf && _playerVoiceItems.Count <= 1)
+	            {
+	                _pushToTalk.gameObject.SetActive(false);
+	            }
+	            else if (!_pushToTalk.gameObject.activeSelf && _playerVoiceItems.Count > 1)
+	            {
+	                _pushToTalk.gameObject.SetActive(true);
+	            }
+	        }
+	    }
+
+	    private string GetScoreDifference(string current, int next)
 		{
 			var currentInt = Convert.ToInt16(current);
 			var difference = next - currentInt;
@@ -223,15 +242,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 		private void OnLanguageChange()
 		{
-			var pushToTalk = _chatPanel.transform.FindText("PushToTalk/PushToTalk Text");
-			if (pushToTalk != null)
+			var text = _pushToTalk.FindText("PushToTalk Text");
+			if (text != null)
 			{
-			    pushToTalk.text = Localization.GetAndFormat(
-			        Application.isMobilePlatform 
-			            ? "VOICE_PRESS_TO_TALK" 
-			            : "VOICE_PUSH_TO_TALK", 
-			        false, 
-			        "TAB");
+			    text.text = Localization.GetAndFormat("VOICE_PUSH_TO_TALK", false, "TAB");
 			}
 		}
 	}

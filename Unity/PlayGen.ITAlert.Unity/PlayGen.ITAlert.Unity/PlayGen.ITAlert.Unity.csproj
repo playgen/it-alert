@@ -341,6 +341,7 @@
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\CameraSizingUtility.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
+    <Compile Include="Utilities\PlatformUtils.cs" />
     <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>
