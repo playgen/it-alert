@@ -25,8 +25,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 		private readonly Director _director;
 	    private readonly SimulationSummary.SimulationSummary _simulationSummary;
 
-	    public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient,
-		    SimulationSummary.SimulationSummary simulationSummary)
+	    public RoomStateControllerFactory(Director director, ITAlertPhotonClient photonClient, SimulationSummary.SimulationSummary simulationSummary)
 		{
 			_director = director;
 			_photonClient = photonClient;
@@ -41,6 +40,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var pausedState = CreatePausedState(_photonClient);
 			var settingsState = CreateSettingsState(_photonClient);
 			var feedbackState = CreateFeedbackState(_photonClient);
+			var simulationSummaryState = CreateSimulationSummaryState(_photonClient, _simulationSummary);
 
 			var stateController = new TickStateController(
 				lobbyState,
@@ -48,6 +48,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				playingState,
 				pausedState,
 				feedbackState,
+				simulationSummaryState,
 				settingsState);
 
 			stateController.SetParent(ParentStateController);
@@ -167,5 +168,22 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			return state;
 		}
+		private SimulationSummaryState CreateSimulationSummaryState(ITAlertPhotonClient photonClient, SimulationSummary.SimulationSummary simulationSummary)
+		{
+			var input = new SimulationSummaryStateInput(simulationSummary, photonClient);
+			var state = new SimulationSummaryState(input, simulationSummary);
+
+			var menuStateTransition = new OnEventTransition(MenuState.StateName);
+
+			input.ContinueClickedEvent += menuStateTransition.ChangeState;
+			input.ContinueClickedEvent += photonClient.CurrentRoom.Leave;
+
+			state.AddTransitions(menuStateTransition);
+
+			return state;
+
+		}
 	}
+
+	
 }
