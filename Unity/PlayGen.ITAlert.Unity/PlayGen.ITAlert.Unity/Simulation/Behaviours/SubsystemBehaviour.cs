@@ -34,15 +34,16 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 
 
 		[SerializeField]
-		private Image _cpuImage;
+		private Image _cpuImageLeft;
 		[SerializeField]
-		private Image _memoryImage;
+		private Image _cpuImageRight;
 
 		[SerializeField]
-		private GameObject _cpu;
+		private GameObject _cpuLeft;
 		[SerializeField]
-		private GameObject _memory;
-
+		private GameObject _cpuRight;
+		[SerializeField]
+		private GameObject _cpuConnection;
 
 		[SerializeField]
 		private Image _sprite;
@@ -173,8 +174,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		protected override void OnStateUpdated()
 		{
 			base.OnStateUpdated();
-			_cpuImage.fillAmount = 1f - _cpuResource.GetUtilisation();
-			_memoryImage.fillAmount = 1f - _memoryResource.GetUtilisation() - 0.2f;
+			_cpuImageLeft.fillAmount = (1 - _cpuResource.GetUtilisation()) * 2;
+			_cpuImageRight.fillAmount = 1 - (_cpuResource.GetUtilisation() * 2);
 
 			if (_nameText.text != _name.Value)
 			{
@@ -223,13 +224,15 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				&& Director.Player != null
 				&& _visitors.Values.Contains(Director.Player.Id))
 			{
-				_cpu.SetActive(true);
-				_memory.SetActive(true);
+				_cpuLeft.SetActive(true);
+				_cpuRight.SetActive(true);
+				_cpuConnection.SetActive(true);
 			}
 			else
 			{
-				_cpu.SetActive(false);
-				_memory.SetActive(false);
+				_cpuLeft.SetActive(false);
+				_cpuRight.SetActive(false);
+				_cpuConnection.SetActive(false);
 			}
 		}
 

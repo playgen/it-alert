@@ -71,7 +71,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			var nodeAntivirus = new NodeConfig()
 			{
-				Name = "Antivirus",
+				Name = "11",
 				X = 1,
 				Y = 1,
 				Archetype = TutorialAntivirusWorkstation.Archetype,

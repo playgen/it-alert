@@ -50,7 +50,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 
 			var nodeT1 = new NodeConfig()
 			{
-				Name = "T00",
+				Name = "00",
 				X = 0,
 				Y = 0,
 				Archetype = TransferWorkstation.Archetype,
@@ -106,7 +106,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			};
 			var nodeT2 = new NodeConfig()
 			{
-				Name = "T41",
+				Name = "41",
 				X = 4,
 				Y = 1,
 				Archetype = TransferWorkstation.Archetype,
