@@ -31,7 +31,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 	    private Transform _playerMetricsContainer;
 	    private GameObject _playerMetricsResource;
 
-	    private ITAlertPhotonClient _photonClient;
         public event Action ContinueClickedEvent;
 
         private readonly List<SummaryMetricConfig> _multiplayerMetrics = new List<SummaryMetricConfig>
@@ -74,10 +73,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
             SummaryMetricConfigs.AntivirusCreationFails
         };
 
-        public SimulationSummaryStateInput(SimulationSummary simulationSummary, ITAlertPhotonClient photonClient)
+        public SimulationSummaryStateInput(SimulationSummary simulationSummary)
         {
             _simulationSummary = simulationSummary;
-	        _photonClient = photonClient;
         }
 
         protected override void OnInitialize()
@@ -118,20 +116,6 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 
         private void OnContinueClicked()
         {
-			if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
-	        {
-		        // The following string contains the key for the google form is used for the cognitive load questionnaire
-		        var formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
-
-		        // Google form ID
-		        var googleFormsURL = "https://docs.google.com/forms/d/e/"
-		                             + formsKey
-		                             + "/viewform?entry.1596836094="
-		                             + SUGARManager.CurrentUser.Name;
-		        // Open the default browser and show the form
-		        Application.OpenURL(googleFormsURL);
-		        Application.Quit();
-	        }
 			ContinueClickedEvent?.Invoke();
         }
 

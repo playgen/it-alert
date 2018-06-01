@@ -1,5 +1,7 @@
-﻿using GameWork.Core.States;
+﻿using System.CodeDom.Compiler;
+using GameWork.Core.States;
 using GameWork.Core.States.Tick;
+using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
 using PlayGen.ITAlert.Unity.Photon;
@@ -7,6 +9,7 @@ using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.States.Game.Menu;
 using PlayGen.ITAlert.Unity.States.Game.Room.Feedback;
 using PlayGen.ITAlert.Unity.States.Game.Room.Initializing;
+using PlayGen.ITAlert.Unity.States.Game.Room.LaunchQuestionnaire;
 using PlayGen.ITAlert.Unity.States.Game.Room.Lobby;
 using PlayGen.ITAlert.Unity.States.Game.Room.Paused;
 using PlayGen.ITAlert.Unity.States.Game.Room.Playing;
@@ -40,7 +43,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 			var pausedState = CreatePausedState(_photonClient);
 			var settingsState = CreateSettingsState(_photonClient);
 			var feedbackState = CreateFeedbackState(_photonClient);
-			var simulationSummaryState = CreateSimulationSummaryState(_photonClient, _simulationSummary);
+			var simulationSummaryState = CreateSimulationSummaryState(_simulationSummary);
+			var launchQuestionnaireState = CreateLaunchQuestionnaireState();
 
 			var stateController = new TickStateController(
 				lobbyState,
@@ -49,7 +53,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 				pausedState,
 				feedbackState,
 				simulationSummaryState,
-				settingsState);
+				settingsState,
+				launchQuestionnaireState);
 
 			stateController.SetParent(ParentStateController);
 
@@ -168,20 +173,40 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room
 
 			return state;
 		}
-		private SimulationSummaryState CreateSimulationSummaryState(ITAlertPhotonClient photonClient, SimulationSummary.SimulationSummary simulationSummary)
+		private SimulationSummaryState CreateSimulationSummaryState(SimulationSummary.SimulationSummary simulationSummary)
 		{
-			var input = new SimulationSummaryStateInput(simulationSummary, photonClient);
+			var input = new SimulationSummaryStateInput(simulationSummary);
 			var state = new SimulationSummaryState(input, simulationSummary);
 
-			var menuStateTransition = new OnEventTransition(MenuState.StateName);
+			var launchQuestionnaire = _photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3";
 
-			input.ContinueClickedEvent += menuStateTransition.ChangeState;
-			input.ContinueClickedEvent += photonClient.CurrentRoom.Leave;
+			var onEndAndLaunchQuestionniareTransition = new OnEventTransition(
+				LaunchQuestionnaireState.StateName,
+				() => launchQuestionnaire);
 
-			state.AddTransitions(menuStateTransition);
+
+			var onEndAndReturnToMenuTransition = new OnEventTransition(
+				MenuState.StateName,
+				() => !launchQuestionnaire);
+
+			input.ContinueClickedEvent += onEndAndReturnToMenuTransition.ChangeState;
+			input.ContinueClickedEvent += onEndAndLaunchQuestionniareTransition.ChangeState;
+			input.ContinueClickedEvent += _photonClient.CurrentRoom.Leave;
+
+			state.AddTransitions(
+				onEndAndReturnToMenuTransition,
+				onEndAndLaunchQuestionniareTransition
+			);
 
 			return state;
+		}
 
+		private LaunchQuestionnaireState CreateLaunchQuestionnaireState()
+		{
+			var input = new LaunchQuestionnaireStateInput();
+			var state = new LaunchQuestionnaireState(input);
+
+			return state;
 		}
 	}
 
