@@ -70,11 +70,11 @@ namespace PlayGen.ITAlert.Unity.Controllers
 				_colourPickerBehaviour.GenerateColorPicker(players.ToList(), currentPlayer);
 
 				_photonClient.CurrentRoom.PlayerListUpdatedEvent += _colourPickerBehaviour.UpdateSelectedGlyphs;
-				_popupBehaviour.SetPopup(Localization.Get("COLOUR_PICKER_LABEL_TITLE"),
+				_popupBehaviour.SetPopup(Localization.Get("ICON_PICKER_LABEL_TITLE"),
 					new[]
 					{
-						new PopupBehaviour.Output(Localization.Get("COLOUR_PICKER_BUTTON_CANCEL"), null),
-						new PopupBehaviour.Output(Localization.Get("COLOUR_PICKER_BUTTON_SELECT"), () => ColorCallback(callback))
+						new PopupBehaviour.Output(Localization.Get("ICON_PICKER_BUTTON_CANCEL"), null),
+						new PopupBehaviour.Output(Localization.Get("ICON_PICKER_BUTTON_SELECT"), () => ColorCallback(callback))
 					},
 					PopupClosed
 				);

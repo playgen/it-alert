@@ -283,8 +283,8 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				else if (_selectionOptions && !_selectionOptions.activeSelf && (inventory || !string.IsNullOrEmpty(description)) && !IsInvoking("OptionsDelay") && !IsInvoking(nameof(ResetOptions)) && !IsInvoking("EnableOptions"))
 				{
 					var canContain = IsEnabled && (!inventory || CanContain(inventory.Id));
-					_leftButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropAndActivateItemCommand), out var dropAndActivateHandler) && dropAndActivateHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemAndActivateCommand), out dropAndActivateHandler) && dropAndActivateHandler.Enabled);
-					_rightButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropItemCommand), out var dropHandler) && dropHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemCommand), out dropHandler) && dropHandler.Enabled);
+					_leftButton.SetActive(true);
+					_rightButton.SetActive(true);
 					_leftButton.transform.localScale = Vector3.one;
 					_rightButton.transform.localScale = Vector3.one;
 					_descriptionText.transform.localScale = Vector3.one;
@@ -292,12 +292,14 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 					_selectionOptions.SetActive(true);
 					Invoke("OptionsDelay", Time.smoothDeltaTime * 2);
 					Invoke("EnableOptions", 0.34f);
-					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit();
-					_descriptionText.fontSize = (int)(bestFitSize * 0.8f);
 					var optionAnim = _selectionOptions.GetComponent<Animation>();
 					_currentAnim = inventory ? !string.IsNullOrEmpty(description) ? "ItemContainerSelection" : "ItemContainerNoDescription" : "ItemContainerOnlyDescription";
 					_descriptionText.GetComponent<TextLocalization>().Key = description;
 					_descriptionText.GetComponent<TextLocalization>().Set();
+					var bestFitSize = _selectionOptions.GetComponentsInChildren<Button>().BestFit();
+					_descriptionText.fontSize = bestFitSize;
+					_leftButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropAndActivateItemCommand), out var dropAndActivateHandler) && dropAndActivateHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemAndActivateCommand), out dropAndActivateHandler) && dropAndActivateHandler.Enabled);
+					_rightButton.SetActive(canContain && Director.CommandSystem.TryGetHandler(typeof(DropItemCommand), out var dropHandler) && dropHandler.Enabled && Director.CommandSystem.TryGetHandler(typeof(SwapInventoryItemCommand), out dropHandler) && dropHandler.Enabled);
 					optionAnim[_currentAnim].time = 0;
 					optionAnim[_currentAnim].speed = 1;
 					optionAnim.Play(_currentAnim);

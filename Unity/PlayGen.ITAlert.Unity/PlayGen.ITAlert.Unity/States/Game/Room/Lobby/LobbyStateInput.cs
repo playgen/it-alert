@@ -26,7 +26,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 		private GameObject _lobbyPanel;
 		private ButtonList _buttons;
 		private Button _readyButton;
-		private Button _changeColorButton;
+		private Button _changeIconButton;
 		private GameObject _playerListObject;
 		private GameObject _playerItemPrefab;
 		private GameObject _playerSpacePrefab;
@@ -54,7 +54,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			_backButton = _buttons.GetButton("BackButtonContainer");
 			_readyButton = _buttons.GetButton("ReadyButtonContainer");
-			_changeColorButton = _buttons.GetButton("ChangeColourButtonContainer");
+			_changeIconButton = _buttons.GetButton("ChangeIconButtonContainer");
 			
 			_roomNameObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/RoomNameContainer/RoomName");
 			_playerListObject = GameObjectUtilities.FindGameObject("LobbyContainer/LobbyPanelContainer/LobbyPanel/PlayerListContainer");
@@ -78,7 +78,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			_backButton.onClick.AddListener(OnBackButtonClick);
 			_readyButton.onClick.AddListener(OnReadyButtonClick);
-			_changeColorButton.onClick.AddListener(OnColorChangeButtonClick);
+			_changeIconButton.onClick.AddListener(OnColorChangeButtonClick);
 
 			PlayGen.Unity.Utilities.Loading.Loading.Stop();
 		}
@@ -92,7 +92,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 
 			_backButton.onClick.RemoveListener(OnBackButtonClick);
 			_readyButton.onClick.RemoveListener(OnReadyButtonClick);
-			_changeColorButton.onClick.RemoveListener(OnColorChangeButtonClick);
+			_changeIconButton.onClick.RemoveListener(OnColorChangeButtonClick);
             if (_popupController.Active)
             {
                 _popupController.PopupClosed();

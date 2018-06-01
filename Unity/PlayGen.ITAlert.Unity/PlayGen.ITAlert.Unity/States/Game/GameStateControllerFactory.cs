@@ -32,16 +32,8 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			var roomStateInput = new RoomStateInput(photonClient);
 			var roomState = new RoomState(roomStateInput, photonClient, simulationSummary);
 
-			// Simulation Summary
-            var simulationSummaryStateInput = new SimulationSummaryStateInput(simulationSummary);
-		    var simulationSummaryState = new SimulationSummaryState(simulationSummaryStateInput, simulationSummary);
-
-            var menuStateTransition = new OnEventTransition(MenuState.StateName);
-		    simulationSummaryStateInput.ContinueClickedEvent += menuStateTransition.ChangeState;
-            simulationSummaryState.AddTransitions(menuStateTransition);
-
             // Add states to controller
-		    var stateController = new TickStateController(loadingState, loginState, menuState, roomState, simulationSummaryState);
+		    var stateController = new TickStateController(loadingState, loginState, menuState, roomState);
 		    stateController.SetParent(ParentStateController);
 
 		    roomState.SetSubstateParentController(stateController);

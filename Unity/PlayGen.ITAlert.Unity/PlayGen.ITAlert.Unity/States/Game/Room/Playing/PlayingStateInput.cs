@@ -57,23 +57,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Room.Playing
 			{
 				EndGameContinueClickedEvent?.Invoke();
 			}
-			else if (_director.Players.Count == 1 && int.Parse(_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0)
+			else if (_director.Players.Count == 1 && int.Parse(_photonClient.CurrentRoom.RoomInfo
+				         .customProperties[CustomRoomSettingKeys.TimeLimit].ToString()) > 0)
 			{
 				EndGameOnePlayerContinueClickedEvent?.Invoke();
-				if (_photonClient.CurrentRoom.RoomInfo.customProperties[CustomRoomSettingKeys.GameScenario].ToString() == "SPL3")
-				{
-					// The following string contains the key for the google form is used for the cognitive load questionnaire
-					var formsKey = "1FAIpQLSctM-kR-1hlmF6Nk-pQNIWYnFGxRAVvyP6o3ZV0kr8K7JD5dQ";
-
-					// Google form ID
-					var googleFormsURL = "https://docs.google.com/forms/d/e/"
-											+ formsKey
-											+ "/viewform?entry.1596836094="
-											+ SUGARManager.CurrentUser.Name;
-					// Open the default browser and show the form
-					Application.OpenURL(googleFormsURL);
-					Application.Quit();
-				}
 			}
 			else
 			{
