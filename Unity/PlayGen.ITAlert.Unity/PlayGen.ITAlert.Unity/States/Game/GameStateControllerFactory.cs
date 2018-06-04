@@ -32,9 +32,15 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			var roomStateInput = new RoomStateInput(photonClient);
 			var roomState = new RoomState(roomStateInput, photonClient, simulationSummary);
 
-            // Add states to controller
-		    var stateController = new TickStateController(loadingState, loginState, menuState, roomState);
+
+			// Test Simulation Summary
+			var simulationSummaryStateInput = new SimulationSummaryStateInput(simulationSummary);
+			var simulationSummaryState = new SimulationSummaryState(simulationSummaryStateInput, simulationSummary);
+
+			// Add states to controller
+			var stateController = new TickStateController(loadingState, loginState, menuState, roomState, simulationSummaryState);
 		    stateController.SetParent(ParentStateController);
+
 
 		    roomState.SetSubstateParentController(stateController);
 		    menuState.SetSubstateParentController(stateController);
