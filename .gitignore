@@ -62,6 +62,7 @@ Unity/Assets/InitTestScene*.unity*
 
 # Run Helpers
 !Unity/[Bb]uild/start*.bat
+!Unity/[Bb]uild/replace-and-launch_*.bat
 
 #
 # Photon
