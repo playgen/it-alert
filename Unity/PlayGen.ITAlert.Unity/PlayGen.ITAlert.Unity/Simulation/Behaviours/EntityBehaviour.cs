@@ -114,10 +114,6 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 			Entity.TryGetComponent(out _tutorialHighlight);
 			OnInitialize();
 			Initialized = true;
-			if (gameObject.activeSelf == false)
-			{
-				gameObject.SetActive(true);
-			}
 
 			LogProxy.Info($"EntityBehviour Initialize: GameObject {gameObject.name} Entity {Entity?.Id.ToString() ?? "null"} Director {Director?.InstanceId ?? "null"}");
 

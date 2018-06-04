@@ -114,6 +114,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				//TODO: extract item specific logic to subclasses
 				InitializeAntivirus();
 				InitializeCapture();
+				UpdateInventory();
 			}
 			else
 			{
@@ -154,6 +155,10 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				if (GetComponentInParent<SubsystemBehaviour>() && !gameObject.activeSelf)
 				{
 					gameObject.SetActive(true);
+				}
+				else if (!GetComponentInParent<SubsystemBehaviour>() && gameObject.activeSelf)
+				{
+					gameObject.SetActive(false);
 				}
 			}
 		}
