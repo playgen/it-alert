@@ -184,11 +184,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
                 yield return null;
             }
 
-
-	        var roomState = GetStates(gameStateController)[RoomState.StateName];
-			var roomStateController = GetStateController<TickStateController>(roomState);
-
-			var simulationSummaryState = GetStates(roomStateController)[SimulationSummaryState.StateName];
+	        var simulationSummaryState = GetStates(gameStateController)[SimulationSummaryState.StateName];
             var simulationSummary = (Unity.States.Game.SimulationSummary.SimulationSummary)simulationSummaryState
 				.GetType()
                 .GetField("_simulationSummary", BindingFlags.NonPublic | BindingFlags.Instance)
@@ -198,7 +194,7 @@ namespace PlayGen.ITAlert.Unity.Tests.States.Game.SimulationSummary
 			var events = ParseDump();
             simulationSummary.SetData(events, playersData);
 
-			gameStateController.ExitState(roomStateController.ActiveStateName);
+	        gameStateController.ExitState(gameStateController.ActiveStateName);
             gameStateController.EnterState(SimulationSummaryState.StateName);
 
             while (!Input.GetKey(KeyCode.Escape))
