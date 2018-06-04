@@ -45,10 +45,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				_pulse = exitType == typeof(WaitForTutorialContinue) || 
 						(exitType == typeof(LogicalOperationEvaluator<ITAlert.Simulation.Simulation, SimulationConfiguration>) &&
 						(LogicalOperationEvaluator< ITAlert.Simulation.Simulation, SimulationConfiguration>)exitCondition.);*/
-				if (_textComponent.ShowContinue)
-				{
-					_continue.SetActive(true);
-				}
+				_continue.SetActive(_textComponent.ShowContinue);
 				SetText();
 			}
 			else

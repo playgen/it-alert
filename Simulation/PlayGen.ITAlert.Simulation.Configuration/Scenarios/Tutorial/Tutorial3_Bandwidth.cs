@@ -127,6 +127,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 			ConfigurationHelper.ProcessNodeConfigs(nodeConfigs);
 
 			var edgeConfigs = ConfigurationHelper.GenerateFullyConnectedConfiguration(nodeConfigs, 1);
+			edgeConfigs = edgeConfigs.Where(e => !(e.Source == nodeT1.Id && e.Destination == node10.Id) && !(e.Source == node10.Id && e.Destination == nodeT1.Id)).ToList();
 
 			#endregion
 
@@ -194,6 +195,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 				}
 			);
@@ -204,6 +206,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new CreateItem(GreenTutorialAntivirus.Archetype, nodeT1),
+						new SetCommandEnabled<ActivateItemCommand>(false),
 						new ShowText(false, $"{scenario.Key}_Frame3")
 					},
 					ExitCondition = new PlayerIsAtLocation(nodeT1)
@@ -223,8 +226,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<ActivateItemCommand>(false),
 						new CreateItem(RedTutorialAntivirus.Archetype, nodeT2, typeof(TransferItemContainer)),
+						new SetCommandEnabled<MoveItemCommand>(false),
 						new ShowText(true, $"{scenario.Key}_Frame4"),
 					},
 					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1).Or(new WaitForTutorialContinue()),
@@ -242,7 +245,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new SetCommandEnabled<DropItemCommand>(true),
-						new SetCommandEnabled<SetActorDestinationCommand>(false),
 						new ShowText(false, $"{scenario.Key}_Frame5"),
 					},
 					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1),
@@ -250,7 +252,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new SetCommandEnabled<PickupItemCommand>(false),
 						new SetCommandEnabled<ActivateItemCommand>(true),
-						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 					},
 				}
 			);
@@ -260,7 +261,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<PickupItemCommand>(false),
 					},
 					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT2, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneGreen))
 						.And(new ItemTypeIsInStorageAtLocation<Antivirus, TransferItemContainer>(nodeT1, new AntivirusGenomeFilter(SimulationConstants.MalwareGeneRed))),
@@ -268,6 +268,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					{
 						new HideText(),
 						new SetCommandEnabled<PickupItemCommand>(true),
+						new SetCommandEnabled<MoveItemCommand>(true),
+						new SetCommandEnabled<DropItemCommand>(false),
 					},
 				}
 			);
@@ -282,13 +284,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					ExitCondition = new WaitForTicks(1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<SetActorDestinationCommand>(true),
 						new CreatePlayer(TutorialNPC.Archetype, nodeT2, "Colleague"),
 						new SetCommandEnabled<ActivateItemCommand>(false),
 					},
 				}
 			);
-			
+
 			#region NPC behaviour
 			// 8
 			scenario.Sequence.Add(
@@ -296,11 +297,11 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 					},
 					ExitCondition = new WaitForTicks(10),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<ActivateItemCommand>(true),
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
 						{
 							ItemType = typeof(Antivirus),
@@ -310,12 +311,47 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
+
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new ItemTypeIsInInventory<Antivirus>().And(new PlayerIsAtLocation(node01)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
+						new SetCommandEnabled<DropItemCommand>(true),
+					},
+				}
+			);
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node01)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
+						new SetCommandEnabled<ActivateItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
+						new SetCommandEnabled<DropItemCommand>(false),
+					},
+				}
+			);
+
 			// 9
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<DropItemCommand>(true),
 					},
 					ExitCondition = new PlayerIsAtLocation(node30, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -325,6 +361,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							ItemType = typeof(Antivirus),
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
+						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
 					},
 				}
 			);
@@ -339,10 +377,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							ItemType = typeof(Antivirus),
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 					},
 					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node30)).And(new WaitForTicks(1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<ActivateItemCommand>(false),
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
 						{
 							ItemType = typeof(Antivirus),
@@ -352,12 +392,47 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
+
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new ItemTypeIsInInventory<Antivirus>().And(new PlayerIsAtLocation(node11)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
+						new SetCommandEnabled<DropItemCommand>(true),
+					},
+				}
+			);
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node11)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
+						new SetCommandEnabled<ActivateItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
+						new SetCommandEnabled<DropItemCommand>(false),
+					},
+				}
+			);
+
 			// 11
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<DropItemCommand>(true),
 					},
 					ExitCondition = new PlayerIsAtLocation(node31, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -367,6 +442,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							ItemType = typeof(Antivirus),
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
+						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
 					},
 				}
 			);
@@ -381,10 +458,12 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							ItemType = typeof(Antivirus),
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
 					},
 					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node31)).And(new WaitForTicks(1)),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<ActivateItemCommand>(false),
 						new EnqueuePlayerCommand(new PickupItemTypeCommand()
 						{
 							ItemType = typeof(Antivirus),
@@ -394,12 +473,47 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					},
 				}
 			);
+
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = new ItemTypeIsInInventory<Antivirus>().And(new PlayerIsAtLocation(node10)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
+						new SetCommandEnabled<DropItemCommand>(true),
+					},
+				}
+			);
+			scenario.Sequence.Add(
+				new SimulationFrame()
+				{
+					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+					},
+					ExitCondition = EvaluatorExtensions.Not(new IsInfected(node10)),
+					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+					{
+						new SetCommandEnabled<SetActorDestinationCommand>(true),
+						new SetCommandEnabled<ActivateItemCommand>(false),
+						new SetCommandEnabled<DropAndActivateItemCommand>(false),
+						new SetCommandEnabled<DropItemCommand>(false),
+					},
+				}
+			);
+
 			// 13
 			scenario.Sequence.Add(
 				new SimulationFrame()
 				{
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<DropItemCommand>(true),
 					},
 					ExitCondition = new PlayerIsAtLocation(node21, 1),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
@@ -409,6 +523,8 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 							ItemType = typeof(Antivirus),
 							PlayerId = 1,	// TODO: find the npc player id automatically
 						}),
+						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<ActivateItemCommand>(true),
 					},
 				}
 			);
@@ -427,6 +543,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					ExitCondition = EvaluatorExtensions.Not(new IsInfected()),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<ActivateItemCommand>(false),
 						new HideText(),
 					},
 				}

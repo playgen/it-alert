@@ -296,6 +296,10 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					ExitCondition = new ItemTypeIsInInventory<Antivirus>(),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
+						new SetCommandEnabled<DropItemCommand>(false),
+						new SetCommandEnabled<PickupItemCommand>(false),
+						new SetCommandEnabled<SwapInventoryItemCommand>(false),
+						new SetCommandEnabled<SwapInventoryItemAndActivateCommand>(false),
 						new ClearHighlight(),
 					},
 				}
@@ -307,12 +311,15 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 					},
-					ExitCondition = new ItemTypeIsInStorageAtLocation<Antivirus>(nodeLeft),
+					ExitCondition = new PlayerIsAtLocation(nodeLeft),
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
-						new SetCommandEnabled<ActivateItemCommand>(true),
-						new SetCommandEnabled<DropAndActivateItemCommand>(true),
 						new SetCommandEnabled<SetActorDestinationCommand>(false),
+						new SetCommandEnabled<DropItemCommand>(true),
+						new SetCommandEnabled<DropAndActivateItemCommand>(true),
+						new SetCommandEnabled<SwapInventoryItemCommand>(true),
+						new SetCommandEnabled<SwapInventoryItemAndActivateCommand>(true),
+						new SetCommandEnabled<ActivateItemCommand>(true),
 					},
 				}
 			);

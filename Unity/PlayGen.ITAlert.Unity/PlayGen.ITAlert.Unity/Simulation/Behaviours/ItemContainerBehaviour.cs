@@ -160,7 +160,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 		{
 			var hasItem = _itemContainer?.Item != null;
 
-			if (_moveItem && IsEnabled && CanContain(_moveItem.Id) && (!hasItem || _moveItemContainer.CanContain(_itemContainer.Item.Value)))
+			if (_moveItem && IsEnabled && CanContain(_moveItem.Id) && (!hasItem || (_moveItemContainer && _moveItemContainer.CanContain(_itemContainer.Item.Value))))
 			{
 				var newScale = transform.localScale.x + ((_moveHighlightGrow ? Time.smoothDeltaTime : -Time.smoothDeltaTime) * 0.25f);
 				if (newScale < 0.95f)
