@@ -46,7 +46,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.SPL
 
 			#region graph
 
-			var node11 = new NodeConfig(1, 1, AntivirusWorkstation.Archetype, "Antivirus");
+			var node11 = new NodeConfig(1, 1, AntivirusWorkstation.Archetype);
 			var node10 = new NodeConfig(1, 0, SubsystemNode.Archetype);
 			var node20 = new NodeConfig(2, 0, SubsystemNode.Archetype);
 

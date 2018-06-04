@@ -30,10 +30,12 @@ namespace PlayGen.ITAlert.Unity.States
 			// TODO: firgure out how to catch unmity exceptions and trigger state transition
 			// temporarily catch ui exception from the director ourselves
 			gameState.Exception += GameExceptionHandler.OnException;
-			gameState.Disconnected += GameExceptionHandler.OnException;
 			GameExceptionHandler.HadUnignoredExceptionEvent += hadExceptionTransition.ChangeState;
 
-			gameState.AddTransitions(hadExceptionTransition);
+			var disconnectedTransition = new OnEventTransition(ErrorState.StateName);
+			gameState.Disconnected += disconnectedTransition.ChangeState;
+
+			gameState.AddTransitions(hadExceptionTransition, disconnectedTransition);
 
 			return gameState;
 		}

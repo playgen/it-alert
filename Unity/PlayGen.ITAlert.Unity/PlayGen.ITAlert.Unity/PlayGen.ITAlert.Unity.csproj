@@ -238,11 +238,14 @@
     <Compile Include="Commands\ReadyPlayerCommand.cs" />
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
+    <Compile Include="Components\PressedState.cs" />
     <Compile Include="Components\StringExtensions.cs" />
     <Compile Include="Components\TextCutoff.cs" />
+    <Compile Include="Controllers\HoverController.cs" />
     <Compile Include="Debug\DebugCommands.cs" />
     <Compile Include="Debug\DebugInterface.cs" />
     <Compile Include="Exceptions\EntityInitializationException.cs" />
+    <Compile Include="Exceptions\PhotonDisconnectionException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
     <Compile Include="LogProxy.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
@@ -343,6 +346,8 @@
     <Compile Include="Utilities\ButtonList.cs" />
     <Compile Include="Utilities\CameraSizingUtility.cs" />
     <Compile Include="Utilities\GameObjectUtilities.cs" />
+    <Compile Include="Utilities\HoverObject.cs" />
+    <Compile Include="Utilities\PlatformUtils.cs" />
     <Compile Include="Utilities\TrackerUtility.cs" />
   </ItemGroup>
   <ItemGroup>
