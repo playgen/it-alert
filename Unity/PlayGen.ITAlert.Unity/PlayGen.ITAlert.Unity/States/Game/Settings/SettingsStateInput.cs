@@ -26,9 +26,9 @@ using PlayGen.Unity.Utilities.Localization;namespace PlayGen.ITAlert.Unity.State
 			_creator = _settingsPanel.GetComponentInChildren<SettingCreation>();
 			_creator.Wipe();
 			_creator.SetLabelAlignment(TextAnchor.MiddleLeft);
-			_language = _creator.Language(false, true, "SETTINGS_LABEL_LANGUAGE");
-			_resolution = _creator.Resolution(960, 540, null, false, true, "SETTINGS_LABEL_RESOLUTION");
-			_fullScreen = _creator.FullScreen(true, "SETTINGS_LABEL_FULLSCREEN");
+            _creator.TryLanguageForPlatform(out _language, false, true, "SETTINGS_LABEL_LANGUAGE");
+            _creator.TryResolutionForPlatform(out _resolution, 960, 540, null, false, true, "SETTINGS_LABEL_RESOLUTION");
+            _creator.TryFullScreenForPlatform(out _fullScreen, true, "SETTINGS_LABEL_FULLSCREEN");
             _cancel = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/CancelButtonContainer").GetComponent<Button>();
 			_apply = GameObjectUtilities.FindGameObject("SettingsContainer/SettingsPanelContainer/ButtonPanel/ApplyButtonContainer").GetComponent<Button>();
 		}
@@ -40,17 +40,22 @@ using PlayGen.Unity.Utilities.Localization;namespace PlayGen.ITAlert.Unity.State
 
 		private void OnApplyClick()
 		{
-			var newResolutionSplit = _resolution.options[_resolution.value].text.Split('x');
-			var newResolution = new Resolution
-			{
-				width = int.Parse(newResolutionSplit[0]),
-				height = int.Parse(newResolutionSplit[1])
-			};
+		    var fullScreen = _fullScreen != null ? _fullScreen.isOn : Screen.fullScreen;
 
-			Localization.UpdateLanguage(Localization.Languages[_language.value]);
-			Screen.SetResolution(newResolution.width, newResolution.height, _fullScreen.isOn);
+		    if (_resolution != null)
+		    {
+		        var newResolutionSplit = _resolution.options[_resolution.value].text.Split('x');
+		        var newResolution = new Resolution { width = int.Parse(newResolutionSplit[0]), height = int.Parse(newResolutionSplit[1]) };
 
-			OnExit();
+		        Screen.SetResolution(newResolution.width, newResolution.height, fullScreen);
+		    }
+
+		    if (_language != null)
+		    {
+		        Localization.UpdateLanguage(Localization.Languages[_language.value]);
+            }
+
+		    OnExit();
 			OnEnter();
 		}
 
