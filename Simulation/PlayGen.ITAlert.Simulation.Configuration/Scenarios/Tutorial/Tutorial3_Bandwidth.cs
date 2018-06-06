@@ -195,7 +195,6 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 					OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
 					{
 						new HideText(),
-						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 				}
 			);
@@ -217,6 +216,7 @@ namespace PlayGen.ITAlert.Simulation.Configuration.Scenarios.Tutorial
 						new ClearHighlight(),
 						new SetCommandEnabled<DropItemCommand>(false),
 						new SetCommandEnabled<DropAndActivateItemCommand>(false),
+						new SetCommandEnabled<SetActorDestinationCommand>(false),
 					},
 				}
 			);
