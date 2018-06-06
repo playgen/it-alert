@@ -179,18 +179,18 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			SetupScoreObject(playerObj, name, value, color);
 		}
 
-		private void SetupScoreObject(GameObject scoreObj, string name, string value, string color = "#FFFFFF")
+		private void SetupScoreObject(GameObject scoreObj, string label, string value, string color = "#FFFFFF")
 		{
-			var nameText = scoreObj.transform.Find("Text").GetComponent<Text>();
+			var labelText = scoreObj.transform.Find("Text").GetComponent<Text>();
 			var scoreText = scoreObj.transform.Find("Score").GetComponent<Text>();
 
-			nameText.text = name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
+			labelText.text = label;
 			scoreText.text = value;
 
-			if (ColorUtility.TryParseHtmlString(color, out var colour))
+		    if (ColorUtility.TryParseHtmlString(color, out var colour))
 			{
 				//rowText.color = colour;
-				nameText.color = colour;
+				labelText.color = colour;
 				scoreText.color = colour;
 			}
 		}
