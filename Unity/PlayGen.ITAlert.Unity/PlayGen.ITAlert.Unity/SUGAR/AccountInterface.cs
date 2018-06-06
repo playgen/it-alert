@@ -3,6 +3,9 @@ using System.Linq;
 using PlayGen.SUGAR.Unity;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Extensions;
+
+using UnityEngine;
 
 namespace PlayGen.ITAlert.Unity.Sugar
 {
@@ -10,8 +13,6 @@ namespace PlayGen.ITAlert.Unity.Sugar
 
     public class AccountInterface : BaseAccountInterface
 	{
-	    private UILocalization[] _localizationComponents;
-
 	    /// <summary>
 		/// Trigger DoBestFit method and add event listener for when resolution changes to trigger DoBestFit.
 		/// </summary>
@@ -19,9 +20,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
 		{
 			DoBestFit();
 			BestFit.ResolutionChange += DoBestFit;
-
-		    _localizationComponents = GetComponentsInChildren<UILocalization>(true);
-		    Array.ForEach(_localizationComponents, lc => lc.SetEvent += DoBestFit);
+			Localization.LanguageChange += DoBestFit;
 		}
 
 		/// <summary>
@@ -30,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
 		private void OnDisable()
 		{
 			BestFit.ResolutionChange -= DoBestFit;
-            Array.ForEach(_localizationComponents, lc => lc.SetEvent -= DoBestFit);
+			Localization.LanguageChange -= DoBestFit;
         }
 
 		/// <summary>
