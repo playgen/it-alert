@@ -36,6 +36,23 @@ Note:
 Make sure that Submodules have been pulled properly. Source Tree likes to ignore the Newtonsoft.Json Submodule
 
 # Development
+## Environment Setup
+For .pdb debugging it is expected that you work from `P:\it-alert` so that the source files can be resolved.
+
+If you are going to be commiting DLLs or want to debug code inside the DLLs, you will need to do the following:
+
+1. Open CMD.
+2. Map the parent folder of your IT Alert repository folder to the drive letter P:  
+`SUBST P: [`Parent dir of it-alert project`]`  
+If the path of the it-alert project is C:\Users\Bob\Projects\it-alert, the command would be:  
+`SUBST P: C:\Users\Bob\Projects`
+3. Navigate to P:\it-alert to make sure the mapping has worked.
+4. Remember to always use this path when working on it-alert.
+
+## Conventions
+- Work from P:\it-alert.
+- Commit .pdb files when committing .dlls.
+
 ## Run Instructions
 1. Build Simulation/PlayGen.ITAlert.sln
 2. Run Server/PlayGen.ITAlert.Photon.sln (Make sure PlayGen.ITAlert.Photon.Plugin is set as startup project)
