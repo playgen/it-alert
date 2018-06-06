@@ -16,7 +16,7 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 	{
 		private readonly List<ITeamScoringExtension> _scoringExtensions;
 
-		public int  CumulativeScore { get; private set; }
+		public int CumulativeScore { get; private set; }
 		public List<decimal> SystemHealth { get; private set; } 
 
 		private readonly EventSystem _eventSystem;
@@ -44,14 +44,13 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 		{
 			var teamScoreEvent = new TeamScoreEvent()
 			{
-				Score = CumulativeScore,
+				Score = GetTeamScore()
 			};
 			_eventSystem.Publish(teamScoreEvent);
 		}
 
 		private void ExtensionOnScore(int i, decimal systemHealth = -1)
 		{
-			CumulativeScore += i;
 			if (systemHealth != -1)
 			{
 				SystemHealth.Add(systemHealth);
@@ -73,6 +72,17 @@ namespace PlayGen.ITAlert.Simulation.Scoring.Team
 				scores.Add(score);
 			}
 			return scores;
+		}
+
+		public decimal GetAverageHealth()
+		{
+			return 1 + Math.Round(SystemHealth.Average(), 2);
+		}
+
+		public int GetTeamScore()
+		{
+			var playerScores = GetPlayerScores();
+			return (int)Math.Round(playerScores.Sum(s => s.PublicScore) * GetAverageHealth());
 		}
 
 		public void Tick(int currentTick)

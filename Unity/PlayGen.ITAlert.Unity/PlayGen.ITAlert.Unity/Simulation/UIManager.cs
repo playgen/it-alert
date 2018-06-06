@@ -141,8 +141,8 @@ namespace PlayGen.ITAlert.Unity.Simulation
 			}
 
 			var playerScores = teamScoringSystem.GetPlayerScores();
-			var multiplier = 1 + teamScoringSystem.SystemHealth.Average();
-			var finalScore = Math.Round(playerScores.Sum(s => s.PublicScore) * multiplier);
+			var multiplier = teamScoringSystem.GetAverageHealth();
+			var finalScore = teamScoringSystem.GetTeamScore();
 
 			foreach (var scores in playerScores)
 			{
@@ -160,11 +160,11 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 			// now create the multiplier object
 			var multiplierObj = parent.transform.parent.Find("Multiplier").gameObject;
-			SetupScoreObject(multiplierObj,Localization.Get("GAME_OVER_MULTIPLIER"), multiplier.ToString("N"));
+			SetupScoreObject(multiplierObj,Localization.Get("GAME_OVER_MULTIPLIER"), multiplier.ToString(Localization.SpecificSelectedLanguage));
 			// Finally create the final score object
 
 			var finalScoreObj = parent.transform.parent.Find("FinalScore").gameObject;
-			SetupScoreObject(finalScoreObj, Localization.Get("GAME_OVER_FINAL_SCORE"), finalScore.ToString());
+			SetupScoreObject(finalScoreObj, Localization.Get("GAME_OVER_FINAL_SCORE"), finalScore.ToString(Localization.SpecificSelectedLanguage));
 
 			parent.gameObject.BestFit();
 			multiplierObj.BestFit();

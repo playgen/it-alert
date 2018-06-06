@@ -156,7 +156,7 @@ namespace PlayGen.ITAlert.Unity.Simulation.Behaviours
 				{
 					gameObject.SetActive(true);
 				}
-				else if (!GetComponentInParent<SubsystemBehaviour>() && gameObject.activeSelf)
+				else if (!GetComponentInParent<SubsystemBehaviour>() && !GetComponentInParent<ItemPanel>() && gameObject.activeSelf)
 				{
 					gameObject.SetActive(false);
 				}
