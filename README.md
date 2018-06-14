@@ -1,5 +1,5 @@
 # Overview 
-IT Alert! is a system admin, network protection, multiplayer cooperative survival game.
+IT Alert! is a system admin, network protection, cooperative survival game.
 
 It is part of the [RAGE project](http://rageproject.eu/).
 
@@ -14,9 +14,12 @@ See the [LICENCE](LICENCE.md) file included in this project.
   - **Photon**: *used by the photon server.*
   - **SUGAR**: *Social Gamification Backend*
   - **Unity**: *prequired Unity dlls.*
-- **Server**: *todo*
-
-todo
+- **Server**: *server side code, based on the Photon server architecture*
+- **Simulation**: *client side code*
+- **Tools**: *batch files for rebuilding project*
+- **Unity**: *IT Alert! Unity project files*
+  - **PlayGen.ITAlert.Unity**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
+  - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
 
 
 # Included Assets:
@@ -85,3 +88,37 @@ OR
 # Deployment
 ## Run Instructions
 To run the Photon Server as a service, see this [ReadMe](Server/deploy/ReadMe.md).
+
+# Unity Game
+
+The Unity project has 1 scene (Unity\Assets\Scenes\IT Alert.unity) from which all User Interfaces for the game states are set up. Game logic is compiled from Unity\PlayGen.ITAlert.Unity.sln and built into the Unity\Assets\PlayGen.ITAlert.Unity folder
+
+## Key Scene Structure
+
+- **Camera**: *The Main Camera*
+- **SUGAR**: *prefab containing all components relating to SUGAR *
+- **Game**: *game UI*
+  - **Canvas**: *in game UI*
+  - **End Canvas**: *post game UI*
+- **Menu**: *menu UI*
+  - **[stateName]Container**: *UI for each state within the menu*
+- **Voice**: *voice panel UI*
+- **Popup**: *generic popup UI container*
+- **Hover**: *hover container for in game information*
+- **Loading**: *loading spinner panel, from PlayGen Utilities*
+
+# Installer:
+[Wix](http://wixtoolset.org/) is used to create the Windows installer.
+
+The game-launcher repository is used to launch the game from url.
+
+## Requirements:
+- Wix Toolset
+- Visual Studio 2017
+- Wix Visual Studio Extension
+- [game-launcher](https://gitlab.com/playgen/game-launcher) project
+
+## Process:
+1. Create a Unity PC Build at Unity\Build\ITAlert_StandaloneWindows64 called “ITAlert_StandaloneWindows64”.
+2. Once built, go to the project solution (Unity/PlayGen.ITAlert.Installer) and build the PlayGen.ITAlert.Installer project.
+3. The resulting windows installer can be found at Unity/PlayGen.ITAlert.Installer/bin/PlayGen.ITAlert.Installer.msi
