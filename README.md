@@ -122,3 +122,9 @@ The game-launcher repository is used to launch the game from url.
 1. Create a Unity PC Build at Unity\Build\ITAlert_StandaloneWindows64 called “ITAlert_StandaloneWindows64”.
 2. Once built, go to the project solution (Unity/PlayGen.ITAlert.Installer) and build the PlayGen.ITAlert.Installer project.
 3. The resulting windows installer can be found at Unity/PlayGen.ITAlert.Installer/bin/PlayGen.ITAlert.Installer.msi
+
+## Setting up your game with SUGAR
+For information on Setting up Space Modules Inc. using SUGAR, see [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). *make sure that Assets\StreamingAssets\SUGAR.config.json exists and the BaseUri value matches the Base Address in the SUGAR Prefab.* 
+
+## Running SUGAR Locally
+Using Space Modules inc. with a local version of SUGAR is as simple as changing the Base Address in the SUGAR Prefab, and the BaseUri value in *Assets\StreamingAssets\SUGAR.config.json*
