@@ -11,19 +11,18 @@ The game uses a client/server architecture based around Photon Networking. Photo
 - [PUN](https://www.photonengine.com/en/PUN)
 
 ### Location
-- **Simulation/PlayGen.ItAlert.sln**
-
+- **Simulation/PlayGen.ItAlert.sln** [Guide](Simulation/Simulation.md)
 ## Server Side Code
 The server code was based on the OnPremise server Loadbalancing example which has been structurally altered to suit the needs of the project. Upgrading the photon dependencies, to for example deploy to the Photon cloud, would involve mapping the photon code onto the altered directory structure and upgrading the required binary references within the Photon-Plugin and PlayGen.ITAlert.Photon solution.
 
 ### Location
-- **Server/PlayGen.ITAlert.Photon.sln**
+- **Server/PlayGen.ITAlert.Photon.sln** [Guide](Server/Photon.md)
 
 ## Client Side Code
 The client integration has modified the structure of the PUN unity package deployment to suit the DLL based workflow required to share assemblies between unity and non-unity projects. 
 
 ### Location
-- **Unity/PlayGen.ITAlert.Unity/**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
+- **Unity/PlayGen.ITAlert.Unity/**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity* [Guide](Unity/Unity.md)
 
 ## Unity Project
 The unity project controls the UI elements in game and uses the compiled Client Side Code
