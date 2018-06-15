@@ -1,4 +1,7 @@
 # Project Structure
+![Project Structure](http://www.plantuml.com/plantuml/img/XL7B3e903Bpp5Vo0Ve4NOWWnCKf4OyA5eAbQXLsp58r_BoxowDh40w4pizFTJlNX2aVoL_0ahIfz8a-tJ0hgy-zWSidDFSNx4WyT5SwJhbniWm8CJHCiwo8drCfLuekcWMrH5XVr6HrohM839LQGW7c0uU9E8RrMG4zjRgZExYLMxb-yYu8D0ndJexo4VTF7nRpB9eZ2B51vyI8yLfut1ENF9XERmJUf7e-YwhdcytLJ2q7zKjRb16S7i0BFZY79AAOgDFhpZ3OKtbiu8Av9E3UCCzxCg1OytOAiv6oBmtzcFZbViU1z0m00)
+
+The project is primarily composed of three solutions, shared game logic, server and client code
 
 ## Shared Game Logic
 Common logic that is shared between to server and client
@@ -11,7 +14,7 @@ The game uses a client/server architecture based around Photon Networking. Photo
 - **Simulation/PlayGen.ItAlert.sln**
 
 ## Server Side Code
-The server code was based on the OnPremise server Loadbalancing example which has been structurally altered to suit the needs of the project. Upgrading the photon dependencies, to for example deploy to the Photon cloud, would involve mapping the photon code onto the altered directory structure and upgrading the required binary references within the Photon-Plugin and PlayGen.ITAlert.Photon solution.
+The server code was based on the OnPremise server Loadbalancing example which has been structurally altered to s    uit the needs of the project. Upgrading the photon dependencies, to for example deploy to the Photon cloud, would involve mapping the photon code onto the altered directory structure and upgrading the required binary references within the Photon-Plugin and PlayGen.ITAlert.Photon solution.
 
 ### Location
 - **Server/PlayGen.ITAlert.Photon.sln**
