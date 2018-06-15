@@ -94,4 +94,4 @@ Tutorial 1 is defined as follows:
 - **Success**: all steps completed, virus neutralised
 - **Failure**: N/A
 
-The final setup for the tutorial can be seen in [Tutorial1_Movement](Simulation/PlayGen.ITAlert.Simulation.Configuration/Scenarios/Tutorial/Tutorial1_movement.cs)
+The final setup for the tutorial can be seen in [Tutorial1_Movement](Simulation/PlayGen.ITAlert.Simulation.Configuration/Scenarios/Tutorial/Tutorial1_Movement.cs)
