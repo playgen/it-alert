@@ -101,4 +101,4 @@ Custom evaluators can be implemented to perform more complex evaluation operatio
 The tutorial system provides an index of continue flags associated with the players and the flags can be interacted with via various behaviours, the most obvious of these is the player clicking on a ‘Continue’ button on the instructional text box. The continue behaviour can be applied to other entity behaviours where a bespoke evaluator is not required.
 
 # Example Scenario
-For an example of a scenario, please see [example](SCENARIOCREATION.md#example)
+For an example of a scenario, please see [example](SCENARIOCREATION.md#example-scenario)
