@@ -47,10 +47,10 @@ Each frame defines three configuration elements:
 
 The sequence will progress through frames in the order they are defined and will not proceed to the next frame until the evaluation criteria is satisfied. 
 
-# Actions
+## Actions
 All manipulation of the game state by the players or sequence are implemented via commands. 
 
-## Player Commands
+### Player Commands
 Player commands can be executed by the sequence on behalf of the player however this should be discouraged unless used to simulate AI player behaviour.
 
 Currently implemented player commands are:
@@ -62,7 +62,7 @@ Activate | Instructs the game to attempt to activate the specified item, if:<br>
 Pickup | Instructs the game to attempt to move the specified item from the system to the player’s inventory, if:<br> - The player is located on a system<br> - The item is located in the same system as the player<br> - The item is not currently active<br> -The player has no item currently in their inventory | Player<br>Item
 Drop | Instructs the game to attempt to move the  specified item from the player’s inventory to the current system, if:<br> The player has an item in their inventory, <br> - The player is located on a system<br> - The system has empty, enabled storage locations | Player<br>Item
 
-## System Commands
+### System Commands
 For the purpose of sequencing the following system commands have been implemented although the list is not exhaustive and can be added to on request:
 
 Command | Description | Parameters 
@@ -75,7 +75,7 @@ CreateItemOnPlayer | Spawn a new item in the specified player’s inventory. | P
 CreateNPCOnSystem | Spawn an NPC (Virus) on the specified system. | System Id<br>NPC Type
 EndGame | Ends the game in a success or failure state. *This implementation is intended to be temporary until scenario scoped evaluators are implemented.* | ExitCode: (Success/Failure)
 
-# Evaluators
+## Evaluators
 Evaluators are functions that evaluate the state of the game and return true when satisfied. Evaluators can be chained and therefore combined to form more complex expressions. 
 
 The following evaluators are currently implemented:
@@ -97,7 +97,7 @@ ItemIsInPlayerInventory | Satisfied when the specified item or any instance of t
 
 Custom evaluators can be implemented to perform more complex evaluation operations and implementation of the standard evaluators is ongoing and will grow over time.
 
-# Tutorial System
+## Tutorial System
 The tutorial system provides an index of continue flags associated with the players and the flags can be interacted with via various behaviours, the most obvious of these is the player clicking on a ‘Continue’ button on the instructional text box. The continue behaviour can be applied to other entity behaviours where a bespoke evaluator is not required.
 
 # Example Scenario
