@@ -73,7 +73,7 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 - Commit .pdb files when committing .dlls.
 
 ## Code Structure
-For more information of code structure, see the [Developer Guide](DEVELOPERGUIDE.md)
+For more information of code structure, see the [Developer Guide](guides/DeveloperGuide.md)
 
 ## SUGAR
 ### Build Instructions
@@ -113,6 +113,15 @@ The Unity project has 1 scene (Unity\Assets\Scenes\IT Alert.unity) from which al
 [Wix](http://wixtoolset.org/) is used to create the Windows installer.
 
 The game-launcher repository is used to launch the game from url.
+
+# Game Sequenceing
+## Multiplayer Implementation
+- Game client hosts slave instance of simulation (ECS)
+- Photon Loadbalancing Server hosts multiple, on-demand instances of master simulation
+- Server broadcast instructs clients to tick and apply commands, latent clients can fast forward and interpolate
+- Clients validate state against server checksum, fail and disconnect if out of sync
+
+![Multiplayer Implementation]()
 
 ## Requirements:
 - Wix Toolset
