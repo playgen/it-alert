@@ -21,7 +21,6 @@ See the [LICENCE](LICENCE.md) file included in this project.
   - **PlayGen.ITAlert.Unity**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
   - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
 
-
 # Included Assets:
 - [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
 - ExcelToJsonConverter: is used to convert Excel Localization files to jSON.
@@ -72,6 +71,9 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 ## Conventions
 - Work from P:\it-alert.
 - Commit .pdb files when committing .dlls.
+
+## Code Structure
+For more information of code structure, see the [Developer Guide](DEVELOPERGUIDE.md)
 
 ## SUGAR
 ### Build Instructions
