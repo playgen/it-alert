@@ -79,6 +79,7 @@ EndGame | Ends the game in a success or failure state. *This implementation is i
 Evaluators are functions that evaluate the state of the game and return true when satisfied. Evaluators can be chained and therefore combined to form more complex expressions. 
 
 The following evaluators are currently implemented:
+
 Evaluator | Description | Parameters
 --- | --- |---
 AND | Performs a logical AND operation on the left and right operands. | Left: Evaluator<br>Right: Evaluator
