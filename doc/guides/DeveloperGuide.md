@@ -52,12 +52,7 @@ The client integration has modified the structure of the PUN unity package deplo
 The unity project controls the UI elements in game and uses the compiled Client Side Code
 
 ### Location
-- **Unity/**: *unity project directory, open folder in Unity*
-    - **Assets/**: *unity project assets*
-        - **Scenes/IT Alert.unity**: *the main scene for the project*
-    - **PlayGen.ITAlert.Unity/**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
-    - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
-
+- **Unity/**: *unity project directory, open folder in Unity* [Structure](Unity/UnityProject.md)
 
 # Creating Scenarios
 For more information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)

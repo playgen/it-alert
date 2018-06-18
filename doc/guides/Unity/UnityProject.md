@@ -9,7 +9,6 @@ The Unity project has 1 scene (Unity\Assets\Scenes\IT Alert.unity) from which al
         - **Editor**: *Utilities that are used in the editor for setup and ease, these are not included in builds*
         - **Prefabs**: *UI objects for loading in during runtime, objects in 'Resources' can be loaded with Resource.Load*
         - **Sprites**: *UI Textures, for use on Unity UI components*
-        - ****: **
         - **Scenes/IT Alert.unity**: *the main scene for the project*
     - **PlayGen.ITAlert.Unity/**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
     - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
