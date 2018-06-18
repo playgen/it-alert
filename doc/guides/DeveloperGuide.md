@@ -45,5 +45,16 @@ The unity project controls the UI elements in game and uses the compiled Client 
 ### Location
 - **Unity/**: *unity project directory, open folder in Unity* [Structure](Unity/UnityProject.md)
 
+# Systems
+Systems act upon entities through matchers, matchers maintain a collection of all entities that contain a specific set of components. In this manner all entities of a given ‘type’ can be acted upon without knowledge of the archetypes from which they were created.
+
+Systems can implement any of two interfaces depending on the required behaviour:
+- **InitializingSystem**: *perform operations before the first tick of the simulation loop, this can be used for set up activities and setting initial state*
+- **Tickable System**: *ticked as part of the simulation loop and implement the majority of the game logic by testing conditional actions and updating state on a regular basis*
+
+There are also systems that have no automatic behaviour and are used to accumulate counters, provide services, such as RNG (Random Number Generator) and provide interfaces to components outside of the simulation.
+
+System configuration is currently hardcoded but it is intended that this configuration will be serializable and form part of the parameterizable scenario configuration.
+
 # Creating Scenarios
 For information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)

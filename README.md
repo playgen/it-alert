@@ -30,6 +30,15 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 todo ECS, Simulation, etc
 
+# Cloning
+When a fresh clone of the repository has been taken the following script should be executed to set up the required symbolic links for the Unity build process: \Tools\CreateLibJunctions.bat
+
+If this completes correctly you will have 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR 
+
+When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
+
+If cloning via SourceTree or another graphical git tool the submodules must be manually opened to force the LFS content to be pulled.
+
 
 # Development:
 ## Requirements:

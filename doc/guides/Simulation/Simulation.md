@@ -38,7 +38,7 @@ This project contains shared logic between both Server and Client
     - Scenario Definitions in Scenarios/ and Configuration loader
     - Definitions of available player colours 
 - **PlayGen.ItAlert.Simulation.Logging**
-    - Handles logging of events to database for query later
+    - Handles logging of events to database for query later, see [Logging](#logging-and-analytics)
 - **PlayGen.ItAlert.Simulation.Scenario**
 - **PlayGen.ItAlert.Simulation.Scenario.Tests**
     - Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration
@@ -57,3 +57,34 @@ This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.UI**
     - todo
 
+#Logging and Analytics
+The ECS and simulation layer provide a database event logging architecture that capture low level data about the game instances and the actions of players.
+
+Table | Column | Type | Value | Comment
+--- | --- | --- | --- | --- 
+Instances | Id | GUID | {GUID} | 
+Instances | Name | String | Game name from creating player | Creating player will usually be player Id 0, unless they left the lobby after other players had joined before the game started
+Instances | ScenarioId | String | Selected scenario identifier | 
+Instances | Initialized | DateTime | Date/Time game was started
+InstancePlayers | Game Id | GUID | Foreign Key Instances => Id |
+InstancePlayers | Player Id | int | Player Index (0, 3)
+InstanceEvents | GameId | GUID | Foreign Key Instances => Id |
+IntsanceEvents | EventId | Int | Unique sequence number within game instance 0..* |
+InstanceEvents | PlayerId | Nullable int | Foreign Key InstancePlayers => PlayerId | Null if system event
+InstanceEvents | Data | String | JSON blob with event context |
+InstanceEvents | Event Code | String | Event type enumeration |
+InstanceEvents | Tick | Int | Simulation tick in which event was generated | Timestamp in seconds => Tick/10
+PlayerFeedbacks | GameId | GUID | Foreign Key Instances => Id |
+PlayerFeedbacks | PlyerId | Int | Foreign Key InstancePlayers => PlayerId | Player providing Feedback
+PlayerFeedbacks | RankedPlayerId | Int | Foreign Key InstancePlayers => PlayerId | Player feedback is about
+PlayerFeedbacks | LeadershipRank | Int | Ranking in first category 0..6 | 
+PlayerFeedbacks | CommunicationRank | Int | Ranking in second category 0..6 |
+Player Feedbacks | CooperationRank | Int | Ranking in third category 0..6 | 
+InstancePlayerIdentifiers | GameId | GUID | Foreign Key InstancePlayers => PlayerId | 
+InstancePlayerIdentifiers | PlayerId | Int | Foreign Key InstancePlayers => PlayerId |
+InstancePlayerIdentifiers | IdentifierType | String | Identifier Token | currently: SUGAR, RAGE_CLASS
+InstancePlauerIdentifiers | Identifier | String | Identifier Value |
+
+The event table stores a time series of events associated with a specific game instance and player. Event records contain an EventCode token and JSON payload along with the simulation tick in which they were generated. 
+
+It is intended that the event processing components of the system will be extended with evaluators allowing integration with SUGAR and/or other achievement systems. The event stream could be used either via or independently from the achievement system to feed data to RAGE analytics assets such as the competency assessment and performance statistics components.
