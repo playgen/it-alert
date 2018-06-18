@@ -1,3 +1,12 @@
+# Multiplayer Implementation
+
+- Game client hosts slace instance of simulations (ECS) 
+- Photon Loadbalancing Server hosts multiple, on demand instances of master simulation
+- Server broadcasts instructs clients to tick and apply commands, latent clients can fast forward and interpolate
+- Clients validate state against server checksum, fail and disconnect if out of sync.
+
+![MultiplayerImplementation](../images/MultiplayerImplementation.png)
+
 # Simulation Logic
 The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 

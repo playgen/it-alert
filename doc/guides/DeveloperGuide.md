@@ -12,15 +12,6 @@ The Simulation Loop executes commands from clients on the server, then broadcast
 
 ![Simulation Loop](images/SimulationLoop.png)
 
-# Multiplayer Implementation
-
-- Game client hosts slace instance of simulations (ECS) 
-- Photon Loadbalancing Server hosts multiple, on demand instances of master simulation
-- Server broadcasts instructs clients to tick and apply commands, latent clients can fast forward and interpolate
-- Clients validate state against server checksum, fail and disconnect if out of sync.
-
-![MultiplayerImplementation](images/MultiplayerImplementation.png)
-
 # Project Architecture
 ![Project Architecture](images/ProjectArchitecture.png)
 
@@ -55,4 +46,4 @@ The unity project controls the UI elements in game and uses the compiled Client 
 - **Unity/**: *unity project directory, open folder in Unity* [Structure](Unity/UnityProject.md)
 
 # Creating Scenarios
-For more information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)
+For information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)
