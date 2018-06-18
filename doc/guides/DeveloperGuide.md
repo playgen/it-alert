@@ -1,5 +1,28 @@
+# IT Alert! Client/Server Simulation Loop
+The Simulation Loop is based around Photon Networking, see [Shared Game Logic](#shared-game-logic). 
+
+The Simulation Loop executes commands from clients on the server, then broadcasts the new state to clients. The following steps show the process:
+1. Player Commands are sent immediately to the server
+2. Server deduplicates redundant commands
+3. On tick, server attempts to process queued commands
+4. Successfully processed commands are buffered for broadcast
+5. Scenario frame is processed
+6. Simulation ticks
+7. Commands and checksum broadcast to clients
+
+![Simulation Loop](images/SimulationLoop.png)
+
+# Multiplayer Implementation
+
+- Game client hosts slace instance of simulations (ECS) 
+- Photon Loadbalancing Server hosts multiple, on demand instances of master simulation
+- Server broadcasts instructs clients to tick and apply commands, latent clients can fast forward and interpolate
+- Clients validate state against server checksum, fail and disconnect if out of sync.
+
+![MultiplayerImplementation](images/MultiplayerImplementation.png)
+
 # Project Architecture
-![Project Architecture](http://www.plantuml.com/plantuml/img/XL7B3e903Bpp5Vo0Ve4NOWWnCKf4OyA5eAbQXLsp58r_BoxowDh40w4pizFTJlNX2aVoL_0ahIfz8a-tJ0hgy-zWSidDFSNx4WyT5SwJhbniWm8CJHCiwo8drCfLuekcWMrH5XVr6HrohM839LQGW7c0uU9E8RrMG4zjRgZExYLMxb-yYu8D0ndJexo4VTF7nRpB9eZ2B51vyI8yLfut1ENF9XERmJUf7e-YwhdcytLJ2q7zKjRb16S7i0BFZY79AAOgDFhpZ3OKtbiu8Av9E3UCCzxCg1OytOAiv6oBmtzcFZbViU1z0m00)
+![Project Architecture](images/ProjectArchitecture.png)
 
 The project is primarily composed of three solutions, shared game logic, server and client code
 
@@ -33,3 +56,7 @@ The unity project controls the UI elements in game and uses the compiled Client 
         - **Scenes/IT Alert.unity**: *the main scene for the project*
     - **PlayGen.ITAlert.Unity/**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
     - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
+
+
+# Creating Scenarios
+For more information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)

@@ -1,0 +1,46 @@
+@startuml
+participant Client1
+participant Client2
+participant Server
+
+activate Client1
+-> Client1: Select Scenario
+activate Server
+Client1 -> Server: CreateGame(Scenario)
+Server -> Client1: GameId, ClientId
+loop Client Count Satisfied / All Clients Ready
+    Server -> Client1: ClientList
+end
+
+...
+
+-> Client2: Join Game
+activate Client2
+Client2 -> Server: ListGames
+Server --> Client2: Games
+Client2 -> Server: Join Game
+Client2 -> Server: Ready
+Client1 -> Server: Ready
+
+activate Server
+Server -> Server: InitializeEngine
+Server -> Client2: InitializeGame
+activate Client2
+Client2 -> Client2: InitializeEngine
+Server -> Client1: InitializeGame
+activate Client1
+Client1 -> Client1: InitializeEngine
+Client2 --> Server: Initialized
+Client1 --> Server: Initialized
+activate Server
+Server -> Server: StartSequence
+loop Process Sequence Frame
+    note over Client1, Server
+        See Simulation Loop Diagram
+    end note
+end
+
+deactivate Server
+deactivate Client2
+deactivate Client1
+@enduml

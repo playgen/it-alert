@@ -73,7 +73,7 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 - Commit .pdb files when committing .dlls.
 
 ## Code Structure
-For more information of code structure, see the [Developer Guide](guides/DeveloperGuide.md)
+For more information of code structure, see the [Developer Guide](doc/guides/DeveloperGuide.md)
 
 ## SUGAR
 ### Build Instructions

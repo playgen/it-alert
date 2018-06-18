@@ -1,0 +1,44 @@
+@startuml
+Object Newtonsoft
+Object Zenject
+Object SharpZipLib
+Object ECS
+
+SharpZipLib <-- ECS
+Zenject <-- ECS
+Newtonsoft <-- ECS
+
+Object Photon_Plugin
+Object PhotonOnPromiseServer
+Object SUGAR
+Object GameWork
+
+SUGAR <-- Photon_Plugin
+GameWork <-- Photon_Plugin
+PhotonOnPromiseServer <-- Photon_Plugin
+
+Object ITAlert.Simulation
+Object ITAlert.Photon
+
+ECS o-- ITAlert.Simulation
+Photon_Plugin <-- ITAlert.Photon
+ITAlert.Simulation <-- ITAlert.Photon
+
+Object ITAlert.Unity
+
+ITAlert.Simulation <-- ITAlert.Unity
+ITAlert.Photon <-- ITAlert.Unity
+
+Object GameWork.Unity
+Object SUGAR_Unity
+Object RAGE_Analytics
+Object PhotonUnityNetworking
+
+GameWork <-- GameWork.Unity
+SUGAR_Unity <-- ITAlert.Unity
+
+GameWork.Unity <-- ITAlert.Unity
+SUGAR <-- SUGAR_Unity
+RAGE_Analytics <-- ITAlert.Unity
+PhotonUnityNetworking <-- ITAlert.Unity
+@enduml

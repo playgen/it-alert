@@ -1,5 +1,3 @@
-# Simulation Logic
-
 # Game Scenarios 
 Creating game scenarios for IT Alert! requires a full understanding of game systems, please see the guide for [Creating Scenarios Guide](ScenarioCreation.md) for full details on creating and adding scenarios to the game.
 
