@@ -91,23 +91,8 @@ OR
 ## Run Instructions
 To run the Photon Server as a service, see this [ReadMe](Server/deploy/ReadMe.md).
 
-# Unity Game
-
-The Unity project has 1 scene (Unity\Assets\Scenes\IT Alert.unity) from which all User Interfaces for the game states are set up. Game logic is compiled from Unity\PlayGen.ITAlert.Unity.sln and built into the Unity\Assets\PlayGen.ITAlert.Unity folder
-
-## Key Scene Structure
-
-- **Camera**: *The Main Camera*
-- **SUGAR**: *prefab containing all components relating to SUGAR *
-- **Game**: *game UI*
-  - **Canvas**: *in game UI*
-  - **End Canvas**: *post game UI*
-- **Menu**: *menu UI*
-  - **[stateName]Container**: *UI for each state within the menu*
-- **Voice**: *voice panel UI*
-- **Popup**: *generic popup UI container*
-- **Hover**: *hover container for in game information*
-- **Loading**: *loading spinner panel, from PlayGen Utilities*
+# Unity Project
+For more information about the unity project, see this [Guide](doc/guides/Unity/UnityProject.md)
 
 # Installer:
 [Wix](http://wixtoolset.org/) is used to create the Windows installer.

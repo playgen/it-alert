@@ -1,6 +1,21 @@
 # Simulation Logic
 The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
+
+This project contains shared logic between both Server and Client
 ## Project Structure
+- **PlayGen.ItAlert.Simulation.Modules**
+    - **PlayGen.ITAlert.Simulation.Modules.Antivirus**
+        - Antivirus, capture and anaylsis system enhancement and tools 
+    - **PlayGen.ITAlert.Simulation.Modules.GarbageDisposal** 
+        - Garbage disposal system enhancement
+    - **PlayGen.ITAlert.Simulation.Modules.Malware** 
+        - Malware propagation and detection components
+    - **PlayGen.ITAlert.Simulation.Modules.Resources**
+        - Subsystem and connection resource components 
+    - **PlayGen.ITAlert.Simulation.Modules.Transfer** 
+        - Transfer system enhancements
+    - **PlayGen.ITAlert.Simulation.Modules.Tutorial** 
+        - Tutorial system components
 - **PlayGen.ItAlert.Simulation**
 - **PlayGen.ItAlert.Simulation.Tests**
     - Base project containing config files and object definitions
@@ -21,13 +36,13 @@ The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 - **PlayGen.ItAlert.Simulation.Scenario.Localization**
     - Localization for retrieval of strings for a given key and langugae
 - **PlayGen.ItAlert.Simulation.Scenario.Serialization**
-    - tofo
+    - DOES NOT SEEM TO BE USED
 - **PlayGen.ItAlert.Simulation.Scoring**
     - Scoring system for tracking player scores
     - Event Handlers that handle scorable events
 - **PlayGen.ItAlert.Simulation.Serialization**
 - **PlayGen.ItAlert.Simulation.Serialization.Tests**
-    - unused
+    - DOES NOT SEEM TO BE USED
 - **PlayGen.ItAlert.Simulation.Startup**
     - Handles setup of simulations life cycle
 - **PlayGen.ItAlert.Simulation.UI**
