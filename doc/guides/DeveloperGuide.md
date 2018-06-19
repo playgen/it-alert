@@ -32,13 +32,13 @@ The game uses a client/server architecture based around Photon Networking. Photo
 ### Location
 - **Simulation/PlayGen.ItAlert.sln** [Structure](Simulation/Simulation.md)
 
-## Server Side Code
+## Server Code
 The server code was based on the OnPremise server Loadbalancing example which has been structurally altered to suit the needs of the project. Upgrading the photon dependencies, to for example deploy to the Photon cloud, would involve mapping the photon code onto the altered directory structure and upgrading the required binary references within the Photon-Plugin and PlayGen.ITAlert.Photon solution.
 
 ### Location
 - **Server/PlayGen.ITAlert.Photon.sln** [Structure](Server/Photon.md)
 
-## Client Side Code
+## Client Code
 The client integration has modified the structure of the PUN unity package deployment to suit the DLL based workflow required to share assemblies between unity and non-unity projects. 
 
 ### Location

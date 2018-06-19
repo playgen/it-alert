@@ -111,10 +111,8 @@ OnExit | - **HideText**
     {
         OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
         {
-            // TODO: this should disable the cancapture flag of the inventory slot
             new SetCommandEnabled<PickupItemCommand>(false),	
             new SetCommandEnabled<ActivateItemCommand>(false),
-            new SetCommandEnabled<DropAndActivateItemCommand>(false),
             new CreateItem(TutorialScanner.Archetype, nodeRight),
             new ShowText(true, $"{scenario.Key}_Frame4"),
         },
@@ -131,7 +129,7 @@ OnExit | - **HideText**
 
 |  | Criteria  
 :--- | :---  
-OnEnter | - **SetPlayerCommandEnabled** (Drop, true)<br>*Enable the player's ability to drop items*<br>- **SetPlayerCommandEnabled** (DropAndActivate, true)<br>- **ShowText** (text, false)
+OnEnter | - **SetPlayerCommandEnabled** (Drop, true)<br>*Enable the player's ability to drop items*<br>- **ShowText** (text, false)
 Evaluation Criteria | - **ItemIsAtLocation** (TutorialScanner, nodeLeft)<br>- **AND**<br>- **WaitForContinueAll**<br>Activating the TutorialScanner sets the continue flag
 OnExit | - **SetPlayerCommandEnabled** (SetActorDistination, true)<br>- **HideText**
 
@@ -141,7 +139,6 @@ OnExit | - **SetPlayerCommandEnabled** (SetActorDistination, true)<br>- **HideTe
         OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
         {
             new SetCommandEnabled<DropItemCommand>(true),
-            new SetCommandEnabled<DropAndActivateItemCommand>(true),
             new ShowText(false, $"{scenario.Key}_Frame10"),
         },
         ExitCondition = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
@@ -167,10 +164,8 @@ OnExit | - **HideText**<br>- **EndGame** (Success)
         {
             OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
             {
-                new ShowText(false, $"{scenario.Key}_Frame12"),
-                new SetCommandEnabled<ActivateItemCommand>(false),
-                new SetCommandEnabled<DropAndActivateItemCommand>(false),
                 new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
+                new ShowText(false, $"{scenario.Key}_Frame12")
             },
         // ExitCondition Hidden
         // OnExit Hidden
