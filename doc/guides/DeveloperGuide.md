@@ -1,3 +1,10 @@
+# Developer Guide
+The following guide will provide more information about the project architecture and game/server sequencing, looking at each of the key projects and providing an overview of what tasks each one does.
+
+The following topics are covered:
+- [Project Architecture](#project-architecture) Overview of project structure and functionality
+- [Scenario Creation](#creating-scenarios) Introduction to how game scenarios are created
+
 # IT Alert! Client/Server Simulation Loop
 The Simulation Loop is based around Photon Networking, see [Shared Game Logic](#shared-game-logic). 
 
@@ -13,8 +20,6 @@ The Simulation Loop executes commands from clients on the server, then broadcast
 ![Simulation Loop](images/SimulationLoop.png)
 
 # Project Architecture
-![Project Architecture](images/ProjectArchitecture.png)
-
 The project is primarily composed of three solutions, shared game logic, server and client code
 
 ## Shared Game Logic
@@ -45,16 +50,9 @@ The unity project controls the UI elements in game and uses the compiled Client 
 ### Location
 - **Unity/**: *unity project directory, open folder in Unity* [Structure](Unity/UnityProject.md)
 
-# Systems
-Systems act upon entities through matchers, matchers maintain a collection of all entities that contain a specific set of components. In this manner all entities of a given ‘type’ can be acted upon without knowledge of the archetypes from which they were created.
-
-Systems can implement any of two interfaces depending on the required behaviour:
-- **InitializingSystem**: *perform operations before the first tick of the simulation loop, this can be used for set up activities and setting initial state*
-- **Tickable System**: *ticked as part of the simulation loop and implement the majority of the game logic by testing conditional actions and updating state on a regular basis*
-
-There are also systems that have no automatic behaviour and are used to accumulate counters, provide services, such as RNG (Random Number Generator) and provide interfaces to components outside of the simulation.
-
-System configuration is currently hardcoded but it is intended that this configuration will be serializable and form part of the parameterizable scenario configuration.
+![Project Architecture](images/ProjectArchitecture.png)
 
 # Creating Scenarios
-For information on creating new scenarios, see [Game Scenarios](Simulation/GameScenarios.md)
+Each playable 'level' in ITAlert! is called a scenario, these are currently hard coded within Simulation/PlayGen.ItAlert.Simulation.Configuration, which contains configurations for level layouts, items available, virus types, and win/loss conditions. 
+- [Creating New Scenarios](Simulation/GameScenarios.md#game-scenarios)
+- [Example Scenario](Simulation/ScenarioCreation.md#example-scenario)

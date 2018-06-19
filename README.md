@@ -23,22 +23,16 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 # Included Assets:
 - [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
-- ExcelToJsonConverter: is used to convert Excel Localization files to jSON.
-- [PlayGen Unity Utilities](git@codebasehq.com:playgen/components/unityutilities.git): is a collection of simple game utilities.
+- [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON, game uses a modified version of the original to handle rich text more efficiently
+- [PlayGen Unity Utilities](https://gitlab.com/playgen/unity-utilities): is a collection of simple game utilities.
 - [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
 - [Photon](https://www.photonengine.com/en/OnPremise) Game Server Backend.
 
 todo ECS, Simulation, etc
 
 # Cloning
-When a fresh clone of the repository has been taken the following script should be executed to set up the required symbolic links for the Unity build process: \Tools\CreateLibJunctions.bat
-
-If this completes correctly you will have 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR 
-
-When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
-
-If cloning via SourceTree or another graphical git tool the submodules must be manually opened to force the LFS content to be pulled.
-
+- When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
+- If cloning via SourceTree or another graphical git tool the submodules must be manually opened to force the LFS content to be pulled.
 
 # Development:
 ## Requirements:
@@ -72,7 +66,7 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 
 4. Build Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity.sln.
 
-5. Run Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (you need to do this before opening .Unity so Unity doesn't create the folders instead).
+5. Run Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (**you need to do this before opening .Unity so Unity doesn't create the folders instead**). This will create 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR
 
 6. Open and run Unity/ in the Unity Editor.
 
@@ -80,9 +74,6 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 ## Conventions
 - Work from P:\it-alert.
 - Commit .pdb files when committing .dlls.
-
-## Code Structure
-For more information of code structure, see the [Developer Guide](doc/guides/DeveloperGuide.md)
 
 ## SUGAR
 ### Build Instructions
@@ -108,15 +99,6 @@ For more information about the unity project, see this [Guide](doc/guides/Unity/
 
 The game-launcher repository is used to launch the game from url.
 
-# Game Sequenceing
-## Multiplayer Implementation
-- Game client hosts slave instance of simulation (ECS)
-- Photon Loadbalancing Server hosts multiple, on-demand instances of master simulation
-- Server broadcast instructs clients to tick and apply commands, latent clients can fast forward and interpolate
-- Clients validate state against server checksum, fail and disconnect if out of sync
-
-![Multiplayer Implementation]()
-
 ## Requirements:
 - Wix Toolset
 - Visual Studio 2017
@@ -129,7 +111,16 @@ The game-launcher repository is used to launch the game from url.
 3. The resulting windows installer can be found at Unity/PlayGen.ITAlert.Installer/bin/PlayGen.ITAlert.Installer.msi
 
 ## Setting up your game with SUGAR
-For information on Setting up Space Modules Inc. using SUGAR, see [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). *make sure that Assets\StreamingAssets\SUGAR.config.json exists and the BaseUri value matches the Base Address in the SUGAR Prefab.* 
+For information on Setting up IT Alert!. using SUGAR, see [SUGAR Quick Start Guide](http://api.sugarengine.org/v1/unity-client/tutorials/quick-start.html). *make sure that Assets\StreamingAssets\SUGAR.config.json exists and the BaseUri value matches the Base Address in the SUGAR Prefab.* 
+
+``` c#
+  {
+    "BaseUri": "http://api.sugarengine.org/v1/"
+  }
+````
 
 ## Running SUGAR Locally
-Using Space Modules inc. with a local version of SUGAR is as simple as changing the Base Address in the SUGAR Prefab, and the BaseUri value in *Assets\StreamingAssets\SUGAR.config.json*
+Using IT Alert!. with a local version of SUGAR is as simple as changing the Base Address in the SUGAR Prefab, and the BaseUri value in *Assets\StreamingAssets\SUGAR.config.json*
+
+## Developer Guide
+For more information of project structure for Game, Server and Client, see the the [Developer Guide](doc/guides/DeveloperGuide.md)

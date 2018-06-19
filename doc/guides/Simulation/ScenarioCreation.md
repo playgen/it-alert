@@ -94,4 +94,110 @@ Tutorial 1 is defined as follows:
 - **Success**: all steps completed, virus neutralised
 - **Failure**: N/A
 
-The final setup for the tutorial can be seen in [Tutorial1_Movement](../../Simulation/PlayGen.ITAlert.Simulation.Configuration/Scenarios/Tutorial/Tutorial1_Movement.cs)
+The scenario is broken down into key frames that players have to complete to successfully beat the level, the first scenario has 13 frames.
+
+## Example steps
+The following frames are used within the first tutorial, which trains users to start using navigation, activate items, capture viruses and create antiviruses. The tutorial is completed once the virus is neutralized. Below are 3 frames within the scenario and how they are set up.
+
+**Step 4 - Spawn Scanner item, wait for tutorial text acknowledgement**
+|  | Criteria
+--- | :---
+OnEnter | - **SetPlayerCommandEnabled** (Activate, false)<br>Disable the player's ability to activate items<br>- **SetPlayerCommandEnabled** (Pickup, false)<br>Disable the player's ability to pick up items<br>- **CreateItemOnSystem** (nodeRigit, TutorialScanner)<br>Spawn a TutorialScanner item on the right hand system<br>- **ShowText** (text, true)
+Evaluation Criteria | - **WaitForContinueAll**
+OnExit | - **HideText**
+
+``` c#
+    new SimulationFrame()
+    {
+        OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+        {
+            // TODO: this should disable the cancapture flag of the inventory slot
+            new SetCommandEnabled<PickupItemCommand>(false),	
+            new SetCommandEnabled<ActivateItemCommand>(false),
+            new SetCommandEnabled<DropAndActivateItemCommand>(false),
+            new CreateItem(TutorialScanner.Archetype, nodeRight),
+            new ShowText(true, $"{scenario.Key}_Frame4"),
+        },
+        ExitCondition = new PlayerIsAtLocation(nodeRight).Or(new WaitForTutorialContinue()),
+        OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+        {
+            new HideText(),
+            new ClearHighlight(),
+        }
+    }
+```
+
+**Step 10 - Drop Off Item**
+
+|  | Criteria  
+:--- | :---  
+OnEnter | - **SetPlayerCommandEnabled** (Drop, true)<br>*Enable the player's ability to drop items*<br>- **SetPlayerCommandEnabled** (DropAndActivate, true)<br>- **ShowText** (text, false)
+Evaluation Criteria | - **ItemIsAtLocation** (TutorialScanner, nodeLeft)<br>- **AND**<br>- **WaitForContinueAll**<br>Activating the TutorialScanner sets the continue flag
+OnExit | - **SetPlayerCommandEnabled** (SetActorDistination, true)<br>- **HideText**
+
+``` c#
+    new SimulationFrame()
+    {
+        OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+        {
+            new SetCommandEnabled<DropItemCommand>(true),
+            new SetCommandEnabled<DropAndActivateItemCommand>(true),
+            new ShowText(false, $"{scenario.Key}_Frame10"),
+        },
+        ExitCondition = new ItemTypeIsInStorageAtLocation<Scanner>(nodeLeft),
+        OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+        {
+            new SetCommandEnabled<SetActorDestinationCommand>(true),
+            new HideText(),
+        },
+    }
+```
+
+**Step 12 - Create antivirus, leave player to solve**
+
+|  | Criteria
+:-- | :--
+OnEnter | - **CreateItemAtLocation** (RedAntivirus, nodeRight)<br>- **ShowText** (text, false)
+Evaluation Criteria | - **NOT**<br>- **SystemInfected** (nodeLeft)
+OnExit | - **HideText**<br>- **EndGame** (Success)
+
+``` c#
+    scenario.Sequence.Add(
+        new SimulationFrame()
+        {
+            OnEnterActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+            {
+                new ShowText(false, $"{scenario.Key}_Frame12"),
+                new SetCommandEnabled<ActivateItemCommand>(false),
+                new SetCommandEnabled<DropAndActivateItemCommand>(false),
+                new CreateItem(RedTutorialAntivirus.Archetype, nodeRight),
+            },
+        // ExitCondition Hidden
+        // OnExit Hidden
+    );
+    scenario.Sequence.Add(
+        new SimulationFrame()
+        {
+            // OnEnter Hidden
+            ExitCondition = EvaluatorExtensions.Not(new IsInfected(nodeLeft)),
+            OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+            {
+                new HideText(),
+            },
+        }
+    );
+    scenario.Sequence.Add(
+        new SimulationFrame()
+        {
+            // OnEnter Hidden
+            // ExitCondition Hidden
+            OnExitActions = new List<ECSAction<Simulation, SimulationConfiguration>>()
+            {
+                new EndGame(EndGameState.Success),
+            },
+        }
+    );
+
+```
+
+The complete setup for the tutorial can be seen in [Tutorial1_Movement](../../../Simulation/PlayGen.ITAlert.Simulation.Configuration/Scenarios/Tutorial/Tutorial1_Movement.cs)
