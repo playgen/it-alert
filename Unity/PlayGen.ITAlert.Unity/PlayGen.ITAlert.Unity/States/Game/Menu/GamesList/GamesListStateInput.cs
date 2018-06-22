@@ -10,7 +10,7 @@ using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.GamesList

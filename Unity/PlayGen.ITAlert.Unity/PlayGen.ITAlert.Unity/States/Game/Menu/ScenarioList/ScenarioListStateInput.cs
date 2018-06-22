@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 
 using Object = UnityEngine.Object;
@@ -69,8 +69,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			_backButton.onClick.AddListener(OnBackClick);
 
 			_scenarioPanel.SetActive(true);
-			_backButton.gameObject.BestFit();
-			_selectButton.gameObject.BestFit();
+			_backButton.BestFit();
+			_selectButton.BestFit();
 			_selectedName.text = string.Empty;
 			_selectedDescription.text = string.Empty;
 			_selectButton.gameObject.SetActive(false);
@@ -92,8 +92,8 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 		{
 			if (_bestFitTick)
 			{
-				_backButton.gameObject.BestFit();
-				_selectButton.gameObject.BestFit();
+				_backButton.BestFit();
+				_selectButton.BestFit();
 				_bestFitTick = false;
 			}
 			if (_photonClient.ClientState != PlayGen.Photon.Unity.Client.ClientState.Connected)
@@ -114,7 +114,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu.ScenarioList
 			_selectedDescription.text = description ?? scenario.Description;
 			_scenarioSelectPanel.SetActive(true);
 			_selectButton.gameObject.SetActive(true);
-			_selectButton.gameObject.BestFit();
+			_selectButton.BestFit();
 			_selectButton.onClick.RemoveAllListeners();
 			_selectButton.onClick.AddListener(delegate { ConfirmScenario(scenario); });
 			_bestFitTick = true;

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Linq;
 using PlayGen.SUGAR.Common.Shared;
 using PlayGen.SUGAR.Unity;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Sugar
@@ -141,7 +141,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
         /// </summary>
         private void DoBestFit()
         {
-            GetComponentsInChildren<Button>(true).Select(t => t.gameObject).BestFit();
+            GetComponentsInChildren<Button>(true).ToList().BestFit();
         }
 
         /// <summary>

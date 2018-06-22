@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
 using PlayGen.Unity.Utilities.Loading;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.States.Error

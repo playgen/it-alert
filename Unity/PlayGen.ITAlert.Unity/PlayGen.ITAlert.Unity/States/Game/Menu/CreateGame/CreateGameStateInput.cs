@@ -9,7 +9,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Menu.CreateGame
 {

@@ -404,6 +404,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!95 &95725615969290006
 Animator:
   serializedVersion: 3
@@ -421,6 +422,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114018775230737550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -817,9 +819,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1952200346222594}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1159228509, guid: 8eda9b7dbf2917d4aa08ec4cab705234, type: 3}
+  m_Script: {fileID: 1923024115, guid: 57711a12eebb7f14b94351dd40c8913e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MinFontSize: 1
+  MaxFontSize: 40
+  _includeInactive: 1
+  _newStrings: []
 --- !u!114 &114524673873026004
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1294,7 +1300,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: 0}
+  m_AnchoredPosition: {x: 19.999878, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!224 &224063739987439148
@@ -1630,7 +1636,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 216.8265, y: -53.673462}
+  m_AnchoredPosition: {x: 216.82654, y: -53.673462}
   m_SizeDelta: {x: 349.3877, y: 87.346924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224962249350180710

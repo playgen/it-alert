@@ -1,11 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using PlayGen.SUGAR.Unity;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
-using PlayGen.Unity.Utilities.Extensions;
-
-using UnityEngine;
+using PlayGen.Unity.Utilities.Text;
 
 namespace PlayGen.ITAlert.Unity.Sugar
 {
@@ -37,7 +33,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
 		/// </summary>
 		private void DoBestFit()
 		{
-			GetComponentsInChildren<Button>(true).Select(t => t.gameObject).Where(t => t.activeSelf).BestFit();
+			GetComponentsInChildren<Button>(true).ToList().BestFit(false);
 			GetComponentsInChildren<Text>().Where(t => !t.GetComponentsInParent<Button>(true).Any() && !t.GetComponentsInParent<InputField>(true).Any()).BestFit();
 		}
 	}

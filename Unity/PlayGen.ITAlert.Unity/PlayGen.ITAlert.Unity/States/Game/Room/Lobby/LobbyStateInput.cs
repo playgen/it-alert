@@ -7,7 +7,7 @@ using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client.Voice;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;

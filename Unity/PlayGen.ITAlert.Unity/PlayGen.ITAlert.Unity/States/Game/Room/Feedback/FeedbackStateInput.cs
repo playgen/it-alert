@@ -4,17 +4,15 @@ using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 
-using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.SUGAR.Unity;
 
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 

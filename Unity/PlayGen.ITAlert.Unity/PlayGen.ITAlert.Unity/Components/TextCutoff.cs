@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using PlayGen.Unity.Utilities.Text;
+
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace PlayGen.ITAlert.Unity.Components
@@ -6,13 +8,13 @@ namespace PlayGen.ITAlert.Unity.Components
     [RequireComponent(typeof(Text))]
     public class TextCutoff : MonoBehaviour
     {
-        [SerializeField] private int _maxLength;
+        [SerializeField] private uint _maxLength;
         // ReSharper disable once FieldCanBeMadeReadOnly.Local
         [SerializeField] private char[] _cuttoffAfter = { };
         [SerializeField] private bool _useGlobalSettings = true;
         private Text _text;
 
-        public static int GlobalMaxLength = 15;
+        public static uint GlobalMaxLength = 15;
         public static char[] GlobalCutoffAfter = {'@'};
 
         // Mimic Unity's API
@@ -27,7 +29,7 @@ namespace PlayGen.ITAlert.Unity.Components
 	        var cutoffAfter = _useGlobalSettings ? GlobalCutoffAfter : _cuttoffAfter;
 	        var maxLength = _useGlobalSettings ? GlobalMaxLength : _maxLength;
 
-			_text.text = uncutText.Cutoff(cutoffAfter, maxLength);
+			_text.text = uncutText.CutOff(maxLength, cutoffAfter);
         }
 
         private void Awake()

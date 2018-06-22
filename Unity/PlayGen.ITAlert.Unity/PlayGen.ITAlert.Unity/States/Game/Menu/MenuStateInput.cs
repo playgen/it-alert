@@ -8,7 +8,7 @@ using PlayGen.Photon.Unity.Client;
 using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 

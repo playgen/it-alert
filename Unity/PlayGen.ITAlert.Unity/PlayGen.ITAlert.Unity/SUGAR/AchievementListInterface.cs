@@ -5,7 +5,7 @@ using PlayGen.SUGAR.Unity;
 using UnityEngine;
 using UnityEngine.UI;
 
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 
 namespace PlayGen.ITAlert.Unity.Sugar
@@ -112,7 +112,7 @@ namespace PlayGen.ITAlert.Unity.Sugar
             _pageNumberText.text = Localization.GetAndFormat("PAGE", false, _pageNumber + 1);
             _previousButton.interactable = _pageNumber > 0;
             _nextButton.interactable = SUGARManager.Evaluation.Progress.Count > (_pageNumber + 1) * _achievementItems.Length;
-            _achievementItems.Select(t => t.gameObject).BestFit();
+            _achievementItems.ToList().BestFit();
         }
 
         /// <summary>
@@ -137,8 +137,8 @@ namespace PlayGen.ITAlert.Unity.Sugar
         /// </summary>
         private void DoBestFit()
         {
-            _achievementItems.Select(t => t.gameObject).BestFit();
-            GetComponentsInChildren<Button>(true).Select(t => t.gameObject).BestFit();
+            _achievementItems.ToList().BestFit();
+            GetComponentsInChildren<Button>(true).ToList().BestFit();
         }
 
         /// <summary>

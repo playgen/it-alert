@@ -172,12 +172,6 @@
       <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="PlayGen.Unity.Settings">
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Settings.dll</HintPath>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.BestFit">
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.BestFit.dll</HintPath>
-    </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Extensions">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Extensions.dll</HintPath>
     </Reference>
@@ -190,8 +184,11 @@
     <Reference Include="PlayGen.Unity.Utilities.Localization">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Localization.dll</HintPath>
     </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Platforms">
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Platforms.dll</HintPath>
+    <Reference Include="PlayGen.Unity.Utilities.Settings">
+      <HintPath>P:\it-alert\Unity\lib\PlayGen Internals\PlayGen.Unity.Utilities.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="PlayGen.Unity.Utilities.Text">
+      <HintPath>P:\it-alert\Unity\lib\PlayGen Internals\PlayGen.Unity.Utilities.Text.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.UI">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.UI.dll</HintPath>
@@ -239,7 +236,6 @@
     <Compile Include="Commands\RefreshGamesListCommand.cs" />
     <Compile Include="Commands\SelectScenarioCommand.cs" />
     <Compile Include="Components\PressedState.cs" />
-    <Compile Include="Components\StringExtensions.cs" />
     <Compile Include="Components\TextCutoff.cs" />
     <Compile Include="Controllers\HoverController.cs" />
     <Compile Include="Debug\DebugCommands.cs" />

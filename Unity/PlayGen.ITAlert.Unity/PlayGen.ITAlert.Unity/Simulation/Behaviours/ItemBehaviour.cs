@@ -12,7 +12,7 @@ using PlayGen.ITAlert.Simulation.UI.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.Localization;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 
 using UnityEngine;

@@ -8,7 +8,7 @@ using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Utilities;
 using UnityEngine;
 using UnityEngine.UI;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using Engine.Lifecycle;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Paused

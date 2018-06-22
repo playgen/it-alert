@@ -14,7 +14,7 @@ using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client.Voice;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 

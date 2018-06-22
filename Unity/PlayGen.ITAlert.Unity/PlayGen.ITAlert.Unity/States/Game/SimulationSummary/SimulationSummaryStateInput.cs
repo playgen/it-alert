@@ -4,13 +4,10 @@ using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
-using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Unity.Components;
-using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
-using PlayGen.SUGAR.Unity;
-using PlayGen.Unity.Utilities.BestFit;
+using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
@@ -172,7 +169,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 					//rowText.color = colour;
 	                background.color = colour;
                 }
-				rowText.text = playerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
+				rowText.text = playerData.Name.CutOff(TextCutoff.GlobalMaxLength, TextCutoff.GlobalCutoffAfter);
 			}
         }
 
@@ -249,7 +246,7 @@ namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 			    var titleText = metricItem.transform.FindText("PlayerTitle");
 			    var descriptionText = metricItem.transform.FindText("PlayerMetric");
 
-				nameText.text = playerMetric.PlayerData.Name.Cutoff(TextCutoff.GlobalCutoffAfter, TextCutoff.GlobalMaxLength);
+				nameText.text = playerMetric.PlayerData.Name.CutOff(TextCutoff.GlobalMaxLength, TextCutoff.GlobalCutoffAfter);
 				titleText.text = Localization.Get(metricConfig.KeyTitle);
 			    //descriptionText.text = Localization.Get(metricConfig.KeyDescription);
 				descriptionText.text = Localization.GetAndFormat(metricConfig.KeyFormattedMetric, false, playerMetric.Score.ToString());

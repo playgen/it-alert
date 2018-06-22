@@ -57,10 +57,6 @@
     <Reference Include="PlayGen.ITAlert.Simulation.Startup, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <Private>False</Private>
     </Reference>
-    <Reference Include="PlayGen.Unity.Editor.Settings">
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Editor.Settings.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Editor.FontReplace">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.FontReplace.dll</HintPath>
       <Private>True</Private>
@@ -72,11 +68,6 @@
     <Reference Include="PlayGen.Unity.Utilities.Editor.Shortcuts">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Editor.Shortcuts.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="PlayGen.Unity.Utilities.Localization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Localization.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -99,7 +90,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectorThreadHelper.cs" />
-    <Compile Include="LocalizationCharacterCheck.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
