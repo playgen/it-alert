@@ -16,7 +16,6 @@ See the [LICENCE](LICENCE.md) file included in this project.
   - **Unity**: *prequired Unity dlls.*
 - **Server**: *[server side code](Server/README.md), based on the Photon server architecture.*
 - **Simulation**: *[Simulation source](Simulation/README.md).*
-- **Tools**: *batch files for rebuilding project.*
 - **Unity**: *[IT Alert! Game Client Unity project files](Unity/README.md).*
   - **PlayGen.ITAlert.Unity**: *[source game client Logic](Unity/PlayGen.ITAlert.Unity/README.md), builds to Assets/PlayGen.ITAlert.Unity.*
   - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project.*
@@ -64,7 +63,7 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 
 4. Build Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity.sln.
 
-5. Run Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (**you need to do this before opening .Unity so Unity doesn't create the folders instead**). This will create 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR
+5. Run Unity/Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (**you need to do this before opening .Unity so Unity doesn't create the folders instead**). This will create 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR
 
 6. Open and run Unity/ in the Unity Editor.
 
