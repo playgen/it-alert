@@ -21,10 +21,10 @@ This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.Scenario**
 - **PlayGen.ItAlert.Simulation.Scenario.Tests**: *Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration.*
 - **PlayGen.ItAlert.Simulation.Scenario.Localization**: *Localization for retrieval of strings for a given key and langugae.*
-- **PlayGen.ItAlert.Simulation.Scenario.Serialization**: *DOES NOT SEEM TO BE USED.*
+- **PlayGen.ItAlert.Simulation.Scenario.Serialization**: *Not currently used. Would handle serialization/deserialization of game scenarios currently defined in PlayGen.ItAlert.Simulation.Configuration.*
 - **PlayGen.ItAlert.Simulation.Scoring**: *Scoring system for tracking player scores. Event Handlers that handle scorable events.*
 - **PlayGen.ItAlert.Simulation.Serialization**
-- **PlayGen.ItAlert.Simulation.Serialization.Tests**: *DOES NOT SEEM TO BE USED.*
+- **PlayGen.ItAlert.Simulation.Serialization.Tests**: *Not currently used.*
 - **PlayGen.ItAlert.Simulation.Startup**: *Handles setup of simulations life cycle.*
 - **PlayGen.ItAlert.Simulation.UI**
 
