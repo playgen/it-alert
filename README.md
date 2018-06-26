@@ -7,28 +7,26 @@ It is part of the [RAGE project](http://rageproject.eu/).
 See the [LICENCE](LICENCE.md) file included in this project.
 
 # Key Project Structure
-- **doc**: *documentation generated with DocFX*.
+- **doc**: *Documentation*
 - **lib**: *precompiled [Included Assets](#Included-Assets)* 
   - **GameWork**: *Game Development Framework.*  
   - **High-Speed-Priority-Queue-for-C-Sharp**: *used by the simulation for pathfinding.*
   - **Photon**: *used by the photon server.*
-  - **SUGAR**: *Social Gamification Backend*
+  - **SUGAR**: *Social Gamification Backend.*
   - **Unity**: *prequired Unity dlls.*
-- **Server**: *server side code, based on the Photon server architecture*
-- **Simulation**: *client side code*
-- **Tools**: *batch files for rebuilding project*
-- **Unity**: *IT Alert! Unity project files*
-  - **PlayGen.ITAlert.Unity**: *precompiled game Logic, builds to Assets/PlayGen.ITAlert.Unity*
-  - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project*
+- **Server**: *[server side code](Server/README.md), based on the Photon server architecture.*
+- **Simulation**: *[Simulation source](Simulation/README.md).*
+- **Tools**: *batch files for rebuilding project.*
+- **Unity**: *[IT Alert! Game Client Unity project files](Unity/README.md).*
+  - **PlayGen.ITAlert.Unity**: *[source game client Logic](Unity/PlayGen.ITAlert.Unity/README.md), builds to Assets/PlayGen.ITAlert.Unity.*
+  - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project.*
 
 # Included Assets:
 - [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
 - [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON, game uses a modified version of the original to handle rich text more efficiently
-- [PlayGen Unity Utilities](https://gitlab.com/playgen/unity-utilities): is a collection of simple game utilities.
+- [PlayGen Unity Utilities](https://github.com/playgen/unity-utilities): is a collection of simple game utilities.
 - [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
 - [Photon](https://www.photonengine.com/en/OnPremise) Game Server Backend.
-
-todo ECS, Simulation, etc
 
 # Cloning
 - When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
@@ -79,20 +77,20 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 ### Build Instructions
 Currently using the unity client built from commit: 65b3f05407eb5f58096c1ae862da18ab8d643e1c
 
-1. Build SUGAR-Unity
-2. Copy build output of SUGAR-Unity build to lib/SUGAR/bin
+1. [Build SUGAR-Unity](https://docs.sugarengine.org/unity-client/tutorials/build-instructions.html).
+2. Copy build output of SUGAR-Unity build to lib/SUGAR/bin.
 
 OR
 
-1. Build the SUGAR-Unity unitypackage
-2. Import into IT Alert
+1. [Build the SUGAR-Unity unitypackage](https://docs.sugarengine.org/unity-client/tutorials/build-instructions.html).
+2. Import into IT Alert.
+
+# Developer Guide
+For more information of project structure for Game, Server and Client, see the the [Developer Guide](docs/guides/DeveloperGuide.md)
 
 # Deployment
 ## Run Instructions
-To run the Photon Server as a service, see this [ReadMe](Server/deploy/ReadMe.md).
-
-# Unity Project
-For more information about the unity project, see this [Guide](doc/guides/Unity/UnityProject.md)
+To run the Photon Server as a service, see this [ReadMe](Server/deploy/README.md).
 
 # Installer:
 [Wix](http://wixtoolset.org/) is used to create the Windows installer.
@@ -121,6 +119,3 @@ For information on Setting up IT Alert!. using SUGAR, see [SUGAR Quick Start Gui
 
 ## Running SUGAR Locally
 Using IT Alert!. with a local version of SUGAR is as simple as changing the Base Address in the SUGAR Prefab, and the BaseUri value in *Assets\StreamingAssets\SUGAR.config.json*
-
-## Developer Guide
-For more information of project structure for Game, Server and Client, see the the [Developer Guide](doc/guides/DeveloperGuide.md)

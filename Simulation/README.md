@@ -1,6 +1,33 @@
 # Simulation Logic
 The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 
+# Project Structure
+This project contains shared logic between both Server and Client
+- **PlayGen.ItAlert.Simulation.Modules**
+    - **PlayGen.ITAlert.Simulation.Modules.Antivirus**: *Antivirus, capture and anaylsis system enhancement and tools.* 
+    - **PlayGen.ITAlert.Simulation.Modules.GarbageDisposal**: *Garbage disposal system enhancement.*
+    - **PlayGen.ITAlert.Simulation.Modules.Malware**: *Malware propagation and detection components.*
+    - **PlayGen.ITAlert.Simulation.Modules.Resources**: *Subsystem and connection resource components.*
+    - **PlayGen.ITAlert.Simulation.Modules.Transfer**: *Transfer system enhancements.*
+    - **PlayGen.ITAlert.Simulation.Modules.Tutorial**: *Tutorial system components.*
+- **PlayGen.ItAlert.Simulation**
+- **PlayGen.ItAlert.Simulation.Tests**: *Base project containing config files and object definitions.*
+- **PlayGen.ItAlert.Simulation.Archetypes**: *Base archetypes to be extended in PlayGen.ITAlert.Simulation.Modules.*
+- **PlayGen.ItAlert.Simulation.Common**
+- **PlayGen.ItAlert.Simulation.Common.Tests**: *Common identifiers used.*
+- **PlayGen.ItAlert.Simulation.Configuration**
+- **PlayGen.ItAlert.Simulation.Configuration.Tests**: *Scenario Definitions in Scenarios/ and Configuration loader. Definitions of available player colours .*
+- **PlayGen.ItAlert.Simulation.Logging**: *Handles logging of events to database for query later, see [Logging](#logging-and-analytics).*
+- **PlayGen.ItAlert.Simulation.Scenario**
+- **PlayGen.ItAlert.Simulation.Scenario.Tests**: *Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration.*
+- **PlayGen.ItAlert.Simulation.Scenario.Localization**: *Localization for retrieval of strings for a given key and langugae.*
+- **PlayGen.ItAlert.Simulation.Scenario.Serialization**: *DOES NOT SEEM TO BE USED.*
+- **PlayGen.ItAlert.Simulation.Scoring**: *Scoring system for tracking player scores. Event Handlers that handle scorable events.*
+- **PlayGen.ItAlert.Simulation.Serialization**
+- **PlayGen.ItAlert.Simulation.Serialization.Tests**: *DOES NOT SEEM TO BE USED.*
+- **PlayGen.ItAlert.Simulation.Startup**: *Handles setup of simulations life cycle.*
+- **PlayGen.ItAlert.Simulation.UI**
+
 # Systems
 Systems act upon entities through matchers, matchers maintain a collection of all entities that contain a specific set of components. In this manner all entities of a given ‘type’ can be acted upon without knowledge of the archetypes from which they were created.
 
@@ -19,56 +46,9 @@ System configuration is currently hardcoded but it is intended that this configu
 - Server broadcasts instructs clients to tick and apply commands, latent clients can fast forward and interpolate
 - Clients validate state against server checksum, fail and disconnect if out of sync.
 
-![MultiplayerImplementation](../images/MultiplayerImplementation.png)
+![MultiplayerImplementation](docs/MultiplayerImplementation.png)
 
-# Project Structure
-This project contains shared logic between both Server and Client
-- **PlayGen.ItAlert.Simulation.Modules**
-    - **PlayGen.ITAlert.Simulation.Modules.Antivirus**
-        - Antivirus, capture and anaylsis system enhancement and tools 
-    - **PlayGen.ITAlert.Simulation.Modules.GarbageDisposal** 
-        - Garbage disposal system enhancement
-    - **PlayGen.ITAlert.Simulation.Modules.Malware** 
-        - Malware propagation and detection components
-    - **PlayGen.ITAlert.Simulation.Modules.Resources**
-        - Subsystem and connection resource components 
-    - **PlayGen.ITAlert.Simulation.Modules.Transfer** 
-        - Transfer system enhancements
-    - **PlayGen.ITAlert.Simulation.Modules.Tutorial** 
-        - Tutorial system components
-- **PlayGen.ItAlert.Simulation**
-- **PlayGen.ItAlert.Simulation.Tests**
-    - Base project containing config files and object definitions
-- **PlayGen.ItAlert.Simulation.Archetypes**
-    - Base archetypes to be extended in PlayGen.ITAlert.Simulation.Modules
-- **PlayGen.ItAlert.Simulation.Common**
-- **PlayGen.ItAlert.Simulation.Common.Tests**
-    - Common identifiers used
-- **PlayGen.ItAlert.Simulation.Configuration**
-- **PlayGen.ItAlert.Simulation.Configuration.Tests**
-    - Scenario Definitions in Scenarios/ and Configuration loader
-    - Definitions of available player colours 
-- **PlayGen.ItAlert.Simulation.Logging**
-    - Handles logging of events to database for query later, see [Logging](#logging-and-analytics)
-- **PlayGen.ItAlert.Simulation.Scenario**
-- **PlayGen.ItAlert.Simulation.Scenario.Tests**
-    - Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration
-- **PlayGen.ItAlert.Simulation.Scenario.Localization**
-    - Localization for retrieval of strings for a given key and langugae
-- **PlayGen.ItAlert.Simulation.Scenario.Serialization**
-    - DOES NOT SEEM TO BE USED
-- **PlayGen.ItAlert.Simulation.Scoring**
-    - Scoring system for tracking player scores
-    - Event Handlers that handle scorable events
-- **PlayGen.ItAlert.Simulation.Serialization**
-- **PlayGen.ItAlert.Simulation.Serialization.Tests**
-    - DOES NOT SEEM TO BE USED
-- **PlayGen.ItAlert.Simulation.Startup**
-    - Handles setup of simulations life cycle
-- **PlayGen.ItAlert.Simulation.UI**
-    - todo
-
-#Logging and Analytics
+# Logging and Analytics 
 The ECS and simulation layer provide a database event logging architecture that capture low level data about the game instances and the actions of players.
 
 Table | Column | Type | Value | Comment
