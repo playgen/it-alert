@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Convert.ps1" />
-    <None Include="Download.url" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

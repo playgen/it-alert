@@ -1,7 +1,13 @@
 # Simulation Logic
 The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 
-# Project Structure
+# Key Project Structure
+- **Engine**: *[Entity-Component System](Engine/README.md)*
+- **lib**: *precompiled referenced .dlls.*
+- **Tools**
+  - **ExcelToJsonConverter**: *Used in the Scenario Localization project to generate the .json localization file from .xlsx.*
+
+# Visual Studio Project Structure
 This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.Modules**
     - **PlayGen.ITAlert.Simulation.Modules.Antivirus**: *Antivirus, capture and anaylsis system enhancement and tools.* 

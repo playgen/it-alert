@@ -6,4 +6,4 @@ if(!(Split-Path -parent $xlsxPath) -or !(Test-Path -pathType Container (Split-Pa
 	$xlsxPath = Join-Path $pwd (Split-Path -leaf $xlsxPath) 
 }      
 
-& ..\..\tools\exceltojsonconverter\exceltojsonconverter.exe $xlsx $jsonPath
+& ..\tools\exceltojsonconverter\exceltojsonconverter.exe $xlsx $jsonPath
