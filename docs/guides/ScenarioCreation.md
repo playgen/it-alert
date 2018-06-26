@@ -196,3 +196,6 @@ OnExit | - **HideText**<br>- **EndGame** (Success)
 ```
 
 The complete setup for the tutorial can be seen in [Tutorial1_Movement.cs](../../Simulation/PlayGen.ITAlert.Simulation.Configuration/Scenarios/Tutorial/Tutorial1_Movement.cs)
+
+
+See [*docs/guides/ScenarioDeveloperGuide.docx*](ScenarioDeveloperGuide.docx) for more detail.
