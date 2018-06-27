@@ -3,8 +3,17 @@ IT Alert! is a system admin, network protection, cooperative survival game.
 
 It is part of the [RAGE project](http://rageproject.eu/).
 
+The project has three main areas: 
+- The **client**.
+- The **server**.
+- The shared **simulation**.
+
 # Licensing
 See the [LICENCE](LICENCE.md) file included in this project.
+
+# Cloning
+- When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
+- If cloning via SourceTree or another graphical git tool the submodules must be manually opened to force the LFS content to be pulled.
 
 # Key Project Structure
 - **doc**: *Documentation*
@@ -27,10 +36,6 @@ See the [LICENCE](LICENCE.md) file included in this project.
 - [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
 - [Photon](https://www.photonengine.com/en/OnPremise) Game Server Backend.
 
-# Cloning
-- When the project is cloned the ECS solution will need to be opened to perform a NuGet package restore, this will only need to be repeated if the ECS is updated with new package dependencies.
-- If cloning via SourceTree or another graphical git tool the submodules must be manually opened to force the LFS content to be pulled.
-
 # Development:
 ## Requirements:
 - Windows
@@ -44,12 +49,14 @@ For .pdb debugging it is expected that you work from `P:\it-alert` so that the s
 If you are going to be commiting DLLs or want to debug code inside the DLLs, you will need to do the following:
 
 1. Open CMD.
-2. Map the parent folder of your IT Alert repository folder to the drive letter P:  
+2. We will refer to the parent folder of your IT Alert repository as your "Projects Folder".
+3. Map your Projects Folder to the drive letter P:  
 `SUBST P: [`Parent dir of it-alert project`]`  
 If the path of the it-alert project is C:\Users\Bob\Projects\it-alert, the command would be:  
 `SUBST P: C:\Users\Bob\Projects`
 3. Navigate to P:\it-alert to make sure the mapping has worked.
 4. Remember to always use this path when working on it-alert.
+5. Pull any of the repositories with source code you want to debug to your Projects Folder, leaving the cloned repository name as the default that git has defined.
 
 ## Run
 1. This project uses Git Submodules so make sure those have been pulled too.  
@@ -72,6 +79,9 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 - Work from P:\it-alert.
 - Commit .pdb files when committing .dlls.
 
+## Developer Guide
+For detailed information on the project structure for the Game Logic, Server and Client, see the the [Developer Guide](docs/guides/DeveloperGuide.md)
+
 ## SUGAR
 ### Build Instructions
 Currently using the unity client built from commit: 65b3f05407eb5f58096c1ae862da18ab8d643e1c
@@ -83,9 +93,6 @@ OR
 
 1. [Build the SUGAR-Unity unitypackage](https://docs.sugarengine.org/unity-client/tutorials/build-instructions.html).
 2. Import into IT Alert.
-
-# Developer Guide
-For more information of project structure for Game, Server and Client, see the the [Developer Guide](docs/guides/DeveloperGuide.md)
 
 # Deployment
 ## Run Instructions

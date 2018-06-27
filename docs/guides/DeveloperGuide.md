@@ -5,9 +5,6 @@ The following topics are covered:
 - [Project Architecture](#project-architecture) Overview of project structure and functionality
 - [Scenario Creation](#creating-scenarios) Introduction to how game scenarios are created
 
-# Project Architecture
-The project is primarily composed of three solutions, shared game logic, server and client code
-
 # IT Alert! Client/Server Simulation Loop
 The game uses a client/server architecture based around Photon Networking. Photon uses a plugin architecture where each game instance maps to a logical ‘room’. For each room an instance of the plugin is instantiated within the load balancing host. Messages are transferred between client and server over TCP or UDP transports, optionally using WebSockets for proxy traversal.
 - [Server](https://www.photonengine.com/en/OnPremise)

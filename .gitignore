@@ -90,6 +90,11 @@ Server/deploy/bin*/NLog*
 Server/deploy/bin*/SUGARConfiguration.json
 
 #
+# Android
+#
+.keystore
+
+#
 # General Ignore
 #
 ~*.docx
