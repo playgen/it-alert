@@ -33,7 +33,7 @@ See the [LICENCE](LICENCE.md) file included in this project.
 - [SUGAR](http://www.sugarengine.org/) is a Social Gamification Backend.
 - [ExcelToJsonConverter](https://github.com/Benzino/ExcelToJsonConverter): is used to convert Excel Localization files to jSON, game uses a modified version of the original to handle rich text more efficiently
 - [PlayGen Unity Utilities](https://github.com/playgen/unity-utilities): is a collection of simple game utilities.
-- [GameWork](https://github.com/Game-Work/GameWork.Unity) is a game development framework. 
+- [GameWork](https://github.com/JaredGG/GameWork.Unity) is a game development framework. 
 - [Photon](https://www.photonengine.com/en/OnPremise) Game Server Backend.
 
 # Development:
