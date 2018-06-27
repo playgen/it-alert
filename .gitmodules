@@ -1,6 +1,6 @@
 [submodule "Simulation/Engine"]
 	path = Simulation/Engine
-	url = git@gitlab.com:ephemeris/ecs-alpha.git
+url=git@gitlab.com:playgen/ephemeris/ecs-alpha.git
 	branch = master
 [submodule "Server/photon-plugin"]
 	path = Server/photon-plugin
