@@ -4,6 +4,9 @@ The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 # Key Project Structure
 - **Engine**: *[Entity-Component System](Engine/README.md)*
 - **lib**: *precompiled referenced .dlls.*
+- **PlayGen.ItAlert.Simulation.Scenario.Localization**
+  - **ScenarioLocalization.xlsx**: *Localization of scenarios.*
+  - **Convert.ps1**: *Script to convert ScenarioLocalization.xlsx to ScenarioLocalization.json for use in game.*    
 - **Tools**
   - **ExcelToJsonConverter**: *Used in the Scenario Localization project to generate the .json localization file from .xlsx.*
 
@@ -26,7 +29,8 @@ This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.Logging**: *Handles logging of events to database for query later, see [Logging](#logging-and-analytics).*
 - **PlayGen.ItAlert.Simulation.Scenario**
 - **PlayGen.ItAlert.Simulation.Scenario.Tests**: *Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration.*
-- **PlayGen.ItAlert.Simulation.Scenario.Localization**: *Localization for retrieval of strings for a given key and langugae.*
+- **PlayGen.ItAlert.Simulation.Scenario.Localization**: *Localization for retrieval of strings for a given key and langugae.*  
+  - **ScenarioLocalization.json**: *Localized scenario text.*
 - **PlayGen.ItAlert.Simulation.Scenario.Serialization**: *Not currently used. Would handle serialization/deserialization of game scenarios currently defined in PlayGen.ItAlert.Simulation.Configuration.*
 - **PlayGen.ItAlert.Simulation.Scoring**: *Scoring system for tracking player scores. Event Handlers that handle scorable events.*
 - **PlayGen.ItAlert.Simulation.Serialization**

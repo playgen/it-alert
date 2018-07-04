@@ -1,3 +1,5 @@
+﻿# Must be run as administrator from this directory
+
 $xlsx = "ScenarioLocalization.xlsx" 
 $xlsxPath = $xlsx
 $jsonPath = "ScenarioLocalization.json" 
