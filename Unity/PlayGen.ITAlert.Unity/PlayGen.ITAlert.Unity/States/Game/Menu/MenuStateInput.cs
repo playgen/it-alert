@@ -34,11 +34,12 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 		private Button _createGameButton;
 		private Text _serverConnectionText;
 		private Text _sugarConnectionText;
+	    private Text _versionText;
 
-		private Color _red;
+        private Color _red;
 		private Color _green;
 
-		public MenuStateInput(ITAlertPhotonClient photonClient, ScenarioController controller)
+	    public MenuStateInput(ITAlertPhotonClient photonClient, ScenarioController controller)
 		{
 			_photonClient = photonClient;
 			_controller = controller;
@@ -58,8 +59,9 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 			_serverConnectionText = _mainMenuPanel.transform.FindText("MenuStatusContainer/ServerConnection");
 			_sugarConnectionText = _mainMenuPanel.transform.FindText("MenuStatusContainer/SUGARConnection");
-
-			_quitButton.onClick.AddListener(OnQuitClick);
+            _versionText = _mainMenuPanel.transform.FindText("MenuStatusContainer/Version");
+            
+            _quitButton.onClick.AddListener(OnQuitClick);
 			_createGameButton.onClick.AddListener(OnCreateGameClick);
 			_joinGameButton.onClick.AddListener(OnJoinGameClick);
 			_quickMatchButton.onClick.AddListener(OnQuickMatchClick);
@@ -67,6 +69,10 @@ namespace PlayGen.ITAlert.Unity.States.Game.Menu
 
 			ColorUtility.TryParseHtmlString("#E32730", out _red);
 			ColorUtility.TryParseHtmlString("#89C845", out _green);
+
+		    _versionText.text =
+		        $"Version: Client: {Version.ToString()}, Server: {ITAlert.Photon.Common.Version.ToString()}, Simulation: {ITAlert.Simulation.Version.ToString()}.";
+
 		}
 
 		protected override void OnTerminate()

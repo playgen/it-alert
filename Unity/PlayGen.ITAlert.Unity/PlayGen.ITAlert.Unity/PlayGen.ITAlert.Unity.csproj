@@ -345,6 +345,7 @@
     <Compile Include="Utilities\HoverObject.cs" />
     <Compile Include="Utilities\PlatformUtils.cs" />
     <Compile Include="Utilities\TrackerUtility.cs" />
+    <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PhotonDependencies\PhotonDependencies.csproj">

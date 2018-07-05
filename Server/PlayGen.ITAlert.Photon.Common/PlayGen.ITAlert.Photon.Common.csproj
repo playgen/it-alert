@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="CustomRoomSettingKeys.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Version.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\photon-plugin\PlayGen.Photon.Common\PlayGen.Photon.Common.csproj">
