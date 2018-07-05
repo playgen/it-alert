@@ -80,12 +80,16 @@ namespace PlayGen.ITAlert.Simulation.Modules.Transfer.Systems
 					&& remoteTransferActivatorContainer.Item.HasValue
 					&& _transferActivatorMatcherGroup.TryGetMatchingEntity(remoteTransferActivatorContainer.Item.Value, out var remoteTransferActivatorTuple))
 				{
-					localTransferItemContainer.Locked = true;
-					remoterTransferItemContainer.Locked = true;
-					remoteTransferActivatorTuple.Component1.SetState(ActivationState.Active, currentTick);
-					// TODO: find a better way of doing this
-					remoteTransferActivatorTuple.Component5.Synchronized = true;
-					remoteTransferActivatorTuple.Component5.ActivationTicksRemaining = remoteTransferActivatorTuple.Component5.ActivationDuration;
+                    // Make sure items haven't recently been locked by another player.
+				    if (localTransferItemContainer.Locked == false)
+				    {
+				        localTransferItemContainer.Locked = true;
+				        remoterTransferItemContainer.Locked = true;
+				        remoteTransferActivatorTuple.Component1.SetState(ActivationState.Active, currentTick);
+				        // TODO: find a better way of doing this
+				        remoteTransferActivatorTuple.Component5.Synchronized = true;
+				        remoteTransferActivatorTuple.Component5.ActivationTicksRemaining = remoteTransferActivatorTuple.Component5.ActivationDuration;
+				    }
 				}
 				else
 				{
