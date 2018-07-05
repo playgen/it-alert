@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using POpusCodec.Enums;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -47,10 +48,8 @@ namespace PlayGen.Photon.Unity.Client.Voice
 			PhotonVoiceSettings.Instance.AutoTransmit = false;
 			PhotonVoiceSettings.Instance.AutoDisconnect = true;
 			PhotonVoiceSettings.Instance.AutoConnect = true;
-			PhotonVoiceSettings.Instance.Delay = POpusCodec.Enums.Delay.Delay2dot5ms;
-			PhotonVoiceSettings.Instance.PlayDelayMs = 2;
-
-			_gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
+            
+            _gameObject = PhotonNetwork.Instantiate(VoicePlayerPath, Vector3.zero, Quaternion.identity, 0);
 
 			SetVolume();
 
