@@ -97,6 +97,17 @@ OR
 1. [Build the SUGAR-Unity unitypackage](https://docs.sugarengine.org/unity-client/tutorials/build-instructions.html).
 2. Import into IT Alert.
 
+## Versioning
+Each main area of the IT Alert! project has its own version located in:  
+- **Client**: *Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity/Version.cs*
+- **Server**: *Server/PlayGen.ITAlert.Photon.Common/Version.cs*
+- **Simulation**: *Simulation/PlayGen.ITAlert.Simulation/Version.cs*
+
+The version is composed of:
+- **Major**: Increment for backwards compatibility breaking changes.
+- **Minor**: Increment for features.
+- **Build**: Increment for bug fixes, minor changes etc that result in a new build.
+
 # Deployment
 ## Run Instructions
 To run the Photon Server as a service, see this [ReadMe](Server/deploy/README.md).
