@@ -17,16 +17,20 @@ See the [LICENCE](LICENCE.md) file included in this project.
 
 # Key Project Structure
 - **doc**: *Documentation*
-- **lib**: *precompiled [Included Assets](#Included-Assets)* 
+- **lib**: *precompiled [Included Assets](#Included-Assets) used by the client and server.* 
   - **GameWork**: *Game Development Framework.*  
   - **High-Speed-Priority-Queue-for-C-Sharp**: *used by the simulation for pathfinding.*
-  - **Photon**: *used by the photon server.*
-  - **SUGAR**: *Social Gamification Backend.*
-  - **Unity**: *prequired Unity dlls.*
+  - **Photon**: *used by the photon server.*  
 - **Server**: *[server side code](Server/README.md), based on the Photon server architecture.*
 - **Simulation**: *[Simulation source](Simulation/README.md).*
 - **Unity**: *[IT Alert! Game Client Unity project files](Unity/README.md).*
+  - **Assets**
+    - **SUGAR**: *Social Gamification Unity Client. See [Included Assets](#Included-Assets).*
+  - **lib**: *precompiled [Included Assets](#Included-Assets) used by the client.*     
+    - **Unity**: *prequired Unity dlls.*
   - **PlayGen.ITAlert.Unity**: *[source game client Logic](Unity/PlayGen.ITAlert.Unity/README.md), builds to Assets/PlayGen.ITAlert.Unity.*
+  - **Tools**
+    - **CreateLibJunctions.bat**: *setup script to create symlinks to necessary lib files.*
   - **PlayGen.ITAlert.Installer**: *[WiX](http://wixtoolset.org/) installer project.*
 
 # Included Assets:
@@ -70,10 +74,9 @@ Note: Make sure that Submodules have been pulled properly. Source Tree likes to 
 
 4. Build Unity/PlayGen.ITAlert.Unity/PlayGen.ITAlert.Unity.sln.
 
-5. Run Unity/Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (**you need to do this before opening .Unity so Unity doesn't create the folders instead**). This will create 2 symlinks \Unity\Assets\Gamework and \Unity\Assets\SUGAR
+5. Run Unity/Tools/CreateLibJunctions.bat to setup the required symlinks so the correct dlls are included (**you need to do this before opening .Unity so Unity doesn't create the folders instead**). This will create a symlink at \Unity\Assets\Gamework.
 
 6. Open and run Unity/ in the Unity Editor.
-
 
 ## Conventions
 - Work from P:\it-alert.

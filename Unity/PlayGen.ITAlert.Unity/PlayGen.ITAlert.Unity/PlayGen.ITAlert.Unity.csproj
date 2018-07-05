@@ -165,11 +165,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Client">
-      <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
+      <HintPath>..\..\Assets\SUGAR\bin\PlayGen.SUGAR.Client.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.SUGAR.Unity">
-      <HintPath>..\..\..\lib\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
+      <HintPath>..\..\Assets\SUGAR\bin\PlayGen.SUGAR.Unity.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Extensions">
@@ -209,11 +209,11 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\lib\Unity\UnityEngine.dll</HintPath>
+      <HintPath>..\..\lib\Unity\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\lib\Unity\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Zenject">
