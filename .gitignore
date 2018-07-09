@@ -50,8 +50,8 @@ Unity/*.user
 Unity/*.sln
 Unity/*.csproj
 Unity/Unity.userprefs
-Unity/Assets/SUGAR/
 Unity/Assets/GameWork/
+!Unity/Assets/SUGAR/**/*
 Unity/Assets/PlayGen.ITAlert.Unity/**/*
 !Unity/Assets/PlayGen.ITAlert.Unity/**/*.dll.meta
 *.mdb.meta
