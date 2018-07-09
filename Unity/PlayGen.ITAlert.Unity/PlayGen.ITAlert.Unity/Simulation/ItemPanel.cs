@@ -107,7 +107,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void ExplicitUpdate()
 		{
-			LogProxy.Info($"ItemPanel ExplicitUpdate: Director Id {_director.InstanceId} player is null: {_director.Player}");
+			LogProxy.Debug("ItemPanel ExplicitUpdate: Director Id {0} player is null: {1}", _director.InstanceId, _director.Player.Name);
 
 			if (_director.Player != null)
 			{

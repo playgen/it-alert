@@ -456,7 +456,7 @@ namespace PlayGen.ITAlert.Unity.Simulation
 
 		public void UpdateSimulation(TickMessage tickMessage)
 		{
-			LogProxy.Info("ExplicitUpdate Simulation");
+			LogProxy.Debug("ExplicitUpdate Simulation");
 			lock (_queueLock)
 			{
 				_queuedMessages.Enqueue(tickMessage);
