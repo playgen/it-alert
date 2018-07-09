@@ -248,7 +248,7 @@
     <Compile Include="Exceptions\EntityInitializationException.cs" />
     <Compile Include="Exceptions\PhotonDisconnectionException.cs" />
     <Compile Include="Exceptions\SimulationSynchronisationException.cs" />
-    <Compile Include="GameSettings.cs" />
+    <Compile Include="GameConfig.cs" />
     <Compile Include="Photon\CreateRoomSettings.cs" />
     <Compile Include="Photon\ITAlertClientRoom.cs" />
     <Compile Include="Photon\ITAlertPhotonClient.cs" />

@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="GameWork.Core.Logging">
       <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Logging.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

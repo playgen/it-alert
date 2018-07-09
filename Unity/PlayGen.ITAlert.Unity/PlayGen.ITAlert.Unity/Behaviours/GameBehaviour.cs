@@ -15,36 +15,54 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 	[RequireComponent(typeof(DontDestroyOnLoad))]
 	public class GameBehaviour : MonoBehaviour
 	{
-		private static string ConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
+	    public static GameConfig GameConfig { get; private set; }
 
-		private bool _loaded;
-        private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
 	    private static string GameConfigPath => Application.streamingAssetsPath + "/Game.config.json";
+        private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
         private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
-		private IEnumerator LoadPhotonConfig(string path)
-		{
-			if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WSAPlayerX86 || Application.platform == RuntimePlatform.WSAPlayerX64)
-			{
-				path = "file:///" + path;
-			}
-			var www = new WWW(path);
-			yield return www;
+        private bool _loaded;
+
         static GameBehaviour()
 	    {
 	        LogProxy.SetLogger(Logger);
         }
 
-			var config = JsonConvert.DeserializeObject<ServerSettings>(www.text);
-			PhotonNetwork.PhotonServerSettings = config;
+        private IEnumerator LoadConfigs()
+        {
+            // Game Config
+            var gameConfigTextLoader = CreateTextLoader(GameConfigPath);
+            yield return gameConfigTextLoader;
 
-			_stateController.EnterState(GameState.StateName);
+            GameConfig = new GameConfig();
+            //todo uncomment GameConfig = JsonConvert.DeserializeObject<GameConfig>(gameConfigTextLoader.text);
+            LogProxy.LogLevel = GameConfig.LogLevel;
+
+            // Photon Config
+            var photonConfigTextLoader = CreateTextLoader(PhotonConfigPath);
+            yield return photonConfigTextLoader;
+
+            var photonConfig = JsonConvert.DeserializeObject<ServerSettings>(photonConfigTextLoader.text);
+			PhotonNetwork.PhotonServerSettings = photonConfig;
+            
+            _stateController.EnterState(GameState.StateName);
 			_loaded = true;
 		}
 
-		private TickStateController _stateController;
+	    private WWW CreateTextLoader(string path)
+	    {
+	        if (Application.platform == RuntimePlatform.WindowsEditor || Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WSAPlayerX86 || Application.platform == RuntimePlatform.WSAPlayerX64)
+	        {
+	            path = "file:///" + path;
+	        }
 
-		private void Awake()
+	        return new WWW(path);
+	    }
+
+		private TickStateController _stateController;
+	    
+
+	    private void Awake()
 		{
 		    GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
 
@@ -54,9 +72,8 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void Start()
 		{
-			StartCoroutine(LoadPhotonConfig(ConfigPath));
-
-			_stateController.Initialize();
+			StartCoroutine(LoadConfigs());
+            _stateController.Initialize();
 		}
 
 		private void Update()
