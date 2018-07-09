@@ -17,7 +17,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 	{
 	    public static GameConfig GameConfig { get; private set; }
 
-	    private static string GameConfigPath => Application.streamingAssetsPath + "/NewGame.config.json";
+	    private static string GameConfigPath => Application.streamingAssetsPath + "/Debug.config.json";
         private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
         private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
