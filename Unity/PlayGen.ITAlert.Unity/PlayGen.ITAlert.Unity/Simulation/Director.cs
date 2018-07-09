@@ -8,6 +8,7 @@ using Engine.Commands;
 using Engine.Entities;
 using Engine.Lifecycle;
 using Engine.Serialization;
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Photon.Messages.Simulation.States;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Startup;

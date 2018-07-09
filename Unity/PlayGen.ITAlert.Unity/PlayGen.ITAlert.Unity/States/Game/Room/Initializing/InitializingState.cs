@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Engine.Serialization;
-
+using GameWork.Core.Logging.Loggers;
 using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Messages;
 using PlayGen.ITAlert.Photon.Messages.Game.States;
@@ -12,7 +12,7 @@ using PlayGen.ITAlert.Simulation.Startup;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
 using PlayGen.Photon.Messaging;
-using PlayGen.Photon.Unity;
+using Logger = PlayGen.Photon.Unity.Logger;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Initializing
 {

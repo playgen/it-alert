@@ -2,7 +2,7 @@
 using System.Linq;
 
 using Engine.Systems.Activation.Components;
-
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Simulation.Archetypes;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Components.Common;

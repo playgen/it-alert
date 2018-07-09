@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Engine.Entities;
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;
 using UnityEngine;

@@ -1,4 +1,5 @@
-﻿using PlayGen.ITAlert.Simulation.Components.EntityTypes;
+﻿using GameWork.Core.Logging.Loggers;
+using PlayGen.ITAlert.Simulation.Components.EntityTypes;
 using PlayGen.ITAlert.Simulation.Components.Items;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Simulation.Behaviours;

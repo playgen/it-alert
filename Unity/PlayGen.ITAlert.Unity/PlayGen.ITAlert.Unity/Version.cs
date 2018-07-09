@@ -12,7 +12,7 @@ namespace PlayGen.ITAlert.Unity
 
         public const int Minor = 0;
 
-        public const int Build = 1;
+        public const int Build = 2;
 
         public new static string ToString()
         {

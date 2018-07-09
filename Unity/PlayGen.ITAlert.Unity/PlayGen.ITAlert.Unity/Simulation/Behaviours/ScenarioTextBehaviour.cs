@@ -1,4 +1,5 @@
-﻿using PlayGen.ITAlert.Unity.Exceptions;
+﻿using GameWork.Core.Logging.Loggers;
+using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.Unity.Utilities.Extensions;
 using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;

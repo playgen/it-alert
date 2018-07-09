@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using GameWork.Core.Logging.Loggers;
 using GameWork.Core.States.Tick;
 using GameWork.Unity.Engine.Components;
 using Newtonsoft.Json;
@@ -7,6 +8,7 @@ using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client.Exceptions;
+using ThreadedLogger = GameWork.Unity.Logging.ThreadedLogger;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {
@@ -16,6 +18,9 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private static string ConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
 
 		private bool _loaded;
+        private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
+	    private static string GameConfigPath => Application.streamingAssetsPath + "/Game.config.json";
+        private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
 		private IEnumerator LoadPhotonConfig(string path)
 		{
@@ -25,6 +30,10 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 			}
 			var www = new WWW(path);
 			yield return www;
+        static GameBehaviour()
+	    {
+	        LogProxy.SetLogger(Logger);
+        }
 
 			var config = JsonConvert.DeserializeObject<ServerSettings>(www.text);
 			PhotonNetwork.PhotonServerSettings = config;
@@ -37,9 +46,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void Awake()
 		{
-			LogProxy.LogLevel = LogType.Warning;
-
-			GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
+		    GameExceptionHandler.AddExceptionTypeToIgnore(typeof(ConnectionException));
 
 			var stateControllerFactory = new StateControllerFactory();
 			_stateController = stateControllerFactory.Create();
@@ -70,6 +77,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 		private void OnApplicationQuit()
 		{
 			_stateController.Terminate();
+            LogProxy.Info("Game Gracefully Terminated.");
 		}
 	}
 }

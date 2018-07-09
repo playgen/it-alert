@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using GameWork.Core.Logging.Loggers;
 
 namespace PlayGen.ITAlert.Unity.Utilities
 {

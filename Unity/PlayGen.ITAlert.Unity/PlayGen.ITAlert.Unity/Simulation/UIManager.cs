@@ -2,6 +2,7 @@
 using System.Linq;
 using Engine.Lifecycle;
 using Engine.Systems.Timing;
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Configuration;
 using PlayGen.ITAlert.Simulation.Scoring.Team;

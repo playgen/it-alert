@@ -1,5 +1,5 @@
 ﻿using Engine.Commands;
-
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Photon.Messages.Simulation.Commands;
 using PlayGen.ITAlert.Simulation.Commands;
 using PlayGen.ITAlert.Unity.Photon;
@@ -39,7 +39,7 @@ namespace PlayGen.ITAlert.Unity.Debug
 		private static void IssueCommand(ICommand command)
 		{
 			PhotonClient.CurrentRoom.Messenger.SendMessage(new CommandMessage
-																{
+            {
 				Command = command
 			});
 		}

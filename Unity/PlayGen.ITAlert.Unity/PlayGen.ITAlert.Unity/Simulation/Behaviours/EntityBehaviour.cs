@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Entities;
+using GameWork.Core.Logging.Loggers;
 using PlayGen.ITAlert.Simulation.Modules.Tutorial.Components;
 using UnityEngine;
 

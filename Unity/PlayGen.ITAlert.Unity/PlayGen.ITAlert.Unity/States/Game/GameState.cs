@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWork.Core.Logging.Loggers;
 using GameWork.Core.States;
 using GameWork.Core.States.Tick;
 
@@ -78,8 +79,9 @@ namespace PlayGen.ITAlert.Unity.States.Game
 			}
 			catch (Exception exception)
 			{
-				LogProxy.Exception(exception);
-				OnException(exception);
+				LogProxy.Error(exception.ToString());
+			    LogProxy.Debug(exception.StackTrace);
+                OnException(exception);
 			}
 		}
 
