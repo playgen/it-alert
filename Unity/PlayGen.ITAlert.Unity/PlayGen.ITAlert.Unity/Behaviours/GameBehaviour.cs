@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using GameWork.Core.Logging;
 using GameWork.Core.Logging.Loggers;
 using GameWork.Core.States.Tick;
 using GameWork.Unity.Engine.Components;
@@ -9,7 +8,7 @@ using PlayGen.ITAlert.Unity.States;
 using PlayGen.ITAlert.Unity.States.Game;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Photon.Unity.Client.Exceptions;
-using ThreadedLogger = GameWork.Unity.Logging.ThreadedLogger;
+using AsyncLogger = GameWork.Unity.Logging.AsyncLogger;
 
 namespace PlayGen.ITAlert.Unity.Behaviours
 {
@@ -20,7 +19,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 	    private static string GameConfigPath => Application.streamingAssetsPath + "/Debug.config.json";
         private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
-        private static readonly ThreadedLogger Logger = new ThreadedLogger();
+        private static readonly AsyncLogger Logger = new AsyncLogger();
 
         private bool _loaded;
 	    private bool _isDisposed;
