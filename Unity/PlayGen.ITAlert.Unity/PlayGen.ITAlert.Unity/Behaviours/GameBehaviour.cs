@@ -15,9 +15,9 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 	[RequireComponent(typeof(DontDestroyOnLoad))]
 	public class GameBehaviour : MonoBehaviour
 	{
-	    public static GameConfig GameConfig { get; private set; }
+	    public static DebugConfig DebugConfig { get; private set; }
 
-	    private static string GameConfigPath => Application.streamingAssetsPath + "/Debug.config.json";
+	    private static string DebugConfigPath => Application.streamingAssetsPath + "/Debug.config.json";
         private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
         private static readonly AsyncLogger Logger = new AsyncLogger();
 
@@ -32,12 +32,12 @@ namespace PlayGen.ITAlert.Unity.Behaviours
         private IEnumerator LoadConfigs()
         {
             // Game Config
-            var gameConfigTextLoader = CreateTextLoader(GameConfigPath);
-            yield return gameConfigTextLoader;
+            var debugConfigTextLoader = CreateTextLoader(DebugConfigPath);
+            yield return debugConfigTextLoader;
 
-            GameConfig = new GameConfig();
-            GameConfig = JsonConvert.DeserializeObject<GameConfig>(gameConfigTextLoader.text);
-            LogProxy.LogLevel = GameConfig.LogLevel;
+	        DebugConfig = new DebugConfig();
+	        DebugConfig = JsonConvert.DeserializeObject<DebugConfig>(debugConfigTextLoader.text);
+            LogProxy.LogLevel = DebugConfig.LogLevel;
 
             // Photon Config
             var photonConfigTextLoader = CreateTextLoader(PhotonConfigPath);
