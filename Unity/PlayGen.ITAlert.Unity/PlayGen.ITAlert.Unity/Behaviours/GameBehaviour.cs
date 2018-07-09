@@ -18,7 +18,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 	{
 	    public static GameConfig GameConfig { get; private set; }
 
-	    private static string GameConfigPath => Application.streamingAssetsPath + "/Game.config.json";
+	    private static string GameConfigPath => Application.streamingAssetsPath + "/Debug.config.json";
         private static string PhotonConfigPath => Application.streamingAssetsPath + "/Photon.config.json";
         private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
@@ -37,7 +37,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
             yield return gameConfigTextLoader;
 
             GameConfig = new GameConfig();
-            //todo uncomment GameConfig = JsonConvert.DeserializeObject<GameConfig>(gameConfigTextLoader.text);
+            GameConfig = JsonConvert.DeserializeObject<GameConfig>(gameConfigTextLoader.text);
             LogProxy.LogLevel = GameConfig.LogLevel;
 
             // Photon Config
