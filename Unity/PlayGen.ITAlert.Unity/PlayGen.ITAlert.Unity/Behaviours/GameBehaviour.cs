@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using GameWork.Core.Logging;
 using GameWork.Core.Logging.Loggers;
 using GameWork.Core.States.Tick;
 using GameWork.Unity.Engine.Components;
@@ -22,6 +23,7 @@ namespace PlayGen.ITAlert.Unity.Behaviours
         private static readonly ThreadedLogger Logger = new ThreadedLogger();
 
         private bool _loaded;
+	    private bool _isDisposed;
 
         static GameBehaviour()
 	    {
@@ -93,8 +95,18 @@ namespace PlayGen.ITAlert.Unity.Behaviours
 
 		private void OnApplicationQuit()
 		{
-			_stateController.Terminate();
-            LogProxy.Info("Game Gracefully Terminated.");
+		    if (!_isDisposed)
+		    {
+		        Application.CancelQuit();
+
+		        _stateController.Terminate();
+		        LogProxy.Info("Game Quit Gracefully.");
+                Logger.Flush();
+
+                _isDisposed = true;
+
+		        Application.Quit();
+            }
 		}
 	}
 }
