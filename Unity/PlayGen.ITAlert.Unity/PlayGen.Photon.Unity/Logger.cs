@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameWork.Core.Logging;
+using GameWork.Core.Logging.Loggers;
 using PlayGen.Photon.Messages.Logging;
 using PlayGen.Photon.Unity.Messaging;
 
@@ -11,11 +14,11 @@ namespace PlayGen.Photon.Unity
 
 		internal static int PlayerPhotonId { get; set; }
 
-		public static void Log(LogLevel logLevel, string message)
+        public static void Log(LogType logType, string message)
 		{
 			if (Messenger == null || _isSendingMessage)
 			{
-				UnityLog(logLevel, message);
+				LogProxy.Log(logType, message);
 				_isSendingMessage = false;
 			}
 			else
@@ -24,7 +27,7 @@ namespace PlayGen.Photon.Unity
 				Messenger.SendMessage(new LogMessage
 										{
 					PlayerPhotonId = PlayerPhotonId,
-					LogLevel = logLevel,
+					LogType = logType,
 					Message = message
 				});
 				_isSendingMessage = false;
@@ -33,62 +36,41 @@ namespace PlayGen.Photon.Unity
 
 		public static void LogFatal(string message)
 		{
-			Log(LogLevel.Fatal, message);
+			Log(LogType.Fatal, message);
 		}
 
 		public static void LogFatal(Exception exception)
 		{
-			Log(LogLevel.Fatal, exception.Message);
+			Log(LogType.Fatal, exception.Message);
 		}
 
 		public static void LogError(string message)
 		{
-			Log(LogLevel.Error, message);
+			Log(LogType.Error, message);
 		}
 
 		public static void LogError(Exception exception)
 		{
-			Log(LogLevel.Error, exception.Message);
+			Log(LogType.Error, exception.Message);
 		}
 
 		public static void LogWarn(string message)
 		{
-			Log(LogLevel.Warn, message);
+			Log(LogType.Warning, message);
 		}
 		public static void LogDebug(string message)
 		{
-			Log(LogLevel.Debug, message);
+			Log(LogType.Debug, message);
 		}
 
 		public static void LogInfo(string message)
 		{
-			Log(LogLevel.Info, message);
+			Log(LogType.Info, message);
 		}
 
 		internal static void SetMessenger(Messenger messenger)
 		{
 			Messenger = messenger;
-		}
-
-		private static void UnityLog(LogLevel logLevel, string message)
-		{
-			switch (logLevel)
-			{
-				case LogLevel.Fatal:
-				case LogLevel.Error:
-					UnityEngine.Debug.LogError(message);
-					break;
-				case LogLevel.Warn:
-					UnityEngine.Debug.LogWarning(message);
-					break;
-				case LogLevel.Debug:
-				case LogLevel.Info:
-					UnityEngine.Debug.Log(message);
-					break;
-				default:
-					UnityEngine.Debug.LogError($"Unhandled log level type: {logLevel}. \nMessage: {message}");
-					break;
-			}
 		}
 	}
 }

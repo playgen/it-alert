@@ -33,6 +33,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GameWork.Core.Logging">
+      <HintPath>..\..\..\lib\GameWork\Core\GameWork.Core.Logging.dll</HintPath>
+    </Reference>
     <Reference Include="GameWork.Unity.Engine.Components">
       <HintPath>..\..\..\lib\GameWork\Engine\GameWork.Unity.Engine.Components.dll</HintPath>
       <Private>False</Private>
