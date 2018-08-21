@@ -7,7 +7,7 @@ using GameWork.Core.States.Tick.Input;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
 using PlayGen.ITAlert.Simulation.Scoring.Player;
-using PlayGen.ITAlert.Unity.Components;
+using PlayGen.ITAlert.Unity.Behaviours;
 using PlayGen.ITAlert.Unity.Exceptions;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.ITAlert.Unity.Simulation;
