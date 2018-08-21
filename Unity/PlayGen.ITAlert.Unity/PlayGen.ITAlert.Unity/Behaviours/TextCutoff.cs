@@ -3,7 +3,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace PlayGen.ITAlert.Unity.Components
+namespace PlayGen.ITAlert.Unity.Behaviours
 {
     [RequireComponent(typeof(Text))]
     public class TextCutoff : MonoBehaviour

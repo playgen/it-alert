@@ -2,7 +2,7 @@
 The simulation project is found at *Simulation/Playgen.ItAlert.sln*.
 
 # Key Project Structure
-- **Engine**: *[Entity-Component System](Engine/README.md)*
+- **Engine**: *[Entity-Component System](Engine/README.md)*.
 - **lib**: *precompiled referenced .dlls.*
 - **PlayGen.ItAlert.Simulation.Scenario.Localization**
   - **ScenarioLocalization.xlsx**: *Localization of scenarios.*
@@ -25,7 +25,7 @@ This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.Common**
 - **PlayGen.ItAlert.Simulation.Common.Tests**: *Common identifiers used.*
 - **PlayGen.ItAlert.Simulation.Configuration**
-- **PlayGen.ItAlert.Simulation.Configuration.Tests**: *Scenario Definitions in Scenarios/ and Configuration loader. Definitions of available player colours .*
+- **PlayGen.ItAlert.Simulation.Configuration.Tests**: *Scenario Definitions in Scenarios/ and Configuration loader. Definitions of available player colours.*
 - **PlayGen.ItAlert.Simulation.Logging**: *Handles logging of events to database for query later, see [Logging](#logging-and-analytics).*
 - **PlayGen.ItAlert.Simulation.Scenario**
 - **PlayGen.ItAlert.Simulation.Scenario.Tests**: *Creation of scenarios loaded from PlayGen.ITAlert.Simulation.Configuration.*
@@ -39,11 +39,11 @@ This project contains shared logic between both Server and Client
 - **PlayGen.ItAlert.Simulation.UI**
 
 # Systems
-Systems act upon entities through matchers, matchers maintain a collection of all entities that contain a specific set of components. In this manner all entities of a given ‘type’ can be acted upon without knowledge of the archetypes from which they were created.
+Systems act upon entities through matchers. Matchers maintain a collection of all entities that contain a specific set of components. In this manner all entities of a given ‘type’ can be acted upon without knowledge of the archetypes from which they were created.
 
 Systems can implement any of two interfaces depending on the required behaviour:
-- **InitializingSystem**: *perform operations before the first tick of the simulation loop, this can be used for set up activities and setting initial state*
-- **Tickable System**: *ticked as part of the simulation loop and implement the majority of the game logic by testing conditional actions and updating state on a regular basis*
+- **InitializingSystem**: *perform operations before the first tick of the simulation loop, this can be used for set up activities and setting initial state.*
+- **Tickable System**: *ticked as part of the simulation loop and implement the majority of the game logic by testing conditional actions and updating state on a regular basis.*
 
 There are also systems that have no automatic behaviour and are used to accumulate counters, provide services, such as RNG (Random Number Generator) and provide interfaces to components outside of the simulation.
 
@@ -51,9 +51,9 @@ System configuration is currently hardcoded but it is intended that this configu
 
 # Multiplayer Implementation
 
-- Game client hosts slace instance of simulations (ECS) 
-- Photon Loadbalancing Server hosts multiple, on demand instances of master simulation
-- Server broadcasts instructs clients to tick and apply commands, latent clients can fast forward and interpolate
+- Game client hosts slace instance of simulations (ECS).
+- Photon Loadbalancing Server hosts multiple, on demand instances of master simulation.
+- Server broadcasts instructions to clients to tick and apply commands, latent clients can fast forward and interpolate.
 - Clients validate state against server checksum, fail and disconnect if out of sync.
 
 ![MultiplayerImplementation](docs/MultiplayerImplementation.png)

@@ -7,16 +7,15 @@ This project uses the [Photon Unity Client](https://www.photonengine.com/en/PUN)
 
 ## Visual Studio Project Structure
 - **PlayGen.ITAlert.Unity**: *All Client game logic, which will be reflected in game UI in Unity project.*
-  - **Behaviours**: *for states in game.*
+  - **Behaviours**: *MonoBehaviours used to control object functionality.*
   - **Commands**: *Client Commands (Join, Leave, Create etc.).*  
   - **Controllers**: *Interaction Controllers (Join Game, Popups, Scenarios, Hover).*
-  - **States**: *Game States.*
+  - **States**: *Management of transitions between states and how the user interface should be displayed and act within each state.*
   - **Photon**: *Photon Client side logic.*
-  - **Simulation**: *Client side logic to reproduce the simulation.*
+  - **Simulation**: *Client side logic to display the simulation.*
     - **Summary**: *Post simulation summary statistics.*
         - **PlayerMetrics.cs**: *Calculations for Player Metrics.*        
-  - **LogProxy.cs**: *LogProxy for logging to unity.*
+  - **LogProxy.cs**: *LogProxy for logging to Unity in place of Debug.Log etc.*
 - **PlayGen.ITAlert.Unity.Tests**    
-- **PlayGen.ITAlert.Unity.Editor**: *Useful utilities for checking functionality in the Unity Editor.*
-- **PlayGen.Photon.Unity**: *Photon client wrapper for using Photon in unity and retrieving client status'.*
-- **UnityEngine.UI.Extensions.ColorPicker**: *Config values for colors available in game, and events that occur when colors change.*
+- **PlayGen.Photon.Unity**: *Photon client wrapper for using Photon in Unity and retrieving client status.*
+- **UnityEngine.UI.Extensions.ColorPicker**: *Contains logic relating to the ColorPicker previously used to select player color in-game.*
