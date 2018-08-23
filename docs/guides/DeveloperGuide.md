@@ -2,7 +2,6 @@
 The following guide will provide more information about the project architecture and game/server sequencing, looking at each of the key projects and providing an overview of what tasks each one does.
 
 The following topics are covered:
-- [Project Architecture](#project-architecture) - Overview of project structure and functionality.
 - [Scenario Creation](#creating-scenarios) - Introduction to how game scenarios are created.
 
 # IT Alert! Client/Server Simulation Loop
