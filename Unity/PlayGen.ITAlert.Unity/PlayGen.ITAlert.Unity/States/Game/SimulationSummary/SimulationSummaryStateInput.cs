@@ -4,7 +4,6 @@ using System.Linq;
 
 using GameWork.Core.States.Tick.Input;
 using ModestTree;
-using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Simulation.Summary;
 using PlayGen.ITAlert.Unity.Utilities;
 using PlayGen.Unity.Utilities.Text;
@@ -13,6 +12,7 @@ using PlayGen.Unity.Utilities.Localization;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using PlayGen.ITAlert.Unity.Behaviours;
 
 namespace PlayGen.ITAlert.Unity.States.Game.SimulationSummary
 {

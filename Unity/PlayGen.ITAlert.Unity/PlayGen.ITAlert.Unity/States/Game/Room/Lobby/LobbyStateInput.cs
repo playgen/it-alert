@@ -11,10 +11,10 @@ using PlayGen.Unity.Utilities.Text;
 using PlayGen.Unity.Utilities.Localization;
 using PlayGen.ITAlert.Photon.Common;
 using PlayGen.ITAlert.Photon.Players;
-using PlayGen.ITAlert.Unity.Components;
 using PlayGen.ITAlert.Unity.Controllers;
 using PlayGen.ITAlert.Unity.Photon;
 using PlayGen.Unity.Utilities.Extensions;
+using PlayGen.ITAlert.Unity.Behaviours;
 
 namespace PlayGen.ITAlert.Unity.States.Game.Room.Lobby
 {
