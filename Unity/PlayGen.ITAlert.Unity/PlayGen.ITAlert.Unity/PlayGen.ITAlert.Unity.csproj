@@ -190,10 +190,10 @@
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Localization.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Settings">
-      <HintPath>P:\it-alert\Unity\lib\PlayGen Internals\PlayGen.Unity.Utilities.Settings.dll</HintPath>
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Settings.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.Text">
-      <HintPath>P:\it-alert\Unity\lib\PlayGen Internals\PlayGen.Unity.Utilities.Text.dll</HintPath>
+      <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.Text.dll</HintPath>
     </Reference>
     <Reference Include="PlayGen.Unity.Utilities.UI">
       <HintPath>..\..\lib\PlayGen Internals\PlayGen.Unity.Utilities.UI.dll</HintPath>
