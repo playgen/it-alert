@@ -16,3 +16,8 @@ In the file:
 4. In Photon Control  
 4.1. LoadBallancing/Install service    
 4.2. LoadBallancing/Start service  
+5. In Windows's "Services" manager:  
+5.1. Locate the "Photon Socket Server. LoadBalancing" service.  
+5.2. Right Click and select "Properties".    
+5.3. Select the "Recovery" tab and set all failure options to "Restart the service".  
+5.4. Click "Apply".  
