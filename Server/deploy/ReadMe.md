@@ -19,5 +19,7 @@ In the file:
 5. In Windows's "Services" manager:  
 5.1. Locate the "Photon Socket Server. LoadBalancing" service.  
 5.2. Right Click and select "Properties".    
-5.3. Select the "Recovery" tab and set all failure options to "Restart the service".  
-5.4. Click "Apply".  
+5.3. Set "Startup Type" to "Automatic (Delayed Start)".  
+5.4. Select the "Recovery" tab and set all failure options to "Restart the service".  
+5.5. Set both "Reset fial count after" and "Restart service after" to 1.  
+5.6. Click "Apply".  
